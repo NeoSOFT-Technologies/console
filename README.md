@@ -4,6 +4,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `npm i / npm install`
+
+This Command will install the dependences that are required to ru this project<br>
+
 ### `npm start`
 
 Runs the app in the development mode.<br>
@@ -16,6 +20,16 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+### `npm run lint`
+
+this command will run eslint over the src to find error and look for formatting option.<br>
+Learn about [eslint](https://eslint.org/) for more information.<br>
+
+### `npm run lint:fix`
+
+this command will fix all the formatting error and fixable error sorted by the eslint and prettier.<br>
+Learn about [prettier](https://github.com/prettier/prettier) for more information.<br>
 
 ### `npm run build`
 
@@ -43,26 +57,35 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+### `descrption`
+Admin templates are a set of web pages, built with HTML, CSS, and Javascript or any javascript libraries used to create the user interface of the backend of a web application. These pre-built pages are integrated with the web application for doing backend tasks like maintaining the website, user and content management, installation and configuration of website software, and tracking data like network traffic and user visits to the website, to improve the performance of the website.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Project Structure
 
-### Analyzing the Bundle Size
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Please find below a detailed description of the app's folder structures:
 
-### Making a Progressive Web App
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+> **Note!** Make sure you have already built the app using  `npm run build`
+| Name | Description |
+| ------------------------ | --------------------------------------------------------------------------------------------- |
+| **.github**              | Contains GitHub settings and configurations, including the GitHub Actions workflows            |
+| **node_modules**         | Contains all your npm dependencies                                                            |
+| **src**                  | Contains your source code that will be compiled to the dist dir                               |
+| **src/config**           | Here you will find all the environment configuration necessary to access the application|
+| **src/app**              | Components define group of files/source that respond to various module(http requests)|
+| **src/app/dashboard/**   |  contain the main dashboard           |
+| **src/app/error-pages/** | error page for 404 and 500             |
+| **src/app/shared/**      |   Contain the other components like sidebar and navigationBar          |
+| **src/app/user-pages**   |  login page register page  and lockscreen       |
+| **src/app/AppRoutes**    |  Conatian all the Routes            |
+| package.json             | File that contains npm dependencies|
+| .eslintrc                | Config settings for ESLint code style checking                                                  |
+## Stay in touch
 
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+* Website - [https://www.neosofttech.com/](https://www.neosofttech.com/)
+* Twitter - [@neosofttech](https://twitter.com/neosofttech)
+* Meetup -  [https://www.meetup.com/neosoft-technologies/](https://www.meetup.com/neosoft-technologies/)
+* Medium -  [https://medium.com/@neosofttech-technologies-blog](https://medium.com/@neosofttech-technologies-blog)
+* GitHub - [https://github.com/NeoSOFT-Technologies](https://github.com/NeoSOFT-Technologies)
+* Discord - [NodeJS](https://discord.gg/9xW5gQhQa4)
