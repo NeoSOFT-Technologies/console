@@ -77,8 +77,9 @@ Please find below a detailed description of the app's folder structures:
 | **src/app/shared/**      |   Contain the other components like sidebar and navigationBar          |
 | **src/app/user-pages**   |  login page register page  and lockscreen       |
 | **src/app/AppRoutes**    |  Conatian all the Routes            |
+| **src/asset**            |  conatin images, svgs and SASS files         |
 | package.json             | File that contains npm dependencies|
-| .eslintrc                | Config settings for ESLint code style checking                                                  |
+| .eslintrc                | Config settings for ESLint code style checking         |
 ## Stay in touch
 
 * Website - [https://www.neosofttech.com/](https://www.neosofttech.com/)
