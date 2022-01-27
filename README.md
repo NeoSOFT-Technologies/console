@@ -65,8 +65,6 @@ Admin templates are a set of web pages, built with HTML, CSS, and Javascript or 
 
 Please find below a detailed description of the app's folder structures:
 
-
-> **Note!** Make sure you have already built the app using  `npm run build`
 | Name | Description |
 | ------------------------ | --------------------------------------------------------------------------------------------- |
 | **.github**              | Contains GitHub settings and configurations, including the GitHub Actions workflows            |
