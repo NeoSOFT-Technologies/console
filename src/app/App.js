@@ -3,11 +3,12 @@ import { withRouter } from "react-router-dom";
 import "./App.scss";
 import AppRoutes from "./AppRoutes";
 import Navbar from "./shared/Navbar";
-import Sidebar from "./shared/Sidebar";
+// import Sidebar from "./shared/Sidebar";
 import SettingsPanel from "./shared/SettingsPanel";
 import Footer from "./shared/Footer";
 // import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
+import AdminSidebar from "./shared/AdminSidebar";
 class App extends Component {
   state = "";
   componentDidMount() {
@@ -15,7 +16,7 @@ class App extends Component {
   }
   render() {
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar /> : "";
-    let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar /> : "";
+    let sidebarComponent = !this.state.isFullPageLayout ? <AdminSidebar /> : "";
     let SettingsPanelComponent = !this.state.isFullPageLayout ? (
       <SettingsPanel />
     ) : (
