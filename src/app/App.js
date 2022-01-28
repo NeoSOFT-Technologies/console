@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import withRouter from "./WithRouter";
 import "./App.scss";
 import AppRoutes from "./AppRoutes";
 import Navbar from "./shared/Navbar";
@@ -41,7 +41,7 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
+    if (this.props.router.location !== prevProps.router.location) {
       this.onRouteChanged();
     }
   }
@@ -67,7 +67,8 @@ class App extends Component {
       "/general-pages/landing-page",
     ];
     for (let i = 0; i < fullPageLayoutRoutes.length; i++) {
-      if (this.props.location.pathname === fullPageLayoutRoutes[i]) {
+      console.log(this.props.router.location.pathname);
+      if (this.props.router.location.pathname === fullPageLayoutRoutes[i]) {
         this.setState({
           isFullPageLayout: true,
         });
