@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
+import withRouter from "../WithRouter";
 import { Collapse } from "react-bootstrap";
 // import {  } from 'react-i18next';
 
@@ -20,7 +21,7 @@ class Sidebar extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
+    if (this.props.router.location !== prevProps.router.location) {
       this.onRouteChanged();
     }
   }
@@ -207,7 +208,7 @@ class Sidebar extends Component {
   }
 
   isPathActive(path) {
-    return this.props.location.pathname.startsWith(path);
+    return this.props.router.location.pathname.startsWith(path);
   }
 
   componentDidMount() {

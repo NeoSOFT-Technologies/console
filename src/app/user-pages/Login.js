@@ -1,8 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Form } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Form } from "react-bootstrap";
 import logo from "../../assets/images/logo.svg";
 export default function Login() {
+  const navigate = useNavigate();
+  const validate = () => {
+    //uservalidation
+    navigate("/dashboard");
+  };
   return (
     <div>
       <div className="d-flex align-items-center auth px-0">
@@ -32,12 +37,12 @@ export default function Login() {
                   />
                 </Form.Group>
                 <div className="mt-3">
-                  <Link
+                  <Button
                     className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                    to="/dashboard"
+                    onClick={() => validate()}
                   >
                     SIGN IN
-                  </Link>
+                  </Button>
                 </div>
                 <div className="my-2 d-flex justify-content-between align-items-center">
                   <div className="form-check">

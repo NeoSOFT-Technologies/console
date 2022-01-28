@@ -1,5 +1,5 @@
 import React, { Component, Suspense, lazy } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Spinner from "../app/shared/Spinner";
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
 const Error404 = lazy(() => import("./error-pages/Error404"));
@@ -11,15 +11,15 @@ class AppRoutes extends Component {
   render() {
     return (
       <Suspense fallback={<Spinner />}>
-        <Switch>
-          <Route exact path="/dashboard" component={Dashboard} />
-          <Route path="/login-page" component={Login} />
-          <Route path="/registration-page" component={Register} />
-          <Route path="/user-pages/lockscreen" component={Lockscreen} />
-          <Route path="/error-pages/error-404" component={Error404} />
-          <Route path="/error-pages/error-500" component={Error500} />
-          <Redirect to="/dashboard" />
-        </Switch>
+        <Routes>
+          <Route exact path="/dashboard" element={<Dashboard />} />
+          <Route path="/login-page" element={<Login />} />
+          <Route path="/registration-page" element={<Register />} />
+          <Route path="/user-pages/lockscreen" element={<Lockscreen />} />
+          <Route path="/error-pages/error-404" element={<Error404 />} />
+          <Route path="/error-pages/error-500" element={<Error500 />} />
+          <Route path="*" to="/login-page" />
+        </Routes>
       </Suspense>
     );
   }
