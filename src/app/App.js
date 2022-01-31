@@ -8,7 +8,8 @@ import SettingsPanel from "./shared/SettingsPanel";
 import Footer from "./shared/Footer";
 // import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
-import AdminSidebar from "./shared/AdminSidebar";
+// import AdminSidebar from "./shared/AdminSidebar";
+import TenantSidebar from "./shared/TenantSidebar";
 class App extends Component {
   state = "";
   componentDidMount() {
@@ -16,7 +17,11 @@ class App extends Component {
   }
   render() {
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar /> : "";
-    let sidebarComponent = !this.state.isFullPageLayout ? <AdminSidebar /> : "";
+    let sidebarComponent = !this.state.isFullPageLayout ? (
+      <TenantSidebar />
+    ) : (
+      ""
+    );
     let SettingsPanelComponent = !this.state.isFullPageLayout ? (
       <SettingsPanel />
     ) : (

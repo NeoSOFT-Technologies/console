@@ -1,8 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import withRouter from "../WithRouter";
-const tenant = ["tenant1", "tenant2"];
-function AdminSidebar() {
+function TenantSidebar() {
   const location = useLocation();
   const isPathActive = (path) => {
     return location.pathname.startsWith(path);
@@ -38,34 +37,39 @@ function AdminSidebar() {
           </li>
           <li
             className={
-              isPathActive("/registertenant") ? "nav-item active" : "nav-item"
+              isPathActive("/dashboard") ? "nav-item active" : "nav-item"
             }
           >
-            <Link className="nav-link" to="/registertenant">
+            <Link className="nav-link" to="/dashboard">
               <span className="menu-title">
-                <>Master</>
+                <>Dashboard</>
               </span>
-              <i className="mdi mdi-account-star menu-icon"></i>
+              <i className="mdi mdi-home menu-icon"></i>
             </Link>
           </li>
-          {tenant.map((val, i) => (
-            <li
-              key={i}
-              className={
-                isPathActive(`/${val}`) ? "nav-item active" : "nav-item"
-              }
-            >
-              <Link className="nav-link" to={`#`}>
-                <span className="menu-title">
-                  <>{val}</>
-                </span>
-                <i className="mdi mdi-account-check menu-icon"></i>
-              </Link>
-            </li>
-          ))}
+          <li
+            className={
+              isPathActive("/createuser") ? "nav-item active" : "nav-item"
+            }
+          >
+            <Link className="nav-link" to="/createuser">
+              <span className="menu-title">
+                <>New User</>
+              </span>
+              <i className="mdi mdi-account-plus menu-icon"></i>
+            </Link>
+          </li>
+          <li className={isPathActive("#") ? "nav-item active" : "nav-item"}>
+            <Link className="nav-link" to="/dashboard">
+              <span className="menu-title">
+                <>Config</>
+              </span>
+              <i className="mdi mdi-settings menu-icon"></i>
+            </Link>
+          </li>
         </ul>
       </nav>
     </>
   );
 }
-export default withRouter(AdminSidebar);
+export default withRouter(TenantSidebar);

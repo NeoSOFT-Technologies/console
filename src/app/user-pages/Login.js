@@ -71,7 +71,7 @@ export default function Login() {
                 </div>
                 <div className="text-center mt-4 font-weight-light">
                   Don&apos;t have an account?{" "}
-                  <Link to="registration-page" className="text-primary">
+                  <Link to="/registration-page" className="text-primary">
                     Create
                   </Link>
                 </div>
