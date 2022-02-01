@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import logo from "../../assets/images/logo.svg";
 export default function Login() {
   const navigate = useNavigate();
+  const [inputDetails, setInputDetails] = useState({
+    email: "",
+    password: "",
+  });
   const validate = () => {
     //uservalidation
+    //if validation true pass the input details state
     navigate("/dashboard");
   };
   return (
@@ -23,9 +28,15 @@ export default function Login() {
                 <Form.Group className="d-flex search-field">
                   <Form.Control
                     type="email"
-                    placeholder="Username"
+                    placeholder="Email"
                     size="lg"
                     className="h-auto"
+                    onChange={(e) =>
+                      setInputDetails({
+                        ...inputDetails,
+                        email: e.target.value,
+                      })
+                    }
                   />
                 </Form.Group>
                 <Form.Group className="d-flex search-field">
@@ -34,6 +45,12 @@ export default function Login() {
                     placeholder="Password"
                     size="lg"
                     className="h-auto"
+                    onChange={(e) =>
+                      setInputDetails({
+                        ...inputDetails,
+                        password: e.target.value,
+                      })
+                    }
                   />
                 </Form.Group>
                 <div className="mt-3">
