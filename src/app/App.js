@@ -3,22 +3,27 @@ import withRouter from "./WithRouter";
 import "./App.scss";
 import AppRoutes from "./AppRoutes";
 import Navbar from "./shared/Navbar";
-// import Sidebar from "./shared/Sidebar";
+
 import SettingsPanel from "./shared/SettingsPanel";
 import Footer from "./shared/Footer";
 // import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
-// import AdminSidebar from "./shared/AdminSidebar";
+import AdminSidebar from "./shared/AdminSidebar";
 import TenantSidebar from "./shared/TenantSidebar";
 class App extends Component {
   state = "";
   componentDidMount() {
     this.onRouteChanged();
   }
+
   render() {
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar /> : "";
     let sidebarComponent = !this.state.isFullPageLayout ? (
-      <TenantSidebar />
+      localStorage.getItem("user") == undefined ? (
+        <TenantSidebar />
+      ) : (
+        <AdminSidebar />
+      )
     ) : (
       ""
     );
