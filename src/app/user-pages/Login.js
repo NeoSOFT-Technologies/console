@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -79,9 +77,10 @@ export default function Login() {
 
     return valid;
   };
+
   return (
     <div>
-       <div className="d-flex align-items-center auth px-0">
+      <div className="d-flex align-items-center auth px-0">
         <div className="row w-100 mx-0">
           <div className="col-lg-4 mx-auto">
             <div className="auth-form-light text-left py-5 px-4 px-sm-5">
@@ -90,7 +89,6 @@ export default function Login() {
               </div>
               <h4>Hello! let&apos;s get started</h4>
               <h6 className="font-weight-light">Sign in to continue.</h6>
-              
               <Form className="pt-3">
                 <Form.Group className="mb-3">
                   <Form.Control

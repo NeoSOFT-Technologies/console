@@ -1,28 +1,5 @@
 {
   "Registration": [
-<<<<<<< HEAD
-   
-    {
-     
-      "email": "abc@gmail.com",
-      "password": "12345678",
-      "type":"tenant"
-      
-    },
-    {
-     
-      "email": "abcd@gmail.com",
-      "password": "123456789",
-      "type":"tenant"
-      
-    },
-    {
-     
-      "email": "admin@gmail.com",
-      "password": "123456789",
-      "type":"admin"
-      
-=======
     {
       "name": "Deepthi",
       "description": "i am smartest",
@@ -85,7 +62,6 @@
       "password": "rohit",
       "type": "tenant",
       "id": 11
->>>>>>> 31c15bf3c64cde393dbd046589a360b0e2124e4f
     }
   ]
 }
