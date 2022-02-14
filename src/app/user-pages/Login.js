@@ -1,18 +1,83 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button, Form } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import logo from "../../assets/images/logo.svg";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+toast.configure();
+const regforEmail = RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+
 export default function Login() {
-  const navigate = useNavigate();
-  const [inputDetails, setInputDetails] = useState({
+  let [email, setEmail] = useState("");
+  let [password, setpassword] = useState("");
+  let [error, setError] = useState({
     email: "",
     password: "",
   });
-  const validate = () => {
-    //uservalidation
-    //if validation true pass the input details state
-    navigate("/dashboard");
+  const navigate = useNavigate();
+  const success = (data) =>
+    toast.success(data, { position: toast.POSITION.BOTTOM_RIGHT });
+  const failure = (data) =>
+    toast.error(data, { position: toast.POSITION.BOTTOM_RIGHT });
+  const warning = (data) =>
+    toast.warn(data, { position: toast.POSITION.BOTTOM_RIGHT });
+
+  const handle = (event) => {
+    let { name, value } = event.target;
+    switch (name) {
+      case "email":
+        setEmail(value);
+        setError({
+          ...error,
+          email: regforEmail.test(value) ? "" : "Email is not valid",
+        });
+        break;
+      case "password":
+        setpassword(value);
+        setError({
+          ...error,
+          password: value.length < 8 ? "password is not valid" : "",
+        });
+        break;
+      default:
+        break;
+    }
   };
+
+  const handleSubmit = async () => {
+    if (validate(error)) {
+      const res = await axios.get(
+        `http://localhost:3001/Registration?email=${email}&password=${password}`
+      );
+      console.log(res);
+      let data = res.data[0];
+      console.log(data);
+      if (data.type == "tenant") {
+        success("Logged In");
+        localStorage.removeItem("user", email);
+        navigate("/dashboard");
+      } else if (data.type == "admin") {
+        success("Logged In");
+        localStorage.setItem("user", email);
+        navigate("/dashboard");
+      } else {
+        console.log(data);
+        warning("Incorrect Credntials!");
+      }
+    } else {
+      failure("Please fill all the fields");
+    }
+  };
+
+  const validate = () => {
+    let valid = false;
+
+    valid = !(email.length < 1 || password.length < 1);
+
+    return valid;
+  };
+
   return (
     <div>
       <div className="d-flex align-items-center auth px-0">
@@ -25,38 +90,39 @@ export default function Login() {
               <h4>Hello! let&apos;s get started</h4>
               <h6 className="font-weight-light">Sign in to continue.</h6>
               <Form className="pt-3">
-                <Form.Group className="d-flex search-field">
+                <Form.Group className="mb-3">
                   <Form.Control
                     type="email"
-                    placeholder="Email"
-                    size="lg"
-                    className="h-auto"
-                    onChange={(e) =>
-                      setInputDetails({
-                        ...inputDetails,
-                        email: e.target.value,
-                      })
-                    }
+                    name="email"
+                    placeholder="Enter Email"
+                    onChange={handle}
+                    required
                   />
+                  {error.email.length > 0 && (
+                    <Alert variant="danger" className="mt-2">
+                      {error.email}
+                    </Alert>
+                  )}
                 </Form.Group>
-                <Form.Group className="d-flex search-field">
+                <Form.Group className="mb-3">
                   <Form.Control
-                    type="password"
-                    placeholder="Password"
-                    size="lg"
-                    className="h-auto"
-                    onChange={(e) =>
-                      setInputDetails({
-                        ...inputDetails,
-                        password: e.target.value,
-                      })
-                    }
+                    type="number"
+                    name="password"
+                    placeholder="Enter password"
+                    onChange={handle}
                   />
+                  {error.password.length > 0 && (
+                    <Alert variant="danger" className="mt-2">
+                      {error.password}
+                    </Alert>
+                  )}
                 </Form.Group>
                 <div className="mt-3">
                   <Button
                     className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                    onClick={() => validate()}
+                    onClick={() => {
+                      handleSubmit();
+                    }}
                   >
                     SIGN IN
                   </Button>
@@ -76,21 +142,6 @@ export default function Login() {
                   >
                     Forgot password?
                   </a>
-                </div>
-                <div className="mb-2">
-                  <button
-                    type="button"
-                    className="btn btn-block btn-facebook auth-form-btn"
-                  >
-                    <i className="mdi mdi-facebook mr-2"></i>Connect using
-                    facebook
-                  </button>
-                </div>
-                <div className="text-center mt-4 font-weight-light">
-                  Don&apos;t have an account?{" "}
-                  <Link to="/registration-page" className="text-primary">
-                    Create
-                  </Link>
                 </div>
               </Form>
             </div>

@@ -9,6 +9,8 @@ const Register = lazy(() => import("./user-pages/Register"));
 const Lockscreen = lazy(() => import("./user-pages/Lockscreen"));
 const CreateUser = lazy(() => import("./dashboard/CreateUser"));
 const RegisterUser = lazy(() => import("./dashboard/RegisterUser"));
+const TenantList = lazy(() => import("./dashboard/TenantList"));
+
 class AppRoutes extends Component {
   render() {
     return (
@@ -17,6 +19,7 @@ class AppRoutes extends Component {
           <Route exact path="/dashboard" element={<Dashboard />} />
           <Route path="/createuser" element={<CreateUser />} />
           <Route path="/registertenant" element={<RegisterUser />} />
+          <Route path="/tenantlist" element={<TenantList />} />
           <Route path="/login-page" element={<Login />} />
           <Route path="/registration-page" element={<Register />} />
           <Route path="/user-pages/lockscreen" element={<Lockscreen />} />

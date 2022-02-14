@@ -1,0 +1,67 @@
+{
+  "Registration": [
+    {
+      "name": "Deepthi",
+      "description": "i am smartest",
+      "userid": "deepthi123",
+      "email": "deepthi@gmail.com",
+      "password": "deepthi",
+      "type": "tenant",
+      "id": 3
+    },
+    {
+      "name": "Rahul kenchi",
+      "description": "i am going to win the world",
+      "userid": "rahul123",
+      "email": "rahul768@gmail.com",
+      "password": "rahul768",
+      "type": "tenant",
+      "id": 5
+    },
+    {
+      "name": "Mihir Mihir",
+      "description": "i know everything about everything ",
+      "userid": "mihir9991",
+      "email": "mihir999@gmail.com",
+      "password": "mihir999",
+      "type": "tenant",
+      "id": 6
+    },
+    {
+      "name": "Tushar Saxena",
+      "description": "i am the king of the seven worlds",
+      "userid": "tushar123",
+      "email": "tushar057@gmail.com",
+      "password": "tushar057",
+      "type": "tenant",
+      "id": 7
+    },
+    {
+      "name": "Jeff Mathew",
+      "description": "i am a coding god",
+      "userid": "jeff1234",
+      "email": "jeff123@gmail.com",
+      "password": "jeff123",
+      "type": "tenant",
+      "id": 8
+    },
+    {
+      "name": "Paras Saxena",
+      "description": "I am a Master hacker ",
+      "userid": "paras72727",
+      "email": "parassaxena206@gmail.com",
+      "password": "parassaxena206",
+      "type": "tenant",
+      "id": 10
+    },
+    {
+      "name": "Rohit singh",
+      "description": "i am pro gamer",
+      "userid": "rohit123",
+      "email": "rohit@gmail.com",
+      "password": "rohit",
+      "type": "tenant",
+      "id": 11
+    }
+  ]
+}

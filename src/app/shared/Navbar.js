@@ -3,7 +3,7 @@ import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 // import {  } from "react-i18next";
 import logo from "../../assets/images/logo.svg";
-import logo_mini from "../../assets/images/logo-mini.svg";
+import logo_mini from "../../assets/images/logo-mini.png";
 
 class Navbar extends Component {
   toggleOffcanvas() {
