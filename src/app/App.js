@@ -36,6 +36,7 @@ class App extends Component {
     return (
       <div className="container-scroller">
         {navbarComponent}
+
         <div className="container-fluid page-body-wrapper">
           {sidebarComponent}
           <div className="main-panel">
@@ -71,6 +72,7 @@ class App extends Component {
     const fullPageLayoutRoutes = [
       "/login-page",
       "/registration-page",
+
       "/user-pages/lockscreen",
       "/error-pages/error-404",
       "/error-pages/error-500",
@@ -85,6 +87,7 @@ class App extends Component {
         document
           .querySelector(".page-body-wrapper")
           .classList.add("full-page-wrapper");
+
         break;
       } else {
         this.setState({

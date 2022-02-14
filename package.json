@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@mdi/font": "^4.2.95",
+    "axios": "^0.25.0",
     "bootstrap": "^4.3.1",
     "bosket": "^0.2.3",
     "brace": "^0.11.1",
@@ -55,6 +56,7 @@
     "react-svg-gauge": "^1.0.10",
     "react-table": "^6.10.3",
     "react-tag-autocomplete": "^5.11.1",
+    "react-toastify": "^8.1.1",
     "react-treebeard": "^3.2.4",
     "react-trello": "^2.2.3",
     "sweetalert2-react": "^0.8.3",
@@ -67,8 +69,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint src/**/*.js",
-    "lint:fix": "eslint src/**/*.js --fix"
+    "lint": "eslint src/**/*.js --fix"
   },
   "husky": {
     "hooks": {
