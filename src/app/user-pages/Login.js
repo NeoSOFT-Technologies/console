@@ -5,8 +5,8 @@ import axios from "axios";
 import logo from "../../assets/images/logo.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { regexForEmail } from "../constants/constantVariables";
 toast.configure();
-const regforEmail = RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
 
 export default function Login() {
   let [email, setEmail] = useState("");
@@ -30,7 +30,7 @@ export default function Login() {
         setEmail(value);
         setError({
           ...error,
-          email: regforEmail.test(value) ? "" : "Email is not valid",
+          email: regexForEmail.test(value) ? "" : "Email is not valid",
         });
         break;
       case "password":
@@ -106,7 +106,7 @@ export default function Login() {
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Control
-                    type="number"
+                    type="password"
                     name="password"
                     placeholder="Enter password"
                     onChange={handle}

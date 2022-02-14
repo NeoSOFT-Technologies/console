@@ -3,14 +3,11 @@ import axios from "axios";
 import { Modal, Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { regexForName, regexForUser } from "../constants/constantVariables";
 toast.configure();
 const client = axios.create({
   baseURL: "http://localhost:3001/Registration",
 });
-const regForName = RegExp(/^[A-Z a-z]{4,29}$/);
-const regForUser = RegExp(
-  /^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$/
-);
 export default function TenantList() {
   const [tenantList, setTenantList] = useState([]);
   const [modalShow, setModalShow] = useState(false);
@@ -58,13 +55,13 @@ export default function TenantList() {
       ...err,
       no: false,
     });
-    if (!regForName.test(tenant.name)) {
+    if (!regexForName.test(tenant.name)) {
       setErr({
         ...err,
         name: true,
       });
       document.getElementById("name").focus();
-    } else if (!regForUser.test(tenant.userid)) {
+    } else if (!regexForUser.test(tenant.userid)) {
       setErr({
         ...err,
         userid: true,
@@ -172,7 +169,7 @@ export default function TenantList() {
                     }}
                     required
                   />
-                  {tenant.name && !regForName.test(tenant.name) && (
+                  {tenant.name && !regexForName.test(tenant.name) && (
                     <span className="text-danger">
                       Name Should Not Cantain Any Special Character or Number
                     </span>
@@ -208,7 +205,7 @@ export default function TenantList() {
                     }}
                     required
                   />
-                  {tenant.userid && !regForUser.test(tenant.userid) && (
+                  {tenant.userid && !regexForUser.test(tenant.userid) && (
                     <span className="text-danger">
                       Id Should Contain alphabet, number.(i.e. : paras123,
                       p_A_r_A_s_1)

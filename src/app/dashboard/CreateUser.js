@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
-const regForEmail = RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+import { regexForEmail } from "../constants/constantVariables";
 
 export default function Createuser() {
   let [name, setName] = useState("");
@@ -55,7 +55,7 @@ export default function Createuser() {
               }}
               required
             />
-            {email != "" && !regForEmail.test(email) && (
+            {email != "" && !regexForEmail.test(email) && (
               <span className="text-danger">Enter email correctly</span>
             )}
           </Form.Group>
