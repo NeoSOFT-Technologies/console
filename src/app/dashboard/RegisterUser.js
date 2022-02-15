@@ -70,7 +70,7 @@ export default function RegisterUser() {
       success("Registered successfully");
       setTimeout(() => {
         window.location.reload(false);
-      }, 1000);
+      }, 500);
     }
   };
   return (

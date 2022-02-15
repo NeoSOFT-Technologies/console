@@ -56,6 +56,7 @@ export default function Login() {
       if (data.type == "tenant") {
         success("Logged In");
         localStorage.removeItem("user", email);
+        sessionStorage.setItem("user", email);
         navigate("/dashboard");
       } else if (data.type == "admin") {
         success("Logged In");
