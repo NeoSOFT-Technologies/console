@@ -6,7 +6,7 @@ export default function Dashboard() {
   return (
     <>
       <Container>
-        {user && (
+        {!!user && (
           <Card style={{ width: "550px" }} className="m-1 p-2">
             <Card.Title style={{ fontSize: "32px" }} className="text-center">
               Tenant Details

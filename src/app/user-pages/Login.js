@@ -52,12 +52,9 @@ export default function Login() {
       console.log(user);
       if (user.type == "tenant") {
         success("Logged In");
-        localStorage.removeItem("user", email);
-        sessionStorage.setItem("user", email);
         navigate("/dashboard");
       } else if (user.type == "admin") {
         success("Logged In");
-        localStorage.setItem("user", email);
         navigate("/dashboard");
       } else {
         console.log(user);
