@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { regexForEmail } from "../constants/constantVariables";
 toast.configure();
-const regforEmail = RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
 
 export default function Login1() {
   let [email, setEmail] = useState("");
@@ -29,7 +29,7 @@ export default function Login1() {
         setEmail(value);
         setError({
           ...error,
-          email: regforEmail.test(value) ? "" : "Email is not valid",
+          email: regexForEmail.test(value) ? "" : "Email is not valid",
         });
         break;
       case "password":

@@ -3,15 +3,15 @@ import { Button, Form } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  regexForEmail,
+  regexForName,
+  regexForUser,
+} from "../constants/constantVariables";
 toast.configure();
 const client = axios.create({
   baseURL: "http://localhost:3001/Registration",
 });
-const regForName = RegExp(/^[A-Z a-z]{4,29}$/);
-const regForUser = RegExp(
-  /^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$/
-);
-const regForEmail = RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
 export default function RegisterUser() {
   const [tenant, setTenant] = useState({
     name: null,
@@ -31,7 +31,7 @@ export default function RegisterUser() {
     toast.success(data, { position: toast.POSITION.BOTTOM_RIGHT });
   const addtenant = (e) => {
     e.preventDefault();
-    if (!regForName.test(tenant.name)) {
+    if (!regexForName.test(tenant.name)) {
       setErr({
         ...err,
         name: true,
@@ -41,14 +41,14 @@ export default function RegisterUser() {
         top: 0,
         behavior: "smooth",
       });
-    } else if (!regForUser.test(tenant.userid)) {
+    } else if (!regexForUser.test(tenant.userid)) {
       setErr({
         ...err,
         userid: true,
         name: false,
       });
       document.getElementById("userid").focus();
-    } else if (!regForEmail.test(tenant.email)) {
+    } else if (!regexForEmail.test(tenant.email)) {
       setErr({
         ...err,
         email: true,
@@ -93,7 +93,7 @@ export default function RegisterUser() {
               }}
               required
             />
-            {tenant.name && !regForName.test(tenant.name) && (
+            {tenant.name && !regexForName.test(tenant.name) && (
               <span className="text-danger">
                 Name Should Not Cantain Any Special Character or Number
               </span>
@@ -127,7 +127,7 @@ export default function RegisterUser() {
               }}
               required
             />
-            {tenant.userid && !regForUser.test(tenant.userid) && (
+            {tenant.userid && !regexForUser.test(tenant.userid) && (
               <span className="text-danger">
                 Id Should Contain alphabet, number.(i.e. : paras123,
                 p_A_r_A_s_1)
@@ -148,7 +148,7 @@ export default function RegisterUser() {
               }}
               required
             />
-            {tenant.email && !regForEmail.test(tenant.email) && (
+            {tenant.email && !regexForEmail.test(tenant.email) && (
               <span className="text-danger">Enter a Valid Mail Id</span>
             )}
           </Form.Group>
