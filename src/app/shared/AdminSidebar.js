@@ -1,7 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import withRouter from "../WithRouter";
-const tenant = ["tenant1", "tenant2"];
 function AdminSidebar() {
   const location = useLocation();
   const isPathActive = (path) => {
@@ -36,6 +35,31 @@ function AdminSidebar() {
               <i className="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
             </a>
           </li>
+
+          <li
+            className={
+              isPathActive("/masterdashboard") ? "nav-item active" : "nav-item"
+            }
+          >
+            <Link className="nav-link" to="/masterdashboard">
+              <span className="menu-title">
+                <>Master</>
+              </span>
+              <i className="mdi mdi-account-star menu-icon"></i>
+            </Link>
+          </li>
+          <li
+            className={
+              isPathActive("/tenantlist") ? "nav-item active" : "nav-item"
+            }
+          >
+            <Link className="nav-link" to="/tenantlist">
+              <span className="menu-title">
+                <>List</>
+              </span>
+              <i className="mdi mdi-format-list-bulleted menu-icon"></i>
+            </Link>
+          </li>
           <li
             className={
               isPathActive("/registertenant") ? "nav-item active" : "nav-item"
@@ -43,26 +67,11 @@ function AdminSidebar() {
           >
             <Link className="nav-link" to="/registertenant">
               <span className="menu-title">
-                <>Master</>
+                <>Add User</>
               </span>
-              <i className="mdi mdi-account-star menu-icon"></i>
+              <i className="mdi mdi-account-plus menu-icon"></i>
             </Link>
           </li>
-          {tenant.map((val, i) => (
-            <li
-              key={i}
-              className={
-                isPathActive(`/${val}`) ? "nav-item active" : "nav-item"
-              }
-            >
-              <Link className="nav-link" to={`#`}>
-                <span className="menu-title">
-                  <>{val}</>
-                </span>
-                <i className="mdi mdi-account-check menu-icon"></i>
-              </Link>
-            </li>
-          ))}
         </ul>
       </nav>
     </>
