@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import logo from "../../assets/images/logo.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { regexForEmail } from "../constants/constantVariables";
+import { useDispatch, useSelector } from "react-redux";
+import { UserLogin } from "../redux/actions/LoginActions";
 toast.configure();
 
 export default function Login() {
@@ -15,7 +16,9 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.setUserData);
   const success = (data) =>
     toast.success(data, { position: toast.POSITION.BOTTOM_RIGHT });
   const failure = (data) =>
@@ -44,28 +47,28 @@ export default function Login() {
         break;
     }
   };
-
-  const handleSubmit = async () => {
-    if (validate(error)) {
-      const res = await axios.get(
-        `http://localhost:3001/Registration?email=${email}&password=${password}`
-      );
-      console.log(res);
-      let data = res.data[0];
-      console.log(data);
-      if (data.type == "tenant") {
+  useEffect(() => {
+    if (email != "" && password != "") {
+      console.log(user);
+      if (user.type == "tenant") {
         success("Logged In");
         localStorage.removeItem("user", email);
         sessionStorage.setItem("user", email);
         navigate("/dashboard");
-      } else if (data.type == "admin") {
+      } else if (user.type == "admin") {
         success("Logged In");
         localStorage.setItem("user", email);
         navigate("/dashboard");
       } else {
-        console.log(data);
+        console.log(user);
         warning("Incorrect Credntials!");
       }
+    }
+  }, [user]);
+
+  const handleSubmit = async () => {
+    if (validate(error)) {
+      UserLogin(email, password).then((res) => dispatch(res));
     } else {
       failure("Please fill all the fields");
     }

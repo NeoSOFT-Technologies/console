@@ -1,5 +1,10 @@
 import { combineReducers } from "redux";
 import setAdminLogin from "./AdminLoginState";
 import setTenantLogin from "./TenantLoginState";
-const rootReducer = combineReducers({ setAdminLogin, setTenantLogin });
+import setUserData from "./userDataState";
+const rootReducer = combineReducers({
+  setAdminLogin,
+  setTenantLogin,
+  setUserData,
+});
 export default rootReducer;
