@@ -1,15 +1,21 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect, useRef } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { regexForName, regexForUser } from "../constants/constantVariables";
+import { useDispatch, useSelector } from "react-redux";
+import { getTenantList } from "../redux/actions/TenantActions";
+import axios from "axios";
 toast.configure();
-const client = axios.create({
-  baseURL: "http://localhost:3001/Registration",
-});
+
 export default function TenantList() {
-  const [tenantList, setTenantList] = useState([]);
+  const client = axios.create({
+    baseURL: "http://localhost:3001/Registration",
+  });
+  const name = useRef(null);
+  const userid = useRef(null);
+  const dispatch = useDispatch();
+  const tenantList = useSelector((state) => state.setTenantList);
   const [modalShow, setModalShow] = useState(false);
   const [tenant, setTenant] = useState({
     name: null,
@@ -29,9 +35,9 @@ export default function TenantList() {
   }, []);
   const mainCall = async () => {
     try {
-      client.get("/").then((res) => {
-        console.log(res.data);
-        setTenantList(res.data);
+      getTenantList().then((res) => {
+        console.log("in Teanant List", res);
+        dispatch(res);
       });
     } catch (err) {
       console.log(err);
@@ -60,14 +66,14 @@ export default function TenantList() {
         ...err,
         name: true,
       });
-      document.getElementById("name").focus();
+      name.current.focus();
     } else if (!regexForUser.test(tenant.userid)) {
       setErr({
         ...err,
         userid: true,
         name: false,
       });
-      document.getElementById("userid").focus();
+      userid.current.focus();
     } else {
       setErr({
         userid: false,
@@ -160,7 +166,7 @@ export default function TenantList() {
                     type="text"
                     placeholder="Enter Name"
                     name="name"
-                    id="name"
+                    ref={name}
                     value={tenant.name}
                     isInvalid={err.name}
                     isValid={err.no}
@@ -196,7 +202,7 @@ export default function TenantList() {
                   <Form.Control
                     type="text"
                     placeholder="Enter User ID"
-                    id="userid"
+                    ref={userid}
                     isValid={err.no}
                     value={tenant.userid}
                     isInvalid={err.userid}
