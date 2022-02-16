@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import logo from "../../assets/images/logo.svg";
+import { registerationGet } from "../../config/Myservices";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { regexForEmail } from "../constants/constantVariables";
+import { host } from "../../config/URL";
+import PasswordButtons from "../shared/Password";
+
 toast.configure();
 
 export default function Login() {
@@ -16,6 +18,7 @@ export default function Login() {
     password: "",
   });
   const navigate = useNavigate();
+  const [showPassword, setShowpassword] = useState(false);
   const success = (data) =>
     toast.success(data, { position: toast.POSITION.BOTTOM_RIGHT });
   const failure = (data) =>
@@ -47,8 +50,8 @@ export default function Login() {
 
   const handleSubmit = async () => {
     if (validate(error)) {
-      const res = await axios.get(
-        `http://localhost:3001/Registration?email=${email}&password=${password}`
+      const res = await registerationGet(
+        `?email=${email}&password=${password}`
       );
       console.log(res);
       let data = res.data[0];
@@ -83,10 +86,10 @@ export default function Login() {
     <div>
       <div className="d-flex align-items-center auth px-0">
         <div className="row w-100 mx-0">
-          <div className="col-lg-4 mx-auto">
+          <div className="col-lg-6 mx-auto">
             <div className="auth-form-light text-left py-5 px-4 px-sm-5">
               <div className="brand-logo">
-                <img src={logo} alt="logo" />
+                <img src={`${host}/images/logo.svg`} alt="logo" />
               </div>
               <h4>Hello! let&apos;s get started</h4>
               <h6 className="font-weight-light">Sign in to continue.</h6>
@@ -105,19 +108,27 @@ export default function Login() {
                     </Alert>
                   )}
                 </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    placeholder="Enter password"
-                    onChange={handle}
-                  />
-                  {error.password.length > 0 && (
-                    <Alert variant="danger" className="mt-2">
-                      {error.password}
-                    </Alert>
-                  )}
-                </Form.Group>
+                <div>
+                  <Form.Group className="mb-3">
+                    <InputGroup>
+                      <Form.Control
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        placeholder="Enter password"
+                        onChange={handle}
+                      />
+                      <PasswordButtons
+                        viewPassword={showPassword}
+                        setViewPassword={setShowpassword}
+                      />
+                    </InputGroup>
+                    {error.password.length > 0 && (
+                      <Alert variant="danger" className="mt-2">
+                        {error.password}
+                      </Alert>
+                    )}
+                  </Form.Group>
+                </div>
                 <div className="mt-3">
                   <Button
                     className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"

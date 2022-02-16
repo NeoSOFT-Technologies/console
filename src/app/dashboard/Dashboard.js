@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Container, Card } from "react-bootstrap";
-import axios from "axios";
+import { registerationGet } from "../../config/Myservices";
 export default function Dashboard() {
   const [details, setDetails] = useState([]);
   useEffect(() => {
-    let url = " http://localhost:3001/Registration";
-    axios.get(url).then((res) => {
+    registerationGet().then((res) => {
       setDetails(res.data);
     });
   }, []);
@@ -21,11 +20,8 @@ export default function Dashboard() {
           details.map((val) => {
             if (val.email === email) {
               return (
-                <Card style={{ width: "550px" }} className="m-1 p-2">
-                  <Card.Title
-                    style={{ fontSize: "32px" }}
-                    className="text-center"
-                  >
+                <Card className="m-1 p-2 w-75 mx-auto">
+                  <Card.Title className="text-center">
                     Tenant Details
                   </Card.Title>
                   <hr />

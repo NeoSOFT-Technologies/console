@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import axios from "axios";
+import { registerationPost } from "../../config/Myservices";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -9,9 +9,7 @@ import {
   regexForUser,
 } from "../constants/constantVariables";
 toast.configure();
-const client = axios.create({
-  baseURL: "http://localhost:3001/Registration",
-});
+
 export default function RegisterUser() {
   const [tenant, setTenant] = useState({
     name: null,
@@ -66,7 +64,7 @@ export default function RegisterUser() {
         ...tenant,
         password: tenant.email.substring(0, tenant.email.search("@")),
       };
-      client.post("/", newUser);
+      registerationPost("/", newUser);
       success("Registered successfully");
       setTimeout(() => {
         window.location.reload(false);
@@ -75,7 +73,7 @@ export default function RegisterUser() {
   };
   return (
     <>
-      <div className=" w-75 bg-white">
+      <div className=" w-75 bg-white mx-auto">
         <h1 className="text-center text-dark pb-2">Register New Tenant</h1>
         <Form onSubmit={(e) => addtenant(e)} className="p-4">
           <Form.Group className="mb-3">

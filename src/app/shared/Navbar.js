@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 // import {  } from "react-i18next";
-import logo from "../../assets/images/logo.svg";
-import logo_mini from "../../assets/images/logo-mini.png";
+import { host } from "../../config/URL";
 
 class Navbar extends Component {
   toggleOffcanvas() {
@@ -17,10 +16,10 @@ class Navbar extends Component {
       <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
           <Link className="navbar-brand brand-logo" to="/">
-            <img src={logo} alt="logo" />
+            <img src={`${host}/images/logo.svg`} alt="logo" />
           </Link>
           <Link className="navbar-brand brand-logo-mini" to="/">
-            <img src={logo_mini} alt="logo" />
+            <img src={`${host}/images/logo-mini.png`} alt="logo" />
           </Link>
         </div>
         <div className="navbar-menu-wrapper d-flex align-items-stretch">
@@ -50,10 +49,7 @@ class Navbar extends Component {
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link">
                   <div className="nav-profile-img">
-                    <img
-                      src={require("../../assets/images/faces/face1.jpg")}
-                      alt="user"
-                    />
+                    <img src={`${host}/images/faces/face1.jpg`} alt="user" />
                     <span className="availability-status online"></span>
                   </div>
                   <div className="nav-profile-text">
@@ -99,7 +95,7 @@ class Navbar extends Component {
                   >
                     <div className="preview-thumbnail">
                       <img
-                        src={require("../../assets/images/faces/face4.jpg")}
+                        src={`${host}/images/faces/face4.jpg`}
                         alt="user"
                         className="profile-pic"
                       />
@@ -120,7 +116,7 @@ class Navbar extends Component {
                   >
                     <div className="preview-thumbnail">
                       <img
-                        src={require("../../assets/images/faces/face2.jpg")}
+                        src={`${host}/images/faces/face2.jpg`}
                         alt="user"
                         className="profile-pic"
                       />
@@ -141,7 +137,7 @@ class Navbar extends Component {
                   >
                     <div className="preview-thumbnail">
                       <img
-                        src={require("../../assets/images/faces/face3.jpg")}
+                        src={`${host}/images/faces/face3.jpg`}
                         alt="user"
                         className="profile-pic"
                       />

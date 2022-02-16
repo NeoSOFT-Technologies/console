@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Tabs, Tab } from "react-bootstrap";
 // import { } from "react-i18next";
 import PropTypes from "prop-types";
+import { host } from "../../config/URL";
 export class SettingsPanel extends Component {
   constructor(props) {
     super(props);
@@ -285,7 +286,7 @@ export class SettingsPanel extends Component {
                   <li className="list active">
                     <div className="profile">
                       <img
-                        src={require("../../assets/images/faces/face1.jpg")}
+                        src={`${host}/images/faces/face1.jpg`}
                         alt="profile"
                       />
                       <span className="online"></span>
@@ -305,7 +306,7 @@ export class SettingsPanel extends Component {
                   <li className="list">
                     <div className="profile">
                       <img
-                        src={require("../../assets/images/faces/face2.jpg")}
+                        src={`${host}/images/faces/face2.jpg`}
                         alt="profile"
                       />
                       <span className="offline"></span>
@@ -330,7 +331,7 @@ export class SettingsPanel extends Component {
                   <li className="list">
                     <div className="profile">
                       <img
-                        src={require("../../assets/images/faces/face3.jpg")}
+                        src={`${host}/images/faces/face3.jpg`}
                         alt="profile"
                       />
                       <span className="online"></span>
@@ -350,7 +351,7 @@ export class SettingsPanel extends Component {
                   <li className="list">
                     <div className="profile">
                       <img
-                        src={require("../../assets/images/faces/face4.jpg")}
+                        src={`${host}/images/faces/face4.jpg`}
                         alt="profile"
                       />
                       <span className="offline"></span>
@@ -370,7 +371,7 @@ export class SettingsPanel extends Component {
                   <li className="list">
                     <div className="profile">
                       <img
-                        src={require("../../assets/images/faces/face5.jpg")}
+                        src={`${host}/images/faces/face5.jpg`}
                         alt="profile"
                       />
                       <span className="online"></span>
@@ -390,7 +391,7 @@ export class SettingsPanel extends Component {
                   <li className="list">
                     <div className="profile">
                       <img
-                        src={require("../../assets/images/faces/face6.jpg")}
+                        src={`${host}/images/faces/face6.jpg`}
                         alt="profile"
                       />
                       <span className="online"></span>

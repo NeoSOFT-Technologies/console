@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Modal, Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  registerationGet,
+  registerationPut,
+  registerationDelete,
+} from "../../config/Myservices";
 import { regexForName, regexForUser } from "../constants/constantVariables";
 toast.configure();
-const client = axios.create({
-  baseURL: "http://localhost:3001/Registration",
-});
+
 export default function TenantList() {
   const [tenantList, setTenantList] = useState([]);
   const [modalShow, setModalShow] = useState(false);
@@ -29,7 +31,7 @@ export default function TenantList() {
   }, []);
   const mainCall = async () => {
     try {
-      client.get("/").then((res) => {
+      registerationGet().then((res) => {
         console.log(res.data);
         setTenantList(res.data);
       });
@@ -38,7 +40,7 @@ export default function TenantList() {
     }
   };
   const deleteTenant = async (id) => {
-    client.delete(`/${id}`).then(() => {
+    registerationDelete(`${id}`).then(() => {
       mainCall();
     });
     toast.error("Tenant Removed", {
@@ -77,7 +79,7 @@ export default function TenantList() {
       let updated = {
         ...tenant,
       };
-      client.put(`${tenant.id}`, updated).then(() => {
+      registerationPut(`${tenant.id}`, updated).then(() => {
         mainCall();
       });
       setModalShow(false);
@@ -149,7 +151,7 @@ export default function TenantList() {
       {tenant && (
         <Modal show={modalShow} onHide={() => setModalShow(false)} centered>
           <Modal.Header closeButton>
-            <Modal.Title>Upadte Tenant</Modal.Title>
+            <Modal.Title>Update Tenant</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className=" bg-white">
