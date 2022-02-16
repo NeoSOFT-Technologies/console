@@ -65,7 +65,12 @@ export default function Login() {
 
   const handleSubmit = async () => {
     if (validate(error)) {
-      UserLogin(email, password).then((res) => dispatch(res));
+      UserLogin(email, password)
+        .then((res) => dispatch(res))
+        .catch((err) => {
+          console.log(err);
+          warning("Incorrect Credntials!");
+        });
     } else {
       failure("Please fill all the fields");
     }
