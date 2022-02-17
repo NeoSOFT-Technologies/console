@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { registerationPost } from "../../config/Myservices";
 import { toast } from "react-toastify";
@@ -11,6 +11,9 @@ import {
 toast.configure();
 
 export default function RegisterUser() {
+  const name = useRef(null);
+  const userid = useRef(null);
+  const email = useRef(null);
   const [tenant, setTenant] = useState({
     name: null,
     description: null,
@@ -34,7 +37,7 @@ export default function RegisterUser() {
         ...err,
         name: true,
       });
-      document.getElementById("name").focus();
+      name.current.focus();
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -45,14 +48,14 @@ export default function RegisterUser() {
         userid: true,
         name: false,
       });
-      document.getElementById("userid").focus();
+      userid.current.focus();
     } else if (!regexForEmail.test(tenant.email)) {
       setErr({
         ...err,
         email: true,
         userid: false,
       });
-      document.getElementById("email").focus();
+      email.current.focus();
     } else {
       setErr({
         email: false,
@@ -82,7 +85,7 @@ export default function RegisterUser() {
               type="text"
               placeholder="Enter Name"
               name="name"
-              id="name"
+              ref={name}
               value={tenant.name}
               isInvalid={err.name}
               isValid={err.no}
@@ -116,7 +119,7 @@ export default function RegisterUser() {
             <Form.Control
               type="text"
               placeholder="Enter User ID"
-              id="userid"
+              ref={userid}
               isValid={err.no}
               value={tenant.userid}
               isInvalid={err.userid}
@@ -137,7 +140,7 @@ export default function RegisterUser() {
             <Form.Control
               type="text"
               placeholder="Enter Email"
-              id="email"
+              ref={email}
               value={tenant.email}
               isValid={err.no}
               isInvalid={err.email}

@@ -1,15 +1,6 @@
 {
   "Registration": [
     {
-      "name": "Deepthi",
-      "description": "i am smartest",
-      "userid": "deepthi123",
-      "email": "deepthi@gmail.com",
-      "password": "deepthi",
-      "type": "tenant",
-      "id": 3
-    },
-    {
       "name": "Rahul kenchi",
       "description": "i am going to win the world",
       "userid": "rahul123",
@@ -53,6 +44,24 @@
       "password": "rohit",
       "type": "tenant",
       "id": 11
+    },
+    {
+      "name": "Naveen",
+      "description": "i am a fan of Spiderman",
+      "userid": "naveen768",
+      "email": "naveen768@gmail.com",
+      "password": "naveen768",
+      "type": "tenant",
+      "id": 12
+    },
+    {
+      "name": "harsh",
+      "description": "i live in indore",
+      "userid": "harsh768",
+      "email": "harsh768@gmail.com",
+      "password": "harsh768",
+      "type": "tenant",
+      "id": 13
     }
   ]
 }

@@ -9,6 +9,7 @@ import Footer from "./shared/Footer";
 import PropTypes from "prop-types";
 import AdminSidebar from "./shared/AdminSidebar";
 import TenantSidebar from "./shared/TenantSidebar";
+import { connect } from "react-redux";
 class App extends Component {
   state = "";
   componentDidMount() {
@@ -18,7 +19,7 @@ class App extends Component {
   render() {
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar /> : "";
     let sidebarComponent = !this.state.isFullPageLayout ? (
-      localStorage.getItem("user") == undefined ? (
+      this.props.user != null && this.props.user.type == "tenant" ? (
         <TenantSidebar />
       ) : (
         <AdminSidebar />
@@ -99,4 +100,7 @@ class App extends Component {
 App.propTypes = {
   location: PropTypes.object.isRequired,
 };
-export default withRouter(App);
+const mapStateToProps = (state) => ({
+  user: state.setUserData,
+});
+export default connect(mapStateToProps)(withRouter(App));

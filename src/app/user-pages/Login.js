@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { Form, Button, Alert, InputGroup } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { registerationGet } from "../../config/Myservices";
+import logo from "../../assets/images/logo.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { regexForEmail } from "../constants/constantVariables";
-import { host } from "../../config/URL";
-import PasswordButtons from "../shared/Password";
-
+import { useDispatch, useSelector } from "react-redux";
+import { UserLogin } from "../redux/actions/LoginActions";
 toast.configure();
 
 export default function Login() {
@@ -17,8 +16,10 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowpassword] = useState(false);
+  const user = useSelector((state) => state.setUserData);
   const success = (data) =>
     toast.success(data, { position: toast.POSITION.BOTTOM_RIGHT });
   const failure = (data) =>
@@ -47,28 +48,30 @@ export default function Login() {
         break;
     }
   };
+  useEffect(() => {
+    if (email != "" && password != "") {
+      console.log(user);
+      if (user.type == "tenant") {
+        success("Logged In");
+        navigate("/dashboard");
+      } else if (user.type == "admin") {
+        success("Logged In");
+        navigate("/dashboard");
+      } else {
+        console.log(user);
+        warning("Incorrect Credntials!");
+      }
+    }
+  }, [user]);
 
   const handleSubmit = async () => {
     if (validate(error)) {
-      const res = await registerationGet(
-        `?email=${email}&password=${password}`
-      );
-      console.log(res);
-      let data = res.data[0];
-      console.log(data);
-      if (data.type == "tenant") {
-        success("Logged In");
-        localStorage.removeItem("user", email);
-        sessionStorage.setItem("user", email);
-        navigate("/dashboard");
-      } else if (data.type == "admin") {
-        success("Logged In");
-        localStorage.setItem("user", email);
-        navigate("/dashboard");
-      } else {
-        console.log(data);
-        warning("Incorrect Credntials!");
-      }
+      UserLogin(email, password)
+        .then((res) => dispatch(res))
+        .catch((err) => {
+          console.log(err);
+          warning("Incorrect Credntials!");
+        });
     } else {
       failure("Please fill all the fields");
     }
