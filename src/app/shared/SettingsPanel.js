@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Tabs, Tab } from "react-bootstrap";
 // import { } from "react-i18next";
 import PropTypes from "prop-types";
-import { host } from "../../config/URL";
+import { host } from "../config/URL";
 export class SettingsPanel extends Component {
   constructor(props) {
     super(props);

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/images/logo.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { regexForEmail } from "../constants/constantVariables";
 import { useDispatch, useSelector } from "react-redux";
 import { UserLogin } from "../redux/actions/LoginActions";
+import { host } from "../config/URL";
+import PasswordButtons from "../shared/Password";
+
 toast.configure();
 
 export default function Login() {
@@ -99,6 +101,7 @@ export default function Login() {
               <Form className="pt-3">
                 <Form.Group className="mb-3">
                   <Form.Control
+                    data-testid="email-input"
                     type="email"
                     name="email"
                     placeholder="Enter Email"
@@ -115,6 +118,7 @@ export default function Login() {
                   <Form.Group className="mb-3">
                     <InputGroup>
                       <Form.Control
+                        data-testid="password-input"
                         type={showPassword ? "text" : "password"}
                         name="password"
                         placeholder="Enter password"
@@ -134,6 +138,7 @@ export default function Login() {
                 </div>
                 <div className="mt-3">
                   <Button
+                    data-testid="submit-button"
                     className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                     onClick={() => {
                       handleSubmit();

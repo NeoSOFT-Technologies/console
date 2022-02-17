@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 // import {  } from "react-i18next";
-import { host } from "../../config/URL";
+import { host } from "../config/URL";
 
 class Navbar extends Component {
   toggleOffcanvas() {

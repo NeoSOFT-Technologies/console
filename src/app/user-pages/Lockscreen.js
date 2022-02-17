@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { host } from "../../config/URL";
+import { host } from "../config/URL";
 
 export class LockScreen extends Component {
   render() {

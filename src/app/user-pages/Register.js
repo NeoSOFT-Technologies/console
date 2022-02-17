@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { host } from "../../config/URL";
+import { host } from "../config/URL";
 
 export default function Register() {
   const [inputDetails, setInputDetails] = useState({

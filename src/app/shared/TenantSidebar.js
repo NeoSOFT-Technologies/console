@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { host } from "../../config/URL";
+import { host } from "../config/URL";
 import withRouter from "../WithRouter";
 function TenantSidebar() {
   const location = useLocation();

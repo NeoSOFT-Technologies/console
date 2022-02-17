@@ -2,21 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  registerationGet,
-  registerationPut,
-  registerationDelete,
-} from "../../config/Myservices";
+import { registerationPut, registerationDelete } from "../config/Myservices";
 import { regexForName, regexForUser } from "../constants/constantVariables";
 import { useDispatch, useSelector } from "react-redux";
 import { getTenantList } from "../redux/actions/TenantActions";
-import axios from "axios";
 toast.configure();
 
 export default function TenantList() {
-  const client = axios.create({
-    baseURL: "http://localhost:3001/Registration",
-  });
   const name = useRef(null);
   const userid = useRef(null);
   const dispatch = useDispatch();
@@ -49,7 +41,7 @@ export default function TenantList() {
     }
   };
   const deleteTenant = async (id) => {
-    registerationDelete(`${id}`).then(() => {
+    registerationDelete(id).then(() => {
       mainCall();
     });
     toast.error("Tenant Removed", {
@@ -88,7 +80,7 @@ export default function TenantList() {
       let updated = {
         ...tenant,
       };
-      registerationPut(`${tenant.id}`, updated).then(() => {
+      registerationPut(tenant.id, updated).then(() => {
         mainCall();
       });
       setModalShow(false);

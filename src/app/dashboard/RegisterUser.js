@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { registerationPost } from "../../config/Myservices";
+import { registerationPost } from "../config/Myservices";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -67,7 +67,7 @@ export default function RegisterUser() {
         ...tenant,
         password: tenant.email.substring(0, tenant.email.search("@")),
       };
-      registerationPost("/", newUser);
+      registerationPost(newUser);
       success("Registered successfully");
       setTimeout(() => {
         window.location.reload(false);
