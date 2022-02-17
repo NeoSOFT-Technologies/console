@@ -1,8 +1,6 @@
-import axios from "axios";
-const client = axios.create({
-  baseURL: "http://localhost:3001/Registration",
-});
+import { tenantListService } from "../../config/Myservices";
+
 export const getTenantList = async () => {
-  let res = await client.get("?type=tenant");
+  let res = await tenantListService();
   return { type: "getTenants", payload: [...res.data] };
 };

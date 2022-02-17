@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/images/logo.svg";
+import { host } from "../config/URL";
 
 export default function Register() {
   const [inputDetails, setInputDetails] = useState({
@@ -16,7 +16,7 @@ export default function Register() {
           <div className="col-lg-4 mx-auto">
             <div className="auth-form-light text-left py-5 px-4 px-sm-5">
               <div className="brand-logo">
-                <img src={logo} alt="logo" />
+                <img src={`${host}./images/logo.svg`} alt="logo" />
               </div>
               <h4>New here?</h4>
               <h6 className="font-weight-light">

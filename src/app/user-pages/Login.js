@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/images/logo.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { regexForEmail } from "../constants/constantVariables";
 import { useDispatch, useSelector } from "react-redux";
 import { UserLogin } from "../redux/actions/LoginActions";
+import { host } from "../config/URL";
+import PasswordButtons from "../shared/Password";
+
 toast.configure();
 
 export default function Login() {
@@ -18,6 +20,7 @@ export default function Login() {
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPassword, setShowpassword] = useState(false);
   const user = useSelector((state) => state.setUserData);
   const success = (data) =>
     toast.success(data, { position: toast.POSITION.BOTTOM_RIGHT });
@@ -88,16 +91,17 @@ export default function Login() {
     <div>
       <div className="d-flex align-items-center auth px-0">
         <div className="row w-100 mx-0">
-          <div className="col-lg-4 mx-auto">
+          <div className="col-lg-6 mx-auto">
             <div className="auth-form-light text-left py-5 px-4 px-sm-5">
               <div className="brand-logo">
-                <img src={logo} alt="logo" />
+                <img src={`${host}/images/logo.svg`} alt="logo" />
               </div>
               <h4>Hello! let&apos;s get started</h4>
               <h6 className="font-weight-light">Sign in to continue.</h6>
               <Form className="pt-3">
                 <Form.Group className="mb-3">
                   <Form.Control
+                    data-testid="email-input"
                     type="email"
                     name="email"
                     placeholder="Enter Email"
@@ -110,21 +114,31 @@ export default function Login() {
                     </Alert>
                   )}
                 </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    placeholder="Enter password"
-                    onChange={handle}
-                  />
-                  {error.password.length > 0 && (
-                    <Alert variant="danger" className="mt-2">
-                      {error.password}
-                    </Alert>
-                  )}
-                </Form.Group>
+                <div>
+                  <Form.Group className="mb-3">
+                    <InputGroup>
+                      <Form.Control
+                        data-testid="password-input"
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        placeholder="Enter password"
+                        onChange={handle}
+                      />
+                      <PasswordButtons
+                        viewPassword={showPassword}
+                        setViewPassword={setShowpassword}
+                      />
+                    </InputGroup>
+                    {error.password.length > 0 && (
+                      <Alert variant="danger" className="mt-2">
+                        {error.password}
+                      </Alert>
+                    )}
+                  </Form.Group>
+                </div>
                 <div className="mt-3">
                   <Button
+                    data-testid="submit-button"
                     className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                     onClick={() => {
                       handleSubmit();

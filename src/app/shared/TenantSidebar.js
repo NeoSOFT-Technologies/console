@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { host } from "../config/URL";
 import withRouter from "../WithRouter";
 function TenantSidebar() {
   const location = useLocation();
@@ -17,10 +18,7 @@ function TenantSidebar() {
               onClick={(evt) => evt.preventDefault()}
             >
               <div className="nav-profile-image">
-                <img
-                  src={require("../../assets/images/faces/face1.jpg")}
-                  alt="profile"
-                />
+                <img src={`${host}/images/faces/face1.jpg`} alt="profile" />
                 <span className="login-status online"></span>{" "}
                 {/* change to offline or busy as needed */}
               </div>
