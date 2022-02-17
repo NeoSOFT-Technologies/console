@@ -1,9 +1,9 @@
-const setUserData = (state = [], action) => {
+const setUserData = (state = null, action) => {
   switch (action.type) {
     case "setUser":
       return action.payload;
     case "clearUser":
-      return [];
+      return null;
     default:
       return state;
   }

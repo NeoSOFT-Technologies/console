@@ -19,7 +19,7 @@ class App extends Component {
   render() {
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar /> : "";
     let sidebarComponent = !this.state.isFullPageLayout ? (
-      this.props.user.type == "tenant" ? (
+      this.props.user != null && this.props.user.type == "tenant" ? (
         <TenantSidebar />
       ) : (
         <AdminSidebar />

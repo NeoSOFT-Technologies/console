@@ -52,12 +52,9 @@ export default function Login() {
       console.log(user);
       if (user.type == "tenant") {
         success("Logged In");
-        localStorage.removeItem("user", email);
-        sessionStorage.setItem("user", email);
         navigate("/dashboard");
       } else if (user.type == "admin") {
         success("Logged In");
-        localStorage.setItem("user", email);
         navigate("/dashboard");
       } else {
         console.log(user);
@@ -68,7 +65,12 @@ export default function Login() {
 
   const handleSubmit = async () => {
     if (validate(error)) {
-      UserLogin(email, password).then((res) => dispatch(res));
+      UserLogin(email, password)
+        .then((res) => dispatch(res))
+        .catch((err) => {
+          console.log(err);
+          warning("Incorrect Credntials!");
+        });
     } else {
       failure("Please fill all the fields");
     }
