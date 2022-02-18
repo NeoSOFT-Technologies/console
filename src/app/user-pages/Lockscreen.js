@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { host } from "../config/URL";
 
 export class LockScreen extends Component {
   render() {
@@ -10,7 +11,7 @@ export class LockScreen extends Component {
             <div className="col-lg-4 mx-auto">
               <div className="auth-form-transparent text-left p-5 text-center">
                 <img
-                  src={require("../../assets/images/faces/face13.jpg")}
+                  src={`${host}/images/faces/face13.jpg`}
                   className="lock-profile-img"
                   alt="img"
                 />
