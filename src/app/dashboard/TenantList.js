@@ -6,6 +6,7 @@ import { regexForName, regexForUser } from "../constants/constantVariables";
 import { useDispatch, useSelector } from "react-redux";
 import { getTenantList } from "../redux/actions/TenantActions";
 import axios from "axios";
+import RenderList from "../shared/RenderList";
 toast.configure();
 
 export default function TenantList() {
@@ -43,8 +44,12 @@ export default function TenantList() {
       console.log(err);
     }
   };
-  const deleteTenant = async (id) => {
-    client.delete(`/${id}`).then(() => {
+  const renderTenant = (val) => {
+    setTenant(val);
+    setModalShow(true);
+  };
+  const deleteTenant = async (val) => {
+    client.delete(`/${val.id}`).then(() => {
       mainCall();
     });
     toast.error("Tenant Removed", {
@@ -96,6 +101,31 @@ export default function TenantList() {
       });
     }
   };
+  const actions = [
+    {
+      className: "btn btn-sm btn-success",
+      iconClassName: "mdi mdi-sync",
+      buttonFunction: renderTenant,
+    },
+    {
+      className: "btn btn-sm btn-danger",
+      iconClassName: "mdi mdi-delete",
+      buttonFunction: deleteTenant,
+    },
+    {
+      className: "btn btn-sm btn-dark",
+      iconClassName: "mdi mdi-settings",
+    },
+  ];
+  const datalist = {
+    list: [...tenantList],
+    fields: ["userid", "description"],
+  };
+  const headings = [
+    { title: "User ID" },
+    { title: "Description", className: "w-100" },
+    { title: "Action", className: "text-center" },
+  ];
   return (
     <>
       <div className="col-lg-12 grid-margin stretch-card">
@@ -103,51 +133,11 @@ export default function TenantList() {
           <div className="card-body">
             <h2 className="card-title">Tenant List</h2>
             <div className="table-responsive">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>User ID</th>
-                    <th className="w-100">Description</th>
-                    <th className="text-center">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tenantList &&
-                    tenantList.map((val, i) => (
-                      <tr key={i}>
-                        <td>{val.userid}</td>
-                        <td>{val.description}</td>
-                        <td>
-                          <div className="btn-group" role="group">
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-success"
-                              onClick={() => {
-                                setTenant(val);
-                                setModalShow(true);
-                              }}
-                            >
-                              <i className="mdi mdi-sync"></i>
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-danger"
-                              onClick={() => deleteTenant(val.id)}
-                            >
-                              <i className="mdi mdi-delete"></i>
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-dark"
-                            >
-                              <i className="mdi mdi-settings"></i>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
+              <RenderList
+                headings={headings}
+                data={datalist}
+                actions={actions}
+              />
             </div>
           </div>
         </div>
