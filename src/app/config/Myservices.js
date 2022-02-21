@@ -19,6 +19,8 @@ export function registerationPost(data) {
   return axios.post(`${URL}/api/registeration`, data);
 }
 
-export function tenantListService() {
-  return axios.get(`${URL}/api/registeration?type=tenant`);
+export function tenantListService(currentPage, search) {
+  return axios.get(
+    `${URL}/Registration?type=tenant&_page=${currentPage}&name_like=${search}`
+  );
 }
