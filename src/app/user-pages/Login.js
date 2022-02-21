@@ -61,7 +61,7 @@ export default function Login() {
         navigate("/dashboard");
       } else {
         console.log(user);
-        warning("Incorrect Credntials!");
+        warning("Incorrect Credentials!");
       }
     }
   }, [user]);
@@ -72,7 +72,7 @@ export default function Login() {
         .then((res) => dispatch(res))
         .catch((err) => {
           console.log(err);
-          warning("Incorrect Credntials!");
+          warning("Incorrect Credentials!");
         });
     } else {
       failure("Please fill all the fields");
@@ -91,7 +91,7 @@ export default function Login() {
     <div>
       <div className="d-flex align-items-center auth px-0">
         <div className="row w-100 mx-0">
-          <div className="col-lg-6 mx-auto">
+          <div className="col-lg-6 col-md-8 col-sm-10 mx-auto">
             <div className="auth-form-light text-left py-5 px-4 px-sm-5">
               <div className="brand-logo">
                 <img src={`${host}/images/logo.svg`} alt="logo" />

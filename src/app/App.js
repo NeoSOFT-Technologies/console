@@ -14,6 +14,19 @@ class App extends Component {
   state = "";
   componentDidMount() {
     this.onRouteChanged();
+    fetch("/Registeration/7", {
+      method: "PUT",
+      body: JSON.stringify({
+        name: "Tushar Saxena",
+        description: "i am the king.",
+        userid: "tush",
+        email: "tushar@gmail.com",
+        password: "tushar",
+        type: "tenant",
+        id: 7,
+      }),
+    }).then(async (res) => console.log(await res.json()));
+    fetch("/Registeration").then(async (res) => console.log(await res.json()));
   }
 
   render() {
