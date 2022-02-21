@@ -14,5 +14,9 @@ export const TenantLoginSuccess = () => {
 };
 export const UserLogin = async (email, password) => {
   let res = await registerationGet(email, password);
-  return { type: "setUser", payload: res.data[0] };
+  if (res.data.err === 0) {
+    return { type: "setUser", payload: res.data.data[0] };
+  } else if (res.data.err > 0) {
+    return { type: "setUser", payload: res.data };
+  }
 };

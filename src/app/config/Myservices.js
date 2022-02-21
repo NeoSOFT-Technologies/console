@@ -2,21 +2,23 @@ import { URL } from "./URL";
 import axios from "axios";
 
 export function registerationGet(email, password) {
-  return axios.get(`${URL}/Registeration?email=${email}&password=${password}`);
+  return axios.get(
+    `${URL}/api/registeration?email=${email}&password=${password}`
+  );
 }
 
 export function registerationDelete(id) {
-  return axios.delete(`${URL}/Registeration/${id}`);
+  return axios.delete(`${URL}/api/registeration/${id}`);
 }
 
 export function registerationPut(id, data) {
-  return axios.put(`${URL}/Registeration/${id}`, data);
+  return axios.put(`${URL}/api/registeration/${id}`, data);
 }
 
 export function registerationPost(data) {
-  return axios.post(`${URL}/Registeration`, data);
+  return axios.post(`${URL}/api/registeration`, data);
 }
 
 export function tenantListService() {
-  return axios.get(`${URL}/Registeration?type=tenant`);
+  return axios.get(`${URL}/api/registeration?type=tenant`);
 }

@@ -1,7 +1,8 @@
-import { createServer, Model } from "miragejs";
+import { createServer, Model, Response } from "miragejs";
 
-export default function makeServer() {
+export default function makeServer({ environment = "development" } = {}) {
   let server = createServer({
+    environment,
     models: {
       user: Model,
     },
@@ -77,23 +78,75 @@ export default function makeServer() {
     },
 
     routes() {
-      this.get("/Registeration", (schema, request) => {
-        return schema.db.user.where(request.queryParams);
+      this.namespace = "/api";
+
+      this.get("/registeration", (schema, request) => {
+        try {
+          let tmp = schema.db.user.where(request.queryParams);
+          console.log(tmp, "OK");
+          return new Response(
+            200,
+            { "Content-type": "application/json" },
+            { err: 0, data: tmp }
+          );
+        } catch (err) {
+          return new Response(
+            500,
+            { "Content-type": "application/json" },
+            { err: 1, msg: err }
+          );
+        }
       });
 
-      this.put("/Registeration/:id", (schema, request) => {
-        return schema.db.user.update(
-          request.params,
-          JSON.parse(request.requestBody)
-        );
+      this.put("/registeration/:id", (schema, request) => {
+        try {
+          schema.db.user.update(
+            request.params,
+            JSON.parse(request.requestBody)
+          );
+          return new Response(204, {});
+        } catch (err) {
+          return new Response(
+            500,
+            { "Content-type": "application/json" },
+            { err: 1, msg: err }
+          );
+        }
       });
 
-      this.post("/Registeration", (schema, request) => {
-        return schema.db.user.insert(JSON.parse(request.requestBody));
+      this.post("/registeration", (schema, request) => {
+        try {
+          schema.db.user.insert(JSON.parse(request.requestBody));
+          console.log(schema.db.user);
+          return new Response(
+            201,
+            { "Content-type": "application/json" },
+            { err: 0 }
+          );
+        } catch (err) {
+          return new Response(
+            500,
+            { "Content-type": "application/json" },
+            { err: 1, msg: err }
+          );
+        }
       });
 
-      this.delete("/Registeration/:id", (schema, request) => {
-        return schema.db.user.remove({ id: request.params.id });
+      this.delete("/registeration/:id", (schema, request) => {
+        try {
+          schema.db.user.remove({ id: request.params.id });
+          return new Response(
+            200,
+            { "Content-type": "application/json" },
+            { err: 0 }
+          );
+        } catch (err) {
+          return new Response(
+            500,
+            { "Content-type": "application/json" },
+            { err: 1, msg: "Error deleting object" }
+          );
+        }
       });
     },
   });
