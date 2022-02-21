@@ -6,6 +6,7 @@ import { registerationPut, registerationDelete } from "../config/Myservices";
 import { regexForName, regexForUser } from "../constants/constantVariables";
 import { useDispatch, useSelector } from "react-redux";
 import { getTenantList } from "../redux/actions/TenantActions";
+import RenderList from "../shared/RenderList";
 toast.configure();
 
 export default function TenantList() {
@@ -14,6 +15,8 @@ export default function TenantList() {
   const dispatch = useDispatch();
   const tenantList = useSelector((state) => state.setTenantList);
   const [modalShow, setModalShow] = useState(false);
+  const [selected, setSelected] = useState(1);
+  const [search, setSearch] = useState(" ");
   const [tenant, setTenant] = useState({
     name: null,
     description: null,
@@ -28,11 +31,18 @@ export default function TenantList() {
     no: null,
   });
   useEffect(() => {
-    mainCall();
+    mainCall(1, search);
   }, []);
-  const mainCall = async () => {
+  const handlePageClick = (data) => {
+    console.log(data.selected);
+    let currentPage = data.selected + 1;
+    mainCall(currentPage, search);
+    setSelected(currentPage);
+  };
+  const mainCall = (currentPage, search) => {
     try {
-      getTenantList().then((res) => {
+      console.log(currentPage);
+      getTenantList(currentPage, search).then((res) => {
         console.log("in Teanant List", res);
         dispatch(res);
       });
@@ -40,9 +50,13 @@ export default function TenantList() {
       console.log(err);
     }
   };
-  const deleteTenant = async (id) => {
-    registerationDelete(id).then(() => {
-      mainCall();
+  const renderTenant = (val) => {
+    setTenant(val);
+    setModalShow(true);
+  };
+  const deleteTenant = (val) => {
+    registerationDelete(val.id).then(() => {
+      mainCall(selected, search);
     });
     toast.error("Tenant Removed", {
       position: "top-right",
@@ -81,7 +95,7 @@ export default function TenantList() {
         ...tenant,
       };
       registerationPut(tenant.id, updated).then(() => {
-        mainCall();
+        mainCall(selected, search);
       });
       setModalShow(false);
       toast.success("Tenant Details Update", {
@@ -93,58 +107,73 @@ export default function TenantList() {
       });
     }
   };
+
+  const searchFilter = (e) => {
+    e.preventDefault();
+    setSelected(1);
+    mainCall(1, search);
+  };
+  const actions = [
+    {
+      className: "btn btn-sm btn-success",
+      iconClassName: "mdi mdi-sync",
+      buttonFunction: renderTenant,
+    },
+    {
+      className: "btn btn-sm btn-danger",
+      iconClassName: "mdi mdi-delete",
+      buttonFunction: deleteTenant,
+    },
+    {
+      className: "btn btn-sm btn-dark",
+      iconClassName: "mdi mdi-settings",
+    },
+  ];
+  const datalist = {
+    list: [...tenantList.list],
+    fields: ["userid", "description"],
+  };
+  const headings = [
+    { title: "User ID" },
+    { title: "Description", className: "w-100" },
+    { title: "Action", className: "text-center" },
+  ];
   return (
     <>
       <div className="col-lg-12 grid-margin stretch-card">
         <div className="card">
           <div className="card-body">
-            <h2 className="card-title">Tenant List</h2>
+            <div className="d-flex align-items-center justify-content-around">
+              <h2 className="card-title">Tenant List</h2>
+              <div className="search-field ">
+                <form className="h-50">
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      className="form-control bg-parent border-1"
+                      placeholder="Search projects"
+                      onChange={(e) => setSearch(e.target.value)}
+                    />
+                    <button
+                      className=" btn  btn-success btn-sm"
+                      onClick={(e) => searchFilter(e)}
+                    >
+                      <i className=" mdi mdi-magnify"></i>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
             <div className="table-responsive">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>User ID</th>
-                    <th className="w-100">Description</th>
-                    <th className="text-center">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tenantList &&
-                    tenantList.map((val, i) => (
-                      <tr key={i}>
-                        <td>{val.userid}</td>
-                        <td>{val.description}</td>
-                        <td>
-                          <div className="btn-group" role="group">
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-success"
-                              onClick={() => {
-                                setTenant(val);
-                                setModalShow(true);
-                              }}
-                            >
-                              <i className="mdi mdi-sync"></i>
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-danger"
-                              onClick={() => deleteTenant(val.id)}
-                            >
-                              <i className="mdi mdi-delete"></i>
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-dark"
-                            >
-                              <i className="mdi mdi-settings"></i>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
+              <RenderList
+                headings={headings}
+                data={datalist}
+                actions={actions}
+                handlePageClick={handlePageClick}
+                pageCount={tenantList.count}
+                selected={selected}
+              />
             </div>
           </div>
         </div>
