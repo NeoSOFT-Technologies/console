@@ -15,6 +15,8 @@ export default function TenantList() {
   const dispatch = useDispatch();
   const tenantList = useSelector((state) => state.setTenantList);
   const [modalShow, setModalShow] = useState(false);
+  const [selected, setSelected] = useState(1);
+  const [search, setSearch] = useState(" ");
   const [tenant, setTenant] = useState({
     name: null,
     description: null,
@@ -29,11 +31,18 @@ export default function TenantList() {
     no: null,
   });
   useEffect(() => {
-    mainCall();
+    mainCall(1, search);
   }, []);
-  const mainCall = async () => {
+  const handlePageClick = (data) => {
+    console.log(data.selected);
+    let currentPage = data.selected + 1;
+    mainCall(currentPage, search);
+    setSelected(currentPage);
+  };
+  const mainCall = (currentPage, search) => {
     try {
-      getTenantList().then((res) => {
+      console.log(currentPage);
+      getTenantList(currentPage, search).then((res) => {
         console.log("in Teanant List", res);
         dispatch(res);
       });
@@ -45,9 +54,9 @@ export default function TenantList() {
     setTenant(val);
     setModalShow(true);
   };
-  const deleteTenant = async (id) => {
-    registerationDelete(id).then(() => {
-      mainCall();
+  const deleteTenant = (val) => {
+    registerationDelete(val.id).then(() => {
+      mainCall(selected, search);
     });
     toast.error("Tenant Removed", {
       position: "top-right",
@@ -86,7 +95,7 @@ export default function TenantList() {
         ...tenant,
       };
       registerationPut(tenant.id, updated).then(() => {
-        mainCall();
+        mainCall(selected, search);
       });
       setModalShow(false);
       toast.success("Tenant Details Update", {
@@ -97,6 +106,12 @@ export default function TenantList() {
         draggable: true,
       });
     }
+  };
+
+  const searchFilter = (e) => {
+    e.preventDefault();
+    setSelected(1);
+    mainCall(1, search);
   };
   const actions = [
     {
@@ -115,7 +130,7 @@ export default function TenantList() {
     },
   ];
   const datalist = {
-    list: [...tenantList],
+    list: [...tenantList.list],
     fields: ["userid", "description"],
   };
   const headings = [
@@ -128,12 +143,36 @@ export default function TenantList() {
       <div className="col-lg-12 grid-margin stretch-card">
         <div className="card">
           <div className="card-body">
-            <h2 className="card-title">Tenant List</h2>
+            <div className="d-flex align-items-center justify-content-around">
+              <h2 className="card-title">Tenant List</h2>
+              <div className="search-field ">
+                <form className="h-50">
+                  <div className="input-group">
+                    <button
+                      className="input-group-prepend btn  btn-success"
+                      onClick={(e) => searchFilter(e)}
+                    >
+                      <i className=" mdi mdi-magnify"></i>
+                    </button>
+                    <input
+                      type="text"
+                      className="form-control bg-parent border-1"
+                      placeholder="Search projects"
+                      onChange={(e) => setSearch(e.target.value)}
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+
             <div className="table-responsive">
               <RenderList
                 headings={headings}
                 data={datalist}
                 actions={actions}
+                handlePageClick={handlePageClick}
+                pageCount={tenantList.count}
+                selected={selected}
               />
             </div>
           </div>

@@ -11,7 +11,7 @@
     },
     {
       "name": "Tushar Saxena",
-      "description": "i am the king of the seven worlds",
+      "description": "i am the king of the seven worlds :)",
       "userid": "tushar123",
       "email": "tushar057@gmail.com",
       "password": "tushar057",
@@ -26,15 +26,6 @@
       "password": "jeff123",
       "type": "tenant",
       "id": 8
-    },
-    {
-      "name": "Paras Saxena",
-      "description": "I am a Master hacker ",
-      "userid": "paras72727",
-      "email": "parassaxena206@gmail.com",
-      "password": "parassaxena206",
-      "type": "tenant",
-      "id": 10
     },
     {
       "name": "Rohit singh",
@@ -62,6 +53,78 @@
       "password": "harsh768",
       "type": "tenant",
       "id": 13
+    },
+    {
+      "name": "test1",
+      "description": "i live in indore",
+      "userid": "test1",
+      "email": "test1@gmail.com",
+      "password": "test1",
+      "type": "tenant",
+      "id": 14
+    },
+    {
+      "name": "test11",
+      "description": "i live in indore",
+      "userid": "test11",
+      "email": "test11@gmail.com",
+      "password": "test1",
+      "type": "tenant",
+      "id": 15
+    },
+    {
+      "name": "test12",
+      "description": "i live in indore",
+      "userid": "test12",
+      "email": "test12@gmail.com",
+      "password": "test12",
+      "type": "tenant",
+      "id": 16
+    },
+    {
+      "name": "test14",
+      "description": "i live in indore",
+      "userid": "test14",
+      "email": "test14@gmail.com",
+      "password": "test14",
+      "type": "tenant",
+      "id": 18
+    },
+    {
+      "name": "test15",
+      "description": "i live in indore",
+      "userid": "test15",
+      "email": "test15@gmail.com",
+      "password": "test15",
+      "type": "tenant",
+      "id": 19
+    },
+    {
+      "name": "test21",
+      "description": "i live in indore",
+      "userid": "test21",
+      "email": "test21@gmail.com",
+      "password": "test21",
+      "type": "tenant",
+      "id": 20
+    },
+    {
+      "name": "test22",
+      "description": "i live in indore",
+      "userid": "test22",
+      "email": "test22@gmail.com",
+      "password": "test22",
+      "type": "tenant",
+      "id": 21
+    },
+    {
+      "name": "testify",
+      "description": "i live in indore",
+      "userid": "test2345_12",
+      "email": "test23@gmail.com",
+      "password": "test23",
+      "type": "tenant",
+      "id": 22
     }
   ]
 }
