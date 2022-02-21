@@ -35,7 +35,7 @@
     "react-bootstrap-table-next": "^1.1.0",
     "react-bootstrap-typeahead": "^3.4.7",
     "react-contextmenu": "^2.11.0",
-    "react-datepicker": "^2.9.6",
+    "react-datepicker": "^4.6.0",
     "react-dom": "^16.9.0",
     "react-i18next": "^11.2.1",
     "react-images": "^0.6.7",
