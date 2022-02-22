@@ -1,4 +1,7 @@
 import makeServer from "./index";
+jest.mock("axios");
+
+export const BASE_URL = "http://localhost:3000/api";
 
 let server;
 
@@ -73,9 +76,13 @@ let output = [
     type: "tenant",
     id: 7,
   },
-]
-test("Shows all database entries", async () => {
-  let tmp = await fetch("/api/registeration")
-  console.log(tmp)
-  expect(tmp.json()).toEqual(output)
+];
+
+test("Shows all database entries", () => {
+  let tmp;
+  fetch("/api/registeration").then(async (res) => {
+    console.log(await res.json());
+    tmp = res.json();
+    expect(tmp).toEqual(output);
+  });
 });

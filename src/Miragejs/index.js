@@ -40,7 +40,7 @@ export default function makeServer({ environment = "development" } = {}) {
           {
             name: "Paras Saxena",
             description: "I am a Master hacker ",
-            userid: "paras72727",
+            userid: "paras727271",
             email: "parassaxena206@gmail.com",
             password: "parassaxena206",
             type: "tenant",
@@ -58,7 +58,7 @@ export default function makeServer({ environment = "development" } = {}) {
           {
             name: "Naveen",
             description: "i am a fan of Spiderman",
-            userid: "naveen768",
+            userid: "naveen7681",
             email: "naveen768@gmail.com",
             password: "naveen768",
             type: "tenant",
@@ -67,7 +67,7 @@ export default function makeServer({ environment = "development" } = {}) {
           {
             name: "harsh",
             description: "i live in indore",
-            userid: "harsh768",
+            userid: "harsh7681",
             email: "harsh768@gmail.com",
             password: "harsh768",
             type: "tenant",
@@ -82,19 +82,28 @@ export default function makeServer({ environment = "development" } = {}) {
 
       this.get("/registeration", (schema, request) => {
         try {
+          let count;
+          console.log(request.queryParams);
+          if (request.queryParams._page) {
+            let tmp = schema.db.user.where({ type: request.queryParams.type });
+            // console.log("tmp1", tmp);
+            if (request.queryParams.name_like != " ") {
+              let reg = new RegExp(request.queryParams.name_like);
+              tmp = tmp.filter((ele) => reg.test(ele.userid));
+            }
+            count = Math.ceil(tmp.length / 10);
+            tmp = tmp.splice((request.queryParams._page - 1) * 10, 10);
+            // console.log("tmp3", tmp);
+            return new Response(
+              200,
+              { "Content-type": "application/json" },
+              { list: tmp, count: count }
+            );
+          }
           let tmp = schema.db.user.where(request.queryParams);
-          console.log(tmp, "OK");
-          return new Response(
-            200,
-            { "Content-type": "application/json" },
-            { err: 0, data: tmp }
-          );
+          return new Response(200, { "Content-type": "application/json" }, tmp);
         } catch (err) {
-          return new Response(
-            500,
-            { "Content-type": "application/json" },
-            { err: 1, msg: err }
-          );
+          return new Response(500, { "Content-type": "application/json" });
         }
       });
 
@@ -104,7 +113,11 @@ export default function makeServer({ environment = "development" } = {}) {
             request.params,
             JSON.parse(request.requestBody)
           );
-          return new Response(204, {});
+          return new Response(
+            204,
+            { "Content-type": "application/json" },
+            { err: 0 }
+          );
         } catch (err) {
           return new Response(
             500,
@@ -117,7 +130,7 @@ export default function makeServer({ environment = "development" } = {}) {
       this.post("/registeration", (schema, request) => {
         try {
           schema.db.user.insert(JSON.parse(request.requestBody));
-          console.log(schema.db.user);
+          // console.log(schema.db.user);
           return new Response(
             201,
             { "Content-type": "application/json" },

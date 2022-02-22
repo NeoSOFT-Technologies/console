@@ -21,6 +21,6 @@ export function registerationPost(data) {
 
 export function tenantListService(currentPage, search) {
   return axios.get(
-    `${URL}/Registration?type=tenant&_page=${currentPage}&name_like=${search}`
+    `${URL}/api/registeration?type=tenant&_page=${currentPage}&name_like=${search}`
   );
 }
