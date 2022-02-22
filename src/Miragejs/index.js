@@ -93,7 +93,7 @@ export default function makeServer({ environment = "development" } = {}) {
             }
             count = Math.ceil(tmp.length / 10);
             tmp = tmp.splice((request.queryParams._page - 1) * 10, 10);
-            // console.log("tmp3", tmp);
+            console.log("tmp3", tmp);
             return new Response(
               200,
               { "Content-type": "application/json" },
@@ -130,7 +130,7 @@ export default function makeServer({ environment = "development" } = {}) {
       this.post("/registeration", (schema, request) => {
         try {
           schema.db.user.insert(JSON.parse(request.requestBody));
-          // console.log(schema.db.user);
+          console.log(schema.db.user);
           return new Response(
             201,
             { "Content-type": "application/json" },
