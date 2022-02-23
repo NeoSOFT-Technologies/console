@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { registerationPut, registerationDelete } from "../config/Myservices";
+import { updateTenantData, deleteTenantData } from "../config/Myservices";
 import { regexForName, regexForUser } from "../constants/constantVariables";
 import { useDispatch, useSelector } from "react-redux";
 import { getTenantList } from "../redux/actions/TenantActions";
@@ -55,7 +55,7 @@ export default function TenantList() {
     setModalShow(true);
   };
   const deleteTenant = (val) => {
-    registerationDelete(val.id).then(() => {
+    deleteTenantData(val.id).then(() => {
       mainCall(selected, search);
     });
     toast.error("Tenant Removed", {
@@ -94,7 +94,7 @@ export default function TenantList() {
       let updated = {
         ...tenant,
       };
-      registerationPut(tenant.id, updated).then(() => {
+      updateTenantData(tenant.id, updated).then(() => {
         mainCall(selected, search);
       });
       setModalShow(false);

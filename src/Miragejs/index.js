@@ -1,4 +1,12 @@
-import { createServer, Model, Response } from "miragejs";
+import { createServer, Model } from "miragejs";
+import { responseUtils } from "./utils/responseUtils";
+import {
+  getDataList,
+  updateUser,
+  userLogin,
+  userDelete,
+  userAdd,
+} from "./utils/index";
 
 export default function makeServer({ environment = "development" } = {}) {
   let server = createServer({
@@ -80,66 +88,53 @@ export default function makeServer({ environment = "development" } = {}) {
     routes() {
       this.namespace = "/api";
 
-      this.get("/registeration", (schema, request) => {
+      this.post("/login", (schema, request) => {
         try {
-          let count;
-          let query = request.queryParams;
-          if (query._page) {
-            let datalist = schema.db.user.where({
-              type: query.type,
-            });
-            //this variable stores list of all tenant
-            if (query.name_like != " ") {
-              let reg = new RegExp(query.name_like);
-              datalist = datalist.filter((ele) => reg.test(ele.userid));
-              //filter out userid which have name_like
-            }
-            count = Math.ceil(datalist.length / 10);
-            //count total entries and have a round number for pagination.
-            let start = (query._page - 1) * 10;
-            //calculate start of array to be sent according to page number.
-            datalist = datalist.splice(start, 10);
-            //array now contains list according to pagination.
-            return new Response(
-              200,
-              { "Content-type": "application/json" },
-              { list: datalist, count: count }
-            );
-          }
-          let tmp = schema.db.user.where(query);
-          return new Response(200, { "Content-type": "application/json" }, tmp);
+          const { requestBody } = request;
+          let uniqueUser = userLogin(schema, requestBody);
+          return responseUtils(200, uniqueUser);
         } catch (err) {
-          return new Response(500);
+          return responseUtils(500);
         }
       });
 
-      this.put("/registeration/:id", (schema, request) => {
+      this.get("/user", (schema, request) => {
         try {
-          schema.db.user.update(
-            request.params,
-            JSON.parse(request.requestBody)
-          );
-          return new Response(200);
+          const { type, _page, name_like } = request.queryParams;
+          let { datalist, count } = getDataList(schema, type, _page, name_like);
+          return responseUtils(200, { list: datalist, count: count });
         } catch (err) {
-          return new Response(500);
+          return responseUtils(500);
         }
       });
 
-      this.post("/registeration", (schema, request) => {
+      this.put("/user/:id", (schema, request) => {
         try {
-          schema.db.user.insert(JSON.parse(request.requestBody));
-          return new Response(201);
+          const { params, requestBody } = request;
+          updateUser(schema, params, requestBody);
+          return responseUtils(200);
         } catch (err) {
-          return new Response(500);
+          return responseUtils(500);
         }
       });
 
-      this.delete("/registeration/:id", (schema, request) => {
+      this.post("/user", (schema, request) => {
         try {
-          schema.db.user.remove({ id: request.params.id });
-          return new Response(200);
+          const { requestBody } = request;
+          userAdd(schema, requestBody);
+          return responseUtils(200);
         } catch (err) {
-          return new Response(500);
+          return responseUtils(500);
+        }
+      });
+
+      this.delete("/user/:id", (schema, request) => {
+        try {
+          const { id } = request.params;
+          userDelete(schema, id);
+          return responseUtils(200);
+        } catch (err) {
+          return responseUtils(500);
         }
       });
     },

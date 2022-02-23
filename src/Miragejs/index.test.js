@@ -13,7 +13,7 @@ afterEach(() => {
 
 it("Shows all database entries", () => {
   let tmp;
-  fetch("/api/registeration").then((res) => {
+  fetch("/api/registeration?email=rahul768&password=rahul768").then((res) => {
     tmp = res.json();
     expect(tmp).toHaveValue(output);
   });
