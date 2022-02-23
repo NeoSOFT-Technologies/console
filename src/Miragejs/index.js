@@ -83,27 +83,33 @@ export default function makeServer({ environment = "development" } = {}) {
       this.get("/registeration", (schema, request) => {
         try {
           let count;
-          console.log(request.queryParams);
-          if (request.queryParams._page) {
-            let tmp = schema.db.user.where({ type: request.queryParams.type });
-            // console.log("tmp1", tmp);
-            if (request.queryParams.name_like != " ") {
-              let reg = new RegExp(request.queryParams.name_like);
-              tmp = tmp.filter((ele) => reg.test(ele.userid));
+          let query = request.queryParams;
+          if (query._page) {
+            let datalist = schema.db.user.where({
+              type: query.type,
+            });
+            //this variable stores list of all tenant
+            if (query.name_like != " ") {
+              let reg = new RegExp(query.name_like);
+              datalist = datalist.filter((ele) => reg.test(ele.userid));
+              //filter out userid which have name_like
             }
-            count = Math.ceil(tmp.length / 10);
-            tmp = tmp.splice((request.queryParams._page - 1) * 10, 10);
-            console.log("tmp3", tmp);
+            count = Math.ceil(datalist.length / 10);
+            //count total entries and have a round number for pagination.
+            let start = (query._page - 1) * 10;
+            //calculate start of array to be sent according to page number.
+            datalist = datalist.splice(start, 10);
+            //array now contains list according to pagination.
             return new Response(
               200,
               { "Content-type": "application/json" },
-              { list: tmp, count: count }
+              { list: datalist, count: count }
             );
           }
-          let tmp = schema.db.user.where(request.queryParams);
+          let tmp = schema.db.user.where(query);
           return new Response(200, { "Content-type": "application/json" }, tmp);
         } catch (err) {
-          return new Response(500, { "Content-type": "application/json" });
+          return new Response(500);
         }
       });
 
@@ -113,52 +119,27 @@ export default function makeServer({ environment = "development" } = {}) {
             request.params,
             JSON.parse(request.requestBody)
           );
-          return new Response(
-            204,
-            { "Content-type": "application/json" },
-            { err: 0 }
-          );
+          return new Response(200);
         } catch (err) {
-          return new Response(
-            500,
-            { "Content-type": "application/json" },
-            { err: 1, msg: err }
-          );
+          return new Response(500);
         }
       });
 
       this.post("/registeration", (schema, request) => {
         try {
           schema.db.user.insert(JSON.parse(request.requestBody));
-          console.log(schema.db.user);
-          return new Response(
-            201,
-            { "Content-type": "application/json" },
-            { err: 0 }
-          );
+          return new Response(201);
         } catch (err) {
-          return new Response(
-            500,
-            { "Content-type": "application/json" },
-            { err: 1, msg: err }
-          );
+          return new Response(500);
         }
       });
 
       this.delete("/registeration/:id", (schema, request) => {
         try {
           schema.db.user.remove({ id: request.params.id });
-          return new Response(
-            200,
-            { "Content-type": "application/json" },
-            { err: 0 }
-          );
+          return new Response(200);
         } catch (err) {
-          return new Response(
-            500,
-            { "Content-type": "application/json" },
-            { err: 1, msg: "Error deleting object" }
-          );
+          return new Response(500);
         }
       });
     },
