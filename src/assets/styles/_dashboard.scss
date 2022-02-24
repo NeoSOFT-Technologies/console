@@ -118,7 +118,7 @@
 .card-revenue {
   background: linear-gradient(120deg, #556cdc, #128bfc, #18bef1);
   background-size: cover;
-  color: color(white);
+  color: white;
 
   .highlight-text {
     font-size: 1.875rem;
@@ -126,7 +126,7 @@
   }
 
   .badge {
-    background-color: rgba(color(white), .2);
+    background-color: rgba(white, .2);
     font-size: 1.125rem;
     padding: 0.5rem 1.25rem;
   }
