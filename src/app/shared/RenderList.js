@@ -6,6 +6,7 @@ export default function RenderList(props) {
   return (
     <div>
       {console.log(props.selected - 1)}
+      {/* headings mapping logic */}
       <table className="table">
         <thead>
           <tr>
@@ -22,6 +23,7 @@ export default function RenderList(props) {
               <td rowSpan={headings.length}>No data Available</td>
             </tr>
           ) : (
+            //actions that is required on buttons
             data.list.map((val, index1) => (
               <tr key={index1}>
                 {data.fields.map((field, index2) => (
@@ -51,7 +53,7 @@ export default function RenderList(props) {
           )}
         </tbody>
       </table>
-
+      {/* react paginate logic */}
       <ReactPaginate
         previousLabel={"previous"}
         nextLabel={"next"}

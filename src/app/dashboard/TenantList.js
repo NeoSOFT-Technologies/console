@@ -34,7 +34,7 @@ export default function TenantList() {
     mainCall(1, search);
   }, []);
   const handlePageClick = (data) => {
-    console.log(data.selected);
+    console.log(data);
     let currentPage = data.selected + 1;
     mainCall(currentPage, search);
     setSelected(currentPage);
