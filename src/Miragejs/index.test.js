@@ -1,6 +1,5 @@
 import makeServer from "./index";
 import "@testing-library/jest-dom/extend-expect";
-let output = [];
 
 let server;
 beforeEach(() => {
@@ -11,10 +10,11 @@ afterEach(() => {
   server.shutdown();
 });
 
-it("Shows all database entries", () => {
-  let tmp;
-  fetch("/api/registeration?email=rahul768&password=rahul768").then((res) => {
-    tmp = res.json();
-    expect(tmp).toHaveValue(output);
-  });
+//TODO write working test cases
+
+it("Try to login", () => {
+  fetch("/api/login", {
+    method: "POST",
+    body: JSON.stringify({ email: "rohit@gmail.com", password: "rohit" }),
+  }).then((res) => console.log(res.json()));
 });
