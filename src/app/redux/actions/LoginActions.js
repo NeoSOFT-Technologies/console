@@ -1,4 +1,4 @@
-import { registerationGet } from "../../config/Myservices";
+import { getUserData } from "../../config/Myservices";
 
 export const AdminLoginSuccess = () => {
   return { type: "AdminLoginSuccess" };
@@ -13,6 +13,6 @@ export const TenantLoginSuccess = () => {
   return { type: "TenantLoginSuccess" };
 };
 export const UserLogin = async (email, password) => {
-  let res = await registerationGet(email, password);
+  let res = await getUserData(email, password);
   return { type: "setUser", payload: res.data[0] };
 };
