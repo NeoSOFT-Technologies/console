@@ -125,6 +125,15 @@
       "password": "test23",
       "type": "tenant",
       "id": 22
+    },
+    {
+      "name": "Paras Saxena",
+      "description": "i am a hacker",
+      "userid": "paras1234",
+      "email": "parassaxena206@gmail.com",
+      "password": "parassaxena206",
+      "type": "tenant",
+      "id": 23
     }
   ]
 }

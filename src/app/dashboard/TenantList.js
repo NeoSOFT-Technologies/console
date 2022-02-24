@@ -148,18 +148,18 @@ export default function TenantList() {
               <div className="search-field ">
                 <form className="h-50">
                   <div className="input-group">
-                    <button
-                      className="input-group-prepend btn  btn-success"
-                      onClick={(e) => searchFilter(e)}
-                    >
-                      <i className=" mdi mdi-magnify"></i>
-                    </button>
                     <input
                       type="text"
                       className="form-control bg-parent border-1"
                       placeholder="Search projects"
                       onChange={(e) => setSearch(e.target.value)}
                     />
+                    <button
+                      className=" btn  btn-success btn-sm"
+                      onClick={(e) => searchFilter(e)}
+                    >
+                      <i className=" mdi mdi-magnify"></i>
+                    </button>
                   </div>
                 </form>
               </div>
