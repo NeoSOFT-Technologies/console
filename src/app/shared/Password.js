@@ -11,8 +11,8 @@ export default function PasswordButtons({ viewPassword, setViewPassword }) {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="22"
-            height="22"
+            width="23"
+            height="23"
             fill="currentColor"
             className="bi bi-eye-fill"
             viewBox="0 0 16 16"
@@ -29,8 +29,8 @@ export default function PasswordButtons({ viewPassword, setViewPassword }) {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="22"
-            height="22"
+            width="23"
+            height="23"
             fill="currentColor"
             className="bi bi-eye-slash-fill"
             viewBox="0 0 16 16"

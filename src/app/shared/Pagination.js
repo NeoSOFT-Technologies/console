@@ -19,11 +19,8 @@ export default function Pagination({
   };
   const setNextPage = () => {
     if (selectedPage < pageCount) {
-      console.log("in next");
       selectedPage = selectedPage + 1;
-      console.log(selectedPage);
     }
-    console.log(selectedPage, pageCount, selectedPage < pageCount);
     onPageChange(selectedPage);
   };
   const setCurrentPage = (page) => {

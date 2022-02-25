@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import AdminSidebar from "./shared/AdminSidebar";
 import TenantSidebar from "./shared/TenantSidebar";
 import { connect } from "react-redux";
+
 class App extends Component {
   state = "";
   componentDidMount() {
