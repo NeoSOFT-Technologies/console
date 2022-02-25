@@ -1,9 +1,18 @@
 ## UI Todo
 
+### Admin 
 #### 1. Login
 #### 2. Register
 #### 3. List / Data Grid
 #### 4. Details
+#### 5. API Integration
+
+### Tenant 
+#### 1. Login
+#### 2. Register
+#### 3. List / Data Grid
+#### 4. Details
+#### 5. API Integration
 
 ## Utility Todo 
 
