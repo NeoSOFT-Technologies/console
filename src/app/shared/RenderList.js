@@ -1,11 +1,11 @@
 import React from "react";
-import ReactPaginate from "react-paginate";
+import Pagination from "./Pagination";
 
 export default function RenderList(props) {
   const { headings, data, pageCount, handlePageClick } = props;
   return (
     <div>
-      {console.log(props.selected - 1)}
+      {/* headings mapping logic */}
       <table className="table">
         <thead>
           <tr>
@@ -22,6 +22,7 @@ export default function RenderList(props) {
               <td rowSpan={headings.length}>No data Available</td>
             </tr>
           ) : (
+            //actions that is required on buttons
             data.list.map((val, index1) => (
               <tr key={index1}>
                 {data.fields.map((field, index2) => (
@@ -51,26 +52,13 @@ export default function RenderList(props) {
           )}
         </tbody>
       </table>
-
-      <ReactPaginate
+      {/* paginate logic */}
+      <Pagination
         previousLabel={"previous"}
         nextLabel={"next"}
-        breakLabel={"..."}
         pageCount={pageCount}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={5}
         onPageChange={handlePageClick}
-        forcePage={parseInt(props.selected - 1)}
-        containerClassName={"pagination justify-content-center"}
-        pageClassName={"page-item"}
-        pageLinkClassName={"page-link"}
-        previousClassName={"page-item"}
-        previousLinkClassName={"page-link"}
-        nextClassName={"page-item"}
-        nextLinkClassName={"page-link"}
-        breakClassName={"page-item"}
-        breakLinkClassName={"page-link"}
-        activeClassName={"active"}
+        selectedPage={props.selected}
       />
     </div>
   );

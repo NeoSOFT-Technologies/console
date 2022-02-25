@@ -39,7 +39,6 @@
     "react-dom": "^16.9.0",
     "react-i18next": "^11.2.1",
     "react-images": "^1.1.7",
-    "react-paginate": "^8.1.0",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
     "react-scripts": "^5.0.0",

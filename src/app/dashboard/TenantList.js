@@ -33,11 +33,9 @@ export default function TenantList() {
   useEffect(() => {
     mainCall(1, search);
   }, []);
-  const handlePageClick = (data) => {
-    console.log(data.selected);
-    let currentPage = data.selected + 1;
-    mainCall(currentPage, search);
-    setSelected(currentPage);
+  const handlePageClick = (selected) => {
+    mainCall(selected, search);
+    setSelected(selected);
   };
   const mainCall = (currentPage, search) => {
     try {
@@ -126,7 +124,7 @@ export default function TenantList() {
     },
     {
       className: "btn btn-sm btn-dark",
-      iconClassName: "mdi mdi-settings",
+      iconClassName: "mdi mdi-cog",
     },
   ];
   const datalist = {
