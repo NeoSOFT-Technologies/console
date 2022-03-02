@@ -6,6 +6,7 @@ import {
   userLogin,
   userDelete,
   userAdd,
+  getUserDataList,
 } from "./utils/index";
 
 export default function makeServer({ environment = "development" } = {}) {
@@ -13,6 +14,7 @@ export default function makeServer({ environment = "development" } = {}) {
     environment,
     models: {
       user: Model,
+      tenantUser: Model,
     },
 
     seeds(server) {
@@ -154,6 +156,104 @@ export default function makeServer({ environment = "development" } = {}) {
             id: 23,
           },
         ],
+        tenantUser: [
+          {
+            id: "1",
+            userName: "User1",
+            email: "user1@gmail.com",
+            tenantName: "Tenant1",
+            createdDateTime: "Mar 01 2022 11:51:39",
+            isDeleted: "false",
+          },
+          {
+            id: "2",
+            userName: "User2",
+            email: "user2@gmail.com",
+            tenantName: "Tenant2",
+            createdDateTime: "Mar 01 2022 11:51:39",
+            isDeleted: "false",
+          },
+          {
+            id: "3",
+            userName: "User3",
+            email: "user3@gmail.com",
+            tenantName: "Tenant3",
+            createdDateTime: "Mar 01 2022 11:51:39",
+            isDeleted: "false",
+          },
+          {
+            id: "4",
+            userName: "User4",
+            email: "user4@gmail.com",
+            tenantName: "Tenant4",
+            createdDateTime: "Mar 01 2022 11:51:39",
+            isDeleted: "false",
+          },
+          {
+            id: "5",
+            userName: "User5",
+            email: "user5@gmail.com",
+            tenantName: "Tenant5",
+            createdDateTime: "Mar 01 2022 11:51:39",
+            isDeleted: "false",
+          },
+          {
+            id: "6",
+            userName: "User6",
+            email: "user6@gmail.com",
+            tenantName: "Tenant6",
+            createdDateTime: "Mar 01 2022 11:51:39",
+            isDeleted: "false",
+          },
+          {
+            id: "7",
+            userName: "User7",
+            email: "user7@gmail.com",
+            tenantName: "Tenant7",
+            createdDateTime: "Mar 01 2022 11:51:39",
+            isDeleted: "false",
+          },
+          {
+            id: "8",
+            userName: "User8",
+            email: "user8@gmail.com",
+            tenantName: "Tenant8",
+            createdDateTime: "Mar 01 2022 11:51:39",
+            isDeleted: "false",
+          },
+          {
+            id: "9",
+            userName: "User9",
+            email: "user9@gmail.com",
+            tenantName: "Tenant9",
+            createdDateTime: "Mar 01 2022 11:51:39",
+            isDeleted: "false",
+          },
+          {
+            id: "10",
+            userName: "User10",
+            email: "user10@gmail.com",
+            tenantName: "Tenant10",
+            createdDateTime: "Mar 01 2022 11:51:39",
+            isDeleted: "false",
+          },
+          {
+            id: "11",
+            userName: "User11",
+            email: "user11@gmail.com",
+            tenantName: "Tenant11",
+            createdDateTime: "Mar 01 2022 11:51:39",
+            isDeleted: "false",
+          },
+          {
+            id: "12",
+            userName: "User12",
+            email: "user12@gmail.com",
+            tenantName: "Tenant12",
+            createdDateTime: "Mar 01 2022 11:51:39",
+            isDeleted: "false",
+          },
+        ],
       });
     },
 
@@ -174,6 +274,15 @@ export default function makeServer({ environment = "development" } = {}) {
         try {
           const { type, _page, name_like } = request.queryParams;
           let { datalist, count } = getDataList(schema, type, _page, name_like);
+          return responseUtils(200, { list: datalist, count: count });
+        } catch (err) {
+          return responseUtils(500);
+        }
+      });
+      this.get("/tenant-user", (schema, request) => {
+        try {
+          const { _page, name_like } = request.queryParams;
+          let { datalist, count } = getUserDataList(schema, _page, name_like);
           return responseUtils(200, { list: datalist, count: count });
         } catch (err) {
           return responseUtils(500);

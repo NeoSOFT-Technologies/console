@@ -23,3 +23,8 @@ export function tenantListService(currentPage, search) {
     `${URL}/api/user?type=tenant&_page=${currentPage}&name_like=${search}`
   );
 }
+export function tenantUserListService(currentPage, search) {
+  return axios.get(
+    `${URL}/api/tenant-user?_page=${currentPage}&name_like=${search}`
+  );
+}

@@ -1,6 +1,7 @@
 import React, { Component, Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Spinner from "../app/shared/Spinner";
+import UserList from "./dashboard/UserList";
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
 const Error404 = lazy(() => import("./error-pages/Error404"));
 const Error500 = lazy(() => import("./error-pages/Error500"));
@@ -20,6 +21,7 @@ class AppRoutes extends Component {
           <Route path="/createuser" element={<CreateUser />} />
           <Route path="/registertenant" element={<RegisterUser />} />
           <Route path="/tenantlist" element={<TenantList />} />
+          <Route path="/userlist" element={<UserList />} />
           <Route path="/login-page" element={<Login />} />
           <Route path="/registration-page" element={<Register />} />
           <Route path="/user-pages/lockscreen" element={<Lockscreen />} />
