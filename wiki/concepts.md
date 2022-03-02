@@ -2,19 +2,22 @@
 
 ## 1. Component
 ### 1. Class Component
+   ```
       a.constructor
       b.state and props
       c.lifecyle methods(componentDidMount,componentDidUpdate,etc)
       d.render
       e.export class component
+   ```
 ### 2. Functional Component
+   ```
       a. props
       b. useState
       c. useEffect
       d. useRef
       e. return
       f. export function component
-
+   ```
 ## 2. React Hooks 
    ```
       a. useState (react)
