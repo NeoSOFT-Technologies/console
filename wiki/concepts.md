@@ -222,3 +222,50 @@
          The API is designed to mimic the behavior of tar(1) on unix systems. <br/>
    package-link :- https://www.npmjs.com/package/tar<br/>
    docs :- https://github.com/npm/node-tar#readme<br/>
+
+24. "@testing-library/jest-dom": The @testing-library/jest-dom library provides a set of custom jest matchers 
+      that you can use to extend jest. These will make your tests more declarative, clear to read and to maintain.<br/>
+   package-link :- https://www.npmjs.com/package/@testing-library/jest-dom <br/>
+   docs :- https://github.com/testing-library/jest-dom#readme ,https://testing-library.com/docs/ecosystem-jest-dom/ <br/>
+
+25. "@testing-library/react": The React Testing Library is a very lightweight solution for testing
+       React components. It provides light utility functions on top of react-dom and react-dom/test-utils,
+       in a way that encourages better testing practices.<br/>
+   package-link :- https://www.npmjs.com/package/@testing-library/react <br/>
+   docs :- https://github.com/testing-library/react-testing-library#readme, https://testing-library.com/docs/react-testing-library/intro/ <br/>
+
+26. "eslint" : ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code. <br/>
+      package-link :- https://www.npmjs.com/package/eslint <br/>
+      docs :- https://eslint.org  <br/>
+
+27. "eslint-config-prettier": Turns off all rules that are unnecessary or might conflict with Prettier.This lets you use your favorite shareable config without
+            letting its stylistic choices get in the way when using Prettier.<br/>
+      package-link :- https://www.npmjs.com/package/eslint-config-prettier <br/>
+      docs :- https://github.com/prettier/eslint-config-prettier#readme <br/>
+
+28. "eslint-plugin-prettier":Runs Prettier as an ESLint rule and reports differences as individual ESLint issues.<br/>
+      package-link :- https://www.npmjs.com/package/eslint-plugin-prettier<br/>
+      docs :- https://github.com/prettier/eslint-plugin-prettier#readme <br/>
+
+29. "eslint-plugin-react": React specific linting rules for eslint <br/>
+      package-link :- https://www.npmjs.com/package/eslint-plugin-react <br/>
+      docs :- https://github.com/yannickcr/eslint-plugin-react <br/>
+
+30. "husky":Modern native Git hooks made easy <br/>
+      package-link :- https://www.npmjs.com/package/husky <br/>
+      docs :- https://typicode.github.io/husky <br/>
+
+
+31. "lint-staged":Run linters against staged git files <br/>
+      package-link :- https://www.npmjs.com/package/eslint-plugin-react <br/>
+      docs :- https://github.com/okonet/lint-staged#readme <br/>
+
+32. "miragejs": A client-side server to develop, test and prototype your JavaScript app. <br/>
+      package-link :- https://www.npmjs.com/package/miragejs <br/>
+      docs :- https://github.com/miragejs/miragejs , https://miragejs.com/ <br/>
+
+
+33. "prettier": Prettier is an opinionated code formatter. It enforces a consistent style by parsing
+         your code and re-printing it with its own rules that take the maximum line length into account, wrapping code when necessary.<br/>
+      package-link :- https://www.npmjs.com/package/eslint-plugin-react <br/>
+      docs :-   https://prettier.io/ <br/>
