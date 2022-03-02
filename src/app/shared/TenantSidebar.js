@@ -47,6 +47,18 @@ function TenantSidebar() {
           </li>
           <li
             className={
+              isPathActive("/userlist") ? "nav-item active" : "nav-item"
+            }
+          >
+            <Link className="nav-link" to="/userlist">
+              <span className="menu-title">
+                <>User List</>
+              </span>
+              <i className="mdi mdi-home menu-icon"></i>
+            </Link>
+          </li>
+          <li
+            className={
               isPathActive("/createuser") ? "nav-item active" : "nav-item"
             }
           >
