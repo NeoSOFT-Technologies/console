@@ -54,7 +54,7 @@ class Navbar extends Component {
                   </div>
                   <div className="nav-profile-text">
                     <p className="mb-1 text-black">
-                      <>David Greymaax</>
+                      <>Santosh Shinde</>
                     </p>
                   </div>
                 </Dropdown.Toggle>
@@ -67,10 +67,7 @@ class Navbar extends Component {
                     <i className="mdi mdi-cached mr-2 text-success"></i>
                     <>Activity Log</>
                   </Dropdown.Item>
-                  <Dropdown.Item
-                    href="!#"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
+                  <Dropdown.Item as={Link} to="/">
                     <i className="mdi mdi-logout mr-2 text-primary"></i>
                     <>Signout</>
                   </Dropdown.Item>
