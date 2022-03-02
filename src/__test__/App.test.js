@@ -8,7 +8,7 @@ import Register from "../app/user-pages/Register";
 import LockScreen from "../app/user-pages/Lockscreen";
 import Error404 from "../app/error-pages/Error404";
 import Error500 from "../app/error-pages/Error500";
-import { div } from "../app/constants/constantVariables";
+import { div } from "../app/constants";
 import { Provider } from "react-redux";
 import store from "../app/redux/store/store";
 

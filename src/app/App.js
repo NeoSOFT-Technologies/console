@@ -7,6 +7,7 @@ import SettingsPanel from "./shared/SettingsPanel";
 import Footer from "./shared/Footer";
 // import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
+import { Navigate } from "react-router-dom";
 import AdminSidebar from "./shared/AdminSidebar";
 import TenantSidebar from "./shared/TenantSidebar";
 import { connect } from "react-redux";
@@ -20,10 +21,14 @@ class App extends Component {
   render() {
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar /> : "";
     let sidebarComponent = !this.state.isFullPageLayout ? (
-      this.props.user != null && this.props.user.type == "tenant" ? (
-        <TenantSidebar />
+      this.props.user != null ? (
+        this.props.user.type == "tenant" ? (
+          <TenantSidebar />
+        ) : (
+          <AdminSidebar />
+        )
       ) : (
-        <AdminSidebar />
+        <Navigate to="/login-page" />
       )
     ) : (
       ""

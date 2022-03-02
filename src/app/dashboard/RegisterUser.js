@@ -3,11 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { addTenantData } from "../config/Myservices";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  regexForEmail,
-  regexForName,
-  regexForUser,
-} from "../constants/constantVariables";
+import { regexForEmail, regexForName, regexForUser } from "../constants";
 toast.configure();
 
 export default function RegisterUser() {

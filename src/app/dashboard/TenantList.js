@@ -3,7 +3,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { updateTenantData, deleteTenantData } from "../config/Myservices";
-import { regexForName, regexForUser } from "../constants/constantVariables";
+import { regexForName, regexForUser } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { getTenantList } from "../redux/actions/TenantActions";
 import RenderList from "../shared/RenderList";

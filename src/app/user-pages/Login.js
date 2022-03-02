@@ -3,7 +3,7 @@ import { Form, Button, Alert, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { regexForEmail } from "../constants/constantVariables";
+import { regexForEmail } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { UserLogin } from "../redux/actions/LoginActions";
 import { host } from "../config/URL";
