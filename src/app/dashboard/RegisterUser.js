@@ -69,9 +69,21 @@ export default function RegisterUser() {
       };
       addTenantData(newUser);
       success("Registered successfully");
-      setTimeout(() => {
-        window.location.reload(false);
-      }, 500);
+      // setTimeout(() => {
+      //   window.location.reload(false);
+      // }, 500);
+      setTenant({
+        name: "",
+        description: "",
+        userid: "",
+        email: "",
+        password: "",
+        type: "tenant",
+      });
+      setErr({
+        ...err,
+        no: false,
+      });
     }
   };
   return (
