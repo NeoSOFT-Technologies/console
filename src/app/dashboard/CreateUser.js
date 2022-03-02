@@ -9,12 +9,15 @@ export default function Createuser() {
 
   let [password, setPassword] = useState("");
 
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+  };
   return (
     <div>
       <Container className="mt-3 w-75 bg-white p-4">
         <h1 className="text-center text-dark pb-3">Create User</h1>
 
-        <Form>
+        <Form onSubmit={handleFormSubmit}>
           <Form.Group>
             <label htmlFor="exampleFormControlSelect2">Type:</label>
             <select className="form-control" id="exampleFormControlSelect2">

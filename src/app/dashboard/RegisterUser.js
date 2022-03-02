@@ -69,10 +69,33 @@ export default function RegisterUser() {
       };
       addTenantData(newUser);
       success("Registered successfully");
-      setTimeout(() => {
-        window.location.reload(false);
-      }, 500);
+      // setTimeout(() => {
+      //   window.location.reload(false);
+      // }, 500);
+      setTenant({
+        name: "",
+        description: "",
+        userid: "",
+        email: "",
+        password: "",
+        type: "tenant",
+      });
+      setErr({
+        ...err,
+        no: false,
+      });
     }
+  };
+  const clearData = (e) => {
+    e.preventDefault();
+    setTenant({
+      name: "",
+      description: "",
+      userid: "",
+      email: "",
+      password: "",
+      type: "tenant",
+    });
   };
   return (
     <>
@@ -164,7 +187,11 @@ export default function RegisterUser() {
           <Button className="info" type="submit">
             Submit
           </Button>
-          <Button className="btn btn-light" type="reset">
+          <Button
+            className="btn btn-light"
+            type="reset"
+            onClick={(e) => clearData(e)}
+          >
             Cancel
           </Button>
         </Form>
