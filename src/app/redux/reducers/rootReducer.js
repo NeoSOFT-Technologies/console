@@ -3,12 +3,12 @@ import setAdminLogin from "./AdminLoginState";
 import setTenantLogin from "./TenantLoginState";
 import setUserData from "./userDataState";
 import setTenantList from "./TenantListState";
-import setTenantUserList from './TenantUserListState'
+import setTenantUserList from "./TenantUserListState";
 const rootReducer = combineReducers({
   setAdminLogin,
   setTenantLogin,
   setUserData,
   setTenantList,
-  setTenantUserList
+  setTenantUserList,
 });
 export default rootReducer;
