@@ -32,7 +32,7 @@
     "nouislider-react": "^3.4.1",
     "react": "^16.9.0",
     "react-bootstrap": "^1.0.0-beta.12",
-    "react-bootstrap-table-next": "^1.1.0",
+    "react-bootstrap-table-next": "^4.0.3",
     "react-bootstrap-typeahead": "^5.2.2",
     "react-contextmenu": "^2.11.0",
     "react-datepicker": "^4.6.0",
