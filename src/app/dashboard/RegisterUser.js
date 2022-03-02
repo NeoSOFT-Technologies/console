@@ -86,6 +86,17 @@ export default function RegisterUser() {
       });
     }
   };
+  const clearData = (e) => {
+    e.preventDefault();
+    setTenant({
+      name: "",
+      description: "",
+      userid: "",
+      email: "",
+      password: "",
+      type: "tenant",
+    });
+  };
   return (
     <>
       <div className=" w-75 bg-white mx-auto">
@@ -176,7 +187,11 @@ export default function RegisterUser() {
           <Button className="info" type="submit">
             Submit
           </Button>
-          <Button className="btn btn-light" type="reset">
+          <Button
+            className="btn btn-light"
+            type="reset"
+            onClick={(e) => clearData(e)}
+          >
             Cancel
           </Button>
         </Form>
