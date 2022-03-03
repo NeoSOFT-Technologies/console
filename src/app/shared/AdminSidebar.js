@@ -39,7 +39,7 @@ function AdminSidebar() {
               isPathActive("/masterdashboard") ? "nav-item active" : "nav-item"
             }
           >
-            <Link className="nav-link" to="/masterdashboard">
+            <Link className="nav-link" to="/admindashboard">
               <span className="menu-title">
                 <>Master</>
               </span>
@@ -47,11 +47,9 @@ function AdminSidebar() {
             </Link>
           </li>
           <li
-            className={
-              isPathActive("/tenantlist") ? "nav-item active" : "nav-item"
-            }
+            className={isPathActive("/tenant") ? "nav-item active" : "nav-item"}
           >
-            <Link className="nav-link" to="/tenantlist">
+            <Link className="nav-link" to="/tenant">
               <span className="menu-title">
                 <>List</>
               </span>
@@ -60,12 +58,12 @@ function AdminSidebar() {
           </li>
           <li
             className={
-              isPathActive("/registertenant") ? "nav-item active" : "nav-item"
+              isPathActive("/tenantdatabase") ? "nav-item active" : "nav-item"
             }
           >
-            <Link className="nav-link" to="/registertenant">
+            <Link className="nav-link" to="/tenantdatabase">
               <span className="menu-title">
-                <>Add User</>
+                <>Add Tenant</>
               </span>
               <i className="mdi mdi-account-plus menu-icon"></i>
             </Link>

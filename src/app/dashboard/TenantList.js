@@ -1,35 +1,27 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { updateTenantData, deleteTenantData } from "../config/Myservices";
-import { regexForName, regexForUser } from "../constants/constantVariables";
+
 import { useDispatch, useSelector } from "react-redux";
 import { getTenantList } from "../redux/actions/TenantActions";
 import RenderList from "../shared/RenderList";
+import { useNavigate } from "react-router";
+import { Button } from "react-bootstrap";
 toast.configure();
 
 export default function TenantList() {
-  const name = useRef(null);
-  const userid = useRef(null);
   const dispatch = useDispatch();
   const tenantList = useSelector((state) => state.setTenantList);
-  const [modalShow, setModalShow] = useState(false);
+
   const [selected, setSelected] = useState(1);
   const [search, setSearch] = useState(" ");
-  const [tenant, setTenant] = useState({
-    name: null,
-    description: null,
-    userid: null,
-    email: null,
-    type: "tenant",
+  const [checkactive, setCheckactive] = useState({
+    btn1: false,
+    btn2: false,
+    btn3: true,
   });
-  const [err, setErr] = useState({
-    name: null,
-    userid: null,
-    email: null,
-    no: null,
-  });
+
   useEffect(() => {
     mainCall(1, search);
   }, []);
@@ -48,62 +40,14 @@ export default function TenantList() {
       console.log(err);
     }
   };
-  const renderTenant = (val) => {
-    setTenant(val);
-    setModalShow(true);
-  };
-  const deleteTenant = (val) => {
-    deleteTenantData(val.id).then(() => {
-      mainCall(selected, search);
-    });
-    toast.error("Tenant Removed", {
-      position: "top-right",
-      autoClose: 1500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      draggable: true,
-    });
-  };
 
-  const updateTenant = async () => {
-    setErr({
-      ...err,
-      no: false,
+  const navigate = useNavigate();
+  const NavigateTenant = (tenantDetails) => {
+    console.log(tenantDetails);
+    console.log(tenantDetails.id);
+    navigate(`/tenant/${tenantDetails.id}`, {
+      state: { tenantDetails: tenantDetails },
     });
-    if (!regexForName.test(tenant.name)) {
-      setErr({
-        ...err,
-        name: true,
-      });
-      name.current.focus();
-    } else if (!regexForUser.test(tenant.userid)) {
-      setErr({
-        ...err,
-        userid: true,
-        name: false,
-      });
-      userid.current.focus();
-    } else {
-      setErr({
-        userid: false,
-        name: false,
-        no: true,
-      });
-      let updated = {
-        ...tenant,
-      };
-      updateTenantData(tenant.id, updated).then(() => {
-        mainCall(selected, search);
-      });
-      setModalShow(false);
-      toast.success("Tenant Details Update", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-      });
-    }
   };
 
   const searchFilter = (e) => {
@@ -113,31 +57,50 @@ export default function TenantList() {
   };
   const actions = [
     {
-      className: "btn btn-sm btn-success",
-      iconClassName: "mdi mdi-sync",
-      buttonFunction: renderTenant,
-    },
-    {
-      className: "btn btn-sm btn-danger",
-      iconClassName: "mdi mdi-delete",
-      buttonFunction: deleteTenant,
-    },
-    {
       className: "btn btn-sm btn-dark",
       iconClassName: "mdi mdi-cog",
+      buttonFunction: NavigateTenant,
     },
   ];
   const datalist = {
     list: [...tenantList.list],
-    fields: ["userid", "description"],
+    fields: ["userid", "description", "lastlogin"],
   };
   const headings = [
-    { title: "User ID" },
+    { title: "Tenant ID" },
     { title: "Description", className: "w-100" },
+    { title: "LastLogin", className: "w-100" },
     { title: "Action", className: "text-center" },
   ];
+
   return (
     <>
+      {/* <div className="d-flex justify-content-between ">
+        <span> */}
+      <Button
+        className={
+          checkactive.btn1 ? "ml-4  w5 btn-light " : "ml-4  w5 btn-secondary"
+        }
+        onClick={() => setCheckactive({ btn1: true, btn2: false, btn3: false })}
+      >
+        Active
+      </Button>
+      <Button
+        className={checkactive.btn2 ? "  w5 btn-light " : "  w5 btn-secondary"}
+        onClick={() => setCheckactive({ btn1: false, btn2: true, btn3: false })}
+      >
+        InActive
+      </Button>
+      <Button
+        className={checkactive.btn3 ? "  w5 btn-light " : "  w5 btn-secondary"}
+      >
+        All
+      </Button>
+      {/* </span> */}
+      <span className="w-50 text-right  d-inline-block">No.of tenants:35</span>
+
+      {/* </div>  */}
+
       <div className="col-lg-12 grid-margin stretch-card">
         <div className="card">
           <div className="card-body">
@@ -176,86 +139,6 @@ export default function TenantList() {
           </div>
         </div>
       </div>
-      {tenant && (
-        <Modal show={modalShow} onHide={() => setModalShow(false)} centered>
-          <Modal.Header closeButton>
-            <Modal.Title>Update Tenant</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className=" bg-white">
-              <Form className="p-4">
-                <Form.Group className="mb-3">
-                  <Form.Label>Name :</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter Name"
-                    name="name"
-                    ref={name}
-                    value={tenant.name}
-                    isInvalid={err.name}
-                    isValid={err.no}
-                    onChange={(e) => {
-                      setTenant({ ...tenant, name: e.target.value });
-                    }}
-                    required
-                  />
-                  {tenant.name && !regexForName.test(tenant.name) && (
-                    <span className="text-danger">
-                      Name Should Not Cantain Any Special Character or Number
-                    </span>
-                  )}
-                </Form.Group>
-                <div className="form-group">
-                  <label htmlFor="exampleFormControlTextarea2">
-                    Description :
-                  </label>
-                  <textarea
-                    className="form-control rounded-0"
-                    id="description"
-                    placeholder="Here...."
-                    rows="3"
-                    value={tenant.description}
-                    onChange={(e) => {
-                      setTenant({ ...tenant, description: e.target.value });
-                    }}
-                    required
-                  />
-                </div>
-                <Form.Group className="mb-3">
-                  <Form.Label>UserID :</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter User ID"
-                    ref={userid}
-                    isValid={err.no}
-                    value={tenant.userid}
-                    isInvalid={err.userid}
-                    onChange={(e) => {
-                      setTenant({ ...tenant, userid: e.target.value });
-                    }}
-                    required
-                  />
-                  {tenant.userid && !regexForUser.test(tenant.userid) && (
-                    <span className="text-danger">
-                      Id Should Contain alphabet, number.(i.e. : paras123,
-                      p_A_r_A_s_1)
-                    </span>
-                  )}
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Email :</Form.Label>
-                  <Form.Control type="text" disabled value={tenant.email} />
-                </Form.Group>
-              </Form>
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button className="info" onClick={() => updateTenant()}>
-              Submit
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      )}
     </>
   );
 }

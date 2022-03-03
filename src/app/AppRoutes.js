@@ -12,17 +12,24 @@ const CreateUser = lazy(() => import("./dashboard/CreateUser"));
 const RegisterUser = lazy(() => import("./dashboard/RegisterUser"));
 const TenantList = lazy(() => import("./dashboard/TenantList"));
 
+const AdminDashboard = lazy(() => import("./dashboard/AdminDashboard"));
+const TenantDetails = lazy(() => import("./dashboard/TenantDetails"));
+const TenantDatabaseForm = lazy(() => import("./dashboard/TenantDatabaseForm"));
 class AppRoutes extends Component {
   render() {
     return (
       <Suspense fallback={<Spinner />}>
         <Routes>
           <Route exact path="/dashboard" element={<Dashboard />} />
+          <Route path="/admindashboard" element={<AdminDashboard />} />
+          <Route path="/tenant/:id" element={<TenantDetails />} />
           <Route path="/createuser" element={<CreateUser />} />
+          <Route path="/tenantdatabase" element={<TenantDatabaseForm />} />
           <Route path="/registertenant" element={<RegisterUser />} />
-          <Route path="/tenantlist" element={<TenantList />} />
+          <Route path="/tenant" element={<TenantList />} />
           <Route path="/userlist" element={<UserList />} />
           <Route path="/login-page" element={<Login />} />
+
           <Route path="/registration-page" element={<Register />} />
           <Route path="/user-pages/lockscreen" element={<Lockscreen />} />
           <Route path="/error-pages/error-404" element={<Error404 />} />

@@ -58,7 +58,7 @@ export default function Login() {
         navigate("/dashboard");
       } else if (user.type == "admin") {
         success("Logged In");
-        navigate("/dashboard");
+        navigate("/admindashboard");
       } else {
         console.log(user);
         warning("Incorrect Credentials!");

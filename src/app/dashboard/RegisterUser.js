@@ -8,12 +8,14 @@ import {
   regexForName,
   regexForUser,
 } from "../constants/constantVariables";
+import { useLocation } from "react-router";
 toast.configure();
 
 export default function RegisterUser() {
   const name = useRef(null);
   const userid = useRef(null);
   const email = useRef(null);
+  const { state } = useLocation();
   const [tenant, setTenant] = useState({
     name: null,
     description: null,
@@ -65,9 +67,12 @@ export default function RegisterUser() {
       });
       let newUser = {
         ...tenant,
+        ...state,
+        lastlogin: "Mar 01 2022 11:51:39",
         password: tenant.email.substring(0, tenant.email.search("@")),
       };
       addTenantData(newUser);
+      console.log(newUser);
       success("Registered successfully");
       // setTimeout(() => {
       //   window.location.reload(false);
