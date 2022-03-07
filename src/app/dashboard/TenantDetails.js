@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Form,
@@ -12,41 +12,42 @@ import { updateTenantData, deleteTenantData } from "../config/Myservices";
 import { useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { regexForName, regexForUser } from "../constants/constantVariables";
-
+import {
+  regexForName,
+  regexForUser,
+  regexForEmail,
+} from "../constants/constantVariables";
 toast.configure();
+
 export default function TenantDetails() {
-  const name = useRef(null);
-  const databasename = useRef(null);
-  const userid = useRef(null);
   const navigate = useNavigate();
   const { state } = useLocation();
-
   const [deleteshow, setDeleteshow] = useState(false);
   const [edit, setEdit] = useState(false);
-  console.log(setEdit);
   const [tenant, setTenant] = useState({
     name: null,
     description: null,
     userid: null,
     email: null,
     databasename: null,
+    port: null,
+    host: null,
     type: "tenant",
   });
   const [err, setErr] = useState({
-    name: null,
-    userid: null,
-    email: null,
-    databasename: null,
-    no: null,
+    name: "",
+    description: "",
+    userid: "",
+    email: "",
+    databasename: "",
+    port: "",
+    host: "",
   });
+
   useEffect(() => {
     setTenant(state.tenantDetails);
   }, []);
-  //const renderTenant = () => {
 
-  //};
   const deleteTenant = () => {
     deleteTenantData(state.tenantDetails.id).then(() => {});
     toast.error("Tenant Removed", {
@@ -59,51 +60,105 @@ export default function TenantDetails() {
 
     navigate("/tenant");
   };
-  const updateTenant = async () => {
-    setErr({
-      ...err,
-      no: false,
-    });
-    if (!regexForName.test(tenant.name)) {
-      setErr({
-        ...err,
-        name: true,
-      });
-      name.current.focus();
-    } else if (!regexForUser.test(tenant.userid)) {
-      setErr({
-        ...err,
-        userid: true,
-        name: false,
-      });
-      userid.current.focus();
-    } else if (!regexForName.test(tenant.databasename)) {
-      setErr({
-        ...err,
-        databasename: true,
-        userid: false,
-        name: false,
-      });
-      databasename.current.focus();
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case "name":
+        setErr({
+          ...err,
+          [name]: regexForName.test(value) ? "" : "Enter a valid name",
+        });
+        break;
+      case "description":
+        // setErr({
+        //   ...err,
+        //   [name]: regexForUser.test(value) ? "" : "Enter a valid Username ",
+        // });
+        break;
+      case "userid":
+        setErr({
+          ...err,
+          [name]: regexForUser.test(value) ? "" : "Enter a valid Username ",
+        });
+        break;
+      case "email":
+        setErr({
+          ...err,
+          [name]: regexForEmail.test(value) ? "" : "Enter a Valid Email",
+        });
+        break;
+      case "databasename":
+        // setErr({
+        //   ...err,
+        //   [name]: regexForUser.test(value) ? "" : "Enter a valid Username ",
+        // });
+        break;
+      case "port":
+        // setErr({
+        //   ...err,
+        //   [name]: regForPassword.test(value)
+        //     ? ""
+        //     : "Enter a Valid Password (must include 8 character)",
+        // });
+        break;
+      case "host":
+        // setErr({
+        //   ...err,
+        //   [name]: regexForName.test(value) ? "" : "Enter a valid tenant name ",
+        // });
+        break;
+      default:
+        break;
+    }
+    setTenant({ ...tenant, [name]: value });
+  };
+  const handleValidate = (err) => {
+    let validate =
+      err.name === "" &&
+      err.description === "" &&
+      err.userid === "" &&
+      err.email === "" &&
+      err.port === "" &&
+      err.host === "" &&
+      err.databasename === ""
+        ? true
+        : false;
+    return validate;
+  };
+  const handleUpdateTenant = (event) => {
+    event.preventDefault();
+    console.log(err);
+    if (handleValidate(err)) {
+      console.log("update");
+      if (
+        tenant.name !== "" &&
+        tenant.description !== "" &&
+        tenant.userid !== "" &&
+        tenant.email !== "" &&
+        tenant.port !== "" &&
+        tenant.host !== "" &&
+        tenant.databasename !== ""
+      ) {
+        // dispatch(update(tenant));
+        // let updated = tenant;
+        const updated = { ...tenant };
+        updateTenantData(tenant.id, updated).then(() => {});
+        setEdit(false);
+        toast.success("Tenant Details Update", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+        });
+        // toast_alert("Tenant Upated", "success");
+        // navigate("/login");
+      } else {
+        // toast_alert("Please Fill All Fields", "warning");
+      }
     } else {
-      setErr({
-        databasename: false,
-        userid: false,
-        name: false,
-        no: true,
-      });
-      let updated = {
-        ...tenant,
-      };
-      updateTenantData(tenant.id, updated).then(() => {});
-      //setModalShow(false);
-      toast.success("Tenant Details Update", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-      });
+      // toast_alert("Please Enter Valid Details", "warning");
     }
   };
   return (
@@ -153,163 +208,169 @@ export default function TenantDetails() {
         <Container className="m-1">
           {/* <Card style={{ width: "500px", height: "400px" }} className="m-1 p-4"> */}
           <h2 className="text-center pt-3 p-3">Tenant Details </h2>
-          <Form className="p-4">
+          <Form onSubmit={handleUpdateTenant}>
             <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Name :</Form.Label>
-
+              <Col md="6">
+                <Form.Group md="6">
+                  <Form.Label>Name</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Enter Name"
-                    name="name"
-                    ref={name}
+                    placeholder="name"
                     value={tenant.name}
+                    name="name"
+                    onChange={handleInputChange}
+                    disabled={!edit}
                     isInvalid={err.name}
-                    isValid={err.no}
-                    disabled={!edit}
-                    onChange={(e) => {
-                      setTenant({ ...tenant, name: e.target.value });
-                    }}
-                    required
+                    isValid={!err.name && tenant.name}
                   />
-                  {tenant.name && !regexForName.test(tenant.name) && (
-                    <span className="text-danger">
-                      Name Should Not Cantain Any Special Character or Number
-                    </span>
-                  )}
+                  <Form.Control.Feedback type="invalid">
+                    {err.name}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>UserId :</Form.Label>
-
+              <Col md="6">
+                <Form.Group md="6">
+                  <Form.Label>Userid</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Enter User ID"
-                    ref={userid}
-                    isValid={err.no}
+                    placeholder="userid"
                     value={tenant.userid}
+                    name="userid"
+                    onChange={handleInputChange}
+                    disabled={!edit}
                     isInvalid={err.userid}
-                    disabled={!edit}
-                    onChange={(e) => {
-                      setTenant({ ...tenant, userid: e.target.value });
-                    }}
-                    required
+                    isValid={!err.userid && tenant.userid}
                   />
-                  {tenant.userid && !regexForUser.test(tenant.userid) && (
-                    <span className="text-danger">
-                      Id Should Contain alphabet, number.(i.e. : paras123,
-                      p_A_r_A_s_1)
-                    </span>
-                  )}
+                  <Form.Control.Feedback type="invalid">
+                    {err.userid}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>EmailId :</Form.Label>
-
-                  <Form.Control type="text" disabled value={tenant.email} />
+              <Col md="6">
+                <Form.Group md="6">
+                  <Form.Label>email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    placeholder="email"
+                    value={tenant.email}
+                    name="email"
+                    onChange={handleInputChange}
+                    disabled
+                    isInvalid={err.email}
+                    isValid={!err.email && tenant.email}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {err.email}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>DatabaseName :</Form.Label>
-
+              <Col md="6">
+                <Form.Group md="6">
+                  <Form.Label>databasename</Form.Label>
                   <Form.Control
                     type="text"
-                    ref={databasename}
-                    placeholder="Enter database name"
+                    placeholder="databasename"
                     value={tenant.databasename}
-                    isValid={err.no}
+                    name="databasename"
+                    onChange={handleInputChange}
+                    disabled={!edit}
                     isInvalid={err.databasename}
-                    disabled={!edit}
-                    onChange={(e) => {
-                      setTenant({ ...tenant, databasename: e.target.value });
-                    }}
-                    required
+                    isValid={!err.databasename && tenant.databasename}
                   />
-                  {tenant.databasename &&
-                    !regexForName.test(tenant.databasename) && (
-                      <span className="text-danger">
-                        DatabaseName Should Not Cantain Any Special Character or
-                        Number
-                      </span>
-                    )}
+                  <Form.Control.Feedback type="invalid">
+                    {err.databasename}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Host :</Form.Label>
-
+              <Col md="6">
+                <Form.Group md="6">
+                  <Form.Label>host</Form.Label>
                   <Form.Control
                     type="text"
+                    placeholder="host"
+                    // value={tenant.host}
+                    // defaultValue="193.168.0.1"
+                    value="193.168.0.1"
+                    name="host"
+                    onChange={handleInputChange}
                     disabled={!edit}
-                    placeholder="Enter host of db server"
-                    required
+                    isInvalid={err.host}
+                    isValid={!err.host && tenant.host}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {err.host}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Port :</Form.Label>
-
+              <Col md="6">
+                <Form.Group md="6">
+                  <Form.Label>port</Form.Label>
                   <Form.Control
                     type="text"
+                    placeholder="port"
+                    // value={tenant.port}
+                    // defaultValue="8989"
+                    value="8989"
+                    name="port"
+                    onChange={handleInputChange}
                     disabled={!edit}
-                    placeholder="Enter Port of db server"
-                    required
+                    isInvalid={err.port}
+                    isValid={!err.port && tenant.port}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {err.port}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
-              <Col md={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlTextarea1"
-                >
-                  <Form.Label>Description:</Form.Label>
-
+              <Col md="12">
+                <Form.Group md="6">
+                  <Form.Label>description</Form.Label>
                   <Form.Control
                     as="textarea"
                     rows={3}
-                    className="form-control rounded-0"
-                    id="description"
-                    placeholder="Here...."
+                    placeholder="description"
                     value={tenant.description}
+                    name="description"
+                    onChange={handleInputChange}
                     disabled={!edit}
-                    onChange={(e) => {
-                      setTenant({ ...tenant, description: e.target.value });
-                    }}
-                    required
+                    isInvalid={err.description}
+                    isValid={!err.description && tenant.description}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {err.description}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
-              {edit ? (
-                <Button
-                  onClick={() => updateTenant()}
-                  className="mt-3 info ml-4"
-                >
+            </Row>
+            {edit && (
+              <>
+                <Button type="submit" className="mb-3 info ml-4">
                   Update
                 </Button>
-              ) : (
                 <Button
-                  onClick={() => setEdit(true)}
-                  className="mt-3 info ml-4"
+                  className="btn btn-light mb-3"
+                  type="reset"
+                  onClick={() => navigate("/tenant")}
                 >
-                  Edit
+                  Cancel
                 </Button>
-              )}
-
-              <Button
-                className="btn btn-light mt-3"
-                type="reset"
-                onClick={() => navigate("/tenant")}
-              >
-                Cancel
-              </Button>
-            </Row>
+              </>
+            )}
           </Form>
-
+          {!edit && (
+            <Button onClick={() => setEdit(true)} className="mb-3 info ml-4">
+              Edit
+            </Button>
+          )}
+          {/* <span className="text-danger">
+            Name Should Not Cantain Any Special Character or Number
+          </span>
+          <span className="text-danger">
+            Id Should Contain alphabet, number.(i.e. : paras123, p_A_r_A_s_1)
+          </span>
+          <span className="text-danger">
+            DatabaseName Should Not Cantain Any Special Character or Number
+          </span> */}
           {/* </Card> */}
         </Container>
       </div>
