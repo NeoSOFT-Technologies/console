@@ -32,13 +32,13 @@ class App extends Component<IProp, IState> {
   render() {
     const navbarComponent = !this.state.isFullPageLayout ? <Navbar /> : "";
     const sidebarComponent = !this.state.isFullPageLayout ? (
-      this.props.user  ? (
+      this.props.user ? (
         <Sidebar />
       ) : (
         <Navigate to="/login-page" />
       )
     ) : (
-     ""
+      ""
     );
     const footerComponent = !this.state.isFullPageLayout ? <Footer /> : "";
     return (

@@ -10,7 +10,7 @@ import {
   addTenantUser,
 } from "./utils/index";
 export default function makeServer({ environment = "development" } = {}) {
-  const server = createServer({
+  return createServer({
     environment,
     models: {
       tenant: Model,
@@ -382,6 +382,4 @@ export default function makeServer({ environment = "development" } = {}) {
       });
     },
   });
-
-  return server;
 }

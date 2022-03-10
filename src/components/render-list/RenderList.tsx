@@ -39,6 +39,7 @@ const RenderList: React.FC<IProps> = (props) => {
             </tr>
           ) : (
             // actions that is required on buttons
+            // @ts-ignore
             data.list.map(
               (val: ITenantData | ITenantUserData, index1: number) => (
                 <tr key={index1}>
