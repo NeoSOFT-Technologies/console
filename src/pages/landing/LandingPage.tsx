@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import Loader from "../../components/loader/Loader";
 import { useAppSelector } from "../../store/hooks";
 import { getLandingPageDetails } from "../../store/landing/slice";
-import "./landing.scss";
 
 function LandingPage() {
   const dispatch = useDispatch();
@@ -21,7 +20,8 @@ function LandingPage() {
         <div className="container">
           <div className="content">
             <div className="text">
-              <h1>Admin Console</h1>
+              <h1>Santosh Shinde</h1>
+              <span>Senior Software Enginneer</span>
               <p>{data.description}</p>
             </div>
           </div>

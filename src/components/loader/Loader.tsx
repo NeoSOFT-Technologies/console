@@ -1,7 +1,13 @@
-import React from "react";
+import React, { Component } from "react";
 
-const Loader = () => {
-  return <div className="loader"></div>;
-};
+export class Spinner extends Component {
+  render() {
+    return (
+      <div className="spinner-wrapper">
+        <div className="donut"></div>
+      </div>
+    );
+  }
+}
 
-export default Loader;
+export default Spinner;
