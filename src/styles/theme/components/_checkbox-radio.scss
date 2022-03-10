@@ -57,27 +57,27 @@
           -webkit-transition-duration: 250ms;
           transition-duration: 250ms;
         }
-  
+
         &:after {
           @include transition(all);
           transition-duration: 0s;
           -webkit-transition-duration: 250ms;
           transition-duration: 250ms;
-          font-family: 'Material Design Icons';
+          font-family: "Material Design Icons";
           opacity: 0;
           filter: alpha(opacity=0);
           -webkit-transform: scale(0);
           -ms-transform: scale(0);
           -o-transform: scale(0);
           transform: scale(0);
-          content: '\F12C';
-          font-size: .9375rem;
+          content: "\F12C";
+          font-size: 0.9375rem;
           font-weight: bold;
           color: $white;
         }
       }
       &:checked {
-        +.input-helper {
+        + .input-helper {
           &:before {
             background: theme-color(primary);
             border-width: 0;
@@ -113,7 +113,7 @@
       }
     }
     input[type="radio"] {
-      +.input-helper {
+      + .input-helper {
         &:before {
           position: absolute;
           content: "";
@@ -163,7 +163,7 @@
       }
 
       &:checked {
-        +.input-helper {
+        + .input-helper {
           &:before {
             background: theme-color(primary);
             border-width: 0;
@@ -210,13 +210,13 @@
       label {
         input[type="checkbox"],
         input[type="radio"] {
-          +.input-helper {
+          + .input-helper {
             &:before {
               border-color: theme-color($color);
             }
           }
           &:checked {
-            +.input-helper {
+            + .input-helper {
               &:before {
                 background: $value;
               }
@@ -230,6 +230,5 @@
 
 @media (min-width: 576px) {
   .form-inline .form-check {
-
   }
 }

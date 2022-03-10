@@ -71,7 +71,8 @@
   .swal2-actions {
     .swal2-styled {
       @extend .btn;
-      &.swal2-cancel, &.swal2-confirm {
+      &.swal2-cancel,
+      &.swal2-confirm {
         font-size: $default-font-size;
         &:focus {
           box-shadow: none;
@@ -79,13 +80,13 @@
       }
       &.swal2-cancel {
         @extend .bg-danger;
-        &:hover { 
+        &:hover {
           @extend .text-white;
         }
       }
       &.swal2-confirm {
         @extend .bg-primary;
-        &:hover { 
+        &:hover {
           @extend .text-white;
         }
       }

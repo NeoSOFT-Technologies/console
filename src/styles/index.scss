@@ -19,7 +19,6 @@ html {
 /* === Icon fonts === */
 @import "../../node_modules/@mdi/font/scss/materialdesignicons";
 
-
 /* === Template mixins === */
 @import "./theme/mixins/animation";
 @import "./theme/mixins/badges";
@@ -32,7 +31,6 @@ html {
 @import "./theme/mixins/tooltips";
 @import "./theme/mixins/no-ui-slider";
 
-
 /* === Core Styles === */
 @import "./theme/background";
 @import "./theme/typography";
@@ -43,7 +41,6 @@ html {
 @import "./theme/demo";
 @import "./theme/spinner";
 @import "./theme/dashboard";
-
 
 /* === Components === */
 

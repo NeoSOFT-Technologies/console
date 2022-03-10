@@ -97,7 +97,7 @@
 
     .page-link {
       &:hover {
-        background: lighten($color,5%);
+        background: lighten($color, 5%);
         border-color: $color;
         color: $white;
       }

@@ -10,7 +10,7 @@
         @include flex-wrap(wrap);
         padding-left: 0;
         list-style-type: none;
-        @media(max-width: 767px) {
+        @media (max-width: 767px) {
           @include justify-content(normal);
         }
         li {
@@ -21,7 +21,7 @@
           margin: 0 0.5em 0.5em;
           border-radius: 5px;
           font-weight: 600;
-          @media(max-width: 767px) {
+          @media (max-width: 767px) {
             width: auto;
             &:first-child {
               margin-left: auto;
@@ -42,7 +42,7 @@
             color: $white;
           }
           &.progtrckr-done {
-            background: rgba(theme-color(primary), .3);
+            background: rgba(theme-color(primary), 0.3);
             color: $white;
           }
         }
@@ -50,7 +50,7 @@
     }
     .content {
       min-height: 25rem;
-      background: rgba(theme-color(primary), .1);
+      background: rgba(theme-color(primary), 0.1);
       padding: 2rem;
       border-radius: 5px;
       overflow: scroll;
@@ -59,7 +59,7 @@
       &:not(.content) {
         margin-top: 20px;
         text-align: right;
-        @media(max-width: 767px) {
+        @media (max-width: 767px) {
           text-align: center;
         }
         > button {
@@ -67,7 +67,7 @@
           @extend .btn-primary;
           + button {
             margin-left: 10px;
-            @media(max-width: 767px) {
+            @media (max-width: 767px) {
               margin-top: 10px;
             }
           }

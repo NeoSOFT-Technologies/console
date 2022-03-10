@@ -58,12 +58,12 @@
       .noUi-origin {
         background: theme-color(success);
 
-        .noUi-handle {}
+        .noUi-handle {
+        }
       }
     }
 
     .noUi-pips {
-
       .noUi-marker-horizontal,
       .noUi-marker-vertical {
         background: $border-color;
@@ -89,8 +89,7 @@
 }
 
 /* Slider Color variations */
-@each $color,
-$value in $theme-colors {
+@each $color, $value in $theme-colors {
   .slider-#{$color} {
     &.noUi-ltr {
       @include slider-color-variant($value);

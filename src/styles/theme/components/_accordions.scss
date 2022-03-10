@@ -2,16 +2,16 @@
 
 .accordion {
   .card {
-    margin-bottom: .75rem;
-    box-shadow: 0px 1px 15px 1px rgba(230, 234, 236, 0.35);    
-    border-radius: .25rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0px 1px 15px 1px rgba(230, 234, 236, 0.35);
+    border-radius: 0.25rem;
     .card-header {
       background-color: transparent;
       border: none;
       padding: 2rem;
       * {
         font-weight: 400;
-        font-size: 1rem;        
+        font-size: 1rem;
       }
       button {
         padding: 0;
@@ -22,11 +22,11 @@
         text-decoration: none;
         font-size: inherit;
         position: relative;
-        @include transition(color .5s ease);
+        @include transition(color 0.5s ease);
         padding-right: 1.5rem;
         line-height: 24px;
         &:before {
-          font-family:"Material Design Icons";
+          font-family: "Material Design Icons";
           position: absolute;
           right: 7px;
           top: 0;
@@ -47,7 +47,7 @@
   }
   &.accordion-bordered {
     background: $white;
-    box-shadow: 0px 1px 15px 1px rgba(230, 234, 236, 0.35);    
+    box-shadow: 0px 1px 15px 1px rgba(230, 234, 236, 0.35);
     .card {
       margin: 0 2rem;
       border-top: 1px solid $border-color;
@@ -79,10 +79,10 @@
     .card {
       padding: 0;
       .card-header {
-        padding: 0;        
+        padding: 0;
         button {
           padding: 2rem 4.5rem 2rem 2rem;
-          @include transition(all .2s linear);
+          @include transition(all 0.2s linear);
           &:before {
             top: 40%;
             right: 40px;

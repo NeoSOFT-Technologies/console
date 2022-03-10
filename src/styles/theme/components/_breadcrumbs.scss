@@ -13,23 +13,25 @@
     .breadcrumb-item {
       font-size: $breadcrumb-font-size;
       background: $breadcrumb-item-bg;
-      padding: $breadcrumb-custom-item-padding-y $breadcrumb-custom-item-padding-x;
+      padding: $breadcrumb-custom-item-padding-y
+        $breadcrumb-custom-item-padding-x;
       color: $breadcrumb-custom-item-color;
       display: inline-block;
       vertical-align: top;
       &:last-child {
         background: transparent;
       }
-      &:before{
+      &:before {
         content: "";
       }
-      a{
+      a {
         position: relative;
         color: inherit;
         border: 1px solid $breadcrumb-item-bg;
         display: inline-block;
         vertical-align: top;
-        &:before,&:after{
+        &:before,
+        &:after {
           position: absolute;
           top: -9px;
           width: 0;
@@ -38,14 +40,14 @@
           border-top: 21px solid transparent;
           border-bottom: 21px solid transparent;
         }
-        &:before{
+        &:before {
           right: -22px;
           z-index: 3;
           border-left-color: $breadcrumb-item-bg;
           border-left-style: solid;
           border-left-width: 12px;
         }
-        &:after{
+        &:after {
           border-top: 21px solid transparent;
           border-bottom: 22px solid transparent;
           border-left: 12px solid $white;
@@ -53,27 +55,32 @@
           right: -23px;
         }
       }
-      span{
+      span {
         display: inline-block;
         vertical-align: top;
       }
     }
   }
 
-  &.bg-success,&.bg-dark,&.bg-danger,&.bg-warning,&.bg-primary,&.bg-info{
+  &.bg-success,
+  &.bg-dark,
+  &.bg-danger,
+  &.bg-warning,
+  &.bg-primary,
+  &.bg-info {
     border: none;
-    .breadcrumb-item{
+    .breadcrumb-item {
       color: $white;
-      &:before{
+      &:before {
         color: inherit;
       }
-      a,span{
+      a,
+      span {
         color: inherit;
       }
     }
   }
 }
-
 
 /* inverse breadcrumb */
 @each $color, $value in $theme-colors {

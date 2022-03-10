@@ -1,11 +1,11 @@
 .glowing-loader {
-	position: relative;
+  position: relative;
 }
 .s2 {
   position: absolute;
   height: 70px;
-	width: 70px;
-	top: 50px;
+  width: 70px;
+  top: 50px;
   background-color: transparent;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -15,8 +15,8 @@
   position: absolute;
   height: 70px;
   width: 70px;
-	left: 50%;
-	top: 50px;
+  left: 50%;
+  top: 50px;
   transform-origin: center;
   transform: translate(-50%, -50%) rotate(45deg);
   background-color: transparent;
@@ -26,8 +26,8 @@
   position: absolute;
   height: 75px;
   width: 75px;
-	left: 50%;
-	top: 50px;
+  left: 50%;
+  top: 50px;
   transform-origin: center;
   transform: translate(-50%, -50%) rotate(-45deg);
   background-color: transparent;
@@ -44,8 +44,8 @@
   width: 15px;
   height: 15px;
   animation: small 2s infinite ease;
-  box-shadow: 0px 2px rgba($black, .3);
-   background-color: theme-color(primary);
+  box-shadow: 0px 2px rgba($black, 0.3);
+  background-color: theme-color(primary);
 }
 
 .s:nth-child(1) {
@@ -72,34 +72,36 @@
   width: 15px;
   height: 15px;
   border-radius: 15px;
-  box-shadow:0px 0px 10px theme-color(primary), 0px 0px 20px theme-color(primary), 0px 0px 30px theme-color(primary), 0px 0px 50px theme-color(primary), 0px 0px 60px theme-color(primary) ;
+  box-shadow: 0px 0px 10px theme-color(primary),
+    0px 0px 20px theme-color(primary), 0px 0px 30px theme-color(primary),
+    0px 0px 50px theme-color(primary), 0px 0px 60px theme-color(primary);
   z-index: 1;
   background-color: theme-color(primary);
   animation: bigball 1s infinite linear;
 }
 
-.sb1{
+.sb1 {
   animation-delay: -1.75s;
 }
-.sb6{
+.sb6 {
   animation-delay: -1.5s;
 }
-.sb2{
+.sb2 {
   animation-delay: -1.25s;
 }
-.sb7{
+.sb7 {
   animation-delay: -1s;
 }
-.sb3{
+.sb3 {
   animation-delay: -0.75s;
 }
-.sb8{
+.sb8 {
   animation-delay: -0.5s;
 }
-.sb4{
+.sb4 {
   animation-delay: -0.25s;
 }
-.sb5{
+.sb5 {
   animation-delay: -0s;
 }
 
@@ -117,7 +119,7 @@
 @keyframes small {
   0% {
     transform: scale(1);
-     background-color: lighten(theme-color(primary), 20%);
+    background-color: lighten(theme-color(primary), 20%);
   }
   10% {
     transform: scale(1.3);
@@ -126,12 +128,12 @@
   15% {
     transform: scale(1);
   }
-  25%{
-transform: scale(1);
-     background-color: theme-color(primary);
-  }
-  100%{
+  25% {
     transform: scale(1);
-     background-color: theme-color(primary);
+    background-color: theme-color(primary);
+  }
+  100% {
+    transform: scale(1);
+    background-color: theme-color(primary);
   }
 }

@@ -16,7 +16,7 @@
 }
 
 .react-tags.is-focused {
-  border-color: #B1B1B1;
+  border-color: #b1b1b1;
 }
 
 .react-tags__selected {
@@ -24,13 +24,19 @@
 }
 
 .react-tags__selected-tag {
-  background: -webkit-gradient(linear, left top, right top, from(#da8cff), to(#9a55ff));
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(#da8cff),
+    to(#9a55ff)
+  );
   background: linear-gradient(to right, #da8cff, #9a55ff);
   border: 0;
   border-radius: 2px;
   color: #ffffff;
   padding: 6px 14px;
-  font-size: .8125rem;
+  font-size: 0.8125rem;
   font-family: inherit;
   line-height: 1;
   margin-right: 5px;
@@ -38,14 +44,14 @@
 }
 
 .react-tags__selected-tag:after {
-  content: 'x';
+  content: "x";
   color: #fff;
   margin-left: 8px;
 }
 
 .react-tags__selected-tag:hover,
 .react-tags__selected-tag:focus {
-  border-color: #B1B1B1;
+  border-color: #b1b1b1;
 }
 
 .react-tags__search {
@@ -60,12 +66,10 @@
 }
 
 @media screen and (min-width: 30em) {
-
   .react-tags__search {
     /* this will become the offsetParent for suggestions */
     position: relative;
   }
-
 }
 
 .react-tags__search input {
@@ -79,8 +83,7 @@
   padding: 5px;
   outline: none;
   color: $black;
-  min-width: 100px;;
-
+  min-width: 100px;
 }
 
 .react-tags__search input::-ms-clear {
@@ -95,11 +98,9 @@
 }
 
 @media screen and (min-width: 30em) {
-
   .react-tags__suggestions {
     width: 240px;
   }
-
 }
 
 .react-tags__suggestions ul {
@@ -107,7 +108,7 @@
   padding: 0;
   list-style: none;
   background: white;
-  border: 1px solid #D1D1D1;
+  border: 1px solid #d1d1d1;
   border-radius: 2px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }

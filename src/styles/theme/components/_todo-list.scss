@@ -10,10 +10,10 @@
     background: transparent;
   }
   .btn {
-    margin-left: .5rem;
+    margin-left: 0.5rem;
     .rtl & {
       margin-left: auto;
-      margin-right: .5rem;
+      margin-right: 0.5rem;
     }
   }
 }
@@ -29,18 +29,18 @@
       @extend .d-flex;
       @extend .align-items-center;
       @extend .justify-content-start;
-      font-size: .9375rem;
-      padding: .4rem 0;
+      font-size: 0.9375rem;
+      padding: 0.4rem 0;
       border-bottom: 1px solid $border-color;
       &:last-child {
         border-bottom: none;
       }
-      .form-check{
+      .form-check {
         @extend %ellipsor;
         max-width: 90%;
-        margin-top: .25rem;
-        margin-bottom: .25rem;
-        .form-check-label{
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+        .form-check-label {
           @extend%ellipsor;
         }
       }

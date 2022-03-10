@@ -5,9 +5,9 @@
     .page-link {
       border-color: $border-color;
       color: color(black);
-      font-size: .875rem;
+      font-size: 0.875rem;
       @include transition-duration(0.3s);
-      &:focus{
+      &:focus {
         background: inherit;
       }
       i {
@@ -54,7 +54,8 @@
   }
   &.rounded {
     .page-item {
-      .page-link {}
+      .page-link {
+      }
       &:first-child {
         .page-link {
           @include border-radius(25px 0 0 25px);
@@ -67,28 +68,26 @@
       }
     }
   }
-  &.rounded-flat{
+  &.rounded-flat {
     .page-item {
       margin-right: 3px;
       margin-left: 3px;
-      .page-link{
+      .page-link {
         border: none;
         @include border-radius(50px);
-
       }
     }
   }
-  &.rounded-separated{
+  &.rounded-separated {
     .page-item {
       margin-left: 2px;
       margin-right: 2px;
-      .page-link{
+      .page-link {
         @include border-radius(18px);
       }
     }
   }
 }
-
 
 /* pagination variations */
 @each $color, $value in $theme-colors {

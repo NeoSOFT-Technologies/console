@@ -1,11 +1,11 @@
 // Tooltip color  variations
 
 @mixin tooltip-variant($color) {
-	.tooltip-inner {
-		background:  theme-gradient-color($color);
-		color: $white;
-	}
-	&.bs-tooltip-top {
+  .tooltip-inner {
+    background: theme-gradient-color($color);
+    color: $white;
+  }
+  &.bs-tooltip-top {
     .arrow::before {
       border-top-color: theme-color($color);
     }

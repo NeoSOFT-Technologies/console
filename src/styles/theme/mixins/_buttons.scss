@@ -12,26 +12,26 @@
     background: lighten($color, 10%);
     i {
       background: $color;
-      padding: .75rem;
+      padding: 0.75rem;
       display: inline-block;
       margin-right: 1.5rem;
     }
   }
 }
 @mixin social-outline-button($color) {
-border: 1px solid $color;
-color: $color;
-&:hover {
-  background: $color;
-  color: $white;
-}
+  border: 1px solid $color;
+  color: $color;
+  &:hover {
+    background: $color;
+    color: $white;
+  }
 }
 @mixin button-inverse-variant($color, $color-hover: $white) {
   background-color: rgba($color, 0.2);
   background-image: none;
   border-color: rgba($color, 0);
   &:not(.btn-inverse-light) {
-    color: $color;      
+    color: $color;
   }
   @include hover {
     color: $color-hover;
@@ -41,7 +41,7 @@ color: $color;
 
   &.focus,
   &:focus {
-    box-shadow: 0 0 0 3px rgba($color, .5);
+    box-shadow: 0 0 0 3px rgba($color, 0.5);
   }
 
   &.disabled,
@@ -67,15 +67,15 @@ color: $color;
     background: $value;
   }
   &:hover {
-    opacity: .8;
+    opacity: 0.8;
   }
   &:not(.btn-gradient-light) {
-    color: $white;      
+    color: $white;
     &:hover,
     &:focus,
     &:active {
       color: $white;
     }
   }
-  @include transition(opacity .3s ease);
+  @include transition(opacity 0.3s ease);
 }

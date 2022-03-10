@@ -18,7 +18,7 @@
         color: $fullcalendar-color;
         font: normal normal normal 20px/1 "Material Design Icons";
       }
-    }  
+    }
     .fc-icon-chevron-right {
       &::before {
         content: "\F142";
@@ -36,7 +36,7 @@
       background-color: $white;
       margin: 0;
       &.fc-state-active {
-        color: theme-color(danger);        
+        color: theme-color(danger);
       }
     }
     .fc-button-primary {
@@ -59,7 +59,7 @@
     }
     .fc-center {
       h2 {
-        font-size: 1rem;        
+        font-size: 1rem;
       }
     }
     @media (max-width: 767px) {
@@ -95,8 +95,8 @@
           margin-bottom: 0.75rem;
         }
         .fc-today-button {
-            float: none;
-            margin: 0;
+          float: none;
+          margin: 0;
         }
       }
     }
@@ -110,7 +110,7 @@
           text-align: right;
           padding: 1rem;
           @media (max-width: 767px) {
-            padding: 1rem .25rem;
+            padding: 1rem 0.25rem;
           }
           span {
             font-size: 10px;
@@ -126,8 +126,8 @@
     table {
       tr {
         td {
-          padding: .5rem;
-          font-size: .875rem;
+          padding: 0.5rem;
+          font-size: 0.875rem;
         }
       }
     }
@@ -135,17 +135,17 @@
   .fc-event {
     border: 0;
     color: $white;
-    padding: .5rem;
+    padding: 0.5rem;
     &.fc-start {
-      background: theme-color(primary); 
+      background: theme-color(primary);
       border-radius: 4px;
-      border-left: 4px solid theme-color(primary);        
+      border-left: 4px solid theme-color(primary);
     }
     &.fc-not-start,
     &.fc-not-end {
       background: theme-color(danger);
       border-left: 4px solid theme-color(danger);
-      padding-left: .5rem;
+      padding-left: 0.5rem;
     }
     &.fc-not-end {
       border-top-right-radius: 0;
@@ -167,7 +167,7 @@
     padding: 16px;
     border-radius: 0;
     margin-bottom: 10px;
-    transition: color .3s ease-in-out;
+    transition: color 0.3s ease-in-out;
     &:nth-child(1) {
       border-color: theme-color(primary);
     }

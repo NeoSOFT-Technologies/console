@@ -7,7 +7,7 @@
       border-top: 0;
       border-bottom-width: 1px;
       font-weight: $font-weight-medium;
-      i{
+      i {
         margin-left: 0.325rem;
       }
     }
@@ -27,9 +27,11 @@
       margin-bottom: 0;
     }
   }
-  &.table-borderless{
+  &.table-borderless {
     border: none;
-    tr,td,th{
+    tr,
+    td,
+    th {
       border: none;
     }
   }

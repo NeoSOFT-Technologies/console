@@ -5,8 +5,8 @@
     @include display-flex;
     @include flex-direction(row);
     @include align-items(flex-start);
-    padding: .75rem 1.5rem;
-    font-size: .875rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
     &:last-child {
       border-bottom: 0;
     }
@@ -70,7 +70,7 @@
       p {
         margin-bottom: 10px;
         .content-category {
-          font-family: 'source-sans-pro-semibold', sans-serif;
+          font-family: "source-sans-pro-semibold", sans-serif;
           padding-right: 15px;
           border-right: 1px solid $border-color;
           @extend .text-muted;
@@ -102,7 +102,7 @@
   }
   &.comment-preview {
     .preview-item {
-      padding: .87rem 0;
+      padding: 0.87rem 0;
       &:first-child {
         padding-top: 0;
       }

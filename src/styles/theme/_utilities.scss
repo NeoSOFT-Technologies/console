@@ -43,7 +43,7 @@
   @include display-flex;
   @include align-items(stretch);
   @include justify-content(stretch);
-  >.card{
+  > .card {
     width: 100%;
     min-width: 100%;
   }
@@ -136,7 +136,6 @@
       box-shadow: 0 0 5px -2px rgba(0, 0, 0, 0.5);
       transform: scale(1.05);
       border-width: 0;
-
     }
   }
 
@@ -155,10 +154,10 @@
 
 .aligner-wrapper {
   position: relative;
-  
+
   .absolute {
     position: absolute;
-  
+
     &.absolute-center {
       top: 50%;
       transform: translateY(-50%);
@@ -167,19 +166,19 @@
       left: 0;
       margin: auto;
     }
-    
+
     &.left {
       left: 0;
     }
-    
+
     &.right {
       right: 0;
     }
-    
+
     &.bottom {
       bottom: 0;
     }
-    
+
     &.top {
       top: 0;
     }

@@ -16,7 +16,7 @@
   }
 
   > .btn-group,
-  >  .btn-group-vertical {
+  > .btn-group-vertical {
     @extend .mt-2;
     @extend .mr-2;
   }
@@ -30,10 +30,10 @@
   }
 
   > h2,
-   > h3,
-   > h4,
-   > h5,
-   > h6,
+  > h3,
+  > h4,
+  > h5,
+  > h6,
   > h1 {
     border-top: 1px solid $border-color;
     padding: 0.5rem 0 0;
