@@ -31,6 +31,7 @@ export default function UserList() {
     dispatch(getTenantUserList({ currentPage, search: searchUser }));
   };
   useEffect(() => {
+    console.log(userList);
     if (userList.data) {
       setDataList({
         list: [...userList.data.list],
@@ -45,6 +46,7 @@ export default function UserList() {
       });
     }
   }, [userList.data]);
+
   useEffect(() => {
     mainCall(1, search);
   }, []);
@@ -77,7 +79,7 @@ export default function UserList() {
   const actions = [
     {
       className: "btn btn-sm btn-dark",
-      iconClassName: "mdi mdi-cog",
+      iconClassName: "bi bi-gear-fill",
       buttonFunction: handleUserDetails,
     },
   ];
@@ -133,7 +135,7 @@ export default function UserList() {
                       className=" btn  btn-success btn-sm"
                       onClick={(e) => searchFilter(e)}
                     >
-                      <i className=" mdi mdi-magnify"></i>
+                      <i className=" bi bi-search"></i>
                     </button>
                   </div>
                 </form>

@@ -2,9 +2,10 @@ import { ITenantData } from "../types";
 import apiFactory from "../utils/api";
 
 interface CreateUser {
-  name: string;
+  username: string;
   email: string;
   password: string;
+  tenantname: string;
 }
 
 export function updateTenantDataService(id: number, data: ITenantData) {
@@ -18,7 +19,7 @@ export function tenantUserListService(currentPage: number, search: string) {
 }
 
 export function createNewUserService(data: CreateUser) {
-  return apiFactory().post(`/api/user`, data);
+  return apiFactory().post(`/api/tenant-user`, data);
 }
 
 export function deleteUserDataService() {

@@ -50,7 +50,7 @@ export const Sidebar = () => {
                   <>Project Manager</>
                 </span>
               </div>
-              <i className="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+              <i className="bi bi-bookmark-star-fill text-success nav-profile-badge"></i>
             </a>
           </li>
           {routes.map((route, index) => (

@@ -18,6 +18,7 @@ import {
 import { useAppDispatch } from "../../../../store/hooks";
 import { deleteTenant } from "../../../../store/fetaures/admin/delete-tenant/slice";
 import { updateTenant } from "../../../../store/fetaures/tenant/update-tenant/slice";
+import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 
 interface LocationState {
   val: ITenantData;
@@ -58,7 +59,7 @@ export default function TenantDetails() {
     const { val } = location.state as LocationState;
     if (val.id !== undefined) {
       dispatch(deleteTenant(val.id));
-      alert("Tenant Removed");
+      ToastAlert("Tenant Removed", "success");
       navigate("/tenantlist");
     }
   };
@@ -123,10 +124,10 @@ export default function TenantDetails() {
         if (tenant.id !== undefined) {
           dispatch(updateTenant({ id: tenant.id, data: tenant }));
           setEdit(false);
-          alert("Tenant Details Update");
+          ToastAlert("Tenant Details Update", "success");
         }
       } else {
-        alert("Please Fill All Fields");
+        ToastAlert("Please Fill All Fields", "warning");
       }
     }
   };
@@ -134,7 +135,7 @@ export default function TenantDetails() {
   return (
     <>
       <Dropdown className="d-inline-block">
-        <Dropdown.Toggle className="   btn-success " id="dropdown-basic">
+        <Dropdown.Toggle className="btn-success " id="dropdown-basic">
           Action
         </Dropdown.Toggle>
 

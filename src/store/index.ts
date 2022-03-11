@@ -6,6 +6,7 @@ import tenantUserListReducer from "./fetaures/tenant/tenant-user-list/slice";
 import addNewTenantReducer from "./fetaures/admin/add-tenant/slice";
 import deleteTenantReducer from "./fetaures/admin/delete-tenant/slice";
 import updateTenantReducer from "./fetaures/tenant/update-tenant/slice";
+import addNewUserReducer from "./fetaures/tenant/add-user/slice";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     addNewTenant: addNewTenantReducer,
     deleteTenant: deleteTenantReducer,
     updateTenant: updateTenantReducer,
+    addNewUser: addNewUserReducer,
   },
 });
 

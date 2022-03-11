@@ -10,6 +10,7 @@ import {
 import { addNewTenant } from "../../../../store/fetaures/admin/add-tenant/slice";
 import { useAppDispatch } from "../../../../store/hooks";
 import { IErrorTenantInput, ITenantData } from "../../../../types/index";
+import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 
 export default function RegisterTenant() {
   const dispatch = useAppDispatch();
@@ -111,7 +112,7 @@ export default function RegisterTenant() {
         };
 
         dispatch(addNewTenant(newUser));
-        alert("Tenant Registered");
+        ToastAlert("Tenant Registered", "success");
 
         setTenant({
           name: "",
@@ -124,7 +125,7 @@ export default function RegisterTenant() {
           type: "tenant",
         });
       } else {
-        alert("Please Fill All Fields");
+        ToastAlert("Please Fill All Fields", "warning");
       }
     } else {
       setErr({

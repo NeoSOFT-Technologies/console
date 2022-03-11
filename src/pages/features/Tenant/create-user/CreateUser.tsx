@@ -1,87 +1,171 @@
 import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
-import { regexForEmail } from "../../../../resources/constants";
-
+import {
+  regexForEmail,
+  regexForName,
+  regexForUser,
+  regForPassword,
+} from "../../../../resources/constants";
+import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
+import { useAppDispatch } from "../../../../store/hooks";
+import { addNewUser } from "../../../../store/fetaures/tenant/add-user/slice";
+interface Ierrors {
+  username: string;
+  email: string;
+  password: string;
+  tenantname: string;
+}
 export default function Createuser() {
-  const [name, setName] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    tenantname: "",
+  });
+  const [errors, setErrors] = useState<Ierrors>({
+    username: "",
+    email: "",
+    password: "",
+    tenantname: "",
+  });
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case "username":
+        setErrors({
+          ...errors,
+          [name]: regexForUser.test(value) ? "" : "Enter a valid Username ",
+        });
+        break;
 
-  const [email, setEmail] = useState<string>("");
-
-  const [password, setPassword] = useState<string>("");
-
+      case "email":
+        setErrors({
+          ...errors,
+          [name]: regexForEmail.test(value) ? "" : "Enter a Valid Email",
+        });
+        break;
+      case "password":
+        setErrors({
+          ...errors,
+          [name]: regForPassword.test(value)
+            ? ""
+            : "Enter a Valid Password (must include 8 character)",
+        });
+        break;
+      case "tenantname":
+        setErrors({
+          ...errors,
+          [name]: regexForName.test(value) ? "" : "Enter a valid tenant name ",
+        });
+        break;
+      default:
+        break;
+    }
+    setFormData({ ...formData, [name]: value });
+  };
+  const handleValidate = () => {
+    const validate = !!(
+      errors.username === "" &&
+      errors.email === "" &&
+      errors.password === "" &&
+      errors.tenantname === ""
+    );
+    return validate;
+  };
+  const handleFormSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (handleValidate()) {
+      if (
+        formData.username !== "" &&
+        formData.email !== "" &&
+        formData.password !== "" &&
+        formData.tenantname !== ""
+      ) {
+        dispatch(addNewUser(formData));
+        ToastAlert("User Registered", "success");
+        // navigate("/login");
+      } else {
+        ToastAlert("Please Fill All Fields", "warning");
+      }
+    } else {
+      ToastAlert("Please Enter Valid Details", "warning");
+    }
+  };
   return (
     <div>
       <Container className="mt-3 w-75 bg-white p-4">
         <h1 className="text-center text-dark pb-3">Create User</h1>
-
-        <Form>
+        {/* UserName Email Password Tenant Name */}
+        <Form onSubmit={handleFormSubmit}>
           <Form.Group>
-            <label htmlFor="exampleFormControlSelect2">Type:</label>
-            <select className="form-control" id="exampleFormControlSelect2">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </select>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Name:</Form.Label>
+            <Form.Label>Username</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter Name"
-              name="name"
-              id="name"
-              onChange={(event) => {
-                setName(event.target.value);
-              }}
-              required
+              placeholder="username"
+              value={formData.username}
+              name="username"
+              onChange={handleInputChange}
+              isInvalid={!!errors.username}
+              isValid={!!(!errors.username && formData.username)}
             />
-            {name !== "" && name.length < 4 && (
-              <span className="text-danger">Enter Name correctly</span>
-            )}
+            <Form.Control.Feedback type="invalid">
+              {errors.username}
+            </Form.Control.Feedback>
           </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Email:</Form.Label>
+          <Form.Group>
+            <Form.Label>Email</Form.Label>
             <Form.Control
-              type="email"
-              placeholder="Enter Email"
+              type="text"
+              placeholder="email"
+              value={formData.email}
               name="email"
-              id="email"
-              onChange={(event) => {
-                setEmail(event.target.value);
-              }}
-              required
+              onChange={handleInputChange}
+              isInvalid={!!errors.email}
+              isValid={!!(!errors.email && formData.email)}
             />
-            {email !== "" && !regexForEmail.test(email) && (
-              <span className="text-danger">Enter email correctly</span>
-            )}
+            <Form.Control.Feedback type="invalid">
+              {errors.email}
+            </Form.Control.Feedback>
           </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Pasword:</Form.Label>
+          <Form.Group>
+            <Form.Label>Password</Form.Label>
             <Form.Control
-              type="password"
-              placeholder="Enter Password"
+              type="text"
+              placeholder="password"
+              value={formData.password}
               name="password"
-              id="password"
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
-              required
+              onChange={handleInputChange}
+              isInvalid={!!errors.password}
+              isValid={!!(!errors.password && formData.password)}
             />
-            {password !== "" && password.length < 8 && (
-              <span className="text-danger">Enter password correctly</span>
-            )}
+            <Form.Control.Feedback type="invalid">
+              {errors.password}
+            </Form.Control.Feedback>
           </Form.Group>
-          <Button className="info" type="submit">
-            Submit
-          </Button>
-          <Button className="btn btn-light" type="reset">
-            Cancel
-          </Button>
+          <Form.Group>
+            <Form.Label>Tenant Name</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="tenantname"
+              value={formData.tenantname}
+              name="tenantname"
+              onChange={handleInputChange}
+              isInvalid={!!errors.tenantname}
+              isValid={!!(!errors.tenantname && formData.tenantname)}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.tenantname}
+            </Form.Control.Feedback>
+          </Form.Group>
+          <div className="my-2">
+            <Button type="submit" variant="success">
+              Submit
+            </Button>
+            <Button type="reset" variant="danger">
+              Cancel
+            </Button>
+          </div>
         </Form>
       </Container>
     </div>

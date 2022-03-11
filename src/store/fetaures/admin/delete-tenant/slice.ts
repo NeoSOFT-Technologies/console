@@ -34,6 +34,7 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(deleteTenant.pending, (state) => {
       state.loading = true;
+      state.isDeleted = false;
     });
     builder.addCase(deleteTenant.fulfilled, (state, action) => {
       state.loading = false;
@@ -41,6 +42,7 @@ const slice = createSlice({
     });
     builder.addCase(deleteTenant.rejected, (state, action) => {
       state.loading = false;
+      state.isDeleted = false;
       // action.payload contains error information
       state.error = error(action.payload);
     });

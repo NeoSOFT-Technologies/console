@@ -7,8 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import PasswordButtons from "../../components/password-field/Password";
 import { RootState } from "../../store";
 import { IUserDataState } from "../../types";
-import { userData } from "../../store/user-data/slice";
 import { logo } from "../../resources/images";
+import { commonLogin } from "../../store/login/slice";
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setpassword] = useState<string>("");
@@ -67,7 +67,7 @@ export default function Login() {
   };
   const handleSubmit = async () => {
     if (validate()) {
-      dispatch(userData({ email, password }));
+      dispatch(commonLogin({ email, password }));
     } else {
       // failure("Please fill all the fields");
       ToastAlert("Please fill all the fields", "error");

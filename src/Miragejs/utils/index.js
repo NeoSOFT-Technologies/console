@@ -38,7 +38,9 @@ export function getTenantUserDataList(schema, _page, name_like) {
     const start = (_page - 1) * 10;
     // calculate start of array to be sent according to page number.
     datalist = datalist.splice(start, 10);
+    console.log("getTenantUserDataList ~ datalist", datalist);
     // array now contains list according to pagination.
+
     return { datalist, count };
   }
 }
@@ -64,5 +66,21 @@ export function addTenant(schema, requestBody) {
 // teant user
 export function addTenantUser(schema, requestBody) {
   requestBody = JSON.parse(requestBody);
-  return schema.db.tenantUser.insert(requestBody);
+  console.log("addTenantUser ~ requestBody", requestBody);
+  requestBody = {
+    userName: requestBody.username,
+    email: requestBody.email,
+    tenantName: requestBody.tenantname,
+    createdDateTime: "Mar 01 2022 11:51:39",
+    isDeleted: false,
+    isActive: true,
+  };
+
+  schema.db.tenantUser.insert(requestBody);
+  console.log(schema.db.tenantUser.where({}));
+  return "";
+}
+
+export function updateTenantUser(schema, requestBody) {
+  return schema.db.tenantUser.update(requestBody);
 }

@@ -8,6 +8,7 @@ import {
   getTenantUserDataList,
   loginTenant,
   addTenantUser,
+  updateTenantUser,
 } from "./utils/index";
 export default function makeServer({ environment = "development" } = {}) {
   return createServer({
@@ -387,6 +388,16 @@ export default function makeServer({ environment = "development" } = {}) {
         try {
           const { requestBody } = request;
           addTenantUser(schema, requestBody);
+          return responseUtils(200);
+        } catch (err) {
+          return responseUtils(500);
+        }
+      });
+
+      this.put("/tenant-user", (schema, request) => {
+        try {
+          const { requestBody } = request;
+          updateTenantUser(schema, requestBody);
           return responseUtils(200);
         } catch (err) {
           return responseUtils(500);

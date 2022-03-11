@@ -73,7 +73,7 @@ export default function TenantList() {
   const headings = [
     { title: "Tenant ID" },
     { title: "Description", className: "w-100" },
-    { title: "LastLogin", className: "w-100" },
+    { title: "Last Login", className: "w-100" },
     { title: "Action", className: "text-center" },
   ];
   const actions = [
@@ -128,7 +128,7 @@ export default function TenantList() {
                       className=" btn  btn-success btn-sm"
                       onClick={(e) => searchFilter(e)}
                     >
-                      <i className=" mdi mdi-magnify"></i>
+                      <i className=" bi bi-search"></i>
                     </button>
                   </div>
                 </form>
