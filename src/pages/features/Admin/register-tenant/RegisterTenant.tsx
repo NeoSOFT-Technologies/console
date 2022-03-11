@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, Form, Row, Col, Container } from "react-bootstrap";
-import { addTenantData } from "../../../../services/Myservices";
 
 import {
   regexForEmail,
@@ -8,9 +7,12 @@ import {
   regexForUser,
   regForPassword,
 } from "../../../../resources/constants";
+import { addNewTenant } from "../../../../store/fetaures/admin/add-tenant/slice";
+import { useAppDispatch } from "../../../../store/hooks";
 import { IErrorTenantInput, ITenantData } from "../../../../types/index";
 
 export default function RegisterTenant() {
+  const dispatch = useAppDispatch();
   const [tenant, setTenant] = useState<ITenantData>({
     name: "",
     description: "",
@@ -108,7 +110,7 @@ export default function RegisterTenant() {
           lastlogin: "Mar 01 2022 11:51:39",
         };
 
-        addTenantData(newUser);
+        dispatch(addNewTenant(newUser));
         alert("Tenant Registered");
 
         setTenant({

@@ -16,7 +16,7 @@ const initialState: LandingPageState = {
 };
 
 export const getLandingPageDetails = createAsyncThunk(
-  "landing/gerDetails",
+  "landing/getDetails",
   async () => {
     try {
       const response = await httpclient().get("/global/mock-data/landing.json");

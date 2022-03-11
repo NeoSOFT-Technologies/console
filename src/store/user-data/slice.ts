@@ -1,24 +1,19 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../utils/error";
 import { IUserDataState } from "../../types/index";
-import { getUserData } from "../../services/Myservices";
+import { getUserListService } from "../../services";
 
-interface IConditions {
-  email: string;
-  password: string;
-}
 const initialState: IUserDataState = {
   data: null,
   loading: false,
   error: null,
 };
 
-export const userData = createAsyncThunk(
+export const getUserList = createAsyncThunk(
   "user/data",
-  async (conditions: IConditions) => {
-    const { email, password } = conditions;
+  async (conditions: string) => {
     try {
-      const response = await getUserData(email, password);
+      const response = await getUserListService(conditions);
       console.log(response);
       return response.data[0];
     } catch (err) {
@@ -32,14 +27,14 @@ const slice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder): void {
-    builder.addCase(userData.pending, (state) => {
+    builder.addCase(getUserList.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(userData.fulfilled, (state, action) => {
+    builder.addCase(getUserList.fulfilled, (state, action) => {
       state.loading = false;
       state.data = action.payload;
     });
-    builder.addCase(userData.rejected, (state, action) => {
+    builder.addCase(getUserList.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
       state.error = error(action.payload);

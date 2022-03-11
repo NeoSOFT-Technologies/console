@@ -8,10 +8,6 @@ import {
   Dropdown,
   Modal,
 } from "react-bootstrap";
-import {
-  updateTenantData,
-  deleteTenantData,
-} from "../../../../services/Myservices";
 import { useLocation, useNavigate } from "react-router";
 import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
 import {
@@ -19,12 +15,17 @@ import {
   regexForUser,
   regexForEmail,
 } from "../../../../resources/constants";
+import { useAppDispatch } from "../../../../store/hooks";
+import { deleteTenant } from "../../../../store/fetaures/admin/delete-tenant/slice";
+import { updateTenant } from "../../../../store/fetaures/tenant/update-tenant/slice";
+
 interface LocationState {
   val: ITenantData;
 }
 export default function TenantDetails() {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useAppDispatch();
   console.log(location);
   const [deleteshow, setDeleteshow] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -53,13 +54,11 @@ export default function TenantDetails() {
   // const renderTenant = () => {
 
   // };
-  const deleteTenant = () => {
+  const deleteTenantFunction = () => {
     const { val } = location.state as LocationState;
     if (val.id !== undefined) {
-      deleteTenantData(val.id).then(() => {});
-
+      dispatch(deleteTenant(val.id));
       alert("Tenant Removed");
-
       navigate("/tenantlist");
     }
   };
@@ -122,7 +121,7 @@ export default function TenantDetails() {
       ) {
         // const updated = { ...tenant };
         if (tenant.id !== undefined) {
-          updateTenantData(tenant.id, tenant).then(() => {});
+          dispatch(updateTenant({ id: tenant.id, data: tenant }));
           setEdit(false);
           alert("Tenant Details Update");
         }
@@ -167,7 +166,7 @@ export default function TenantDetails() {
           under tenant
         </Modal.Body>
         <Modal.Footer>
-          <Button className="btn-danger" onClick={() => deleteTenant()}>
+          <Button className="btn-danger" onClick={() => deleteTenantFunction()}>
             Remove
           </Button>
         </Modal.Footer>

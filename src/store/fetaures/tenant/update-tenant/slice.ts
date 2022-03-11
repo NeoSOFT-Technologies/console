@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
-import { ITenantUserListState } from "../../../../types/index";
-import { tenantUserListService } from "../../../../services";
+import { ITenantUserListState, ITenantData } from "../../../../types/index";
+import {
+  updateTenantDataService,
+} from "../../../../services";
 
 interface IConditions {
-  currentPage: number;
-  search: string;
+  id: number;
+  data: ITenantData;
 }
 const initialState: ITenantUserListState = {
   data: null,
@@ -13,12 +15,12 @@ const initialState: ITenantUserListState = {
   error: null,
 };
 
-export const getTenantUserList = createAsyncThunk(
-  "tenantUser/list",
+export const updateTenant = createAsyncThunk(
+  "tenant/update",
   async (conditions: IConditions) => {
-    const { currentPage, search } = conditions;
+    const { id, data } = conditions;
     try {
-      const response = await tenantUserListService(currentPage, search);
+      const response = await updateTenantDataService(id, data);
       console.log(response);
       return response.data;
     } catch (err) {
@@ -28,18 +30,18 @@ export const getTenantUserList = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "tenantUser",
+  name: "tenantUpdate",
   initialState,
   reducers: {},
   extraReducers(builder): void {
-    builder.addCase(getTenantUserList.pending, (state) => {
+    builder.addCase(updateTenant.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(getTenantUserList.fulfilled, (state, action) => {
+    builder.addCase(updateTenant.fulfilled, (state, action) => {
       state.loading = false;
       state.data = action.payload;
     });
-    builder.addCase(getTenantUserList.rejected, (state, action) => {
+    builder.addCase(updateTenant.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
       state.error = error(action.payload);

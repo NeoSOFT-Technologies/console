@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
 import { ITenantListState } from "../../../../types/index";
-import { tenantListService } from "../../../../services/Myservices";
+import { tenantListService } from "../../../../services";
 
 interface IConditions {
   currentPage: number;
   search: string;
 }
+
 const initialState: ITenantListState = {
   data: null,
   loading: false,

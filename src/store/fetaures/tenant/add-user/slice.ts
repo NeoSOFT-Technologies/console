@@ -1,24 +1,25 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
 import { ITenantUserListState } from "../../../../types/index";
-import { tenantUserListService } from "../../../../services";
+import { createNewUserService } from "../../../../services";
 
 interface IConditions {
-  currentPage: number;
-  search: string;
+  name: string;
+  email: string;
+  password: string;
 }
+
 const initialState: ITenantUserListState = {
   data: null,
   loading: false,
   error: null,
 };
 
-export const getTenantUserList = createAsyncThunk(
+export const addNewUser = createAsyncThunk(
   "tenantUser/list",
   async (conditions: IConditions) => {
-    const { currentPage, search } = conditions;
     try {
-      const response = await tenantUserListService(currentPage, search);
+      const response = await createNewUserService(conditions);
       console.log(response);
       return response.data;
     } catch (err) {
@@ -32,14 +33,14 @@ const slice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder): void {
-    builder.addCase(getTenantUserList.pending, (state) => {
+    builder.addCase(addNewUser.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(getTenantUserList.fulfilled, (state, action) => {
+    builder.addCase(addNewUser.fulfilled, (state, action) => {
       state.loading = false;
       state.data = action.payload;
     });
-    builder.addCase(getTenantUserList.rejected, (state, action) => {
+    builder.addCase(addNewUser.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
       state.error = error(action.payload);

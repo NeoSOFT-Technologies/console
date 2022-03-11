@@ -3,6 +3,9 @@ import landingReducer from "./landing/slice";
 import tenantListReducer from "./fetaures/admin/tenant-list/slice";
 import userDatatReducer from "./user-data/slice";
 import tenantUserListReducer from "./fetaures/tenant/tenant-user-list/slice";
+import addNewTenantReducer from "./fetaures/admin/add-tenant/slice";
+import deleteTenantReducer from "./fetaures/admin/delete-tenant/slice";
+import updateTenantReducer from "./fetaures/tenant/update-tenant/slice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +13,9 @@ const store = configureStore({
     tenantList: tenantListReducer,
     userData: userDatatReducer,
     tenantUserList: tenantUserListReducer,
+    addNewTenant: addNewTenantReducer,
+    deleteTenant: deleteTenantReducer,
+    updateTenant: updateTenantReducer,
   },
 });
 
