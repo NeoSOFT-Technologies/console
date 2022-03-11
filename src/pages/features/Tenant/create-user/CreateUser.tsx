@@ -8,7 +8,7 @@ import {
 } from "../../../../resources/constants";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import { useAppDispatch } from "../../../../store/hooks";
-import { addNewUser } from "../../../../store/fetaures/tenant/add-user/slice";
+import { addNewUser } from "../../../../store/features/tenant/add-user/slice";
 interface Ierrors {
   username: string;
   email: string;

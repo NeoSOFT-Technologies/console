@@ -7,7 +7,7 @@ import {
   regexForUser,
   regForPassword,
 } from "../../../../resources/constants";
-import { addNewTenant } from "../../../../store/fetaures/admin/add-tenant/slice";
+import { addNewTenant } from "../../../../store/features/admin/add-tenant/slice";
 import { useAppDispatch } from "../../../../store/hooks";
 import { IErrorTenantInput, ITenantData } from "../../../../types/index";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";

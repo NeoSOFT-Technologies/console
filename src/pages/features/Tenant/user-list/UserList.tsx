@@ -4,7 +4,7 @@ import RenderList from "../../../../components/list/RenderList";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../../store";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { getTenantUserList } from "../../../../store/fetaures/tenant/tenant-user-list/slice";
+import { getTenantUserList } from "../../../../store/features/tenant/tenant-user-list/slice";
 import {
   ITenantUserData,
   ITenantUserDataList,

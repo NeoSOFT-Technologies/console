@@ -6,14 +6,14 @@ import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import { connect } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { ITenantData } from "./types/index";
+import { IUserDataState } from "./types/index";
 import Sidebar from "./components/sidebar/Sidebar";
 import { RootState } from "./store";
 interface IState {
   isFullPageLayout: boolean;
 }
 interface IProp {
-  user: ITenantData;
+  user: IUserDataState;
   router: {
     location: Location;
     navigate: typeof Navigate;
@@ -32,7 +32,7 @@ class App extends Component<IProp, IState> {
   render() {
     const navbarComponent = !this.state.isFullPageLayout ? <Navbar /> : "";
     const sidebarComponent = !this.state.isFullPageLayout ? (
-      this.props.user ? (
+      this.props.user.data ? (
         <Sidebar />
       ) : (
         <Navigate to="/login-page" />
@@ -72,6 +72,7 @@ class App extends Component<IProp, IState> {
       "/user-pages/lockscreen",
       "/error-pages/error-404",
       "/error-pages/error-500",
+      "/error-pages/error-401",
       "/general-pages/landing-page",
     ];
     for (let i = 0; i < fullPageLayoutRoutes.length; i++) {

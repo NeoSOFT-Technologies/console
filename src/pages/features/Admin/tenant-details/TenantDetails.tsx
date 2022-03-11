@@ -16,8 +16,8 @@ import {
   regexForEmail,
 } from "../../../../resources/constants";
 import { useAppDispatch } from "../../../../store/hooks";
-import { deleteTenant } from "../../../../store/fetaures/admin/delete-tenant/slice";
-import { updateTenant } from "../../../../store/fetaures/tenant/update-tenant/slice";
+import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
+import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 
 interface LocationState {
