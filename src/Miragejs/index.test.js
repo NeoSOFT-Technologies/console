@@ -10,7 +10,7 @@ afterEach(() => {
   server.shutdown();
 });
 
-//TODO write working test cases
+// TODO write working test cases
 
 it("Try to login", () => {
   fetch("/api/login", {

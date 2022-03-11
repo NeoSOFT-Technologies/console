@@ -1,11 +1,11 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "React Redux with Typescript Template",
+  "name": "React Redux with Typescript Template",
   "icons": [
     {
-      "src": "logo-mini.png",
-      "type": "image/png",
-      "sizes": "108x87"
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
     }
   ],
   "start_url": ".",
