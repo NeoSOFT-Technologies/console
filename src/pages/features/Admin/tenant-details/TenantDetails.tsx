@@ -135,7 +135,7 @@ export default function TenantDetails() {
   return (
     <>
       <Dropdown className="d-inline-block">
-        <Dropdown.Toggle className="   btn-success " id="dropdown-basic">
+        <Dropdown.Toggle className="btn-success " id="dropdown-basic">
           Action
         </Dropdown.Toggle>
 

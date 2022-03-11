@@ -9,6 +9,7 @@ import {
   regForPassword,
 } from "../../../../resources/constants";
 import { IErrorTenantInput, ITenantData } from "../../../../types/index";
+import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 
 export default function RegisterTenant() {
   const [tenant, setTenant] = useState<ITenantData>({
@@ -109,7 +110,7 @@ export default function RegisterTenant() {
         };
 
         addTenantData(newUser);
-        alert("Tenant Registered");
+        ToastAlert("Tenant Registered", "success");
 
         setTenant({
           name: "",
@@ -122,7 +123,7 @@ export default function RegisterTenant() {
           type: "tenant",
         });
       } else {
-        alert("Please Fill All Fields");
+        ToastAlert("Please Fill All Fields", "warning");
       }
     } else {
       setErr({
