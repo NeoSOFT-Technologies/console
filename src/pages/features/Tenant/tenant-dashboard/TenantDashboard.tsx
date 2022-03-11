@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { Container, Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { IUserDataState } from "../../types";
+import { RootState } from "../../../../store";
+import { IUserDataState } from "../../../../types";
 
-const Dashboard = () => {
+const TenantDashboard = () => {
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
   );
@@ -49,4 +49,4 @@ const Dashboard = () => {
     </React.Fragment>
   );
 };
-export default Dashboard;
+export default TenantDashboard;

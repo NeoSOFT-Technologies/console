@@ -5,11 +5,31 @@ export interface IHeadings {
 export interface ITenantData {
   name: string;
   description: string;
+  databaseName: string;
+  databaseDescription: string;
   userid: string;
   email: string;
   password?: string;
   type: string;
   id?: number;
+}
+export interface ITenantDetail {
+  name: string;
+  description: string;
+  databaseName: string;
+
+  userid: string;
+  email: string;
+
+  type: string;
+  id?: number;
+}
+export interface IErrorTenantDetail {
+  name: string;
+  userid: string;
+  email: string;
+
+  databaseName: string;
 }
 
 export interface ITenantUserData {
@@ -51,6 +71,13 @@ export interface IErrorInput {
   email: boolean;
   no: boolean;
 }
+export interface IErrorTenantInput {
+  name: string;
+  userid: string;
+  email: string;
+  password: string;
+  databaseName: string;
+}
 
 // redux toolkit states
 
@@ -58,6 +85,12 @@ export interface ITenantListState {
   data?: ISetTenantList | null;
   loading: boolean;
   error?: string | null;
+}
+export interface ITenantDetails {
+  id: number;
+  userid: string;
+  description: string;
+  lastlogin: string;
 }
 
 export interface ITenantUserListState {

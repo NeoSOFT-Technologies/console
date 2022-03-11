@@ -4,8 +4,8 @@ import { Link, useLocation } from "react-router-dom";
 import { RootState } from "../../store";
 import { IUserDataState } from "../../types";
 import withRouter from "../../WithRouter";
-import adminRoutes from "./adminRoutes";
-import tenantRoutes from "./tenantRoutes";
+import adminRoutes from "../../Routes/adminRoutes";
+import tenantRoutes from "../../Routes/tenantRoutes";
 
 export const Sidebar = () => {
   const location = useLocation();

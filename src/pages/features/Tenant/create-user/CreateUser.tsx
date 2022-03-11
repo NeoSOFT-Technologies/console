@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
-import { regexForEmail } from "../../../resources/constants";
+import { regexForEmail } from "../../../../resources/constants";
 
 export default function Createuser() {
   const [name, setName] = useState<string>("");

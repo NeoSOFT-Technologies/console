@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card } from "react-bootstrap";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import RenderList from "../../../components/render-list/RenderList";
+import RenderList from "../../../../components/list/RenderList";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../../store";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { getTenantUserList } from "../../../store/tenant-user-list/slice";
+import { RootState } from "../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { getTenantUserList } from "../../../../store/fetaures/tenant/tenant-user-list/slice";
 import {
   ITenantUserData,
   ITenantUserDataList,
   ITenantUserListState,
-} from "../../../types";
-toast.configure();
-
+} from "../../../../types";
 export default function UserList() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(1);

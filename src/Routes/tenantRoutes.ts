@@ -1,23 +1,23 @@
 const tenantRoutes = [
   {
-    path: "/dashboard",
-    title: "Dashboard",
-    icon: "mdi mdi-home menu-icon",
+    path: "/tenantdashboard",
+    title: "TenantDashboard",
+    icon: "bi bi-person-circle",
   },
   {
     path: "/userlist",
     title: "User List",
-    icon: "mdi mdi-home menu-icon",
+    icon: "bi bi-list-ul",
   },
   {
     path: "/createuser",
     title: "Add User",
-    icon: "mdi mdi-account-plus menu-icon",
+    icon: "bi bi-person-plus-fill",
   },
   {
     path: "#",
     title: "Config",
-    icon: "mdi mdi-settings menu-icon",
+    icon: "bi bi-gear",
   },
 ];
 export default tenantRoutes;

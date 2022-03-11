@@ -30,7 +30,10 @@
         "prettier"
     ],
     "rules": {
-      "prettier/prettier": ["error"],
+      "prettier/prettier": ["error",
+        {
+          "endOfLine": "auto"
+        }],
       "semi": ["error", "always"],
       "object-curly-spacing": ["error", "always"],
       "camelcase": "off",

@@ -1,18 +1,18 @@
 const adminRoutes = [
   {
-    path: "/dashboard",
+    path: "/admindashboard",
     title: "Master",
-    icon: "mdi mdi-account-star menu-icon",
+    icon: "bi bi-person-circle",
   },
   {
     path: "/tenantlist",
     title: "List",
-    icon: "mdi mdi-format-list-bulleted menu-icon",
+    icon: "bi bi-list-ul",
   },
   {
     path: "/registertenant",
     title: "Add Tenant",
-    icon: "mdi mdi-account-plus menu-icon",
+    icon: "bi bi-person-plus-fill",
   },
 ];
 export default adminRoutes;

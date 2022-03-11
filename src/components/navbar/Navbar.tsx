@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { logo, logo_mini } from "../../resources/images";
 // import {  } from "react-i18next";
 
 class Navbar extends Component {
@@ -17,16 +18,10 @@ class Navbar extends Component {
       <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
           <Link className="navbar-brand brand-logo" to="/">
-            <img
-              src={`${process.env.REACT_APP_HOST}/global/images/logo.svg`}
-              alt="logo"
-            />
+            <img src={logo} alt="logo" />
           </Link>
           <Link className="navbar-brand brand-logo-mini" to="/">
-            <img
-              src={`${process.env.REACT_APP_HOST}/global/images/logo-mini.png`}
-              alt="logo"
-            />
+            <img src={logo_mini} alt="logo" />
           </Link>
         </div>
         <div className="navbar-menu-wrapper d-flex align-items-stretch">
@@ -35,13 +30,13 @@ class Navbar extends Component {
             type="button"
             onClick={() => document.body.classList.toggle("sidebar-icon-only")}
           >
-            <span className="mdi mdi-menu"></span>
+            <span className="bi bi-list"></span>
           </button>
           <div className="search-field d-none d-md-block">
             <form className="d-flex align-items-center h-100" action="#">
               <div className="input-group">
                 <div className="input-group-prepend bg-parent">
-                  <i className="input-group-text border-0 mdi mdi-magnify"></i>
+                  <i className="input-group-text border-0 bi bi-search"></i>
                 </div>
                 <input
                   type="text"
@@ -52,47 +47,11 @@ class Navbar extends Component {
             </form>
           </div>
           <ul className="navbar-nav navbar-nav-right">
-            <li className="nav-item nav-profile">
-              {/* @ts-ignore */}
-              <Dropdown alignRight>
-                <Dropdown.Toggle className="nav-link">
-                  <div className="nav-profile-img">
-                    <img
-                      src={`${process.env.REACT_APP_HOST}/global/images/faces/face1.jpg`}
-                      alt="user"
-                    />
-                    <span className="availability-status online"></span>
-                  </div>
-                  <div className="nav-profile-text">
-                    <p className="mb-1 text-black">
-                      <>David Greymaax</>
-                    </p>
-                  </div>
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu className="navbar-dropdown">
-                  <Dropdown.Item
-                    href="!#"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
-                    <i className="mdi mdi-cached mr-2 text-success"></i>
-                    <>Activity Log</>
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    href="!#"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
-                    <i className="mdi mdi-logout mr-2 text-primary"></i>
-                    <>Signout</>
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </li>
             <li className="nav-item">
               {/* @ts-ignore */}
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link count-indicator">
-                  <i className="mdi mdi-email-outline"></i>
+                  <i className="bi bi-envelope"></i>
                   <span className="count-symbol bg-warning"></span>
                 </Dropdown.Toggle>
 
@@ -174,7 +133,7 @@ class Navbar extends Component {
               {/* @ts-ignore */}
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link count-indicator">
-                  <i className="mdi mdi-bell-outline"></i>
+                  <i className="bi bi-bell"></i>
                   <span className="count-symbol bg-danger"></span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="dropdown-menu navbar-dropdown preview-list">
@@ -188,7 +147,7 @@ class Navbar extends Component {
                   >
                     <div className="preview-thumbnail">
                       <div className="preview-icon bg-success">
-                        <i className="mdi mdi-calendar"></i>
+                        <i className="bi bi-power"></i>
                       </div>
                     </div>
                     <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
@@ -207,7 +166,7 @@ class Navbar extends Component {
                   >
                     <div className="preview-thumbnail">
                       <div className="preview-icon bg-warning">
-                        <i className="mdi mdi-settings"></i>
+                        <i className="bi bi-gear"></i>
                       </div>
                     </div>
                     <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
@@ -251,7 +210,7 @@ class Navbar extends Component {
                 href="!#"
                 onClick={(event) => event.preventDefault()}
               >
-                <i className="mdi mdi-power"></i>
+                <i className="bi bi-power"></i>
               </a>
             </li>
             <li className="nav-item nav-settings d-none d-lg-block">
@@ -260,7 +219,7 @@ class Navbar extends Component {
                 className="nav-link border-0"
                 onClick={this.toggleRightSidebar}
               >
-                <i className="mdi mdi-format-line-spacing"></i>
+                <i className="bi bi-gear"></i>
               </button>
             </li>
           </ul>
@@ -269,7 +228,7 @@ class Navbar extends Component {
             type="button"
             onClick={this.toggleOffcanvas}
           >
-            <span className="mdi mdi-menu"></span>
+            <span className="bi bi-gear"></span>
           </button>
         </div>
       </nav>

@@ -1,17 +1,14 @@
 import React, { useEffect, useState, ChangeEvent } from "react";
 import { Form, Button, Alert, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastAlert } from "../../components/ToasterAlert/ToastAlert";
 import { regexForEmail } from "../../resources/constants";
 import { useDispatch, useSelector } from "react-redux";
 import PasswordButtons from "../../components/password-field/Password";
 import { RootState } from "../../store";
 import { IUserDataState } from "../../types";
 import { userData } from "../../store/user-data/slice";
-
-toast.configure();
-
+import { logo } from "../../resources/images";
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setpassword] = useState<string>("");
@@ -25,13 +22,6 @@ export default function Login() {
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
   );
-  const success = (data: string) =>
-    toast.success(data, { position: toast.POSITION.BOTTOM_RIGHT });
-  const failure = (data: string) =>
-    toast.error(data, { position: toast.POSITION.BOTTOM_RIGHT });
-  const warning = (data: string) =>
-    toast.warn(data, { position: toast.POSITION.BOTTOM_RIGHT });
-
   const handle = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
@@ -53,15 +43,18 @@ export default function Login() {
         break;
     }
   };
+
   useEffect(() => {
     if (email !== "" && password !== "") {
-      console.log(user);
-      if (user.data) {
-        success("Logged In");
-        navigate("/dashboard");
+      // console.log(user);
+      if (user.data && user.data.type === "tenant") {
+        ToastAlert("Logged In", "success");
+        navigate("/tenantdashboard");
+      } else if (user.data && user.data.type === "admin") {
+        ToastAlert("Logged In", "success");
+        navigate("/admindashboard");
       } else {
-        console.log(user);
-        warning("Incorrect Credentials!");
+        ToastAlert("Incorrect Credentials!", "warning");
       }
     }
   }, [user.data]);
@@ -76,7 +69,8 @@ export default function Login() {
     if (validate()) {
       dispatch(userData({ email, password }));
     } else {
-      failure("Please fill all the fields");
+      // failure("Please fill all the fields");
+      ToastAlert("Please fill all the fields", "error");
     }
   };
 
@@ -87,10 +81,7 @@ export default function Login() {
           <div className="col-lg-6 col-md-8 col-sm-10 mx-auto">
             <div className="auth-form-light text-left py-5 px-4 px-sm-5">
               <div className="brand-logo">
-                <img
-                  src={`${process.env.REACT_APP_HOST}/global/images/logo.svg`}
-                  alt="logo"
-                />
+                <img src={logo} alt="logo" />
               </div>
               <h4>Hello! let&apos;s get started</h4>
               <h6 className="font-weight-light">Sign in to continue.</h6>
