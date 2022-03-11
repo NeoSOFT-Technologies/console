@@ -7,7 +7,6 @@ interface CreateUser {
   password: string;
 }
 
-
 export function updateTenantDataService(id: number, data: ITenantData) {
   return apiFactory().put(`/api/tenant/${id}`, data);
 }
