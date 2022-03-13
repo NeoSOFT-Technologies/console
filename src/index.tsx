@@ -4,10 +4,9 @@ import App from "./App";
 import store from "./store/index";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
-import makeServer from "./Miragejs/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter } from "react-router-dom";
-makeServer();
+
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
