@@ -9,9 +9,9 @@ interface IConditions {
 }
 
 const initialState: IUserDataState = {
-  data: null,
+  data: undefined,
   loading: false,
-  error: null,
+  error: undefined,
 };
 
 export const commonLogin = createAsyncThunk(
@@ -22,8 +22,8 @@ export const commonLogin = createAsyncThunk(
       const response = await commonLoginService(email, password);
       console.log(response);
       return response.data[0];
-    } catch (err) {
-      return err;
+    } catch (error_) {
+      return error_;
     }
   }
 );

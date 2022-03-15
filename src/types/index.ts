@@ -45,7 +45,7 @@ export interface ITenantUserData {
 export interface IActionsRenderList {
   className?: string;
   iconClassName?: string;
-  buttonFunction?: (val: any) => void;
+  buttonFunction?: (value: any) => void;
 }
 export interface ITenantDataList {
   list: ITenantData[];

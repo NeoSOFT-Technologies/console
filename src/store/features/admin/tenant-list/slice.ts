@@ -9,9 +9,9 @@ interface IConditions {
 }
 
 const initialState: ITenantListState = {
-  data: null,
+  data: undefined,
   loading: false,
-  error: null,
+  error: undefined,
 };
 
 export const getTenantList = createAsyncThunk(
@@ -22,8 +22,8 @@ export const getTenantList = createAsyncThunk(
       const response = await tenantListService(currentPage, search);
       console.log(response);
       return response.data;
-    } catch (err) {
-      return err;
+    } catch (error_) {
+      return error_;
     }
   }
 );

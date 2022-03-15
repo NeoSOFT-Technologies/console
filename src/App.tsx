@@ -12,7 +12,7 @@ import { RootState } from "./store";
 interface IState {
   isFullPageLayout: boolean;
 }
-interface IProp {
+interface IProperty {
   user: IUserDataState;
   router: {
     location: Location;
@@ -20,7 +20,7 @@ interface IProp {
     params: string;
   };
 }
-class App extends Component<IProp, IState> {
+class App extends Component<IProperty, IState> {
   state: IState = {
     isFullPageLayout: true,
   };
@@ -57,8 +57,8 @@ class App extends Component<IProp, IState> {
     );
   }
 
-  componentDidUpdate(prevProps: IProp) {
-    if (this.props.router.location !== prevProps.router.location) {
+  componentDidUpdate(previousProperties: IProperty) {
+    if (this.props.router.location !== previousProperties.router.location) {
       this.onRouteChanged();
     }
   }
@@ -75,9 +75,9 @@ class App extends Component<IProp, IState> {
       "/error-pages/error-401",
       "/general-pages/landing-page",
     ];
-    for (let i = 0; i < fullPageLayoutRoutes.length; i++) {
+    for (const fullPageLayoutRoute of fullPageLayoutRoutes) {
       console.log(this.props.router.location.pathname);
-      if (this.props.router.location.pathname === fullPageLayoutRoutes[i]) {
+      if (this.props.router.location.pathname === fullPageLayoutRoute) {
         this.setState({
           isFullPageLayout: true,
         });
@@ -96,7 +96,7 @@ class App extends Component<IProp, IState> {
     }
   }
 }
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProperties = (state: RootState) => ({
   user: state.userData,
 });
-export default connect(mapStateToProps)(withRouter(App));
+export default connect(mapStateToProperties)(withRouter(App));

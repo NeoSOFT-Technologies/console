@@ -1,11 +1,11 @@
 import React from "react";
 
-interface IProps {
+interface IProperties {
   viewPassword: boolean;
-  setViewPassword: (val: boolean) => void;
+  setViewPassword: (value: boolean) => void;
 }
-const PasswordButtons: React.FC<IProps> = (props) => {
-  const { viewPassword, setViewPassword } = props;
+const PasswordButtons: React.FC<IProperties> = (properties) => {
+  const { viewPassword, setViewPassword } = properties;
   return (
     <div className="icons">
       {viewPassword ? (

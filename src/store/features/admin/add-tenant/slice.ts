@@ -11,7 +11,7 @@ interface IAddTenantState {
 const initialState: IAddTenantState = {
   tenantAdded: false,
   loading: false,
-  error: null,
+  error: undefined,
 };
 
 export const addNewTenant = createAsyncThunk(
@@ -21,8 +21,8 @@ export const addNewTenant = createAsyncThunk(
       const response = await addTenantDataService(conditions);
       console.log(response);
       return response.data;
-    } catch (err) {
-      return err;
+    } catch (error_) {
+      return error_;
     }
   }
 );

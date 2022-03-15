@@ -6,7 +6,7 @@ import {
   regexForUser,
   regForPassword,
 } from "../../../../resources/constants";
-import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
+import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
 import { useAppDispatch } from "../../../../store/hooks";
 import { addNewUser } from "../../../../store/features/tenant/add-user/slice";
 interface Ierrors {
