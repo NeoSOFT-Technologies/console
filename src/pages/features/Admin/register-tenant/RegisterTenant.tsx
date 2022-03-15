@@ -10,7 +10,7 @@ import {
 import { addNewTenant } from "../../../../store/features/admin/add-tenant/slice";
 import { useAppDispatch } from "../../../../store/hooks";
 import { IErrorTenantInput, ITenantData } from "../../../../types/index";
-import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
+import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
 
 export default function RegisterTenant() {
   const dispatch = useAppDispatch();
@@ -24,7 +24,7 @@ export default function RegisterTenant() {
     databaseDescription: "",
     type: "tenant",
   });
-  const [err, setErr] = useState<IErrorTenantInput>({
+  const [error, setError] = useState<IErrorTenantInput>({
     name: "",
     userid: "",
     email: "",
@@ -37,8 +37,8 @@ export default function RegisterTenant() {
     const { name, value } = event.target;
     switch (name) {
       case "databaseName":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regexForName.test(value)
             ? ""
             : "databaseName should only consist Alphabets",
@@ -46,16 +46,16 @@ export default function RegisterTenant() {
         break;
 
       case "name":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regexForName.test(value)
             ? ""
             : "Name should only consist Alphabets",
         });
         break;
       case "password":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regForPassword.test(value)
             ? ""
             : "Password should contains Alphabet,special Charater,Number",
@@ -63,16 +63,16 @@ export default function RegisterTenant() {
         break;
 
       case "userid":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regexForUser.test(value)
             ? ""
             : "Username should contains alteast 1number and Alphabets ",
         });
         break;
       case "email":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regexForEmail.test(value)
             ? ""
             : "Email should contains atlast @,.com",
@@ -86,11 +86,11 @@ export default function RegisterTenant() {
   };
   const handleValidate = () => {
     const validate = !!(
-      err.name === "" &&
-      err.userid === "" &&
-      err.email === "" &&
-      err.databaseName === "" &&
-      err.password === ""
+      error.name === "" &&
+      error.userid === "" &&
+      error.email === "" &&
+      error.databaseName === "" &&
+      error.password === ""
     );
     return validate;
   };
@@ -128,7 +128,7 @@ export default function RegisterTenant() {
         ToastAlert("Please Fill All Fields", "warning");
       }
     } else {
-      setErr({
+      setError({
         name: "",
 
         userid: "",
@@ -176,13 +176,13 @@ export default function RegisterTenant() {
                     name="name"
                     data-testid="name-input"
                     value={tenant.name}
-                    isInvalid={!!err.name}
-                    isValid={!err.name && !!tenant.name}
+                    isInvalid={!!error.name}
+                    isValid={!error.name && !!tenant.name}
                     onChange={handleInputChange}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    {err.name}
+                    {error.name}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -195,14 +195,14 @@ export default function RegisterTenant() {
                     id="userid"
                     data-testid="userid-input"
                     placeholder="Enter User ID"
-                    isValid={!err.userid && !!tenant.userid}
+                    isValid={!error.userid && !!tenant.userid}
                     value={tenant.userid}
-                    isInvalid={!!err.userid}
+                    isInvalid={!!error.userid}
                     onChange={handleInputChange}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    {err.userid}
+                    {error.userid}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -215,14 +215,14 @@ export default function RegisterTenant() {
                     name="email"
                     id="email"
                     value={tenant.email}
-                    isValid={!err.email && !!tenant.email}
+                    isValid={!error.email && !!tenant.email}
                     data-testid="email-input"
-                    isInvalid={!!err.email}
+                    isInvalid={!!error.email}
                     onChange={handleInputChange}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    {err.email}
+                    {error.email}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -236,13 +236,13 @@ export default function RegisterTenant() {
                     value={tenant.password}
                     name="password"
                     id="password"
-                    isValid={!err.password && !!tenant.password}
-                    isInvalid={!!err.password}
+                    isValid={!error.password && !!tenant.password}
+                    isInvalid={!!error.password}
                     onChange={handleInputChange}
                     required
                   />{" "}
                   <Form.Control.Feedback type="invalid">
-                    {err.password}
+                    {error.password}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -277,13 +277,13 @@ export default function RegisterTenant() {
                     name="databaseName"
                     id="databaseName"
                     value={tenant.databaseName}
-                    isInvalid={!!err.databaseName}
-                    isValid={!err.databaseName && !!tenant.databaseName}
+                    isInvalid={!!error.databaseName}
+                    isValid={!error.databaseName && !!tenant.databaseName}
                     onChange={handleInputChange}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    {err.databaseName}
+                    {error.databaseName}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>

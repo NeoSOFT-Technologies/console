@@ -1,24 +1,14 @@
-import {
-  addTenantDataService,
-  deleteTenantDataService,
-  tenantListService,
-} from "./admin";
-import {
-  updateTenantDataService,
-  tenantUserListService,
-  createNewUserService,
-} from "./tenants";
-import { getUserListService } from "./users";
-import { commonLoginService, commonLogoutService } from "./common";
-
 export {
   addTenantDataService,
   deleteTenantDataService,
   tenantListService,
+} from "./admin";
+export {
   updateTenantDataService,
   tenantUserListService,
   createNewUserService,
-  getUserListService,
-  commonLoginService,
-  commonLogoutService,
-};
+} from "./tenants";
+
+export { getUserListService } from "./users";
+
+export { commonLoginService, commonLogoutService } from "./common";

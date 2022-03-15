@@ -61,10 +61,10 @@ export default function UserList() {
     setSelected(1);
     mainCall(1, search);
   };
-  const handleUserDetails = (val: ITenantUserData) => {
-    console.log(val);
+  const handleUserDetails = (value: ITenantUserData) => {
+    console.log(value);
     // navigate("/userdetails");
-    navigate(`/userdetails/${val.id}`, { state: { ...val } });
+    navigate(`/userdetails/${value.id}`, { state: { ...value } });
   };
 
   const headings = [

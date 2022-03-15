@@ -32,7 +32,7 @@ export const Sidebar = () => {
             <a
               href="!#"
               className="nav-link"
-              onClick={(evt) => evt.preventDefault()}
+              onClick={(event_) => event_.preventDefault()}
             >
               <div className="nav-profile-image">
                 <img

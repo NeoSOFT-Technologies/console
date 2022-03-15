@@ -1,17 +1,17 @@
 import React from "react";
-interface IProps {
+interface IProperties {
   previousLabel: string;
   nextLabel: string;
   pageCount: number;
   onPageChange: (selected: number) => void;
   selectedPage: number;
 }
-const Pagination: React.FC<IProps> = (props) => {
+const Pagination: React.FC<IProperties> = (properties) => {
   let { previousLabel, nextLabel, pageCount, onPageChange, selectedPage } =
-    props;
+    properties;
   const pageArray = [];
-  for (let i = 1; i <= pageCount; i++) {
-    pageArray.push(i);
+  for (let index = 1; index <= pageCount; index++) {
+    pageArray.push(index);
   }
   const setPreviousPage = () => {
     if (selectedPage > 1) {

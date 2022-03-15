@@ -2,8 +2,10 @@ import React from "react";
 import { Dropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { logo, logo_mini } from "../../resources/images";
+
 export default function Navbar() {
   const naviagte = useNavigate();
+
   const toggleOffcanvas = () => {
     document?.querySelector(".sidebar-offcanvas")?.classList.toggle("active");
   };
@@ -55,7 +57,7 @@ export default function Navbar() {
                 <div className="dropdown-divider"></div>
                 <Dropdown.Item
                   className="dropdown-item preview-item"
-                  onClick={(evt) => evt.preventDefault()}
+                  onClick={(event_) => event_.preventDefault()}
                 >
                   <div className="preview-thumbnail">
                     <div className="preview-icon bg-success">
@@ -74,7 +76,7 @@ export default function Navbar() {
                 <div className="dropdown-divider"></div>
                 <Dropdown.Item
                   className="dropdown-item preview-item"
-                  onClick={(evt) => evt.preventDefault()}
+                  onClick={(event_) => event_.preventDefault()}
                 >
                   <div className="preview-thumbnail">
                     <div className="preview-icon bg-warning">
@@ -93,7 +95,7 @@ export default function Navbar() {
                 <div className="dropdown-divider"></div>
                 <Dropdown.Item
                   className="dropdown-item preview-item"
-                  onClick={(evt) => evt.preventDefault()}
+                  onClick={(event_) => event_.preventDefault()}
                 >
                   <div className="preview-thumbnail">
                     <div className="preview-icon bg-info">
