@@ -1,36 +1,24 @@
-import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Form,
-  Container,
-  Row,
-  Col,
-  Dropdown,
-  Modal,
-} from "react-bootstrap";
-import { useLocation, useNavigate } from "react-router";
-import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
+import React, { useEffect, useState } from "react";
+import { Button, Form, Container, Row, Col, ListGroup } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../store";
+
+import { IUserDataState } from "../../../../types";
 import {
   regexForName,
   regexForUser,
   regexForEmail,
 } from "../../../../resources/constants";
 import { useAppDispatch } from "../../../../store/hooks";
-import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
-import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
-
-interface LocationState {
-  val: ITenantData;
-}
-export default function TenantDetails() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const dispatch = useAppDispatch();
-  console.log(location);
-  const [deleteshow, setDeleteshow] = useState(false);
+import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
+import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
+const TenantProfile = () => {
+  const user: IUserDataState = useSelector(
+    (state: RootState) => state.userData
+  );
   const [edit, setEdit] = useState(false);
-  // console.log(setEdit);
+  const dispatch = useAppDispatch();
   const [tenant, setTenant] = useState<ITenantData>({
     name: "",
     description: "",
@@ -47,24 +35,6 @@ export default function TenantDetails() {
     email: "",
     databaseName: "",
   });
-  useEffect(() => {
-    const { val } = location.state as LocationState;
-    console.log(val);
-    setTenant(val);
-  }, []);
-  console.log(tenant);
-  // const renderTenant = () => {
-
-  // };
-  const deleteTenantFunction = () => {
-    const { val } = location.state as LocationState;
-    if (val.id !== undefined) {
-      dispatch(deleteTenant(val.id));
-      ToastAlert("Tenant Removed", "success");
-      navigate("/tenantlist");
-    }
-  };
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
@@ -125,6 +95,8 @@ export default function TenantDetails() {
         if (tenant.id !== undefined) {
           dispatch(updateTenant({ id: tenant.id, data: tenant }));
           setEdit(false);
+          console.log(tenant.id);
+          // console.log(dispatch(updateTenant({ id: tenant.id, data: tenant })));
           ToastAlert("Tenant Details Update", "success");
         }
       } else {
@@ -132,47 +104,14 @@ export default function TenantDetails() {
       }
     }
   };
-
+  useEffect(() => {
+    // console.log(user.data);
+    if (user.data) {
+      setTenant(user.data);
+    }
+  }, [user.data]);
   return (
     <>
-      <Dropdown className="d-inline-block">
-        <Dropdown.Toggle className="btn-success " id="dropdown-basic">
-          Action
-        </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-          <Dropdown.Item onClick={() => setDeleteshow(true)}>
-            Delete Tenant
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-      <Dropdown className="d-inline-block">
-        <Dropdown.Toggle className=" btn-danger " id="dropdown-basic">
-          Utilis
-        </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-          <Dropdown.Item>Test</Dropdown.Item>
-          <Dropdown.Item>Set Tenant Url</Dropdown.Item>
-          <Dropdown.Item>Set InActive</Dropdown.Item>
-          <Dropdown.Item>Upload</Dropdown.Item>
-          <Dropdown.Item>Create tenant tables & data</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-      <Modal show={deleteshow} onHide={() => setDeleteshow(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Tenant</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Do You want To delete the tenant,Then whole database will be delete
-          under tenant
-        </Modal.Body>
-        <Modal.Footer>
-          <Button className="btn-danger" onClick={() => deleteTenantFunction()}>
-            Remove
-          </Button>
-        </Modal.Footer>
-      </Modal>
       <div className=" bg-white">
         <Container className="m-1">
           <h2 className="text-center pt-3 p-3">Tenant Details </h2>
@@ -185,6 +124,7 @@ export default function TenantDetails() {
                   <Form.Control
                     type="text"
                     placeholder="Enter Name"
+                    data-testid="name-input"
                     name="name"
                     onChange={handleInputChange}
                     value={tenant.name}
@@ -312,6 +252,29 @@ export default function TenantDetails() {
                   />
                 </Form.Group>
               </Col>
+              <Col md={6}>
+                <h6>Roles</h6>
+
+                <ul>
+                  <li>Tenant roles cannot edit</li>
+                  <li>Tenant roles cannot edit</li>
+                  <li>Tenant roles cannot edit</li>
+                </ul>
+              </Col>
+              <Col md={6}>
+                <h6>Permissions</h6>
+                <ListGroup as="ul">
+                  <ListGroup.Item as="li" className="bb">
+                    Tenant roles cannot edit
+                  </ListGroup.Item>
+                  <ListGroup.Item as="li">
+                    Tenant roles cannot edit
+                  </ListGroup.Item>
+                  <ListGroup.Item as="li">
+                    Tenant roles cannot edit
+                  </ListGroup.Item>
+                </ListGroup>
+              </Col>
               {edit ? (
                 <Button
                   onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
@@ -329,18 +292,11 @@ export default function TenantDetails() {
                   Edit
                 </Button>
               )}
-
-              <Button
-                className="btn btn-light mt-3"
-                type="reset"
-                onClick={() => navigate("/tenantlist")}
-              >
-                Cancel
-              </Button>
             </Row>
           </Form>
         </Container>
       </div>
     </>
   );
-}
+};
+export default TenantProfile;

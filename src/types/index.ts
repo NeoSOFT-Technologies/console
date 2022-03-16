@@ -11,6 +11,7 @@ export interface ITenantData {
   email: string;
   password?: string;
   type: string;
+  roles: string[];
   id?: number;
 }
 export interface ITenantDetail {
@@ -40,6 +41,7 @@ export interface ITenantUserData {
   createdDateTime: string;
   isDeleted: boolean;
   isActive: boolean;
+  roles: string[];
 }
 
 export interface IActionsRenderList {

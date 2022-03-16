@@ -29,6 +29,17 @@ export default function Createuser() {
     password: "",
     tenantname: "",
   });
+  const [checked, setChecked] = useState<string[]>([]);
+  const checkList = ["A", "B", "C", "D"];
+
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      setChecked([...checked, event.target.value]);
+    } else {
+      checked.splice(checked.indexOf(event.target.value), 1);
+      setChecked(checked);
+    }
+  };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
@@ -82,7 +93,12 @@ export default function Createuser() {
         formData.password !== "" &&
         formData.tenantname !== ""
       ) {
-        dispatch(addNewUser(formData));
+        const newUser = {
+          ...formData,
+          checked,
+        };
+        console.log(newUser);
+        dispatch(addNewUser(newUser));
         ToastAlert("User Registered", "success");
         // navigate("/login");
       } else {
@@ -102,6 +118,7 @@ export default function Createuser() {
             <Form.Label>Username</Form.Label>
             <Form.Control
               type="text"
+              data-testid="username-input"
               placeholder="username"
               value={formData.username}
               name="username"
@@ -118,6 +135,7 @@ export default function Createuser() {
             <Form.Control
               type="text"
               placeholder="email"
+              data-testid="email-input"
               value={formData.email}
               name="email"
               onChange={handleInputChange}
@@ -133,6 +151,7 @@ export default function Createuser() {
             <Form.Control
               type="text"
               placeholder="password"
+              data-testid="password-input"
               value={formData.password}
               name="password"
               onChange={handleInputChange}
@@ -148,6 +167,7 @@ export default function Createuser() {
             <Form.Control
               type="text"
               placeholder="tenantname"
+              data-testid="tenantname-input"
               value={formData.tenantname}
               name="tenantname"
               onChange={handleInputChange}
@@ -158,11 +178,20 @@ export default function Createuser() {
               {errors.tenantname}
             </Form.Control.Feedback>
           </Form.Group>
+          <div className="title">Tenant Roles:</div>
+          <div className="list-container  ">
+            {checkList.map((item, index) => (
+              <span key={index} className="m-4">
+                <input value={item} type="checkbox" onChange={handleCheck} />
+                <span>{item}</span>
+              </span>
+            ))}
+          </div>
           <div className="my-2">
-            <Button type="submit" variant="success">
+            <Button type="submit" variant="success" data-testid="submit-button">
               Submit
             </Button>
-            <Button type="reset" variant="danger">
+            <Button type="reset" variant="danger" data-testid="cancel-button">
               Cancel
             </Button>
           </div>

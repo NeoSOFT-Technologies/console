@@ -30,11 +30,15 @@ const AdminDashboard = lazy(
 const TenantDetails = lazy(
   () => import("./pages/features/Admin/tenant-details/TenantDetails")
 );
+const TenantProfile = lazy(
+  () => import("./pages/features/Tenant/tenant-profile/TenantProfile")
+);
 function AppRoutes() {
   return (
     <Suspense fallback={<Spinner />}>
       <Routes>
         <Route path="/login-page" element={<Login />} />
+
         <Route path="/error-pages/error-404" element={<Error404 />} />
         <Route path="/error-pages/error-500" element={<Error500 />} />
         <Route path="/error-pages/error-401" element={<Error401 />} />
@@ -102,6 +106,14 @@ function AppRoutes() {
           element={
             <TenantGuard>
               <UserDetails />
+            </TenantGuard>
+          }
+        />
+        <Route
+          path="/tenantprofile"
+          element={
+            <TenantGuard>
+              <TenantProfile />
             </TenantGuard>
           }
         />

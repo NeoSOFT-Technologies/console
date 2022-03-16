@@ -89,6 +89,7 @@ export default function UserList() {
         <Card>
           <Card.Header>
             <Button
+              data-testid="active-button"
               variant={checkactive.btn1 ? "dark" : "secondary"}
               className="w5"
               onClick={() =>
@@ -100,6 +101,7 @@ export default function UserList() {
             <Button
               variant={checkactive.btn2 ? "dark" : "secondary"}
               className="w5"
+              data-testid="inactive-button"
               onClick={() =>
                 setCheckactive({ btn1: false, btn2: true, btn3: false })
               }
@@ -109,6 +111,7 @@ export default function UserList() {
             <Button
               variant={checkactive.btn3 ? "dark" : "secondary"}
               className="w5"
+              data-testid="all-button"
               onClick={() =>
                 setCheckactive({ btn1: false, btn2: false, btn3: true })
               }
@@ -124,7 +127,7 @@ export default function UserList() {
               <h2 className="card-title">User List</h2>
               <div className="search-field ">
                 <form className="h-50">
-                  <div className="input-group">
+                  <div className="input-group" data-testid="input-group">
                     <input
                       type="text"
                       className="form-control bg-parent border-1"
@@ -133,6 +136,7 @@ export default function UserList() {
                     />
                     <button
                       className=" btn  btn-success btn-sm"
+                      data-testid="search-button"
                       onClick={(e) => searchFilter(e)}
                     >
                       <i className=" bi bi-search"></i>
