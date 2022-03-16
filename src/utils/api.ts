@@ -47,7 +47,7 @@ const apiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
       return config;
     },
     (error) => {
-      return Promise.reject(error);
+      return error;
     }
   );
 
