@@ -2,7 +2,6 @@ import React, { useEffect, useState, ChangeEvent } from "react";
 import { Form, Button, Alert, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { ToastAlert } from "../../components/toaster-alert/ToastAlert";
-import { regexForEmail } from "../../resources/constants";
 import { useDispatch, useSelector } from "react-redux";
 import PasswordButtons from "../../components/password-field/Password";
 import { RootState } from "../../store";
@@ -10,11 +9,14 @@ import { IUserDataState } from "../../types";
 import { logo } from "../../resources/images";
 import { commonLogin } from "../../store/login/slice";
 export default function Login() {
-  const [email, setEmail] = useState<string>("");
+  const [type, setType] = useState<string>("admin");
+  const [username, setUsername] = useState<string>("");
   const [password, setpassword] = useState<string>("");
+  const [tenantName, setTenantName] = useState<string>("");
   const [error, setError] = useState({
-    email: "",
+    username: "",
     password: "",
+    tenantName: "",
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,11 +27,11 @@ export default function Login() {
   const handle = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
-      case "email":
-        setEmail(value);
+      case "username":
+        setUsername(value);
         setError({
           ...error,
-          email: regexForEmail.test(value) ? "" : "Email is not valid",
+          username: value.length > 4 ? "" : "Username is not valid",
         });
         break;
       case "password":
@@ -39,13 +41,20 @@ export default function Login() {
           password: value.length < 8 ? "password is not valid" : "",
         });
         break;
+      case "tenantName":
+        setTenantName(value);
+        setError({
+          ...error,
+          tenantName: value.length < 4 ? "tenantName is not valid" : "",
+        });
+        break;
       default:
         break;
     }
   };
 
   useEffect(() => {
-    if (email !== "" && password !== "") {
+    if (username !== "" && password !== "") {
       // console.log(user);
       if (user.data && user.data.type === "tenant") {
         ToastAlert("Logged In", "success");
@@ -60,18 +69,43 @@ export default function Login() {
   }, [user.data]);
   const validate = () => {
     let valid = false;
-
-    valid = !(email.length === 0 || password.length === 0);
-
+    switch (type) {
+      case "admin":
+        valid = !(username.length === 0 || password.length === 0);
+        break;
+      case "tenant":
+        valid = !(tenantName.length === 0 || password.length === 0);
+        break;
+      case "user":
+        valid = !(
+          username.length === 0 ||
+          password.length === 0 ||
+          tenantName.length === 0
+        );
+        break;
+    }
     return valid;
   };
   const handleSubmit = async () => {
+    console.log("OK", username, password, tenantName, type);
     if (validate()) {
-      dispatch(commonLogin({ email, password }));
+      dispatch(commonLogin({ username, password, tenantName }));
     } else {
       // failure("Please fill all the fields");
       ToastAlert("Please fill all the fields", "error");
     }
+  };
+
+  const setLoginType = (logintype: string) => {
+    setType(logintype);
+    setUsername("");
+    setpassword("");
+    setTenantName("");
+    setError({
+      username: "",
+      password: "",
+      tenantName: "",
+    });
   };
 
   return (
@@ -83,24 +117,44 @@ export default function Login() {
               <div className="brand-logo">
                 <img src={logo} alt="logo" />
               </div>
-              <h4>Hello! let&apos;s get started</h4>
+              <h4>Hello {type} ! let&apos;s get started</h4>
               <h6 className="font-weight-light">Sign in to continue.</h6>
               <Form className="pt-3">
-                <Form.Group className="mb-3">
-                  <Form.Control
-                    data-testid="email-input"
-                    type="email"
-                    name="email"
-                    placeholder="Enter Email"
-                    onChange={handle}
-                    required
-                  />
-                  {error.email.length > 0 && (
-                    <Alert variant="danger" className="mt-2">
-                      {error.email}
-                    </Alert>
-                  )}
-                </Form.Group>
+                {(type === "admin" || type === "user") && (
+                  <Form.Group className="mb-3">
+                    <Form.Control
+                      data-testid="email-input"
+                      type="text"
+                      name="username"
+                      placeholder="Enter Username"
+                      onChange={handle}
+                      required
+                    />
+                    {error.username.length > 0 && (
+                      <Alert variant="danger" className="mt-2">
+                        {error.username}
+                      </Alert>
+                    )}
+                  </Form.Group>
+                )}
+                {(type === "tenant" || type === "user") && (
+                  <div>
+                    <Form.Group className="mb-3">
+                      <Form.Control
+                        type="text"
+                        name="tenantName"
+                        placeholder="Enter TenantName"
+                        onChange={handle}
+                        required
+                      />
+                      {error.tenantName.length > 0 && (
+                        <Alert variant="danger" className="mt-2">
+                          {error.tenantName}
+                        </Alert>
+                      )}
+                    </Form.Group>
+                  </div>
+                )}
                 <div>
                   <Form.Group className="mb-3">
                     <InputGroup>
@@ -149,6 +203,29 @@ export default function Login() {
                   >
                     Forgot password?
                   </a>
+                </div>
+                <div>
+                  {type !== "admin" && (
+                    <p>
+                      <span onClick={() => setLoginType("admin")}>
+                        Login as admin
+                      </span>
+                    </p>
+                  )}
+                  {type !== "tenant" && (
+                    <p>
+                      <span onClick={() => setLoginType("tenant")}>
+                        Login as tenant
+                      </span>
+                    </p>
+                  )}
+                  {type !== "user" && (
+                    <p>
+                      <span onClick={() => setLoginType("user")}>
+                        Login as user
+                      </span>
+                    </p>
+                  )}
                 </div>
               </Form>
             </div>
