@@ -40,7 +40,7 @@
       "object-curly-spacing": ["error", "always"],
       "camelcase": "off",
       "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/no-explicit-any": 1,
+      "@typescript-eslint/no-explicit-any": 0,
       "@typescript-eslint/no-inferrable-types": [
           "warn",
           {
@@ -75,8 +75,7 @@
             "rules": {
               // https://stackoverflow.com/questions/63818415/react-was-used-before-it-was-defined
               "no-use-before-define": "off",
-              "@typescript-eslint/no-use-before-define": ["error"],
-              "@typescript-eslint/no-explicit-any":"off"
+              "@typescript-eslint/no-use-before-define": ["error"]
             }
         },
         {
