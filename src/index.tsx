@@ -7,13 +7,16 @@ import * as serviceWorker from "./serviceWorker";
 import makeServer from "./Miragejs/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter } from "react-router-dom";
+import ErrorBoundary from "./utils/error-boundry";
 makeServer();
 ReactDOM.render(
-  <BrowserRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </BrowserRouter>,
+  <ErrorBoundary>
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>
+  </ErrorBoundary>,
   document.getElementById("root")
 );
 
