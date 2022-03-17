@@ -41,7 +41,7 @@ it("test if input box is present", () => {
   expect(passwordBox).toBeInTheDocument();
   expect(passwordBox).toHaveAttribute("type", "password");
 
-  const tDesBox = screen.getByTestId("databaseDescription-input");
+  const tDesBox = screen.getByTestId("tenantDescription-input");
   expect(tDesBox).toBeInTheDocument();
   expect(tDesBox).toHaveAttribute("type", "textarea");
 
@@ -81,9 +81,9 @@ it("test if input box take input", () => {
   fireEvent.change(passwordBox, { target: { value: "akhil@1234" } });
   expect(screen.getByTestId("password-input")).toHaveValue("akhil@1234");
 
-  const tDesBox = screen.getByTestId("databaseDescription-input");
+  const tDesBox = screen.getByTestId("tenantDescription-input");
   fireEvent.change(tDesBox, { target: { value: "hello" } });
-  expect(screen.getByTestId("databaseDescription-input")).toHaveValue("hello");
+  expect(screen.getByTestId("tenantDescription-input")).toHaveValue("hello");
 
   const dbNameBox = screen.getByTestId("databaseName-input");
   fireEvent.change(dbNameBox, { target: { value: "registername" } });

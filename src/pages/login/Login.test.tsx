@@ -16,16 +16,6 @@ it("render without crashing Login", () => {
   );
 });
 
-it("render without crashing Login", () => {
-  render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <Login />
-      </Provider>
-    </BrowserRouter>
-  );
-});
-
 it("test if input box is present", () => {
   render(
     <BrowserRouter>

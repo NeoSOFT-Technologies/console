@@ -145,6 +145,7 @@ const TenantProfile = () => {
                   <Form.Control
                     type="text"
                     placeholder="Enter User ID"
+                    data-testid="userid-input"
                     name="userid"
                     disabled={!edit}
                     value={tenant.userid}
@@ -165,6 +166,7 @@ const TenantProfile = () => {
                   <Form.Control
                     type="email"
                     placeholder="email"
+                    data-testid="email-input"
                     value={tenant.email}
                     name="email"
                     onChange={handleInputChange}
@@ -184,6 +186,7 @@ const TenantProfile = () => {
                     type="text"
                     onChange={handleInputChange}
                     name="databaseName"
+                    data-testid="databaseName-input"
                     disabled={!edit}
                     placeholder="Enter database name"
                     value={tenant.databaseName}
@@ -207,6 +210,7 @@ const TenantProfile = () => {
                     placeholder="host"
                     // value={tenant.host}
                     // defaultValue="193.168.0.1"
+                    data-testid="host-input"
                     value="193.168.0.1"
                     name="host"
                     onChange={handleInputChange}
@@ -224,6 +228,7 @@ const TenantProfile = () => {
                     placeholder="port"
                     // value={tenant.port}
                     // defaultValue="8989"
+                    data-testid="port-input"
                     value="8989"
                     name="port"
                     onChange={handleInputChange}
@@ -244,6 +249,7 @@ const TenantProfile = () => {
                     name="description"
                     rows={3}
                     className="form-control rounded-0"
+                    data-testid="description-input"
                     id="description"
                     placeholder="Here...."
                     value={tenant.description}
@@ -277,6 +283,7 @@ const TenantProfile = () => {
               </Col>
               {edit ? (
                 <Button
+                  data-testid="update-button"
                   onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
                     handleUpdateTenant(event)
                   }
@@ -286,6 +293,7 @@ const TenantProfile = () => {
                 </Button>
               ) : (
                 <Button
+                  data-testid="edit-button"
                   onClick={() => setEdit(true)}
                   className="mt-3 info ml-4"
                 >
