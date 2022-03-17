@@ -36,7 +36,7 @@ const slice = createSlice({
       state.loading = true;
       state.isDeleted = false;
     });
-    builder.addCase(deleteTenant.fulfilled, (state, action) => {
+    builder.addCase(deleteTenant.fulfilled, (state) => {
       state.loading = false;
       state.isDeleted = true;
     });
