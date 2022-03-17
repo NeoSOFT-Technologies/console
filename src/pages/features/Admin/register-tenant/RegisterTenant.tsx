@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form, Row, Col, Container } from "react-bootstrap";
 
+import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
 import {
   regexForEmail,
   regexForName,
@@ -10,7 +11,6 @@ import {
 import { addNewTenant } from "../../../../store/features/admin/add-tenant/slice";
 import { useAppDispatch } from "../../../../store/hooks";
 import { IErrorTenantInput, ITenantData } from "../../../../types/index";
-import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
 
 export default function RegisterTenant() {
   const dispatch = useAppDispatch();

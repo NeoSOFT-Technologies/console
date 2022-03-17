@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../utils/error";
-import { ITenantUserListState, ITenantData } from "../../../../types/index";
 import { updateTenantDataService } from "../../../../services";
+import { ITenantUserListState, ITenantData } from "../../../../types/index";
+import error from "../../../../utils/error";
 
 interface IConditions {
   id: number;

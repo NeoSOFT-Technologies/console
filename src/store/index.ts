@@ -1,12 +1,12 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import landingReducer from "./landing/slice";
-import tenantListReducer from "./features/admin/tenant-list/slice";
-import userDatatReducer from "./user-data/slice";
-import tenantUserListReducer from "./features/tenant/tenant-user-list/slice";
 import addNewTenantReducer from "./features/admin/add-tenant/slice";
 import deleteTenantReducer from "./features/admin/delete-tenant/slice";
-import updateTenantReducer from "./features/tenant/update-tenant/slice";
+import tenantListReducer from "./features/admin/tenant-list/slice";
 import addNewUserReducer from "./features/tenant/add-user/slice";
+import tenantUserListReducer from "./features/tenant/tenant-user-list/slice";
+import updateTenantReducer from "./features/tenant/update-tenant/slice";
+import landingReducer from "./landing/slice";
+import userDatatReducer from "./user-data/slice";
 
 const store = configureStore({
   reducer: {

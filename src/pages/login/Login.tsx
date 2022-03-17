@@ -1,14 +1,14 @@
 import React, { useEffect, useState, ChangeEvent } from "react";
 import { Form, Button, Alert, InputGroup } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import PasswordButtons from "../../components/password-field/Password";
 import { ToastAlert } from "../../components/toaster-alert/ToastAlert";
 import { regexForEmail } from "../../resources/constants";
-import { useDispatch, useSelector } from "react-redux";
-import PasswordButtons from "../../components/password-field/Password";
-import { RootState } from "../../store";
-import { IUserDataState } from "../../types";
 import { logo } from "../../resources/images";
+import { RootState } from "../../store";
 import { commonLogin } from "../../store/login/slice";
+import { IUserDataState } from "../../types";
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setpassword] = useState<string>("");

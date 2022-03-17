@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
-import RenderList from "../../../../components/list/RenderList";
 import { useNavigate } from "react-router-dom";
+import RenderList from "../../../../components/list/RenderList";
+import Spinner from "../../../../components/loader/Loader";
 import { RootState } from "../../../../store";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getTenantList } from "../../../../store/features/admin/tenant-list/slice";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 
 import {
   ITenantDataList,
   ITenantListState,
   ITenantDetails,
 } from "../../../../types/index";
-import Spinner from "../../../../components/loader/Loader";
 
 export default function TenantList() {
   const navigate = useNavigate();

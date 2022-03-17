@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import withRouter from "../../WithRouter";
 import adminRoutes from "../../routes/admin";
 import tenantRoutes from "../../routes/tenants";
 import { RootState } from "../../store";
 import { IUserDataState } from "../../types";
-import withRouter from "../../WithRouter";
 
 export const Sidebar = () => {
   const location = useLocation();

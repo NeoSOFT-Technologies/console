@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card } from "react-bootstrap";
-import RenderList from "../../../../components/list/RenderList";
 import { useNavigate } from "react-router-dom";
+import RenderList from "../../../../components/list/RenderList";
 import { RootState } from "../../../../store";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getTenantUserList } from "../../../../store/features/tenant/tenant-user-list/slice";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
   ITenantUserData,
   ITenantUserDataList,

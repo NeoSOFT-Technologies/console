@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import withRouter from "./WithRouter";
 // import "./styles/index.scss";
-import AppRoutes from "./AppRoutes";
-import Navbar from "./components/navbar/Navbar";
-import Footer from "./components/footer/Footer";
 import { connect } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { IUserDataState } from "./types/index";
+import AppRoutes from "./AppRoutes";
+import withRouter from "./WithRouter";
+import Footer from "./components/footer/Footer";
+import Navbar from "./components/navbar/Navbar";
 import Sidebar from "./components/sidebar/Sidebar";
 import { RootState } from "./store";
+import { IUserDataState } from "./types/index";
 interface IState {
   isFullPageLayout: boolean;
 }
