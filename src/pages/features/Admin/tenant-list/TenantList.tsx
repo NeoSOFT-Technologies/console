@@ -63,10 +63,10 @@ export default function TenantList() {
   //     navigate(`/userdetails/${val.id}`, { state: { ...val } });
   //   };
 
-  const NavigateTenant = (val: ITenantDetails) => {
-    console.log(val);
+  const NavigateTenant = (value: ITenantDetails) => {
+    console.log(value);
     navigate("/tenantdetails", {
-      state: { val },
+      state: { val: value },
     });
   };
 

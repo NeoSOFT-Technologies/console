@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ChangeEvent } from "react";
 import { Form, Button, Alert, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { ToastAlert } from "../../components/ToasterAlert/ToastAlert";
+import { ToastAlert } from "../../components/toaster-alert/ToastAlert";
 import { regexForEmail } from "../../resources/constants";
 import { useDispatch, useSelector } from "react-redux";
 import PasswordButtons from "../../components/password-field/Password";
@@ -61,7 +61,7 @@ export default function Login() {
   const validate = () => {
     let valid = false;
 
-    valid = !(email.length < 1 || password.length < 1);
+    valid = !(email.length === 0 || password.length === 0);
 
     return valid;
   };

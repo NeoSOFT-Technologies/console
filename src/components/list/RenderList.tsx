@@ -9,7 +9,7 @@ import {
 } from "../../types/index";
 import Pagination from "./Pagination";
 
-interface IProps {
+interface IProperties {
   headings: IHeadings[];
   data: ITenantDataList | ITenantUserDataList;
   pageCount: number;
@@ -17,8 +17,8 @@ interface IProps {
   actions?: IActionsRenderList[];
   selected: number;
 }
-const RenderList: React.FC<IProps> = (props) => {
-  const { headings, data, pageCount, handlePageClick } = props;
+const RenderList: React.FC<IProperties> = (properties) => {
+  const { headings, data, pageCount, handlePageClick } = properties;
   return (
     <div>
       {/* headings mapping logic */}
@@ -41,23 +41,23 @@ const RenderList: React.FC<IProps> = (props) => {
             // actions that is required on buttons
             // @ts-ignore
             data.list.map(
-              (val: ITenantData | ITenantUserData, index1: number) => (
+              (value: ITenantData | ITenantUserData, index1: number) => (
                 <tr key={index1}>
                   {data.fields.map((field: string, index2: number) => (
                     // @ts-ignore
-                    <td key={`list${index1}${index2}`}>{val[field]}</td>
+                    <td key={`list${index1}${index2}`}>{value[field]}</td>
                   ))}
-                  {props.actions && (
+                  {properties.actions && (
                     <td>
                       <div className="btn-group" role="group">
-                        {props.actions.map((button, index) => (
+                        {properties.actions.map((button, index) => (
                           <button
                             key={`button${index}`}
                             type="button"
                             className={button.className}
                             onClick={() => {
                               if (button.buttonFunction)
-                                button.buttonFunction(val);
+                                button.buttonFunction(value);
                             }}
                           >
                             <i className={button.iconClassName}></i>
@@ -78,7 +78,7 @@ const RenderList: React.FC<IProps> = (props) => {
         nextLabel={"next"}
         pageCount={pageCount}
         onPageChange={handlePageClick}
-        selectedPage={props.selected}
+        selectedPage={properties.selected}
       />
     </div>
   );

@@ -4,9 +4,9 @@ import { IUserDataState } from "../../types/index";
 import { getUserListService } from "../../services";
 
 const initialState: IUserDataState = {
-  data: null,
+  data: undefined,
   loading: false,
-  error: null,
+  error: undefined,
 };
 
 export const getUserList = createAsyncThunk(
@@ -16,8 +16,8 @@ export const getUserList = createAsyncThunk(
       const response = await getUserListService(conditions);
       console.log(response);
       return response.data[0];
-    } catch (err) {
-      return err;
+    } catch (error_) {
+      return error_;
     }
   }
 );

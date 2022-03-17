@@ -11,7 +11,7 @@ interface IAddTenantState {
 const initialState: IAddTenantState = {
   isDeleted: false,
   loading: false,
-  error: null,
+  error: undefined,
 };
 
 export const deleteTenant = createAsyncThunk(
@@ -21,8 +21,8 @@ export const deleteTenant = createAsyncThunk(
       const response = await deleteTenantDataService(id);
       // console.log(response);
       return response.data;
-    } catch (err) {
-      return err;
+    } catch (error_) {
+      return error_;
     }
   }
 );

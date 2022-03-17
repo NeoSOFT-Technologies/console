@@ -13,6 +13,7 @@
         "plugin:react/recommended",
         "standard",
         "plugin:jest-dom/recommended",
+        "plugin:unicorn/recommended",
         "prettier"
     ],
     "parser": "@typescript-eslint/parser",
@@ -26,6 +27,7 @@
     "plugins": [
         "react",
         "@typescript-eslint",
+        "unicorn",
         "jest-dom",
         "prettier"
     ],
@@ -50,7 +52,21 @@
       "no-new": 0,
       "@typescript-eslint/no-shadow": ["error"],
       "@typescript-eslint/no-unused-vars": "warn",
-      "class-methods-use-this": "off"
+      "class-methods-use-this": "off",
+      "unicorn/prevent-abbreviations": "off",
+      "unicorn/consistent-destructuring": "off",
+      "unicorn/consistent-function-scoping": "off",
+			"unicorn/filename-case": [
+        "error",
+        {
+          "case": "kebabCase",
+          "ignore": [
+            "setupTests.ts",
+            "serviceWorker.ts",
+            "/*.tsx"
+          ]
+        }
+      ]
     },
     "overrides": [
         {

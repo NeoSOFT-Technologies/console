@@ -23,8 +23,9 @@ test("Deletes a book from list with id", async () => {
   await store.dispatch(deleteTenant(9));
 
   state = store.getState().deleteTenant;
+      console.log(state);
   if (state.loading === true) {
-    // console.log(state);
+    console.log(state);
     expect(state.isDeleted).toBeFalsy();
   }
 

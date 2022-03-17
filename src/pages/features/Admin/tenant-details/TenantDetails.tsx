@@ -18,7 +18,7 @@ import {
 import { useAppDispatch } from "../../../../store/hooks";
 import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
 import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
-import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
+import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
 
 interface LocationState {
   val: ITenantData;
@@ -41,7 +41,7 @@ export default function TenantDetails() {
     roles: [],
     type: "tenant",
   });
-  const [err, setErr] = useState<IErrorTenantDetail>({
+  const [error, setError] = useState<IErrorTenantDetail>({
     name: "",
     userid: "",
     email: "",
@@ -69,27 +69,27 @@ export default function TenantDetails() {
     const { name, value } = event.target;
     switch (name) {
       case "name":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regexForName.test(value) ? "" : "Enter a valid name",
         });
         break;
 
       case "userid":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regexForUser.test(value) ? "" : "Enter a valid Username ",
         });
         break;
       case "email":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regexForEmail.test(value) ? "" : "Enter a Valid Email",
         });
         break;
       case "databaseName":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regexForName.test(value)
             ? ""
             : "databaseName should only consist Alphabets",
@@ -103,16 +103,16 @@ export default function TenantDetails() {
   };
   const handleValidate = () => {
     const validate = !!(
-      err.name === "" &&
-      err.userid === "" &&
-      err.email === "" &&
-      err.databaseName === ""
+      error.name === "" &&
+      error.userid === "" &&
+      error.email === "" &&
+      error.databaseName === ""
     );
     return validate;
   };
   const handleUpdateTenant = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log(err);
+    console.log(error);
     if (handleValidate()) {
       console.log("update");
       if (
@@ -189,7 +189,7 @@ export default function TenantDetails() {
                     onChange={handleInputChange}
                     value={tenant.name}
                     disabled={!edit}
-                    isInvalid={!!err.name}
+                    isInvalid={!!error.name}
                   />
                   {tenant.name && !regexForName.test(tenant.name) && (
                     <span className="text-danger">
@@ -208,7 +208,7 @@ export default function TenantDetails() {
                     name="userid"
                     disabled={!edit}
                     value={tenant.userid}
-                    isInvalid={!!err.userid}
+                    isInvalid={!!error.userid}
                     onChange={handleInputChange}
                   />
                   {tenant.userid && !regexForUser.test(tenant.userid) && (
@@ -229,10 +229,10 @@ export default function TenantDetails() {
                     name="email"
                     onChange={handleInputChange}
                     disabled={!edit}
-                    isInvalid={!!err.email}
+                    isInvalid={!!error.email}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {err.email}
+                    {error.email}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -247,7 +247,7 @@ export default function TenantDetails() {
                     disabled={!edit}
                     placeholder="Enter database name"
                     value={tenant.databaseName}
-                    isInvalid={!!err.databaseName}
+                    isInvalid={!!error.databaseName}
                   />
                   {tenant.databaseName &&
                     !regexForName.test(tenant.databaseName) && (

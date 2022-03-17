@@ -18,7 +18,7 @@ interface IAddUserState {
 const initialState: IAddUserState = {
   isAdded: false,
   loading: false,
-  error: null,
+  error: undefined,
 };
 
 export const addNewUser = createAsyncThunk(
@@ -28,8 +28,8 @@ export const addNewUser = createAsyncThunk(
       const response = await createNewUserService(conditions);
       console.log(response);
       return response.data;
-    } catch (err) {
-      return err;
+    } catch (error_) {
+      return error_;
     }
   }
 );

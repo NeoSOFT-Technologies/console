@@ -52,7 +52,8 @@
    
    h. connect :-  (a method used with "mapStateToProps" method to use redux in class components)   
 ```
-## 4. React-Router-Dom
+## 4. Redux Toolkit
+## 5. React-Router-Dom
 ```
    a.BrowserRouter      (a component which works as a wrapper for other components which use routing in react)
    
@@ -70,25 +71,25 @@
    
    h.Link (a component used to navigate through react-dom)
 ```
-## 5. React-Bootstrap
+## 6. React-Bootstrap
 ```
    a.React-Bootstrap Components     
    b.inline styling   
    c.bootstrap classes
 ```
-## 6. Bootstrap 
+## 7. Bootstrap 
 ```
    a.bootstrap components   
    b.bootstrap classes
 ```
 
-## 7. Regular Expression
+## 8. Regular Expression
    ```
    a.create a regular expression   
    b.test data against regular
    ```
 
-## 8. Axios
+## 9. Axios
 ```
    a.GET,POST,PUT,DELETE requests  
    b.headers      
@@ -96,7 +97,7 @@
    d.query   
    e.request body
 ```
-## 9.Sass
+## 10.Sass
 ```
    a. preprocessing
    b. using variables
@@ -107,10 +108,10 @@
    g. operators
    h. mixins
 ```
-## 10. Reuseable Components :- 
+## 11. Reuseable Components :- 
    (These components are like a template which can be used multiple times in our project and used with props to pass data into it.)
 
-## 11. Environmental files :- 
+## 12. Environmental files :- 
    (these files are used to store sensitive data like certain tokens and PORT numbers, connection links ,etc.)
 
 

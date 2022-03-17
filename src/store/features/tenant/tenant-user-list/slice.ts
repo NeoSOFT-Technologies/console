@@ -8,9 +8,9 @@ interface IConditions {
   search: string;
 }
 const initialState: ITenantUserListState = {
-  data: null,
+  data: undefined,
   loading: false,
-  error: null,
+  error: undefined,
 };
 
 export const getTenantUserList = createAsyncThunk(
@@ -21,8 +21,8 @@ export const getTenantUserList = createAsyncThunk(
       const response = await tenantUserListService(currentPage, search);
       console.log(response);
       return response.data;
-    } catch (err) {
-      return err;
+    } catch (error_) {
+      return error_;
     }
   }
 );

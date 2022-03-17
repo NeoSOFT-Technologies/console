@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import adminRoutes from "../../routes/admin";
+import tenantRoutes from "../../routes/tenants";
 import { RootState } from "../../store";
 import { IUserDataState } from "../../types";
 import withRouter from "../../WithRouter";
-import adminRoutes from "../../Routes/adminRoutes";
-import tenantRoutes from "../../Routes/tenantRoutes";
 
 export const Sidebar = () => {
   const location = useLocation();
@@ -32,7 +32,7 @@ export const Sidebar = () => {
             <a
               href="!#"
               className="nav-link"
-              onClick={(evt) => evt.preventDefault()}
+              onClick={(event_) => event_.preventDefault()}
             >
               <div className="nav-profile-image">
                 <img
