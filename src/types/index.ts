@@ -12,7 +12,7 @@ export interface ITenantData {
   password?: string;
   type: string;
   id?: number;
-  roles:String[];
+  roles: String[];
 }
 
 export interface ITenantDetail {
