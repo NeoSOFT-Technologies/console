@@ -1,4 +1,4 @@
-import{ Component, ErrorInfo, ReactNode } from "react";
+import { Component, ErrorInfo, ReactNode } from "react";
 
 interface IProperty {
   children: ReactNode;
