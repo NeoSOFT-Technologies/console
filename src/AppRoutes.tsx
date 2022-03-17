@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Spinner from "./components/loader/Loader";
-import { AdminGuard, TenantGuard } from "./utils/Authgaurd";
+import { AdminGuard, TenantGuard } from "./components/Authgaurd";
 const UserDetails = lazy(
   () => import("./pages/features/Tenant/user-details/UserDetails")
 );
