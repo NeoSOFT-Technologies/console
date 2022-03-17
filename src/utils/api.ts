@@ -1,5 +1,5 @@
 import axios from "axios";
-import tokenService from "../services/token.service";
+// import tokenService from "../services/token.service";
 
 const defaultBaseUrl =
   process.env.REACT_APP_API_BASEURL || "http://localhost:3000/";
@@ -37,52 +37,52 @@ const apiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
     ],
   });
 
-  service.interceptors.request.use(
-    (config: any) => {
-      const token = tokenService.getLocalAccessToken();
-      if (token) {
-        // config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
-        config.headers["x-access-token"] = token; // for Node.js Express back-end
-      }
-      return config;
-    },
-    (error) => {
-      return error;
-    }
-  );
+  // service.interceptors.request.use(
+  //   (config: any) => {
+  //     const token = tokenService.getLocalAccessToken();
+  //     if (token) {
+  //       // config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
+  //       config.headers["x-access-token"] = token; // for Node.js Express back-end
+  //     }
+  //     return config;
+  //   },
+  //   (error) => {
+  //     return error;
+  //   }
+  // );
 
-  service.interceptors.response.use(
-    (res) => {
-      return res;
-    },
-    async (err) => {
-      const originalConfig = err.config;
+  // service.interceptors.response.use(
+  //   (res) => {
+  //     return res;
+  //   },
+  //   async (err) => {
+  //     const originalConfig = err.config;
 
-      if (
-        originalConfig.url !== "/login" &&
-        err.response && // Access Token was expired
-        err.response.status === 401 &&
-        !originalConfig._retry
-      ) {
-        originalConfig._retry = true;
+  //     if (
+  //       originalConfig.url !== "/login" &&
+  //       err.response && // Access Token was expired
+  //       err.response.status === 401 &&
+  //       !originalConfig._retry
+  //     ) {
+  //       originalConfig._retry = true;
 
-        try {
-          const rs = await service.post("/refreshtoken", {
-            refreshToken: tokenService.getLocalRefreshToken(),
-          });
+  //       try {
+  //         const rs = await service.post("/refreshtoken", {
+  //           refreshToken: tokenService.getLocalRefreshToken(),
+  //         });
 
-          const { accessToken } = rs.data;
-          tokenService.updateLocalAccessToken(accessToken);
+  //         const { accessToken } = rs.data;
+  //         tokenService.updateLocalAccessToken(accessToken);
 
-          return service(originalConfig);
-        } catch (_error) {
-          return _error;
-        }
-      }
+  //         return service(originalConfig);
+  //       } catch (_error) {
+  //         return _error;
+  //       }
+  //     }
 
-      throw err;
-    }
-  );
+  //     throw err;
+  //   }
+  // );
 
   return service;
 };

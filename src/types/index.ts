@@ -12,7 +12,9 @@ export interface ITenantData {
   password?: string;
   type: string;
   id?: number;
+  roles:String[];
 }
+
 export interface ITenantDetail {
   name: string;
   description: string;
@@ -60,6 +62,9 @@ export interface ISetTenantList {
   list: ITenantData[];
   count: number;
 }
+export interface ISetTenantRoles {
+  roles: String[];
+}
 export interface ISetTenantUserList {
   list: ITenantUserData[];
   count: number;
@@ -86,6 +91,13 @@ export interface ITenantListState {
   loading: boolean;
   error?: string | null;
 }
+
+export interface ITenantRolesState {
+  data?: ISetTenantRoles | null;
+  loading: boolean;
+  error?: string | null;
+}
+
 export interface ITenantDetails {
   id: number;
   userid: string;

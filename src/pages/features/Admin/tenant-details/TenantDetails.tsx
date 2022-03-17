@@ -39,6 +39,7 @@ export default function TenantDetails() {
     databaseName: "",
     databaseDescription: "",
     type: "tenant",
+    roles: [],
   });
   const [error, setError] = useState<IErrorTenantDetail>({
     name: "",
@@ -152,6 +153,10 @@ export default function TenantDetails() {
 
         <Dropdown.Menu>
           <Dropdown.Item>Test</Dropdown.Item>
+          <Dropdown.Item onClick={() => navigate("/manageroles")}>
+            Manage Roles
+          </Dropdown.Item>
+          <Dropdown.Item>Manage Permission</Dropdown.Item>
           <Dropdown.Item>Set Tenant Url</Dropdown.Item>
           <Dropdown.Item>Set InActive</Dropdown.Item>
           <Dropdown.Item>Upload</Dropdown.Item>
@@ -294,7 +299,7 @@ export default function TenantDetails() {
               <Col md={12}>
                 <Form.Group
                   className="mb-3"
-                  controlId="exampleForm.ControlTextarea1"
+                  // controlId="exampleForm.ControlTextarea1"
                 >
                   <Form.Label>Description:</Form.Label>
 

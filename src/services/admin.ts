@@ -14,3 +14,7 @@ export function tenantListService(currentPage: number, search: string) {
     `/api/tenant?type=tenant&_page=${currentPage}&name_like=${search}`
   );
 }
+
+export function tenantRolesService() {
+  return apiFactory().get(`/api/tenant-roles`);
+}
