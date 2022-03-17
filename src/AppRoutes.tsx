@@ -30,6 +30,9 @@ const AdminDashboard = lazy(
 const TenantDetails = lazy(
   () => import("./pages/features/Admin/tenant-details/TenantDetails")
 );
+const TenantProfile = lazy(
+  () => import("./pages/features/Tenant/tenant-profile/TenantProfile")
+);
 function AppRoutes() {
   return (
     <Suspense fallback={<Spinner />}>
@@ -102,6 +105,14 @@ function AppRoutes() {
           element={
             <TenantGuard>
               <UserDetails />
+            </TenantGuard>
+          }
+        />
+        <Route
+          path="/tenantprofile"
+          element={
+            <TenantGuard>
+              <TenantProfile />
             </TenantGuard>
           }
         />

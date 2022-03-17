@@ -144,6 +144,7 @@ export default function Login() {
                   </div>
                   <a
                     href="!#"
+                    data-testid="link"
                     onClick={(event) => event.preventDefault()}
                     className="auth-link text-black"
                   >

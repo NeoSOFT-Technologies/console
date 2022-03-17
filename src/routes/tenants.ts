@@ -15,8 +15,8 @@ const tenantRoutes = [
     icon: "bi bi-person-plus-fill",
   },
   {
-    path: "#",
-    title: "Config",
+    path: "/tenantprofile",
+    title: "Profile",
     icon: "bi bi-gear",
   },
 ];

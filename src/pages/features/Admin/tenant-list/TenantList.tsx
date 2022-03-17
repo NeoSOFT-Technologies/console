@@ -120,12 +120,14 @@ export default function TenantList() {
                   <div className="input-group">
                     <input
                       type="text"
+                      data-testid="input-group"
                       className="form-control bg-parent border-1"
                       placeholder="Search Tenant"
                       onChange={(e) => setSearch(e.target.value)}
                     />
                     <button
                       className=" btn  btn-success btn-sm"
+                      data-testid="search-button"
                       onClick={(e) => searchFilter(e)}
                     >
                       <i className=" bi bi-search"></i>

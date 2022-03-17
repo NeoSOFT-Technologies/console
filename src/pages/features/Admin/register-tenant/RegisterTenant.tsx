@@ -255,7 +255,7 @@ export default function RegisterTenant() {
                   <Form.Control
                     as="textarea"
                     type="textarea"
-                    data-testid="databaseDescription-input"
+                    data-testid="tenantDescription-input"
                     name="description"
                     placeholder="Here...."
                     rows={3}
