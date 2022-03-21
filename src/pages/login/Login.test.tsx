@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { BrowserRouter } from "react-router-dom";
-import Login from "./Login";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import store from "./../../store";
+import Login from "./Login";
 
 it("render without crashing Login", () => {
   render(
