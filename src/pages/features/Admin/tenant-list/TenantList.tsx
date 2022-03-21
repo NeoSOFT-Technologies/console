@@ -34,7 +34,7 @@ export default function TenantList() {
     dispatch(getTenantList({ currentPage, search: searchUser }));
   };
   useEffect(() => {
-    console.log(tenantList.data);
+    // console.log(tenantList.data);
     if (tenantList.data) {
       setDataList({
         list: [...tenantList.data.list],

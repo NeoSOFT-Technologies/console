@@ -82,9 +82,8 @@ const TenantProfile = () => {
   };
   const handleUpdateTenant = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log(err);
+    // console.log(err);
     if (handleValidate()) {
-      console.log("update");
       if (
         tenant.name !== "" &&
         tenant.userid !== "" &&
@@ -250,7 +249,7 @@ const TenantProfile = () => {
                     rows={3}
                     className="form-control rounded-0"
                     data-testid="description-input"
-                    id="description"
+                    // id="description"
                     placeholder="Here...."
                     value={tenant.description}
                     disabled={!edit}

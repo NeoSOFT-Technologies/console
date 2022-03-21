@@ -64,19 +64,19 @@ class App extends Component<IProperty, IState> {
   }
 
   onRouteChanged() {
-    console.log("ROUTE CHANGED");
-    window.scrollTo(0, 0);
+    // console.log("ROUTE CHANGED");
+    // window.scrollTo(0, 0);
     const fullPageLayoutRoutes = [
       "/login-page",
-      "/registration-page",
-      "/user-pages/lockscreen",
-      "/error-pages/error-404",
-      "/error-pages/error-500",
-      "/error-pages/error-401",
-      "/general-pages/landing-page",
+      // "/registration-page",
+      // "/user-pages/lockscreen",
+      // "/error-pages/error-404",
+      // "/error-pages/error-500",
+      // "/error-pages/error-401",
+      // "/general-pages/landing-page",
     ];
     for (const fullPageLayoutRoute of fullPageLayoutRoutes) {
-      console.log(this.props.router.location.pathname);
+      // console.log(this.props.router.location.pathname);
       if (this.props.router.location.pathname === fullPageLayoutRoute) {
         this.setState({
           isFullPageLayout: true,
