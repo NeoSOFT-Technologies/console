@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
+import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
 import {
   regexForEmail,
   regexForName,
   regexForUser,
   regForPassword,
 } from "../../../../resources/constants";
-import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
-import { useAppDispatch } from "../../../../store/hooks";
 import { addNewUser } from "../../../../store/features/tenant/add-user/slice";
+import { useAppDispatch } from "../../../../store/hooks";
 interface Ierrors {
   username: string;
   email: string;

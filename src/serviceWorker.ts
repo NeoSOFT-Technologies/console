@@ -32,10 +32,10 @@ function registerValidSW(swUrl: string, config?: Config) {
       registration.addEventListener("updatefound", () => {
         /* eslint eqeqeq: 1 */
         const installingWorker = registration.installing;
-        if (installingWorker == undefined) {
+        if (installingWorker === undefined) {
           return;
         }
-        installingWorker.addEventListener("statechange", () => {
+        installingWorker?.addEventListener("statechange", () => {
           if (installingWorker.state === "installed") {
             if (navigator.serviceWorker.controller) {
               // At this point, the updated precached content has been fetched,
@@ -81,7 +81,7 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
       /* eslint eqeqeq: 1 */
       if (
         response.status === 404 ||
-        (contentType != undefined && !contentType.includes("javascript"))
+        (contentType !== undefined && !contentType?.includes("javascript"))
       ) {
         // No service worker found. Probably a different app. Reload the page.
         navigator.serviceWorker.ready.then((registration) => {

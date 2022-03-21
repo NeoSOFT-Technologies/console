@@ -1,5 +1,5 @@
-import tokenService from "./token.service";
 import apiFactory from "../utils/api";
+import tokenService from "./token.service";
 
 class AuthService {
   public login(email: string, password: string) {

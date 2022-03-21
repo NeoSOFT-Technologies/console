@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../utils/error";
 import { createNewUserService } from "../../../../services";
+import error from "../../../../utils/error";
 
 interface IConditions {
   username: string;
@@ -43,7 +43,7 @@ const slice = createSlice({
       state.loading = true;
       state.isAdded = false;
     });
-    builder.addCase(addNewUser.fulfilled, (state, action) => {
+    builder.addCase(addNewUser.fulfilled, (state) => {
       state.loading = false;
       state.isAdded = true;
     });

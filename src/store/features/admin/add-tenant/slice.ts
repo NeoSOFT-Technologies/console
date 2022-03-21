@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../utils/error";
-import { ITenantData } from "../../../../types/index";
 import { addTenantDataService } from "../../../../services";
+import { ITenantData } from "../../../../types/index";
+import error from "../../../../utils/error";
 
 interface IAddTenantState {
   tenantAdded?: boolean;
@@ -35,7 +35,7 @@ const slice = createSlice({
     builder.addCase(addNewTenant.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(addNewTenant.fulfilled, (state, action) => {
+    builder.addCase(addNewTenant.fulfilled, (state) => {
       state.loading = false;
       state.tenantAdded = true;
     });
