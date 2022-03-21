@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../../store";
-
-import { IUserDataState } from "../../../../types";
+import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
 import {
   regexForName,
   regexForUser,
   regexForEmail,
 } from "../../../../resources/constants";
-import { useAppDispatch } from "../../../../store/hooks";
-import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
+import { RootState } from "../../../../store";
+
 import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
+import { useAppDispatch } from "../../../../store/hooks";
+import { IUserDataState } from "../../../../types";
 import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
 const TenantProfile = () => {
   const user: IUserDataState = useSelector(
