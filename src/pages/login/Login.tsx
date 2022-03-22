@@ -53,6 +53,9 @@ export default function Login() {
       } else if (user.data && user.data.type === "admin") {
         ToastAlert("Logged In", "success");
         navigate("/admindashboard");
+      } else if (user.data && user.data.type === "user") {
+        ToastAlert("Logged In", "success");
+        navigate("/userdashboard");
       } else {
         ToastAlert("Incorrect Credentials!", "warning");
       }

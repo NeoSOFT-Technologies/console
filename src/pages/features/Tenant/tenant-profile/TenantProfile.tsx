@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
   regexForUser,
@@ -26,7 +26,7 @@ const TenantProfile = () => {
     email: "",
     databaseName: "",
     databaseDescription: "",
-    // roles: [],
+    roles: [],
     type: "tenant",
   });
   const [err, setErr] = useState<IErrorTenantDetail>({

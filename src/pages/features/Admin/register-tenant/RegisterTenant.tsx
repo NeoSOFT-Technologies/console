@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Row, Col, Container } from "react-bootstrap";
-
-import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForEmail,
   regexForName,
@@ -22,6 +21,7 @@ export default function RegisterTenant() {
     password: "",
     databaseName: "",
     databaseDescription: "",
+    roles: [],
     type: "tenant",
   });
   const [error, setError] = useState<IErrorTenantInput>({
@@ -31,6 +31,20 @@ export default function RegisterTenant() {
     password: "",
     databaseName: "",
   });
+
+  // const [tenant.roles, setTenant] = useState<string[]>([]);
+  const checkList = ["A", "B", "C", "D"];
+
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (tenant.roles !== undefined) {
+      if (event.target.checked) {
+        setTenant({ ...tenant, roles: [...tenant.roles, event.target.value] });
+      } else {
+        tenant.roles.splice(tenant.roles.indexOf(event.target.value), 1);
+        setTenant({ ...tenant, roles: [...tenant.roles] });
+      }
+    }
+  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // console.log(event.target.value);
@@ -107,11 +121,13 @@ export default function RegisterTenant() {
       ) {
         const newUser = {
           ...tenant,
+          // .tenant.roles,
 
           lastlogin: "Mar 01 2022 11:51:39",
         };
-
+        console.log(newUser);
         dispatch(addNewTenant(newUser));
+
         ToastAlert("Tenant Registered", "success");
 
         setTenant({
@@ -122,6 +138,7 @@ export default function RegisterTenant() {
           password: "",
           databaseName: "",
           databaseDescription: "",
+          roles: [],
           type: "tenant",
         });
       } else {
@@ -150,6 +167,7 @@ export default function RegisterTenant() {
       password: "",
       databaseName: "",
       databaseDescription: "",
+      roles: [],
       type: "tenant",
     });
   };
@@ -311,6 +329,21 @@ export default function RegisterTenant() {
                 </Form.Group>
               </Col>
             </Row>
+            <div className="title">Tenant Roles:</div>
+            <div className="list-container  ">
+              {checkList.map((item, index) => (
+                <span key={index} className="m-4">
+                  <input
+                    value={item}
+                    type="checkbox"
+                    onChange={handleCheck}
+                    className=" inline"
+                  />
+                  <span>{item}</span>
+                </span>
+              ))}
+            </div>
+
             <Button className="info" type="submit" data-testid="submit-input">
               Submit
             </Button>

@@ -89,9 +89,9 @@ export default function UserList() {
         <Card>
           <Card.Header>
             <Button
+              data-testid="active-button"
               variant={checkactive.btn1 ? "dark" : "secondary"}
               className="w5"
-              data-testid="active-button"
               onClick={() =>
                 setCheckactive({ btn1: true, btn2: false, btn3: false })
               }
@@ -127,7 +127,7 @@ export default function UserList() {
               <h2 className="card-title">User List</h2>
               <div className="search-field ">
                 <form className="h-50">
-                  <div className="input-group">
+                  <div className="input-group" data-testid="input-group">
                     <input
                       type="text"
                       data-testid="input-group"

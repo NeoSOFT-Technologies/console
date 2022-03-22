@@ -7,15 +7,16 @@ export interface ITenantData {
   description?: string;
   databaseName?: string;
   databaseDescription?: string;
-  userid: string;
-  email: string;
+  userid?: string;
+  email?: string;
   password?: string;
-  type: string;
+  type?: string;
   tenantName?: string;
   createdDateTime?: string;
   isDeleted?: boolean;
   isActive?: boolean;
-  role?: string[];
+  roles?: string[];
+  permissions?: string[];
   id?: number;
 }
 export interface ITenantDetail {
@@ -45,6 +46,7 @@ export interface ITenantUserData {
   createdDateTime: string;
   isDeleted: boolean;
   isActive: boolean;
+  roles: string[];
 }
 
 export interface IActionsRenderList {

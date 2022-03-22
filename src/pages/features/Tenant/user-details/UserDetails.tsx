@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useLocation } from "react-router";
-import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { regexForUser, regexForEmail } from "../../../../resources/constants";
 import { ITenantUserData } from "../../../../types";
 interface LocationState {

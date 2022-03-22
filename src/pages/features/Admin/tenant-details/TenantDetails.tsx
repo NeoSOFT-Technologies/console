@@ -9,7 +9,7 @@ import {
   Modal,
 } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router";
-import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
   regexForUser,
@@ -38,6 +38,7 @@ export default function TenantDetails() {
     email: "",
     databaseName: "",
     databaseDescription: "",
+    roles: [],
     type: "tenant",
   });
   const [error, setError] = useState<IErrorTenantDetail>({

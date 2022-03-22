@@ -9,7 +9,7 @@ const initialState: IUserDataState = {
   error: undefined,
 };
 
-export const getUserList = createAsyncThunk(
+export const getUserData = createAsyncThunk(
   "user/data",
   async (conditions: string) => {
     try {
@@ -27,14 +27,14 @@ const slice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder): void {
-    builder.addCase(getUserList.pending, (state) => {
+    builder.addCase(getUserData.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(getUserList.fulfilled, (state, action) => {
+    builder.addCase(getUserData.fulfilled, (state, action) => {
       state.loading = false;
       state.data = action.payload;
     });
-    builder.addCase(getUserList.rejected, (state, action) => {
+    builder.addCase(getUserData.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
       state.error = error(action.payload);
