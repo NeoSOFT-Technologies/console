@@ -56,6 +56,15 @@
       "unicorn/prevent-abbreviations": "off",
       "unicorn/consistent-destructuring": "off",
       "unicorn/consistent-function-scoping": "off",
+      "import/order": [
+        "error",
+        {
+          "groups": ["builtin", "external", "parent", "sibling", "index"],
+          "alphabetize": {
+            "order": "asc"
+          }
+        }
+      ],
 			"unicorn/filename-case": [
         "error",
         {

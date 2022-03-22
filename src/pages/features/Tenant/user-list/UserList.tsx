@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card } from "react-bootstrap";
-import RenderList from "../../../../components/list/RenderList";
 import { useNavigate } from "react-router-dom";
+import RenderList from "../../../../components/list/RenderList";
 import { RootState } from "../../../../store";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getTenantUserList } from "../../../../store/features/tenant/tenant-user-list/slice";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
   ITenantUserData,
   ITenantUserDataList,
@@ -31,7 +31,7 @@ export default function UserList() {
     dispatch(getTenantUserList({ currentPage, search: searchUser }));
   };
   useEffect(() => {
-    console.log(userList);
+    // console.log(userList);
     if (userList.data) {
       setDataList({
         list: [...userList.data.list],
@@ -92,6 +92,7 @@ export default function UserList() {
               data-testid="active-button"
               variant={checkactive.btn1 ? "dark" : "secondary"}
               className="w5"
+              data-testid="active-button"
               onClick={() =>
                 setCheckactive({ btn1: true, btn2: false, btn3: false })
               }
@@ -130,6 +131,7 @@ export default function UserList() {
                   <div className="input-group" data-testid="input-group">
                     <input
                       type="text"
+                      data-testid="input-group"
                       className="form-control bg-parent border-1"
                       placeholder="Search User"
                       onChange={(e) => setSearch(e.target.value)}

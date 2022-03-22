@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { BrowserRouter } from "react-router-dom";
-import CreateUser from "./CreateUser";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import store from "../../../../store/index";
+import CreateUser from "./CreateUser";
 
 it("render without crashing CreateUser", () => {
   render(
@@ -54,9 +54,11 @@ it("test if input box takes input", () => {
   expect(screen.getByTestId("username-input")).toHaveValue("akhilpinni");
 
   const emailBox = screen.getByTestId("email-input");
-  fireEvent.change(emailBox, { target: { value: "akhilpinni123@gmail.com" } });
+  fireEvent.change(emailBox, {
+    target: { value: "mailto:akhilpinni123@gmail.com" },
+  });
   expect(screen.getByTestId("email-input")).toHaveValue(
-    "akhilpinni123@gmail.com"
+    "mailto:akhilpinni123@gmail.com"
   );
 
   const passwordBox = screen.getByTestId("password-input");

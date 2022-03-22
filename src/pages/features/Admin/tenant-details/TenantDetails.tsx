@@ -9,16 +9,16 @@ import {
   Modal,
 } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router";
-import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
   regexForUser,
   regexForEmail,
 } from "../../../../resources/constants";
-import { useAppDispatch } from "../../../../store/hooks";
 import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
 import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
-import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import { useAppDispatch } from "../../../../store/hooks";
+import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
 
 interface LocationState {
   val: ITenantData;

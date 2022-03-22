@@ -3,14 +3,14 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import store from "../../store/index";
-import LandingPage from "./LandingPage";
+import store from "../../store";
+import Loader from "./Loader";
 
-it("render without crashing AdminDashboard", () => {
+it("render without crashing Loader", () => {
   render(
     <BrowserRouter>
       <Provider store={store}>
-        <LandingPage />
+        <Loader />
       </Provider>
     </BrowserRouter>
   );

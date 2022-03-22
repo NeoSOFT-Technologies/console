@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import withRouter from "./WithRouter";
 // import "./styles/index.scss";
-import AppRoutes from "./AppRoutes";
-import Navbar from "./components/navbar/Navbar";
-import Footer from "./components/footer/Footer";
 import { connect } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { IUserDataState } from "./types/index";
+import AppRoutes from "./AppRoutes";
+import withRouter from "./WithRouter";
+import Footer from "./components/footer/Footer";
+import Navbar from "./components/navbar/Navbar";
 import Sidebar from "./components/sidebar/Sidebar";
 import { RootState } from "./store";
+import { IUserDataState } from "./types/index";
 interface IState {
   isFullPageLayout: boolean;
 }
@@ -64,19 +64,19 @@ class App extends Component<IProperty, IState> {
   }
 
   onRouteChanged() {
-    console.log("ROUTE CHANGED");
-    window.scrollTo(0, 0);
+    // console.log("ROUTE CHANGED");
+    // window.scrollTo(0, 0);
     const fullPageLayoutRoutes = [
       "/login-page",
-      "/registration-page",
-      "/user-pages/lockscreen",
-      "/error-pages/error-404",
-      "/error-pages/error-500",
-      "/error-pages/error-401",
-      "/general-pages/landing-page",
+      // "/registration-page",
+      // "/user-pages/lockscreen",
+      // "/error-pages/error-404",
+      // "/error-pages/error-500",
+      // "/error-pages/error-401",
+      // "/general-pages/landing-page",
     ];
     for (const fullPageLayoutRoute of fullPageLayoutRoutes) {
-      console.log(this.props.router.location.pathname);
+      // console.log(this.props.router.location.pathname);
       if (this.props.router.location.pathname === fullPageLayoutRoute) {
         this.setState({
           isFullPageLayout: true,

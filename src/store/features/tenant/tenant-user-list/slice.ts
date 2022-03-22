@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../utils/error";
-import { ITenantUserListState } from "../../../../types/index";
 import { tenantUserListService } from "../../../../services";
+import { ITenantUserListState } from "../../../../types/index";
+import error from "../../../../utils/error";
 
 interface IConditions {
   currentPage: number;

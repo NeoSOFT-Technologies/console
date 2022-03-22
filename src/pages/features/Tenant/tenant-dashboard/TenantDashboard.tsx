@@ -9,7 +9,7 @@ const TenantDashboard = () => {
     (state: RootState) => state.userData
   );
   useEffect(() => {
-    console.log(user.data);
+    // console.log(user.data);
   }, [user.data]);
 
   return (

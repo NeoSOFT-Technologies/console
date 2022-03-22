@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../utils/error";
 import { createNewUserService } from "../../../../services";
+import error from "../../../../utils/error";
 
 interface IConditions {
   username: string;

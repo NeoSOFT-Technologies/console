@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { BrowserRouter } from "react-router-dom";
-import TenantProfile from "./TenantProfile";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import store from "../../../../store/index";
+import TenantProfile from "./TenantProfile";
 
 it("render without crashing TenantProfile", () => {
   render(
@@ -15,7 +15,6 @@ it("render without crashing TenantProfile", () => {
     </BrowserRouter>
   );
 });
-
 it("test if input box is present", () => {
   render(
     <BrowserRouter>

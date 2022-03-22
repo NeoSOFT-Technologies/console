@@ -1,14 +1,14 @@
 import React, { useEffect, useState, ChangeEvent } from "react";
 import { Form, Button, Alert, InputGroup } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { ToastAlert } from "../../components/toast-alert/toast-alert";
-import { regexForEmail } from "../../resources/constants";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import PasswordButtons from "../../components/password-field/Password";
-import { RootState } from "../../store";
-import { IUserDataState } from "../../types";
+import { ToastAlert } from "../../components/toaster-alert/ToastAlert";
+import { regexForEmail } from "../../resources/constants";
 import { logo } from "../../resources/images";
+import { RootState } from "../../store";
 import { commonLogin } from "../../store/login/slice";
+import { IUserDataState } from "../../types";
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setpassword] = useState<string>("");
@@ -147,6 +147,7 @@ export default function Login() {
                   </div>
                   <a
                     href="!#"
+                    data-testid="link"
                     onClick={(event) => event.preventDefault()}
                     className="auth-link text-black"
                   >

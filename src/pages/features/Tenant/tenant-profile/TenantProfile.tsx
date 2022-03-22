@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Container, Row, Col, ListGroup } from "react-bootstrap";
+import { Button, Form, Container, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../../store";
-
-import { IUserDataState } from "../../../../types";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
   regexForUser,
   regexForEmail,
 } from "../../../../resources/constants";
-import { useAppDispatch } from "../../../../store/hooks";
-import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import { RootState } from "../../../../store";
+
 import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
+import { useAppDispatch } from "../../../../store/hooks";
+import { IUserDataState } from "../../../../types";
 import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
 const TenantProfile = () => {
   const user: IUserDataState = useSelector(
@@ -82,9 +82,8 @@ const TenantProfile = () => {
   };
   const handleUpdateTenant = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log(err);
+    // console.log(err);
     if (handleValidate()) {
-      console.log("update");
       if (
         tenant.name !== "" &&
         tenant.userid !== "" &&
@@ -250,7 +249,7 @@ const TenantProfile = () => {
                     rows={3}
                     className="form-control rounded-0"
                     data-testid="description-input"
-                    id="description"
+                    // id="description"
                     placeholder="Here...."
                     value={tenant.description}
                     disabled={!edit}
@@ -258,7 +257,7 @@ const TenantProfile = () => {
                   />
                 </Form.Group>
               </Col>
-              <Col md={6}>
+              {/* <Col md={6}>
                 <h6>Roles</h6>
 
                 <ul>
@@ -267,8 +266,8 @@ const TenantProfile = () => {
                   <li>Tenant roles cannot edit</li>
                 </ul>
               </Col>
-              <Col md={6}>
-                <h6>Permissions</h6>
+              <Col md={6}> */}
+              {/* <h6>Permissions</h6>
                 <ListGroup as="ul">
                   <ListGroup.Item as="li" className="bb">
                     Tenant roles cannot edit
@@ -280,7 +279,7 @@ const TenantProfile = () => {
                     Tenant roles cannot edit
                   </ListGroup.Item>
                 </ListGroup>
-              </Col>
+              </Col> */}
               {edit ? (
                 <Button
                   data-testid="update-button"
