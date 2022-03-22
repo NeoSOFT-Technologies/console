@@ -3,13 +3,14 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import store from "../../../../store/index";
-import AdminDashboard from "./AdminDashboard";
-it("render without crashing AdminDashboard", () => {
+import store from "../../store";
+import Footer from "./Footer";
+
+it("render without crashing Footer", () => {
   render(
     <BrowserRouter>
       <Provider store={store}>
-        <AdminDashboard />
+        <Footer />
       </Provider>
     </BrowserRouter>
   );

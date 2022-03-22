@@ -15,7 +15,6 @@ it("render without crashing TenantProfile", () => {
     </BrowserRouter>
   );
 });
-
 it("test if input box is present", () => {
   render(
     <BrowserRouter>
