@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ChangeEvent } from "react";
 import { Form, Button, Alert, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { ToastAlert } from "../../components/toaster-alert/ToastAlert";
+import { ToastAlert } from "../../components/toast-alert/toast-alert";
 import { regexForEmail } from "../../resources/constants";
 import { useDispatch, useSelector } from "react-redux";
 import PasswordButtons from "../../components/password-field/Password";
@@ -53,6 +53,9 @@ export default function Login() {
       } else if (user.data && user.data.type === "admin") {
         ToastAlert("Logged In", "success");
         navigate("/admindashboard");
+      } else if (user.data && user.data.type === "user") {
+        ToastAlert("Logged In", "success");
+        navigate("/userdashboard");
       } else {
         ToastAlert("Incorrect Credentials!", "warning");
       }
@@ -144,7 +147,6 @@ export default function Login() {
                   </div>
                   <a
                     href="!#"
-                    data-testid="link"
                     onClick={(event) => event.preventDefault()}
                     className="auth-link text-black"
                   >

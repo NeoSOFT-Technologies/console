@@ -3,15 +3,20 @@ export interface IHeadings {
   className?: string;
 }
 export interface ITenantData {
-  name: string;
-  description: string;
-  databaseName: string;
-  databaseDescription: string;
-  userid: string;
-  email: string;
+  name?: string;
+  description?: string;
+  databaseName?: string;
+  databaseDescription?: string;
+  userid?: string;
+  email?: string;
   password?: string;
-  type: string;
-  roles: string[];
+  type?: string;
+  tenantName?: string;
+  createdDateTime?: string;
+  isDeleted?: boolean;
+  isActive?: boolean;
+  roles?: string[];
+  permissions?: string[];
   id?: number;
 }
 export interface ITenantDetail {

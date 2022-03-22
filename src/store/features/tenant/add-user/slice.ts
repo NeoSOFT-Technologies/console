@@ -43,7 +43,7 @@ const slice = createSlice({
       state.loading = true;
       state.isAdded = false;
     });
-    builder.addCase(addNewUser.fulfilled, (state, action) => {
+    builder.addCase(addNewUser.fulfilled, (state) => {
       state.loading = false;
       state.isAdded = true;
     });

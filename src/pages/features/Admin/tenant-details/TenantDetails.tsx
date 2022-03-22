@@ -18,7 +18,7 @@ import {
 import { useAppDispatch } from "../../../../store/hooks";
 import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
 import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
-import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 
 interface LocationState {
   val: ITenantData;

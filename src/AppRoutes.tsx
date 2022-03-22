@@ -1,7 +1,10 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Spinner from "./components/loader/Loader";
-import { AdminGuard, TenantGuard } from "./utils/authgaurd";
+import { AdminGuard, TenantGuard, UserGuard } from "./components/Authgaurd";
+const RoleAndPermissions = lazy(
+  () => import("./pages/features/User/role-and-permissions/RoleAndPermissions")
+);
 const UserDetails = lazy(
   () => import("./pages/features/Tenant/user-details/UserDetails")
 );
@@ -10,6 +13,9 @@ const UserList = lazy(
 );
 const TenantDashboard = lazy(
   () => import("./pages/features/Tenant/tenant-dashboard/TenantDashboard")
+);
+const UserDashboard = lazy(
+  () => import("./pages/features/User/user-dashboard/UserDashboard")
 );
 const Error404 = lazy(() => import("./pages/error-pages/Error404"));
 const Error401 = lazy(() => import("./pages/error-pages/Error401"));
@@ -30,19 +36,15 @@ const AdminDashboard = lazy(
 const TenantDetails = lazy(
   () => import("./pages/features/Admin/tenant-details/TenantDetails")
 );
-const TenantProfile = lazy(
-  () => import("./pages/features/Tenant/tenant-profile/TenantProfile")
-);
 function AppRoutes() {
   return (
     <Suspense fallback={<Spinner />}>
       <Routes>
         <Route path="/login-page" element={<Login />} />
-
         <Route path="/error-pages/error-404" element={<Error404 />} />
         <Route path="/error-pages/error-500" element={<Error500 />} />
         <Route path="/error-pages/error-401" element={<Error401 />} />
-        {/** *********************ADMIN ROUTES***********************/}
+        {/** **********************ADMIN ROUTES***********************/}
         <Route
           path="/admindashboard"
           element={
@@ -109,12 +111,22 @@ function AppRoutes() {
             </TenantGuard>
           }
         />
+        {/**********************************************************/}
+        {/** ************************USER ROUTES*********************/}
         <Route
-          path="/tenantprofile"
+          path="/userdashboard"
           element={
-            <TenantGuard>
-              <TenantProfile />
-            </TenantGuard>
+            <UserGuard>
+              <UserDashboard />
+            </UserGuard>
+          }
+        />
+        <Route
+          path="/userrolesandpermissions"
+          element={
+            <UserGuard>
+              <RoleAndPermissions />
+            </UserGuard>
           }
         />
         {/**********************************************************/}

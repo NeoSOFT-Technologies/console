@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import adminRoutes from "../../routes/admin";
 import tenantRoutes from "../../routes/tenants";
+import userRoutes from "../../routes/user-routes";
 import { RootState } from "../../store";
 import { IUserDataState } from "../../types";
 import withRouter from "../../WithRouter";
@@ -21,6 +22,8 @@ export const Sidebar = () => {
       setRoutes(adminRoutes);
     } else if (user.data && user.data.type === "tenant") {
       setRoutes(tenantRoutes);
+    } else if (user.data && user.data.type === "user") {
+      setRoutes(userRoutes);
     }
   }, [user.data]);
 

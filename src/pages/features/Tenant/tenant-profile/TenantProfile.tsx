@@ -10,7 +10,7 @@ import {
   regexForEmail,
 } from "../../../../resources/constants";
 import { useAppDispatch } from "../../../../store/hooks";
-import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
 import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
 const TenantProfile = () => {

@@ -10,7 +10,7 @@ import {
 import { addNewTenant } from "../../../../store/features/admin/add-tenant/slice";
 import { useAppDispatch } from "../../../../store/hooks";
 import { IErrorTenantInput, ITenantData } from "../../../../types/index";
-import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 
 export default function RegisterTenant() {
   const dispatch = useAppDispatch();
@@ -37,11 +37,13 @@ export default function RegisterTenant() {
   const checkList = ["A", "B", "C", "D"];
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      setTenant({ ...tenant, roles: [...tenant.roles, event.target.value] });
-    } else {
-      tenant.roles.splice(tenant.roles.indexOf(event.target.value), 1);
-      setTenant({ ...tenant, roles: [...tenant.roles] });
+    if (tenant.roles !== undefined) {
+      if (event.target.checked) {
+        setTenant({ ...tenant, roles: [...tenant.roles, event.target.value] });
+      } else {
+        tenant.roles.splice(tenant.roles.indexOf(event.target.value), 1);
+        setTenant({ ...tenant, roles: [...tenant.roles] });
+      }
     }
   };
 
