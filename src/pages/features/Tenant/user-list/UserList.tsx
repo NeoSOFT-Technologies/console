@@ -92,7 +92,6 @@ export default function UserList() {
               data-testid="active-button"
               variant={checkactive.btn1 ? "dark" : "secondary"}
               className="w5"
-              data-testid="active-button"
               onClick={() =>
                 setCheckactive({ btn1: true, btn2: false, btn3: false })
               }

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Container, Card, Form, Button } from "react-bootstrap";
-import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { useSelector } from "react-redux";
 import Spinner from "../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { regForPassword } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
+import { updateUser } from "../../../../store/features/user/update-user/slice";
+import { useAppDispatch } from "../../../../store/hooks";
 import { IUserDataState } from "../../../../types";
 import Error500 from "../../../error-pages/Error500";
-import { useAppDispatch } from "../../../../store/hooks";
-import { updateUser } from "../../../../store/features/user/update-user/slice";
 import "./userDashboard.scss";
 export default function UserDashboard() {
   const user: IUserDataState = useSelector(

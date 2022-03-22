@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../utils/error";
 import { updateUserPassword } from "../../../../services/users";
+import error from "../../../../utils/error";
 
 interface IConditions {
   id: number;
