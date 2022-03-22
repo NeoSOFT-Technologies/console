@@ -31,7 +31,7 @@ export default function UserList() {
     dispatch(getTenantUserList({ currentPage, search: searchUser }));
   };
   useEffect(() => {
-    console.log(userList);
+    // console.log(userList);
     if (userList.data) {
       setDataList({
         list: [...userList.data.list],
@@ -91,6 +91,7 @@ export default function UserList() {
             <Button
               variant={checkactive.btn1 ? "dark" : "secondary"}
               className="w5"
+              data-testid="active-button"
               onClick={() =>
                 setCheckactive({ btn1: true, btn2: false, btn3: false })
               }
@@ -100,6 +101,7 @@ export default function UserList() {
             <Button
               variant={checkactive.btn2 ? "dark" : "secondary"}
               className="w5"
+              data-testid="inactive-button"
               onClick={() =>
                 setCheckactive({ btn1: false, btn2: true, btn3: false })
               }
@@ -109,6 +111,7 @@ export default function UserList() {
             <Button
               variant={checkactive.btn3 ? "dark" : "secondary"}
               className="w5"
+              data-testid="all-button"
               onClick={() =>
                 setCheckactive({ btn1: false, btn2: false, btn3: true })
               }
@@ -127,12 +130,14 @@ export default function UserList() {
                   <div className="input-group">
                     <input
                       type="text"
+                      data-testid="input-group"
                       className="form-control bg-parent border-1"
                       placeholder="Search User"
                       onChange={(e) => setSearch(e.target.value)}
                     />
                     <button
                       className=" btn  btn-success btn-sm"
+                      data-testid="search-button"
                       onClick={(e) => searchFilter(e)}
                     >
                       <i className=" bi bi-search"></i>

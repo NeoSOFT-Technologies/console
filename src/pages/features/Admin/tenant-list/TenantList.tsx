@@ -34,7 +34,7 @@ export default function TenantList() {
     dispatch(getTenantList({ currentPage, search: searchUser }));
   };
   useEffect(() => {
-    console.log(tenantList.data);
+    // console.log(tenantList.data);
     if (tenantList.data) {
       setDataList({
         list: [...tenantList.data.list],
@@ -120,12 +120,14 @@ export default function TenantList() {
                   <div className="input-group">
                     <input
                       type="text"
+                      data-testid="input-group"
                       className="form-control bg-parent border-1"
                       placeholder="Search Tenant"
                       onChange={(e) => setSearch(e.target.value)}
                     />
                     <button
                       className=" btn  btn-success btn-sm"
+                      data-testid="search-button"
                       onClick={(e) => searchFilter(e)}
                     >
                       <i className=" bi bi-search"></i>

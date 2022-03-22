@@ -19,7 +19,7 @@ export const deleteTenant = createAsyncThunk(
   async (id: number) => {
     try {
       const response = await deleteTenantDataService(id);
-      console.log(response);
+      // sconsole.log(response);
       return response.data;
     } catch (error_) {
       return error_;

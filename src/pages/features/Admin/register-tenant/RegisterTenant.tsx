@@ -171,7 +171,9 @@ export default function RegisterTenant() {
                   <Form.Label> Tenant Name :</Form.Label>
                   <Form.Control
                     type="text"
-                    id="name"
+                    // id="name"
+                    // controlId="myname"
+
                     placeholder="Enter Name"
                     name="name"
                     data-testid="name-input"
@@ -192,7 +194,7 @@ export default function RegisterTenant() {
                   <Form.Control
                     type="text"
                     name="userid"
-                    id="userid"
+                    // id="userid"
                     data-testid="userid-input"
                     placeholder="Enter User ID"
                     isValid={!error.userid && !!tenant.userid}
@@ -213,7 +215,7 @@ export default function RegisterTenant() {
                     type="email"
                     placeholder="Enter Email"
                     name="email"
-                    id="email"
+                    // id="email"
                     value={tenant.email}
                     isValid={!error.email && !!tenant.email}
                     data-testid="email-input"
@@ -235,7 +237,7 @@ export default function RegisterTenant() {
                     data-testid="password-input"
                     value={tenant.password}
                     name="password"
-                    id="password"
+                    // id="password"
                     isValid={!error.password && !!tenant.password}
                     isInvalid={!!error.password}
                     onChange={handleInputChange}
@@ -255,13 +257,13 @@ export default function RegisterTenant() {
                   <Form.Control
                     as="textarea"
                     type="textarea"
-                    data-testid="databaseDescription-input"
+                    data-testid="tenantDescription-input"
                     name="description"
                     placeholder="Here...."
                     rows={3}
                     value={tenant.description}
                     className="form-control rounded-0"
-                    id="description"
+                    // id="description"
                     onChange={handleInputChange}
                     required
                   />
@@ -275,7 +277,7 @@ export default function RegisterTenant() {
                     type="text"
                     placeholder="Enter Name"
                     name="databaseName"
-                    id="databaseName"
+                    // id="databaseName"
                     value={tenant.databaseName}
                     isInvalid={!!error.databaseName}
                     isValid={!error.databaseName && !!tenant.databaseName}
@@ -300,7 +302,7 @@ export default function RegisterTenant() {
                     data-testid="databaseDescription-input"
                     rows={3}
                     className="form-control rounded-0"
-                    id="description"
+                    // id="description"
                     placeholder="Here...."
                     value={tenant.databaseDescription}
                     onChange={handleInputChange}

@@ -103,6 +103,7 @@ export default function Createuser() {
             <Form.Control
               type="text"
               placeholder="username"
+              data-testid="username-input"
               value={formData.username}
               name="username"
               onChange={handleInputChange}
@@ -118,6 +119,7 @@ export default function Createuser() {
             <Form.Control
               type="text"
               placeholder="email"
+              data-testid="email-input"
               value={formData.email}
               name="email"
               onChange={handleInputChange}
@@ -134,6 +136,7 @@ export default function Createuser() {
               type="text"
               placeholder="password"
               value={formData.password}
+              data-testid="password-input"
               name="password"
               onChange={handleInputChange}
               isInvalid={!!errors.password}
@@ -148,6 +151,7 @@ export default function Createuser() {
             <Form.Control
               type="text"
               placeholder="tenantname"
+              data-testid="tenantname-input"
               value={formData.tenantname}
               name="tenantname"
               onChange={handleInputChange}
@@ -159,10 +163,10 @@ export default function Createuser() {
             </Form.Control.Feedback>
           </Form.Group>
           <div className="my-2">
-            <Button type="submit" variant="success">
+            <Button type="submit" variant="success" data-testid="submit-button">
               Submit
             </Button>
-            <Button type="reset" variant="danger">
+            <Button type="reset" variant="danger" data-testid="cancel-button">
               Cancel
             </Button>
           </div>
