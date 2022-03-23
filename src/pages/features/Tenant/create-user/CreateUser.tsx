@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForEmail,
   regexForUser,
   regForPassword,
 } from "../../../../resources/constants";
-import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
-import { useAppDispatch } from "../../../../store/hooks";
 import { addNewUser } from "../../../../store/features/tenant/add-user/slice";
+import { useAppDispatch } from "../../../../store/hooks";
 interface Ierrors {
   userName: string;
   email: string;
@@ -25,6 +25,17 @@ export default function Createuser() {
     email: "",
     password: "",
   });
+  // const [checked, setChecked] = useState<string[]>([]);
+  // const checkList = ["A", "B", "C", "D"];
+
+  // const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.checked) {
+  //     setChecked([...checked, event.target.value]);
+  //   } else {
+  //     checked.splice(checked.indexOf(event.target.value), 1);
+  //     setChecked(checked);
+  //   }
+  // };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
@@ -70,7 +81,12 @@ export default function Createuser() {
         formData.email !== "" &&
         formData.password !== ""
       ) {
-        dispatch(addNewUser(formData));
+        const newUser = {
+          ...formData,
+          // checked,
+        };
+        console.log(newUser);
+        dispatch(addNewUser(newUser));
         ToastAlert("User Registered", "success");
         // navigate("/login");
       } else {
@@ -90,6 +106,7 @@ export default function Createuser() {
             <Form.Label>Username</Form.Label>
             <Form.Control
               type="text"
+              data-testid="username-input"
               placeholder="username"
               value={formData.userName}
               name="userName"
@@ -106,6 +123,7 @@ export default function Createuser() {
             <Form.Control
               type="text"
               placeholder="email"
+              data-testid="email-input"
               value={formData.email}
               name="email"
               onChange={handleInputChange}
@@ -121,6 +139,7 @@ export default function Createuser() {
             <Form.Control
               type="text"
               placeholder="password"
+              data-testid="password-input"
               value={formData.password}
               name="password"
               onChange={handleInputChange}
@@ -132,10 +151,10 @@ export default function Createuser() {
             </Form.Control.Feedback>
           </Form.Group>
           <div className="my-2">
-            <Button type="submit" variant="success">
+            <Button type="submit" variant="success" data-testid="submit-button">
               Submit
             </Button>
-            <Button type="reset" variant="danger">
+            <Button type="reset" variant="danger" data-testid="cancel-button">
               Cancel
             </Button>
           </div>

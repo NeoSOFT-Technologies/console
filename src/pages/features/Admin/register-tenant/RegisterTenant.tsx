@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Row, Col, Container } from "react-bootstrap";
-
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForEmail,
   regexForName,
   // regexForUser,
   regForPassword,
 } from "../../../../resources/constants";
+import { RootState } from "../../../../store";
 import { addNewTenant } from "../../../../store/features/admin/add-tenant/slice";
+import { getTenantRoles } from "../../../../store/features/admin/tenant-roles/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
   IErrorTenantInput,
   ITenantData,
   ITenantRolesState,
 } from "../../../../types/index";
-import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
 // import { useSelector } from "react-redux";
-import { RootState } from "../../../../store";
-import { getTenantRoles } from "../../../../store/features/admin/tenant-roles/slice";
 
 export default function RegisterTenant() {
   const dispatch = useAppDispatch();
@@ -29,8 +28,9 @@ export default function RegisterTenant() {
     databaseName: "",
     databaseDescription: "",
     roles: [],
+    type: "tenant",
   });
-  const [err, setErr] = useState<IErrorTenantInput>({
+  const [error, setError] = useState<IErrorTenantInput>({
     tenantName: "",
     email: "",
     password: "",
@@ -61,8 +61,8 @@ export default function RegisterTenant() {
     const { name, value } = event.target;
     switch (name) {
       case "description":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regexForName.test(value)
             ? ""
             : "description should only consist Alphabets",
@@ -70,24 +70,24 @@ export default function RegisterTenant() {
         break;
 
       case "tenantName":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regexForName.test(value)
             ? ""
             : "Name should only consist Alphabets",
         });
         break;
       case "password":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regForPassword.test(value)
             ? ""
             : "Password should contains Alphabet,special Charater,Number",
         });
         break;
       case "email":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regexForEmail.test(value)
             ? ""
             : "Email should contains atlast @,.com",
@@ -101,10 +101,10 @@ export default function RegisterTenant() {
   };
   const handleValidate = () => {
     const validate = !!(
-      err.tenantName === "" &&
-      err.email === "" &&
-      err.description === "" &&
-      err.password === ""
+      error.tenantName === "" &&
+      error.email === "" &&
+      error.description === "" &&
+      error.password === ""
     );
     return validate;
   };
@@ -134,12 +134,13 @@ export default function RegisterTenant() {
           databaseName: "",
           databaseDescription: "",
           roles: [],
+          type: "tenant",
         });
       } else {
         ToastAlert("Please Fill All Fields", "warning");
       }
     } else {
-      setErr({
+      setError({
         tenantName: "",
         email: "",
         password: "",
@@ -159,6 +160,7 @@ export default function RegisterTenant() {
       databaseName: "",
       databaseDescription: "",
       roles: [],
+      type: "tenant",
     });
   };
   return (
@@ -184,13 +186,13 @@ export default function RegisterTenant() {
                     name="tenantName"
                     data-testid="name-input"
                     value={tenant.tenantName}
-                    isInvalid={!!err.tenantName}
-                    isValid={!err.tenantName && !!tenant.tenantName}
+                    isInvalid={!!error.tenantName}
+                    isValid={!error.tenantName && !!tenant.tenantName}
                     onChange={handleInputChange}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    {err.tenantName}
+                    {error.tenantName}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -201,16 +203,16 @@ export default function RegisterTenant() {
                     type="email"
                     placeholder="Enter Email"
                     name="email"
-                    id="email"
+                    // id="email"
                     value={tenant.email}
-                    isValid={!err.email && !!tenant.email}
+                    isValid={!error.email && !!tenant.email}
                     data-testid="email-input"
-                    isInvalid={!!err.email}
+                    isInvalid={!!error.email}
                     onChange={handleInputChange}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    {err.email}
+                    {error.email}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -223,14 +225,14 @@ export default function RegisterTenant() {
                     data-testid="password-input"
                     value={tenant.password}
                     name="password"
-                    id="password"
-                    isValid={!err.password && !!tenant.password}
-                    isInvalid={!!err.password}
+                    // id="password"
+                    isValid={!error.password && !!tenant.password}
+                    isInvalid={!!error.password}
                     onChange={handleInputChange}
                     required
                   />{" "}
                   <Form.Control.Feedback type="invalid">
-                    {err.password}
+                    {error.password}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -249,15 +251,15 @@ export default function RegisterTenant() {
                     rows={3}
                     value={tenant.description}
                     className="form-control rounded-0"
-                    id="description"
+                    // id="description"
                     onChange={handleInputChange}
-                    isInvalid={!!err.description}
-                    isValid={!err.description && !!tenant.description}
+                    isInvalid={!!error.description}
+                    isValid={!error.description && !!tenant.description}
                     required
                   />
                 </Form.Group>
                 <Form.Control.Feedback type="invalid">
-                  {err.description}
+                  {error.description}
                 </Form.Control.Feedback>
               </Col>
               <Col md="6">
@@ -268,7 +270,7 @@ export default function RegisterTenant() {
                     type="text"
                     placeholder="Enter Name"
                     name="databaseName"
-                    id="databaseName"
+                    // id="databaseName"
                     value={tenant.databaseName}
                     onChange={handleInputChange}
                   />
@@ -287,7 +289,7 @@ export default function RegisterTenant() {
                     data-testid="databaseDescription-input"
                     rows={3}
                     className="form-control rounded-0"
-                    id="description"
+                    // id="description"
                     placeholder="Here...."
                     value={tenant.databaseDescription}
                     onChange={handleInputChange}
@@ -300,7 +302,7 @@ export default function RegisterTenant() {
               {rolesList.data?.roles.map((item, index) => (
                 <span key={index} className="m-4">
                   <input
-                    value={`${item}`}
+                    value={item}
                     type="checkbox"
                     onChange={handleCheck}
                     className=" inline"

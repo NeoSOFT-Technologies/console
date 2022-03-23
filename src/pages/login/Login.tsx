@@ -1,13 +1,14 @@
 import React, { useEffect, useState, ChangeEvent } from "react";
 import { Form, Button, Alert, InputGroup } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { ToastAlert } from "../../components/toaster-alert/ToastAlert";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import PasswordButtons from "../../components/password-field/Password";
-import { RootState } from "../../store";
-import { IUserDataState } from "../../types";
+import { ToastAlert } from "../../components/toaster-alert/ToastAlert";
+// import { regexForEmail } from "../../resources/constants";
 import { logo } from "../../resources/images";
+import { RootState } from "../../store";
 import { commonLogin } from "../../store/login/slice";
+import { IUserDataState } from "../../types";
 export default function Login() {
   const [type, setType] = useState<string>("admin");
   const [username, setUsername] = useState<string>("");
@@ -70,8 +71,9 @@ export default function Login() {
       } else if (user.data && user.data.type === "admin") {
         ToastAlert("Logged In", "success");
         navigate("/admindashboard");
-        // remove the line below before pushing.
-        // navigate("/tenantpermission");
+      } else if (user.data && user.data.type === "user") {
+        ToastAlert("Logged In", "success");
+        navigate("/userdashboard");
       } else {
         ToastAlert("Incorrect Credentials!", "warning");
       }
@@ -207,6 +209,7 @@ export default function Login() {
                   </div>
                   <a
                     href="!#"
+                    data-testid="link"
                     onClick={(event) => event.preventDefault()}
                     className="auth-link text-black"
                   >

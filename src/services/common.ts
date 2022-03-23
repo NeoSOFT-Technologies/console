@@ -1,6 +1,6 @@
+import tokenService from "../services/token.service";
 import apiFactory from "../utils/api";
 // import axios from "axios";
-import tokenService from "../services/token.service";
 
 interface IConditions {
   userName: string;

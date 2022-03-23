@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../utils/error";
-import { ITenantData } from "../../../../types/index";
 import { addTenantDataService } from "../../../../services";
+import { ITenantData } from "../../../../types/index";
+import error from "../../../../utils/error";
 
 interface IAddTenantState {
   tenantAdded?: boolean;

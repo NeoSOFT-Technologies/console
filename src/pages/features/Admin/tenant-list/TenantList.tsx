@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
-import RenderList from "../../../../components/list/RenderList";
 import { useNavigate } from "react-router-dom";
+import RenderList from "../../../../components/list/RenderList";
+import Spinner from "../../../../components/loader/Loader";
 import { RootState } from "../../../../store";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getTenantList } from "../../../../store/features/admin/tenant-list/slice";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 
 import {
   ITenantDataList,
   ITenantListState,
   ITenantDetails,
 } from "../../../../types/index";
-import Spinner from "../../../../components/loader/Loader";
 
 export default function TenantList() {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function TenantList() {
     dispatch(getTenantList({ currentPage, search: searchUser }));
   };
   useEffect(() => {
-    console.log(tenantList.data);
+    // console.log(tenantList.data);
     if (tenantList.data) {
       setDataList({
         list: [...tenantList.data.list],
@@ -117,15 +117,17 @@ export default function TenantList() {
               <h2 className="card-title">Tenant List</h2>
               <div className="search-field ">
                 <form className="h-50">
-                  <div className="input-group">
+                  <div className="input-group" data-testid="input-group">
                     <input
                       type="text"
+                      data-testid="input-group"
                       className="form-control bg-parent border-1"
                       placeholder="Search Tenant"
                       onChange={(e) => setSearch(e.target.value)}
                     />
                     <button
                       className=" btn  btn-success btn-sm"
+                      data-testid="search-button"
                       onClick={(e) => searchFilter(e)}
                     >
                       <i className=" bi bi-search"></i>

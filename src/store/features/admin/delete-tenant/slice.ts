@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../utils/error";
 import { deleteTenantDataService } from "../../../../services";
+import error from "../../../../utils/error";
 
 interface IAddTenantState {
   isDeleted?: boolean;
@@ -38,7 +38,7 @@ const slice = createSlice({
       state.loading = true;
       state.isDeleted = false;
     });
-    builder.addCase(deleteTenant.fulfilled, (state, action) => {
+    builder.addCase(deleteTenant.fulfilled, (state) => {
       state.loading = false;
       state.isDeleted = true;
     });

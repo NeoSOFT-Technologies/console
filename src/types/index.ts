@@ -3,14 +3,21 @@ export interface IHeadings {
   className?: string;
 }
 export interface ITenantData {
-  tenantName: string;
-  description: string;
-  databaseName: string;
-  databaseDescription: string;
-  email: string;
+  name?: string;
+  description?: string;
+  databaseName?: string;
+  databaseDescription?: string;
+  userid?: string;
+  email?: string;
   password?: string;
+  type?: string;
+  tenantName?: string;
+  createdDateTime?: string;
+  isDeleted?: boolean;
+  isActive?: boolean;
+  roles: string[];
+  permissions?: string[];
   id?: number;
-  roles: String[];
 }
 
 export interface ITenantDetail {
@@ -40,6 +47,7 @@ export interface ITenantUserData {
   createdDateTime: string;
   isDeleted: boolean;
   isActive: boolean;
+  roles: string[];
 }
 
 export interface IActionsRenderList {
@@ -61,7 +69,7 @@ export interface ISetTenantList {
   count: number;
 }
 export interface ISetTenantRoles {
-  roles: String[];
+  roles: string[];
 }
 export interface ISetTenantUserList {
   list: ITenantUserData[];

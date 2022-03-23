@@ -8,8 +8,9 @@ const AdminDashboard = () => {
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
   );
-
-  useEffect(() => {}, [user.data]);
+  useEffect(() => {
+    // console.log(user.data);
+  }, [user.data]);
 
   return (
     <React.Fragment>
@@ -28,13 +29,10 @@ const AdminDashboard = () => {
               }}
             >
               <Card.Text>
-                Name:&nbsp; <span>{user.data.name} </span>
+                Name:&nbsp; <span>{user.data.tenantName} </span>
               </Card.Text>
               <Card.Text>
                 <span>Description:&nbsp;{user.data.description}</span>
-              </Card.Text>
-              <Card.Text>
-                <span>UserId:&nbsp;{user.data.userid}</span>
               </Card.Text>
               <Card.Text>
                 <span> Email:&nbsp;{user.data.email}</span>

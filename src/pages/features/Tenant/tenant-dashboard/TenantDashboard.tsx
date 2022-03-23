@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { Container, Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
-import { IUserDataState } from "../../../../types";
-import { useAppDispatch } from "../../../../store/hooks";
 import { getTenantUserList } from "../../../../store/features/tenant/tenant-user-list/slice";
+import { useAppDispatch } from "../../../../store/hooks";
+import { IUserDataState } from "../../../../types";
 
 const TenantDashboard = () => {
   const dispatch = useAppDispatch();

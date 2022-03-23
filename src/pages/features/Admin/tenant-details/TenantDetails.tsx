@@ -9,16 +9,16 @@ import {
   Modal,
 } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router";
-import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
   regexForUser,
   regexForEmail,
 } from "../../../../resources/constants";
-import { useAppDispatch } from "../../../../store/hooks";
 import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
 import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
-import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
+import { useAppDispatch } from "../../../../store/hooks";
+import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
 
 interface LocationState {
   val: ITenantData;
@@ -38,8 +38,8 @@ export default function TenantDetails() {
     email: "",
     databaseName: "",
     databaseDescription: "",
-    type: "tenant",
     roles: [],
+    type: "tenant",
   });
   const [error, setError] = useState<IErrorTenantDetail>({
     name: "",
