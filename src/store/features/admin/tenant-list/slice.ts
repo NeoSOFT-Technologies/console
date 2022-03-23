@@ -6,6 +6,7 @@ import { tenantListService } from "../../../../services";
 interface IConditions {
   currentPage: number;
   search: string;
+  // isActive : string;
 }
 
 const initialState: ITenantListState = {

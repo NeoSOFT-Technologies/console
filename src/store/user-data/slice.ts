@@ -9,11 +9,16 @@ const initialState: IUserDataState = {
   error: undefined,
 };
 
+interface IConditions {
+  tenantName: string;
+  page: number;
+}
 export const getUserList = createAsyncThunk(
   "user/data",
-  async (conditions: string) => {
+  async (conditions: IConditions) => {
     try {
-      const response = await getUserListService(conditions);
+      const { tenantName, page } = conditions;
+      const response = await getUserListService(tenantName, page);
       console.log(response);
       return response.data[0];
     } catch (error_) {

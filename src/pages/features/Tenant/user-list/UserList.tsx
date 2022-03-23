@@ -28,7 +28,13 @@ export default function UserList() {
     fields: [],
   });
   const mainCall = (currentPage: number, searchUser: string) => {
-    dispatch(getTenantUserList({ currentPage, search: searchUser }));
+    dispatch(
+      getTenantUserList({
+        currentPage,
+        search: searchUser,
+        tenantName: "",
+      })
+    );
   };
   useEffect(() => {
     console.log(userList);

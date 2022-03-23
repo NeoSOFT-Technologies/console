@@ -9,15 +9,18 @@ const initialState: ITenantRolesState = {
   error: undefined,
 };
 
-export const getTenantRoles = createAsyncThunk("tenant/roles", async () => {
-  try {
-    const response = await tenantRolesService();
-    console.log(response);
-    return response.data;
-  } catch (error_) {
-    return error_;
+export const getTenantRoles = createAsyncThunk(
+  "tenant/roles",
+  async (tenantName: string) => {
+    try {
+      const response = await tenantRolesService(tenantName);
+      console.log(response);
+      return response.data;
+    } catch (error_) {
+      return error_;
+    }
   }
-});
+);
 
 const slice = createSlice({
   name: "tenant",
@@ -26,6 +29,8 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(getTenantRoles.pending, (state) => {
       state.loading = true;
+      state.data = undefined;
+      state.error = undefined;
     });
     builder.addCase(getTenantRoles.fulfilled, (state, action) => {
       state.loading = false;

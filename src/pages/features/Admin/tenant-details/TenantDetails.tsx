@@ -59,7 +59,7 @@ export default function TenantDetails() {
   const deleteTenantFunction = () => {
     const { val } = location.state as LocationState;
     if (val.id !== undefined) {
-      dispatch(deleteTenant(val.id));
+      dispatch(deleteTenant(""));
       ToastAlert("Tenant Removed", "success");
       navigate("/tenantlist");
     }

@@ -3,13 +3,23 @@ import { Container, Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { IUserDataState } from "../../../../types";
+import { useAppDispatch } from "../../../../store/hooks";
+import { getTenantUserList } from "../../../../store/features/tenant/tenant-user-list/slice";
 
 const TenantDashboard = () => {
+  const dispatch = useAppDispatch();
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
   );
   useEffect(() => {
-    console.log(user.data);
+    console.log(user.data, "KOKOK");
+    setTimeout(
+      () =>
+        dispatch(
+          getTenantUserList({ currentPage: 1, search: "", tenantName: "Paras" })
+        ),
+      3000
+    );
   }, [user.data]);
 
   return (

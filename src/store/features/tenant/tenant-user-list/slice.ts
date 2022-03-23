@@ -6,6 +6,7 @@ import { tenantUserListService } from "../../../../services";
 interface IConditions {
   currentPage: number;
   search: string;
+  tenantName: string;
 }
 const initialState: ITenantUserListState = {
   data: undefined,
@@ -16,9 +17,13 @@ const initialState: ITenantUserListState = {
 export const getTenantUserList = createAsyncThunk(
   "tenantUser/list",
   async (conditions: IConditions) => {
-    const { currentPage, search } = conditions;
+    const { currentPage, search, tenantName } = conditions;
     try {
-      const response = await tenantUserListService(currentPage, search);
+      const response = await tenantUserListService(
+        currentPage,
+        search,
+        tenantName
+      );
       console.log(response);
       return response.data;
     } catch (error_) {

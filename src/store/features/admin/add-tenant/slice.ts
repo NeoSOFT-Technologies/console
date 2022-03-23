@@ -35,7 +35,7 @@ const slice = createSlice({
     builder.addCase(addNewTenant.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(addNewTenant.fulfilled, (state, action) => {
+    builder.addCase(addNewTenant.fulfilled, (state) => {
       state.loading = false;
       state.tenantAdded = true;
     });

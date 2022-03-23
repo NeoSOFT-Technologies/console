@@ -4,7 +4,7 @@ import { IUserDataState } from "../../types/index";
 import { commonLoginService } from "../../services";
 
 interface IConditions {
-  username: string;
+  userName: string;
   password: string;
   tenantName: string;
 }
@@ -19,8 +19,7 @@ export const commonLogin = createAsyncThunk(
   "user/data",
   async (conditions: IConditions) => {
     try {
-      const { username, password, tenantName } = conditions;
-      const response = await commonLoginService(username, password, tenantName);
+      const response = await commonLoginService(conditions);
       console.log(response);
       return response.data[0];
     } catch (error_) {

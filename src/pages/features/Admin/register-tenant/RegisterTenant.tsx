@@ -4,7 +4,7 @@ import { Button, Form, Row, Col, Container } from "react-bootstrap";
 import {
   regexForEmail,
   regexForName,
-  regexForUser,
+  // regexForUser,
   regForPassword,
 } from "../../../../resources/constants";
 import { addNewTenant } from "../../../../store/features/admin/add-tenant/slice";
@@ -22,22 +22,19 @@ import { getTenantRoles } from "../../../../store/features/admin/tenant-roles/sl
 export default function RegisterTenant() {
   const dispatch = useAppDispatch();
   const [tenant, setTenant] = useState<ITenantData>({
-    name: "",
+    tenantName: "",
     description: "",
-    userid: "",
     email: "",
     password: "",
     databaseName: "",
     databaseDescription: "",
     roles: [],
-    type: "tenant",
   });
   const [err, setErr] = useState<IErrorTenantInput>({
-    name: "",
-    userid: "",
+    tenantName: "",
     email: "",
     password: "",
-    databaseName: "",
+    description: "",
   });
 
   // const [tenant.roles, setTenant] = useState<string[]>([]);
@@ -47,7 +44,7 @@ export default function RegisterTenant() {
     (state: RootState) => state.rolesList
   );
   useEffect(() => {
-    dispatch(getTenantRoles());
+    dispatch(getTenantRoles(""));
   }, []);
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,16 +60,16 @@ export default function RegisterTenant() {
     // console.log(event.target.value);
     const { name, value } = event.target;
     switch (name) {
-      case "databaseName":
+      case "description":
         setErr({
           ...err,
           [name]: regexForName.test(value)
             ? ""
-            : "databaseName should only consist Alphabets",
+            : "description should only consist Alphabets",
         });
         break;
 
-      case "name":
+      case "tenantName":
         setErr({
           ...err,
           [name]: regexForName.test(value)
@@ -86,15 +83,6 @@ export default function RegisterTenant() {
           [name]: regForPassword.test(value)
             ? ""
             : "Password should contains Alphabet,special Charater,Number",
-        });
-        break;
-
-      case "userid":
-        setErr({
-          ...err,
-          [name]: regexForUser.test(value)
-            ? ""
-            : "Username should contains alteast 1number and Alphabets ",
         });
         break;
       case "email":
@@ -113,10 +101,9 @@ export default function RegisterTenant() {
   };
   const handleValidate = () => {
     const validate = !!(
-      err.name === "" &&
-      err.userid === "" &&
+      err.tenantName === "" &&
       err.email === "" &&
-      err.databaseName === "" &&
+      err.description === "" &&
       err.password === ""
     );
     return validate;
@@ -126,45 +113,37 @@ export default function RegisterTenant() {
 
     if (handleValidate()) {
       if (
-        tenant.name !== "" &&
-        tenant.userid !== "" &&
+        tenant.tenantName !== "" &&
         tenant.email !== "" &&
-        tenant.databaseName !== "" &&
+        tenant.description !== "" &&
         tenant.password !== ""
       ) {
         const newUser = {
           ...tenant,
-          // .tenant.roles,
-
-          lastlogin: "Mar 01 2022 11:51:39",
         };
-        console.log(newUser);
+        // console.log(newUser);
         dispatch(addNewTenant(newUser));
 
         ToastAlert("Tenant Registered", "success");
 
         setTenant({
-          name: "",
+          tenantName: "",
           description: "",
-          userid: "",
           email: "",
           password: "",
           databaseName: "",
           databaseDescription: "",
           roles: [],
-          type: "tenant",
         });
       } else {
         ToastAlert("Please Fill All Fields", "warning");
       }
     } else {
       setErr({
-        name: "",
-
-        userid: "",
+        tenantName: "",
         email: "",
         password: "",
-        databaseName: "",
+        description: "",
       });
     }
   };
@@ -173,15 +152,13 @@ export default function RegisterTenant() {
   ) => {
     event.preventDefault();
     setTenant({
-      name: "",
+      tenantName: "",
       description: "",
-      userid: "",
       email: "",
       password: "",
       databaseName: "",
       databaseDescription: "",
       roles: [],
-      type: "tenant",
     });
   };
   return (
@@ -202,38 +179,18 @@ export default function RegisterTenant() {
                   <Form.Label> Tenant Name :</Form.Label>
                   <Form.Control
                     type="text"
-                    id="name"
-                    placeholder="Enter Name"
-                    name="name"
+                    id="tenantName"
+                    placeholder="Enter tenantName"
+                    name="tenantName"
                     data-testid="name-input"
-                    value={tenant.name}
-                    isInvalid={!!err.name}
-                    isValid={!err.name && !!tenant.name}
+                    value={tenant.tenantName}
+                    isInvalid={!!err.tenantName}
+                    isValid={!err.tenantName && !!tenant.tenantName}
                     onChange={handleInputChange}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    {err.name}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
-              <Col md="6">
-                <Form.Group className="mb-3">
-                  <Form.Label>UserID :</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="userid"
-                    id="userid"
-                    data-testid="userid-input"
-                    placeholder="Enter User ID"
-                    isValid={!err.userid && !!tenant.userid}
-                    value={tenant.userid}
-                    isInvalid={!!err.userid}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {err.userid}
+                    {err.tenantName}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -286,7 +243,7 @@ export default function RegisterTenant() {
                   <Form.Control
                     as="textarea"
                     type="textarea"
-                    data-testid="databaseDescription-input"
+                    data-testid="tenantDescription-input"
                     name="description"
                     placeholder="Here...."
                     rows={3}
@@ -294,9 +251,14 @@ export default function RegisterTenant() {
                     className="form-control rounded-0"
                     id="description"
                     onChange={handleInputChange}
+                    isInvalid={!!err.description}
+                    isValid={!err.description && !!tenant.description}
                     required
                   />
                 </Form.Group>
+                <Form.Control.Feedback type="invalid">
+                  {err.description}
+                </Form.Control.Feedback>
               </Col>
               <Col md="6">
                 <Form.Group className="mb-3">
@@ -308,14 +270,8 @@ export default function RegisterTenant() {
                     name="databaseName"
                     id="databaseName"
                     value={tenant.databaseName}
-                    isInvalid={!!err.databaseName}
-                    isValid={!err.databaseName && !!tenant.databaseName}
                     onChange={handleInputChange}
-                    required
                   />
-                  <Form.Control.Feedback type="invalid">
-                    {err.databaseName}
-                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
               <Col md="12">
@@ -335,7 +291,6 @@ export default function RegisterTenant() {
                     placeholder="Here...."
                     value={tenant.databaseDescription}
                     onChange={handleInputChange}
-                    required
                   />
                 </Form.Group>
               </Col>

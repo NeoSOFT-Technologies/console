@@ -24,6 +24,14 @@ export default function Login() {
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
   );
+  console.log(
+    "🚀 ~ file: Login.tsx ~ line 27 ~ Login ~ user",
+    user,
+    username,
+    password,
+    tenantName
+  );
+
   const handle = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
@@ -55,7 +63,7 @@ export default function Login() {
 
   useEffect(() => {
     if (username !== "" && password !== "") {
-      // console.log(user);
+      console.log(user);
       if (user.data && user.data.type === "tenant") {
         ToastAlert("Logged In", "success");
         navigate("/tenantdashboard");
@@ -89,7 +97,6 @@ export default function Login() {
     return valid;
   };
   const handleSubmit = async () => {
-    console.log("OK", username, password, tenantName, type);
     if (validate()) {
       dispatch(commonLogin({ username, password, tenantName }));
     } else {

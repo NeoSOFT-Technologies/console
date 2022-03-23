@@ -1,64 +1,71 @@
 import apiFactory from "../utils/api";
 // import axios from "axios";
-interface ILogout {
+import tokenService from "../services/token.service";
+
+interface IConditions {
+  userName: string;
+  password: string;
   tenantName: string;
-  refreshToken: string;
 }
 
-export async function commonLoginService(
-  username: string,
-  password: string,
-  tenantName: string
-) {
-  const data = { username, password, tenantName };
-  console.log("data", data);
-  // return apiFactory().post(`/api/login`, data);
+export async function commonLoginService(data: IConditions) {
+  const getlogin = await apiFactory().post(`/api/login`, data);
+  const setlogin = {
+    accessToken: getlogin.data.access_token,
+    refreshToken: getlogin.data.refresh_token,
+    expiresIn: getlogin.data.expires_in,
+    refreshExpiresIn: getlogin.data.refresh_expires_in,
+    tokenType: getlogin.data.token_type,
+    scope: getlogin.data.scope,
+    sessionState: getlogin.data.session_state,
+  };
+
+  tokenService.setUser(setlogin);
   return {
     data: [
       {
-        description: "i am going to win the world",
-        email: "rahul768@gmail.com",
-        id: "5",
+        name: "Tushar Saxena",
+        description: "i am the king of the seven worlds :)",
+        userid: "tushar123",
+        email: "tushar057@gmail.com",
+        password: "tushar057",
+        databaseName: "Tushar Saxena",
+        databaseDescription: "database size of 100",
         lastlogin: "Mar 01 2022 11:51:39",
-        name: "Rahul kenchi",
-        password: "rahul768",
-        type: "admin",
-        userid: "rahul123",
+        type: "tenant",
+        id: 7,
       },
     ],
   };
 }
 
-export function commonLogoutService(data: ILogout) {
+export function commonLogoutService() {
+  const data = {
+    refreshToken: tokenService.getLocalRefreshToken(),
+  };
   return apiFactory().post(`/api/logout`, data);
 }
 
-// if (tenantName.length != 0) {
-//   return {
-//     data: [
-//       {
-//         id: 1,
-//         userName: "User1",
-//         email: "user1@gmail.com",
-//         tenantName: "Tenant1",
-//         createdDateTime: "Mar 01 2022 11:51:39",
-//         isDeleted: false,
-//         isActive: true,
-//       },
-//     ],
-//   };
-// }
-// return {
-//   data: [
-//     {
-//       description: "i am going to win the world",
-//       email: "rahul768@gmail.com",
-//       id: "5",
-//       lastlogin: "Mar 01 2022 11:51:39",
-//       name: "Rahul kenchi",
-//       password: "rahul768",
-//       type: "admin",
-//       userid: "rahul123",
-//     },
-//   ],
-// };
+// {
+//   "name": "Tushar Saxena",
+//   "description": "i am the king of the seven worlds :)",
+//   "userid": "tushar123",
+//   "email": "tushar057@gmail.com",
+//   "password": "tushar057",
+//   "databaseName": "Tushar Saxena",
+//   "databaseDescription": "database size of 100",
+//   "lastlogin": "Mar 01 2022 11:51:39",
+//   "type": "tenant",
+//   "id": 7
+// },
+
+// {
+//   name: "Rahul kenchi",
+//   description: "i am going to win the world",
+//   userid: "rahul123",
+//   email: "rahul768@gmail.com",
+//   password: "rahul768",
+//   lastlogin: "Mar 01 2022 11:51:39",
+//   type: "admin",
+//   id: 5,
+// },

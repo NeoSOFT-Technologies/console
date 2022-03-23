@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import {
   regexForEmail,
-  regexForName,
   regexForUser,
   regForPassword,
 } from "../../../../resources/constants";
@@ -10,29 +9,26 @@ import { ToastAlert } from "../../../../components/toaster-alert/ToastAlert";
 import { useAppDispatch } from "../../../../store/hooks";
 import { addNewUser } from "../../../../store/features/tenant/add-user/slice";
 interface Ierrors {
-  username: string;
+  userName: string;
   email: string;
   password: string;
-  tenantname: string;
 }
 export default function Createuser() {
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState({
-    username: "",
+    userName: "",
     email: "",
     password: "",
-    tenantname: "",
   });
   const [errors, setErrors] = useState<Ierrors>({
-    username: "",
+    userName: "",
     email: "",
     password: "",
-    tenantname: "",
   });
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
-      case "username":
+      case "userName":
         setErrors({
           ...errors,
           [name]: regexForUser.test(value) ? "" : "Enter a valid Username ",
@@ -53,12 +49,6 @@ export default function Createuser() {
             : "Enter a Valid Password (must include 8 character)",
         });
         break;
-      case "tenantname":
-        setErrors({
-          ...errors,
-          [name]: regexForName.test(value) ? "" : "Enter a valid tenant name ",
-        });
-        break;
       default:
         break;
     }
@@ -66,10 +56,9 @@ export default function Createuser() {
   };
   const handleValidate = () => {
     const validate = !!(
-      errors.username === "" &&
+      errors.userName === "" &&
       errors.email === "" &&
-      errors.password === "" &&
-      errors.tenantname === ""
+      errors.password === ""
     );
     return validate;
   };
@@ -77,10 +66,9 @@ export default function Createuser() {
     event.preventDefault();
     if (handleValidate()) {
       if (
-        formData.username !== "" &&
+        formData.userName !== "" &&
         formData.email !== "" &&
-        formData.password !== "" &&
-        formData.tenantname !== ""
+        formData.password !== ""
       ) {
         dispatch(addNewUser(formData));
         ToastAlert("User Registered", "success");
@@ -103,14 +91,14 @@ export default function Createuser() {
             <Form.Control
               type="text"
               placeholder="username"
-              value={formData.username}
-              name="username"
+              value={formData.userName}
+              name="userName"
               onChange={handleInputChange}
-              isInvalid={!!errors.username}
-              isValid={!!(!errors.username && formData.username)}
+              isInvalid={!!errors.userName}
+              isValid={!!(!errors.userName && formData.userName)}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.username}
+              {errors.userName}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group>
@@ -141,21 +129,6 @@ export default function Createuser() {
             />
             <Form.Control.Feedback type="invalid">
               {errors.password}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Tenant Name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="tenantname"
-              value={formData.tenantname}
-              name="tenantname"
-              onChange={handleInputChange}
-              isInvalid={!!errors.tenantname}
-              isValid={!!(!errors.tenantname && formData.tenantname)}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.tenantname}
             </Form.Control.Feedback>
           </Form.Group>
           <div className="my-2">

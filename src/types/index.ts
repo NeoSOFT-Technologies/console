@@ -3,14 +3,12 @@ export interface IHeadings {
   className?: string;
 }
 export interface ITenantData {
-  name: string;
+  tenantName: string;
   description: string;
   databaseName: string;
   databaseDescription: string;
-  userid: string;
   email: string;
   password?: string;
-  type: string;
   id?: number;
   roles: String[];
 }
@@ -77,11 +75,10 @@ export interface IErrorInput {
   no: boolean;
 }
 export interface IErrorTenantInput {
-  name: string;
-  userid: string;
+  tenantName: string;
   email: string;
   password: string;
-  databaseName: string;
+  description: string;
 }
 
 // redux toolkit states

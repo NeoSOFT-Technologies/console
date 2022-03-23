@@ -8,9 +8,8 @@ const AdminDashboard = () => {
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
   );
-  useEffect(() => {
-    console.log(user.data);
-  }, [user.data]);
+
+  useEffect(() => {}, [user.data]);
 
   return (
     <React.Fragment>

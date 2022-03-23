@@ -2,26 +2,45 @@ import { ITenantData } from "../types";
 import apiFactory from "../utils/api";
 
 interface CreateUser {
-  username: string;
+  userName: string;
   email: string;
   password: string;
-  tenantname: string;
+  roles: string[];
 }
 
-export function updateTenantDataService(id: number, data: ITenantData) {
-  return apiFactory().put(`/api/tenant/${id}`, data);
+interface DeleteUser {
+  userName: string;
 }
 
-export function tenantUserListService(currentPage: number, search: string) {
+export function updateTenantDataService(data: ITenantData) {
+  const body = {
+    action: {
+      ...data,
+    },
+  };
+  return apiFactory().patch(`/api/tenant`, body);
+}
+
+export function tenantUserListService(
+  currentPage: number,
+  search: string,
+  tenantName: string
+  // isActive: string
+) {
   return apiFactory().get(
-    `/api/tenant-user?_page=${currentPage}&name_like=${search}`
+    `/api/user?tenantName=${tenantName}&page=${currentPage}`
   );
 }
 
 export function createNewUserService(data: CreateUser) {
-  return apiFactory().post(`/api/tenant-user`, data);
+  const body = {
+    userDetails: {
+      ...data,
+    },
+  };
+  return apiFactory().post(`/api/user`, body);
 }
 
-export function deleteUserDataService() {
+export function deleteUserDataService(data: DeleteUser) {
   return apiFactory().delete(`/api/user`); // modify here
 }
