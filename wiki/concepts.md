@@ -2,24 +2,24 @@
 
 ## 1. Component
 ### 1. Class Component
-   ```
+   
       a.constructor
       b.state and props
       c.lifecyle methods(componentDidMount,componentDidUpdate,etc)
       d.render
       e.export class component
-   ```
+   
 ### 2. Functional Component
-   ```
+   
       a. props
       b. useState
       c. useEffect
       d. useRef
       e. return
       f. export function component
-   ```
+   
 ## 2. React Hooks 
-   ```
+   
       a. useState (react)
       b. useref (react)
       c. useEffect (react)
@@ -28,10 +28,10 @@
       f. useParams (react-router-dom)
       g. useSelector (react-redux)
       h. useDispatch (react-redux)
-   ```
+   
 
 ## 3. Redux
-```
+
    a. actions :- ( Actions have a type field that tells what kind of action to perform and all other fields contain 
                   information or data. in "src/app/redux/actions" folder contains files with redux actions)
                   
@@ -51,10 +51,10 @@
    g. useSelector,useDispatch :-  (hookes used in function components to access and manipulate redux storage)
    
    h. connect :-  (a method used with "mapStateToProps" method to use redux in class components)   
-```
+
 ## 4. Redux Toolkit
 ## 5. React-Router-Dom
-```
+
    a.BrowserRouter      (a component which works as a wrapper for other components which use routing in react)
    
    b.Routes       (a Routes component is similar to a "switch" statement in many programming languages ,    
@@ -70,35 +70,35 @@
    g.Navigate (a component used to navigate through react-dom)
    
    h.Link (a component used to navigate through react-dom)
-```
+
 ## 6. React-Bootstrap
-```
+
    a.React-Bootstrap Components     
    b.inline styling   
    c.bootstrap classes
-```
+
 ## 7. Bootstrap 
-```
+
    a.bootstrap components   
    b.bootstrap classes
-```
+
 
 ## 8. Regular Expression
-   ```
+   
    a.create a regular expression   
    b.test data against regular
-   ```
+   
 
 ## 9. Axios
-```
+
    a.GET,POST,PUT,DELETE requests  
    b.headers      
    c.params   
    d.query   
    e.request body
-```
+
 ## 10.Sass
-```
+
    a. preprocessing
    b. using variables
    c. nesting
@@ -107,11 +107,19 @@
    f. extend/inheritance
    g. operators
    h. mixins
-```
-## 11. Reuseable Components :- 
+
+## 11. GridJs
+
+   a.Grid  
+   b.data     
+   c.columns   
+   d.pagination   
+   e.searching & sorting
+
+## 12. Reuseable Components :- 
    (These components are like a template which can be used multiple times in our project and used with props to pass data into it.)
 
-## 12. Environmental files :- 
+## 13. Environmental files :- 
    (these files are used to store sensitive data like certain tokens and PORT numbers, connection links ,etc.)
 
 
@@ -223,3 +231,7 @@
          The API is designed to mimic the behavior of tar(1) on unix systems. <br/>
    package-link :- https://www.npmjs.com/package/tar<br/>
    docs :- https://github.com/npm/node-tar#readme<br/>
+   
+24. "Grid.js" : Grid.js uses Preact under the hood to render the templates (Note: but it can be used with any JavaScript frameworks) and employs a minimal Flux architecture to communicate with other components. <br/>
+   package-link :- https://www.npmjs.com/package/gridjs<br/>
+   docs :- https://github.com/grid-js/gridjs<br/>
