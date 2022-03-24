@@ -29,16 +29,16 @@ const AdminDashboard = () => {
               }}
             >
               <Card.Text>
-                Name:&nbsp; <span>{user.data.name} </span>
+                Name :&nbsp; <span>{user.data.name} </span>
               </Card.Text>
               <Card.Text>
-                <span>Description:&nbsp;{user.data.description}</span>
+                <span>Description :&nbsp;{user.data.description}</span>
               </Card.Text>
               <Card.Text>
-                <span>UserId:&nbsp;{user.data.userid}</span>
+                <span>UserId :&nbsp;{user.data.userid}</span>
               </Card.Text>
               <Card.Text>
-                <span> Email:&nbsp;{user.data.email}</span>
+                <span> Email :&nbsp;{user.data.email}</span>
               </Card.Text>
 
               <hr />
