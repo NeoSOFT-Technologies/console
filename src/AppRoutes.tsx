@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { AdminGuard, TenantGuard, UserGuard } from "./components/Authgaurd";
+import { AdminGuard, TenantGuard, UserGuard } from "./components/auth-gaurd";
 import Spinner from "./components/loader/Loader";
 const RoleAndPermissions = lazy(
   () => import("./pages/features/User/role-and-permissions/RoleAndPermissions")

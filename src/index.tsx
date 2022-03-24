@@ -3,16 +3,19 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
+import ErrorBoundary from "./components/error-boundry";
 import * as serviceWorker from "./serviceWorker";
 import store from "./store/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </BrowserRouter>,
+  <ErrorBoundary>
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>
+  </ErrorBoundary>,
   document.querySelector("#root")
 );
 
