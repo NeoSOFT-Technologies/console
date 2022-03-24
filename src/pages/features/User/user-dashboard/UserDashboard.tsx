@@ -62,10 +62,6 @@ export default function UserDashboard() {
               <Card.Body>
                 <table className="w-100">
                   <tr>
-                    <td>UserId</td>
-                    <td>{user.data.userid}</td>
-                  </tr>
-                  <tr>
                     <td>Email</td>
                     <td>{user.data.email}</td>
                   </tr>

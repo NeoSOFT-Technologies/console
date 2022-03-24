@@ -12,6 +12,7 @@ interface Ierrors {
   userName: string;
   email: string;
   password: string;
+  roles: string;
 }
 export default function Createuser() {
   const dispatch = useAppDispatch();
@@ -19,11 +20,13 @@ export default function Createuser() {
     userName: "",
     email: "",
     password: "",
+    roles: ["user"],
   });
   const [errors, setErrors] = useState<Ierrors>({
     userName: "",
     email: "",
     password: "",
+    roles: "",
   });
   // const [checked, setChecked] = useState<string[]>([]);
   // const checkList = ["A", "B", "C", "D"];
@@ -69,7 +72,8 @@ export default function Createuser() {
     const validate = !!(
       errors.userName === "" &&
       errors.email === "" &&
-      errors.password === ""
+      errors.password === "" &&
+      errors.roles === ""
     );
     return validate;
   };
@@ -79,7 +83,8 @@ export default function Createuser() {
       if (
         formData.userName !== "" &&
         formData.email !== "" &&
-        formData.password !== ""
+        formData.password !== "" &&
+        formData.roles.length > 0
       ) {
         const newUser = {
           ...formData,

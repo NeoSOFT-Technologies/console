@@ -3,10 +3,6 @@ import { updateTenantDataService } from "../../../../services";
 import { ITenantUserListState, ITenantData } from "../../../../types/index";
 import error from "../../../../utils/error";
 
-interface IConditions {
-  id: number;
-  data: ITenantData;
-}
 const initialState: ITenantUserListState = {
   data: undefined,
   loading: false,
@@ -15,10 +11,9 @@ const initialState: ITenantUserListState = {
 
 export const updateTenant = createAsyncThunk(
   "tenant/update",
-  async (conditions: IConditions) => {
-    const { id, data } = conditions;
+  async (data: ITenantData) => {
     try {
-      const response = await updateTenantDataService(id, data);
+      const response = await updateTenantDataService(data);
       console.log(response);
       return response.data;
     } catch (error_) {

@@ -9,7 +9,13 @@ interface IConditions {
 }
 
 export async function commonLoginService(data: IConditions) {
-  const getlogin = await apiFactory().post(`/api/login`, data);
+  const getlogin = await apiFactory().post(`/api/login`, {
+    username: "admin",
+    tenantName: "",
+    password: "adminPassword@1",
+  });
+  console.log("🚀 ~ file: common.ts ~ line 21 ~ getlogin ~ getlogin", getlogin);
+
   const setlogin = {
     accessToken: getlogin.data.access_token,
     refreshToken: getlogin.data.refresh_token,
@@ -24,16 +30,13 @@ export async function commonLoginService(data: IConditions) {
   return {
     data: [
       {
-        name: "Tushar Saxena",
-        description: "i am the king of the seven worlds :)",
-        userid: "tushar123",
-        email: "tushar057@gmail.com",
-        password: "tushar057",
-        databaseName: "Tushar Saxena",
-        databaseDescription: "database size of 100",
-        lastlogin: "Mar 01 2022 11:51:39",
-        type: "tenant",
-        id: 7,
+        tenantName: "Rahul kenchi",
+        description: "i am going to win the world",
+        email: "rahul768@gmail.com",
+        password: "rahul768",
+        type: "admin",
+        id: 5,
+        roles: ["user"],
       },
     ],
   };

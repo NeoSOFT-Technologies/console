@@ -18,9 +18,7 @@ export const deleteTenant = createAsyncThunk(
   "tenant/deletetenant",
   async (tenantName: string) => {
     try {
-      const response = await deleteTenantDataService({
-        tenantName: tenantName,
-      });
+      const response = await deleteTenantDataService(tenantName);
       console.log(response);
       return response.data;
     } catch (error_) {

@@ -137,7 +137,7 @@ export default function UserDetails() {
                     disabled={!editUser}
                   />
                 </Form.Group>
-                <Form.Group>
+                {/* <Form.Group>
                   <Form.Label>Status :</Form.Label>
                   <Form.Control
                     type="text"
@@ -146,7 +146,7 @@ export default function UserDetails() {
                     onChange={handleInputChange}
                     disabled
                   />
-                </Form.Group>
+                </Form.Group> */}
                 {editUser && (
                   <>
                     <Button variant="success" onClick={handleEditSave}>

@@ -15,7 +15,8 @@ export const getTenantRoles = createAsyncThunk(
     try {
       const response = await tenantRolesService(tenantName);
       console.log(response);
-      return response.data;
+      // return response.data;
+      return ["user"];
     } catch (error_) {
       return error_;
     }

@@ -4,9 +4,10 @@ import { ITenantUserListState } from "../../../../types/index";
 import error from "../../../../utils/error";
 
 interface IConditions {
+  tenantName: string;
+  userName: string;
   currentPage: number;
   search: string;
-  tenantName: string;
 }
 const initialState: ITenantUserListState = {
   data: undefined,
@@ -17,15 +18,16 @@ const initialState: ITenantUserListState = {
 export const getTenantUserList = createAsyncThunk(
   "tenantUser/list",
   async (conditions: IConditions) => {
-    const { currentPage, search, tenantName } = conditions;
+    const { currentPage, search, tenantName, userName } = conditions;
     try {
       const response = await tenantUserListService(
+        tenantName,
+        userName,
         currentPage,
-        search,
-        tenantName
+        search
       );
       console.log(response);
-      return response.data;
+      return response.data.data;
     } catch (error_) {
       return error_;
     }

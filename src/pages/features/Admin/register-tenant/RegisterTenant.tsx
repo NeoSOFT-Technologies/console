@@ -16,7 +16,6 @@ import {
   ITenantData,
   ITenantRolesState,
 } from "../../../../types/index";
-// import { useSelector } from "react-redux";
 
 export default function RegisterTenant() {
   const dispatch = useAppDispatch();
@@ -28,13 +27,13 @@ export default function RegisterTenant() {
     databaseName: "",
     databaseDescription: "",
     roles: [],
-    type: "tenant",
   });
   const [error, setError] = useState<IErrorTenantInput>({
     tenantName: "",
     email: "",
     password: "",
     description: "",
+    roles: "",
   });
 
   // const [tenant.roles, setTenant] = useState<string[]>([]);
@@ -104,7 +103,8 @@ export default function RegisterTenant() {
       error.tenantName === "" &&
       error.email === "" &&
       error.description === "" &&
-      error.password === ""
+      error.password === "" &&
+      error.roles === ""
     );
     return validate;
   };
@@ -116,7 +116,8 @@ export default function RegisterTenant() {
         tenant.tenantName !== "" &&
         tenant.email !== "" &&
         tenant.description !== "" &&
-        tenant.password !== ""
+        tenant.password !== "" &&
+        tenant.roles.length > 0
       ) {
         const newUser = {
           ...tenant,
@@ -134,7 +135,6 @@ export default function RegisterTenant() {
           databaseName: "",
           databaseDescription: "",
           roles: [],
-          type: "tenant",
         });
       } else {
         ToastAlert("Please Fill All Fields", "warning");
@@ -145,6 +145,7 @@ export default function RegisterTenant() {
         email: "",
         password: "",
         description: "",
+        roles: "",
       });
     }
   };
@@ -160,7 +161,6 @@ export default function RegisterTenant() {
       databaseName: "",
       databaseDescription: "",
       roles: [],
-      type: "tenant",
     });
   };
   return (
@@ -184,7 +184,7 @@ export default function RegisterTenant() {
                     id="tenantName"
                     placeholder="Enter tenantName"
                     name="tenantName"
-                    data-testid="name-input"
+                    data-testid="tenantName-input"
                     value={tenant.tenantName}
                     isInvalid={!!error.tenantName}
                     isValid={!error.tenantName && !!tenant.tenantName}
@@ -299,7 +299,7 @@ export default function RegisterTenant() {
             </Row>
             <div className="title">Tenant Roles:</div>
             <div className="list-container  ">
-              {rolesList.data?.roles.map((item, index) => (
+              {rolesList?.data?.map((item, index) => (
                 <span key={index} className="m-4">
                   <input
                     value={item}

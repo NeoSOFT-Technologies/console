@@ -1,16 +1,22 @@
 import { ITenantData } from "../types";
 import apiFactory from "../utils/api";
 
-interface DeleteTenant {
-  tenantName: string;
-}
-
 export function addTenantDataService(data: ITenantData) {
-  return apiFactory().post(`/api/tenants`, data);
+  const body = {
+    tenantName: data.tenantName,
+    email: data.email,
+    password: data.password,
+    description: data.description,
+  };
+  console.log(
+    "🚀 ~ file: admin.ts ~ line 11 ~ addTenantDataService ~ body",
+    body
+  );
+  return apiFactory().post(`/api/tenants`, body);
 }
 
-export function deleteTenantDataService(data: DeleteTenant) {
-  return apiFactory().delete(`/api/tenants`);
+export function deleteTenantDataService(tenantName: string) {
+  return apiFactory().delete(`/api/tenants/${tenantName}`);
 }
 
 export function tenantListService(

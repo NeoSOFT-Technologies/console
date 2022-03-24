@@ -64,20 +64,6 @@ export default function TenantPermission() {
                     />
                   </Form.Group>
                 </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>UserId :</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter User ID"
-                      name="userid"
-                      disabled
-                      //   value={tenant.userid}
-                      //   isInvalid={!!err.userid}
-                      //   onChange={handleInputChange}
-                    />
-                  </Form.Group>
-                </Col>
                 <Col md={12}>
                   <Form.Group>
                     <Form.Label>Permissions :</Form.Label>

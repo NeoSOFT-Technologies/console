@@ -8,27 +8,26 @@ interface CreateUser {
   roles: string[];
 }
 
-interface DeleteUser {
-  userName: string;
-}
-
 export function updateTenantDataService(data: ITenantData) {
   const body = {
     action: {
-      ...data,
+      tenantName: data.tenantName,
+      email: data.email,
+      description: data.description,
     },
   };
   return apiFactory().patch(`/api/tenant`, body);
 }
 
 export function tenantUserListService(
+  tenantName: string,
+  userName: string,
   currentPage: number,
-  search: string,
-  tenantName: string
+  search: string
   // isActive: string
 ) {
   return apiFactory().get(
-    `/api/user?tenantName=${tenantName}&page=${currentPage}`
+    `/api/user?tenantName=${tenantName}&page=${currentPage}&userName=${userName}`
   );
 }
 
@@ -41,6 +40,6 @@ export function createNewUserService(data: CreateUser) {
   return apiFactory().post(`/api/user`, body);
 }
 
-export function deleteUserDataService(data: DeleteUser) {
-  return apiFactory().delete(`/api/user`); // modify here
+export function deleteUserDataService(userName: string) {
+  return apiFactory().delete(`/api/user/${userName}`);
 }

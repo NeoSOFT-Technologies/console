@@ -4,7 +4,16 @@ import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
 
 const initialState: IUserDataState = {
-  data: undefined,
+  data: {
+    tenantName: "Rahul kenchi",
+    description: "i am going to win the world",
+    email: "rahul768@gmail.com",
+    password: "rahul768",
+    type: "admin",
+    id: 5,
+    roles: ["user"],
+  },
+
   loading: false,
   error: undefined,
 };
@@ -13,6 +22,7 @@ interface IConditions {
   tenantName: string;
   page: number;
 }
+
 export const getUserData = createAsyncThunk(
   "user/data",
   async (conditions: IConditions) => {
@@ -20,7 +30,7 @@ export const getUserData = createAsyncThunk(
       const { tenantName, page } = conditions;
       const response = await getUserListService(tenantName, page);
       console.log(response);
-      return response.data[0];
+      return response.data;
     } catch (error_) {
       return error_;
     }
@@ -37,7 +47,7 @@ const slice = createSlice({
     });
     builder.addCase(getUserData.fulfilled, (state, action) => {
       state.loading = false;
-      state.data = action.payload;
+      // state.data = action.payload;
     });
     builder.addCase(getUserData.rejected, (state, action) => {
       state.loading = false;

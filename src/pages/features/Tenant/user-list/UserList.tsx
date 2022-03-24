@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import RenderList from "../../../../components/list/RenderList";
 import { RootState } from "../../../../store";
 import { getTenantUserList } from "../../../../store/features/tenant/tenant-user-list/slice";
@@ -11,7 +11,7 @@ import {
   ITenantUserListState,
 } from "../../../../types";
 export default function UserList() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [selected, setSelected] = useState(1);
   const [search, setSearch] = useState(" ");
   const dispatch = useAppDispatch();
@@ -30,25 +30,19 @@ export default function UserList() {
   const mainCall = (currentPage: number, searchUser: string) => {
     dispatch(
       getTenantUserList({
-        currentPage,
+        tenantName: "Paras",
+        userName: "",
+        currentPage: 1,
         search: searchUser,
-        tenantName: "",
       })
     );
   };
   useEffect(() => {
-    // console.log(userList);
+    console.log(userList);
     if (userList.data) {
       setDataList({
-        list: [...userList.data.list],
-        fields: [
-          "id",
-          "userName",
-          "email",
-          "tenantName",
-          "createdDateTime",
-          "isDeleted",
-        ],
+        list: [...userList.data],
+        fields: ["userName", "email", "createdDateTime"],
       });
     }
   }, [userList.data]);
@@ -70,16 +64,15 @@ export default function UserList() {
   const handleUserDetails = (value: ITenantUserData) => {
     console.log(value);
     // navigate("/userdetails");
-    navigate(`/userdetails/${value.id}`, { state: { ...value } });
+    // navigate(`/userdetails/${value.id}`, { state: { ...value } });
   };
 
   const headings = [
-    { title: "ID", className: "text-center" },
+    // { title: "ID", className: "text-center" },
     { title: "User Name", className: "text-center" },
     { title: "Email", className: "text-center" },
-    { title: "Tenant Name", className: "text-center" },
-    { title: "Created Date & Time", className: "text-center" },
-    { title: "Status", className: "text-center" },
+    // { title: "Created Date & Time", className: "text-center" },
+    // { title: "Status", className: "text-center" },
     { title: "Action", className: "text-center" },
   ];
   const actions = [
@@ -161,7 +154,8 @@ export default function UserList() {
                   data={datalist}
                   actions={actions}
                   handlePageClick={handlePageClick}
-                  pageCount={userList.data.count}
+                  // pageCount={userList.data.count}
+                  pageCount={5}
                   selected={selected}
                 />
               )}
