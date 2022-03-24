@@ -8,6 +8,7 @@ import deleteTenantReducer from "./features/admin/delete-tenant/slice";
 import updateTenantReducer from "./features/tenant/update-tenant/slice";
 import addNewUserReducer from "./features/tenant/add-user/slice";
 import rolesListReducer from "./features/admin/tenant-roles/slice";
+import tenantPermissionsListReducer from "./features/admin/tenant-permissions/slice";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     updateTenant: updateTenantReducer,
     addNewUser: addNewUserReducer,
     rolesList: rolesListReducer,
+    tenantPermissionsList: tenantPermissionsListReducer,
   },
 });
 

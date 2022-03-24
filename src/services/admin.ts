@@ -18,3 +18,7 @@ export function tenantListService(currentPage: number, search: string) {
 export function tenantRolesService() {
   return apiFactory().get(`/api/tenant-roles`);
 }
+
+export function tenantPermissionsService() {
+  return apiFactory().get(`/api/tenant-permissions`);
+}

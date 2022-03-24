@@ -156,7 +156,9 @@ export default function TenantDetails() {
           <Dropdown.Item onClick={() => navigate("/manageroles")}>
             Manage Roles
           </Dropdown.Item>
-          <Dropdown.Item>Manage Permission</Dropdown.Item>
+          <Dropdown.Item onClick={() => navigate("/tenantpermission")}>
+            Manage Permission
+          </Dropdown.Item>
           <Dropdown.Item>Set Tenant Url</Dropdown.Item>
           <Dropdown.Item>Set InActive</Dropdown.Item>
           <Dropdown.Item>Upload</Dropdown.Item>

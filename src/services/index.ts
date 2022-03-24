@@ -3,6 +3,7 @@ export {
   deleteTenantDataService,
   tenantListService,
   tenantRolesService,
+  tenantPermissionsService,
 } from "./admin";
 export {
   updateTenantDataService,
