@@ -101,9 +101,7 @@ export default function TenantPermission() {
                           label={permission}
                           name="permission"
                           value={`${permission}`}
-                          defaultChecked={tenantPermission.includes(
-                            `${permission}`
-                          )}
+                          defaultChecked={tenantPermission.includes(permission)}
                           type="checkbox"
                           onChange={handleInputChange}
                           inline
