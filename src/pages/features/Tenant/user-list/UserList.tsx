@@ -1,66 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Card } from "react-bootstrap";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import RenderList from "../../../../components/list/RenderList";
-import { RootState } from "../../../../store";
-import { getTenantUserList } from "../../../../store/features/tenant/tenant-user-list/slice";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import {
-  ITenantUserData,
-  ITenantUserDataList,
-  ITenantUserListState,
-} from "../../../../types";
+import { ITenantUserData } from "../../../../types";
 export default function UserList() {
-  // const navigate = useNavigate();
-  const [selected, setSelected] = useState(1);
-  const [search, setSearch] = useState(" ");
-  const dispatch = useAppDispatch();
-  const userList: ITenantUserListState = useAppSelector(
-    (state: RootState) => state.tenantUserList
-  );
+  const navigate = useNavigate();
   const [checkactive, setCheckactive] = useState({
     btn1: false,
     btn2: false,
     btn3: true,
   });
-  const [datalist, setDataList] = useState<ITenantUserDataList>({
-    list: [],
-    fields: [],
-  });
-  const mainCall = (currentPage: number, searchUser: string) => {
-    dispatch(
-      getTenantUserList({
-        tenantName: "Paras",
-        userName: "",
-        currentPage: 1,
-        search: searchUser,
-      })
-    );
-  };
-  useEffect(() => {
-    console.log(userList);
-    if (userList.data) {
-      setDataList({
-        list: [...userList.data],
-        fields: ["userName", "email", "createdDateTime"],
-      });
-    }
-  }, [userList.data]);
 
-  useEffect(() => {
-    mainCall(1, search);
-  }, []);
-
-  const handlePageClick = (pageSelected: number) => {
-    mainCall(pageSelected, search);
-    setSelected(pageSelected);
-  };
-
-  const searchFilter = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    setSelected(1);
-    mainCall(1, search);
-  };
   const handleUserDetails = (value: ITenantUserData) => {
     console.log(value);
     // navigate("/userdetails");
@@ -68,20 +18,38 @@ export default function UserList() {
   };
 
   const headings = [
-    // { title: "ID", className: "text-center" },
-    { title: "User Name", className: "text-center" },
-    { title: "Email", className: "text-center" },
-    // { title: "Created Date & Time", className: "text-center" },
-    // { title: "Status", className: "text-center" },
-    { title: "Action", className: "text-center" },
-  ];
-  const actions = [
     {
-      className: "btn btn-sm btn-dark",
-      iconClassName: "bi bi-gear-fill",
-      buttonFunction: handleUserDetails,
+      name: "ID",
+      data: "id",
+    },
+    {
+      name: "User Name",
+      data: "userName",
+    },
+    {
+      name: "Email",
+      data: "email",
+    },
+    {
+      name: "Tenant Name",
+      data: "tenantName",
+    },
+    {
+      name: "Created Date & Time",
+      data: "createdDateTime",
+    },
+    {
+      name: "Status",
+      data: "isDeleted",
     },
   ];
+  const url =
+    process.env.REACT_APP_API_BASEURL + "/api/tenant-user?" ||
+    "http://localhost:3000/api/tenant-user?";
+  const actions = {
+    classNames: "btn btn-sm btn-dark",
+    func: (val: any) => handleUserDetails(val),
+  };
   return (
     <>
       <div className="col-lg-12 grid-margin stretch-card">
@@ -124,41 +92,11 @@ export default function UserList() {
           <Card.Header>
             <div className="d-flex align-items-center justify-content-between">
               <h2 className="card-title">User List</h2>
-              <div className="search-field ">
-                <form className="h-50">
-                  <div className="input-group" data-testid="input-group">
-                    <input
-                      type="text"
-                      data-testid="input-group"
-                      className="form-control bg-parent border-1"
-                      placeholder="Search User"
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <button
-                      className=" btn  btn-success btn-sm"
-                      data-testid="search-button"
-                      onClick={(e) => searchFilter(e)}
-                    >
-                      <i className=" bi bi-search"></i>
-                    </button>
-                  </div>
-                </form>
-              </div>
             </div>
           </Card.Header>
           <Card.Body>
             <div className="table-responsive">
-              {userList.data && (
-                <RenderList
-                  headings={headings}
-                  data={datalist}
-                  actions={actions}
-                  handlePageClick={handlePageClick}
-                  // pageCount={userList.data.count}
-                  pageCount={5}
-                  selected={selected}
-                />
-              )}
+              <RenderList headings={headings} url={url} actions={actions} />
             </div>
           </Card.Body>
         </Card>

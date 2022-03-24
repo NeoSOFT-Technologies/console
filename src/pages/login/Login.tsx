@@ -3,7 +3,7 @@ import { Form, Button, Alert, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import PasswordButtons from "../../components/password-field/Password";
-import { ToastAlert } from "../../components/toaster-alert/ToastAlert";
+import { ToastAlert } from "../../components/toast-alert/toast-alert";
 // import { regexForEmail } from "../../resources/constants";
 import { logo } from "../../resources/images";
 import { RootState } from "../../store";
@@ -76,6 +76,7 @@ export default function Login() {
         navigate("/userdashboard");
       } else {
         ToastAlert("Incorrect Credentials!", "warning");
+        throw new Error("Incorrect Credentials ");
       }
     }
   }, [user.data, userName]);
@@ -103,8 +104,8 @@ export default function Login() {
     if (validate()) {
       dispatch(commonLogin({ userName, password, tenantName }));
     } else {
-      // failure("Please fill all the fields");
       ToastAlert("Please fill all the fields", "error");
+      throw new Error("Please fill all the fields ");
     }
   };
 

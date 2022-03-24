@@ -1,86 +1,101 @@
+import { h } from "gridjs";
+import { Grid } from "gridjs-react";
 import React from "react";
-import {
-  IActionsRenderList,
-  IHeadings,
-  ITenantDataList,
-  ITenantData,
-  ITenantUserDataList,
-  ITenantUserData,
-} from "../../types/index";
-import Pagination from "./Pagination";
+import "./render-list.scss";
 
-interface IProperties {
-  headings: IHeadings[];
-  data: ITenantDataList | ITenantUserDataList;
-  pageCount: number;
-  handlePageClick: (selected: number) => void;
-  actions?: IActionsRenderList[];
-  selected: number;
+interface IProps {
+  headings: {
+    name: string;
+    data: string;
+    width?: string;
+  }[];
+  url: string;
+  actions?: {
+    classNames: string;
+    func: (val: any) => void;
+  };
 }
-const RenderList: React.FC<IProperties> = (properties) => {
-  const { headings, data, pageCount, handlePageClick } = properties;
+
+interface IColumns {
+  name: string;
+  data?: (row: any) => void;
+  width?: string;
+  formatter?: (cell: any, row: any) => void;
+}
+
+const RenderList1: React.FC<IProps> = (props: IProps) => {
+  const { headings, url } = props;
+  const columns: IColumns[] = headings.map((heading) => ({
+    ...heading,
+    data: (row: any) => row[heading.data],
+    name: heading.name,
+  }));
+
+  if (props.actions !== undefined) {
+    console.log(props.actions);
+    columns.push({
+      name: "Actions",
+      formatter: (cell, row) => {
+        return h(
+          "Button",
+          {
+            className: props.actions?.classNames,
+            onclick: () => props.actions?.func(row),
+          },
+          h(
+            "i",
+            {
+              className: "bi bi-gear-fill",
+            },
+            ""
+          )
+        );
+      },
+    });
+  }
+
+  const serverConfigs = {
+    url: url,
+    // eslint-disable-next-line unicorn/no-thenable
+    then: (res: any) => res.list,
+    total: (res: any) => res.count,
+  };
+
+  const paginationConfigs = {
+    enabled: true,
+    limit: 10,
+    server: {
+      url: (prev: string, page: Number, limit: Number) =>
+        `${prev}_page=${page}&size=${limit}`,
+    },
+  };
+
+  const searchConfigs = {
+    enabled: true,
+    server: {
+      url: (prev: string, keyword: string) => `${prev}search=${keyword}&`,
+    },
+  };
+
+  const classNames = {
+    table: "table",
+    pagination: "d-flex justify-content-around",
+    paginationButton: "page-link d-inline",
+    paginationButtonCurrent: "active",
+    search: "search-field",
+  };
+
   return (
     <div>
-      {/* headings mapping logic */}
-      <table className="table">
-        <thead>
-          <tr>
-            {headings.map((heading, index) => (
-              <th key={`heading${index}`} className={heading.className}>
-                {heading.title}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data && data.list.length === 0 ? (
-            <tr>
-              <td rowSpan={headings.length}>No data Available</td>
-            </tr>
-          ) : (
-            // actions that is required on buttons
-            // @ts-ignore
-            data.list.map(
-              (value: ITenantData | ITenantUserData, index1: number) => (
-                <tr key={index1}>
-                  {data.fields.map((field: string, index2: number) => (
-                    // @ts-ignore
-                    <td key={`list${index1}${index2}`}>{value[field]}</td>
-                  ))}
-                  {properties.actions && (
-                    <td>
-                      <div className="btn-group" role="group">
-                        {properties.actions.map((button, index) => (
-                          <button
-                            key={`button${index}`}
-                            type="button"
-                            className={button.className}
-                            onClick={() => {
-                              if (button.buttonFunction)
-                                button.buttonFunction(value);
-                            }}
-                          >
-                            <i className={button.iconClassName}></i>
-                          </button>
-                        ))}
-                      </div>
-                    </td>
-                  )}
-                </tr>
-              )
-            )
-          )}
-        </tbody>
-      </table>
-      {/* paginate logic */}
-      <Pagination
-        previousLabel={"previous"}
-        nextLabel={"next"}
-        pageCount={pageCount}
-        onPageChange={handlePageClick}
-        selectedPage={properties.selected}
+      <Grid
+        columns={columns}
+        server={serverConfigs}
+        pagination={paginationConfigs}
+        search={searchConfigs}
+        className={classNames}
       />
     </div>
   );
 };
-export default RenderList;
+
+export default RenderList1;
