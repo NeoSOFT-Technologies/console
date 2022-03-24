@@ -96,6 +96,20 @@ Below is a list of all the scripts this template has available:
 | `lint`     | Runs ESLint on project files                                      |
 | `start`    | Does the same as 'npm run serve'. Can be invoked with `npm start` |
 | `test`     | Runs tests using Jest test runner                                 |
+| `clean`    | On Run clean the installed node packages                          |
+| `clean:cdn`     | Runs tests using Jest test runner                            |
+| `build:css`     | Runs clean, clean:cdn and building/minifying the scss files  |
+| `watch:css`     | Runs build:css with sass watch                               |
+| `build:prod`    | Runs build and build:css together                            |
+| `dev`      | Runs the whole script                                             |
+| `eject`    | Runs react-scripts eject                                          |
+| `format`   | Runs prettier roles on project files                              |
+| `test:coverage` | Gives the code covergae infrom to table                      |
+| `lint:fix` | Runs lint and fix the resolve able errors                         |
+| `lint:quiet`    | Run lint to show errors only                                 |
+| `prepare`  | install husky                                                     |
+| `precommit`| Runs lint:fix and format before commit                            |
+| `prepush`  | Runs lint before push                                             |
 
 ## Project Structure
 
@@ -104,18 +118,34 @@ Please find below a detailed description of the app's folder structures:
 | Name                     | Description                                                                              |
 | ------------------------ | ---------------------------------------------------------------------------------------- |
 | **.github**              | Contains GitHub settings and configurations, including the GitHub Actions workflows      |
+| **.husky**               | Contains precommit and prepush rules                                                     |
+| **.vscode**              | vscode settings                                                                          |
 | **node_modules**         | Contains all your npm dependencies                                                       |
 | **src**                  | Contains your source code that will be compiled to the dist dir                          |
-| **src/config**           | Here you will find all the environment configuration necessary to access the application |
-| **src/app**              | Components define group of files/source that respond to various module(http requests)    |
-| **src/app/dashboard/**   | contain the main dashboard                                                               |
-| **src/app/error-pages/** | error page for 404 and 500                                                               |
-| **src/app/shared/**      | Contain the other components like sidebar and navigationBar                              |
-| **src/app/user-pages**   | login page register page and lockscreen                                                  |
-| **src/app/AppRoutes**    | Conatian all the Routes                                                                  |
-| **src/asset**            | conatin images, svgs and SASS files                                                      |
-| package.json             | File that contains npm dependencies                                                      |
+| **src/components/**      | Contains the compoments for the template                                                 |
+| **src/pages/**           | Contains the template common and specfic pages                                           |
+| **src/pages/error-pages/**| Contains the all the error pages(400,401,etc)                                           |
+| **src/pages/features/**  | Contains the pages for the admin, tenant & user                                          |
+| **src/pages/features/admin/**| Contains the pages for the admin                                                     |
+| **src/pages/features/tenant/**| Contains the pages for the tenant                                                   |
+| **src/pages/features/user/**  | Contains the pages for the user                                                     |
+| **src/pages/features/login/** | Contains the common login for all                                                   |
+| **src/resources/**        | Conatin the files for constants and asset                                               |
+| **src/routes/**   | contain the routes for the admin, tenant & user                                                 |
+| **src/services/** | Contain the api calls and the token sevices                                                     |
+| **src/store/**      | Contain the redux toolkit & central store                                                     |
+| **src/store/features**      | Contain slices for admin, tenant and user                                             |
+| **src/styles/**   | Contain the common sass file for the template                                                   |
+| **src/type/**   | Contain the interface for the template                                                            |
+| **src/util/**   | Contain the interface for the utilities                                                           |
+| **wiki**    | Contain concepts and npm modules documentation                                                        |
+| .eslintignore            | Contain the file which are ignored by lint                                               |
 | .eslintrc                | Config settings for ESLint code style checking                                           |
+| .gitignore                | file specifies intentionally untracked files that Git should ignore                     |
+| .prettierignore                | Contain the file which are ignored by prettier                                     |
+| prettierrc.json                | Config settings for prettier code style checking                                   |
+|tsconfig.json               | Config settings for Typescript                                                         |
+| package.json             | File that contains npm dependencies                                                      |
 
 ## Stay in touch
 
