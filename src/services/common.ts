@@ -10,9 +10,9 @@ interface IConditions {
 
 export async function commonLoginService(data: IConditions) {
   const getlogin = await apiFactory().post(`/api/login`, {
-    username: "admin",
-    tenantName: "",
-    password: "adminPassword@1",
+    username: "",
+    tenantName: "Paras",
+    password: "Paras@123",
   });
   console.log(" getlogin", data);
 

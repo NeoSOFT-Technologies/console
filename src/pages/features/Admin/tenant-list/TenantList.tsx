@@ -82,7 +82,12 @@ export default function TenantList() {
             </div>
             {tenantList.loading && <Spinner />}
             <div className="table-responsive">
-              <RenderList headings={headings} url={url} actions={actions} />
+              <RenderList
+                headings={headings}
+                url={url}
+                actions={actions}
+                searchBy={"tenantName"}
+              />
             </div>
           </div>
         </div>

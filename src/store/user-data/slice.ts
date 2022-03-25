@@ -10,7 +10,7 @@ const initialState: IUserDataState = {
     email: "rahul768@gmail.com",
     password: "rahul768",
     id: 5,
-    type: "admin",
+    type: "tenant",
     roles: ["user"],
   },
 
@@ -45,7 +45,7 @@ const slice = createSlice({
     builder.addCase(getUserData.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(getUserData.fulfilled, (state, action) => {
+    builder.addCase(getUserData.fulfilled, (state) => {
       state.loading = false;
       // state.data = action.payload;
     });

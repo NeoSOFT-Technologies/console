@@ -126,7 +126,7 @@ function AppRoutes() {
           }
         />
         <Route
-          path="/userdetails/:id"
+          path="/userdetails/:userName"
           element={
             <TenantGuard>
               <UserDetails />

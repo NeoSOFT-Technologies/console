@@ -11,9 +11,11 @@ interface Ierror {
   userName: string;
   email: string;
   tenantName: string;
+  createdTimestamp?: string;
 }
 export default function UserDetails() {
   const location = useLocation();
+  // const params = useParams();
   const user = location.state as LocationState;
   console.log(user);
   // @ts-ignore

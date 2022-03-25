@@ -5,6 +5,7 @@ import "./render-list.scss";
 import tokenService from "../../services/token.service";
 
 interface IProps {
+  searchBy: string;
   headings: {
     name: string;
     data: string;
@@ -25,7 +26,7 @@ interface IColumns {
 }
 
 const RenderList1: React.FC<IProps> = (props: IProps) => {
-  const { headings, url } = props;
+  const { headings, url, searchBy } = props;
   const columns: IColumns[] = headings.map((heading) => ({
     ...heading,
     data: (row: any) => row[heading.data],
@@ -75,7 +76,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
   const searchConfigs = {
     enabled: true,
     server: {
-      url: (prev: string, keyword: string) => `${prev}tenantName=${keyword}&`,
+      url: (prev: string, keyword: string) => `${prev}${searchBy}=${keyword}&`,
     },
   };
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import RenderList from "../../../../components/list/RenderList";
-import { ITenantUserData } from "../../../../types";
+
 export default function UserList() {
   const navigate = useNavigate();
   const [checkactive, setCheckactive] = useState({
@@ -11,17 +11,18 @@ export default function UserList() {
     btn3: true,
   });
 
-  const handleUserDetails = (value: ITenantUserData) => {
+  const handleUserDetails = (value: any) => {
     console.log(value);
-    navigate("/userdetails");
-    // navigate(`/userdetails/${value.id}`, { state: { ...value } });
+    navigate(`/userdetails/${value._cells[0].data}`, {
+      state: {
+        userName: value._cells[0].data,
+        email: value._cells[1].data,
+        tenantName: "Jeff",
+      },
+    });
   };
 
   const headings = [
-    {
-      name: "ID",
-      data: "id",
-    },
     {
       name: "User Name",
       data: "userName",
@@ -31,21 +32,13 @@ export default function UserList() {
       data: "email",
     },
     {
-      name: "Tenant Name",
-      data: "tenantName",
-    },
-    {
-      name: "Created Date & Time",
-      data: "createdDateTime",
-    },
-    {
-      name: "Status",
-      data: "isDeleted",
+      name: "Created Date and Time",
+      data: "createdTimestamp",
     },
   ];
   const url =
-    process.env.REACT_APP_API_BASEURL + "/api/tenant-user?" ||
-    "http://localhost:3000/api/tenant-user?";
+    process.env.REACT_APP_API_BASEURL + "api/user?" ||
+    "http://localhost:3000/api/user?";
   const actions = {
     classNames: "btn btn-sm btn-dark",
     func: (val: any) => handleUserDetails(val),
@@ -96,7 +89,12 @@ export default function UserList() {
           </Card.Header>
           <Card.Body>
             <div className="table-responsive">
-              <RenderList headings={headings} url={url} actions={actions} />
+              <RenderList
+                headings={headings}
+                url={url}
+                actions={actions}
+                searchBy={"userName"}
+              />
             </div>
           </Card.Body>
         </Card>
