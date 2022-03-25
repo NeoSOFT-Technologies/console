@@ -1,0 +1,17 @@
+input[type="search"] {
+  border: 1px solid rgba(128, 128, 128, 0.685) (128, 128, 128, 0.685);
+  border-radius: 4px;
+  padding: 0.5rem;
+  box-shadow: none;
+  margin-right: 0;
+}
+
+.search-field {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.gridjs-pages > .active {
+  background-color: rgba(35, 152, 206, 0.959);
+  color: white;
+}
