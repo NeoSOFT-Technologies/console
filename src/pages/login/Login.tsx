@@ -25,13 +25,6 @@ export default function Login() {
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
   );
-  console.log(
-    "🚀 ~ file: Login.tsx ~ line 27 ~ Login ~ user",
-    user,
-    userName,
-    password,
-    tenantName
-  );
 
   const handle = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

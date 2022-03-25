@@ -28,20 +28,21 @@ export default function TenantList() {
   const headings = [
     {
       name: "Tenant Name",
-      data: "name",
+      data: "tenantName",
     },
     {
       name: "Description",
       data: "description",
     },
     {
-      name: "Last Login",
-      data: "lastlogin",
+      name: "Created Date and Time",
+      data: "createdDateTime",
     },
   ];
+  console.log(process.env.REACT_APP_API_BASEURL);
   const url =
-    process.env.REACT_APP_API_BASEURL + "/api/tenant?type=tenant&" ||
-    "http://localhost:3000/api/tenant?type=tenant&";
+    process.env.REACT_APP_API_BASEURL + "api/tenants?" ||
+    "http://localhost:3000/api/tenants?";
   const actions = {
     classNames: "btn btn-sm btn-dark",
     func: (val: any) => NavigateTenant(val),

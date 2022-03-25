@@ -2,6 +2,7 @@ import { h } from "gridjs";
 import { Grid } from "gridjs-react";
 import React from "react";
 import "./render-list.scss";
+import tokenService from "../../services/token.service";
 
 interface IProps {
   headings: {
@@ -53,11 +54,12 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
       },
     });
   }
-
+  console.log(`Bearer ${tokenService.getLocalAccessToken()}`);
   const serverConfigs = {
     url: url,
+    headers: { Authorization: `Bearer ${tokenService.getLocalAccessToken()}` },
     // eslint-disable-next-line unicorn/no-thenable
-    then: (res: any) => res.list,
+    then: (res: any) => res.data,
     total: (res: any) => res.count,
   };
 
@@ -65,15 +67,15 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     enabled: true,
     limit: 10,
     server: {
-      url: (prev: string, page: Number, limit: Number) =>
-        `${prev}_page=${page}&size=${limit}`,
+      url: (prev: string, page: number, limit: Number) =>
+        `${prev}page=${page + 1}&size=${limit}`,
     },
   };
 
   const searchConfigs = {
     enabled: true,
     server: {
-      url: (prev: string, keyword: string) => `${prev}search=${keyword}&`,
+      url: (prev: string, keyword: string) => `${prev}tenantName=${keyword}&`,
     },
   };
 
