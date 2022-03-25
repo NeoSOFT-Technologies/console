@@ -127,7 +127,7 @@ export default function UserList() {
               <h2 className="card-title">User List</h2>
               <div className="search-field ">
                 <form className="h-50">
-                  <div className="input-group" data-testid="input-group">
+                  <div className="input-group">
                     <input
                       type="text"
                       data-testid="input-group"

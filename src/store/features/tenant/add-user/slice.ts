@@ -26,7 +26,7 @@ export const addNewUser = createAsyncThunk(
   async (conditions: IConditions) => {
     try {
       const response = await createNewUserService(conditions);
-      console.log(response);
+      // console.log(response);
       return response.data;
     } catch (error_) {
       return error_;

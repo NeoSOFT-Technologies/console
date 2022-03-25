@@ -22,7 +22,7 @@ export const updateUser = createAsyncThunk(
     const { id, password } = condition;
     try {
       const response = await updateUserPassword(id, password);
-      console.log(response);
+      // console.log(response);
       return response.data;
     } catch (error_) {
       return error_;

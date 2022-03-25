@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import store from "../../store";
 import Header from "./Header";
 
-it("render without crashing Header", () => {
+it("renders without crashing Header", () => {
   render(
     <BrowserRouter>
       <Provider store={store}>

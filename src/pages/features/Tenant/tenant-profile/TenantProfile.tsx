@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Container, Row, Col } from "react-bootstrap";
+import { Button, Form, Container, Row, Col, ListGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
@@ -13,6 +13,7 @@ import { updateTenant } from "../../../../store/features/tenant/update-tenant/sl
 import { useAppDispatch } from "../../../../store/hooks";
 import { IUserDataState } from "../../../../types";
 import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
+import "./TenantProfile.scss";
 const TenantProfile = () => {
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
@@ -257,29 +258,35 @@ const TenantProfile = () => {
                   />
                 </Form.Group>
               </Col>
-              {/* <Col md={6}>
-                <h6>Roles</h6>
 
-                <ul>
-                  <li>Tenant roles cannot edit</li>
-                  <li>Tenant roles cannot edit</li>
-                  <li>Tenant roles cannot edit</li>
-                </ul>
-              </Col>
-              <Col md={6}> */}
-              {/* <h6>Permissions</h6>
-                <ListGroup as="ul">
+              <Col md={6}>
+                <h6>Roles</h6>
+                <ListGroup as="ul" className="bb">
                   <ListGroup.Item as="li" className="bb">
                     Tenant roles cannot edit
                   </ListGroup.Item>
-                  <ListGroup.Item as="li">
+                  <ListGroup.Item as="li" className="bb">
                     Tenant roles cannot edit
                   </ListGroup.Item>
-                  <ListGroup.Item as="li">
+                  <ListGroup.Item as="li" className="bb">
                     Tenant roles cannot edit
                   </ListGroup.Item>
                 </ListGroup>
-              </Col> */}
+              </Col>
+              <Col md={6}>
+                <h6>Permissions</h6>
+                <ListGroup as="ul" className="bb">
+                  <ListGroup.Item as="li" className="bb">
+                    Tenant roles cannot edit
+                  </ListGroup.Item>
+                  <ListGroup.Item as="li" className="bb">
+                    Tenant roles cannot edit
+                  </ListGroup.Item>
+                  <ListGroup.Item as="li" className="bb">
+                    Tenant roles cannot edit
+                  </ListGroup.Item>
+                </ListGroup>
+              </Col>
               {edit ? (
                 <Button
                   data-testid="update-button"

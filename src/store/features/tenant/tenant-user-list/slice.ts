@@ -19,7 +19,7 @@ export const getTenantUserList = createAsyncThunk(
     const { currentPage, search } = conditions;
     try {
       const response = await tenantUserListService(currentPage, search);
-      console.log(response);
+      // console.log(response);
       return response.data;
     } catch (error_) {
       return error_;

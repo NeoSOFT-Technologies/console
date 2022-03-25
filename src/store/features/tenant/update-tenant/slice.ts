@@ -19,7 +19,7 @@ export const updateTenant = createAsyncThunk(
     const { id, data } = conditions;
     try {
       const response = await updateTenantDataService(id, data);
-      console.log(response);
+      // console.log(response);
       return response.data;
     } catch (error_) {
       return error_;

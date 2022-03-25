@@ -8,31 +8,31 @@ export default function RoleAndPermissions() {
     (state: RootState) => state.userData
   );
   return (
-    <Card className="w-75 mx-auto p-2">
-      <h1 className="mx-auto p-1">Roles & Permissions</h1>
-      <hr />
-      <h3>Roles</h3>
-      <div>
-        {user &&
-          user.data?.roles !== undefined &&
-          user.data?.roles.map((val, i) => (
-            <span key={i} className="roles">
-              {" "}
-              {val}
-            </span>
-          ))}
-      </div>
-      <h3>Permissions</h3>
-      <div>
-        {user &&
-          user.data?.permissions !== undefined &&
-          user.data?.permissions.map((val, i) => (
-            <span key={i} className="permissions">
-              {" "}
-              {val}
-            </span>
-          ))}
-      </div>
-    </Card>
+    <>
+      <Card className="w-75 mx-auto p-2">
+        <h1 className="mx-auto p-1">Roles & Permissions</h1>
+        <hr />
+        <h3>Roles</h3>
+        <div>
+          {user &&
+            user.data?.roles !== undefined &&
+            user.data?.roles.map((val, i) => (
+              <span key={i} className="roles">
+                {val}
+              </span>
+            ))}
+        </div>
+        <h3>Permissions</h3>
+        <div>
+          {user &&
+            user.data?.permissions !== undefined &&
+            user.data?.permissions.map((val, i) => (
+              <span key={i} className="permissions">
+                {val}
+              </span>
+            ))}
+        </div>
+      </Card>
+    </>
   );
 }
