@@ -43,7 +43,7 @@ export default function RegisterTenant() {
     (state: RootState) => state.rolesList
   );
   useEffect(() => {
-    dispatch(getTenantRoles(""));
+    dispatch(getTenantRoles());
   }, []);
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -299,7 +299,7 @@ export default function RegisterTenant() {
             </Row>
             <div className="title">Tenant Roles:</div>
             <div className="list-container  ">
-              {rolesList?.data?.map((item, index) => (
+              {rolesList?.data?.roles?.map((item, index) => (
                 <span key={index} className="m-4">
                   <input
                     value={item}

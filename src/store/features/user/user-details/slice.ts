@@ -1,8 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { updateUserDataService } from "../../../../services/users";
+import { getUserDetailsService } from "../../../../services/users";
 import error from "../../../../utils/error";
 
-interface IConditions {}
+interface IConditions {
+  tenantName: string;
+  userName: string;
+}
 export interface IUpdateUserState {
   isUpdated: boolean;
   loading: boolean;
@@ -13,11 +16,12 @@ const initialState: IUpdateUserState = {
   loading: false,
   error: undefined,
 };
-export const updateUser = createAsyncThunk(
-  "user/update",
+export const userDetails = createAsyncThunk(
+  "user/details",
   async (condition: IConditions) => {
+    const { tenantName, userName } = condition;
     try {
-      const response = await updateUserDataService();
+      const response = await getUserDetailsService(tenantName, userName);
       console.log(response);
       return response.data;
     } catch (error_) {
@@ -27,19 +31,19 @@ export const updateUser = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "userUpdate",
+  name: "userdetails",
   initialState,
   reducers: {},
   extraReducers(builder): void {
-    builder.addCase(updateUser.pending, (state) => {
+    builder.addCase(userDetails.pending, (state) => {
       state.loading = true;
       state.isUpdated = false;
     });
-    builder.addCase(updateUser.fulfilled, (state) => {
+    builder.addCase(userDetails.fulfilled, (state) => {
       state.loading = false;
       state.isUpdated = true;
     });
-    builder.addCase(updateUser.rejected, (state, action) => {
+    builder.addCase(userDetails.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
       state.error = error(action.payload);

@@ -38,3 +38,9 @@ export function updateUserPassword(id: number, password: string) {
     data: "",
   };
 }
+
+export function getUserDetailsService(tenantName: string, userName: string) {
+  return apiFactory().get(
+    `/api/user-info?tenantName=${tenantName}&userName=${userName}`
+  );
+}

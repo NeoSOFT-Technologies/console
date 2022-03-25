@@ -13,7 +13,7 @@ export default function UserList() {
 
   const handleUserDetails = (value: ITenantUserData) => {
     console.log(value);
-    // navigate("/userdetails");
+    navigate("/userdetails");
     // navigate(`/userdetails/${value.id}`, { state: { ...value } });
   };
 

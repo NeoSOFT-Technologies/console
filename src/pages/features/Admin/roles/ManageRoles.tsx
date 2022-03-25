@@ -26,7 +26,7 @@ export default function ManageRoles() {
     (state: RootState) => state.rolesList
   );
   useEffect(() => {
-    dispatch(getTenantRoles(""));
+    dispatch(getTenantRoles());
   }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

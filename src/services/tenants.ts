@@ -16,6 +16,10 @@ export function updateTenantDataService(data: ITenantData) {
       description: data.description,
     },
   };
+  console.log(
+    "🚀 ~ file: tenants.ts ~ line 19 ~ updateTenantDataService ~ body",
+    body
+  );
   return apiFactory().patch(`/api/tenant`, body);
 }
 
@@ -42,4 +46,18 @@ export function createNewUserService(data: CreateUser) {
 
 export function deleteUserDataService(userName: string) {
   return apiFactory().delete(`/api/user/${userName}`);
+}
+
+export function userPermissionService(tenantName: string, clientName: string) {
+  return apiFactory().get(
+    `/api/permission?tenantName=${tenantName}&clientName=${clientName}`
+  );
+}
+
+export function tenantRolesService() {
+  return apiFactory().get(`/api/roles`);
+}
+
+export function getTenantDetailsService(tenantName: string) {
+  return apiFactory().get(`/api/tenants/${tenantName}`);
 }

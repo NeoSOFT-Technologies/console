@@ -9,7 +9,6 @@ const initialState: IUserDataState = {
     description: "i am going to win the world",
     email: "rahul768@gmail.com",
     password: "rahul768",
-    type: "admin",
     id: 5,
     roles: ["user"],
   },

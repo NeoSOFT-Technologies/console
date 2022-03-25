@@ -12,7 +12,7 @@ import { useLocation, useNavigate } from "react-router";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
-  regexForUser,
+  // regexForUser,
   regexForEmail,
 } from "../../../../resources/constants";
 import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
@@ -32,18 +32,15 @@ export default function TenantDetails() {
   const [edit, setEdit] = useState(false);
   // console.log(setEdit);
   const [tenant, setTenant] = useState<ITenantData>({
-    name: "",
+    tenantName: "",
     description: "",
-    userid: "",
     email: "",
     databaseName: "",
     databaseDescription: "",
     roles: [],
-    type: "tenant",
   });
   const [error, setError] = useState<IErrorTenantDetail>({
-    name: "",
-    userid: "",
+    tenantName: "",
     email: "",
     databaseName: "",
   });
@@ -59,7 +56,7 @@ export default function TenantDetails() {
   const deleteTenantFunction = () => {
     const { val } = location.state as LocationState;
     if (val.id !== undefined) {
-      dispatch(deleteTenant(""));
+      dispatch(deleteTenant(tenant.tenantName));
       ToastAlert("Tenant Removed", "success");
       navigate("/tenantlist");
     }
@@ -68,17 +65,10 @@ export default function TenantDetails() {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
-      case "name":
+      case "tenantName":
         setError({
           ...error,
           [name]: regexForName.test(value) ? "" : "Enter a valid name",
-        });
-        break;
-
-      case "userid":
-        setError({
-          ...error,
-          [name]: regexForUser.test(value) ? "" : "Enter a valid Username ",
         });
         break;
       case "email":
@@ -103,8 +93,7 @@ export default function TenantDetails() {
   };
   const handleValidate = () => {
     const validate = !!(
-      error.name === "" &&
-      error.userid === "" &&
+      error.tenantName === "" &&
       error.email === "" &&
       error.databaseName === ""
     );
@@ -116,14 +105,13 @@ export default function TenantDetails() {
     if (handleValidate()) {
       console.log("update");
       if (
-        tenant.name !== "" &&
-        tenant.userid !== "" &&
+        tenant.tenantName !== "" &&
         tenant.email !== "" &&
         tenant.databaseName !== ""
       ) {
         // const updated = { ...tenant };
         if (tenant.id !== undefined) {
-          dispatch(updateTenant({ id: tenant.id, data: tenant }));
+          dispatch(updateTenant({ ...tenant }));
           setEdit(false);
           ToastAlert("Tenant Details Update", "success");
         }
@@ -191,36 +179,16 @@ export default function TenantDetails() {
                     placeholder="Enter Name"
                     name="name"
                     onChange={handleInputChange}
-                    value={tenant.name}
+                    value={tenant.tenantName}
                     disabled={!edit}
-                    isInvalid={!!error.name}
+                    isInvalid={!!error.tenantName}
                   />
-                  {tenant.name && !regexForName.test(tenant.name) && (
-                    <span className="text-danger">
-                      Name Should Not Cantain Any Special Character or Number
-                    </span>
-                  )}
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>UserId :</Form.Label>
-
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter User ID"
-                    name="userid"
-                    disabled={!edit}
-                    value={tenant.userid}
-                    isInvalid={!!error.userid}
-                    onChange={handleInputChange}
-                  />
-                  {tenant.userid && !regexForUser.test(tenant.userid) && (
-                    <span className="text-danger">
-                      Id Should Contain alphabet, number.(i.e. : paras123,
-                      p_A_r_A_s_1)
-                    </span>
-                  )}
+                  {tenant.tenantName &&
+                    !regexForName.test(tenant.tenantName) && (
+                      <span className="text-danger">
+                        Name Should Not Cantain Any Special Character or Number
+                      </span>
+                    )}
                 </Form.Group>
               </Col>
               <Col md="6">

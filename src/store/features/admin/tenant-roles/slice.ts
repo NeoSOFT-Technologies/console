@@ -9,19 +9,15 @@ const initialState: ITenantRolesState = {
   error: undefined,
 };
 
-export const getTenantRoles = createAsyncThunk(
-  "tenant/roles",
-  async (tenantName: string) => {
-    try {
-      const response = await tenantRolesService(tenantName);
-      console.log(response);
-      // return response.data;
-      return ["user"];
-    } catch (error_) {
-      return error_;
-    }
+export const getTenantRoles = createAsyncThunk("tenant/roles", async () => {
+  try {
+    const response = await tenantRolesService();
+    console.log(response);
+    return response.data;
+  } catch (error_) {
+    return error_;
   }
-);
+});
 
 const slice = createSlice({
   name: "tenant",

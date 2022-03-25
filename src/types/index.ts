@@ -3,7 +3,7 @@ export interface IHeadings {
   className?: string;
 }
 export interface ITenantData {
-  tenantName?: string;
+  tenantName: string;
   email?: string;
   password?: string;
   description?: string;

@@ -26,10 +26,6 @@ export function tenantListService(
   return apiFactory().get(`/api/tenants?page=${currentPage}`);
 }
 
-export function tenantRolesService(tenantName: string) {
-  return apiFactory().get(`/api/roles?tenantName=${tenantName}`);
-}
-
 // {
 //   data: [
 //     {

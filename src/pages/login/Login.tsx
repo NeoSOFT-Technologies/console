@@ -137,6 +137,7 @@ export default function Login() {
                   data-testid="email-input"
                   type="text"
                   name="userName"
+                  value={userName}
                   placeholder="Enter Username"
                   onChange={handle}
                   required
@@ -155,6 +156,7 @@ export default function Login() {
                       name="tenantName"
                       placeholder="Enter TenantName"
                       onChange={handle}
+                      value={tenantName}
                       required
                     />
                     {error.tenantName.length > 0 && (
@@ -172,6 +174,7 @@ export default function Login() {
                       data-testid="password-input"
                       type={showPassword ? "text" : "password"}
                       name="password"
+                      value={password}
                       placeholder="Enter password"
                       onChange={handle}
                     />
