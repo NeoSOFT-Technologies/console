@@ -37,20 +37,20 @@ it("renders active, inactive and all buttons", () => {
   fireEvent.click(allBtn);
 });
 
-it("render searchBtn and inputBox", () => {
-  render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <TenantList />
-      </Provider>
-    </BrowserRouter>
-  );
-  const searchBtn = screen.getByTestId("search-button");
-  expect(searchBtn).toBeInTheDocument();
-  fireEvent.click(searchBtn);
+// it("render searchBtn and inputBox", () => {
+//   render(
+//     <BrowserRouter>
+//       <Provider store={store}>
+//         <TenantList />
+//       </Provider>
+//     </BrowserRouter>
+//   );
+//   const searchBtn = screen.getByTestId("search-button");
+//   expect(searchBtn).toBeInTheDocument();
+//   fireEvent.click(searchBtn);
 
-  const inputBox = screen.getByTestId("input-group");
-  expect(inputBox).toBeInTheDocument();
-  fireEvent.change(inputBox, { target: { value: "akhilpinni" } });
-  expect(screen.getByTestId("input-group")).toHaveValue("akhilpinni");
-});
+//   const inputBox = screen.getByTestId("input-group");
+//   expect(inputBox).toBeInTheDocument();
+//   fireEvent.change(inputBox, { target: { value: "akhilpinni" } });
+//   expect(screen.getByTestId("input-group")).toHaveValue("akhilpinni");
+// });
