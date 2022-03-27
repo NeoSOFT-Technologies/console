@@ -55,7 +55,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
       },
     });
   }
-  console.log(`Bearer ${tokenService.getLocalAccessToken()}`);
+  // console.log(`Bearer ${tokenService.getLocalAccessToken()}`);
   const serverConfigs = {
     url: url,
     headers: { Authorization: `Bearer ${tokenService.getLocalAccessToken()}` },

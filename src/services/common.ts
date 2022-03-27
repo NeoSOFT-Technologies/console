@@ -1,6 +1,5 @@
 import tokenService from "../services/token.service";
 import apiFactory from "../utils/api";
-// import axios from "axios";
 
 interface IConditions {
   userName: string;
@@ -10,11 +9,14 @@ interface IConditions {
 
 export async function commonLoginService(data: IConditions) {
   const getlogin = await apiFactory().post(`/api/login`, {
-    username: "",
-    tenantName: "Paras",
-    password: "Paras@123",
+    username: data.userName,
+    password: data.password,
+    tenantName: data.tenantName,
   });
-  console.log(" getlogin", data);
+  console.log("getlogin", {
+    ...data,
+    username: data.userName,
+  });
 
   const setlogin = {
     accessToken: getlogin.data.access_token,
@@ -37,7 +39,6 @@ export async function commonLoginService(data: IConditions) {
         databaseName: "Tushar Saxena",
         databaseDescription: "database size of 100",
         lastlogin: "Mar 01 2022 11:51:39",
-        type: "tenant",
         id: 7,
       },
     ],

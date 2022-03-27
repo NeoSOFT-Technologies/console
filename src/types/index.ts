@@ -78,7 +78,7 @@ export interface IErrorTenantInput {
   email: string;
   password: string;
   description: string;
-  roles: string;
+  roles?: string;
 }
 
 // redux toolkit states
@@ -90,7 +90,7 @@ export interface ITenantListState {
 }
 
 export interface ITenantRolesState {
-  data?: ISetTenantRoles | null;
+  data?: string[] | null;
   loading: boolean;
   error?: string | null;
 }

@@ -8,9 +8,11 @@ type component = {
 };
 
 export const AdminGuard = ({ children }: component) => {
-  const authenticationState = useSelector((state: RootState) => state.userData);
-  return authenticationState.data &&
-    authenticationState.data.type === "admin" ? (
+  const authenticationState = useSelector(
+    (state: RootState) => state.loginType
+  );
+
+  return authenticationState.data && authenticationState.data === "admin" ? (
     children
   ) : (
     <Navigate to="/error-pages/error-401" />
@@ -18,9 +20,10 @@ export const AdminGuard = ({ children }: component) => {
 };
 
 export const TenantGuard = ({ children }: component) => {
-  const authenticationState = useSelector((state: RootState) => state.userData);
-  return authenticationState.data &&
-    authenticationState.data.type === "tenant" ? (
+  const authenticationState = useSelector(
+    (state: RootState) => state.loginType
+  );
+  return authenticationState.data && authenticationState.data === "tenant" ? (
     children
   ) : (
     <Navigate to="/error-pages/error-401" />
@@ -28,9 +31,10 @@ export const TenantGuard = ({ children }: component) => {
 };
 
 export const UserGuard = ({ children }: component) => {
-  const authenticationState = useSelector((state: RootState) => state.userData);
-  return authenticationState.data &&
-    authenticationState.data.type === "user" ? (
+  const authenticationState = useSelector(
+    (state: RootState) => state.loginType
+  );
+  return authenticationState.data && authenticationState.data === "user" ? (
     children
   ) : (
     <Navigate to="/error-pages/error-401" />

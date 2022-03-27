@@ -3,6 +3,9 @@ import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useLocation } from "react-router";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { regexForUser, regexForEmail } from "../../../../resources/constants";
+import { deleteUser } from "../../../../store/features/tenant/delete-user/slice";
+import { updateUser } from "../../../../store/features/user/update-user/slice";
+import { useAppDispatch } from "../../../../store/hooks";
 import { ITenantUserData } from "../../../../types";
 interface LocationState {
   user: ITenantUserData;
@@ -26,8 +29,12 @@ export default function UserDetails() {
     tenantName: "",
   });
   const [editUser, setEditUser] = useState(false);
+  const dispatch = useAppDispatch();
 
-  const handleRemove = () => {};
+  const handleRemove = () => {
+    dispatch(deleteUser(userdata.userName));
+  };
+
   const handleSetStatus = () => {};
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -56,21 +63,19 @@ export default function UserDetails() {
     setUserdata({ ...userdata, [name]: value });
   };
   const handleValidate = (errors: Ierror) => {
-    const validate = !!(
-      errors.userName === "" &&
-      errors.email === "" &&
-      errors.tenantName === ""
-    );
+    const validate = !!(errors.userName === "" && errors.email === "");
     return validate;
   };
   const handleEditSave = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (handleValidate(errordata)) {
-      if (
-        userdata.userName !== "" &&
-        userdata.email !== "" &&
-        userdata.tenantName !== ""
-      ) {
+      if (userdata.userName !== "" && userdata.email !== "") {
+        dispatch(
+          updateUser({
+            userName: userdata.userName,
+            email: userdata.email,
+          })
+        );
         ToastAlert("User Saved", "success");
         setEditUser(false);
       } else {
@@ -139,16 +144,6 @@ export default function UserDetails() {
                     disabled={!editUser}
                   />
                 </Form.Group>
-                {/* <Form.Group>
-                  <Form.Label>Status :</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="isDeleted"
-                    value={userdata.isDeleted ? "deleted" : "active"}
-                    onChange={handleInputChange}
-                    disabled
-                  />
-                </Form.Group> */}
                 {editUser && (
                   <>
                     <Button variant="success" onClick={handleEditSave}>

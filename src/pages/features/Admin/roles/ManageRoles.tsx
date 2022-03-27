@@ -30,7 +30,7 @@ export default function ManageRoles() {
   }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(rolesList.data?.roles);
+    console.log(rolesList.data);
 
     const { name, checked } = event.target;
     // console.log();
@@ -108,7 +108,7 @@ export default function ManageRoles() {
                         inline
                       />
                     ))} */}
-                    {rolesList.data?.roles.map((role) => (
+                    {rolesList.data?.map((role) => (
                       <Form.Check
                         className="mx-4"
                         key={`${role}`}

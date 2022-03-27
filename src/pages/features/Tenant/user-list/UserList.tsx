@@ -37,7 +37,7 @@ export default function UserList() {
     },
   ];
   const url =
-    process.env.REACT_APP_API_BASEURL + "api/user?" ||
+    process.env.REACT_APP_API_BASEURL + "/api/user?" ||
     "http://localhost:3000/api/user?";
   const actions = {
     classNames: "btn btn-sm btn-dark",

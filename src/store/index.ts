@@ -7,6 +7,7 @@ import addNewUserReducer from "./features/tenant/add-user/slice";
 import tenantUserListReducer from "./features/tenant/tenant-user-list/slice";
 import updateTenantReducer from "./features/tenant/update-tenant/slice";
 import landingReducer from "./landing/slice";
+import loginTypeReducer from "./login-type/slice";
 import userDatatReducer from "./user-data/slice";
 
 const store = configureStore({
@@ -20,6 +21,7 @@ const store = configureStore({
     updateTenant: updateTenantReducer,
     addNewUser: addNewUserReducer,
     rolesList: rolesListReducer,
+    loginType: loginTypeReducer,
   },
 });
 

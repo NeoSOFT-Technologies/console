@@ -3,10 +3,6 @@ import { deleteUserDataService } from "../../../../services";
 import { ITenantUserListState } from "../../../../types/index";
 import error from "../../../../utils/error";
 
-interface IConditions {
-  userName: string;
-}
-
 const initialState: ITenantUserListState = {
   data: undefined,
   loading: false,
@@ -15,9 +11,8 @@ const initialState: ITenantUserListState = {
 
 export const deleteUser = createAsyncThunk(
   "tenantUser/list",
-  async (conditions: IConditions) => {
+  async (userName: string) => {
     try {
-      const { userName } = conditions;
       const response = await deleteUserDataService(userName);
       console.log(response);
       return response.data.data;

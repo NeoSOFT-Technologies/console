@@ -8,6 +8,12 @@ import userRoutes from "../../routes/user-routes";
 import { RootState } from "../../store";
 import { IUserDataState } from "../../types";
 
+interface IConditions {
+  data: string;
+  loading: boolean;
+  error?: string | null;
+}
+
 export const Sidebar = () => {
   const location = useLocation();
   const isPathActive = (path: string) => {
@@ -16,13 +22,19 @@ export const Sidebar = () => {
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
   );
+  const loginType: IConditions = useSelector(
+    (state: RootState) => state.loginType
+  );
   const [routes, setRoutes] = useState([{ path: "", title: "", icon: "" }]);
+  /**
+   * ! remove type
+   */
   useEffect(() => {
-    if (user.data && user.data.type === "admin") {
+    if (user.data && loginType.data === "admin") {
       setRoutes(adminRoutes);
-    } else if (user.data && user.data.type === "tenant") {
+    } else if (user.data && loginType.data === "tenant") {
       setRoutes(tenantRoutes);
-    } else if (user.data && user.data.type === "user") {
+    } else if (user.data && loginType.data === "user") {
       setRoutes(userRoutes);
     }
   }, [user.data]);

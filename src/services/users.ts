@@ -15,14 +15,18 @@ export function getUserListService(tenantName: string, page: number) {
   };
 }
 
-export function updateUserDataService() {
-  // need to modify
+interface IConditions {
+  userName: string;
+  email: string;
+}
+
+export function updateUserDataService(data: IConditions) {
   const tmp = {
-    userName: "string",
+    userName: data.userName,
     action: {
-      email: "string",
+      email: data.email,
       enabled: true,
-      realmRoles: ["string"],
+      realmRoles: ["user"],
     },
   };
   return apiFactory().patch(`/api/user`, tmp);

@@ -9,6 +9,12 @@ import { logo } from "../../resources/images";
 import { RootState } from "../../store";
 import { commonLogin } from "../../store/login/slice";
 import { IUserDataState } from "../../types";
+interface IConditions {
+  data: string;
+  loading: boolean;
+  error?: string | null;
+}
+
 export default function Login() {
   const [type, setType] = useState<string>("admin");
   const [userName, setUserName] = useState<string>("");
@@ -25,7 +31,9 @@ export default function Login() {
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
   );
-
+  const loginType: IConditions = useSelector(
+    (state: RootState) => state.loginType
+  );
   const handle = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
@@ -54,17 +62,19 @@ export default function Login() {
         break;
     }
   };
-
+  /**
+   * ! red flag remove type
+   * */
   useEffect(() => {
     console.log(user.data?.type);
     if (userName !== "" && password !== "") {
-      if (user.data && user.data.type === "tenant") {
+      if (user.data && loginType.data === "tenant") {
         ToastAlert("Logged In", "success");
         navigate("/tenantdashboard");
-      } else if (user.data && user.data.type === "admin") {
+      } else if (user.data && loginType.data === "admin") {
         ToastAlert("Logged In", "success");
         navigate("/admindashboard");
-      } else if (user.data && user.data.type === "user") {
+      } else if (user.data && loginType.data === "user") {
         ToastAlert("Logged In", "success");
         navigate("/userdashboard");
       } else {

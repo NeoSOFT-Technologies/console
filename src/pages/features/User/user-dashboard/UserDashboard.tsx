@@ -35,9 +35,7 @@ export default function UserDashboard() {
       ToastAlert("password requirement not match", "warning");
     } else {
       if (user.data?.id !== undefined) {
-        dispatch(
-          updateUser({ id: user.data?.id, password: currentUser.newpassword })
-        );
+        dispatch(updateUser({ userName: "", email: "" }));
       }
       ToastAlert("password updated", "success");
       setEditable(false);

@@ -33,7 +33,7 @@ export default function RegisterTenant() {
     email: "",
     password: "",
     description: "",
-    roles: "",
+    // roles: "",
   });
 
   // const [tenant.roles, setTenant] = useState<string[]>([]);
@@ -100,11 +100,13 @@ export default function RegisterTenant() {
   };
   const handleValidate = () => {
     const validate = !!(
-      error.tenantName === "" &&
-      error.email === "" &&
-      error.description === "" &&
-      error.password === "" &&
-      error.roles === ""
+      (
+        error.tenantName === "" &&
+        error.email === "" &&
+        error.description === "" &&
+        error.password === ""
+      )
+      // error.roles === ""
     );
     return validate;
   };
@@ -116,8 +118,8 @@ export default function RegisterTenant() {
         tenant.tenantName !== "" &&
         tenant.email !== "" &&
         tenant.description !== "" &&
-        tenant.password !== "" &&
-        tenant.roles.length > 0
+        tenant.password !== ""
+        // tenant.roles.length > 0
       ) {
         const newUser = {
           ...tenant,
@@ -145,7 +147,7 @@ export default function RegisterTenant() {
         email: "",
         password: "",
         description: "",
-        roles: "",
+        // roles: "",
       });
     }
   };
@@ -299,16 +301,17 @@ export default function RegisterTenant() {
             </Row>
             <div className="title">Tenant Roles:</div>
             <div className="list-container  ">
-              {rolesList?.data?.roles?.map((item, index) => (
-                <span key={index} className="m-4">
+              {console.log(rolesList)}
+              {rolesList?.data?.map((item, index) => (
+                <p key={index} className="m-4">
                   <input
                     value={item}
                     type="checkbox"
                     onChange={handleCheck}
                     className=" inline"
                   />
-                  <span>{item}</span>
-                </span>
+                  <span className="mx-1">{item}</span>
+                </p>
               ))}
             </div>
 

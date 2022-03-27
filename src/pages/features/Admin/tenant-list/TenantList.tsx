@@ -41,7 +41,7 @@ export default function TenantList() {
   ];
   console.log(process.env.REACT_APP_API_BASEURL);
   const url =
-    process.env.REACT_APP_API_BASEURL + "api/tenants?" ||
+    process.env.REACT_APP_API_BASEURL + "/api/tenants?" ||
     "http://localhost:3000/api/tenants?";
   const actions = {
     classNames: "btn btn-sm btn-dark",
