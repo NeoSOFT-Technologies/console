@@ -26,6 +26,10 @@ export function tenantListService(
   return apiFactory().get(`/api/tenants?page=${currentPage}`);
 }
 
+export function adminLogin() {
+  return apiFactory().get(`/api/admin`);
+}
+
 // {
 //   data: [
 //     {

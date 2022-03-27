@@ -14,7 +14,7 @@ const initialState: IConditions = {
   error: undefined,
 };
 
-export const loginType = createAsyncThunk(
+export const checkLoginType = createAsyncThunk(
   "login/type",
   async (type: string) => {
     try {
@@ -31,13 +31,14 @@ const slice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder): void {
-    builder.addCase(loginType.pending, (state) => {
+    builder.addCase(checkLoginType.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(loginType.fulfilled, (state) => {
+    builder.addCase(checkLoginType.fulfilled, (state, action) => {
       state.loading = false;
+      state.data = action.payload;
     });
-    builder.addCase(loginType.rejected, (state, action) => {
+    builder.addCase(checkLoginType.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
       state.error = error(action.payload);

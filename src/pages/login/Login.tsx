@@ -7,16 +7,12 @@ import { ToastAlert } from "../../components/toast-alert/toast-alert";
 // import { regexForEmail } from "../../resources/constants";
 import { logo } from "../../resources/images";
 import { RootState } from "../../store";
+import { checkLoginType } from "../../store/login-type/slice";
 import { commonLogin } from "../../store/login/slice";
 import { IUserDataState } from "../../types";
-interface IConditions {
-  data: string;
-  loading: boolean;
-  error?: string | null;
-}
 
 export default function Login() {
-  const [type, setType] = useState<string>("admin");
+  const type: string = useSelector((state: RootState) => state.loginType.data);
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [tenantName, setTenantName] = useState<string>("");
@@ -30,9 +26,6 @@ export default function Login() {
   const [showPassword, setShowpassword] = useState(false);
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
-  );
-  const loginType: IConditions = useSelector(
-    (state: RootState) => state.loginType
   );
   const handle = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -66,15 +59,15 @@ export default function Login() {
    * ! red flag remove type
    * */
   useEffect(() => {
-    console.log(user.data?.type);
+    console.log(type);
     if (userName !== "" && password !== "") {
-      if (user.data && loginType.data === "tenant") {
+      if (user.data && type === "tenant") {
         ToastAlert("Logged In", "success");
         navigate("/tenantdashboard");
-      } else if (user.data && loginType.data === "admin") {
+      } else if (user.data && type === "admin") {
         ToastAlert("Logged In", "success");
         navigate("/admindashboard");
-      } else if (user.data && loginType.data === "user") {
+      } else if (user.data && type === "user") {
         ToastAlert("Logged In", "success");
         navigate("/userdashboard");
       } else {
@@ -112,8 +105,9 @@ export default function Login() {
     }
   };
 
-  const setLoginType = (logintype: string) => {
-    setType(logintype);
+  const setLoginType = (a: string) => {
+    console.log(type);
+    dispatch(checkLoginType(a));
     setUserName("");
     setPassword("");
     setTenantName("");
