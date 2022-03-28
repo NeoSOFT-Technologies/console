@@ -59,7 +59,7 @@ function AppRoutes() {
           }
         />
         <Route
-          path="/tenantdetails"
+          path="/tenantdetails/:tenantName"
           element={
             <AdminGuard>
               <TenantDetails />

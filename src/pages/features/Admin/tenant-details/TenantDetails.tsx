@@ -20,9 +20,10 @@ import { updateTenant } from "../../../../store/features/tenant/update-tenant/sl
 import { useAppDispatch } from "../../../../store/hooks";
 import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
 
-interface LocationState {
-  val: ITenantData;
-}
+// interface LocationState {
+//   val: ITenantData;
+// }
+
 export default function TenantDetails() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,18 +46,18 @@ export default function TenantDetails() {
     databaseName: "",
   });
   useEffect(() => {
-    const { val } = location.state as LocationState;
-    console.log(val);
-    setTenant(val);
+    const { tenantName, description } = location.state as any;
+    // console.log(val);
+    setTenant({ ...tenant, tenantName, description });
   }, []);
   console.log(tenant);
   // const renderTenant = () => {
 
   // };
   const deleteTenantFunction = () => {
-    const { val } = location.state as LocationState;
-    if (val.id !== undefined) {
-      dispatch(deleteTenant(tenant.tenantName));
+    const { tenantName } = location.state as any;
+    if (tenantName) {
+      dispatch(deleteTenant(tenantName));
       ToastAlert("Tenant Removed", "success");
       navigate("/tenantlist");
     }

@@ -6,7 +6,7 @@ import Spinner from "../../../../components/loader/Loader";
 import { RootState } from "../../../../store";
 import { useAppSelector } from "../../../../store/hooks";
 
-import { ITenantListState, ITenantDetails } from "../../../../types/index";
+import { ITenantListState } from "../../../../types/index";
 
 export default function TenantList() {
   const navigate = useNavigate();
@@ -19,10 +19,13 @@ export default function TenantList() {
     btn3: true,
   });
 
-  const NavigateTenant = (value: ITenantDetails) => {
+  const NavigateTenant = (value: any) => {
     console.log(value);
-    navigate("/tenantdetails", {
-      state: { val: value },
+    navigate(`/tenantdetails/${value._cells[0].data}`, {
+      state: {
+        tenantName: value._cells[0].data,
+        description: value._cells[1].data,
+      },
     });
   };
   const headings = [
