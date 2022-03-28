@@ -31,8 +31,8 @@ export default function UserDetails() {
   const [editUser, setEditUser] = useState(false);
   const dispatch = useAppDispatch();
 
-  const handleRemove = () => {
-    dispatch(deleteUser(userdata.userName));
+  const handleRemove = async () => {
+    await dispatch(deleteUser(userdata.userName));
   };
 
   const handleSetStatus = () => {};

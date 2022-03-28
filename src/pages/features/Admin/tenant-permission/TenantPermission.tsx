@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../store";
+import { getTenantPermissions } from "../../../../store/features/admin/tenant-permissions/slice";
+import { useAppDispatch } from "../../../../store/hooks";
+import { ITenantPermissionsState } from "../../../../types";
 
 export default function TenantPermission() {
-  const [tenantPermissionList, setTenantPermissionList] = useState<string[]>(
-    []
-  );
+  const [tenantPermissionList, setTenantPermissionList] =
+    useState<ITenantPermissionsState>();
   const [tenantPermission, settenantPermission] = useState<string[]>([]);
-
+  const dispatch = useAppDispatch();
+  const permissionList: ITenantPermissionsState = useSelector(
+    (state: RootState) => state.tenantPermissionsList
+  );
   //   get the permissions that were allowed before and all the permissions that are for tenants from API.
   useEffect(() => {
     //   list of permissions that were allowed before to the selected tenant.
-    settenantPermission(["demo_P1", "demo_P2"]);
+    settenantPermission(["Default Permission"]);
     // list of permissions that are available for tenants.
-    setTenantPermissionList([
-      "demo_P1",
-      "demo_P2",
-      "demo_P3",
-      "demo_P4",
-      "demo_P5",
-      "demo_P6",
-      "demo_P7",
-      "demo_P8",
-    ]);
+    setTenantPermissionList(permissionList);
+    dispatch(getTenantPermissions("Paras"));
+    console.log(permissionList);
   }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,15 +68,17 @@ export default function TenantPermission() {
                   <Form.Group>
                     <Form.Label>Permissions :</Form.Label>
                     <br />
-                    {tenantPermissionList.map((permission) => (
+                    {tenantPermissionList?.data?.map((permission) => (
                       <Form.Check
                         className="mx-4"
-                        key={`${permission}`}
-                        id={`${permission}`}
-                        label={permission}
+                        key={`${permission.name}`}
+                        // id={`${permission.id}`}
+                        label={permission.name}
                         name="permission"
-                        value={permission}
-                        defaultChecked={tenantPermission.includes(permission)}
+                        value={`${permission.name}`}
+                        defaultChecked={tenantPermission.includes(
+                          permission.name
+                        )}
                         type="checkbox"
                         onChange={handleInputChange}
                         inline
@@ -85,13 +87,15 @@ export default function TenantPermission() {
                   </Form.Group>
                 </Col>
               </Row>
+              <Button type="submit">Update</Button>
+              <Button variant="danger">Cancel</Button>
             </Form>
             {/* test of data */}
-            <ul>
+            {/* <ul>
               {tenantPermission.map((ele, index) => (
                 <li key={index}>{ele}</li>
               ))}
-            </ul>
+            </ul> */}
           </Card.Body>
         </Card>
       </Container>

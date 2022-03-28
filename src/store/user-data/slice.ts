@@ -1,35 +1,44 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getUserListService } from "../../services";
+import {
+  adminLogin,
+  getTenantDetailsService,
+  getUserDetailsService,
+} from "../../services";
 import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
 
+interface IConditions {
+  userName: string;
+  tenantName: string;
+  type: string;
+}
 const initialState: IUserDataState = {
-  data: {
-    tenantName: "Rahul kenchi",
-    description: "i am going to win the world",
-    email: "rahul768@gmail.com",
-    password: "rahul768",
-    id: 5,
-    roles: ["user"],
-  },
-
+  data: undefined,
   loading: false,
   error: undefined,
 };
-
-interface IConditions {
-  tenantName: string;
-  page: number;
-}
 
 export const getUserData = createAsyncThunk(
   "user/data",
   async (conditions: IConditions) => {
     try {
-      const { tenantName, page } = conditions;
-      const response = await getUserListService(tenantName, page);
+      let response;
+      switch (conditions.type) {
+        case "admin":
+          response = await adminLogin();
+          break;
+        case "tenant":
+          response = await getTenantDetailsService(conditions.tenantName);
+          break;
+        case "user":
+          response = await getUserDetailsService(
+            conditions.tenantName,
+            conditions.userName
+          );
+          break;
+      }
       console.log(response);
-      return response.data;
+      return response?.data;
     } catch (error_) {
       return error_;
     }

@@ -61,3 +61,7 @@ export function tenantRolesService() {
 export function getTenantDetailsService(tenantName: string) {
   return apiFactory().get(`/api/tenants/${tenantName}`);
 }
+
+export function tenantPermissionsService(tenantName: string) {
+  return apiFactory().get(`/api/permission?tenantName=${tenantName}`);
+}

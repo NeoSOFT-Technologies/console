@@ -62,6 +62,15 @@ export interface ISetTenantList {
 export interface ISetTenantRoles {
   roles: string[];
 }
+export interface ISetTenantPermissions {
+  id: string;
+  name: string;
+  description: string;
+  type: string;
+  logic: string;
+  decisionStrategy: string;
+  resourceType: string;
+}
 export interface ISetTenantUserList {
   list: ITenantUserData[];
   count: number;
@@ -95,6 +104,11 @@ export interface ITenantRolesState {
   error?: string | null;
 }
 
+export interface ITenantPermissionsState {
+  data?: ISetTenantPermissions[] | null;
+  loading: boolean;
+  error?: string | null;
+}
 export interface ITenantDetails {
   id: number;
   userid: string;

@@ -2,8 +2,6 @@ import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AdminGuard, TenantGuard, UserGuard } from "./components/auth-gaurd";
 import Spinner from "./components/loader/Loader";
-import ManageRoles from "./pages/features/Admin/roles/ManageRoles";
-import TenantPermission from "./pages/features/Admin/tenant-permission/TenantPermission";
 const RoleAndPermissions = lazy(
   () => import("./pages/features/User/role-and-permissions/RoleAndPermissions")
 );
@@ -41,6 +39,13 @@ const TenantDetails = lazy(
 const TenantProfile = lazy(
   () => import("./pages/features/Tenant/tenant-profile/TenantProfile")
 );
+const TenantPermission = lazy(
+  () => import("./pages/features/Admin/tenant-permission/TenantPermission")
+);
+const TenantRoles = lazy(
+  () => import("./pages/features/Admin/tenant-roles/TenantRoles")
+);
+
 function AppRoutes() {
   return (
     <Suspense fallback={<Spinner />}>
@@ -86,7 +91,7 @@ function AppRoutes() {
           path="/manageroles"
           element={
             <AdminGuard>
-              <ManageRoles />
+              <TenantRoles />
             </AdminGuard>
           }
         />

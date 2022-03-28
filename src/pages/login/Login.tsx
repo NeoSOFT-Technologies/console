@@ -9,6 +9,7 @@ import { logo } from "../../resources/images";
 import { RootState } from "../../store";
 import { checkLoginType } from "../../store/login-type/slice";
 import { commonLogin } from "../../store/login/slice";
+import { getUserData } from "../../store/user-data/slice";
 import { IUserDataState } from "../../types";
 
 export default function Login() {
@@ -98,7 +99,8 @@ export default function Login() {
   };
   const handleSubmit = async () => {
     if (validate()) {
-      dispatch(commonLogin({ userName, password, tenantName }));
+      await dispatch(commonLogin({ userName, password, tenantName }));
+      await dispatch(getUserData({ userName, tenantName, type }));
     } else {
       ToastAlert("Please fill all the fields", "error");
       throw new Error("Please fill all the fields ");

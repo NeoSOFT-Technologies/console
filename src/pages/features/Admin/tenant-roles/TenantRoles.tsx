@@ -6,8 +6,9 @@ import { getTenantRoles } from "../../../../store/features/admin/tenant-roles/sl
 import { useAppDispatch } from "../../../../store/hooks";
 import { ITenantRolesState } from "../../../../types";
 
-export default function ManageRoles() {
-  const [roles, setRoles] = useState({});
+export default function TenantRoles() {
+  const [tenantRoleList, setTenantRoleList] = useState<ITenantRolesState>();
+  const [tenantRoles, settenantRoles] = useState<string[]>([]);
   // const [rolesList, setRolesList] = useState([
   //   "Demo_Role_1",
   //   "Demo_Role_2",
@@ -27,19 +28,25 @@ export default function ManageRoles() {
   );
   useEffect(() => {
     dispatch(getTenantRoles());
+    settenantRoles(["default-roles-paras"]);
+    setTenantRoleList(rolesList);
   }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(rolesList.data);
+    const { name, value, checked } = event.target;
+    switch (name) {
+      case "role":
+        if (checked) {
+          settenantRoles([...tenantRoles, value]);
+        } else {
+          tenantRoles.splice(tenantRoles.indexOf(value), 1);
+          settenantRoles([...tenantRoles]);
+        }
+        break;
 
-    const { name, checked } = event.target;
-    // console.log();
-    if (checked) {
-      setRoles({ ...roles, [name]: checked });
-    } else {
-      setRoles({ ...roles, [name]: false });
+      default:
+        break;
     }
-    console.log(roles);
   };
   return (
     <>
@@ -102,20 +109,21 @@ export default function ManageRoles() {
                         id={`Demo_Role_${id}`}
                         label={`Demo_Role_${id}`}
                         name={`Demo_Role_${id}`}
-                        // checked={roles}
+                        // checked={tenantRole}
                         type="checkbox"
                         onChange={handleInputChange}
                         inline
                       />
                     ))} */}
-                    {rolesList.data?.map((role) => (
+                    {tenantRoleList?.data?.map((role) => (
                       <Form.Check
                         className="mx-4"
                         key={`${role}`}
                         id={`${role}`}
                         label={role}
-                        name={`${role}`}
-                        // checked={roles}
+                        name="role"
+                        value={`${role}`}
+                        defaultChecked={tenantRoles.includes(role)}
                         type="checkbox"
                         onChange={handleInputChange}
                         inline
