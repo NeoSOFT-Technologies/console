@@ -12,21 +12,21 @@ export async function commonLoginService(
 ) {
   const data = { username, password, tenantName };
   console.log("data", data);
-  // return apiFactory().post(`/api/login`, data);
-  return {
-    data: [
-      {
-        description: "i am going to win the world",
-        email: "rahul768@gmail.com",
-        id: "5",
-        lastlogin: "Mar 01 2022 11:51:39",
-        name: "Rahul kenchi",
-        password: "rahul768",
-        type: "admin",
-        userid: "rahul123",
-      },
-    ],
-  };
+  return apiFactory().post(`/api/login`, data);
+  // return {
+  //   data: [
+  //     {
+  //       description: "i am going to win the world",
+  //       email: "rahul768@gmail.com",
+  //       id: "5",
+  //       lastlogin: "Mar 01 2022 11:51:39",
+  //       name: "Rahul kenchi",
+  //       password: "rahul768",
+  //       type: "admin",
+  //       userid: "rahul123",
+  //     },
+  //   ],
+  // };
 }
 
 export function commonLogoutService(data: ILogout) {
