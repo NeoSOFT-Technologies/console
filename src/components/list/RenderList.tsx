@@ -2,7 +2,7 @@ import { h } from "gridjs";
 import { Grid } from "gridjs-react";
 import React from "react";
 import "./render-list.scss";
-import tokenService from "../../services/token.service";
+import apiFactory from "../../utils/api";
 
 interface IProps {
   searchBy: string;
@@ -58,7 +58,10 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
   // console.log(`Bearer ${tokenService.getLocalAccessToken()}`);
   const serverConfigs = {
     url: url,
-    headers: { Authorization: `Bearer ${tokenService.getLocalAccessToken()}` },
+    data: async (args: any) => {
+      const response = await apiFactory().get(`${args.url}`);
+      return response.data;
+    },
     // eslint-disable-next-line unicorn/no-thenable
     then: (res: any) => res.data,
     total: (res: any) => res.count,
