@@ -89,7 +89,12 @@ export interface IErrorTenantInput {
   description: string;
   roles?: string;
 }
-
+export interface IAdminData {
+  username: string;
+  createdTimestamp: string;
+  count: number;
+  roles: string[];
+}
 // redux toolkit states
 
 export interface ITenantListState {
@@ -123,7 +128,7 @@ export interface ITenantUserListState {
 }
 
 export interface IUserDataState {
-  data?: ITenantData | null;
+  data?: (ITenantData & IAdminData) | null;
   loading: boolean;
   error?: string | null;
 }
