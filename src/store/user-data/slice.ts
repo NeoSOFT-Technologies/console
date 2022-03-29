@@ -53,9 +53,9 @@ const slice = createSlice({
     builder.addCase(getUserData.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(getUserData.fulfilled, (state) => {
+    builder.addCase(getUserData.fulfilled, (state, action) => {
       state.loading = false;
-      // state.data = action.payload;
+      state.data = action.payload;
     });
     builder.addCase(getUserData.rejected, (state, action) => {
       state.loading = false;

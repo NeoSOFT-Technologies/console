@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Row, Col, Container } from "react-bootstrap";
+import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForEmail,
@@ -35,7 +36,7 @@ export default function RegisterTenant() {
     description: "",
     // roles: "",
   });
-
+  const tenantAdded = useAppSelector((state: RootState) => state.addNewTenant);
   // const [tenant.roles, setTenant] = useState<string[]>([]);
   // const [rolesList, setRolesList] = useState([]);
   // const rolesList = ["A", "B", "C", "D"];
@@ -110,7 +111,7 @@ export default function RegisterTenant() {
     );
     return validate;
   };
-  const handleSubmitTenant = (event: React.FormEvent) => {
+  const handleSubmitTenant = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (handleValidate()) {
@@ -125,7 +126,7 @@ export default function RegisterTenant() {
           ...tenant,
         };
         // console.log(newUser);
-        dispatch(addNewTenant(newUser));
+        await dispatch(addNewTenant(newUser));
 
         ToastAlert("Tenant Registered", "success");
 
@@ -165,7 +166,9 @@ export default function RegisterTenant() {
       roles: [],
     });
   };
-  return (
+  return tenantAdded.loading ? (
+    <Spinner />
+  ) : (
     <>
       <div className=" bg-white">
         <Container className="m-1">

@@ -9,6 +9,7 @@ import {
   Modal,
 } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router";
+import Spinner from "../../../../components/loader/Loader";
 // import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
@@ -16,10 +17,11 @@ import {
   // regexForUser,
   regexForEmail,
 } from "../../../../resources/constants";
+import { RootState } from "../../../../store";
 // import { RootState } from "../../../../store";
 import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
 import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
-import { useAppDispatch } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
 
 // interface LocationState {
@@ -29,9 +31,9 @@ import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
 export default function TenantDetails() {
   const navigate = useNavigate();
   const location = useLocation();
-  // const tenantDeleted = useAppSelector(
-  //   (state: RootState) => state.deleteTenant
-  // );
+  const tenantDeleted = useAppSelector(
+    (state: RootState) => state.deleteTenant
+  );
   const dispatch = useAppDispatch();
   console.log(location);
   const [deleteshow, setDeleteshow] = useState(false);
@@ -127,11 +129,9 @@ export default function TenantDetails() {
     }
   };
 
-  return (
-    // <>
-    //   {tenantDeleted.loading ? (
-    //     <Spinner></Spinner>
-    //   ) : (
+  return tenantDeleted.loading ? (
+    <Spinner />
+  ) : (
     <>
       <Dropdown className="d-inline-block">
         <Dropdown.Toggle className="btn-success " id="dropdown-basic">
@@ -326,7 +326,5 @@ export default function TenantDetails() {
         </Container>
       </div>
     </>
-    //   )}
-    // </>
   );
 }

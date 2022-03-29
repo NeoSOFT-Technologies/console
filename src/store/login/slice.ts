@@ -29,7 +29,7 @@ export const commonLogin = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "user",
+  name: "user_accessToken",
   initialState,
   reducers: {},
   extraReducers(builder): void {

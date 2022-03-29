@@ -60,8 +60,8 @@ export default function Login() {
    * ! red flag remove type
    * */
   useEffect(() => {
-    console.log(type);
-    if (userName !== "" && password !== "") {
+    console.log(type, user);
+    if (!user.loading && userName !== "" && password !== "") {
       if (user.data && type === "tenant") {
         ToastAlert("Logged In", "success");
         navigate("/tenantdashboard");
@@ -76,7 +76,7 @@ export default function Login() {
         throw new Error("Incorrect Credentials ");
       }
     }
-  }, [user.data, userName]);
+  }, [user.data]);
 
   const validate = () => {
     let valid = false;

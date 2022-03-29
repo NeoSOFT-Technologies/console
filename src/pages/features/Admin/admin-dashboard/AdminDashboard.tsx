@@ -29,13 +29,26 @@ const AdminDashboard = () => {
               }}
             >
               <Card.Text>
-                Name:&nbsp; <span>{user.data.tenantName} </span>
+                Name:&nbsp; <span>{user.data.username} </span>
               </Card.Text>
               <Card.Text>
-                <span>Description :&nbsp;{user.data.description}</span>
+                <span>
+                  Created Date and Time :&nbsp;{user.data.createdTimestamp}
+                </span>
               </Card.Text>
               <Card.Text>
-                <span> Email:&nbsp;{user.data.email}</span>
+                <span> Number of Tenants:&nbsp;{user.data.count}</span>
+              </Card.Text>
+              <Card.Text>
+                <span>
+                  {" "}
+                  Roles:&nbsp;
+                  <ul>
+                    {user?.data?.roles?.map((ele) => (
+                      <li key={`${ele}`}>{ele}</li>
+                    ))}
+                  </ul>
+                </span>
               </Card.Text>
 
               <hr />
