@@ -19,7 +19,7 @@ export const addNewTenant = createAsyncThunk(
   async (conditions: ITenantData) => {
     try {
       const response = await addTenantDataService(conditions);
-      console.log(response);
+      // console.log(response);
       return response.data;
     } catch (error_) {
       return error_;
@@ -34,6 +34,7 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(addNewTenant.pending, (state) => {
       state.loading = true;
+      state.tenantAdded = false;
     });
     builder.addCase(addNewTenant.fulfilled, (state) => {
       state.loading = false;

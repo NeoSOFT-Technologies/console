@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
@@ -16,26 +16,26 @@ it("render without crashing TenantList", () => {
   );
 });
 
-// it("renders active, inactive and all buttons", () => {
-//   render(
-//     <BrowserRouter>
-//       <Provider store={store}>
-//         <TenantList />
-//       </Provider>
-//     </BrowserRouter>
-//   );
-//   const activeBtn = screen.getByTestId("active");
-//   expect(activeBtn).toBeInTheDocument();
-//   fireEvent.click(activeBtn);
+it("renders active, inactive and all buttons", () => {
+  render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <TenantList />
+      </Provider>
+    </BrowserRouter>
+  );
+  const activeBtn = screen.getByTestId("active");
+  expect(activeBtn).toBeInTheDocument();
+  fireEvent.click(activeBtn);
 
-//   const inactiveBtn = screen.getByTestId("inactive");
-//   expect(inactiveBtn).toBeInTheDocument();
-//   fireEvent.click(inactiveBtn);
+  const inactiveBtn = screen.getByTestId("inactive");
+  expect(inactiveBtn).toBeInTheDocument();
+  fireEvent.click(inactiveBtn);
 
-//   const allBtn = screen.getByTestId("all");
-//   expect(allBtn).toBeInTheDocument();
-//   fireEvent.click(allBtn);
-// });
+  const allBtn = screen.getByTestId("all");
+  expect(allBtn).toBeInTheDocument();
+  fireEvent.click(allBtn);
+});
 
 // it("render searchBtn and inputBox", () => {
 //   render(
