@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { Container, Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import Spinner from "../../../../components/loader/Loader";
 import { RootState } from "../../../../store";
 import { IUserDataState } from "../../../../types";
-
 const AdminDashboard = () => {
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
@@ -12,7 +12,9 @@ const AdminDashboard = () => {
     // console.log(user.data);
   }, [user.data]);
 
-  return (
+  return user.loading ? (
+    <Spinner />
+  ) : (
     <React.Fragment>
       <Container>
         {!!user.data && (
