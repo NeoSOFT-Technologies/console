@@ -54,12 +54,16 @@ export function userPermissionService(tenantName: string, clientName: string) {
   );
 }
 
-export function tenantRolesService() {
-  return apiFactory().get(`/api/roles`);
+export function tenantRolesService(tenantName: string) {
+  return apiFactory().get(`/api/roles?tenantName=${tenantName}`);
 }
 
 export function getTenantDetailsService(tenantName: string) {
-  return apiFactory().get(`/api/tenants/${tenantName}`);
+  console.log(
+    "🚀 ~ file: tenants.ts ~ line 62 ~ getTenantDetailsService ~ tenantName",
+    tenantName
+  );
+  return apiFactory().get(`/api/tenants/2`); // put tenantName here
 }
 
 export function tenantPermissionsService(tenantName: string) {

@@ -3,15 +3,16 @@ import { getTenantDetailsService } from "../../../../services";
 import error from "../../../../utils/error";
 
 export interface IUpdateUserState {
-  isUpdated: boolean;
+  data: undefined;
   loading: boolean;
   error?: string;
 }
 const initialState: IUpdateUserState = {
-  isUpdated: false,
+  data: undefined,
   loading: false,
   error: undefined,
 };
+
 export const tenantDetails = createAsyncThunk(
   "tenant/details",
   async (tenantName: string) => {
@@ -32,11 +33,10 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(tenantDetails.pending, (state) => {
       state.loading = true;
-      state.isUpdated = false;
     });
-    builder.addCase(tenantDetails.fulfilled, (state) => {
+    builder.addCase(tenantDetails.fulfilled, (state, action) => {
       state.loading = false;
-      state.isUpdated = true;
+      state.data = action.payload;
     });
     builder.addCase(tenantDetails.rejected, (state, action) => {
       state.loading = false;

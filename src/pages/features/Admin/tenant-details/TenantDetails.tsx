@@ -20,6 +20,7 @@ import {
 import { RootState } from "../../../../store";
 // import { RootState } from "../../../../store";
 import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
+import { tenantDetails } from "../../../../store/features/tenant/tenant-details/slice";
 import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
@@ -52,8 +53,19 @@ export default function TenantDetails() {
     email: "",
     databaseName: "",
   });
+
+  const incomingtenantdetails = useAppSelector(
+    (state: RootState) => state.tenantDetails.data
+  );
+
+  console.log(
+    "🚀 ~ file: TenantDetails.tsx ~ line 60 ~ TenantDetails ~ incomingtenantdetails",
+    incomingtenantdetails
+  );
+
   useEffect(() => {
     const { tenantName, description } = location.state as any;
+    dispatch(tenantDetails(tenantName));
     // console.log(val);
     setTenant({ ...tenant, tenantName, description });
   }, []);
