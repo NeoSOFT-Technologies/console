@@ -55,24 +55,21 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
       },
     });
   }
-  // console.log(`Bearer ${tokenService.getLocalAccessToken()}`);
   const serverConfigs = {
     url: url,
     data: async (args: any) => {
       const response = await apiFactory().get(`${args.url}`);
-      return response.data;
+      console.log(args.url, response.data);
+      return { data: response.data.data, total: response.data.count };
     },
     // eslint-disable-next-line unicorn/no-thenable
-    then: (res: any) => res.data,
-    total: (res: any) => res.count,
   };
 
   const paginationConfigs = {
     enabled: true,
     limit: 10,
     server: {
-      url: (prev: string, page: number, limit: Number) =>
-        `${prev}page=${page + 1}&size=${limit}`,
+      url: (prev: string, page: number) => `${prev}page=${page + 1}`,
     },
   };
 

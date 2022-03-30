@@ -29,20 +29,6 @@ export async function commonLoginService(data: IConditions) {
   };
 
   tokenService.setUser(setlogin);
-  return {
-    data: [
-      {
-        name: "Tushar Saxena",
-        description: "i am the king of the seven worlds :)",
-        email: "tushar057@gmail.com",
-        password: "tushar057",
-        databaseName: "Tushar Saxena",
-        databaseDescription: "database size of 100",
-        lastlogin: "Mar 01 2022 11:51:39",
-        id: 7,
-      },
-    ],
-  };
 }
 
 export function commonLogoutService() {

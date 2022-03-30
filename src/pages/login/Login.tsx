@@ -2,6 +2,7 @@ import React, { useEffect, useState, ChangeEvent } from "react";
 import { Form, Button, Alert, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../../components/loader/Loader";
 import PasswordButtons from "../../components/password-field/Password";
 import { ToastAlert } from "../../components/toast-alert/toast-alert";
 // import { regexForEmail } from "../../resources/constants";
@@ -120,7 +121,9 @@ export default function Login() {
     });
   };
 
-  return (
+  return user.loading ? (
+    <Spinner />
+  ) : (
     <div className="d-flex align-items-center auth px-0">
       <div className="row w-100 mx-0">
         <div className="col-lg-6 col-md-8 col-sm-10 mx-auto">

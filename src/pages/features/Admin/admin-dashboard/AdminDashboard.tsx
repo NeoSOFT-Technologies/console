@@ -1,18 +1,23 @@
 import React, { useEffect } from "react";
 import { Container, Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+import Spinner from "../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { RootState } from "../../../../store";
 import { IUserDataState } from "../../../../types";
-
 const AdminDashboard = () => {
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
   );
   useEffect(() => {
     // console.log(user.data);
-  }, [user.data]);
+    if (user.error) ToastAlert("Userdata not found", "error");
+  }, [user.error]);
 
-  return (
+  return user.loading ? (
+    <Spinner />
+  ) : user.data ? (
     <React.Fragment>
       <Container>
         {!!user.data && (
@@ -57,6 +62,8 @@ const AdminDashboard = () => {
         )}
       </Container>
     </React.Fragment>
+  ) : (
+    <Navigate to="/login-page" />
   );
 };
 export default AdminDashboard;
