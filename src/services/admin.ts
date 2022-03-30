@@ -7,6 +7,8 @@ export function addTenantDataService(data: ITenantData) {
     email: data.email,
     password: data.password,
     description: data.description,
+    databaseName: data.databaseName,
+    databaseDescription: data.databaseDescription,
   };
   console.log(
     "🚀 ~ file: admin.ts ~ line 11 ~ addTenantDataService ~ body",
