@@ -189,7 +189,7 @@ export default function RegisterTenant() {
                     id="tenantName"
                     placeholder="Enter tenantName"
                     name="tenantName"
-                    data-testid="tenantName-input"
+                    data-testid="name-input"
                     value={tenant.tenantName}
                     isInvalid={!!error.tenantName}
                     isValid={!error.tenantName && !!tenant.tenantName}
@@ -304,7 +304,7 @@ export default function RegisterTenant() {
             </Row>
             <div className="title">Tenant Roles:</div>
             <div className="list-container  ">
-              {console.log(rolesList)}
+              {/* {console.log(rolesList)} */}
               {rolesList?.data?.map((item, index) => (
                 <p key={index} className="m-4">
                   <input

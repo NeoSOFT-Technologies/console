@@ -7,7 +7,13 @@ test("Deletes a book from list with id", async () => {
   expect(state.loading).toBeFalsy();
 
   await store.dispatch(
-    getTenantUserList({ currentPage: 2, search: "deepthi" })
+    getTenantUserList({
+      tenantName: "deepthi",
+      userName: "deepthi",
+
+      currentPage: 2,
+      search: "deepthi",
+    })
   );
 
   state = store.getState().tenantUserList;

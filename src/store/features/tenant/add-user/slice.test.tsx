@@ -8,10 +8,10 @@ test("Deletes a book from list with id", async () => {
 
   await store.dispatch(
     addNewUser({
-      username: "deepthi",
+      userName: "deepthi",
       email: "deepthi@gmail.com",
       password: "deepthi123",
-      tenantname: "deepthi",
+      roles: [],
     })
   );
 

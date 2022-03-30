@@ -27,10 +27,6 @@ it("test if input box is present", () => {
   expect(nameBox).toBeInTheDocument();
   expect(nameBox).toHaveAttribute("type", "text");
 
-  const useridBox = screen.getByTestId("userid-input");
-  expect(useridBox).toBeInTheDocument();
-  expect(useridBox).toHaveAttribute("type", "text");
-
   const emailBox = screen.getByTestId("email-input");
   expect(emailBox).toBeInTheDocument();
   expect(emailBox).toHaveAttribute("type", "email");
@@ -59,10 +55,6 @@ it("if input box takes input and if update and edit button renders", () => {
   const nameBox = screen.getByTestId("name-input");
   fireEvent.change(nameBox, { target: { value: "akhilpinni" } });
   expect(screen.getByTestId("name-input")).toHaveValue("akhilpinni");
-
-  const useridBox = screen.getByTestId("userid-input");
-  fireEvent.change(useridBox, { target: { value: "akhilpinni" } });
-  expect(screen.getByTestId("userid-input")).toHaveValue("akhilpinni");
 
   const emailBox = screen.getByTestId("email-input");
   fireEvent.change(emailBox, { target: { value: "akhilpinni123@gmail.com" } });

@@ -26,7 +26,7 @@ it("test if input box is present", () => {
   );
   const emailBox = screen.getByTestId("email-input");
   expect(emailBox).toBeInTheDocument();
-  expect(emailBox).toHaveAttribute("type", "email");
+  expect(emailBox).toHaveAttribute("type", "text");
 
   const passwordBox = screen.getByTestId("password-input");
   expect(passwordBox).toBeInTheDocument();

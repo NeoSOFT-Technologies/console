@@ -6,7 +6,9 @@ test("Deletes a book from list with id", async () => {
 
   expect(state.loading).toBeFalsy();
 
-  await store.dispatch(updateUser({ id: 9, password: "deepthi" }));
+  await store.dispatch(
+    updateUser({ userName: "deepthi", email: "deepthi@gmail.com" })
+  );
 
   state = store.getState().updateUser;
   if (state.loading === false) {

@@ -6,7 +6,7 @@ test("Deletes a book from list with id", async () => {
 
   expect(state.loading).toBeFalsy();
 
-  await store.dispatch(updateTenant({ id: 9, data: {} }));
+  await store.dispatch(updateTenant({ tenantName: "deepthi", roles: [] }));
 
   state = store.getState().updateTenant;
   //   if (state.loading === false) {
