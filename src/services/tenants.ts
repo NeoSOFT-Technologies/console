@@ -12,7 +12,6 @@ export function updateTenantDataService(data: ITenantData) {
   const body = {
     action: {
       tenantName: data.tenantName,
-      email: data.email,
       description: data.description,
     },
   };

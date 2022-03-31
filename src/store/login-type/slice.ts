@@ -9,7 +9,7 @@ interface IConditions {
 }
 
 const initialState: IConditions = {
-  data: "tenant",
+  data: "admin",
   loading: false,
   error: undefined,
 };

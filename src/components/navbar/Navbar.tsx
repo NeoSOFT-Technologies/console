@@ -2,12 +2,19 @@ import React from "react";
 import { Dropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { logo, logo_mini } from "../../resources/images";
+import { useAppDispatch } from "../../store/hooks";
+import { commonLogout } from "../../store/logout/slice";
 
 export default function Navbar() {
-  const naviagte = useNavigate();
-
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const toggleOffcanvas = () => {
     document?.querySelector(".sidebar-offcanvas")?.classList.toggle("active");
+  };
+
+  const logout = async () => {
+    await dispatch(commonLogout());
+    navigate("/login-page");
   };
 
   return (
@@ -122,7 +129,7 @@ export default function Navbar() {
             <button
               type="button"
               className="nav-link border-0"
-              onClick={() => naviagte("/login-page")}
+              onClick={() => logout()}
             >
               <i className="bi bi-power"></i>
             </button>
