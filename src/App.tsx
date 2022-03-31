@@ -70,9 +70,9 @@ class App extends Component<IProperty, IState> {
       "/login-page",
       // "/registration-page",
       // "/user-pages/lockscreen",
-      // "/error-pages/error-404",
-      // "/error-pages/error-500",
-      // "/error-pages/error-401",
+      "/error-pages/error-404",
+      "/error-pages/error-500",
+      "/error-pages/error-401",
       // "/general-pages/landing-page",
     ];
     for (const fullPageLayoutRoute of fullPageLayoutRoutes) {

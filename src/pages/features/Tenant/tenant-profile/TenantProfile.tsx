@@ -83,7 +83,6 @@ const TenantProfile = () => {
           dispatch(updateTenant({ ...tenant }));
           setEdit(false);
           console.log(tenant.id);
-          // console.log(dispatch(updateTenant({ id: tenant.id, data: tenant })));
           ToastAlert("Tenant Details Update", "success");
         }
       } else {

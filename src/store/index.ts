@@ -12,7 +12,7 @@ import updateTenantReducer from "./features/tenant/update-tenant/slice";
 import userPermissionReducer from "./features/tenant/user-permission/slice";
 import updateUserReducer from "./features/user/update-user/slice";
 
-import userDetailsReducer from "./features/user/user-details/slice";
+import getUserDetailsReducer from "./features/user/user-details/slice";
 import landingReducer from "./landing/slice";
 import loginTypeReducer from "./login-type/slice";
 import commonLoginReducer from "./login/slice";
@@ -34,7 +34,7 @@ const store = configureStore({
     userPermission: userPermissionReducer,
     tenantPermissionsList: tenantPermissionsListReducer,
     updateUser: updateUserReducer,
-    userDetails: userDetailsReducer,
+    userDetails: getUserDetailsReducer,
 
     tenantDetails: tenantDetailsReducer,
   },

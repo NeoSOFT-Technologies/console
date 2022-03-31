@@ -40,6 +40,7 @@ export const getUserData = createAsyncThunk(
       // console.log(response);
       return response?.data;
     } catch (error_) {
+      console.log("in error");
       return error_;
     }
   }
@@ -54,10 +55,12 @@ const slice = createSlice({
       state.loading = true;
     });
     builder.addCase(getUserData.fulfilled, (state, action) => {
+      console.log("in fullfilled xyz");
       state.loading = false;
       state.data = action.payload;
     });
     builder.addCase(getUserData.rejected, (state, action) => {
+      console.log("in rejected");
       state.loading = false;
       // action.payload contains error information
       state.error = error(action.payload);
