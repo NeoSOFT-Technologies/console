@@ -5,7 +5,7 @@ test("Deletes a book from list with id", async () => {
 
   expect(state.isDeleted).toBeFalsy();
 
-  await store.dispatch(deleteTenant(9));
+  await store.dispatch(deleteTenant("mihir"));
 
   state = store.getState().deleteTenant;
   if (state.loading === false) {
@@ -20,7 +20,7 @@ test("Deletes a book from list with id", async () => {
 
   expect(state.isDeleted).toBeTruthy();
 
-  await store.dispatch(deleteTenant(9));
+  await store.dispatch(deleteTenant("mihir"));
 
   state = store.getState().deleteTenant;
   console.log(state);

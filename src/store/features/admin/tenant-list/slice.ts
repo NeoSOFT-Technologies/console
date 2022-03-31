@@ -6,6 +6,7 @@ import error from "../../../../utils/error";
 interface IConditions {
   currentPage: number;
   search: string;
+  // isActive : string;
 }
 
 const initialState: ITenantListState = {

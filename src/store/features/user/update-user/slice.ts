@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { updateUserPassword } from "../../../../services/users";
+import { updateUserDataService } from "../../../../services/users";
 import error from "../../../../utils/error";
 
 interface IConditions {
-  id: number;
-  password: string;
+  userName: string;
+  email: string;
 }
 export interface IUpdateUserState {
   isUpdated: boolean;
@@ -19,9 +19,8 @@ const initialState: IUpdateUserState = {
 export const updateUser = createAsyncThunk(
   "user/update",
   async (condition: IConditions) => {
-    const { id, password } = condition;
     try {
-      const response = await updateUserPassword(id, password);
+      const response = await updateUserDataService(condition);
       console.log(response);
       return response.data;
     } catch (error_) {

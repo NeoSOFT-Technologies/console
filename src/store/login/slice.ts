@@ -4,8 +4,9 @@ import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
 
 interface IConditions {
-  email: string;
+  userName: string;
   password: string;
+  tenantName: string;
 }
 
 const initialState: IUserDataState = {
@@ -18,27 +19,24 @@ export const commonLogin = createAsyncThunk(
   "user/data",
   async (conditions: IConditions) => {
     try {
-      const { email, password } = conditions;
-      const response = await commonLoginService(email, password);
-      console.log(response);
-      return response.data[0];
+      await commonLoginService(conditions);
     } catch (error_) {
+      console.log("in error", error_);
       return error_;
     }
   }
 );
 
 const slice = createSlice({
-  name: "user",
+  name: "user_accessToken",
   initialState,
   reducers: {},
   extraReducers(builder): void {
     builder.addCase(commonLogin.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(commonLogin.fulfilled, (state, action) => {
+    builder.addCase(commonLogin.fulfilled, (state) => {
       state.loading = false;
-      state.data = action.payload;
     });
     builder.addCase(commonLogin.rejected, (state, action) => {
       state.loading = false;

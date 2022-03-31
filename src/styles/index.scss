@@ -83,6 +83,7 @@ html {
 @import "./theme/components/react-table";
 @import "./theme/password";
 @import "./theme/components/landing-screens/auth";
+@import "./theme/components/roleandpermissions.scss";
 
 /* === Plugin Overrides === */
 @import "./theme/components/plugin-overrides/contex-menu";

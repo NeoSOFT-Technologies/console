@@ -3,10 +3,10 @@ import { createNewUserService } from "../../../../services";
 import error from "../../../../utils/error";
 
 interface IConditions {
-  username: string;
+  userName: string;
   email: string;
   password: string;
-  tenantname: string;
+  roles: string[];
 }
 
 interface IAddUserState {

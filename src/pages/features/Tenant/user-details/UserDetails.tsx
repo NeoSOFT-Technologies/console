@@ -1,36 +1,74 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { useLocation } from "react-router";
+import { useParams } from "react-router";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { regexForUser, regexForEmail } from "../../../../resources/constants";
-import { ITenantUserData } from "../../../../types";
-interface LocationState {
-  user: ITenantUserData;
-}
+import { RootState } from "../../../../store";
+import { deleteUser } from "../../../../store/features/tenant/delete-user/slice";
+import { updateUser } from "../../../../store/features/user/update-user/slice";
+import {
+  getUserDetails,
+  IUserDetailsData,
+  IUserDetailsState,
+} from "../../../../store/features/user/user-details/slice";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 interface Ierror {
-  userName: string;
+  username: string;
   email: string;
   tenantName: string;
+  createdTimestamp?: string;
 }
 export default function UserDetails() {
-  const location = useLocation();
-  const user = location.state as LocationState;
-  console.log(user);
+  const params = useParams();
   // @ts-ignore
-  const [userdata, setUserdata] = useState<ITenantUserData>(user);
+  const userDetails: IUserDetailsState = useAppSelector(
+    (state: RootState) => state.userDetails
+  );
+  const dispatch = useAppDispatch();
+  const [userdata, setUserdata] = useState<IUserDetailsData>({
+    id: "",
+    createdTimestamp: "",
+    username: "",
+    enabled: false,
+    emailVerified: false,
+    email: "",
+    access: {
+      manageGroupMembership: false,
+      view: false,
+      mapRoles: false,
+      impersonate: false,
+      manage: false,
+    },
+    tenantName: "",
+    roles: [],
+    permissions: [],
+  });
+
   const [errordata, setErrordata] = useState<Ierror>({
-    userName: "",
+    username: "",
     email: "",
     tenantName: "",
   });
   const [editUser, setEditUser] = useState(false);
 
-  const handleRemove = () => {};
+  useEffect(() => {
+    if (params.userName) {
+      dispatch(
+        getUserDetails({ tenantName: "Arpan", userName: params.userName })
+      );
+    }
+    setUserdata({ ...userDetails.data });
+  }, []);
+
+  const handleRemove = async () => {
+    await dispatch(deleteUser(userdata.username));
+  };
+
   const handleSetStatus = () => {};
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
-      case "userName":
+      case "username":
         setErrordata({
           ...errordata,
           [name]: regexForUser.test(value) ? "" : "Enter a valid Username ",
@@ -54,21 +92,19 @@ export default function UserDetails() {
     setUserdata({ ...userdata, [name]: value });
   };
   const handleValidate = (errors: Ierror) => {
-    const validate = !!(
-      errors.userName === "" &&
-      errors.email === "" &&
-      errors.tenantName === ""
-    );
+    const validate = !!(errors.username === "" && errors.email === "");
     return validate;
   };
   const handleEditSave = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (handleValidate(errordata)) {
-      if (
-        userdata.userName !== "" &&
-        userdata.email !== "" &&
-        userdata.tenantName !== ""
-      ) {
+      if (userdata.username !== "" && userdata.email !== "") {
+        dispatch(
+          updateUser({
+            userName: userdata.username,
+            email: userdata.email,
+          })
+        );
         ToastAlert("User Saved", "success");
         setEditUser(false);
       } else {
@@ -108,9 +144,9 @@ export default function UserDetails() {
                   <Form.Label>User Name :</Form.Label>
                   <Form.Control
                     type="text"
-                    name="userName"
+                    name="username"
                     placeholder="Enter user name"
-                    value={userdata.userName}
+                    value={userdata.username}
                     onChange={handleInputChange}
                     disabled={!editUser}
                   />
@@ -135,16 +171,6 @@ export default function UserDetails() {
                     value={userdata.tenantName}
                     onChange={handleInputChange}
                     disabled={!editUser}
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Label>Status :</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="isDeleted"
-                    value={userdata.isDeleted ? "deleted" : "active"}
-                    onChange={handleInputChange}
-                    disabled
                   />
                 </Form.Group>
                 {editUser && (

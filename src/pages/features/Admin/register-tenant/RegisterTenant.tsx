@@ -1,48 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Row, Col, Container } from "react-bootstrap";
+import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForEmail,
   regexForName,
-  regexForUser,
+  // regexForUser,
   regForPassword,
 } from "../../../../resources/constants";
+import { RootState } from "../../../../store";
 import { addNewTenant } from "../../../../store/features/admin/add-tenant/slice";
-import { useAppDispatch } from "../../../../store/hooks";
-import { IErrorTenantInput, ITenantData } from "../../../../types/index";
+import { getTenantRoles } from "../../../../store/features/admin/tenant-roles/slice";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import {
+  IErrorTenantInput,
+  ITenantData,
+  ITenantRolesState,
+} from "../../../../types/index";
 
 export default function RegisterTenant() {
   const dispatch = useAppDispatch();
   const [tenant, setTenant] = useState<ITenantData>({
-    name: "",
+    tenantName: "",
     description: "",
-    userid: "",
     email: "",
     password: "",
     databaseName: "",
     databaseDescription: "",
     roles: [],
-    type: "tenant",
   });
   const [error, setError] = useState<IErrorTenantInput>({
-    name: "",
-    userid: "",
+    tenantName: "",
     email: "",
     password: "",
-    databaseName: "",
+    description: "",
+    // roles: "",
   });
-
+  const tenantAdded = useAppSelector((state: RootState) => state.addNewTenant);
   // const [tenant.roles, setTenant] = useState<string[]>([]);
-  const checkList = ["A", "B", "C", "D"];
+  // const [rolesList, setRolesList] = useState([]);
+  // const rolesList = ["A", "B", "C", "D"];
+  const rolesList: ITenantRolesState = useAppSelector(
+    (state: RootState) => state.rolesList
+  );
+  useEffect(() => {
+    dispatch(getTenantRoles());
+  }, []);
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (tenant.roles !== undefined) {
-      if (event.target.checked) {
-        setTenant({ ...tenant, roles: [...tenant.roles, event.target.value] });
-      } else {
-        tenant.roles.splice(tenant.roles.indexOf(event.target.value), 1);
-        setTenant({ ...tenant, roles: [...tenant.roles] });
-      }
+    if (event.target.checked) {
+      setTenant({ ...tenant, roles: [...tenant.roles, event.target.value] });
+    } else {
+      tenant.roles.splice(tenant.roles.indexOf(event.target.value), 1);
+      setTenant({ ...tenant, roles: [...tenant.roles] });
     }
   };
 
@@ -50,16 +60,16 @@ export default function RegisterTenant() {
     // console.log(event.target.value);
     const { name, value } = event.target;
     switch (name) {
-      case "databaseName":
+      case "description":
         setError({
           ...error,
           [name]: regexForName.test(value)
             ? ""
-            : "databaseName should only consist Alphabets",
+            : "description should only consist Alphabets",
         });
         break;
 
-      case "name":
+      case "tenantName":
         setError({
           ...error,
           [name]: regexForName.test(value)
@@ -73,15 +83,6 @@ export default function RegisterTenant() {
           [name]: regForPassword.test(value)
             ? ""
             : "Password should contains Alphabet,special Charater,Number",
-        });
-        break;
-
-      case "userid":
-        setError({
-          ...error,
-          [name]: regexForUser.test(value)
-            ? ""
-            : "Username should contains alteast 1number and Alphabets ",
         });
         break;
       case "email":
@@ -100,58 +101,54 @@ export default function RegisterTenant() {
   };
   const handleValidate = () => {
     const validate = !!(
-      error.name === "" &&
-      error.userid === "" &&
-      error.email === "" &&
-      error.databaseName === "" &&
-      error.password === ""
+      (
+        error.tenantName === "" &&
+        error.email === "" &&
+        error.description === "" &&
+        error.password === ""
+      )
+      // error.roles === ""
     );
     return validate;
   };
-  const handleSubmitTenant = (event: React.FormEvent) => {
+  const handleSubmitTenant = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (handleValidate()) {
       if (
-        tenant.name !== "" &&
-        tenant.userid !== "" &&
+        tenant.tenantName !== "" &&
         tenant.email !== "" &&
-        tenant.databaseName !== "" &&
+        tenant.description !== "" &&
         tenant.password !== ""
+        // tenant.roles.length > 0
       ) {
         const newUser = {
           ...tenant,
-          // .tenant.roles,
-
-          lastlogin: "Mar 01 2022 11:51:39",
         };
         console.log(newUser);
-        dispatch(addNewTenant(newUser));
+        await dispatch(addNewTenant(newUser));
 
         ToastAlert("Tenant Registered", "success");
 
         setTenant({
-          name: "",
+          tenantName: "",
           description: "",
-          userid: "",
           email: "",
           password: "",
           databaseName: "",
           databaseDescription: "",
           roles: [],
-          type: "tenant",
         });
       } else {
         ToastAlert("Please Fill All Fields", "warning");
       }
     } else {
       setError({
-        name: "",
-
-        userid: "",
+        tenantName: "",
         email: "",
         password: "",
-        databaseName: "",
+        description: "",
+        // roles: "",
       });
     }
   };
@@ -160,18 +157,18 @@ export default function RegisterTenant() {
   ) => {
     event.preventDefault();
     setTenant({
-      name: "",
+      tenantName: "",
       description: "",
-      userid: "",
       email: "",
       password: "",
       databaseName: "",
       databaseDescription: "",
       roles: [],
-      type: "tenant",
     });
   };
-  return (
+  return tenantAdded.loading ? (
+    <Spinner />
+  ) : (
     <>
       <div className=" bg-white">
         <Container className="m-1">
@@ -189,40 +186,18 @@ export default function RegisterTenant() {
                   <Form.Label> Tenant Name :</Form.Label>
                   <Form.Control
                     type="text"
-                    // id="name"
-                    // controlId="myname"
-
-                    placeholder="Enter Name"
-                    name="name"
-                    data-testid="name-input"
-                    value={tenant.name}
-                    isInvalid={!!error.name}
-                    isValid={!error.name && !!tenant.name}
+                    id="tenantName"
+                    placeholder="Enter tenantName"
+                    name="tenantName"
+                    data-testid="tenantName-input"
+                    value={tenant.tenantName}
+                    isInvalid={!!error.tenantName}
+                    isValid={!error.tenantName && !!tenant.tenantName}
                     onChange={handleInputChange}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    {error.name}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
-              <Col md="6">
-                <Form.Group className="mb-3">
-                  <Form.Label>UserID :</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="userid"
-                    // id="userid"
-                    data-testid="userid-input"
-                    placeholder="Enter User ID"
-                    isValid={!error.userid && !!tenant.userid}
-                    value={tenant.userid}
-                    isInvalid={!!error.userid}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {error.userid}
+                    {error.tenantName}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -283,9 +258,14 @@ export default function RegisterTenant() {
                     className="form-control rounded-0"
                     // id="description"
                     onChange={handleInputChange}
+                    isInvalid={!!error.description}
+                    isValid={!error.description && !!tenant.description}
                     required
                   />
                 </Form.Group>
+                <Form.Control.Feedback type="invalid">
+                  {error.description}
+                </Form.Control.Feedback>
               </Col>
               <Col md="6">
                 <Form.Group className="mb-3">
@@ -297,14 +277,8 @@ export default function RegisterTenant() {
                     name="databaseName"
                     // id="databaseName"
                     value={tenant.databaseName}
-                    isInvalid={!!error.databaseName}
-                    isValid={!error.databaseName && !!tenant.databaseName}
                     onChange={handleInputChange}
-                    required
                   />
-                  <Form.Control.Feedback type="invalid">
-                    {error.databaseName}
-                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
               <Col md="12">
@@ -324,23 +298,23 @@ export default function RegisterTenant() {
                     placeholder="Here...."
                     value={tenant.databaseDescription}
                     onChange={handleInputChange}
-                    required
                   />
                 </Form.Group>
               </Col>
             </Row>
             <div className="title">Tenant Roles:</div>
             <div className="list-container  ">
-              {checkList.map((item, index) => (
-                <span key={index} className="m-4">
+              {console.log(rolesList)}
+              {rolesList?.data?.map((item, index) => (
+                <p key={index} className="m-4">
                   <input
                     value={item}
                     type="checkbox"
                     onChange={handleCheck}
                     className=" inline"
                   />
-                  <span>{item}</span>
-                </span>
+                  <span className="mx-1">{item}</span>
+                </p>
               ))}
             </div>
 

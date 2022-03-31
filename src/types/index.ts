@@ -3,22 +3,20 @@ export interface IHeadings {
   className?: string;
 }
 export interface ITenantData {
-  name?: string;
+  tenantName: string;
+  email?: string;
+  password?: string;
   description?: string;
   databaseName?: string;
   databaseDescription?: string;
-  userid?: string;
-  email?: string;
-  password?: string;
-  type?: string;
-  tenantName?: string;
   createdDateTime?: string;
   isDeleted?: boolean;
-  isActive?: boolean;
   roles?: string[];
   permissions?: string[];
   id?: number;
+  type?: string;
 }
+
 export interface ITenantDetail {
   name: string;
   description: string;
@@ -31,22 +29,15 @@ export interface ITenantDetail {
   id?: number;
 }
 export interface IErrorTenantDetail {
-  name: string;
-  userid: string;
-  email: string;
-
-  databaseName: string;
+  tenantName: string;
+  tenantDbName: string;
 }
 
 export interface ITenantUserData {
-  id: number;
   userName: string;
   email: string;
   tenantName: string;
   createdDateTime: string;
-  isDeleted: boolean;
-  isActive: boolean;
-  roles: string[];
 }
 
 export interface IActionsRenderList {
@@ -55,17 +46,29 @@ export interface IActionsRenderList {
   buttonFunction?: (value: any) => void;
 }
 export interface ITenantDataList {
-  list: ITenantData[];
+  data: ITenantData[];
   fields: string[];
 }
 export interface ITenantUserDataList {
-  list: ITenantUserData[];
+  data: ITenantUserData[];
   fields: string[];
 }
 
 export interface ISetTenantList {
-  list: ITenantData[];
+  data: ITenantData[];
   count: number;
+}
+export interface ISetTenantRoles {
+  roles: string[];
+}
+export interface ISetTenantPermissions {
+  id: string;
+  name: string;
+  description: string;
+  type: string;
+  logic: string;
+  decisionStrategy: string;
+  resourceType: string;
 }
 export interface ISetTenantUserList {
   list: ITenantUserData[];
@@ -79,17 +82,34 @@ export interface IErrorInput {
   no: boolean;
 }
 export interface IErrorTenantInput {
-  name: string;
-  userid: string;
+  tenantName: string;
   email: string;
   password: string;
-  databaseName: string;
+  description: string;
+  roles?: string;
 }
-
+export interface IAdminData {
+  username: string;
+  createdTimestamp: string;
+  count: number;
+  roles: string[];
+}
 // redux toolkit states
 
 export interface ITenantListState {
   data?: ISetTenantList | null;
+  loading: boolean;
+  error?: string | null;
+}
+
+export interface ITenantRolesState {
+  data?: string[] | null;
+  loading: boolean;
+  error?: string | null;
+}
+
+export interface ITenantPermissionsState {
+  data?: ISetTenantPermissions[] | null;
   loading: boolean;
   error?: string | null;
 }
@@ -101,13 +121,13 @@ export interface ITenantDetails {
 }
 
 export interface ITenantUserListState {
-  data?: ISetTenantUserList | null;
+  data?: ITenantUserData[] | null;
   loading: boolean;
   error?: string | null;
 }
 
 export interface IUserDataState {
-  data?: ITenantData | null;
+  data?: (ITenantData & IAdminData) | null;
   loading: boolean;
   error?: string | null;
 }

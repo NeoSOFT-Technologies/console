@@ -2,8 +2,10 @@ import { h } from "gridjs";
 import { Grid } from "gridjs-react";
 import React from "react";
 import "./render-list.scss";
+import apiFactory from "../../utils/api";
 
 interface IProps {
+  searchBy: string;
   headings: {
     name: string;
     data: string;
@@ -24,7 +26,7 @@ interface IColumns {
 }
 
 const RenderList1: React.FC<IProps> = (props: IProps) => {
-  const { headings, url } = props;
+  const { headings, url, searchBy } = props;
   const columns: IColumns[] = headings.map((heading) => ({
     ...heading,
     data: (row: any) => row[heading.data],
@@ -32,7 +34,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
   }));
 
   if (props.actions !== undefined) {
-    console.log(props.actions);
+    // console.log(props.actions);
     columns.push({
       name: "Actions",
       formatter: (cell, row) => {
@@ -53,27 +55,28 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
       },
     });
   }
-
   const serverConfigs = {
     url: url,
+    data: async (args: any) => {
+      const response = await apiFactory().get(`${args.url}`);
+      // console.log(args.url, response.data);
+      return { data: response.data.data, total: response.data.count };
+    },
     // eslint-disable-next-line unicorn/no-thenable
-    then: (res: any) => res.list,
-    total: (res: any) => res.count,
   };
 
   const paginationConfigs = {
     enabled: true,
     limit: 10,
     server: {
-      url: (prev: string, page: Number, limit: Number) =>
-        `${prev}_page=${page}&size=${limit}`,
+      url: (prev: string, page: number) => `${prev}page=${page + 1}`,
     },
   };
 
   const searchConfigs = {
     enabled: true,
     server: {
-      url: (prev: string, keyword: string) => `${prev}search=${keyword}&`,
+      url: (prev: string, keyword: string) => `${prev}${searchBy}=${keyword}&`,
     },
   };
 

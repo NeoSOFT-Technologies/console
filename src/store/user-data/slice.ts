@@ -1,8 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getUserListService } from "../../services";
+import {
+  adminLogin,
+  getTenantDetailsService,
+  getUserDetailsService,
+} from "../../services";
 import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
 
+interface IConditions {
+  userName: string;
+  tenantName: string;
+  type: string;
+}
 const initialState: IUserDataState = {
   data: undefined,
   loading: false,
@@ -11,12 +20,27 @@ const initialState: IUserDataState = {
 
 export const getUserData = createAsyncThunk(
   "user/data",
-  async (conditions: string) => {
+  async (conditions: IConditions) => {
     try {
-      const response = await getUserListService(conditions);
+      let response;
+      switch (conditions.type) {
+        case "admin":
+          response = await adminLogin();
+          break;
+        case "tenant":
+          response = await getTenantDetailsService(conditions.tenantName);
+          break;
+        case "user":
+          response = await getUserDetailsService(
+            conditions.tenantName,
+            conditions.userName
+          );
+          break;
+      }
       console.log(response);
-      return response.data[0];
+      return response?.data;
     } catch (error_) {
+      console.log("in error");
       return error_;
     }
   }
@@ -31,10 +55,12 @@ const slice = createSlice({
       state.loading = true;
     });
     builder.addCase(getUserData.fulfilled, (state, action) => {
+      console.log("in fullfilled xyz");
       state.loading = false;
       state.data = action.payload;
     });
     builder.addCase(getUserData.rejected, (state, action) => {
+      console.log("in rejected");
       state.loading = false;
       // action.payload contains error information
       state.error = error(action.payload);

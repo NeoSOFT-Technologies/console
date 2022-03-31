@@ -16,10 +16,10 @@ const initialState: IAddTenantState = {
 
 export const deleteTenant = createAsyncThunk(
   "tenant/deletetenant",
-  async (id: number) => {
+  async (tenantName: string) => {
     try {
-      const response = await deleteTenantDataService(id);
-      // console.log(response);
+      const response = await deleteTenantDataService(tenantName);
+      console.log(response);
       return response.data;
     } catch (error_) {
       return error_;

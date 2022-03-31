@@ -6,7 +6,7 @@ import Spinner from "../../../../components/loader/Loader";
 import { RootState } from "../../../../store";
 import { useAppSelector } from "../../../../store/hooks";
 
-import { ITenantListState, ITenantDetails } from "../../../../types/index";
+import { ITenantListState } from "../../../../types/index";
 
 export default function TenantList() {
   const navigate = useNavigate();
@@ -19,29 +19,32 @@ export default function TenantList() {
     btn3: true,
   });
 
-  const NavigateTenant = (value: ITenantDetails) => {
-    console.log(value);
-    navigate("/tenantdetails", {
-      state: { val: value },
+  const NavigateTenant = (value: any) => {
+    navigate(`/tenantdetails/${value._cells[0].data}`, {
+      state: {
+        tenantName: value._cells[0].data,
+        description: value._cells[1].data,
+      },
     });
   };
   const headings = [
     {
       name: "Tenant Name",
-      data: "name",
+      data: "tenantName",
     },
     {
       name: "Description",
       data: "description",
     },
     {
-      name: "Last Login",
-      data: "lastlogin",
+      name: "Created Date and Time",
+      data: "createdDateTime",
     },
   ];
+  console.log(process.env.REACT_APP_API_BASEURL);
   const url =
-    process.env.REACT_APP_API_BASEURL + "/api/tenant?type=tenant&" ||
-    "http://localhost:3000/api/tenant?type=tenant&";
+    process.env.REACT_APP_API_BASEURL + "/api/tenants?" ||
+    "http://localhost:3000/api/tenants?";
   const actions = {
     classNames: "btn btn-sm btn-dark",
     func: (val: any) => NavigateTenant(val),
@@ -81,7 +84,12 @@ export default function TenantList() {
             </div>
             {tenantList.loading && <Spinner />}
             <div className="table-responsive">
-              <RenderList headings={headings} url={url} actions={actions} />
+              <RenderList
+                headings={headings}
+                url={url}
+                actions={actions}
+                searchBy={"tenantName"}
+              />
             </div>
           </div>
         </div>

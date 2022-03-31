@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
-  regexForUser,
+  // regexForUser,
   regexForEmail,
 } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
@@ -20,46 +20,36 @@ const TenantProfile = () => {
   const [edit, setEdit] = useState(false);
   const dispatch = useAppDispatch();
   const [tenant, setTenant] = useState<ITenantData>({
-    name: "",
-    description: "",
-    userid: "",
+    tenantName: "",
     email: "",
+    description: "",
     databaseName: "",
     databaseDescription: "",
     roles: [],
-    type: "tenant",
   });
-  const [err, setErr] = useState<IErrorTenantDetail>({
-    name: "",
-    userid: "",
+  const [error, setError] = useState<IErrorTenantDetail>({
+    tenantName: "",
     email: "",
     databaseName: "",
   });
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
-      case "name":
-        setErr({
-          ...err,
-          [name]: regexForName.test(value) ? "" : "Enter a valid name",
-        });
-        break;
-
-      case "userid":
-        setErr({
-          ...err,
-          [name]: regexForUser.test(value) ? "" : "Enter a valid Username ",
+      case "tenantName":
+        setError({
+          ...error,
+          [name]: regexForName.test(value) ? "" : "Enter a valid tenantName",
         });
         break;
       case "email":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regexForEmail.test(value) ? "" : "Enter a Valid Email",
         });
         break;
       case "databaseName":
-        setErr({
-          ...err,
+        setError({
+          ...error,
           [name]: regexForName.test(value)
             ? ""
             : "databaseName should only consist Alphabets",
@@ -73,29 +63,26 @@ const TenantProfile = () => {
   };
   const handleValidate = () => {
     const validate = !!(
-      err.name === "" &&
-      err.userid === "" &&
-      err.email === "" &&
-      err.databaseName === ""
+      error.tenantName === "" &&
+      error.email === "" &&
+      error.databaseName === ""
     );
     return validate;
   };
   const handleUpdateTenant = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    // console.log(err);
+    // console.log(error);
     if (handleValidate()) {
       if (
-        tenant.name !== "" &&
-        tenant.userid !== "" &&
+        tenant.tenantName !== "" &&
         tenant.email !== "" &&
         tenant.databaseName !== ""
       ) {
         // const updated = { ...tenant };
         if (tenant.id !== undefined) {
-          dispatch(updateTenant({ id: tenant.id, data: tenant }));
+          dispatch(updateTenant({ ...tenant }));
           setEdit(false);
           console.log(tenant.id);
-          // console.log(dispatch(updateTenant({ id: tenant.id, data: tenant })));
           ToastAlert("Tenant Details Update", "success");
         }
       } else {
@@ -118,45 +105,24 @@ const TenantProfile = () => {
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Name :</Form.Label>
+                  <Form.Label>Tenant Name :</Form.Label>
 
                   <Form.Control
                     type="text"
                     placeholder="Enter Name"
                     data-testid="name-input"
-                    name="name"
+                    name="tenantName"
                     onChange={handleInputChange}
-                    value={tenant.name}
+                    value={tenant.tenantName}
                     disabled={!edit}
-                    isInvalid={!!err.name}
+                    isInvalid={!!error.tenantName}
                   />
-                  {tenant.name && !regexForName.test(tenant.name) && (
-                    <span className="text-danger">
-                      Name Should Not Cantain Any Special Character or Number
-                    </span>
-                  )}
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>UserId :</Form.Label>
-
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter User ID"
-                    data-testid="userid-input"
-                    name="userid"
-                    disabled={!edit}
-                    value={tenant.userid}
-                    isInvalid={!!err.userid}
-                    onChange={handleInputChange}
-                  />
-                  {tenant.userid && !regexForUser.test(tenant.userid) && (
-                    <span className="text-danger">
-                      Id Should Contain alphabet, number.(i.e. : paras123,
-                      p_A_r_A_s_1)
-                    </span>
-                  )}
+                  {tenant.tenantName &&
+                    !regexForName.test(tenant.tenantName) && (
+                      <span className="text-danger">
+                        Name Should Not Cantain Any Special Character or Number
+                      </span>
+                    )}
                 </Form.Group>
               </Col>
               <Col md="6">
@@ -170,16 +136,16 @@ const TenantProfile = () => {
                     name="email"
                     onChange={handleInputChange}
                     disabled={!edit}
-                    isInvalid={!!err.email}
+                    isInvalid={!!error.email}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {err.email}
+                    {error.email}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>databaseName :</Form.Label>
+                  <Form.Label>Database Name :</Form.Label>
 
                   <Form.Control
                     type="text"
@@ -189,7 +155,7 @@ const TenantProfile = () => {
                     disabled={!edit}
                     placeholder="Enter database name"
                     value={tenant.databaseName}
-                    isInvalid={!!err.databaseName}
+                    isInvalid={!!error.databaseName}
                   />
                   {tenant.databaseName &&
                     !regexForName.test(tenant.databaseName) && (
@@ -214,7 +180,7 @@ const TenantProfile = () => {
                     name="host"
                     onChange={handleInputChange}
                     disabled
-                    // isInvalid={!!err.host}
+                    // isInvalid={!!error.host}
                   />
                 </Form.Group>
               </Col>
@@ -232,7 +198,7 @@ const TenantProfile = () => {
                     name="port"
                     onChange={handleInputChange}
                     disabled
-                    // isInvalid={!!err.port}
+                    // isInvalid={!!error.port}
                   />
                 </Form.Group>
               </Col>

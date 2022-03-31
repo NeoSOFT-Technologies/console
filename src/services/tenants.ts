@@ -2,26 +2,69 @@ import { ITenantData } from "../types";
 import apiFactory from "../utils/api";
 
 interface CreateUser {
-  username: string;
+  userName: string;
   email: string;
   password: string;
-  tenantname: string;
+  roles: string[];
 }
 
-export function updateTenantDataService(id: number, data: ITenantData) {
-  return apiFactory().put(`/api/tenant/${id}`, data);
+export function updateTenantDataService(data: ITenantData) {
+  const body = {
+    action: {
+      tenantName: data.tenantName,
+      description: data.description,
+    },
+  };
+  console.log(
+    "🚀 ~ file: tenants.ts ~ line 19 ~ updateTenantDataService ~ body",
+    body
+  );
+  return apiFactory().patch(`/api/tenant`, body);
 }
 
-export function tenantUserListService(currentPage: number, search: string) {
+export function tenantUserListService(
+  tenantName: string,
+  userName: string,
+  currentPage: number,
+  search: string
+  // isActive: string
+) {
   return apiFactory().get(
-    `/api/tenant-user?_page=${currentPage}&name_like=${search}`
+    `/api/user?tenantName=${tenantName}&page=${currentPage}&userName=${userName}`
   );
 }
 
 export function createNewUserService(data: CreateUser) {
-  return apiFactory().post(`/api/tenant-user`, data);
+  const body = {
+    userDetails: {
+      ...data,
+    },
+  };
+  return apiFactory().post(`/api/user`, body);
 }
 
-export function deleteUserDataService() {
-  return apiFactory().delete(`/api/user`); // modify here
+export function deleteUserDataService(userName: string) {
+  return apiFactory().delete(`/api/user/${userName}`);
+}
+
+export function userPermissionService(tenantName: string, clientName: string) {
+  return apiFactory().get(
+    `/api/permission?tenantName=${tenantName}&clientName=${clientName}`
+  );
+}
+
+export function tenantRolesService(tenantName: string) {
+  return apiFactory().get(`/api/roles?tenantName=${tenantName}`);
+}
+
+export function getTenantDetailsService(tenantName: string) {
+  console.log(
+    "🚀 ~ file: tenants.ts ~ line 62 ~ getTenantDetailsService ~ tenantName",
+    tenantName
+  );
+  return apiFactory().get(`/api/tenants/2`); // put tenantName here
+}
+
+export function tenantPermissionsService(tenantName: string) {
+  return apiFactory().get(`/api/permission?tenantName=${tenantName}`);
 }

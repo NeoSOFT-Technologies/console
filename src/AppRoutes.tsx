@@ -39,6 +39,13 @@ const TenantDetails = lazy(
 const TenantProfile = lazy(
   () => import("./pages/features/Tenant/tenant-profile/TenantProfile")
 );
+const TenantPermission = lazy(
+  () => import("./pages/features/Admin/tenant-permission/TenantPermission")
+);
+const TenantRoles = lazy(
+  () => import("./pages/features/Admin/tenant-roles/TenantRoles")
+);
+
 function AppRoutes() {
   return (
     <Suspense fallback={<Spinner />}>
@@ -57,7 +64,7 @@ function AppRoutes() {
           }
         />
         <Route
-          path="/tenantdetails"
+          path="/tenantdetails/:tenantName"
           element={
             <AdminGuard>
               <TenantDetails />
@@ -80,6 +87,23 @@ function AppRoutes() {
             </AdminGuard>
           }
         />
+        <Route
+          path="/manageroles"
+          element={
+            <AdminGuard>
+              <TenantRoles />
+            </AdminGuard>
+          }
+        />
+        <Route
+          path="/tenantpermission"
+          element={
+            <AdminGuard>
+              <TenantPermission />
+            </AdminGuard>
+          }
+        />
+
         {/**********************************************************/}
         {/** ********************TENANT ROUTES*************************/}
         <Route
@@ -107,7 +131,7 @@ function AppRoutes() {
           }
         />
         <Route
-          path="/userdetails/:id"
+          path="/userdetails/:userName"
           element={
             <TenantGuard>
               <UserDetails />
