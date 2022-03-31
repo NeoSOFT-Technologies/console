@@ -32,7 +32,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
   }));
 
   if (props.actions !== undefined) {
-    console.log(props.actions);
+    // console.log(props.actions);
     columns.push({
       name: "Actions",
       formatter: (cell, row) => {
