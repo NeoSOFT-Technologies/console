@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Container, Form, Button } from "react-bootstrap";
+import { Container, Form, Button, Dropdown, Row, Col } from "react-bootstrap";
+import "./createuser.scss";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForEmail,
@@ -132,6 +133,13 @@ export default function Createuser() {
       setFormData({ ...formData, roles: [...formData.roles] });
     }
   };
+  const removeRole = (role: string) => {
+    const temp = formData.roles.filter(function (value) {
+      return value !== role;
+    });
+    console.log(temp);
+    setFormData({ ...formData, roles: [...temp] });
+  };
 
   return (
     <div>
@@ -188,9 +196,62 @@ export default function Createuser() {
             </Form.Control.Feedback>
           </Form.Group>
           <div className="title">Roles:</div>
-          <div className="list-container  ">
-            {}
-            {rolesList?.data?.map((item, index) => (
+          {/* <div className="list-container  "> */}
+          {}
+          <Row>
+            <Col xs={12} sm={6} md={4} lg={4}>
+              {" "}
+              <Dropdown autoClose="outside" className="w-100">
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  Select Roles for the user
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {rolesList?.data?.map((items, index) => (
+                    <Dropdown.Item key={index} as={Form.Label} htmlFor={items}>
+                      <Form.Check
+                        type="checkbox"
+                        label={items}
+                        id={items}
+                        value={items}
+                        checked={formData.roles.includes(items)}
+                        onChange={handleCheck}
+                      />
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+              <div className="my-2">
+                <Button
+                  type="submit"
+                  variant="success"
+                  data-testid="submit-button"
+                >
+                  Submit
+                </Button>
+                <Button
+                  type="reset"
+                  variant="danger"
+                  data-testid="cancel-button"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </Col>
+            <Col xs={12} sm={6} md={8} lg={8}>
+              {formData.roles.length > 0 &&
+                formData.roles.map((val, i) => (
+                  <span className="roles" key={i}>
+                    {val}{" "}
+                    <i
+                      className="bi bi-x-circle"
+                      onClick={() => removeRole(val)}
+                    ></i>
+                  </span>
+                ))}
+            </Col>
+          </Row>
+
+          {/* {rolesList?.data?.map((item, index) => (
               <p key={index} className="m-4">
                 <input
                   value={item}
@@ -200,16 +261,8 @@ export default function Createuser() {
                 />
                 <span className="mx-1">{item}</span>
               </p>
-            ))}
-          </div>
-          <div className="my-2">
-            <Button type="submit" variant="success" data-testid="submit-button">
-              Submit
-            </Button>
-            <Button type="reset" variant="danger" data-testid="cancel-button">
-              Cancel
-            </Button>
-          </div>
+            ))} */}
+          {/* </div> */}
         </Form>
       </Container>
     </div>
