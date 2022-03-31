@@ -35,7 +35,7 @@ export default function TenantDetails() {
     (state: RootState) => state.deleteTenant
   );
   const dispatch = useAppDispatch();
-  console.log(location);
+  // console.log(location);
   const [deleteshow, setDeleteshow] = useState(false);
   const [edit, setEdit] = useState(false);
   // console.log(setEdit);
@@ -53,11 +53,11 @@ export default function TenantDetails() {
     databaseName: "",
   });
   useEffect(() => {
-    const { tenantName, description } = location.state as any;
+    const { tenantName, description } = (location.state as any) || {};
     // console.log(val);
     setTenant({ ...tenant, tenantName, description });
   }, []);
-  console.log(tenant);
+  // console.log(tenant);
   // const renderTenant = () => {
 
   // };
@@ -109,9 +109,9 @@ export default function TenantDetails() {
   };
   const handleUpdateTenant = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log(error);
+    // console.log(error);
     if (handleValidate()) {
-      console.log("update");
+      // console.log("update");
       if (
         tenant.tenantName !== "" &&
         tenant.email !== "" &&
@@ -151,7 +151,10 @@ export default function TenantDetails() {
 
         <Dropdown.Menu>
           <Dropdown.Item>Test</Dropdown.Item>
-          <Dropdown.Item onClick={() => navigate("/manageroles")}>
+          <Dropdown.Item
+            data-testid="dropdownitem1"
+            onClick={() => navigate("/manageroles")}
+          >
             Manage Roles
           </Dropdown.Item>
           <Dropdown.Item onClick={() => navigate("/tenantpermission")}>
@@ -187,6 +190,7 @@ export default function TenantDetails() {
                   <Form.Label>Name :</Form.Label>
 
                   <Form.Control
+                    data-testid="name-input"
                     type="text"
                     placeholder="Enter Name"
                     name="name"
@@ -208,6 +212,7 @@ export default function TenantDetails() {
                   <Form.Label>email</Form.Label>
                   <Form.Control
                     type="email"
+                    data-testid="email-input"
                     placeholder="email"
                     value={tenant.email}
                     name="email"
@@ -226,6 +231,7 @@ export default function TenantDetails() {
 
                   <Form.Control
                     type="text"
+                    data-testid="databaseName-input"
                     onChange={handleInputChange}
                     name="databaseName"
                     disabled={!edit}
@@ -248,6 +254,7 @@ export default function TenantDetails() {
 
                   <Form.Control
                     type="text"
+                    data-testid="host-input"
                     placeholder="host"
                     // value={tenant.host}
                     // defaultValue="193.168.0.1"
@@ -265,6 +272,7 @@ export default function TenantDetails() {
 
                   <Form.Control
                     type="text"
+                    data-testid="port-input"
                     placeholder="port"
                     // value={tenant.port}
                     // defaultValue="8989"
@@ -285,10 +293,11 @@ export default function TenantDetails() {
 
                   <Form.Control
                     as="textarea"
+                    type="textarea"
                     name="description"
+                    data-testid="description-input"
                     rows={3}
                     className="form-control rounded-0"
-                    id="description"
                     placeholder="Here...."
                     value={tenant.description}
                     disabled={!edit}
@@ -298,6 +307,7 @@ export default function TenantDetails() {
               </Col>
               {edit ? (
                 <Button
+                  data-testid="update-button"
                   onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
                     handleUpdateTenant(event)
                   }
@@ -307,6 +317,7 @@ export default function TenantDetails() {
                 </Button>
               ) : (
                 <Button
+                  data-testid="edit-button"
                   onClick={() => setEdit(true)}
                   className="mt-3 info ml-4"
                 >
@@ -315,6 +326,7 @@ export default function TenantDetails() {
               )}
 
               <Button
+                data-testid="cancel-button"
                 className="btn btn-light mt-3"
                 type="reset"
                 onClick={() => navigate("/tenantlist")}

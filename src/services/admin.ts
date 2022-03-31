@@ -8,10 +8,10 @@ export function addTenantDataService(data: ITenantData) {
     password: data.password,
     description: data.description,
   };
-  console.log(
-    "🚀 ~ file: admin.ts ~ line 11 ~ addTenantDataService ~ body",
-    body
-  );
+  // console.log(
+  //   "🚀 ~ file: admin.ts ~ line 11 ~ addTenantDataService ~ body",
+  //   body
+  // );
   return apiFactory().post(`/api/tenants`, body);
 }
 

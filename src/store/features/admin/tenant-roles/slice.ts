@@ -12,7 +12,7 @@ const initialState: ITenantRolesState = {
 export const getTenantRoles = createAsyncThunk("tenant/roles", async () => {
   try {
     const response = await tenantRolesService();
-    console.log(response);
+    // console.log(response);
     return response.data;
   } catch (error_) {
     return error_;

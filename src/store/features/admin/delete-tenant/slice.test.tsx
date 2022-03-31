@@ -1,6 +1,6 @@
 import store from "../../../../store/index";
 import { deleteTenant } from "./slice";
-test("Deletes a book from list with id", async () => {
+test("calling the state of delete-tenant", async () => {
   let state = store.getState().deleteTenant;
 
   expect(state.isDeleted).toBeFalsy();
@@ -12,7 +12,7 @@ test("Deletes a book from list with id", async () => {
     expect(state.isDeleted).toBeTruthy();
   }
 });
-test("Deletes a book from list with id", async () => {
+test("calling the state of delete-tenant", async () => {
   let state = store.getState().deleteTenant;
 
   expect(state.isDeleted).toBeTruthy();
@@ -20,9 +20,8 @@ test("Deletes a book from list with id", async () => {
   await store.dispatch(deleteTenant("mihir"));
 
   state = store.getState().deleteTenant;
-  // console.log(state);
+
   if (state.loading === true) {
-    // console.log(state);
     expect(state.isDeleted).toBeFalsy();
   }
 });

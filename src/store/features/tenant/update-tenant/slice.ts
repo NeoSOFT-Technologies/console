@@ -14,7 +14,7 @@ export const updateTenant = createAsyncThunk(
   async (data: ITenantData) => {
     try {
       const response = await updateTenantDataService(data);
-      console.log(response);
+      // console.log(response);
       return response.data;
     } catch (error_) {
       return error_;

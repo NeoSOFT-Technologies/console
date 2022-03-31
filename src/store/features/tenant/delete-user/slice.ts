@@ -14,7 +14,7 @@ export const deleteUser = createAsyncThunk(
   async (userName: string) => {
     try {
       const response = await deleteUserDataService(userName);
-      console.log(response);
+      // console.log(response);
       return response.data.data;
     } catch (error_) {
       return error_;

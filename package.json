@@ -77,7 +77,12 @@
       "src/serviceWorker.ts",
       "setupTests.ts",
       "react-app-env.d.ts",
-      "__snapshots__/*"
+      "__snapshots__/*",
+      "index.ts",
+      "src/types/landing-page.ts",
+      "services"
+    
+      
     ],
     "collectCoverageFrom": [
       "src/**"

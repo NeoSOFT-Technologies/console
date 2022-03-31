@@ -1,7 +1,7 @@
 import store from "../../../../store/index";
 import { getTenantUserList } from "./slice";
 
-test("Deletes a book from list with id", async () => {
+test("calling the state of tenant-user-list", async () => {
   let state = store.getState().tenantUserList;
 
   expect(state.loading).toBeFalsy();
@@ -17,7 +17,4 @@ test("Deletes a book from list with id", async () => {
   );
 
   state = store.getState().tenantUserList;
-  //   if (state.loading === false) {
-  //     expect(state.tenantAdded).toBeTruthy();
-  //   }
 });

@@ -18,7 +18,7 @@ export const checkLoginType = createAsyncThunk(
   "login/type",
   async (type: string) => {
     try {
-      console.log(type);
+      // console.log(type);
       return type;
     } catch (error_) {
       return error_;

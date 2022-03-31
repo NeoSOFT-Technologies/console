@@ -60,8 +60,8 @@ it("test if input box take input", () => {
   );
 
   const nameBox = screen.getByTestId("name-input");
-  fireEvent.change(nameBox, { target: { value: "akhilpinni" } });
-  expect(screen.getByTestId("name-input")).toHaveValue("akhilpinni");
+  fireEvent.change(nameBox, { target: { value: "deepthi" } });
+  expect(screen.getByTestId("name-input")).toHaveValue("deepthi");
 
   const emailBox = screen.getByTestId("email-input");
   fireEvent.change(emailBox, { target: { value: "akhilpinni123@gmail.com" } });

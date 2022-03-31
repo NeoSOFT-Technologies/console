@@ -1,7 +1,7 @@
 import store from "../../../../store/index";
 import { updateUser } from "./slice";
 
-test("Deletes a book from list with id", async () => {
+test("calling the state of update-user", async () => {
   let state = store.getState().updateUser;
 
   expect(state.loading).toBeFalsy();
