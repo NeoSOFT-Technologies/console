@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
@@ -6,8 +6,12 @@ import {
   regexForUser,
   regForPassword,
 } from "../../../../resources/constants";
+import { RootState } from "../../../../store";
+import { getTenantRoles } from "../../../../store/features/admin/tenant-roles/slice";
 import { addNewUser } from "../../../../store/features/tenant/add-user/slice";
-import { useAppDispatch } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { ITenantRolesState } from "../../../../types/index";
+
 interface Ierrors {
   userName: string;
   email: string;
@@ -15,13 +19,20 @@ interface Ierrors {
   roles: string;
 }
 
+interface IForm {
+  userName: string;
+  email: string;
+  password: string;
+  roles: string[];
+}
+
 export default function Createuser() {
   const dispatch = useAppDispatch();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<IForm>({
     userName: "",
     email: "",
     password: "",
-    roles: ["user"],
+    roles: [],
   });
   const [errors, setErrors] = useState<Ierrors>({
     userName: "",
@@ -29,6 +40,14 @@ export default function Createuser() {
     password: "",
     roles: "",
   });
+
+  const rolesList: ITenantRolesState = useAppSelector(
+    (state: RootState) => state.rolesList
+  );
+  useEffect(() => {
+    dispatch(getTenantRoles());
+  }, []);
+
   // const [checked, setChecked] = useState<string[]>([]);
   // const checkList = ["A", "B", "C", "D"];
 
@@ -89,7 +108,6 @@ export default function Createuser() {
       ) {
         const newUser = {
           ...formData,
-          // checked,
         };
         console.log(newUser);
         dispatch(addNewUser(newUser));
@@ -102,6 +120,19 @@ export default function Createuser() {
       ToastAlert("Please Enter Valid Details", "warning");
     }
   };
+
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      setFormData({
+        ...formData,
+        roles: [...formData.roles, event.target.value],
+      });
+    } else {
+      formData.roles.splice(formData.roles.indexOf(event.target.value), 1);
+      setFormData({ ...formData, roles: [...formData.roles] });
+    }
+  };
+
   return (
     <div>
       <Container className="mt-3 w-75 bg-white p-4">
@@ -156,6 +187,21 @@ export default function Createuser() {
               {errors.password}
             </Form.Control.Feedback>
           </Form.Group>
+          <div className="title">Roles:</div>
+          <div className="list-container  ">
+            {}
+            {rolesList?.data?.map((item, index) => (
+              <p key={index} className="m-4">
+                <input
+                  value={item}
+                  type="checkbox"
+                  onChange={handleCheck}
+                  className=" inline"
+                />
+                <span className="mx-1">{item}</span>
+              </p>
+            ))}
+          </div>
           <div className="my-2">
             <Button type="submit" variant="success" data-testid="submit-button">
               Submit
