@@ -16,6 +16,7 @@ import getUserDetailsReducer from "./features/user/user-details/slice";
 import landingReducer from "./landing/slice";
 import loginTypeReducer from "./login-type/slice";
 import commonLoginReducer from "./login/slice";
+import commonLogoutReducer from "./logout/slice";
 import userDatatReducer from "./user-data/slice";
 const store = configureStore({
   reducer: {
@@ -37,6 +38,7 @@ const store = configureStore({
     userDetails: getUserDetailsReducer,
 
     tenantDetails: tenantDetailsReducer,
+    commonLogout: commonLogoutReducer,
   },
 });
 

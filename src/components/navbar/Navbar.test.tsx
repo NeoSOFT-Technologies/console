@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 
@@ -16,29 +16,29 @@ it("render without crashing Navbar", () => {
   );
 });
 
-// it("render toggle-button, navigate-button, dropdown items properly", () => {
-//   render(
-//     <BrowserRouter>
-//       <Provider store={store}>
-//         <Navbar />
-//       </Provider>
-//     </BrowserRouter>
-//   );
-//   const toggleBtn = screen.getByTestId("toggle-button");
-//   expect(toggleBtn).toBeInTheDocument();
-//   fireEvent.click(toggleBtn);
+it("render toggle-button, navigate-button, dropdown items properly", () => {
+  render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <Navbar />
+      </Provider>
+    </BrowserRouter>
+  );
+  const toggleBtn = screen.getByTestId("toggle-button");
+  expect(toggleBtn).toBeInTheDocument();
+  fireEvent.click(toggleBtn);
 
-//   const navigateBtn = screen.getByTestId("navigate-button");
-//   expect(navigateBtn).toBeInTheDocument();
-//   fireEvent.click(navigateBtn);
+  const navigateBtn = screen.getByTestId("navigate-button");
+  expect(navigateBtn).toBeInTheDocument();
+  fireEvent.click(navigateBtn);
 
-//   const toggleOffBtn = screen.getByTestId("toggleOff-button");
-//   expect(toggleOffBtn).toBeInTheDocument();
-//   fireEvent.click(toggleOffBtn);
+  const toggleOffBtn = screen.getByTestId("toggleOff-button");
+  expect(toggleOffBtn).toBeInTheDocument();
+  fireEvent.click(toggleOffBtn);
 
-//   const node = document.querySelectorAll(".dropdown-item.preview-item").item(0);
-//   if (node) fireEvent.click(node);
-// });
+  const node = document.querySelectorAll(".dropdown-item.preview-item").item(0);
+  if (node) fireEvent.click(node);
+});
 
 // it("render without crashing Navbar", () => {
 //   render(
