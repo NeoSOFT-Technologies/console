@@ -29,8 +29,7 @@ export interface ITenantDetail {
   id?: number;
 }
 export interface IErrorTenantDetail {
-  tenantName: string;
-  tenantDbName: string;
+  description: string;
 }
 
 export interface ITenantUserData {
@@ -127,7 +126,7 @@ export interface ITenantUserListState {
 }
 
 export interface IUserDataState {
-  data?: (ITenantData & IAdminData) | null;
+  data?: (ITenantData & IAdminData & IUserDetailsData) | null;
   loading: boolean;
   error?: string | null;
 }
@@ -137,4 +136,23 @@ export interface IUserDataState {
 export interface actionTenantList {
   type: string;
   payload: ISetTenantList;
+}
+
+export interface IUserDetailsData {
+  id: string;
+  createdTimestamp: string;
+  username: string;
+  enabled: boolean;
+  emailVerified: boolean;
+  email: string;
+  access: {
+    manageGroupMembership: boolean;
+    view: boolean;
+    mapRoles: boolean;
+    impersonate: boolean;
+    manage: boolean;
+  };
+  tenantName: string;
+  roles: string[];
+  permissions: string[];
 }

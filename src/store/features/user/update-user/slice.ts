@@ -3,8 +3,10 @@ import { updateUserDataService } from "../../../../services/users";
 import error from "../../../../utils/error";
 
 interface IConditions {
-  userName: string;
+  username: string;
   email: string;
+  roles: string[];
+  permissions: string[];
 }
 export interface IUpdateUserState {
   isUpdated: boolean;

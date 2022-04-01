@@ -135,8 +135,10 @@ export default function UserDetails() {
       if (userdata.username !== "" && userdata.email !== "") {
         dispatch(
           updateUser({
-            userName: userdata.username,
+            username: userdata.username,
             email: userdata.email,
+            roles: userdata.roles,
+            permissions: userdata.permissions,
           })
         );
         ToastAlert("User Saved", "success");

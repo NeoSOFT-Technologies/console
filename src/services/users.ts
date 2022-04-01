@@ -16,20 +16,23 @@ export function getUserListService(tenantName: string, page: number) {
 }
 
 interface IConditions {
-  userName: string;
+  username: string;
   email: string;
+  roles: string[];
+  permissions: string[];
 }
 
 export function updateUserDataService(data: IConditions) {
-  const tmp = {
-    userName: data.userName,
+  const body = {
+    userName: data.username,
     action: {
       email: data.email,
-      enabled: true,
-      realmRoles: ["user"],
+      realmRoles: [...data.roles],
+      permissions: [...data.permissions],
     },
   };
-  return apiFactory().patch(`/api/user`, tmp);
+  console.log(body);
+  return apiFactory().patch(`/api/user`, body);
 }
 
 export function updateUserPassword(id: number, password: string) {

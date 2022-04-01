@@ -41,15 +41,13 @@ export default function TenantDetails() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const params = useParams();
-  const incomingtenantdetails = useAppSelector(
+  const tenantDetailsState = useAppSelector(
     (state: RootState) => state.tenantDetails
   );
 
   const tenantDeleted = useAppSelector(
     (state: RootState) => state.deleteTenant
   );
-  // console.log("TenantDetails ~ params", params);
-  // console.log("TenantDetails ~ incomingtenantdetails", incomingtenantdetails);
 
   const [deleteshow, setDeleteshow] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -66,8 +64,7 @@ export default function TenantDetails() {
   });
   console.log(tenant);
   const [error, setError] = useState<IErrorTenantDetail>({
-    tenantName: "",
-    tenantDbName: "",
+    description: "",
   });
 
   useEffect(() => {
@@ -75,10 +72,11 @@ export default function TenantDetails() {
     (async () => {
       if (tenantName) {
         await dispatch(tenantDetails(tenantName));
-        setTenant({ ...incomingtenantdetails.data });
+        setTenant({ ...tenantDetailsState.data });
       }
     })();
   }, []);
+
   const deleteTenantFunction = async () => {
     const { tenantName } = params;
     if (tenantName) {
@@ -91,18 +89,12 @@ export default function TenantDetails() {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
-      case "tenantName":
-        setError({
-          ...error,
-          [name]: regexForName.test(value) ? "" : "Enter a valid name",
-        });
-        break;
-      case "tenantDbName":
+      case "description":
         setError({
           ...error,
           [name]: regexForName.test(value)
             ? ""
-            : "databaseName should only consist Alphabets",
+            : "description should only consist Alphabets",
         });
         break;
       default:
@@ -112,7 +104,7 @@ export default function TenantDetails() {
   };
 
   const handleValidate = () => {
-    const validate = !!(error.tenantName === "" && error.tenantDbName === "");
+    const validate = !!(error.description === "");
     return validate;
   };
 
@@ -121,7 +113,6 @@ export default function TenantDetails() {
     // console.log(error);
     if (handleValidate()) {
       if (tenant.tenantName !== "" && tenant.tenantDbName !== "") {
-        // const updated = { ...tenant };
         if (tenant.tenantName !== undefined) {
           dispatch(updateTenant({ ...tenant }));
           setEdit(false);
@@ -133,7 +124,7 @@ export default function TenantDetails() {
     }
   };
 
-  return tenantDeleted.loading || incomingtenantdetails.loading ? (
+  return tenantDeleted.loading || tenantDetailsState.loading ? (
     <Spinner />
   ) : (
     <>
@@ -197,7 +188,7 @@ export default function TenantDetails() {
                     onChange={handleInputChange}
                     value={tenant.tenantName}
                     disabled
-                    isInvalid={!!error.tenantName}
+                    // isInvalid={!!error.tenantName}
                   />
                   {tenant.tenantName &&
                     !regexForName.test(tenant.tenantName) && (
@@ -235,7 +226,7 @@ export default function TenantDetails() {
                     disabled
                     placeholder="Enter database name"
                     value={tenant.tenantDbName}
-                    isInvalid={!!error.tenantDbName}
+                    // isInvalid={!!error.tenantDbName}
                   />
                   {tenant.tenantDbName &&
                     !regexForName.test(tenant.tenantDbName) && (
@@ -290,6 +281,7 @@ export default function TenantDetails() {
                     value={tenant.description}
                     disabled={!edit}
                     onChange={handleInputChange}
+                    isInvalid={!!error.description}
                   />
                 </Form.Group>
               </Col>

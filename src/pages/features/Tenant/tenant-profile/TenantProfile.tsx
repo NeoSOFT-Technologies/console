@@ -102,6 +102,7 @@ const TenantProfile = () => {
       setTenant(user.data);
     }
   }, [user.data]);
+
   return (
     <>
       <div className=" bg-white">

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getUserDetailsService } from "../../../../services/users";
+import { IUserDetailsData } from "../../../../types";
 import error from "../../../../utils/error";
 
 interface IConditions {
@@ -10,25 +11,6 @@ export interface IUserDetailsState {
   data: IUserDetailsData;
   loading: boolean;
   error?: string;
-}
-
-export interface IUserDetailsData {
-  id: string;
-  createdTimestamp: string;
-  username: string;
-  enabled: boolean;
-  emailVerified: boolean;
-  email: string;
-  access: {
-    manageGroupMembership: boolean;
-    view: boolean;
-    mapRoles: boolean;
-    impersonate: boolean;
-    manage: boolean;
-  };
-  tenantName: string;
-  roles: string[];
-  permissions: string[];
 }
 
 const initialState: IUserDetailsState = {
