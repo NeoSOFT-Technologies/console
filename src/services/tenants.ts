@@ -25,8 +25,8 @@ export function updateTenantDataService(data: ITenantData) {
 export function tenantUserListService(
   tenantName: string,
   userName: string,
-  currentPage: number,
-  search: string
+  currentPage: number
+  // search: string
   // isActive: string
 ) {
   return apiFactory().get(

@@ -22,8 +22,8 @@ export function deleteTenantDataService(tenantName: string) {
 }
 
 export function tenantListService(
-  currentPage: number,
-  search: string // add search in backend
+  currentPage: number
+  // search: string // add search in backend
 ) {
   return apiFactory().get(`/api/tenants?page=${currentPage}`);
 }
