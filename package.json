@@ -13,7 +13,8 @@
     "watch:css": "npm run build:css && sass --watch src/styles:public/global/css",
     "build:prod": "npm run build:css && npm run build -- --profile",
     "dev": "npm-run-all -p watch:css start",
-    "test": "rimraf src/__snapshots__ && react-scripts test",
+    "test": "rimraf src/__snapshots__ && react-scripts test &&  echo \"Error: no test specified\" && exit 1",
+   
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.{ts,tsx,json,css,scss}\"",
     "test:coverage": "react-scripts test --coverage --watchAll=false",
