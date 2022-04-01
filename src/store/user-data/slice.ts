@@ -40,23 +40,26 @@ export const getUserData = createAsyncThunk(
       console.log(response);
       return response?.data;
     } catch (error_) {
-      console.log("in error");
-      return error_;
+      console.log("in error", error(error_));
+      throw new Error(error_);
     }
   }
 );
 
 const slice = createSlice({
-  name: "user",
+  name: "userData",
   initialState,
   reducers: {},
   extraReducers(builder): void {
     builder.addCase(getUserData.pending, (state) => {
       state.loading = true;
+      state.data = undefined;
+      state.error = undefined;
     });
     builder.addCase(getUserData.fulfilled, (state, action) => {
       console.log("in fullfilled xyz");
       state.loading = false;
+      console.log(action.payload);
       state.data = action.payload;
     });
     builder.addCase(getUserData.rejected, (state, action) => {

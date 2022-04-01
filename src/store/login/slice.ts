@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { commonLoginService } from "../../services";
-import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
 
 interface IConditions {
@@ -8,21 +7,27 @@ interface IConditions {
   password: string;
   tenantName: string;
 }
+export interface ITokenState {
+  loginVerified: boolean;
+  loading: boolean;
+  error?: string;
+}
 
-const initialState: IUserDataState = {
-  data: undefined,
+const initialState: ITokenState = {
+  loginVerified: false,
   loading: false,
   error: undefined,
 };
 
 export const commonLogin = createAsyncThunk(
-  "user/data",
+  "user/get_acessToken",
   async (conditions: IConditions) => {
     try {
       await commonLoginService(conditions);
+      return true;
     } catch (error_) {
       console.log("in error", error_);
-      return error_;
+      throw new Error(error_);
     }
   }
 );
@@ -34,11 +39,17 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(commonLogin.pending, (state) => {
       state.loading = true;
+      state.loginVerified = false;
+      state.error = undefined;
     });
-    builder.addCase(commonLogin.fulfilled, (state) => {
+    builder.addCase(commonLogin.fulfilled, (state, action) => {
       state.loading = false;
+      state.loginVerified = action.payload;
+
+      // console.log("in fullfilled reducer login");
     });
     builder.addCase(commonLogin.rejected, (state, action) => {
+      // console.log("in error reducer", action.payload, error(action.payload));
       state.loading = false;
       // action.payload contains error information
       state.error = error(action.payload);

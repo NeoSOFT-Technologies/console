@@ -8,8 +8,9 @@ import { ToastAlert } from "../../components/toast-alert/toast-alert";
 // import { regexForEmail } from "../../resources/constants";
 import { logo } from "../../resources/images";
 import { RootState } from "../../store";
+import { useAppSelector } from "../../store/hooks";
 import { checkLoginType } from "../../store/login-type/slice";
-import { commonLogin } from "../../store/login/slice";
+import { commonLogin, ITokenState } from "../../store/login/slice";
 import { getUserData } from "../../store/user-data/slice";
 import { IUserDataState } from "../../types";
 
@@ -28,6 +29,9 @@ export default function Login() {
   const [showPassword, setShowpassword] = useState(false);
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
+  );
+  const loginVerification: ITokenState = useAppSelector(
+    (state: RootState) => state.loginAccessToken
   );
   const handle = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -57,6 +61,36 @@ export default function Login() {
         break;
     }
   };
+
+  useEffect(() => {
+    console.log(
+      loginVerification.loginVerified,
+      loginVerification.error,
+      "inside loginVerification"
+    );
+
+    if (
+      loginVerification.loginVerified &&
+      !loginVerification.error &&
+      !loginVerification.loading
+    ) {
+      console.log(
+        "in  creds loginVerification",
+        loginVerification.loginVerified,
+        !loginVerification.error,
+        !loginVerification.loading
+      );
+
+      dispatch(getUserData({ userName, tenantName, type }));
+    } else if (
+      !loginVerification.loginVerified &&
+      loginVerification.error &&
+      !loginVerification.loading
+    ) {
+      console.log("in incorrect creds loginVerification");
+      ToastAlert("Incorrect Credentials!", "warning");
+    }
+  }, [loginVerification.loginVerified, loginVerification.error]);
   /**
    * ! red flag remove type
    * */
@@ -72,12 +106,9 @@ export default function Login() {
       } else if (user.data && type === "user") {
         ToastAlert("Logged In", "success");
         navigate("/userdashboard");
-      } else {
-        ToastAlert("Incorrect Credentials!", "warning");
-        throw new Error("Incorrect Credentials ");
       }
     }
-  }, [user.data]);
+  }, [user.data, user.error]);
 
   const validate = () => {
     let valid = false;
@@ -101,7 +132,6 @@ export default function Login() {
   const handleSubmit = async () => {
     if (validate()) {
       await dispatch(commonLogin({ userName, password, tenantName }));
-      await dispatch(getUserData({ userName, tenantName, type }));
     } else {
       ToastAlert("Please fill all the fields", "error");
       throw new Error("Please fill all the fields ");

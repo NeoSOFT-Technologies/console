@@ -125,7 +125,7 @@ export default function RegisterTenant() {
         const newUser = {
           ...tenant,
         };
-        console.log(newUser);
+        // console.log(newUser);
         await dispatch(addNewTenant(newUser));
 
         ToastAlert("Tenant Registered", "success");
