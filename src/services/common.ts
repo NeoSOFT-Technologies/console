@@ -13,10 +13,6 @@ export async function commonLoginService(data: IConditions) {
     password: data.password,
     tenantName: data.tenantName,
   });
-  console.log("getlogin", {
-    ...data,
-    username: data.userName,
-  });
 
   const setlogin = {
     accessToken: getlogin.data.access_token,
@@ -35,29 +31,6 @@ export function commonLogoutService() {
   const data = {
     refreshToken: tokenService.getLocalRefreshToken(),
   };
+  tokenService.removeUser();
   return apiFactory().post(`/api/logout`, data);
 }
-
-// {
-//   "name": "Tushar Saxena",
-//   "description": "i am the king of the seven worlds :)",
-//   "userid": "tushar123",
-//   "email": "tushar057@gmail.com",
-//   "password": "tushar057",
-//   "databaseName": "Tushar Saxena",
-//   "databaseDescription": "database size of 100",
-//   "lastlogin": "Mar 01 2022 11:51:39",
-//   "type": "tenant",
-//   "id": 7
-// },
-
-// {
-//   name: "Rahul kenchi",
-//   description: "i am going to win the world",
-//   userid: "rahul123",
-//   email: "rahul768@gmail.com",
-//   password: "rahul768",
-//   lastlogin: "Mar 01 2022 11:51:39",
-//   type: "admin",
-//   id: 5,
-// },

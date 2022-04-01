@@ -8,61 +8,80 @@ import {
   Dropdown,
   Modal,
 } from "react-bootstrap";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Spinner from "../../../../components/loader/Loader";
 // import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
   // regexForUser,
-  regexForEmail,
+  // regexForEmail,
 } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
 // import { RootState } from "../../../../store";
 import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
+import { tenantDetails } from "../../../../store/features/tenant/tenant-details/slice";
 import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { IErrorTenantDetail, ITenantData } from "../../../../types/index";
+import { IErrorTenantDetail } from "../../../../types/index";
 
-// interface LocationState {
-//   val: ITenantData;
-// }
+interface IDATA {
+  createdDateTime: string;
+  description: string;
+  host: string;
+  id: number;
+  policy: string;
+  port: number;
+  tenantDbName: string;
+  tenantId: number;
+  tenantName: string;
+}
 
 export default function TenantDetails() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const dispatch = useAppDispatch();
+  const params = useParams();
+  const incomingtenantdetails = useAppSelector(
+    (state: RootState) => state.tenantDetails
+  );
+
   const tenantDeleted = useAppSelector(
     (state: RootState) => state.deleteTenant
   );
-  const dispatch = useAppDispatch();
-  console.log(location);
+  // console.log("TenantDetails ~ params", params);
+  // console.log("TenantDetails ~ incomingtenantdetails", incomingtenantdetails);
+
   const [deleteshow, setDeleteshow] = useState(false);
   const [edit, setEdit] = useState(false);
-  // console.log(setEdit);
-  const [tenant, setTenant] = useState<ITenantData>({
-    tenantName: "",
+  const [tenant, setTenant] = useState<IDATA>({
+    createdDateTime: "",
     description: "",
-    email: "",
-    databaseName: "",
-    databaseDescription: "",
-    roles: [],
+    host: "",
+    id: 0,
+    policy: "",
+    port: 0,
+    tenantDbName: "",
+    tenantId: 0,
+    tenantName: "",
   });
+  console.log(tenant);
   const [error, setError] = useState<IErrorTenantDetail>({
     tenantName: "",
-    email: "",
-    databaseName: "",
+    tenantDbName: "",
   });
-  useEffect(() => {
-    const { tenantName, description } = location.state as any;
-    // console.log(val);
-    setTenant({ ...tenant, tenantName, description });
-  }, []);
-  console.log(tenant);
-  // const renderTenant = () => {
 
-  // };
+  useEffect(() => {
+    const { tenantName } = params;
+    (async () => {
+      if (tenantName) {
+        await dispatch(tenantDetails(tenantName));
+        setTenant({ ...incomingtenantdetails.data });
+      }
+    })();
+  }, []);
+
   const deleteTenantFunction = async () => {
-    const { tenantName } = location.state as any;
+    const { tenantName } = params;
     if (tenantName) {
       await dispatch(deleteTenant(tenantName));
       ToastAlert("Tenant Removed", "success");
@@ -79,13 +98,7 @@ export default function TenantDetails() {
           [name]: regexForName.test(value) ? "" : "Enter a valid name",
         });
         break;
-      case "email":
-        setError({
-          ...error,
-          [name]: regexForEmail.test(value) ? "" : "Enter a Valid Email",
-        });
-        break;
-      case "databaseName":
+      case "tenantDbName":
         setError({
           ...error,
           [name]: regexForName.test(value)
@@ -93,32 +106,24 @@ export default function TenantDetails() {
             : "databaseName should only consist Alphabets",
         });
         break;
-
       default:
         break;
     }
     setTenant({ ...tenant, [name]: value });
   };
+
   const handleValidate = () => {
-    const validate = !!(
-      error.tenantName === "" &&
-      error.email === "" &&
-      error.databaseName === ""
-    );
+    const validate = !!(error.tenantName === "" && error.tenantDbName === "");
     return validate;
   };
+
   const handleUpdateTenant = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log(error);
+    // console.log(error);
     if (handleValidate()) {
-      console.log("update");
-      if (
-        tenant.tenantName !== "" &&
-        tenant.email !== "" &&
-        tenant.databaseName !== ""
-      ) {
+      if (tenant.tenantName !== "" && tenant.tenantDbName !== "") {
         // const updated = { ...tenant };
-        if (tenant.id !== undefined) {
+        if (tenant.tenantName !== undefined) {
           dispatch(updateTenant({ ...tenant }));
           setEdit(false);
           ToastAlert("Tenant Details Update", "success");
@@ -129,7 +134,7 @@ export default function TenantDetails() {
     }
   };
 
-  return tenantDeleted.loading ? (
+  return tenantDeleted.loading || incomingtenantdetails.loading ? (
     <Spinner />
   ) : (
     <>
@@ -151,14 +156,14 @@ export default function TenantDetails() {
 
         <Dropdown.Menu>
           <Dropdown.Item>Test</Dropdown.Item>
-          <Dropdown.Item onClick={() => navigate("/manageroles")}>
+          {/* <Dropdown.Item onClick={() => navigate("/manageroles")}>
             Manage Roles
           </Dropdown.Item>
           <Dropdown.Item onClick={() => navigate("/tenantpermission")}>
             Manage Permission
-          </Dropdown.Item>
+          </Dropdown.Item> */}
           <Dropdown.Item>Set Tenant Url</Dropdown.Item>
-          <Dropdown.Item>Set InActive</Dropdown.Item>
+          {/* <Dropdown.Item>Set InActive</Dropdown.Item> */}
           <Dropdown.Item>Upload</Dropdown.Item>
           <Dropdown.Item>Create tenant tables & data</Dropdown.Item>
         </Dropdown.Menu>
@@ -189,10 +194,10 @@ export default function TenantDetails() {
                   <Form.Control
                     type="text"
                     placeholder="Enter Name"
-                    name="name"
+                    name="tenantName"
                     onChange={handleInputChange}
                     value={tenant.tenantName}
-                    disabled={!edit}
+                    disabled
                     isInvalid={!!error.tenantName}
                   />
                   {tenant.tenantName &&
@@ -203,7 +208,7 @@ export default function TenantDetails() {
                     )}
                 </Form.Group>
               </Col>
-              <Col md="6">
+              {/* <Col md="6">
                 <Form.Group className="mb-3">
                   <Form.Label>email</Form.Label>
                   <Form.Control
@@ -219,22 +224,22 @@ export default function TenantDetails() {
                     {error.email}
                   </Form.Control.Feedback>
                 </Form.Group>
-              </Col>
+              </Col> */}
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>databaseName :</Form.Label>
-
                   <Form.Control
                     type="text"
                     onChange={handleInputChange}
-                    name="databaseName"
-                    disabled={!edit}
+                    name="tenantDbName"
+                    // disabled={!edit}
+                    disabled
                     placeholder="Enter database name"
-                    value={tenant.databaseName}
-                    isInvalid={!!error.databaseName}
+                    value={tenant.tenantDbName}
+                    isInvalid={!!error.tenantDbName}
                   />
-                  {tenant.databaseName &&
-                    !regexForName.test(tenant.databaseName) && (
+                  {tenant.tenantDbName &&
+                    !regexForName.test(tenant.tenantDbName) && (
                       <span className="text-danger">
                         databaseName Should Not Cantain Any Special Character or
                         Number
@@ -245,17 +250,13 @@ export default function TenantDetails() {
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Host :</Form.Label>
-
                   <Form.Control
                     type="text"
                     placeholder="host"
-                    // value={tenant.host}
-                    // defaultValue="193.168.0.1"
-                    value="193.168.0.1"
+                    value={tenant.host}
                     name="host"
                     onChange={handleInputChange}
                     disabled
-                    // isInvalid={!!err.host}
                   />
                 </Form.Group>
               </Col>
@@ -266,9 +267,7 @@ export default function TenantDetails() {
                   <Form.Control
                     type="text"
                     placeholder="port"
-                    // value={tenant.port}
-                    // defaultValue="8989"
-                    value="8989"
+                    value={tenant.port}
                     name="port"
                     onChange={handleInputChange}
                     disabled
@@ -282,7 +281,6 @@ export default function TenantDetails() {
                   // controlId="exampleForm.ControlTextarea1"
                 >
                   <Form.Label>Description:</Form.Label>
-
                   <Form.Control
                     as="textarea"
                     name="description"

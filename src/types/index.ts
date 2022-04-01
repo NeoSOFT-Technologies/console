@@ -11,7 +11,7 @@ export interface ITenantData {
   databaseDescription?: string;
   createdDateTime?: string;
   isDeleted?: boolean;
-  roles: string[];
+  roles?: string[];
   permissions?: string[];
   id?: number;
   type?: string;
@@ -30,8 +30,7 @@ export interface ITenantDetail {
 }
 export interface IErrorTenantDetail {
   tenantName: string;
-  email: string;
-  databaseName: string;
+  tenantDbName: string;
 }
 
 export interface ITenantUserData {
@@ -87,7 +86,7 @@ export interface IErrorTenantInput {
   email: string;
   password: string;
   description: string;
-  roles?: string;
+  databaseName: string;
 }
 export interface IAdminData {
   username: string;

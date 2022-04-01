@@ -1,13 +1,18 @@
-import React, { useState } from "react";
-import { Container, Form, Button } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Container, Form, Button, Dropdown, Row, Col } from "react-bootstrap";
+import "./createuser.scss";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForEmail,
   regexForUser,
   regForPassword,
 } from "../../../../resources/constants";
+import { RootState } from "../../../../store";
+import { getTenantRoles } from "../../../../store/features/admin/tenant-roles/slice";
 import { addNewUser } from "../../../../store/features/tenant/add-user/slice";
-import { useAppDispatch } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { ITenantRolesState } from "../../../../types/index";
+
 interface Ierrors {
   userName: string;
   email: string;
@@ -15,13 +20,20 @@ interface Ierrors {
   roles: string;
 }
 
+interface IForm {
+  userName: string;
+  email: string;
+  password: string;
+  roles: string[];
+}
+
 export default function Createuser() {
   const dispatch = useAppDispatch();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<IForm>({
     userName: "",
     email: "",
     password: "",
-    roles: ["user"],
+    roles: [],
   });
   const [errors, setErrors] = useState<Ierrors>({
     userName: "",
@@ -29,17 +41,14 @@ export default function Createuser() {
     password: "",
     roles: "",
   });
-  // const [checked, setChecked] = useState<string[]>([]);
-  // const checkList = ["A", "B", "C", "D"];
 
-  // const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (event.target.checked) {
-  //     setChecked([...checked, event.target.value]);
-  //   } else {
-  //     checked.splice(checked.indexOf(event.target.value), 1);
-  //     setChecked(checked);
-  //   }
-  // };
+  const rolesList: ITenantRolesState = useAppSelector(
+    (state: RootState) => state.rolesList
+  );
+  useEffect(() => {
+    dispatch(getTenantRoles());
+  }, []);
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
@@ -89,7 +98,6 @@ export default function Createuser() {
       ) {
         const newUser = {
           ...formData,
-          // checked,
         };
         console.log(newUser);
         dispatch(addNewUser(newUser));
@@ -102,6 +110,27 @@ export default function Createuser() {
       ToastAlert("Please Enter Valid Details", "warning");
     }
   };
+
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      setFormData({
+        ...formData,
+        roles: [...formData.roles, event.target.value],
+      });
+    } else {
+      formData.roles.splice(formData.roles.indexOf(event.target.value), 1);
+      setFormData({ ...formData, roles: [...formData.roles] });
+    }
+  };
+
+  const removeRole = (role: string) => {
+    const temp = formData.roles.filter(function (value) {
+      return value !== role;
+    });
+    console.log(temp);
+    setFormData({ ...formData, roles: [...temp] });
+  };
+
   return (
     <div>
       <Container className="mt-3 w-75 bg-white p-4">
@@ -156,14 +185,59 @@ export default function Createuser() {
               {errors.password}
             </Form.Control.Feedback>
           </Form.Group>
-          <div className="my-2">
-            <Button type="submit" variant="success" data-testid="submit-button">
-              Submit
-            </Button>
-            <Button type="reset" variant="danger" data-testid="cancel-button">
-              Cancel
-            </Button>
-          </div>
+          <div className="title">Roles:</div>
+          <Row>
+            <Col xs={12} sm={6} md={4} lg={4}>
+              {" "}
+              <Dropdown autoClose="outside" className="w-100">
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  Select Roles for the user
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {rolesList?.data?.map((items, index) => (
+                    <Dropdown.Item key={index} as={Form.Label} htmlFor={items}>
+                      <Form.Check
+                        type="checkbox"
+                        label={items}
+                        id={items}
+                        value={items}
+                        checked={formData.roles.includes(items)}
+                        onChange={handleCheck}
+                      />
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+              <div className="my-2">
+                <Button
+                  type="submit"
+                  variant="success"
+                  data-testid="submit-button"
+                >
+                  Submit
+                </Button>
+                <Button
+                  type="reset"
+                  variant="danger"
+                  data-testid="cancel-button"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </Col>
+            <Col xs={12} sm={6} md={8} lg={8}>
+              {formData.roles.length > 0 &&
+                formData.roles.map((val, i) => (
+                  <span className="roles" key={i}>
+                    {val}{" "}
+                    <i
+                      className="bi bi-x-circle"
+                      onClick={() => removeRole(val)}
+                    ></i>
+                  </span>
+                ))}
+            </Col>
+          </Row>
         </Form>
       </Container>
     </div>

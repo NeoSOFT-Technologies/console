@@ -20,7 +20,6 @@ export default function TenantList() {
   });
 
   const NavigateTenant = (value: any) => {
-    console.log(value);
     navigate(`/tenantdetails/${value._cells[0].data}`, {
       state: {
         tenantName: value._cells[0].data,

@@ -6,17 +6,55 @@ interface IConditions {
   tenantName: string;
   userName: string;
 }
-export interface IUpdateUserState {
-  isUpdated: boolean;
+export interface IUserDetailsState {
+  data: IUserDetailsData;
   loading: boolean;
   error?: string;
 }
-const initialState: IUpdateUserState = {
-  isUpdated: false,
+
+export interface IUserDetailsData {
+  id: string;
+  createdTimestamp: string;
+  username: string;
+  enabled: boolean;
+  emailVerified: boolean;
+  email: string;
+  access: {
+    manageGroupMembership: boolean;
+    view: boolean;
+    mapRoles: boolean;
+    impersonate: boolean;
+    manage: boolean;
+  };
+  tenantName: string;
+  roles: string[];
+  permissions: string[];
+}
+
+const initialState: IUserDetailsState = {
+  data: {
+    id: "",
+    createdTimestamp: "",
+    username: "",
+    enabled: false,
+    emailVerified: false,
+    email: "",
+    access: {
+      manageGroupMembership: false,
+      view: false,
+      mapRoles: false,
+      impersonate: false,
+      manage: false,
+    },
+    tenantName: "",
+    roles: [],
+    permissions: [],
+  },
   loading: false,
   error: undefined,
 };
-export const userDetails = createAsyncThunk(
+
+export const getUserDetails = createAsyncThunk(
   "user/details",
   async (condition: IConditions) => {
     const { tenantName, userName } = condition;
@@ -35,15 +73,14 @@ const slice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder): void {
-    builder.addCase(userDetails.pending, (state) => {
+    builder.addCase(getUserDetails.pending, (state) => {
       state.loading = true;
-      state.isUpdated = false;
     });
-    builder.addCase(userDetails.fulfilled, (state) => {
+    builder.addCase(getUserDetails.fulfilled, (state, action) => {
       state.loading = false;
-      state.isUpdated = true;
+      state.data = action.payload;
     });
-    builder.addCase(userDetails.rejected, (state, action) => {
+    builder.addCase(getUserDetails.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
       state.error = error(action.payload);
