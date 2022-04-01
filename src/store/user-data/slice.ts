@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   adminLogin,
-  getTenantDetailsService,
+  // getTenantDetailsService,
   getUserDetailsService,
 } from "../../services";
 import { IUserDataState } from "../../types/index";
@@ -28,7 +28,20 @@ export const getUserData = createAsyncThunk(
           response = await adminLogin();
           break;
         case "tenant":
-          response = await getTenantDetailsService(conditions.tenantName);
+          // response = await getTenantDetailsService(conditions.tenantName);
+          response = {
+            data: {
+              id: 5,
+              tenantId: 11,
+              tenantName: "Arpan",
+              description: "i am Arpan",
+              createdDateTime: "2022/03/29 17:35:59",
+              tenantDbName: "db-Arpan",
+              host: "127.0.0.1",
+              port: 3306,
+              policy: "{ max_size: 30 }",
+            },
+          };
           break;
         case "user":
           response = await getUserDetailsService(

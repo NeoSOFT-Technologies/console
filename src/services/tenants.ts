@@ -1,4 +1,4 @@
-import { ITenantData } from "../types";
+// import { ITenantData } from "../types";
 import apiFactory from "../utils/api";
 
 interface CreateUser {
@@ -8,25 +8,32 @@ interface CreateUser {
   roles: string[];
 }
 
-export function updateTenantDataService(data: ITenantData) {
+interface IData {
+  createdDateTime: string;
+  description: string;
+  host: string;
+  id: number;
+  policy: string;
+  port: number;
+  tenantDbName: string;
+  tenantId: number;
+  tenantName: string;
+}
+
+export function updateTenantDataService(data: IData) {
   const body = {
     action: {
-      tenantName: data.tenantName,
-      description: data.description,
+      ...data,
     },
   };
-  console.log(
-    "🚀 ~ file: tenants.ts ~ line 19 ~ updateTenantDataService ~ body",
-    body
-  );
-  return apiFactory().patch(`/api/tenant`, body);
+  return apiFactory().patch(`/api/tenants`, body);
 }
 
 export function tenantUserListService(
   tenantName: string,
   userName: string,
-  currentPage: number,
-  search: string
+  currentPage: number
+  // search: string
   // isActive: string
 ) {
   return apiFactory().get(
@@ -58,6 +65,7 @@ export function tenantRolesService(tenantName: string) {
 }
 
 export function getTenantDetailsService(tenantName: string) {
+  console.log("tenantName", tenantName);
   return apiFactory().get(`/api/tenants/2`); // put tenantName here
 }
 

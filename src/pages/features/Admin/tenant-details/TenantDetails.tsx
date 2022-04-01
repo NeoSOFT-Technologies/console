@@ -79,7 +79,6 @@ export default function TenantDetails() {
       }
     })();
   }, []);
-
   const deleteTenantFunction = async () => {
     const { tenantName } = params;
     if (tenantName) {

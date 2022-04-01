@@ -2,19 +2,7 @@ import { ITenantData } from "../types";
 import apiFactory from "../utils/api";
 
 export function addTenantDataService(data: ITenantData) {
-  const body = {
-    tenantName: data.tenantName,
-    email: data.email,
-    password: data.password,
-    description: data.description,
-    databaseName: data.databaseName,
-    databaseDescription: data.databaseDescription,
-  };
-  console.log(
-    "🚀 ~ file: admin.ts ~ line 11 ~ addTenantDataService ~ body",
-    body
-  );
-  return apiFactory().post(`/api/tenants`, body);
+  return apiFactory().post(`/api/tenants`, data);
 }
 
 export function deleteTenantDataService(tenantName: string) {
