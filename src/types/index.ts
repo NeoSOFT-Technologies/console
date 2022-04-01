@@ -86,7 +86,7 @@ export interface IErrorTenantInput {
   email: string;
   password: string;
   description: string;
-  roles?: string;
+  databaseName: string;
 }
 export interface IAdminData {
   username: string;

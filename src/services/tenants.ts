@@ -58,10 +58,6 @@ export function tenantRolesService(tenantName: string) {
 }
 
 export function getTenantDetailsService(tenantName: string) {
-  console.log(
-    "🚀 ~ file: tenants.ts ~ line 62 ~ getTenantDetailsService ~ tenantName",
-    tenantName
-  );
   return apiFactory().get(`/api/tenants/2`); // put tenantName here
 }
 

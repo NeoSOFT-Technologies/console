@@ -49,17 +49,6 @@ export default function Createuser() {
     dispatch(getTenantRoles());
   }, []);
 
-  // const [checked, setChecked] = useState<string[]>([]);
-  // const checkList = ["A", "B", "C", "D"];
-
-  // const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (event.target.checked) {
-  //     setChecked([...checked, event.target.value]);
-  //   } else {
-  //     checked.splice(checked.indexOf(event.target.value), 1);
-  //     setChecked(checked);
-  //   }
-  // };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
@@ -133,6 +122,7 @@ export default function Createuser() {
       setFormData({ ...formData, roles: [...formData.roles] });
     }
   };
+
   const removeRole = (role: string) => {
     const temp = formData.roles.filter(function (value) {
       return value !== role;
@@ -196,8 +186,6 @@ export default function Createuser() {
             </Form.Control.Feedback>
           </Form.Group>
           <div className="title">Roles:</div>
-          {/* <div className="list-container  "> */}
-          {}
           <Row>
             <Col xs={12} sm={6} md={4} lg={4}>
               {" "}
@@ -250,19 +238,6 @@ export default function Createuser() {
                 ))}
             </Col>
           </Row>
-
-          {/* {rolesList?.data?.map((item, index) => (
-              <p key={index} className="m-4">
-                <input
-                  value={item}
-                  type="checkbox"
-                  onChange={handleCheck}
-                  className=" inline"
-                />
-                <span className="mx-1">{item}</span>
-              </p>
-            ))} */}
-          {/* </div> */}
         </Form>
       </Container>
     </div>

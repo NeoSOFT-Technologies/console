@@ -20,6 +20,7 @@ export default function UserDashboard() {
     oldpassword: "",
     newpassword: "",
   });
+
   useEffect(() => {
     console.log(user.data);
   }, [user.data]);

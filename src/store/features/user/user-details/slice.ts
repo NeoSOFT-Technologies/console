@@ -7,7 +7,7 @@ interface IConditions {
   userName: string;
 }
 export interface IUserDetailsState {
-  data?: IUserDetailsData;
+  data: IUserDetailsData;
   loading: boolean;
   error?: string;
 }
@@ -32,7 +32,24 @@ export interface IUserDetailsData {
 }
 
 const initialState: IUserDetailsState = {
-  data: undefined,
+  data: {
+    id: "",
+    createdTimestamp: "",
+    username: "",
+    enabled: false,
+    emailVerified: false,
+    email: "",
+    access: {
+      manageGroupMembership: false,
+      view: false,
+      mapRoles: false,
+      impersonate: false,
+      manage: false,
+    },
+    tenantName: "",
+    roles: [],
+    permissions: [],
+  },
   loading: false,
   error: undefined,
 };

@@ -156,14 +156,14 @@ export default function TenantDetails() {
 
         <Dropdown.Menu>
           <Dropdown.Item>Test</Dropdown.Item>
-          <Dropdown.Item onClick={() => navigate("/manageroles")}>
+          {/* <Dropdown.Item onClick={() => navigate("/manageroles")}>
             Manage Roles
           </Dropdown.Item>
           <Dropdown.Item onClick={() => navigate("/tenantpermission")}>
             Manage Permission
-          </Dropdown.Item>
+          </Dropdown.Item> */}
           <Dropdown.Item>Set Tenant Url</Dropdown.Item>
-          <Dropdown.Item>Set InActive</Dropdown.Item>
+          {/* <Dropdown.Item>Set InActive</Dropdown.Item> */}
           <Dropdown.Item>Upload</Dropdown.Item>
           <Dropdown.Item>Create tenant tables & data</Dropdown.Item>
         </Dropdown.Menu>
@@ -197,7 +197,7 @@ export default function TenantDetails() {
                     name="tenantName"
                     onChange={handleInputChange}
                     value={tenant.tenantName}
-                    disabled={!edit}
+                    disabled
                     isInvalid={!!error.tenantName}
                   />
                   {tenant.tenantName &&

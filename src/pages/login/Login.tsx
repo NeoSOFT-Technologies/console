@@ -61,7 +61,7 @@ export default function Login() {
    * ! red flag remove type
    * */
   useEffect(() => {
-    console.log(type, user);
+    // console.log(type, user);
     if (!user.loading && userName !== "" && password !== "") {
       if (user.data && type === "tenant") {
         ToastAlert("Logged In", "success");
@@ -109,7 +109,7 @@ export default function Login() {
   };
 
   const setLoginType = (a: string) => {
-    console.log(type);
+    // console.log(type);
     dispatch(checkLoginType(a));
     setUserName("");
     setPassword("");
