@@ -9,6 +9,7 @@ import {
   Row,
 } from "react-bootstrap";
 import { useParams } from "react-router";
+import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { regexForUser, regexForEmail } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
@@ -76,7 +77,7 @@ export default function UserDetails() {
   }, []);
 
   const removeRole = (role: string) => {
-    const temp = userdata.roles.filter(function (value) {
+    const temp = userdata.roles.filter(function (value: string) {
       return value !== role;
     });
     console.log(temp);
@@ -138,7 +139,6 @@ export default function UserDetails() {
             username: userdata.username,
             email: userdata.email,
             roles: userdata.roles,
-            permissions: userdata.permissions,
           })
         );
         ToastAlert("User Saved", "success");
@@ -150,7 +150,10 @@ export default function UserDetails() {
       ToastAlert("Please Enter Valid Details", "warning");
     }
   };
-  return (
+
+  return userDetails.loading ? (
+    <Spinner />
+  ) : (
     <Container>
       <Row className="text-right">
         <Col>

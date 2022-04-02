@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
+  regexForDatabaseName,
   // regexForUser,
   // regexForEmail,
 } from "../../../../resources/constants";
@@ -44,30 +45,29 @@ const TenantProfile = () => {
     tenantName: "",
   });
   const [error, setError] = useState<IErrorTenantDetail>({
-    tenantName: "",
-    tenantDbName: "",
+    description: "",
   });
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
-      case "tenantName":
-        setError({
-          ...error,
-          [name]: regexForName.test(value) ? "" : "Enter a valid tenantName",
-        });
-        break;
+      // case "tenantName":
+      //   setError({
+      //     ...error,
+      //     [name]: regexForName.test(value) ? "" : "Enter a valid tenantName",
+      //   });
+      //   break;
       // case "email":
       //   setError({
       //     ...error,
       //     [name]: regexForEmail.test(value) ? "" : "Enter a Valid Email",
       //   });
       //   break;
-      case "tenantDbName":
+      case "description":
         setError({
           ...error,
           [name]: regexForName.test(value)
             ? ""
-            : "databaseName should only consist Alphabets",
+            : "description should only consist Alphabets",
         });
         break;
 
@@ -77,7 +77,7 @@ const TenantProfile = () => {
     setTenant({ ...tenant, [name]: value });
   };
   const handleValidate = () => {
-    const validate = !!(error.tenantName === "" && error.tenantDbName === "");
+    const validate = !!(error.description === "");
     return validate;
   };
   const handleUpdateTenant = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -96,12 +96,6 @@ const TenantProfile = () => {
       }
     }
   };
-  useEffect(() => {
-    // console.log(user.data);
-    if (user.data) {
-      setTenant(user.data);
-    }
-  }, [user.data]);
 
   return (
     <>
@@ -121,8 +115,9 @@ const TenantProfile = () => {
                     name="tenantName"
                     onChange={handleInputChange}
                     value={tenant.tenantName}
-                    disabled={!edit}
-                    isInvalid={!!error.tenantName}
+                    // disabled={!edit}
+                    // isInvalid={!!error.tenantName}
+                    disabled
                   />
                   {tenant.tenantName &&
                     !regexForName.test(tenant.tenantName) && (
@@ -141,10 +136,11 @@ const TenantProfile = () => {
                     onChange={handleInputChange}
                     name="databaseName"
                     data-testid="databaseName-input"
-                    disabled={!edit}
+                    // disabled={!edit}
                     placeholder="Enter database name"
                     value={tenant.tenantDbName}
-                    isInvalid={!!error.tenantDbName}
+                    // isInvalid={!!error.tenantDbName}
+                    disabled
                   />
                   {tenant.tenantDbName &&
                     !regexForName.test(tenant.tenantDbName) && (

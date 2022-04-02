@@ -19,7 +19,6 @@ interface IConditions {
   username: string;
   email: string;
   roles: string[];
-  permissions: string[];
 }
 
 export function updateUserDataService(data: IConditions) {
@@ -28,7 +27,6 @@ export function updateUserDataService(data: IConditions) {
     action: {
       email: data.email,
       realmRoles: [...data.roles],
-      permissions: [...data.permissions],
     },
   };
   console.log(body);

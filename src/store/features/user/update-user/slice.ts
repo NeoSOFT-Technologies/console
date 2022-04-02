@@ -6,7 +6,6 @@ interface IConditions {
   username: string;
   email: string;
   roles: string[];
-  permissions: string[];
 }
 export interface IUpdateUserState {
   isUpdated: boolean;

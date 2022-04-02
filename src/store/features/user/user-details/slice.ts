@@ -8,30 +8,13 @@ interface IConditions {
   userName: string;
 }
 export interface IUserDetailsState {
-  data: IUserDetailsData;
+  data?: IUserDetailsData;
   loading: boolean;
   error?: string;
 }
 
 const initialState: IUserDetailsState = {
-  data: {
-    id: "",
-    createdTimestamp: "",
-    username: "",
-    enabled: false,
-    emailVerified: false,
-    email: "",
-    access: {
-      manageGroupMembership: false,
-      view: false,
-      mapRoles: false,
-      impersonate: false,
-      manage: false,
-    },
-    tenantName: "",
-    roles: [],
-    permissions: [],
-  },
+  data: undefined,
   loading: false,
   error: undefined,
 };
@@ -57,6 +40,8 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(getUserDetails.pending, (state) => {
       state.loading = true;
+      state.data = undefined;
+      state.error = undefined;
     });
     builder.addCase(getUserDetails.fulfilled, (state, action) => {
       state.loading = false;

@@ -121,7 +121,6 @@ export default function RegisterTenant() {
           password: "",
           databaseName: "",
           databaseDescription: "",
-          roles: [],
         });
       } else {
         ToastAlert("Please Fill All Fields", "warning");
@@ -147,7 +146,6 @@ export default function RegisterTenant() {
       password: "",
       databaseName: "",
       databaseDescription: "",
-      roles: [],
     });
   };
   return tenantAdded.loading ? (

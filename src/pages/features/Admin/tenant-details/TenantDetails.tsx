@@ -14,6 +14,7 @@ import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
+  regexForDatabaseName,
   // regexForUser,
   // regexForEmail,
 } from "../../../../resources/constants";
@@ -69,13 +70,12 @@ export default function TenantDetails() {
 
   useEffect(() => {
     const { tenantName } = params;
-    (async () => {
-      if (tenantName) {
-        await dispatch(tenantDetails(tenantName));
-        setTenant({ ...tenantDetailsState.data });
-      }
-    })();
+    if (tenantName) dispatch(tenantDetails(tenantName));
   }, []);
+
+  useEffect(() => {
+    setTenant({ ...tenantDetailsState.data });
+  }, [tenantDetailsState.data]);
 
   const deleteTenantFunction = async () => {
     const { tenantName } = params;
@@ -92,7 +92,7 @@ export default function TenantDetails() {
       case "description":
         setError({
           ...error,
-          [name]: regexForName.test(value)
+          [name]: regexForDatabaseName.test(value)
             ? ""
             : "description should only consist Alphabets",
         });

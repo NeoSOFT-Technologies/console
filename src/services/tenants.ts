@@ -1,4 +1,3 @@
-// import { ITenantData } from "../types";
 import apiFactory from "../utils/api";
 
 interface CreateUser {
