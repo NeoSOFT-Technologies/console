@@ -1,25 +1,7 @@
+import { ICreateNewUser, ITenantDetail } from "../types";
 import apiFactory from "../utils/api";
 
-interface CreateUser {
-  userName: string;
-  email: string;
-  password: string;
-  roles: string[];
-}
-
-interface IData {
-  createdDateTime: string;
-  description: string;
-  host: string;
-  id: number;
-  policy: string;
-  port: number;
-  tenantDbName: string;
-  tenantId: number;
-  tenantName: string;
-}
-
-export function updateTenantDataService(data: IData) {
+export function updateTenantDataService(data: ITenantDetail) {
   const body = {
     action: {
       ...data,
@@ -40,7 +22,7 @@ export function tenantUserListService(
   );
 }
 
-export function createNewUserService(data: CreateUser) {
+export function createNewUserService(data: ICreateNewUser) {
   const body = {
     userDetails: {
       ...data,
@@ -53,10 +35,8 @@ export function deleteUserDataService(userName: string) {
   return apiFactory().delete(`/api/user/${userName}`);
 }
 
-export function userPermissionService(tenantName: string, clientName: string) {
-  return apiFactory().get(
-    `/api/permission?tenantName=${tenantName}&clientName=${clientName}`
-  );
+export function userPermissionService(tenantName: string) {
+  return apiFactory().get(`/api/permission?tenantName=${tenantName}`);
 }
 
 export function tenantRolesService(tenantName: string) {

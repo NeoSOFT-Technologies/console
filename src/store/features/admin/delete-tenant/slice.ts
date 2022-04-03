@@ -2,13 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { deleteTenantDataService } from "../../../../services";
 import error from "../../../../utils/error";
 
-interface IAddTenantState {
+interface IDeleteTenantState {
   isDeleted?: boolean;
   loading: boolean;
   error?: string | null;
 }
 
-const initialState: IAddTenantState = {
+const initialState: IDeleteTenantState = {
   isDeleted: false,
   loading: false,
   error: undefined,
@@ -19,7 +19,6 @@ export const deleteTenant = createAsyncThunk(
   async (tenantName: string) => {
     try {
       const response = await deleteTenantDataService(tenantName);
-      console.log(response);
       return response.data;
     } catch (error_) {
       return error_;

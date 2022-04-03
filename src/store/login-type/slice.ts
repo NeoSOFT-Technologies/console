@@ -2,13 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
 
-interface IConditions {
+export interface ILoginTypeState {
   data: string;
   loading: boolean;
   error?: string | null;
 }
 
-const initialState: IConditions = {
+const initialState: ILoginTypeState = {
   data: "admin",
   loading: false,
   error: undefined,
@@ -18,7 +18,6 @@ export const checkLoginType = createAsyncThunk(
   "login/type",
   async (type: string) => {
     try {
-      console.log(type);
       return type;
     } catch (error_) {
       return error_;

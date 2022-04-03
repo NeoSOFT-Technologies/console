@@ -7,6 +7,7 @@ interface IConditions {
   tenantName: string;
   userName: string;
 }
+
 export interface IUserDetailsState {
   data?: IUserDetailsData;
   loading: boolean;
@@ -25,7 +26,6 @@ export const getUserDetails = createAsyncThunk(
     const { tenantName, userName } = condition;
     try {
       const response = await getUserDetailsService(tenantName, userName);
-      console.log(response);
       return response.data;
     } catch (error_) {
       return error_;

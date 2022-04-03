@@ -1,13 +1,8 @@
 import tokenService from "../services/token.service";
+import { ILogin } from "../types";
 import apiFactory from "../utils/api";
 
-interface IConditions {
-  userName: string;
-  password: string;
-  tenantName: string;
-}
-
-export async function commonLoginService(data: IConditions) {
+export async function commonLoginService(data: ILogin) {
   const getlogin = await apiFactory().post(`/api/login`, {
     username: data.userName,
     password: data.password,

@@ -19,24 +19,11 @@ import {
   // regexForEmail,
 } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
-// import { RootState } from "../../../../store";
 import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
 import { tenantDetails } from "../../../../store/features/tenant/tenant-details/slice";
 import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { IErrorTenantDetail } from "../../../../types/index";
-
-interface IDATA {
-  createdDateTime: string;
-  description: string;
-  host: string;
-  id: number;
-  policy: string;
-  port: number;
-  tenantDbName: string;
-  tenantId: number;
-  tenantName: string;
-}
+import { IErrorTenantDetail, ITenantDetail } from "../../../../types/index";
 
 export default function TenantDetails() {
   const navigate = useNavigate();
@@ -52,7 +39,7 @@ export default function TenantDetails() {
 
   const [deleteshow, setDeleteshow] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [tenant, setTenant] = useState<IDATA>({
+  const [tenant, setTenant] = useState<ITenantDetail>({
     createdDateTime: "",
     description: "",
     host: "",
@@ -74,7 +61,8 @@ export default function TenantDetails() {
   }, []);
 
   useEffect(() => {
-    setTenant({ ...tenantDetailsState.data });
+    const data = tenantDetailsState.data;
+    if (data) setTenant({ ...data });
   }, [tenantDetailsState.data]);
 
   const deleteTenantFunction = async () => {

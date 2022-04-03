@@ -1,9 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-  adminLogin,
-  // getTenantDetailsService,
-  getUserDetailsService,
-} from "../../services";
+import { adminLoginData, getUserDetailsService } from "../../services";
 import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
 
@@ -25,7 +21,7 @@ export const getUserData = createAsyncThunk(
       let response;
       switch (conditions.type) {
         case "admin":
-          response = await adminLogin();
+          response = await adminLoginData();
           break;
         case "tenant":
           // response = await getTenantDetailsService(conditions.tenantName);
@@ -50,11 +46,10 @@ export const getUserData = createAsyncThunk(
           );
           break;
       }
-      console.log(response);
       return response?.data;
     } catch (error_) {
       console.log("in error", error(error_));
-      throw new Error(error_);
+      throw new Error(error(error_));
     }
   }
 );
@@ -78,7 +73,6 @@ const slice = createSlice({
     builder.addCase(getUserData.rejected, (state, action) => {
       console.log("in rejected");
       state.loading = false;
-      // action.payload contains error information
       state.error = error(action.payload);
     });
   },

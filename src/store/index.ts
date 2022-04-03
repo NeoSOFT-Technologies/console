@@ -12,6 +12,7 @@ import userDetailsReducer from "./features/user/user-details/slice";
 import landingReducer from "./landing/slice";
 import loginTypeReducer from "./login-type/slice";
 import loginAccessTokenReducer from "./login/slice";
+import logoutReducer from "./logout/slice";
 import userDataReducer from "./user-data/slice";
 
 const store = configureStore({
@@ -30,6 +31,7 @@ const store = configureStore({
     loginAccessToken: loginAccessTokenReducer,
     userDetails: userDetailsReducer,
     tenantDetails: tenantDetailsReducer,
+    logoutState: logoutReducer,
   },
 });
 

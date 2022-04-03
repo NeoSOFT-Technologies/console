@@ -11,7 +11,7 @@ import { RootState } from "../../../../store";
 import { getTenantRoles } from "../../../../store/features/admin/tenant-roles/slice";
 import { addNewUser } from "../../../../store/features/tenant/add-user/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { ITenantRolesState } from "../../../../types/index";
+import { ICreateNewUser, ITenantRolesState } from "../../../../types/index";
 
 interface Ierrors {
   userName: string;
@@ -20,21 +20,19 @@ interface Ierrors {
   roles: string;
 }
 
-interface IForm {
-  userName: string;
-  email: string;
-  password: string;
-  roles: string[];
-}
-
 export default function Createuser() {
   const dispatch = useAppDispatch();
-  const [formData, setFormData] = useState<IForm>({
+  const rolesList: ITenantRolesState = useAppSelector(
+    (state: RootState) => state.rolesList
+  );
+  console.log(rolesList);
+  const [formData, setFormData] = useState<ICreateNewUser>({
     userName: "",
     email: "",
     password: "",
     roles: [],
   });
+
   const [errors, setErrors] = useState<Ierrors>({
     userName: "",
     email: "",
@@ -42,9 +40,6 @@ export default function Createuser() {
     roles: "",
   });
 
-  const rolesList: ITenantRolesState = useAppSelector(
-    (state: RootState) => state.rolesList
-  );
   useEffect(() => {
     dispatch(getTenantRoles());
   }, []);
@@ -135,7 +130,6 @@ export default function Createuser() {
     <div>
       <Container className="mt-3 w-75 bg-white p-4">
         <h1 className="text-center text-dark pb-3">Create User</h1>
-        {/* UserName Email Password Tenant Name */}
         <Form onSubmit={handleFormSubmit}>
           <Form.Group>
             <Form.Label>Username</Form.Label>

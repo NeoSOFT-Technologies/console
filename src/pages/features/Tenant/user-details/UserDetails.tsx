@@ -18,11 +18,10 @@ import { deleteUser } from "../../../../store/features/tenant/delete-user/slice"
 import { updateUser } from "../../../../store/features/user/update-user/slice";
 import {
   getUserDetails,
-  IUserDetailsData,
   IUserDetailsState,
 } from "../../../../store/features/user/user-details/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { ITenantRolesState } from "../../../../types/index";
+import { IUserDetailsData, ITenantRolesState } from "../../../../types/index";
 
 interface Ierror {
   username: string;
@@ -30,6 +29,7 @@ interface Ierror {
   tenantName: string;
   createdTimestamp?: string;
 }
+
 export default function UserDetails() {
   const params = useParams();
   // @ts-ignore
@@ -59,6 +59,7 @@ export default function UserDetails() {
     permissions: [],
   });
   console.log(userdata.roles);
+
   const [errordata, setErrordata] = useState<Ierror>({
     username: "",
     email: "",
@@ -73,7 +74,9 @@ export default function UserDetails() {
       );
       dispatch(getTenantRoles());
     }
-    setUserdata({ ...userDetails.data });
+    if (userDetails.data) {
+      setUserdata({ ...userDetails.data });
+    }
   }, []);
 
   const removeRole = (role: string) => {
@@ -239,14 +242,6 @@ export default function UserDetails() {
                                 type="checkbox"
                                 onChange={handleCheck}
                                 inline
-                                // name="role"
-                                // type="checkbox"
-                                // label={items}
-                                // id={items}
-                                // value={items}
-                                // checked={userdata.roles.includes(items)}
-                                // onChange={handleCheck}
-                                // defaultChecked={}
                               />
                             </Dropdown.Item>
                           ))}

@@ -6,7 +6,6 @@ import error from "../../../../utils/error";
 interface IConditions {
   currentPage: number;
   search: string;
-  // isActive : string;
 }
 
 const initialState: ITenantListState = {
@@ -21,7 +20,6 @@ export const getTenantList = createAsyncThunk(
     const { currentPage, search } = conditions;
     try {
       const response = await tenantListService(currentPage, search);
-      console.log(response);
       return response.data;
     } catch (error_) {
       return error_;

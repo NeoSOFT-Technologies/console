@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
-  regexForDatabaseName,
+  // regexForDatabaseName,
   // regexForUser,
   // regexForEmail,
 } from "../../../../resources/constants";
@@ -12,28 +12,23 @@ import { RootState } from "../../../../store";
 
 import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
 import { useAppDispatch } from "../../../../store/hooks";
-import { IUserDataState } from "../../../../types";
-import { IErrorTenantDetail } from "../../../../types/index";
-
-interface IData {
-  createdDateTime: string;
-  description: string;
-  host: string;
-  id: number;
-  policy: string;
-  port: number;
-  tenantDbName: string;
-  tenantId: number;
-  tenantName: string;
-}
+import {
+  IErrorTenantDetail,
+  ITenantDetail,
+  IUserDataState,
+} from "../../../../types";
 
 const TenantProfile = () => {
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
   );
+  console.log(
+    "🚀 ~ file: TenantProfile.tsx ~ line 34 ~ TenantProfile ~ user",
+    user
+  );
   const [edit, setEdit] = useState(false);
   const dispatch = useAppDispatch();
-  const [tenant, setTenant] = useState<IData>({
+  const [tenant, setTenant] = useState<ITenantDetail>({
     createdDateTime: "",
     description: "",
     host: "",
@@ -47,6 +42,11 @@ const TenantProfile = () => {
   const [error, setError] = useState<IErrorTenantDetail>({
     description: "",
   });
+
+  useEffect(() => {
+    if (user.data) setTenant({ ...user.data });
+  }, [user.data]);
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
@@ -209,15 +209,24 @@ const TenantProfile = () => {
                 </Form.Group>
               </Col>
               {edit ? (
-                <Button
-                  data-testid="update-button"
-                  onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-                    handleUpdateTenant(event)
-                  }
-                  className="mt-3 info ml-4"
-                >
-                  Update
-                </Button>
+                <>
+                  <Button
+                    data-testid="update-button"
+                    onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
+                      handleUpdateTenant(event)
+                    }
+                    className="mt-3 info ml-4"
+                  >
+                    Update
+                  </Button>
+                  <Button
+                    className="btn btn-light mt-3"
+                    type="reset"
+                    onClick={() => setTenant({ ...user.data })}
+                  >
+                    Cancel
+                  </Button>
+                </>
               ) : (
                 <Button
                   data-testid="edit-button"

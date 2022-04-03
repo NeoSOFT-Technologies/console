@@ -8,6 +8,7 @@ interface IConditions {
   userName: string;
   currentPage: number;
 }
+
 const initialState: ITenantUserListState = {
   data: undefined,
   loading: false,
@@ -24,7 +25,6 @@ export const getTenantUserList = createAsyncThunk(
         userName,
         currentPage
       );
-      console.log(response);
       return response.data.data;
     } catch (error_) {
       return error_;

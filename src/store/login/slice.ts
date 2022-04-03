@@ -45,13 +45,9 @@ const slice = createSlice({
     builder.addCase(commonLogin.fulfilled, (state, action) => {
       state.loading = false;
       state.loginVerified = action.payload;
-
-      // console.log("in fullfilled reducer login");
     });
     builder.addCase(commonLogin.rejected, (state, action) => {
-      // console.log("in error reducer", action.payload, error(action.payload));
       state.loading = false;
-      // action.payload contains error information
       state.error = error(action.payload);
     });
   },

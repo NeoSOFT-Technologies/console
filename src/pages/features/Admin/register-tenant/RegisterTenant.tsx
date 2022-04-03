@@ -11,11 +11,15 @@ import {
 import { RootState } from "../../../../store";
 import { addNewTenant } from "../../../../store/features/admin/add-tenant/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { IErrorTenantInput, ITenantData } from "../../../../types/index";
+import {
+  IErrorTenantInput,
+  ITenantRegisterData,
+} from "../../../../types/index";
 
 export default function RegisterTenant() {
+  const tenantAdded = useAppSelector((state: RootState) => state.addNewTenant);
   const dispatch = useAppDispatch();
-  const [tenant, setTenant] = useState<ITenantData>({
+  const [tenant, setTenant] = useState<ITenantRegisterData>({
     tenantName: "",
     description: "",
     email: "",
@@ -30,7 +34,6 @@ export default function RegisterTenant() {
     description: "",
     databaseName: "",
   });
-  const tenantAdded = useAppSelector((state: RootState) => state.addNewTenant);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // console.log(event.target.value);

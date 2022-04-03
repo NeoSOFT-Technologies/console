@@ -7,29 +7,15 @@ import { useAppDispatch } from "../../../../store/hooks";
 import { ITenantRolesState } from "../../../../types";
 
 export default function TenantRoles() {
-  const [tenantRoleList, setTenantRoleList] = useState<ITenantRolesState>();
   const [tenantRoles, settenantRoles] = useState<string[]>([]);
-  // const [rolesList, setRolesList] = useState([
-  //   "Demo_Role_1",
-  //   "Demo_Role_2",
-  //   "Demo_Role_3",
-  //   "Demo_Role_4",
-  //   "Demo_Role_5",
-  //   "Demo_Role_6",
-  //   "Demo_Role_7",
-  //   "Demo_Role_8",
-  //   "Demo_Role_9",
-  //   "Demo_Role_10",
-  // ]);
   const dispatch = useAppDispatch();
 
   const rolesList: ITenantRolesState = useSelector(
     (state: RootState) => state.rolesList
   );
+
   useEffect(() => {
     dispatch(getTenantRoles());
-    settenantRoles(["default-roles-paras"]);
-    setTenantRoleList(rolesList);
   }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +101,7 @@ export default function TenantRoles() {
                         inline
                       />
                     ))} */}
-                    {tenantRoleList?.data?.map((role) => (
+                    {rolesList?.data?.map((role) => (
                       <Form.Check
                         className="mx-4"
                         key={`${role}`}
@@ -123,7 +109,7 @@ export default function TenantRoles() {
                         label={role}
                         name="role"
                         value={`${role}`}
-                        defaultChecked={tenantRoles.includes(role)}
+                        checked={tenantRoles.includes(role)}
                         type="checkbox"
                         onChange={handleInputChange}
                         inline
