@@ -190,13 +190,13 @@ export default function RegisterTenant() {
                 <Form.Group className="mb-3">
                   <Form.Label>Email :</Form.Label>
                   <Form.Control
+                    data-testid="email-input"
                     type="email"
                     placeholder="Enter Email"
                     name="email"
                     // id="email"
                     value={tenant.email}
                     isValid={!error.email && !!tenant.email}
-                    data-testid="email-input"
                     isInvalid={!!error.email}
                     onChange={handleInputChange}
                     required

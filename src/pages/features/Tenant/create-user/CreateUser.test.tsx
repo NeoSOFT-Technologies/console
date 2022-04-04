@@ -30,15 +30,11 @@ it("test if input box is present", () => {
 
   const emailBox = screen.getByTestId("email-input");
   expect(emailBox).toBeInTheDocument();
-  expect(emailBox).toHaveAttribute("type", "text");
+  expect(emailBox).toHaveAttribute("type", "email");
 
   const passwordBox = screen.getByTestId("password-input");
   expect(passwordBox).toBeInTheDocument();
   expect(passwordBox).toHaveAttribute("type", "text");
-
-  const tnameBox = screen.getByTestId("tenantname-input");
-  expect(tnameBox).toBeInTheDocument();
-  expect(tnameBox).toHaveAttribute("type", "text");
 });
 
 it("test if input box takes input", () => {
@@ -64,10 +60,6 @@ it("test if input box takes input", () => {
   const passwordBox = screen.getByTestId("password-input");
   fireEvent.change(passwordBox, { target: { value: "akhilpinni123@" } });
   expect(screen.getByTestId("password-input")).toHaveValue("akhilpinni123@");
-
-  const tnameBox = screen.getByTestId("tenantname-input");
-  fireEvent.change(tnameBox, { target: { value: "akhilpinni" } });
-  expect(screen.getByTestId("tenantname-input")).toHaveValue("akhilpinni");
 });
 
 it("if submit and cancel buttons renders", () => {

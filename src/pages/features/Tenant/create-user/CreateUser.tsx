@@ -150,7 +150,7 @@ export default function Createuser() {
           <Form.Group>
             <Form.Label>Email</Form.Label>
             <Form.Control
-              type="text"
+              type="email"
               placeholder="email"
               data-testid="email-input"
               value={formData.email}

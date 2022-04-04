@@ -222,7 +222,9 @@ const TenantProfile = () => {
                   <Button
                     className="btn btn-light mt-3"
                     type="reset"
-                    onClick={() => setTenant({ ...user.data })}
+                    onClick={() => {
+                      if (user.data) setTenant({ ...user.data });
+                    }}
                   >
                     Cancel
                   </Button>
