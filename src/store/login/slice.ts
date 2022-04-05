@@ -20,6 +20,8 @@ export const commonLogin = createAsyncThunk(
   async (conditions: IConditions) => {
     try {
       await commonLoginService(conditions);
+      // console.log(response);
+      // return response.data[0];
     } catch (error_) {
       console.log("in error", error_);
       return error_;

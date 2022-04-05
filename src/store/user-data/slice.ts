@@ -37,7 +37,7 @@ export const getUserData = createAsyncThunk(
           );
           break;
       }
-      console.log(response);
+      // console.log(response);
       return response?.data;
     } catch (error_) {
       console.log("in error");

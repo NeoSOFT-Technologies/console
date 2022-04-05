@@ -26,7 +26,7 @@ export const getTenantUserList = createAsyncThunk(
         currentPage,
         search
       );
-      console.log(response);
+      // console.log(response);
       return response.data.data;
     } catch (error_) {
       return error_;

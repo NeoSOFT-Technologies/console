@@ -14,9 +14,10 @@
     "build:prod": "npm run build:css && npm run build -- --profile",
     "dev": "npm-run-all -p watch:css start",
     "test": "rimraf src/__snapshots__ && react-scripts test",
+   
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.{ts,tsx,json,css,scss}\"",
-    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "test:coverage": "npm test -- --coverage",
     "lint": "eslint . --ext js,jsx,mjs,ts,tsx ",
     "lint:fix": "eslint . --ext js,jsx,mjs,ts,tsx --fix",
     "lint:quiet": "eslint . --ext js,jsx,mjs,ts,tsx --quiet",
@@ -77,7 +78,13 @@
       "src/serviceWorker.ts",
       "setupTests.ts",
       "react-app-env.d.ts",
-      "__snapshots__/*"
+      "__snapshots__/*",
+      "index.ts",
+      "src/types/landing-page.ts",
+      "services"
+     
+    
+      
     ],
     "collectCoverageFrom": [
       "src/**"

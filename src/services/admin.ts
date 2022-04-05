@@ -10,10 +10,10 @@ export function addTenantDataService(data: ITenantData) {
     databaseName: data.databaseName,
     databaseDescription: data.databaseDescription,
   };
-  console.log(
-    "🚀 ~ file: admin.ts ~ line 11 ~ addTenantDataService ~ body",
-    body
-  );
+  // console.log(
+  //   "🚀 ~ file: admin.ts ~ line 11 ~ addTenantDataService ~ body",
+  //   body
+  // );
   return apiFactory().post(`/api/tenants`, body);
 }
 

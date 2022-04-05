@@ -61,7 +61,7 @@ export default function Login() {
    * ! red flag remove type
    * */
   useEffect(() => {
-    console.log(type, user);
+    // console.log(type, user);
     if (!user.loading && userName !== "" && password !== "") {
       if (user.data && type === "tenant") {
         ToastAlert("Logged In", "success");
@@ -109,7 +109,7 @@ export default function Login() {
   };
 
   const setLoginType = (a: string) => {
-    console.log(type);
+    // console.log(type);
     dispatch(checkLoginType(a));
     setUserName("");
     setPassword("");
@@ -136,7 +136,7 @@ export default function Login() {
             <Form className="pt-3">
               <Form.Group className="mb-3">
                 <Form.Control
-                  data-testid="email-input"
+                  data-testid="username-input"
                   type="text"
                   name="userName"
                   value={userName}
@@ -155,6 +155,7 @@ export default function Login() {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
+                      data-testid="tenantname-input"
                       name="tenantName"
                       placeholder="Enter TenantName"
                       onChange={handle}
@@ -223,21 +224,30 @@ export default function Login() {
               <div>
                 {type !== "admin" && (
                   <p>
-                    <span onClick={() => setLoginType("admin")}>
+                    <span
+                      onClick={() => setLoginType("admin")}
+                      data-testid="admin-login"
+                    >
                       Login as admin
                     </span>
                   </p>
                 )}
                 {type !== "tenant" && (
                   <p>
-                    <span onClick={() => setLoginType("tenant")}>
+                    <span
+                      onClick={() => setLoginType("tenant")}
+                      data-testid="tenant-login"
+                    >
                       Login as tenant
                     </span>
                   </p>
                 )}
                 {type !== "user" && (
                   <p>
-                    <span onClick={() => setLoginType("user")}>
+                    <span
+                      onClick={() => setLoginType("user")}
+                      data-testid="user-login"
+                    >
                       Login as user
                     </span>
                   </p>

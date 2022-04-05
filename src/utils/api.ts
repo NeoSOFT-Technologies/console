@@ -53,11 +53,11 @@ const apiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
 
   service.interceptors.response.use(
     (res) => {
-      console.log(" apiFactory ~ res", res);
+      // console.log(" ApiFactory ~ res", res);
       return res;
     },
     async (err) => {
-      console.log(err.config);
+      // console.log(err.config);
       const originalConfig = err.config;
 
       if (

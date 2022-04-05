@@ -29,6 +29,7 @@ export default function Navbar() {
       </div>
       <div className="navbar-menu-wrapper d-flex align-items-stretch">
         <button
+          data-testid="toggle-button"
           className="navbar-toggler navbar-toggler align-self-center"
           type="button"
           onClick={() => document.body.classList.toggle("sidebar-icon-only")}
@@ -52,8 +53,11 @@ export default function Navbar() {
         <ul className="navbar-nav navbar-nav-right">
           <li className="nav-item">
             {/* @ts-ignore */}
-            <Dropdown alignRight>
-              <Dropdown.Toggle className="nav-link count-indicator">
+            <Dropdown alignright="true">
+              <Dropdown.Toggle
+                data-testid="dropdownItem1"
+                className="nav-link count-indicator"
+              >
                 <i className="bi bi-bell"></i>
                 <span className="count-symbol bg-danger"></span>
               </Dropdown.Toggle>
@@ -63,6 +67,7 @@ export default function Navbar() {
                 </h6>
                 <div className="dropdown-divider"></div>
                 <Dropdown.Item
+                  data-testid="event-today"
                   className="dropdown-item preview-item"
                   onClick={(event_) => event_.preventDefault()}
                 >
@@ -82,6 +87,7 @@ export default function Navbar() {
                 </Dropdown.Item>
                 <div className="dropdown-divider"></div>
                 <Dropdown.Item
+                  data-testid="settings"
                   className="dropdown-item preview-item"
                   onClick={(event_) => event_.preventDefault()}
                 >
@@ -101,6 +107,7 @@ export default function Navbar() {
                 </Dropdown.Item>
                 <div className="dropdown-divider"></div>
                 <Dropdown.Item
+                  data-testid="launch-admin"
                   className="dropdown-item preview-item"
                   onClick={(event_) => event_.preventDefault()}
                 >
@@ -127,6 +134,7 @@ export default function Navbar() {
           </li>
           <li className="nav-item nav-settings d-none d-lg-block">
             <button
+              data-testid="navigate-button"
               type="button"
               className="nav-link border-0"
               onClick={() => logout()}
@@ -136,6 +144,7 @@ export default function Navbar() {
           </li>
         </ul>
         <button
+          data-testid="toggleOff-button"
           className="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
           type="button"
           onClick={toggleOffcanvas}

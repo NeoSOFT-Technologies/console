@@ -21,7 +21,7 @@ export default function UserDashboard() {
     newpassword: "",
   });
   useEffect(() => {
-    console.log(user.data);
+    // console.log(user.data);
   }, [user.data]);
   const updateUserPassword = () => {
     if (currentUser.newpassword === "" || currentUser.oldpassword === "") {
@@ -72,7 +72,7 @@ export default function UserDashboard() {
                     <td>{user.data.createdDateTime}</td>
                   </tr>
                   {editable && (
-                    <>
+                    <div>
                       <tr>
                         <td>Old Password</td>
                         <td>
@@ -118,7 +118,7 @@ export default function UserDashboard() {
                           </Form.Group>
                         </td>
                       </tr>
-                    </>
+                    </div>
                   )}
                 </table>
                 <hr />

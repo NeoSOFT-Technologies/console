@@ -21,7 +21,7 @@ export const getTenantList = createAsyncThunk(
     const { currentPage, search } = conditions;
     try {
       const response = await tenantListService(currentPage, search);
-      console.log(response);
+      // console.log(response);
       return response.data;
     } catch (error_) {
       return error_;
