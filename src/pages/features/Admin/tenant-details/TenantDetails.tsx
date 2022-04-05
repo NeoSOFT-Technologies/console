@@ -50,7 +50,7 @@ export default function TenantDetails() {
     tenantId: 0,
     tenantName: "",
   });
-  console.log(tenant);
+  // console.log(tenant);
   const [error, setError] = useState<IErrorTenantDetail>({
     description: "",
   });
@@ -171,6 +171,7 @@ export default function TenantDetails() {
 
                   <Form.Control
                     type="text"
+                    data-testid="name-input"
                     placeholder="Enter Name"
                     name="tenantName"
                     onChange={handleInputChange}
@@ -212,6 +213,7 @@ export default function TenantDetails() {
                     name="tenantDbName"
                     // disabled={!edit}
                     disabled
+                    data-testid="databaseName-input"
                     placeholder="Enter database name"
                     value={tenant.tenantDbName}
                     // isInvalid={!!error.tenantDbName}
@@ -231,6 +233,7 @@ export default function TenantDetails() {
                   <Form.Control
                     type="text"
                     placeholder="host"
+                    data-testid="host-input"
                     value={tenant.host}
                     name="host"
                     onChange={handleInputChange}
@@ -247,6 +250,7 @@ export default function TenantDetails() {
                     placeholder="port"
                     value={tenant.port}
                     name="port"
+                    data-testid="port-input"
                     onChange={handleInputChange}
                     disabled
                     // isInvalid={!!err.port}
@@ -261,10 +265,11 @@ export default function TenantDetails() {
                   <Form.Label>Description:</Form.Label>
                   <Form.Control
                     as="textarea"
+                    type="textarea"
                     name="description"
+                    data-testid="description-input"
                     rows={3}
                     className="form-control rounded-0"
-                    id="description"
                     placeholder="Here...."
                     value={tenant.description}
                     disabled={!edit}
@@ -275,6 +280,7 @@ export default function TenantDetails() {
               </Col>
               {edit ? (
                 <Button
+                  data-testid="update-button"
                   onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
                     handleUpdateTenant(event)
                   }
@@ -284,6 +290,7 @@ export default function TenantDetails() {
                 </Button>
               ) : (
                 <Button
+                  data-testid="edit-button"
                   onClick={() => setEdit(true)}
                   className="mt-3 info ml-4"
                 >
@@ -292,6 +299,7 @@ export default function TenantDetails() {
               )}
 
               <Button
+                data-testid="cancel-button"
                 className="btn btn-light mt-3"
                 type="reset"
                 onClick={() => navigate("/tenantlist")}

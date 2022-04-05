@@ -70,11 +70,11 @@ export default function Login() {
   };
 
   useEffect(() => {
-    console.log(
-      loginVerification.loginVerified,
-      loginVerification.error,
-      "inside loginVerification"
-    );
+    // console.log(
+    //   loginVerification.loginVerified,
+    //   loginVerification.error,
+    //   "inside loginVerification"
+    // );
 
     if (
       loginVerification.loginVerified &&
