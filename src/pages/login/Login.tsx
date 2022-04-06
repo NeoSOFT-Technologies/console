@@ -202,6 +202,7 @@ export default function Login() {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
+                      data-testid="tenantname-input"
                       name="tenantName"
                       placeholder="Enter TenantName"
                       onChange={handle}
@@ -270,21 +271,30 @@ export default function Login() {
               <div>
                 {loginType.data !== "admin" && (
                   <p>
-                    <span onClick={() => setLoginType("admin")}>
+                    <span
+                      onClick={() => setLoginType("admin")}
+                      data-testid="admin-login"
+                    >
                       Login as admin
                     </span>
                   </p>
                 )}
                 {loginType.data !== "tenant" && (
                   <p>
-                    <span onClick={() => setLoginType("tenant")}>
+                    <span
+                      onClick={() => setLoginType("tenant")}
+                      data-testid="tenant-login"
+                    >
                       Login as tenant
                     </span>
                   </p>
                 )}
                 {loginType.data !== "user" && (
                   <p>
-                    <span onClick={() => setLoginType("user")}>
+                    <span
+                      onClick={() => setLoginType("user")}
+                      data-testid="user-login"
+                    >
                       Login as user
                     </span>
                   </p>

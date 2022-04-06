@@ -74,10 +74,13 @@ export default function UserDetails() {
       );
       dispatch(getTenantRoles());
     }
+  }, []);
+
+  useEffect(() => {
     if (userDetails.data) {
       setUserdata({ ...userDetails.data });
     }
-  }, []);
+  }, [userDetails.loading]);
 
   const removeRole = (role: string) => {
     const temp = userdata.roles.filter(function (value: string) {

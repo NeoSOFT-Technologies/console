@@ -46,11 +46,11 @@ export default function TenantDetails() {
     id: 0,
     policy: "",
     port: 0,
-    tenantDbName: "",
+    databaseName: "",
     tenantId: 0,
     tenantName: "",
   });
-  console.log(tenant);
+  console.log(tenant, tenantDetailsState.data);
   const [error, setError] = useState<IErrorTenantDetail>({
     description: "",
   });
@@ -100,7 +100,7 @@ export default function TenantDetails() {
     event.preventDefault();
     // console.log(error);
     if (handleValidate()) {
-      if (tenant.tenantName !== "" && tenant.tenantDbName !== "") {
+      if (tenant.tenantName !== "" && tenant.databaseName !== "") {
         if (tenant.tenantName !== undefined) {
           dispatch(updateTenant({ ...tenant }));
           setEdit(false);
@@ -134,12 +134,15 @@ export default function TenantDetails() {
 
         <Dropdown.Menu>
           <Dropdown.Item>Test</Dropdown.Item>
-          {/* <Dropdown.Item onClick={() => navigate("/manageroles")}>
+          <Dropdown.Item
+            data-testid="dropdownitem1"
+            onClick={() => navigate("/manageroles")}
+          >
             Manage Roles
           </Dropdown.Item>
           <Dropdown.Item onClick={() => navigate("/tenantpermission")}>
             Manage Permission
-          </Dropdown.Item> */}
+          </Dropdown.Item>
           <Dropdown.Item>Set Tenant Url</Dropdown.Item>
           {/* <Dropdown.Item>Set InActive</Dropdown.Item> */}
           <Dropdown.Item>Upload</Dropdown.Item>
@@ -170,6 +173,7 @@ export default function TenantDetails() {
                   <Form.Label>Name :</Form.Label>
 
                   <Form.Control
+                    data-testid="name-input"
                     type="text"
                     placeholder="Enter Name"
                     name="tenantName"
@@ -191,6 +195,7 @@ export default function TenantDetails() {
                   <Form.Label>email</Form.Label>
                   <Form.Control
                     type="email"
+                    data-testid="email-input"
                     placeholder="email"
                     value={tenant.email}
                     name="email"
@@ -208,16 +213,17 @@ export default function TenantDetails() {
                   <Form.Label>databaseName :</Form.Label>
                   <Form.Control
                     type="text"
+                    data-testid="databaseName-input"
                     onChange={handleInputChange}
-                    name="tenantDbName"
+                    name="databaseName"
                     // disabled={!edit}
                     disabled
                     placeholder="Enter database name"
-                    value={tenant.tenantDbName}
-                    // isInvalid={!!error.tenantDbName}
+                    value={tenant.databaseName}
+                    // isInvalid={!!error.databaseName}
                   />
-                  {tenant.tenantDbName &&
-                    !regexForName.test(tenant.tenantDbName) && (
+                  {tenant.databaseName &&
+                    !regexForName.test(tenant.databaseName) && (
                       <span className="text-danger">
                         databaseName Should Not Cantain Any Special Character or
                         Number
@@ -230,6 +236,7 @@ export default function TenantDetails() {
                   <Form.Label>Host :</Form.Label>
                   <Form.Control
                     type="text"
+                    data-testid="host-input"
                     placeholder="host"
                     value={tenant.host}
                     name="host"
@@ -244,6 +251,7 @@ export default function TenantDetails() {
 
                   <Form.Control
                     type="text"
+                    data-testid="port-input"
                     placeholder="port"
                     value={tenant.port}
                     name="port"
@@ -261,10 +269,11 @@ export default function TenantDetails() {
                   <Form.Label>Description:</Form.Label>
                   <Form.Control
                     as="textarea"
+                    type="textarea"
                     name="description"
+                    data-testid="description-input"
                     rows={3}
                     className="form-control rounded-0"
-                    id="description"
                     placeholder="Here...."
                     value={tenant.description}
                     disabled={!edit}
@@ -275,6 +284,7 @@ export default function TenantDetails() {
               </Col>
               {edit ? (
                 <Button
+                  data-testid="update-button"
                   onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
                     handleUpdateTenant(event)
                   }
@@ -284,6 +294,7 @@ export default function TenantDetails() {
                 </Button>
               ) : (
                 <Button
+                  data-testid="edit-button"
                   onClick={() => setEdit(true)}
                   className="mt-3 info ml-4"
                 >
@@ -292,6 +303,7 @@ export default function TenantDetails() {
               )}
 
               <Button
+                data-testid="cancel-button"
                 className="btn btn-light mt-3"
                 type="reset"
                 onClick={() => navigate("/tenantlist")}

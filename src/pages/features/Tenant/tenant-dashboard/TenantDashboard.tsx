@@ -12,7 +12,7 @@ const TenantDashboard = () => {
     (state: RootState) => state.userData
   );
   useEffect(() => {
-    console.log(user.data, "KOKOK");
+    // console.log(user.data, "KOKOK");
     // setTimeout(
     //   () =>
     //     dispatch(

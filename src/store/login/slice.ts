@@ -27,7 +27,7 @@ export const commonLogin = createAsyncThunk(
       return true;
     } catch (error_) {
       console.log("in error", error_);
-      throw new Error(error_);
+      throw new Error(error(error_));
     }
   }
 );

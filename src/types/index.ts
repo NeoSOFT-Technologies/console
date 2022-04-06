@@ -28,7 +28,7 @@ export interface ITenantDetail {
   tenantName: string;
   description: string;
   createdDateTime: string;
-  tenantDbName: string;
+  databaseName: string;
   host: string;
   port: number;
   policy: string;

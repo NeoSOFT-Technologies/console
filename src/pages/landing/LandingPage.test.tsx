@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import store from "../../store/index";
 import LandingPage from "./LandingPage";
 
-it("render without crashing AdminDashboard", () => {
+it("render without crashing LandingPage", () => {
   render(
     <BrowserRouter>
       <Provider store={store}>

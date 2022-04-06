@@ -35,7 +35,7 @@ const TenantProfile = () => {
     id: 0,
     policy: "",
     port: 0,
-    tenantDbName: "",
+    databaseName: "",
     tenantId: 0,
     tenantName: "",
   });
@@ -84,7 +84,7 @@ const TenantProfile = () => {
     event.preventDefault();
     // console.log(error);
     if (handleValidate()) {
-      if (tenant.tenantName !== "" && tenant.tenantDbName !== "") {
+      if (tenant.tenantName !== "" && tenant.databaseName !== "") {
         // const updated = { ...tenant };
         if (tenant.id !== undefined) {
           dispatch(updateTenant({ ...tenant }));
@@ -111,7 +111,7 @@ const TenantProfile = () => {
                   <Form.Control
                     type="text"
                     placeholder="Enter Name"
-                    data-testid="name-input"
+                    data-testid="tenantName-input"
                     name="tenantName"
                     onChange={handleInputChange}
                     value={tenant.tenantName}
@@ -138,12 +138,12 @@ const TenantProfile = () => {
                     data-testid="databaseName-input"
                     // disabled={!edit}
                     placeholder="Enter database name"
-                    value={tenant.tenantDbName}
-                    // isInvalid={!!error.tenantDbName}
+                    value={tenant.databaseName}
+                    // isInvalid={!!error.databaseName}
                     disabled
                   />
-                  {tenant.tenantDbName &&
-                    !regexForName.test(tenant.tenantDbName) && (
+                  {tenant.databaseName &&
+                    !regexForName.test(tenant.databaseName) && (
                       <span className="text-danger">
                         databaseName Should Not Cantain Any Special Character or
                         Number

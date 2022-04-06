@@ -32,7 +32,7 @@ export const getUserData = createAsyncThunk(
               tenantName: "Arpan",
               description: "i am Arpan",
               createdDateTime: "2022/03/29 17:35:59",
-              tenantDbName: "db-Arpan",
+              databaseName: "db-Arpan",
               host: "127.0.0.1",
               port: 3306,
               policy: "{ max_size: 30 }",
@@ -46,6 +46,7 @@ export const getUserData = createAsyncThunk(
           );
           break;
       }
+      // console.log(response);
       return response?.data;
     } catch (error_) {
       console.log("in error", error(error_));

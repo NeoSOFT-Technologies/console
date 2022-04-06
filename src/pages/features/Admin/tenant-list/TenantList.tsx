@@ -20,6 +20,7 @@ export default function TenantList() {
   });
 
   const NavigateTenant = (value: any) => {
+    // console.log(value);
     navigate(`/tenantdetails/${value._cells[0].data}`, {
       state: {
         tenantName: value._cells[0].data,
@@ -41,7 +42,7 @@ export default function TenantList() {
       data: "createdDateTime",
     },
   ];
-  console.log(process.env.REACT_APP_API_BASEURL);
+  // console.log(process.env.REACT_APP_API_BASEURL);
   const url =
     process.env.REACT_APP_API_BASEURL + "/api/tenants?" ||
     "http://localhost:3000/api/tenants?";

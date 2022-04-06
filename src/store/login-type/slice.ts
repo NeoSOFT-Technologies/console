@@ -33,7 +33,7 @@ const slice = createSlice({
     builder.addCase(checkLoginType.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(checkLoginType.fulfilled, (state, action) => {
+    builder.addCase(checkLoginType.fulfilled, (state, action: any) => {
       state.loading = false;
       state.data = action.payload;
     });
