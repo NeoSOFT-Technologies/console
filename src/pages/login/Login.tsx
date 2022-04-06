@@ -70,6 +70,7 @@ export default function Login() {
         ToastAlert("Logged In", "success");
         navigate("/admindashboard");
       } else if (user.data && type === "user") {
+        
         ToastAlert("Logged In", "success");
         navigate("/userdashboard");
       } else {

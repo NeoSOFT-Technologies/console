@@ -23,7 +23,7 @@ const buildHeader = (obj = {}) => {
   return header;
 };
 
-const apiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
+const ApiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
   const service = axios.create({
     baseURL: baseUrl,
     headers: buildHeader(header),
@@ -88,4 +88,4 @@ const apiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
   return service;
 };
 
-export default apiFactory;
+export default ApiFactory;
