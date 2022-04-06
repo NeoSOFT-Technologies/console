@@ -27,12 +27,12 @@ export const getUserData = createAsyncThunk(
           // response = await getTenantDetailsService(conditions.tenantName);
           response = {
             data: {
-              id: 5,
-              tenantId: 11,
-              tenantName: "Arpan",
-              description: "i am Arpan",
-              createdDateTime: "2022/03/29 17:35:59",
-              databaseName: "db-Arpan",
+              id: 4,
+              tenantId: 4,
+              tenantName: "Rohit",
+              description: "i am Rohit",
+              createdDateTime: "2022/04/06 17:27:46",
+              databaseName: "db-Rohit",
               host: "127.0.0.1",
               port: 3306,
               policy: "{ max_size: 30 }",

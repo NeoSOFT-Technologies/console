@@ -21,7 +21,11 @@ import {
   IUserDetailsState,
 } from "../../../../store/features/user/user-details/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { IUserDetailsData, ITenantRolesState } from "../../../../types/index";
+import {
+  IUserDetailsData,
+  ITenantRolesState,
+  IUserDataState,
+} from "../../../../types/index";
 
 interface Ierror {
   username: string;
@@ -34,6 +38,9 @@ export default function UserDetails() {
   const params = useParams();
   // @ts-ignore
   const dispatch = useAppDispatch();
+  const user: IUserDataState = useAppSelector(
+    (state: RootState) => state.userData
+  );
   const userDetails: IUserDetailsState = useAppSelector(
     (state: RootState) => state.userDetails
   );
@@ -58,7 +65,6 @@ export default function UserDetails() {
     roles: [],
     permissions: [],
   });
-  console.log(userdata.roles);
 
   const [errordata, setErrordata] = useState<Ierror>({
     username: "",
@@ -68,9 +74,12 @@ export default function UserDetails() {
   const [editUser, setEditUser] = useState(false);
 
   useEffect(() => {
-    if (params.userName) {
+    if (params.userName && user.data?.tenantName) {
       dispatch(
-        getUserDetails({ tenantName: "Arpan", userName: params.userName })
+        getUserDetails({
+          tenantName: user.data.tenantName,
+          userName: params.userName,
+        })
       );
       dispatch(getTenantRoles());
     }
