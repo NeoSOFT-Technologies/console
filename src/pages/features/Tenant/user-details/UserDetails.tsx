@@ -8,7 +8,7 @@ import {
   Form,
   Row,
 } from "react-bootstrap";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router-dom";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { regexForUser, regexForEmail } from "../../../../resources/constants";
@@ -36,6 +36,7 @@ interface Ierror {
 
 export default function UserDetails() {
   const params = useParams();
+  const navigate = useNavigate();
   // @ts-ignore
   const dispatch = useAppDispatch();
   const user: IUserDataState = useAppSelector(
@@ -101,6 +102,7 @@ export default function UserDetails() {
 
   const handleRemove = async () => {
     await dispatch(deleteUser(userdata.username));
+    navigate("/userlist");
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

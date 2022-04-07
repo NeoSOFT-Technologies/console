@@ -134,7 +134,7 @@ export default function TenantDetails() {
 
         <Dropdown.Menu>
           <Dropdown.Item>Test</Dropdown.Item>
-          <Dropdown.Item
+          {/* <Dropdown.Item
             data-testid="dropdownitem1"
             onClick={() => navigate("/manageroles")}
           >
@@ -142,7 +142,7 @@ export default function TenantDetails() {
           </Dropdown.Item>
           <Dropdown.Item onClick={() => navigate("/tenantpermission")}>
             Manage Permission
-          </Dropdown.Item>
+          </Dropdown.Item> */}
           <Dropdown.Item>Set Tenant Url</Dropdown.Item>
           {/* <Dropdown.Item>Set InActive</Dropdown.Item> */}
           <Dropdown.Item>Upload</Dropdown.Item>

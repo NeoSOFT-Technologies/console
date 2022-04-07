@@ -46,9 +46,9 @@ const slice = createSlice({
       state.loading = false;
       state.loginVerified = action.payload;
     });
-    builder.addCase(commonLogin.rejected, (state, action) => {
+    builder.addCase(commonLogin.rejected, (state, action: any) => {
       state.loading = false;
-      state.error = error(action.payload);
+      state.error = action.payload;
     });
   },
 });
