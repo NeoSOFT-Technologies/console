@@ -1,6 +1,5 @@
 import React from "react";
 import { Col, Dropdown, Form, Row } from "react-bootstrap";
-// import { ICreateNewUser } from "../../types";
 interface IProps {
   rolesList?: string[] | null;
   formData: string[];
