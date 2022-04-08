@@ -26,7 +26,7 @@ export default function Createuser() {
   const rolesList: ITenantRolesState = useAppSelector(
     (state: RootState) => state.rolesList
   );
-  console.log(rolesList);
+  // console.log(rolesList);
   const [formData, setFormData] = useState<ICreateNewUser>({
     userName: "",
     email: "",

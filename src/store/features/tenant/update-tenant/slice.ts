@@ -36,6 +36,7 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(updateTenant.pending, (state) => {
       state.loading = true;
+      state.error = undefined;
     });
     builder.addCase(updateTenant.fulfilled, (state, action) => {
       state.loading = false;

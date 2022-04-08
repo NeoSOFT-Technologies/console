@@ -22,7 +22,7 @@ export const tenantDetails = createAsyncThunk(
       const response = await getTenantDetailsService(tenantName);
       return response.data;
     } catch (error_) {
-      return error_;
+      throw new Error(error(error_));
     }
   }
 );
@@ -34,6 +34,7 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(tenantDetails.pending, (state) => {
       state.loading = true;
+      state.error = undefined;
     });
     builder.addCase(tenantDetails.fulfilled, (state, action) => {
       state.loading = false;

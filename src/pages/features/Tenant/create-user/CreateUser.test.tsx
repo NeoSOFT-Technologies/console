@@ -61,7 +61,7 @@ it("test if input box takes input", () => {
   fireEvent.change(passwordBox, { target: { value: "akhilpinni123@" } });
   expect(screen.getByTestId("password-input")).toHaveValue("akhilpinni123@");
 });
-//
+// it("multi select dropdown renders properlly", () => {
 //   render(
 //     <BrowserRouter>
 //       <Provider store={store}>

@@ -1,12 +1,15 @@
+import mockApi from "../../resources/testconfig";
 import store from "../../store/index";
 import { getLandingPageDetails } from "./slice";
 
 test("calling the state of landing", async () => {
-  let state = store.getState().landing;
-
-  expect(state.loading).toBeFalsy();
+  mockApi.onGet("/global/mock-data/landing.json").reply(200, {});
 
   await store.dispatch(getLandingPageDetails());
+});
 
-  state = store.getState().landing;
+test("calling the state of landing", async () => {
+  mockApi.onGet("/global/mock-data/landing.json").reply(404);
+
+  await store.dispatch(getLandingPageDetails());
 });

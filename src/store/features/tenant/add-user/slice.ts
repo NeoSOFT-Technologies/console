@@ -22,7 +22,7 @@ export const addNewUser = createAsyncThunk(
       const response = await createNewUserService(conditions);
       return response.data;
     } catch (error_) {
-      return error_;
+      throw new Error(error(error_));
     }
   }
 );
@@ -35,6 +35,7 @@ const slice = createSlice({
     builder.addCase(addNewUser.pending, (state) => {
       state.loading = true;
       state.isAdded = false;
+      state.error = undefined;
     });
     builder.addCase(addNewUser.fulfilled, (state) => {
       state.loading = false;

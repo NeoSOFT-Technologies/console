@@ -22,10 +22,10 @@ const TenantProfile = () => {
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
   );
-  console.log(
-    "🚀 ~ file: TenantProfile.tsx ~ line 34 ~ TenantProfile ~ user",
-    user
-  );
+  // console.log(
+  //   "🚀 ~ file: TenantProfile.tsx ~ line 34 ~ TenantProfile ~ user",
+  //   user
+  // );
   const [edit, setEdit] = useState(false);
   const dispatch = useAppDispatch();
   const [tenant, setTenant] = useState<ITenantDetail>({
