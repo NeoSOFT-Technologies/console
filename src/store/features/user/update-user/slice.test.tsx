@@ -1,4 +1,4 @@
-import store from "../../../../store/index";
+import store from "../../../index";
 import { updateUser } from "./slice";
 
 test("calling the state of update-user", async () => {
@@ -9,7 +9,7 @@ test("calling the state of update-user", async () => {
   await store.dispatch(
     updateUser({
       username: "deepthi",
-      email: "deepthi@gmail.com",
+      email: "mailto:deepthi@gmail.com",
       roles: ["user"],
     })
   );

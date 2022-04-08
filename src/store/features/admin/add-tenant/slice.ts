@@ -22,7 +22,7 @@ export const addNewTenant = createAsyncThunk(
       // console.log(response);
       return response.data;
     } catch (error_) {
-      return error_;
+      throw new Error(error(error_));
     }
   }
 );
@@ -35,6 +35,7 @@ const slice = createSlice({
     builder.addCase(addNewTenant.pending, (state) => {
       state.loading = true;
       state.tenantAdded = false;
+      state.error = undefined;
     });
     builder.addCase(addNewTenant.fulfilled, (state) => {
       state.loading = false;

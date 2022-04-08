@@ -49,7 +49,7 @@ export const getUserData = createAsyncThunk(
       // console.log(response);
       return response?.data;
     } catch (error_) {
-      console.log("in error", error(error_));
+      // console.log("in error", error(error_));
       throw new Error(error(error_));
     }
   }

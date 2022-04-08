@@ -21,7 +21,7 @@ export const deleteTenant = createAsyncThunk(
       const response = await deleteTenantDataService(tenantName);
       return response.data;
     } catch (error_) {
-      return error_;
+      throw new Error(error(error_));
     }
   }
 );
@@ -34,6 +34,7 @@ const slice = createSlice({
     builder.addCase(deleteTenant.pending, (state) => {
       state.loading = true;
       state.isDeleted = false;
+      state.error = undefined;
     });
     builder.addCase(deleteTenant.fulfilled, (state) => {
       state.loading = false;

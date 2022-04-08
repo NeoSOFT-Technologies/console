@@ -50,7 +50,7 @@ export default function TenantDetails() {
     tenantId: 0,
     tenantName: "",
   });
-  console.log(tenant, tenantDetailsState.data);
+  // console.log(tenant, tenantDetailsState.data);
   const [error, setError] = useState<IErrorTenantDetail>({
     description: "",
   });
