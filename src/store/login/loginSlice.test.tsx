@@ -11,7 +11,7 @@ test("calling the state of login", async () => {
       tenantName: "paras",
     })
   );
-  console.log(result);
+  // console.log(result);
   expect(result.type).toBe("user/get_acessToken/fulfilled");
 });
 

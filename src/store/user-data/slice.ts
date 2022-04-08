@@ -66,13 +66,13 @@ const slice = createSlice({
       state.error = undefined;
     });
     builder.addCase(getUserData.fulfilled, (state, action) => {
-      console.log("in fullfilled xyz");
+      // console.log("in fullfilled xyz");
       state.loading = false;
-      console.log(action.payload);
+      // console.log(action.payload);
       state.data = action.payload;
     });
     builder.addCase(getUserData.rejected, (state, action) => {
-      console.log("in rejected");
+      // console.log("in rejected");
       state.loading = false;
       state.error = error(action.payload);
     });

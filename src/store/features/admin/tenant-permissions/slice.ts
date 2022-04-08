@@ -16,7 +16,7 @@ export const getTenantPermissions = createAsyncThunk(
       const response = await tenantPermissionsService(tenantName);
       return response.data;
     } catch (error_) {
-      return error_;
+      throw new Error(error(error_));
     }
   }
 );
@@ -28,6 +28,7 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(getTenantPermissions.pending, (state) => {
       state.loading = true;
+      state.error = undefined;
     });
     builder.addCase(getTenantPermissions.fulfilled, (state, action) => {
       state.loading = false;

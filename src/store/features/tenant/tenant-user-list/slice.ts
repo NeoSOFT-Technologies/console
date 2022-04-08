@@ -27,7 +27,7 @@ export const getTenantUserList = createAsyncThunk(
       );
       return response.data.data;
     } catch (error_) {
-      return error_;
+      throw new Error(error(error_));
     }
   }
 );
@@ -39,6 +39,7 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(getTenantUserList.pending, (state) => {
       state.loading = true;
+      state.error = undefined;
     });
     builder.addCase(getTenantUserList.fulfilled, (state, action) => {
       state.loading = false;

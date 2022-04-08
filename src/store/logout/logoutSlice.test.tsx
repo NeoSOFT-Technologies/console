@@ -9,6 +9,5 @@ test("calling the state of logout", async () => {
 
 test("calling the state of logout should give an error", async () => {
   mockApi.onPost("api/logout").reply(404);
-  const result = await store.dispatch(commonLogout());
-  console.log(result);
+  await store.dispatch(commonLogout());
 });

@@ -19,7 +19,7 @@ export const commonLogout = createAsyncThunk("user/logout", async () => {
     const response = await commonLogoutService();
     return response.data;
   } catch (error_) {
-    console.log("in error", error_);
+    // console.log("in error", error_);
     throw new Error(error(error_));
   }
 });

@@ -13,7 +13,7 @@ export function tenantListService(
   currentPage: number,
   search: string // add search in backend
 ) {
-  console.log(search);
+  // console.log(search);
   return apiFactory().get(`/api/tenants?page=${currentPage}`);
 }
 

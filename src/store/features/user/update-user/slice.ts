@@ -27,7 +27,7 @@ export const updateUser = createAsyncThunk(
       const response = await updateUserDataService(condition);
       return response.data;
     } catch (error_) {
-      return error_;
+      throw new Error(error(error_));
     }
   }
 );
@@ -40,6 +40,7 @@ const slice = createSlice({
     builder.addCase(updateUser.pending, (state) => {
       state.loading = true;
       state.isUpdated = false;
+      state.error = undefined;
     });
     builder.addCase(updateUser.fulfilled, (state) => {
       state.loading = false;
