@@ -26,7 +26,7 @@ export const commonLogin = createAsyncThunk(
       await commonLoginService(conditions);
       return true;
     } catch (error_) {
-      console.log("in error", error_);
+      // console.log("in error", error_);
       throw new Error(error(error_));
     }
   }
