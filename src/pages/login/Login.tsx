@@ -149,7 +149,7 @@ export default function Login() {
       await dispatch(commonLogin({ ...formdata }));
     } else {
       ToastAlert("Please fill all the fields", "error");
-      throw new Error("Please fill all the fields ");
+      // throw new Error("Please fill all the fields ");
     }
   };
 
