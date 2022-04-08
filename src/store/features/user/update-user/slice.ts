@@ -3,25 +3,28 @@ import { updateUserDataService } from "../../../../services/users";
 import error from "../../../../utils/error";
 
 interface IConditions {
-  userName: string;
+  username: string;
   email: string;
+  roles: string[];
 }
+
 export interface IUpdateUserState {
   isUpdated: boolean;
   loading: boolean;
   error?: string;
 }
+
 const initialState: IUpdateUserState = {
   isUpdated: false,
   loading: false,
   error: undefined,
 };
+
 export const updateUser = createAsyncThunk(
   "user/update",
   async (condition: IConditions) => {
     try {
       const response = await updateUserDataService(condition);
-      console.log(response);
       return response.data;
     } catch (error_) {
       return error_;
@@ -44,7 +47,6 @@ const slice = createSlice({
     });
     builder.addCase(updateUser.rejected, (state, action) => {
       state.loading = false;
-      // action.payload contains error information
       state.error = error(action.payload);
     });
   },

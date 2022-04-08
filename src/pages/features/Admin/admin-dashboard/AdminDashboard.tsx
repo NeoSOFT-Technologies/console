@@ -11,7 +11,7 @@ const AdminDashboard = () => {
     (state: RootState) => state.userData
   );
   useEffect(() => {
-    // console.log(user.data);
+    console.log(user.data, user.error);
     if (user.error) ToastAlert("Userdata not found", "error");
   }, [user.error]);
 

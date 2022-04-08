@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Form, Row, Col, Container } from "react-bootstrap";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
@@ -10,51 +10,30 @@ import {
 } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
 import { addNewTenant } from "../../../../store/features/admin/add-tenant/slice";
-import { getTenantRoles } from "../../../../store/features/admin/tenant-roles/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
   IErrorTenantInput,
-  ITenantData,
-  ITenantRolesState,
+  ITenantRegisterData,
 } from "../../../../types/index";
 
 export default function RegisterTenant() {
+  const tenantAdded = useAppSelector((state: RootState) => state.addNewTenant);
   const dispatch = useAppDispatch();
-  const [tenant, setTenant] = useState<ITenantData>({
+  const [tenant, setTenant] = useState<ITenantRegisterData>({
     tenantName: "",
     description: "",
     email: "",
     password: "",
     databaseName: "",
     databaseDescription: "",
-    roles: [],
   });
   const [error, setError] = useState<IErrorTenantInput>({
     tenantName: "",
     email: "",
     password: "",
     description: "",
-    // roles: "",
+    databaseName: "",
   });
-  const tenantAdded = useAppSelector((state: RootState) => state.addNewTenant);
-  // const [tenant.roles, setTenant] = useState<string[]>([]);
-  // const [rolesList, setRolesList] = useState([]);
-  // const rolesList = ["A", "B", "C", "D"];
-  const rolesList: ITenantRolesState = useAppSelector(
-    (state: RootState) => state.rolesList
-  );
-  useEffect(() => {
-    dispatch(getTenantRoles());
-  }, []);
-
-  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      setTenant({ ...tenant, roles: [...tenant.roles, event.target.value] });
-    } else {
-      tenant.roles.splice(tenant.roles.indexOf(event.target.value), 1);
-      setTenant({ ...tenant, roles: [...tenant.roles] });
-    }
-  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // console.log(event.target.value);
@@ -93,7 +72,14 @@ export default function RegisterTenant() {
             : "Email should contains atlast @,.com",
         });
         break;
-
+      case "databaseName":
+        setError({
+          ...error,
+          [name]: regexForEmail.test(value)
+            ? ""
+            : "database Name should not be empty",
+        });
+        break;
       default:
         break;
     }
@@ -105,7 +91,8 @@ export default function RegisterTenant() {
         error.tenantName === "" &&
         error.email === "" &&
         error.description === "" &&
-        error.password === ""
+        error.password === "" &&
+        error.databaseName
       )
       // error.roles === ""
     );
@@ -125,7 +112,7 @@ export default function RegisterTenant() {
         const newUser = {
           ...tenant,
         };
-        console.log(newUser);
+        // console.log(newUser);
         await dispatch(addNewTenant(newUser));
 
         ToastAlert("Tenant Registered", "success");
@@ -137,7 +124,6 @@ export default function RegisterTenant() {
           password: "",
           databaseName: "",
           databaseDescription: "",
-          roles: [],
         });
       } else {
         ToastAlert("Please Fill All Fields", "warning");
@@ -148,7 +134,7 @@ export default function RegisterTenant() {
         email: "",
         password: "",
         description: "",
-        // roles: "",
+        databaseName: "",
       });
     }
   };
@@ -163,7 +149,6 @@ export default function RegisterTenant() {
       password: "",
       databaseName: "",
       databaseDescription: "",
-      roles: [],
     });
   };
   return tenantAdded.loading ? (
@@ -189,7 +174,7 @@ export default function RegisterTenant() {
                     id="tenantName"
                     placeholder="Enter tenantName"
                     name="tenantName"
-                    data-testid="name-input"
+                    data-testid="tenantName-input"
                     value={tenant.tenantName}
                     isInvalid={!!error.tenantName}
                     isValid={!error.tenantName && !!tenant.tenantName}
@@ -205,13 +190,13 @@ export default function RegisterTenant() {
                 <Form.Group className="mb-3">
                   <Form.Label>Email :</Form.Label>
                   <Form.Control
+                    data-testid="email-input"
                     type="email"
                     placeholder="Enter Email"
                     name="email"
                     // id="email"
                     value={tenant.email}
                     isValid={!error.email && !!tenant.email}
-                    data-testid="email-input"
                     isInvalid={!!error.email}
                     onChange={handleInputChange}
                     required
@@ -302,21 +287,6 @@ export default function RegisterTenant() {
                 </Form.Group>
               </Col>
             </Row>
-            <div className="title">Tenant Roles:</div>
-            <div className="list-container  ">
-              {/* {console.log(rolesList)} */}
-              {rolesList?.data?.map((item, index) => (
-                <p key={index} className="m-4">
-                  <input
-                    value={item}
-                    type="checkbox"
-                    onChange={handleCheck}
-                    className=" inline"
-                  />
-                  <span className="mx-1">{item}</span>
-                </p>
-              ))}
-            </div>
 
             <Button className="info" type="submit" data-testid="submit-input">
               Submit

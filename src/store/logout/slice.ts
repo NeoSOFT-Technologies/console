@@ -1,9 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { commonLogoutService } from "../../services";
-import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
 
-const initialState: IUserDataState = {
+interface IConditions {
+  data: undefined;
+  loading: boolean;
+  error: string | undefined;
+}
+
+const initialState: IConditions = {
   data: undefined,
   loading: false,
   error: undefined,
@@ -27,12 +32,12 @@ const slice = createSlice({
     builder.addCase(commonLogout.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(commonLogout.fulfilled, (state) => {
+    builder.addCase(commonLogout.fulfilled, (state, action) => {
       state.loading = false;
+      state.data = action.payload;
     });
     builder.addCase(commonLogout.rejected, (state, action) => {
       state.loading = false;
-      // action.payload contains error information
       state.error = error(action.payload);
     });
   },

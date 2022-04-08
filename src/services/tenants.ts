@@ -1,25 +1,13 @@
-import { ITenantData } from "../types";
+import { ICreateNewUser, ITenantDetail } from "../types";
 import apiFactory from "../utils/api";
 
-interface CreateUser {
-  userName: string;
-  email: string;
-  password: string;
-  roles: string[];
-}
-
-export function updateTenantDataService(data: ITenantData) {
+export function updateTenantDataService(data: ITenantDetail) {
   const body = {
     action: {
-      tenantName: data.tenantName,
-      description: data.description,
+      ...data,
     },
   };
-  console.log(
-    "🚀 ~ file: tenants.ts ~ line 19 ~ updateTenantDataService ~ body",
-    body
-  );
-  return apiFactory().patch(`/api/tenant`, body);
+  return apiFactory().patch(`/api/tenants`, body);
 }
 
 export function tenantUserListService(
@@ -34,7 +22,7 @@ export function tenantUserListService(
   );
 }
 
-export function createNewUserService(data: CreateUser) {
+export function createNewUserService(data: ICreateNewUser) {
   const body = {
     userDetails: {
       ...data,
@@ -47,10 +35,8 @@ export function deleteUserDataService(userName: string) {
   return apiFactory().delete(`/api/user/${userName}`);
 }
 
-export function userPermissionService(tenantName: string, clientName: string) {
-  return apiFactory().get(
-    `/api/permission?tenantName=${tenantName}&clientName=${clientName}`
-  );
+export function userPermissionService(tenantName: string) {
+  return apiFactory().get(`/api/permission?tenantName=${tenantName}`);
 }
 
 export function tenantRolesService(tenantName: string) {
@@ -58,11 +44,8 @@ export function tenantRolesService(tenantName: string) {
 }
 
 export function getTenantDetailsService(tenantName: string) {
-  console.log(
-    "🚀 ~ file: tenants.ts ~ line 62 ~ getTenantDetailsService ~ tenantName",
-    tenantName
-  );
-  return apiFactory().get(`/api/tenants/2`); // put tenantName here
+  console.log("tenantName", tenantName);
+  return apiFactory().get(`/api/tenants/4`); // put tenantName here
 }
 
 export function tenantPermissionsService(tenantName: string) {

@@ -25,7 +25,7 @@ it("test if input box is present", () => {
     </BrowserRouter>
   );
 
-  const nameBox = screen.getByTestId("name-input");
+  const nameBox = screen.getByTestId("tenantName-input");
   expect(nameBox).toBeInTheDocument();
   expect(nameBox).toHaveAttribute("type", "text");
 
@@ -59,9 +59,9 @@ it("test if input box take input", () => {
     </BrowserRouter>
   );
 
-  const nameBox = screen.getByTestId("name-input");
-  fireEvent.change(nameBox, { target: { value: "deepthi" } });
-  expect(screen.getByTestId("name-input")).toHaveValue("deepthi");
+  const nameBox = screen.getByTestId("tenantName-input");
+  fireEvent.change(nameBox, { target: { value: "akhilpinni" } });
+  expect(screen.getByTestId("tenantName-input")).toHaveValue("akhilpinni");
 
   const emailBox = screen.getByTestId("email-input");
   fireEvent.change(emailBox, { target: { value: "akhilpinni123@gmail.com" } });

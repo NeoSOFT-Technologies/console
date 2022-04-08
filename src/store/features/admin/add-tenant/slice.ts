@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { addTenantDataService } from "../../../../services";
-import { ITenantData } from "../../../../types/index";
+import { ITenantRegisterData } from "../../../../types/index";
 import error from "../../../../utils/error";
 
 interface IAddTenantState {
@@ -16,7 +16,7 @@ const initialState: IAddTenantState = {
 
 export const addNewTenant = createAsyncThunk(
   "tenant/addnewtenant",
-  async (conditions: ITenantData) => {
+  async (conditions: ITenantRegisterData) => {
     try {
       const response = await addTenantDataService(conditions);
       // console.log(response);

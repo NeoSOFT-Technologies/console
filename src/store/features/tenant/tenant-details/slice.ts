@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getTenantDetailsService } from "../../../../services";
+import { ITenantDetail } from "../../../../types/index";
 import error from "../../../../utils/error";
 
-export interface IUpdateUserState {
-  data: undefined;
+export interface ITenantDetailState {
+  data?: ITenantDetail;
   loading: boolean;
   error?: string;
 }
-const initialState: IUpdateUserState = {
+
+const initialState: ITenantDetailState = {
   data: undefined,
   loading: false,
   error: undefined,
@@ -18,7 +20,6 @@ export const tenantDetails = createAsyncThunk(
   async (tenantName: string) => {
     try {
       const response = await getTenantDetailsService(tenantName);
-      // console.log(response);
       return response.data;
     } catch (error_) {
       return error_;
@@ -40,7 +41,6 @@ const slice = createSlice({
     });
     builder.addCase(tenantDetails.rejected, (state, action) => {
       state.loading = false;
-      // action.payload contains error information
       state.error = error(action.payload);
     });
   },

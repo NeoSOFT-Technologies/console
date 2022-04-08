@@ -8,7 +8,7 @@ export default function RoleAndPermissions() {
   const user: IUserDataState = useSelector(
     (state: RootState) => state.userData
   );
-  // console.log(user);
+  console.log(user);
   return (
     <Card className="w-75 mx-auto p-2">
       <h1 className="mx-auto p-1">Roles & Permissions</h1>

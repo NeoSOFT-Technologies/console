@@ -8,46 +8,57 @@ import { ToastAlert } from "../../components/toast-alert/toast-alert";
 // import { regexForEmail } from "../../resources/constants";
 import { logo } from "../../resources/images";
 import { RootState } from "../../store";
-import { checkLoginType } from "../../store/login-type/slice";
-import { commonLogin } from "../../store/login/slice";
+import { useAppSelector } from "../../store/hooks";
+import { checkLoginType, ILoginTypeState } from "../../store/login-type/slice";
+import { commonLogin, ITokenState } from "../../store/login/slice";
 import { getUserData } from "../../store/user-data/slice";
-import { IUserDataState } from "../../types";
+import { IUserDataState, ILogin } from "../../types";
 
 export default function Login() {
-  const type: string = useSelector((state: RootState) => state.loginType.data);
-  const [userName, setUserName] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [tenantName, setTenantName] = useState<string>("");
-  const [error, setError] = useState({
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const loginType: ILoginTypeState = useSelector(
+    (state: RootState) => state.loginType
+  );
+  const user: IUserDataState = useSelector(
+    (state: RootState) => state.userData
+  );
+  const loginVerification: ITokenState = useAppSelector(
+    (state: RootState) => state.loginAccessToken
+  );
+  const [formdata, setFormData] = useState<ILogin>({
     userName: "",
     password: "",
     tenantName: "",
   });
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+
+  const [error, setError] = useState<ILogin>({
+    userName: "",
+    password: "",
+    tenantName: "",
+  });
+
   const [showPassword, setShowpassword] = useState(false);
-  const user: IUserDataState = useSelector(
-    (state: RootState) => state.userData
-  );
+
   const handle = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
       case "userName":
-        setUserName(value);
+        setFormData({ ...formdata, userName: value });
         setError({
           ...error,
           userName: value.length > 4 ? "" : "Username is not valid",
         });
         break;
       case "password":
-        setPassword(value);
+        setFormData({ ...formdata, password: value });
         setError({
           ...error,
           password: value.length < 8 ? "password is not valid" : "",
         });
         break;
       case "tenantName":
-        setTenantName(value);
+        setFormData({ ...formdata, tenantName: value });
         setError({
           ...error,
           tenantName: value.length < 4 ? "tenantName is not valid" : "",
@@ -57,42 +68,77 @@ export default function Login() {
         break;
     }
   };
-  /**
-   * ! red flag remove type
-   * */
+
+  useEffect(() => {
+    console.log(
+      loginVerification.loginVerified,
+      loginVerification.error,
+      "inside loginVerification"
+    );
+
+    if (
+      loginVerification.loginVerified &&
+      !loginVerification.error &&
+      !loginVerification.loading
+    ) {
+      console.log(
+        "in  creds loginVerification",
+        loginVerification.loginVerified,
+        !loginVerification.error,
+        !loginVerification.loading
+      );
+
+      dispatch(
+        getUserData({
+          userName: formdata.userName,
+          tenantName: formdata.tenantName,
+          type: loginType.data,
+        })
+      );
+    } else if (
+      !loginVerification.loginVerified &&
+      loginVerification.error &&
+      !loginVerification.loading
+    ) {
+      console.log("in incorrect creds loginVerification");
+      ToastAlert("Incorrect Credentials!", "warning");
+    }
+  }, [loginVerification.loginVerified, loginVerification.error]);
+
   useEffect(() => {
     // console.log(type, user);
-    if (!user.loading && userName !== "" && password !== "") {
-      if (user.data && type === "tenant") {
+    if (!user.loading && formdata.userName !== "" && formdata.password !== "") {
+      if (user.data && loginType.data === "tenant") {
         ToastAlert("Logged In", "success");
         navigate("/tenantdashboard");
-      } else if (user.data && type === "admin") {
+      } else if (user.data && loginType.data === "admin") {
         ToastAlert("Logged In", "success");
         navigate("/admindashboard");
-      } else if (user.data && type === "user") {
+      } else if (user.data && loginType.data === "user") {
         ToastAlert("Logged In", "success");
         navigate("/userdashboard");
-      } else {
-        ToastAlert("Incorrect Credentials!", "warning");
-        throw new Error("Incorrect Credentials ");
       }
     }
-  }, [user.data]);
+  }, [user.data, user.error]);
 
   const validate = () => {
     let valid = false;
-    switch (type) {
+    switch (loginType.data) {
       case "admin":
-        valid = !(userName.length === 0 || password.length === 0);
+        valid = !(
+          formdata.userName.length === 0 || formdata.password.length === 0
+        );
         break;
       case "tenant":
-        valid = !(tenantName.length === 0 || password.length === 0);
+        valid = !(
+          formdata.tenantName.length === 0 || formdata.password.length === 0
+        );
         break;
       case "user":
         valid = !(
-          userName.length === 0 ||
-          password.length === 0 ||
-          tenantName.length === 0
+          formdata.userName.length === 0 ||
+          formdata.password.length === 0 ||
+          formdata.tenantName.length === 0
         );
         break;
     }
@@ -100,20 +146,21 @@ export default function Login() {
   };
   const handleSubmit = async () => {
     if (validate()) {
-      await dispatch(commonLogin({ userName, password, tenantName }));
-      await dispatch(getUserData({ userName, tenantName, type }));
+      await dispatch(commonLogin({ ...formdata }));
     } else {
       ToastAlert("Please fill all the fields", "error");
-      throw new Error("Please fill all the fields ");
+      // throw new Error("Please fill all the fields ");
     }
   };
 
   const setLoginType = (a: string) => {
     // console.log(type);
     dispatch(checkLoginType(a));
-    setUserName("");
-    setPassword("");
-    setTenantName("");
+    setFormData({
+      userName: "",
+      password: "",
+      tenantName: "",
+    });
     setError({
       userName: "",
       password: "",
@@ -131,15 +178,15 @@ export default function Login() {
             <div className="brand-logo">
               <img src={logo} alt="logo" />
             </div>
-            <h4>Hello {type} ! let&apos;s get started</h4>
+            <h4>Hello {loginType.data} ! let&apos;s get started</h4>
             <h6 className="font-weight-light">Sign in to continue.</h6>
             <Form className="pt-3">
               <Form.Group className="mb-3">
                 <Form.Control
-                  data-testid="username-input"
+                  data-testid="userName-input"
                   type="text"
                   name="userName"
-                  value={userName}
+                  value={formdata.userName}
                   placeholder="Enter Username"
                   onChange={handle}
                   required
@@ -150,7 +197,7 @@ export default function Login() {
                   </Alert>
                 )}
               </Form.Group>
-              {type !== "admin" && (
+              {loginType.data !== "admin" && (
                 <div>
                   <Form.Group className="mb-3">
                     <Form.Control
@@ -159,7 +206,7 @@ export default function Login() {
                       name="tenantName"
                       placeholder="Enter TenantName"
                       onChange={handle}
-                      value={tenantName}
+                      value={formdata.tenantName}
                       required
                     />
                     {error.tenantName.length > 0 && (
@@ -177,7 +224,7 @@ export default function Login() {
                       data-testid="password-input"
                       type={showPassword ? "text" : "password"}
                       name="password"
-                      value={password}
+                      value={formdata.password}
                       placeholder="Enter password"
                       onChange={handle}
                     />
@@ -222,7 +269,7 @@ export default function Login() {
                 </a>
               </div>
               <div>
-                {type !== "admin" && (
+                {loginType.data !== "admin" && (
                   <p>
                     <span
                       onClick={() => setLoginType("admin")}
@@ -232,7 +279,7 @@ export default function Login() {
                     </span>
                   </p>
                 )}
-                {type !== "tenant" && (
+                {loginType.data !== "tenant" && (
                   <p>
                     <span
                       onClick={() => setLoginType("tenant")}
@@ -242,7 +289,7 @@ export default function Login() {
                     </span>
                   </p>
                 )}
-                {type !== "user" && (
+                {loginType.data !== "user" && (
                   <p>
                     <span
                       onClick={() => setLoginType("user")}

@@ -14,71 +14,56 @@ import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
+  regexForDatabaseName,
   // regexForUser,
   // regexForEmail,
 } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
-// import { RootState } from "../../../../store";
 import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
 import { tenantDetails } from "../../../../store/features/tenant/tenant-details/slice";
 import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { IErrorTenantDetail } from "../../../../types/index";
-
-interface IDATA {
-  createdDateTime: string;
-  description: string;
-  host: string;
-  id: number;
-  policy: string;
-  port: number;
-  tenantDbName: string;
-  tenantId: number;
-  tenantName: string;
-}
+import { IErrorTenantDetail, ITenantDetail } from "../../../../types/index";
 
 export default function TenantDetails() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const params = useParams();
-  const incomingtenantdetails = useAppSelector(
+  const tenantDetailsState = useAppSelector(
     (state: RootState) => state.tenantDetails
   );
 
   const tenantDeleted = useAppSelector(
     (state: RootState) => state.deleteTenant
   );
-  // console.log("TenantDetails ~ params", params);
-  // console.log("TenantDetails ~ incomingtenantdetails", incomingtenantdetails);
 
   const [deleteshow, setDeleteshow] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [tenant, setTenant] = useState<IDATA>({
+  const [tenant, setTenant] = useState<ITenantDetail>({
     createdDateTime: "",
     description: "",
     host: "",
     id: 0,
     policy: "",
     port: 0,
-    tenantDbName: "",
+    databaseName: "",
     tenantId: 0,
     tenantName: "",
   });
-  // console.log(tenant);
+  console.log(tenant, tenantDetailsState.data);
   const [error, setError] = useState<IErrorTenantDetail>({
-    tenantName: "",
-    tenantDbName: "",
+    description: "",
   });
 
   useEffect(() => {
     const { tenantName } = params;
-    (async () => {
-      if (tenantName) {
-        await dispatch(tenantDetails(tenantName));
-        setTenant({ ...incomingtenantdetails.data });
-      }
-    })();
+    if (tenantName) dispatch(tenantDetails(tenantName));
   }, []);
+
+  useEffect(() => {
+    const data = tenantDetailsState.data;
+    if (data) setTenant({ ...data });
+  }, [tenantDetailsState.data]);
 
   const deleteTenantFunction = async () => {
     const { tenantName } = params;
@@ -92,18 +77,12 @@ export default function TenantDetails() {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
-      case "tenantName":
+      case "description":
         setError({
           ...error,
-          [name]: regexForName.test(value) ? "" : "Enter a valid name",
-        });
-        break;
-      case "tenantDbName":
-        setError({
-          ...error,
-          [name]: regexForName.test(value)
+          [name]: regexForDatabaseName.test(value)
             ? ""
-            : "databaseName should only consist Alphabets",
+            : "description should only consist Alphabets",
         });
         break;
       default:
@@ -113,7 +92,7 @@ export default function TenantDetails() {
   };
 
   const handleValidate = () => {
-    const validate = !!(error.tenantName === "" && error.tenantDbName === "");
+    const validate = !!(error.description === "");
     return validate;
   };
 
@@ -121,8 +100,7 @@ export default function TenantDetails() {
     event.preventDefault();
     // console.log(error);
     if (handleValidate()) {
-      if (tenant.tenantName !== "" && tenant.tenantDbName !== "") {
-        // const updated = { ...tenant };
+      if (tenant.tenantName !== "" && tenant.databaseName !== "") {
         if (tenant.tenantName !== undefined) {
           dispatch(updateTenant({ ...tenant }));
           setEdit(false);
@@ -134,7 +112,7 @@ export default function TenantDetails() {
     }
   };
 
-  return tenantDeleted.loading || incomingtenantdetails.loading ? (
+  return tenantDeleted.loading || tenantDetailsState.loading ? (
     <Spinner />
   ) : (
     <>
@@ -156,7 +134,7 @@ export default function TenantDetails() {
 
         <Dropdown.Menu>
           <Dropdown.Item>Test</Dropdown.Item>
-          <Dropdown.Item
+          {/* <Dropdown.Item
             data-testid="dropdownitem1"
             onClick={() => navigate("/manageroles")}
           >
@@ -164,9 +142,9 @@ export default function TenantDetails() {
           </Dropdown.Item>
           <Dropdown.Item onClick={() => navigate("/tenantpermission")}>
             Manage Permission
-          </Dropdown.Item>
+          </Dropdown.Item> */}
           <Dropdown.Item>Set Tenant Url</Dropdown.Item>
-          <Dropdown.Item>Set InActive</Dropdown.Item>
+          {/* <Dropdown.Item>Set InActive</Dropdown.Item> */}
           <Dropdown.Item>Upload</Dropdown.Item>
           <Dropdown.Item>Create tenant tables & data</Dropdown.Item>
         </Dropdown.Menu>
@@ -201,8 +179,8 @@ export default function TenantDetails() {
                     name="tenantName"
                     onChange={handleInputChange}
                     value={tenant.tenantName}
-                    disabled={!edit}
-                    isInvalid={!!error.tenantName}
+                    disabled
+                    // isInvalid={!!error.tenantName}
                   />
                   {tenant.tenantName &&
                     !regexForName.test(tenant.tenantName) && (
@@ -237,15 +215,15 @@ export default function TenantDetails() {
                     type="text"
                     data-testid="databaseName-input"
                     onChange={handleInputChange}
-                    name="tenantDbName"
+                    name="databaseName"
                     // disabled={!edit}
                     disabled
                     placeholder="Enter database name"
-                    value={tenant.tenantDbName}
-                    isInvalid={!!error.tenantDbName}
+                    value={tenant.databaseName}
+                    // isInvalid={!!error.databaseName}
                   />
-                  {tenant.tenantDbName &&
-                    !regexForName.test(tenant.tenantDbName) && (
+                  {tenant.databaseName &&
+                    !regexForName.test(tenant.databaseName) && (
                       <span className="text-danger">
                         databaseName Should Not Cantain Any Special Character or
                         Number
@@ -300,6 +278,7 @@ export default function TenantDetails() {
                     value={tenant.description}
                     disabled={!edit}
                     onChange={handleInputChange}
+                    isInvalid={!!error.description}
                   />
                 </Form.Group>
               </Col>

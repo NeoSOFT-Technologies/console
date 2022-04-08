@@ -10,9 +10,7 @@ test("calling the state of tenant-user-list", async () => {
     getTenantUserList({
       tenantName: "deepthi",
       userName: "deepthi",
-
       currentPage: 2,
-      search: "deepthi",
     })
   );
 

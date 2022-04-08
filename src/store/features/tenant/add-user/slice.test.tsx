@@ -11,7 +11,7 @@ test("calling the state of add-user", async () => {
       userName: "deepthi",
       email: "deepthi@gmail.com",
       password: "deepthi123",
-      roles: [],
+      roles: ["user"],
     })
   );
 

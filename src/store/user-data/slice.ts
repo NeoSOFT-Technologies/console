@@ -1,9 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-  adminLogin,
-  getTenantDetailsService,
-  getUserDetailsService,
-} from "../../services";
+import { adminLoginData, getUserDetailsService } from "../../services";
 import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
 
@@ -25,10 +21,23 @@ export const getUserData = createAsyncThunk(
       let response;
       switch (conditions.type) {
         case "admin":
-          response = await adminLogin();
+          response = await adminLoginData();
           break;
         case "tenant":
-          response = await getTenantDetailsService(conditions.tenantName);
+          // response = await getTenantDetailsService(conditions.tenantName);
+          response = {
+            data: {
+              id: 4,
+              tenantId: 4,
+              tenantName: "Rohit",
+              description: "i am Rohit",
+              createdDateTime: "2022/04/06 17:27:46",
+              databaseName: "db-Rohit",
+              host: "127.0.0.1",
+              port: 3306,
+              policy: "{ max_size: 30 }",
+            },
+          };
           break;
         case "user":
           response = await getUserDetailsService(
@@ -40,29 +49,31 @@ export const getUserData = createAsyncThunk(
       // console.log(response);
       return response?.data;
     } catch (error_) {
-      console.log("in error");
-      return error_;
+      console.log("in error", error(error_));
+      throw new Error(error(error_));
     }
   }
 );
 
 const slice = createSlice({
-  name: "user",
+  name: "userData",
   initialState,
   reducers: {},
   extraReducers(builder): void {
     builder.addCase(getUserData.pending, (state) => {
       state.loading = true;
+      state.data = undefined;
+      state.error = undefined;
     });
     builder.addCase(getUserData.fulfilled, (state, action) => {
       console.log("in fullfilled xyz");
       state.loading = false;
+      console.log(action.payload);
       state.data = action.payload;
     });
     builder.addCase(getUserData.rejected, (state, action) => {
       console.log("in rejected");
       state.loading = false;
-      // action.payload contains error information
       state.error = error(action.payload);
     });
   },

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Container, Form, Button, Dropdown, Row, Col } from "react-bootstrap";
+import { Container, Form, Button } from "react-bootstrap";
 import "./createuser.scss";
+import MultiSelectDropdown from "../../../../components/mutli-select-dropdown/MultiSelectDropdown";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForEmail,
@@ -11,7 +12,7 @@ import { RootState } from "../../../../store";
 import { getTenantRoles } from "../../../../store/features/admin/tenant-roles/slice";
 import { addNewUser } from "../../../../store/features/tenant/add-user/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { ITenantRolesState } from "../../../../types/index";
+import { ICreateNewUser, ITenantRolesState } from "../../../../types/index";
 
 interface Ierrors {
   userName: string;
@@ -20,21 +21,19 @@ interface Ierrors {
   roles: string;
 }
 
-interface IForm {
-  userName: string;
-  email: string;
-  password: string;
-  roles: string[];
-}
-
 export default function Createuser() {
   const dispatch = useAppDispatch();
-  const [formData, setFormData] = useState<IForm>({
+  const rolesList: ITenantRolesState = useAppSelector(
+    (state: RootState) => state.rolesList
+  );
+  console.log(rolesList);
+  const [formData, setFormData] = useState<ICreateNewUser>({
     userName: "",
     email: "",
     password: "",
     roles: [],
   });
+
   const [errors, setErrors] = useState<Ierrors>({
     userName: "",
     email: "",
@@ -42,24 +41,10 @@ export default function Createuser() {
     roles: "",
   });
 
-  const rolesList: ITenantRolesState = useAppSelector(
-    (state: RootState) => state.rolesList
-  );
   useEffect(() => {
     dispatch(getTenantRoles());
   }, []);
 
-  // const [checked, setChecked] = useState<string[]>([]);
-  // const checkList = ["A", "B", "C", "D"];
-
-  // const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (event.target.checked) {
-  //     setChecked([...checked, event.target.value]);
-  //   } else {
-  //     checked.splice(checked.indexOf(event.target.value), 1);
-  //     setChecked(checked);
-  //   }
-  // };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
@@ -133,6 +118,7 @@ export default function Createuser() {
       setFormData({ ...formData, roles: [...formData.roles] });
     }
   };
+
   const removeRole = (role: string) => {
     const temp = formData.roles.filter(function (value) {
       return value !== role;
@@ -145,7 +131,6 @@ export default function Createuser() {
     <div>
       <Container className="mt-3 w-75 bg-white p-4">
         <h1 className="text-center text-dark pb-3">Create User</h1>
-        {/* UserName Email Password Tenant Name */}
         <Form onSubmit={handleFormSubmit}>
           <Form.Group>
             <Form.Label>Username</Form.Label>
@@ -166,7 +151,7 @@ export default function Createuser() {
           <Form.Group>
             <Form.Label>Email</Form.Label>
             <Form.Control
-              type="text"
+              type="email"
               placeholder="email"
               data-testid="email-input"
               value={formData.email}
@@ -196,9 +181,7 @@ export default function Createuser() {
             </Form.Control.Feedback>
           </Form.Group>
           <div className="title">Roles:</div>
-          {/* <div className="list-container  "> */}
-          {}
-          <Row>
+          {/* <Row>
             <Col xs={12} sm={6} md={4} lg={4}>
               {" "}
               <Dropdown autoClose="outside" className="w-100">
@@ -220,22 +203,6 @@ export default function Createuser() {
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
-              <div className="my-2">
-                <Button
-                  type="submit"
-                  variant="success"
-                  data-testid="submit-button"
-                >
-                  Submit
-                </Button>
-                <Button
-                  type="reset"
-                  variant="danger"
-                  data-testid="cancel-button"
-                >
-                  Cancel
-                </Button>
-              </div>
             </Col>
             <Col xs={12} sm={6} md={8} lg={8}>
               {formData.roles.length > 0 &&
@@ -249,20 +216,22 @@ export default function Createuser() {
                   </span>
                 ))}
             </Col>
-          </Row>
-
-          {/* {rolesList?.data?.map((item, index) => (
-              <p key={index} className="m-4">
-                <input
-                  value={item}
-                  type="checkbox"
-                  onChange={handleCheck}
-                  className=" inline"
-                />
-                <span className="mx-1">{item}</span>
-              </p>
-            ))} */}
-          {/* </div> */}
+          </Row> */}
+          <MultiSelectDropdown
+            data-testid="multidrop"
+            rolesList={rolesList?.data}
+            formData={formData.roles}
+            handleCheck={handleCheck}
+            removeRole={removeRole}
+          />
+          <div className="my-2">
+            <Button type="submit" variant="success" data-testid="submit-button">
+              Submit
+            </Button>
+            <Button type="reset" variant="danger" data-testid="cancel-button">
+              Cancel
+            </Button>
+          </div>
         </Form>
       </Container>
     </div>

@@ -2,7 +2,7 @@ export {
   addTenantDataService,
   deleteTenantDataService,
   tenantListService,
-  adminLogin,
+  adminLoginData,
 } from "./admin";
 
 export {

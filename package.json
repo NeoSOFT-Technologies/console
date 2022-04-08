@@ -14,7 +14,6 @@
     "build:prod": "npm run build:css && npm run build -- --profile",
     "dev": "npm-run-all -p watch:css start",
     "test": "rimraf src/__snapshots__ && react-scripts test",
-   
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.{ts,tsx,json,css,scss}\"",
     "test:coverage": "npm test -- --coverage",
@@ -82,9 +81,6 @@
       "index.ts",
       "src/types/landing-page.ts",
       "services"
-     
-    
-      
     ],
     "collectCoverageFrom": [
       "src/**"

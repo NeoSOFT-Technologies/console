@@ -24,12 +24,9 @@ it("test if input box is present", () => {
       </Provider>
     </BrowserRouter>
   );
-  const emailBox = screen.getByTestId("username-input");
+  const emailBox = screen.getByTestId("userName-input");
   expect(emailBox).toBeInTheDocument();
   expect(emailBox).toHaveAttribute("type", "text");
-  // const tenantBox = screen.getByTestId("tenantname-input");
-  // expect(tenantBox).toBeInTheDocument();
-  // expect(tenantBox).toHaveAttribute("type", "text");
 
   const passwordBox = screen.getByTestId("password-input");
   expect(passwordBox).toBeInTheDocument();
@@ -44,16 +41,13 @@ it("test if input box takes input", () => {
       </Provider>
     </BrowserRouter>
   );
-  const emailBox = screen.getByTestId("username-input");
-  fireEvent.change(emailBox, { target: { value: "deepthi" } });
-  expect(screen.getByTestId("username-input")).toHaveValue("deepthi");
-  // const tenantBox = screen.getByTestId("tenantname-input");
-  // fireEvent.change(tenantBox, { target: { value: "deepthi" } });
-  // expect(screen.getByTestId("tenantname-input")).toHaveValue("deepthi");
+  const emailBox = screen.getByTestId("userName-input");
+  fireEvent.change(emailBox, { target: { value: "tenantadmin" } });
+  expect(screen.getByTestId("userName-input")).toHaveValue("tenantadmin");
 
   const passwordBox = screen.getByTestId("password-input");
-  fireEvent.change(passwordBox, { target: { value: "akhilpinni123@" } });
-  expect(screen.getByTestId("password-input")).toHaveValue("akhilpinni123@");
+  fireEvent.change(passwordBox, { target: { value: "Akhilpinni@123" } });
+  expect(screen.getByTestId("password-input")).toHaveValue("Akhilpinni@123");
 });
 
 it("test if sign in button renders", () => {
@@ -71,23 +65,4 @@ it("test if sign in button renders", () => {
   const linkBox = screen.getByTestId("link");
   expect(linkBox).toBeInTheDocument();
   fireEvent.click(linkBox);
-});
-it("test if sign in button renders", () => {
-  render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <Login />
-      </Provider>
-    </BrowserRouter>
-  );
-  // const adminBtn = screen.getByTestId("admin-login");
-  // expect(adminBtn).toBeInTheDocument();
-  // fireEvent.click(adminBtn);
-
-  // const tenantBtn = screen.getByTestId("tenant-login");
-  // expect(tenantBtn).toBeInTheDocument();
-  // fireEvent.click(tenantBtn);
-  // const userBtn = screen.getByTestId("user-login");
-  // expect(userBtn).toBeInTheDocument();
-  // fireEvent.click(userBtn);
 });

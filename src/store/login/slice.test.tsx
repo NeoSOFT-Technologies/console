@@ -2,7 +2,7 @@ import store from "../../store/index";
 import { commonLogin } from "./slice";
 
 test("calling the state of login", async () => {
-  let state = store.getState().commonLogin;
+  let state = store.getState().loginAccessToken;
 
   expect(state.loading).toBeFalsy();
 
@@ -14,5 +14,5 @@ test("calling the state of login", async () => {
     })
   );
 
-  state = store.getState().commonLogin;
+  state = store.getState().loginAccessToken;
 });

@@ -6,9 +6,7 @@ test("calling the state of user-permission", async () => {
 
   expect(state.loading).toBeFalsy();
 
-  await store.dispatch(
-    userPermission({ tenantName: "deepthi", clientName: "deepthi" })
-  );
+  await store.dispatch(userPermission("deepthi"));
 
   state = store.getState().updateTenant;
 });

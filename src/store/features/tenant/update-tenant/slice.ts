@@ -1,9 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { updateTenantDataService } from "../../../../services";
-import { ITenantUserListState, ITenantData } from "../../../../types/index";
+import { ITenantDetail } from "../../../../types/index";
 import error from "../../../../utils/error";
 
-const initialState: ITenantUserListState = {
+interface IUpdateTenantState {
+  data?: undefined;
+  loading: boolean;
+  error?: string | undefined;
+}
+
+const initialState: IUpdateTenantState = {
   data: undefined,
   loading: false,
   error: undefined,
@@ -11,10 +17,9 @@ const initialState: ITenantUserListState = {
 
 export const updateTenant = createAsyncThunk(
   "tenant/update",
-  async (data: ITenantData) => {
+  async (data: ITenantDetail) => {
     try {
       const response = await updateTenantDataService(data);
-      // console.log(response);
       return response.data;
     } catch (error_) {
       return error_;

@@ -14,7 +14,6 @@ export const getTenantPermissions = createAsyncThunk(
   async (tenantName: string) => {
     try {
       const response = await tenantPermissionsService(tenantName);
-      // console.log(response);
       return response.data;
     } catch (error_) {
       return error_;

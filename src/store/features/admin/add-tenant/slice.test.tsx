@@ -6,7 +6,16 @@ test("calling the state of add-tenant", async () => {
 
   expect(state.loading).toBeFalsy();
 
-  await store.dispatch(addNewTenant({ tenantName: "deepthi", roles: [] }));
+  await store.dispatch(
+    addNewTenant({
+      tenantName: "Test",
+      email: "Test@gmail.com",
+      password: "Test@123",
+      description: "i am Test",
+      databaseName: "db-Test",
+      databaseDescription: "",
+    })
+  );
 
   state = store.getState().addNewTenant;
   if (state.loading === false) {

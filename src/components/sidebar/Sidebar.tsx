@@ -26,9 +26,6 @@ export const Sidebar = () => {
     (state: RootState) => state.loginType
   );
   const [routes, setRoutes] = useState([{ path: "", title: "", icon: "" }]);
-  /**
-   * ! remove type
-   */
   useEffect(() => {
     if (user.data && loginType.data === "admin") {
       setRoutes(adminRoutes);

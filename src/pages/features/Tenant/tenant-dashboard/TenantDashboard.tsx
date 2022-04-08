@@ -39,15 +39,14 @@ const TenantDashboard = () => {
               }}
             >
               <Card.Text>
-                Name:&nbsp; <span>{user.data.tenantName} </span>
+                Name :&nbsp; <span>{user.data.tenantName} </span>
               </Card.Text>
               <Card.Text>
-                <span>Description:&nbsp;{user.data.description}</span>
+                <span>Description :&nbsp;{user.data.description}</span>
               </Card.Text>
               <Card.Text>
-                <span> Email:&nbsp;{user.data.email}</span>
+                <span>Created Date :&nbsp;{user.data.createdDateTime}</span>
               </Card.Text>
-
               <hr />
             </Card.Body>
           </Card>

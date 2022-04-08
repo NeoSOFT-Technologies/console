@@ -1,10 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { deleteUserDataService } from "../../../../services";
-import { ITenantUserListState } from "../../../../types/index";
 import error from "../../../../utils/error";
 
-const initialState: ITenantUserListState = {
-  data: undefined,
+/**
+ * ! check if delete json is correct
+ */
+interface IDeleteUserState {
+  isDeleted?: boolean | null;
+  loading: boolean;
+  error?: string | null;
+}
+
+const initialState: IDeleteUserState = {
+  isDeleted: false,
   loading: false,
   error: undefined,
 };
@@ -14,7 +22,6 @@ export const deleteUser = createAsyncThunk(
   async (userName: string) => {
     try {
       const response = await deleteUserDataService(userName);
-      // console.log(response);
       return response.data.data;
     } catch (error_) {
       return error_;
@@ -32,7 +39,7 @@ const slice = createSlice({
     });
     builder.addCase(deleteUser.fulfilled, (state, action) => {
       state.loading = false;
-      state.data = action.payload;
+      state.isDeleted = action.payload;
     });
     builder.addCase(deleteUser.rejected, (state, action) => {
       state.loading = false;
