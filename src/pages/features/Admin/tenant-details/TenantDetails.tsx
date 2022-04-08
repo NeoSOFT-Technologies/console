@@ -14,7 +14,7 @@ import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
-  regexForDatabaseName,
+  // regexForDatabaseName,
   // regexFortenantDeleted,
   // regexForEmail,
 } from "../../../../resources/constants";
@@ -85,9 +85,9 @@ export default function TenantDetails() {
       case "description":
         setError({
           ...error,
-          [name]: regexForDatabaseName.test(value)
-            ? ""
-            : "description should only consist Alphabets",
+          // [name]: regexForDatabaseName.test(value)
+          //   ? ""
+          //   : "description should only consist Alphabets",
         });
         break;
       default:
@@ -307,7 +307,7 @@ export default function TenantDetails() {
                           value={tenant.description}
                           disabled={!edit}
                           onChange={handleInputChange}
-                          isInvalid={!!error.description}
+                          // isInvalid={!!error.description}
                         />
                       </Form.Group>
                     </Col>

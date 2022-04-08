@@ -79,7 +79,7 @@ class App extends Component<IProperty, IState> {
     for (const fullPageLayoutRoute of fullPageLayoutRoutes) {
       // console.log(this.props.router.location.pathname);
       if (this.props.router.location.pathname === fullPageLayoutRoute) {
-        console.log("fullayout");
+        console.log("fullayout", this.props.router.location.pathname);
         this.setState({
           isFullPageLayout: true,
         });
