@@ -2,7 +2,7 @@ import store from "../../../../store/index";
 import { updateTenant } from "./slice";
 
 test("calling the state of update-tenant", async () => {
-  let state = store.getState().updateTenant;
+  let state = store.getState().updateTenantState;
 
   expect(state.loading).toBeFalsy();
 
@@ -20,5 +20,5 @@ test("calling the state of update-tenant", async () => {
     })
   );
 
-  state = store.getState().updateTenant;
+  state = store.getState().updateTenantState;
 });

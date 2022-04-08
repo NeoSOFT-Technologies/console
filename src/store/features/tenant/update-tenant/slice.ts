@@ -22,7 +22,9 @@ export const updateTenant = createAsyncThunk(
       const response = await updateTenantDataService(data);
       return response.data;
     } catch (error_) {
-      return error_;
+      console.log(error_, "||", error(error_));
+      const errorMessage = error(error_);
+      throw new Error(errorMessage);
     }
   }
 );
@@ -39,10 +41,11 @@ const slice = createSlice({
       state.loading = false;
       state.data = action.payload;
     });
-    builder.addCase(updateTenant.rejected, (state, action) => {
+    builder.addCase(updateTenant.rejected, (state, action: any) => {
       state.loading = false;
       // action.payload contains error information
-      state.error = error(action.payload);
+      const errorMessage = action.error.message.split(" ");
+      state.error = errorMessage[errorMessage.length - 1];
     });
   },
 });

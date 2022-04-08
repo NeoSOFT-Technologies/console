@@ -73,11 +73,13 @@ class App extends Component<IProperty, IState> {
       "/error-pages/error-404",
       "/error-pages/error-500",
       "/error-pages/error-401",
+      "/error",
       // "/general-pages/landing-page",
     ];
     for (const fullPageLayoutRoute of fullPageLayoutRoutes) {
       // console.log(this.props.router.location.pathname);
       if (this.props.router.location.pathname === fullPageLayoutRoute) {
+        console.log("fullayout");
         this.setState({
           isFullPageLayout: true,
         });

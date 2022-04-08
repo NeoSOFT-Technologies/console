@@ -19,10 +19,11 @@ export const addNewTenant = createAsyncThunk(
   async (conditions: ITenantRegisterData) => {
     try {
       const response = await addTenantDataService(conditions);
-      // console.log(response);
       return response.data;
     } catch (error_) {
-      return error_;
+      console.log(error_, "||", error(error_));
+      const errorMessage = error(error_);
+      throw new Error(errorMessage);
     }
   }
 );
@@ -40,10 +41,11 @@ const slice = createSlice({
       state.loading = false;
       state.tenantAdded = true;
     });
-    builder.addCase(addNewTenant.rejected, (state, action) => {
+    builder.addCase(addNewTenant.rejected, (state, action: any) => {
       state.loading = false;
-      // action.payload contains error information
-      state.error = error(action.payload);
+      // console.log(Number(errorMessage[errorMessage.length - 1]), action);
+      const errorMessage = action.error.message.split(" ");
+      state.error = errorMessage[errorMessage.length - 1];
     });
   },
 });
