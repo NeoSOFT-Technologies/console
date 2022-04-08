@@ -44,7 +44,7 @@ export function tenantRolesService(tenantName: string) {
 }
 
 export function getTenantDetailsService(tenantName: string) {
-  // console.log("tenantName", tenantName);
+  console.log("tenantName", tenantName);
   return apiFactory().get(`/api/tenants/4`); // put tenantName here
 }
 
