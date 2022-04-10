@@ -105,7 +105,6 @@ function AppRoutes() {
             </AdminGuard>
           }
         />
-
         {/**********************************************************/}
         {/** ********************TENANT ROUTES*************************/}
         <Route
@@ -167,7 +166,8 @@ function AppRoutes() {
           }
         />
         {/**********************************************************/}
-        <Route path="*" element={<Navigate to="/login-page" />} />
+        <Route path="*" element={<Navigate to="/login-page" />} />{" "}
+        {/* redirect if not match any path */}
       </Routes>
     </Suspense>
   );

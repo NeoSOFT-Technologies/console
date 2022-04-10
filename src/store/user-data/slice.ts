@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { adminLoginData, getUserDetailsService } from "../../services";
+import {
+  adminLoginData,
+  getTenantDetailsService,
+  getUserDetailsService,
+} from "../../services";
 import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
 
@@ -24,20 +28,7 @@ export const getUserData = createAsyncThunk(
           response = await adminLoginData();
           break;
         case "tenant":
-          // response = await getTenantDetailsService(conditions.tenantName);
-          response = {
-            data: {
-              id: 8,
-              tenantId: 8,
-              tenantName: "Neel",
-              description: "i am Neel",
-              createdDateTime: "2022/04/07 05:38:47",
-              databaseName: "db-Neel",
-              host: "127.0.0.1",
-              port: 3306,
-              policy: "{ max_size: 30 }",
-            },
-          };
+          response = await getTenantDetailsService(conditions.tenantName);
           break;
         case "user":
           response = await getUserDetailsService(
@@ -49,8 +40,9 @@ export const getUserData = createAsyncThunk(
       // console.log(response);
       return response?.data;
     } catch (error_) {
-      // console.log("in error", error(error_));
-      throw new Error(error(error_));
+      // console.log(error_, "||", error(error_));
+      const errorMessage = error(error_);
+      throw new Error(errorMessage);
     }
   }
 );
@@ -71,10 +63,11 @@ const slice = createSlice({
       // console.log(action.payload);
       state.data = action.payload;
     });
-    builder.addCase(getUserData.rejected, (state, action) => {
+    builder.addCase(getUserData.rejected, (state, action: any) => {
       // console.log("in rejected");
       state.loading = false;
-      state.error = error(action.payload);
+      const errorMessage = action.error.message.split(" ");
+      state.error = errorMessage[errorMessage.length - 1];
     });
   },
 });

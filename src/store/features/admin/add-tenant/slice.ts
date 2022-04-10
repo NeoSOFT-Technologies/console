@@ -21,7 +21,7 @@ export const addNewTenant = createAsyncThunk(
       const response = await addTenantDataService(conditions);
       return response.data;
     } catch (error_) {
-      console.log(error_, "||", error(error_));
+      // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
       throw new Error(errorMessage);
     }

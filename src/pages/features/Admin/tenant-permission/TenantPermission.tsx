@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { getTenantPermissions } from "../../../../store/features/admin/tenant-permissions/slice";
-import { useAppDispatch } from "../../../../store/hooks";
+import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { ITenantPermissionsState } from "../../../../types";
 
 export default function TenantPermission() {
@@ -11,7 +10,7 @@ export default function TenantPermission() {
     useState<ITenantPermissionsState>();
   const [tenantPermission, settenantPermission] = useState<string[]>([]);
   const dispatch = useAppDispatch();
-  const permissionList: ITenantPermissionsState = useSelector(
+  const permissionList: ITenantPermissionsState = useAppSelector(
     (state: RootState) => state.tenantPermissionsList
   );
   //   get the permissions that were allowed before and all the permissions that are for tenants from API.

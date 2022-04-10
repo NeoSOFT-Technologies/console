@@ -24,7 +24,9 @@ export const deleteUser = createAsyncThunk(
       const response = await deleteUserDataService(userName);
       return response.data.data;
     } catch (error_) {
-      throw new Error(error(error_));
+      // console.log(error_, "||", error(error_));
+      const errorMessage = error(error_);
+      throw new Error(errorMessage);
     }
   }
 );
@@ -42,10 +44,11 @@ const slice = createSlice({
       state.loading = false;
       state.isDeleted = action.payload;
     });
-    builder.addCase(deleteUser.rejected, (state, action) => {
+    builder.addCase(deleteUser.rejected, (state, action: any) => {
       state.loading = false;
       // action.payload contains error information
-      state.error = error(action.payload);
+      const errorMessage = action.error.message.split(" ");
+      state.error = errorMessage[errorMessage.length - 1];
     });
   },
 });

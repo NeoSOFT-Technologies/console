@@ -9,11 +9,7 @@ export function deleteTenantDataService(tenantName: string) {
   return apiFactory().delete(`/api/tenants/${tenantName}`);
 }
 
-export function tenantListService(
-  currentPage: number,
-  search: string // add search in backend
-) {
-  console.log(search);
+export function tenantListService(currentPage: number) {
   return apiFactory().get(`/api/tenants?page=${currentPage}`);
 }
 

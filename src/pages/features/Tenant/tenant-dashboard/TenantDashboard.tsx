@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
 import { Container, Card } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import Spinner from "../../../../components/loader/Loader";
 import { RootState } from "../../../../store";
+import { useAppSelector } from "../../../../store/hooks";
 // import { getTenantUserList } from "../../../../store/features/tenant/tenant-user-list/slice";
 // import { useAppDispatch } from "../../../../store/hooks";
 import { IUserDataState } from "../../../../types";
 
 const TenantDashboard = () => {
   // const dispatch = useAppDispatch();
-  const user: IUserDataState = useSelector(
+  const user: IUserDataState = useAppSelector(
     (state: RootState) => state.userData
   );
   useEffect(() => {
@@ -24,8 +25,9 @@ const TenantDashboard = () => {
 
   return (
     <React.Fragment>
-      <Container>
-        {!!user.data && (
+      {user.loading && <Spinner />}
+      {!user.loading && user.data && (
+        <Container>
           <Card style={{ width: "550px" }} className="m-1 p-2">
             <Card.Title style={{ fontSize: "32px" }} className="text-center">
               Tenant Details
@@ -50,8 +52,8 @@ const TenantDashboard = () => {
               <hr />
             </Card.Body>
           </Card>
-        )}
-      </Container>
+        </Container>
+      )}
     </React.Fragment>
   );
 };

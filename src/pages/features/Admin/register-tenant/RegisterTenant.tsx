@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Row, Col, Container } from "react-bootstrap";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
@@ -18,8 +18,9 @@ import {
 } from "../../../../types/index";
 
 export default function RegisterTenant() {
-  const tenantAdded = useAppSelector((state: RootState) => state.addNewTenant);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const tenantAdded = useAppSelector((state: RootState) => state.addNewTenant);
   const [tenant, setTenant] = useState<ITenantRegisterData>({
     tenantName: "",
     description: "",
@@ -152,12 +153,23 @@ export default function RegisterTenant() {
       databaseDescription: "",
     });
   };
+
+  useEffect(() => {
+    if (!tenantAdded.loading && tenantAdded.error) {
+      navigate("/error", { state: tenantAdded.error });
+    }
+    // if (
+    //   !tenantAdded.loading &&
+    //   !tenantAdded.error &&
+    //   tenantAdded?.tenantAdded
+    // ) {
+    //   navigate("/tenantlist");
+    // } clear tenantadded boolean value else it will stay the same
+  }, [tenantAdded.loading]);
+
   return (
     <>
       {tenantAdded.loading && <Spinner />}
-      {!tenantAdded.loading && tenantAdded.error && (
-        <Navigate to={`/error`} state={tenantAdded.error} />
-      )}
       {!tenantAdded.loading && !tenantAdded.error && (
         <div className=" bg-white">
           <Container className="m-1">
@@ -309,9 +321,6 @@ export default function RegisterTenant() {
           </Container>
         </div>
       )}
-      {!tenantAdded.loading &&
-        !tenantAdded.error &&
-        tenantAdded?.tenantAdded && <Navigate to="/tenantlist" />}
     </>
   );
 }

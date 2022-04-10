@@ -58,7 +58,7 @@ const apiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
       return res;
     },
     async (err) => {
-      console.log(err.config, "IN LINE NO. 60");
+      // console.log(err.config, "IN LINE NO. 60");
       const originalConfig = err.config;
 
       if (
@@ -81,7 +81,7 @@ const apiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
           throw new Error(error(_error));
         }
       }
-      console.log(err);
+      // console.log(err);
       throw new Error(error(err));
     }
   );

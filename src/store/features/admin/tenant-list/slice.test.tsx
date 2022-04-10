@@ -23,10 +23,10 @@ const response = {
 
 test("calling the state of tenant-list", async () => {
   mockApi.onGet("/api/tenants?page=2").reply(200, {});
-  await store.dispatch(getTenantList({ currentPage: 2, search: "deepthi" }));
+  await store.dispatch(getTenantList({ currentPage: 2 }));
 });
 
 test("calling the state of tenant-list", async () => {
   mockApi.onGet("/api/tenants?page=2").reply(404, response);
-  await store.dispatch(getTenantList({ currentPage: 2, search: "deepthi" }));
+  await store.dispatch(getTenantList({ currentPage: 2 }));
 });
