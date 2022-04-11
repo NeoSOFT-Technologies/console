@@ -22,7 +22,7 @@ export const getTenantRoles = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "tenant",
+  name: "tenantRoles",
   initialState,
   reducers: {},
   extraReducers(builder): void {

@@ -1,4 +1,5 @@
 import { ICreateNewUser, ITenantDetail } from "../types";
+import { ICreatePolicyFormData } from "../types/create-policy.types";
 import apiFactory from "../utils/api";
 
 export function updateTenantDataService(data: ITenantDetail) {
@@ -50,4 +51,16 @@ export function getTenantDetailsService(tenantName: string) {
 
 export function tenantPermissionsService(tenantName: string) {
   return apiFactory().get(`/api/permission?tenantName=${tenantName}`);
+}
+export function createNewPolicyService(data: ICreatePolicyFormData) {
+  const body = {
+    tenantName: data.tenantName,
+    policyType: "Role",
+    clientName: "my-nest-application",
+    policyDetails: {
+      name: data.policyName,
+      description: data.description,
+    },
+  };
+  return apiFactory().post("/api/policy", body);
 }

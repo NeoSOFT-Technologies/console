@@ -100,7 +100,10 @@ export default function Login() {
       loginVerification.error &&
       !loginVerification.loading
     ) {
-      console.log("in incorrect creds loginVerification");
+      console.log(
+        "in incorrect creds loginVerification",
+        loginVerification.error
+      );
       ToastAlert("Incorrect Credentials!", "warning");
     }
   }, [loginVerification.loginVerified, loginVerification.error]);

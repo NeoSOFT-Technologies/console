@@ -22,7 +22,7 @@ export const getTenantPermissions = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "tenant",
+  name: "tenantPermissions",
   initialState,
   reducers: {},
   extraReducers(builder): void {

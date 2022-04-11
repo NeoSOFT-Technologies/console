@@ -57,7 +57,7 @@ const apiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
       return res;
     },
     async (err) => {
-      console.log(err.config);
+      console.log(err.config, err);
       const originalConfig = err.config;
 
       if (
