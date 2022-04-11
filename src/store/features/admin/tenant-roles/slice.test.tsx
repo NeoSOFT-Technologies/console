@@ -1,12 +1,15 @@
-import store from "../../../../store/index";
+import mockApi from "../../../../resources/testconfig";
+import store from "../../../index";
 import { getTenantRoles } from "./slice";
 
 test("calling the state of tenant-roles", async () => {
-  let state = store.getState().rolesList;
-
-  expect(state.loading).toBeFalsy();
+  mockApi.onGet(" /api/roles?tenantName=").reply(200, {});
 
   await store.dispatch(getTenantRoles());
+});
 
-  state = store.getState().rolesList;
+test("calling the state of tenant-roles", async () => {
+  mockApi.onGet(" /api/roles?tenantName=").reply(404);
+
+  await store.dispatch(getTenantRoles());
 });

@@ -1,10 +1,9 @@
-import store from "../../../../store/index";
+import mockApi from "../../../../resources/testconfig";
+import store from "../../../index";
 import { addNewTenant } from "./slice";
 
 test("calling the state of add-tenant", async () => {
-  let state = store.getState().addNewTenant;
-
-  expect(state.loading).toBeFalsy();
+  mockApi.onPost("/api/tenants").reply(200, {});
 
   await store.dispatch(
     addNewTenant({
@@ -16,9 +15,19 @@ test("calling the state of add-tenant", async () => {
       databaseDescription: "",
     })
   );
+});
 
-  state = store.getState().addNewTenant;
-  if (state.loading === false) {
-    expect(state.tenantAdded).toBeTruthy();
-  }
+test("calling the state of add-tenant", async () => {
+  mockApi.onPost("/api/tenants").reply(404);
+
+  await store.dispatch(
+    addNewTenant({
+      tenantName: "Test",
+      email: "Test@gmail.com",
+      password: "Test@123",
+      description: "i am Test",
+      databaseName: "db-Test",
+      databaseDescription: "",
+    })
+  );
 });

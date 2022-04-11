@@ -22,7 +22,9 @@ export const addNewUser = createAsyncThunk(
       const response = await createNewUserService(conditions);
       return response.data;
     } catch (error_) {
-      return error_;
+      // console.log(error_, "||", error(error_));
+      const errorMessage = error(error_);
+      throw new Error(errorMessage);
     }
   }
 );
@@ -35,16 +37,18 @@ const slice = createSlice({
     builder.addCase(addNewUser.pending, (state) => {
       state.loading = true;
       state.isAdded = false;
+      state.error = undefined;
     });
     builder.addCase(addNewUser.fulfilled, (state) => {
       state.loading = false;
       state.isAdded = true;
     });
-    builder.addCase(addNewUser.rejected, (state, action) => {
+    builder.addCase(addNewUser.rejected, (state, action: any) => {
       state.loading = false;
       state.isAdded = false;
       // action.payload contains error information
-      state.error = error(action.payload);
+      const errorMessage = action.error.message.split(" ");
+      state.error = errorMessage[errorMessage.length - 1];
     });
   },
 });

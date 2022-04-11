@@ -8,6 +8,7 @@ const RoleAndPermissions = lazy(
 const UserDetails = lazy(
   () => import("./pages/features/Tenant/user-details/UserDetails")
 );
+const Error = lazy(() => import("./pages/error-pages/Error"));
 const UserList = lazy(
   () => import("./pages/features/Tenant/user-list/UserList")
 );
@@ -57,6 +58,7 @@ function AppRoutes() {
         <Route path="/error-pages/error-404" element={<Error404 />} />
         <Route path="/error-pages/error-500" element={<Error500 />} />
         <Route path="/error-pages/error-401" element={<Error401 />} />
+        <Route path="/error" element={<Error />} />
         {/** **********************ADMIN ROUTES***********************/}
         <Route
           path="/admindashboard"
@@ -106,7 +108,6 @@ function AppRoutes() {
             </AdminGuard>
           }
         />
-
         {/**********************************************************/}
         {/** ********************TENANT ROUTES*************************/}
         <Route
@@ -176,7 +177,8 @@ function AppRoutes() {
           }
         />
         {/**********************************************************/}
-        <Route path="*" element={<Navigate to="/login-page" />} />
+        <Route path="*" element={<Navigate to="/login-page" />} />{" "}
+        {/* redirect if not match any path */}
       </Routes>
     </Suspense>
   );

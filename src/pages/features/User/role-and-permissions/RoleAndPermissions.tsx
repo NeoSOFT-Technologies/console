@@ -1,32 +1,47 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Spinner from "../../../../components/loader/Loader";
 import RolesAndPermissions from "../../../../components/roles-and-permissions/RolesAndPermissions";
 import { RootState } from "../../../../store";
+import { useAppSelector } from "../../../../store/hooks";
 import { IUserDataState } from "../../../../types";
+
 export default function RoleAndPermissions() {
-  const user: IUserDataState = useSelector(
+  const navigate = useNavigate();
+  const user: IUserDataState = useAppSelector(
     (state: RootState) => state.userData
   );
-  console.log(user);
+  // console.log(user);
+  useEffect(() => {
+    if (!user.loading && user.error) {
+      navigate("", { state: user.error });
+    }
+  }, [user.loading]);
+
   return (
-    <Card className="w-75 mx-auto p-2">
-      <h1 className="mx-auto p-1">Roles & Permissions</h1>
-      <hr />
-      {user && user.data?.roles !== undefined && (
-        <RolesAndPermissions
-          heading="Roles"
-          list={user.data?.roles}
-          classes="roles"
-        />
+    <>
+      {user.loading && <Spinner />}
+      {!user.loading && user.data && (
+        <Card className="w-75 mx-auto p-2">
+          <h1 className="mx-auto p-1">Roles & Permissions</h1>
+          <hr />
+          {user && user.data?.roles !== undefined && (
+            <RolesAndPermissions
+              heading="Roles"
+              list={user.data?.roles}
+              classes="roles"
+            />
+          )}
+          {user && user.data?.permissions !== undefined && (
+            <RolesAndPermissions
+              heading="Permissions"
+              list={user.data?.permissions}
+              classes="permissions"
+            />
+          )}
+        </Card>
       )}
-      {user && user.data?.permissions !== undefined && (
-        <RolesAndPermissions
-          heading="Permissions"
-          list={user.data?.permissions}
-          classes="permissions"
-        />
-      )}
-    </Card>
+    </>
   );
 }

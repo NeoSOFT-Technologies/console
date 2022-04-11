@@ -1,5 +1,6 @@
 import axios from "axios";
 import tokenService from "../services/token.service";
+import error from "./error";
 
 const defaultBaseUrl =
   process.env.REACT_APP_API_BASEURL || "http://localhost:5000";
@@ -46,14 +47,14 @@ const apiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
       }
       return config;
     },
-    (error) => {
-      return error;
+    (_error) => {
+      return _error;
     }
   );
 
   service.interceptors.response.use(
     (res) => {
-      console.log(" ApiFactory ~ res", res);
+      // console.log(" ApiFactory ~ res", res);
       return res;
     },
     async (err) => {
@@ -74,14 +75,14 @@ const apiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
           });
           const accessToken = rs.data.access_token;
           tokenService.updateLocalAccessToken(accessToken);
-
+          console.log("inside refresh tooken");
           return service(originalConfig);
         } catch (_error) {
-          return _error;
+          throw new Error(error(_error));
         }
       }
-
-      throw err;
+      // console.log(err);
+      throw new Error(error(err));
     }
   );
 

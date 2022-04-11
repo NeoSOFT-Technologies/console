@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Container, Form, Button, Dropdown, Row, Col } from "react-bootstrap";
+import { Container, Form, Button } from "react-bootstrap";
 import "./createuser.scss";
+import MultiSelectDropdown from "../../../../components/mutli-select-dropdown/MultiSelectDropdown";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForEmail,
@@ -25,7 +26,7 @@ export default function Createuser() {
   const rolesList: ITenantRolesState = useAppSelector(
     (state: RootState) => state.rolesList
   );
-  console.log(rolesList);
+  // console.log(rolesList);
   const [formData, setFormData] = useState<ICreateNewUser>({
     userName: "",
     email: "",
@@ -180,7 +181,7 @@ export default function Createuser() {
             </Form.Control.Feedback>
           </Form.Group>
           <div className="title">Roles:</div>
-          <Row>
+          {/* <Row>
             <Col xs={12} sm={6} md={4} lg={4}>
               {" "}
               <Dropdown autoClose="outside" className="w-100">
@@ -202,22 +203,6 @@ export default function Createuser() {
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
-              <div className="my-2">
-                <Button
-                  type="submit"
-                  variant="success"
-                  data-testid="submit-button"
-                >
-                  Submit
-                </Button>
-                <Button
-                  type="reset"
-                  variant="danger"
-                  data-testid="cancel-button"
-                >
-                  Cancel
-                </Button>
-              </div>
             </Col>
             <Col xs={12} sm={6} md={8} lg={8}>
               {formData.roles.length > 0 &&
@@ -231,7 +216,22 @@ export default function Createuser() {
                   </span>
                 ))}
             </Col>
-          </Row>
+          </Row> */}
+          <MultiSelectDropdown
+            data-testid="multidrop"
+            rolesList={rolesList?.data}
+            formData={formData.roles}
+            handleCheck={handleCheck}
+            removeRole={removeRole}
+          />
+          <div className="my-2">
+            <Button type="submit" variant="success" data-testid="submit-button">
+              Submit
+            </Button>
+            <Button type="reset" variant="danger" data-testid="cancel-button">
+              Cancel
+            </Button>
+          </div>
         </Form>
       </Container>
     </div>

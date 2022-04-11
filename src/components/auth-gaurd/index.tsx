@@ -1,14 +1,14 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { RootState } from "../../store";
+import { useAppSelector } from "../../store/hooks";
 
 type component = {
   children: any;
 };
 
 export const AdminGuard = ({ children }: component) => {
-  const authenticationState = useSelector(
+  const authenticationState = useAppSelector(
     (state: RootState) => state.loginType
   );
 
@@ -20,7 +20,7 @@ export const AdminGuard = ({ children }: component) => {
 };
 
 export const TenantGuard = ({ children }: component) => {
-  const authenticationState = useSelector(
+  const authenticationState = useAppSelector(
     (state: RootState) => state.loginType
   );
   return authenticationState.data && authenticationState.data === "tenant" ? (
@@ -31,7 +31,7 @@ export const TenantGuard = ({ children }: component) => {
 };
 
 export const UserGuard = ({ children }: component) => {
-  const authenticationState = useSelector(
+  const authenticationState = useAppSelector(
     (state: RootState) => state.loginType
   );
   return authenticationState.data && authenticationState.data === "user" ? (
