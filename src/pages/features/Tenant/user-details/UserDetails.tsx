@@ -14,8 +14,14 @@ import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { regexForUser, regexForEmail } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
 import { getTenantRoles } from "../../../../store/features/admin/tenant-roles/slice";
-import { deleteUser } from "../../../../store/features/tenant/delete-user/slice";
-import { updateUser } from "../../../../store/features/user/update-user/slice";
+import {
+  deleteUser,
+  IDeleteUserState,
+} from "../../../../store/features/tenant/delete-user/slice";
+import {
+  updateUser,
+  IUpdateUserState,
+} from "../../../../store/features/user/update-user/slice";
 import {
   getUserDetails,
   IUserDetailsState,
@@ -47,6 +53,12 @@ export default function UserDetails() {
   );
   const rolesList: ITenantRolesState = useAppSelector(
     (state: RootState) => state.rolesList
+  );
+  const deleteUserState: IDeleteUserState = useAppSelector(
+    (state: RootState) => state.deleteUserState
+  );
+  const updateUserDataState: IUpdateUserState = useAppSelector(
+    (state: RootState) => state.updateUserDataState
   );
   const [userdata, setUserdata] = useState<IUserDetailsData>({
     id: "",
@@ -170,9 +182,11 @@ export default function UserDetails() {
 
   return (
     <>
-      {(user.loading || userDetails.loading || rolesList.loading) && (
-        <Spinner />
-      )}
+      {(user.loading ||
+        userDetails.loading ||
+        rolesList.loading ||
+        deleteUserState.loading ||
+        updateUserDataState.loading) && <Spinner />}
       {user.data && userDetails.data && rolesList.data && (
         <Container>
           <Row className="text-right">

@@ -101,13 +101,7 @@ export default function Createuser() {
         const newUser = {
           ...formData,
         };
-        console.log(newUser);
-        console.log("1", addNewUserState.isAdded);
         await dispatch(addNewUser(newUser));
-        console.log("2", addNewUserState.isAdded);
-        if (addNewUserState.isAdded) {
-          ToastAlert("User Registered", "success");
-        }
         // navigate("/login");
       } else {
         ToastAlert("Please Fill All Fields", "warning");
@@ -136,6 +130,22 @@ export default function Createuser() {
     console.log(temp);
     setFormData({ ...formData, roles: [...temp] });
   };
+
+  useEffect(() => {
+    if (
+      !addNewUserState.loading &&
+      formData.userName !== "" &&
+      formData.email !== "" &&
+      formData.password !== "" &&
+      formData.roles.length > 0
+    ) {
+      if (addNewUserState.isAdded) {
+        ToastAlert("User Registered", "success");
+      } else if (addNewUserState.error) {
+        ToastAlert("Unable to Register User", "error");
+      }
+    }
+  }, [addNewUserState]);
 
   return (
     <div>

@@ -5,7 +5,7 @@ import error from "../../../../utils/error";
 /**
  * ! check if delete json is correct
  */
-interface IDeleteUserState {
+export interface IDeleteUserState {
   isDeleted?: boolean | null;
   loading: boolean;
   error?: string | null;

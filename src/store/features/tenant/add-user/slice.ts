@@ -42,6 +42,7 @@ const slice = createSlice({
     builder.addCase(addNewUser.fulfilled, (state) => {
       state.loading = false;
       state.isAdded = true;
+      console.log("3");
     });
     builder.addCase(addNewUser.rejected, (state, action: any) => {
       state.loading = false;
