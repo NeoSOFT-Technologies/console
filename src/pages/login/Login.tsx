@@ -1,6 +1,5 @@
 import React, { useEffect, useState, ChangeEvent } from "react";
 import { Form, Button, Alert, InputGroup } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../components/loader/Loader";
 import PasswordButtons from "../../components/password-field/Password";
@@ -8,19 +7,19 @@ import { ToastAlert } from "../../components/toast-alert/toast-alert";
 // import { regexForEmail } from "../../resources/constants";
 import { logo } from "../../resources/images";
 import { RootState } from "../../store";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { checkLoginType, ILoginTypeState } from "../../store/login-type/slice";
 import { commonLogin, ITokenState } from "../../store/login/slice";
 import { getUserData } from "../../store/user-data/slice";
 import { IUserDataState, ILogin } from "../../types";
 
 export default function Login() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const loginType: ILoginTypeState = useSelector(
+  const loginType: ILoginTypeState = useAppSelector(
     (state: RootState) => state.loginType
   );
-  const user: IUserDataState = useSelector(
+  const user: IUserDataState = useAppSelector(
     (state: RootState) => state.userData
   );
   const loginVerification: ITokenState = useAppSelector(
@@ -70,11 +69,11 @@ export default function Login() {
   };
 
   useEffect(() => {
-    console.log(
-      loginVerification.loginVerified,
-      loginVerification.error,
-      "inside loginVerification"
-    );
+    //  console.log(
+    //     loginVerification.loginVerified,
+    //     loginVerification.error,
+    //     "inside loginVerification"
+    //   );
 
     if (
       loginVerification.loginVerified &&
@@ -100,7 +99,10 @@ export default function Login() {
       loginVerification.error &&
       !loginVerification.loading
     ) {
-      console.log("in incorrect creds loginVerification");
+      console.log(
+        "in incorrect creds loginVerification",
+        loginVerification.error
+      );
       ToastAlert("Incorrect Credentials!", "warning");
     }
   }, [loginVerification.loginVerified, loginVerification.error]);

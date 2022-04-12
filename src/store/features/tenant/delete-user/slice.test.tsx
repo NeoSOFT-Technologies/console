@@ -1,12 +1,13 @@
+import mockApi from "../../../../resources/testconfig";
 import store from "../../../../store/index";
 import { deleteUser } from "./slice";
 
 test("calling the state of delete-user", async () => {
-  let state = store.getState().deleteUser;
-
-  expect(state.loading).toBeFalsy();
-
+  mockApi.onDelete("/api/user/deepthi").reply(200, {});
   await store.dispatch(deleteUser("deepthi"));
+});
 
-  state = store.getState().deleteUser;
+test("calling the state of delete-user", async () => {
+  mockApi.onDelete("/api/user/deepthi").reply(404, {});
+  await store.dispatch(deleteUser("deepthi"));
 });

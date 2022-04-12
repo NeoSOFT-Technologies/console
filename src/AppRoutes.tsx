@@ -46,6 +46,9 @@ const TenantPermission = lazy(
 const TenantRoles = lazy(
   () => import("./pages/features/Admin/tenant-roles/TenantRoles")
 );
+const CreatePolicy = lazy(
+  () => import("./pages/features/Tenant/create-policy/CreatePolicy")
+);
 
 function AppRoutes() {
   return (
@@ -105,7 +108,6 @@ function AppRoutes() {
             </AdminGuard>
           }
         />
-
         {/**********************************************************/}
         {/** ********************TENANT ROUTES*************************/}
         <Route
@@ -113,6 +115,14 @@ function AppRoutes() {
           element={
             <TenantGuard>
               <TenantDashboard />
+            </TenantGuard>
+          }
+        />
+        <Route
+          path="/create-policy"
+          element={
+            <TenantGuard>
+              <CreatePolicy />
             </TenantGuard>
           }
         />
@@ -167,7 +177,8 @@ function AppRoutes() {
           }
         />
         {/**********************************************************/}
-        <Route path="*" element={<Navigate to="/login-page" />} />
+        <Route path="*" element={<Navigate to="/login-page" />} />{" "}
+        {/* redirect if not match any path */}
       </Routes>
     </Suspense>
   );

@@ -1,12 +1,15 @@
-import store from "../../../../store/index";
+import mockApi from "../../../../resources/testconfig";
+import store from "../../../index";
 import { getTenantPermissions } from "./slice";
 
-test("calling the state of tenant-permissions", async () => {
-  let state = store.getState().tenantPermissionsList;
-
-  expect(state.loading).toBeFalsy();
+test("calling the state of tenant-permission", async () => {
+  mockApi.onGet("/api/permission?tenantName=deepthi").reply(200, {});
 
   await store.dispatch(getTenantPermissions("deepthi"));
+});
 
-  state = store.getState().tenantPermissionsList;
+test("calling the state of tenant-permission", async () => {
+  mockApi.onGet("/api/permission?tenantName=deepthi").reply(404);
+
+  await store.dispatch(getTenantPermissions("deepthi"));
 });

@@ -8,13 +8,12 @@ import {
   Dropdown,
   Modal,
 } from "react-bootstrap";
-import { useNavigate, useParams, Navigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Spinner from "../../../../components/loader/Loader";
-// import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
-  regexForDatabaseName,
+  // regexForDatabaseName,
   // regexFortenantDeleted,
   // regexForEmail,
 } from "../../../../resources/constants";
@@ -53,7 +52,7 @@ export default function TenantDetails() {
     tenantId: 0,
     tenantName: "",
   });
-  console.log(tenant, tenantDetailsState.data);
+  // console.log(tenant, tenantDetailsState.data);
   const [error, setError] = useState<IErrorTenantDetail>({
     description: "",
   });
@@ -61,6 +60,7 @@ export default function TenantDetails() {
   useEffect(() => {
     const { tenantName } = params;
     if (tenantName) dispatch(tenantDetails(tenantName));
+    else navigate("/error", { state: "404" });
   }, []);
 
   useEffect(() => {
@@ -72,10 +72,10 @@ export default function TenantDetails() {
     const { tenantName } = params;
     if (tenantName) {
       await dispatch(deleteTenant(tenantName));
-      if (tenantDeleted?.isDeleted) {
+      if (tenantDeleted.isDeleted) {
         ToastAlert("Tenant Removed", "success");
+        navigate("/tenantlist");
       }
-      // navigate("/tenantlist");
     }
   };
 
@@ -85,9 +85,9 @@ export default function TenantDetails() {
       case "description":
         setError({
           ...error,
-          [name]: regexForDatabaseName.test(value)
-            ? ""
-            : "description should only consist Alphabets",
+          // [name]: regexForDatabaseName.test(value)
+          //   ? ""
+          //   : "description should only consist Alphabets",
         });
         break;
       default:
@@ -118,12 +118,35 @@ export default function TenantDetails() {
     }
   };
 
+  useEffect(() => {
+    if (!tenantDeleted.loading && tenantDeleted.error) {
+      navigate("/error", { state: tenantDeleted.error });
+    }
+    if (!tenantDetailsState.loading && tenantDetailsState.error) {
+      navigate("/error", { state: tenantDetailsState.error });
+    }
+    if (!updateTenantState.loading && updateTenantState.error) {
+      navigate("/error", { state: updateTenantState.error });
+    }
+    if (
+      !tenantDeleted.loading &&
+      !tenantDeleted.error &&
+      tenantDeleted?.isDeleted
+    ) {
+      navigate("/tenantlist");
+    }
+  }, [
+    tenantDeleted.loading,
+    tenantDetailsState.loading,
+    updateTenantState.loading,
+  ]);
+
   return (
     <>
       {(tenantDeleted.loading ||
         tenantDetailsState.loading ||
         updateTenantState.loading) && <Spinner />}
-      {!tenantDeleted.loading && tenantDeleted.error && (
+      {/* {!tenantDeleted.loading && tenantDeleted.error && (
         <Navigate to={`/error`} state={tenantDeleted.error} />
       )}
       {!tenantDetailsState.loading && tenantDetailsState.error && (
@@ -131,7 +154,7 @@ export default function TenantDetails() {
       )}
       {!updateTenantState.loading && updateTenantState.error && (
         <Navigate to={`/error`} state={updateTenantState.error} />
-      )}
+      )} */}
       {!tenantDeleted.loading &&
         !tenantDetailsState.loading &&
         !updateTenantState.loading &&
@@ -198,10 +221,9 @@ export default function TenantDetails() {
                   <Row>
                     <Col md={6}>
                       <Form.Group className="mb-3">
-                        <Form.Label>Name :</Form.Label>
-
+                        <Form.Label>Tenant Name :</Form.Label>
                         <Form.Control
-                          data-testid="name-input"
+                          data-testid="tenantName-input"
                           type="text"
                           placeholder="Enter Name"
                           name="tenantName"
@@ -307,7 +329,7 @@ export default function TenantDetails() {
                           value={tenant.description}
                           disabled={!edit}
                           onChange={handleInputChange}
-                          isInvalid={!!error.description}
+                          // isInvalid={!!error.description}
                         />
                       </Form.Group>
                     </Col>
@@ -345,9 +367,6 @@ export default function TenantDetails() {
             </div>
           </>
         )}
-      {!tenantDeleted.loading &&
-        !tenantDeleted.error &&
-        tenantDeleted?.isDeleted && <Navigate to="/tenantlist" />}
     </>
   );
 }

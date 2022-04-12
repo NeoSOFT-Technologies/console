@@ -1,21 +1,32 @@
+import mockApi from "../../../../resources/testconfig";
 import store from "../../../../store/index";
 import { updateUser } from "./slice";
 
+const response = {
+  data: {
+    userName: "deepthi",
+    action: { email: "mailto:deepthi@gmail.com", realmRoles: ["user"] },
+  },
+};
+
 test("calling the state of update-user", async () => {
-  let state = store.getState().updateUserData;
-
-  expect(state.loading).toBeFalsy();
-
+  mockApi.onPatch("/api/user").reply(200, {});
   await store.dispatch(
     updateUser({
       username: "deepthi",
-      email: "deepthi@gmail.com",
+      email: "mailto:deepthi@gmail.com",
       roles: ["user"],
     })
   );
+});
 
-  state = store.getState().updateUserData;
-  if (state.loading === false) {
-    expect(state.isUpdated).toBeTruthy();
-  }
+test("calling the state of update-user", async () => {
+  mockApi.onPatch("/api/user").reply(404, response);
+  await store.dispatch(
+    updateUser({
+      username: "deepthi",
+      email: "mailto:deepthi@gmail.com",
+      roles: ["user"],
+    })
+  );
 });

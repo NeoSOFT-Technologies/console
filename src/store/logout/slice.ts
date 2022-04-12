@@ -19,8 +19,9 @@ export const commonLogout = createAsyncThunk("user/logout", async () => {
     const response = await commonLogoutService();
     return response.data;
   } catch (error_) {
-    console.log("in error", error_);
-    return error_;
+    // console.log(error_, "||", error(error_));
+    const errorMessage = error(error_);
+    throw new Error(errorMessage);
   }
 });
 
@@ -31,14 +32,16 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(commonLogout.pending, (state) => {
       state.loading = true;
+      state.error = undefined;
     });
     builder.addCase(commonLogout.fulfilled, (state, action) => {
       state.loading = false;
       state.data = action.payload;
     });
-    builder.addCase(commonLogout.rejected, (state, action) => {
+    builder.addCase(commonLogout.rejected, (state, action: any) => {
       state.loading = false;
-      state.error = error(action.payload);
+      const errorMessage = action.error.message.split(" ");
+      state.error = errorMessage[errorMessage.length - 1];
     });
   },
 });

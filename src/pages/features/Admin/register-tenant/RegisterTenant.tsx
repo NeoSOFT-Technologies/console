@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Row, Col, Container } from "react-bootstrap";
-import { Navigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
@@ -18,8 +18,9 @@ import {
 } from "../../../../types/index";
 
 export default function RegisterTenant() {
-  const tenantAdded = useAppSelector((state: RootState) => state.addNewTenant);
+  // const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const tenantAdded = useAppSelector((state: RootState) => state.addNewTenant);
   const [tenant, setTenant] = useState<ITenantRegisterData>({
     tenantName: "",
     description: "",
@@ -107,25 +108,26 @@ export default function RegisterTenant() {
         tenant.tenantName !== "" &&
         tenant.email !== "" &&
         tenant.description !== "" &&
-        tenant.password !== ""
-        // tenant.roles.length > 0
+        tenant.password !== "" &&
+        tenant.databaseName !== ""
       ) {
         const newUser = {
           ...tenant,
         };
-        // console.log(newUser);
         await dispatch(addNewTenant(newUser));
-
-        ToastAlert("Tenant Registered", "success");
-
-        setTenant({
-          tenantName: "",
-          description: "",
-          email: "",
-          password: "",
-          databaseName: "",
-          databaseDescription: "",
-        });
+        if (tenantAdded.tenantAdded) {
+          ToastAlert("Tenant Registered", "success");
+          setTenant({
+            tenantName: "",
+            description: "",
+            email: "",
+            password: "",
+            databaseName: "",
+            databaseDescription: "",
+          });
+        } else {
+          ToastAlert("Could not add tenant", "error");
+        }
       } else {
         ToastAlert("Please Fill All Fields", "warning");
       }
@@ -152,13 +154,25 @@ export default function RegisterTenant() {
       databaseDescription: "",
     });
   };
+  // make logic here
+  // useEffect(() => {
+  //   if (!tenantAdded.loading && tenantAdded.error) {
+  //     navigate("/error", { state: tenantAdded.error });
+  //   }
+  // if (
+  //   !tenantAdded.loading &&
+  //   !tenantAdded.error &&
+  //   tenantAdded?.tenantAdded
+  // ) {
+  //   navigate("/tenantlist");
+  // } clear tenantadded boolean value else it will stay the same
+  // }, [tenantAdded.loading]);
+
   return (
     <>
-      {tenantAdded.loading && <Spinner />}
-      {!tenantAdded.loading && tenantAdded.error && (
-        <Navigate to={`/error`} state={tenantAdded.error} />
-      )}
-      {!tenantAdded.loading && !tenantAdded.error && (
+      {tenantAdded.loading ? (
+        <Spinner />
+      ) : (
         <div className=" bg-white">
           <Container className="m-1">
             <h1 className="text-center text-dark pb-2 pt-3">
@@ -309,9 +323,6 @@ export default function RegisterTenant() {
           </Container>
         </div>
       )}
-      {!tenantAdded.loading &&
-        !tenantAdded.error &&
-        tenantAdded?.tenantAdded && <Navigate to="/tenantlist" />}
     </>
   );
 }

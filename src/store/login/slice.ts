@@ -52,8 +52,6 @@ const slice = createSlice({
       const errorMessage = action.error.message.split(" ");
       console.log(Number(errorMessage[errorMessage.length - 1]), action);
       state.error = errorMessage[errorMessage.length - 1];
-      console.log(window);
-      // window.location.href = `/error/${state.error}`;
     });
   },
 });

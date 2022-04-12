@@ -8,7 +8,9 @@ export const regexForName = /^[ A-Za-z]{4,29}$/;
 export const regexForDatabaseName = /^[A-Za-z]+-*[A-Za-z]{4,29}$/;
 export const regexForUser =
   /^[\dA-Za-z]([._-](?![._-])|[\dA-Za-z]){3,18}[\dA-Za-z]$/;
+export const regexForPolicyName = /^[#$&@A-Za-z-]{4,29}$/;
 export const regForPassword = /^[\d!$%&*@A-Za-z]{8,15}$/;
+export const regexForDescription = /^[ A-Za-z]{4,100}$/;
 
 export const errorMsg = {
   "400": "Bad Request",
