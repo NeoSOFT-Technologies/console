@@ -23,9 +23,10 @@ const AdminDashboard = () => {
 
   return (
     <>
-      {user.loading && <Spinner />}
-      {!user.loading && user.data && (
-        <React.Fragment>
+      {user.loading ? (
+        <Spinner />
+      ) : (
+        user.data && (
           <Container>
             <Card style={{ width: "550px" }} className="m-1 p-2">
               <Card.Title style={{ fontSize: "32px" }} className="text-center">
@@ -61,7 +62,7 @@ const AdminDashboard = () => {
               </Card.Body>
             </Card>
           </Container>
-        </React.Fragment>
+        )
       )}
     </>
   );

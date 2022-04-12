@@ -3,7 +3,7 @@ import { createNewUserService } from "../../../../services";
 import { ICreateNewUser } from "../../../../types/index";
 import error from "../../../../utils/error";
 
-interface IAddUserState {
+export interface IAddUserState {
   isAdded: boolean;
   loading: boolean;
   error?: string | null;

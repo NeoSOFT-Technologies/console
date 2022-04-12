@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Form, Button, Dropdown, Row, Col } from "react-bootstrap";
+import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForDescription,
@@ -109,94 +110,104 @@ function CreatePolicy() {
   };
   return (
     <div>
-      {" "}
-      <Container className="mt-3 w-75 bg-white p-4">
-        <h1 className="text-center text-dark pb-3">Create Realm Policy</h1>
-        <Form onSubmit={(e) => handelFormSubmit(e)}>
-          <Form.Group>
-            <Form.Label>Policy name</Form.Label>
-            <Form.Control
-              name="policyName"
-              type="text"
-              onChange={handleInputChange}
-              isInvalid={!!error.policyName}
-              isValid={!!(!error.policyName && formData.policyName)}
-              placeholder="Policy name"
-            />
-            <Form.Control.Feedback type="invalid">
-              {error.policyName}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              name="description"
-              type="text"
-              onChange={handleInputChange}
-              isInvalid={!!error.description}
-              isValid={!!(!error.description && formData.description)}
-              placeholder="Discription"
-            />
-            <Form.Control.Feedback type="invalid">
-              {error.description}
-            </Form.Control.Feedback>
-          </Form.Group>
+      {rolesList.loading || tenantData.loading ? (
+        <Spinner />
+      ) : (
+        rolesList.data &&
+        tenantData.data && (
+          <Container className="mt-3 w-75 bg-white p-4">
+            <h1 className="text-center text-dark pb-3">Create Realm Policy</h1>
+            <Form onSubmit={(e) => handelFormSubmit(e)}>
+              <Form.Group>
+                <Form.Label>Policy name</Form.Label>
+                <Form.Control
+                  name="policyName"
+                  type="text"
+                  onChange={handleInputChange}
+                  isInvalid={!!error.policyName}
+                  isValid={!!(!error.policyName && formData.policyName)}
+                  placeholder="Policy name"
+                />
+                <Form.Control.Feedback type="invalid">
+                  {error.policyName}
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  name="description"
+                  type="text"
+                  onChange={handleInputChange}
+                  isInvalid={!!error.description}
+                  isValid={!!(!error.description && formData.description)}
+                  placeholder="Discription"
+                />
+                <Form.Control.Feedback type="invalid">
+                  {error.description}
+                </Form.Control.Feedback>
+              </Form.Group>
 
-          <div className="title">Roles:</div>
-          <Row>
-            <Col xs={12} sm={6} md={4} lg={4}>
-              {" "}
-              <Dropdown autoClose="outside" className="w-100">
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  Select Roles for the user
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  {rolesList?.data?.map((items, index) => (
-                    <Dropdown.Item key={index} as={Form.Label} htmlFor={items}>
-                      <Form.Check
-                        type="checkbox"
-                        label={items}
-                        id={items}
-                        value={items}
-                        checked={formData.roles.includes(items)}
-                        onChange={handleCheck}
-                      />
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
-              <div className="my-2">
-                <Button
-                  type="submit"
-                  variant="success"
-                  data-testid="submit-button"
-                >
-                  Submit
-                </Button>
-                <Button
-                  type="reset"
-                  variant="danger"
-                  data-testid="cancel-button"
-                >
-                  Cancel
-                </Button>
-              </div>
-            </Col>
-            <Col xs={12} sm={6} md={8} lg={8}>
-              {formData.roles.length > 0 &&
-                formData.roles.map((val: string, i: number) => (
-                  <span className="roles" key={i}>
-                    {val}{" "}
-                    <i
-                      className="bi bi-x-circle"
-                      onClick={() => removeRole(val)}
-                    ></i>
-                  </span>
-                ))}
-            </Col>
-          </Row>
-        </Form>
-      </Container>
+              <div className="title">Roles:</div>
+              <Row>
+                <Col xs={12} sm={6} md={4} lg={4}>
+                  {" "}
+                  <Dropdown autoClose="outside" className="w-100">
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                      Select Roles for the user
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      {rolesList?.data?.map((items, index) => (
+                        <Dropdown.Item
+                          key={index}
+                          as={Form.Label}
+                          htmlFor={items}
+                        >
+                          <Form.Check
+                            type="checkbox"
+                            label={items}
+                            id={items}
+                            value={items}
+                            checked={formData.roles.includes(items)}
+                            onChange={handleCheck}
+                          />
+                        </Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  <div className="my-2">
+                    <Button
+                      type="submit"
+                      variant="success"
+                      data-testid="submit-button"
+                    >
+                      Submit
+                    </Button>
+                    <Button
+                      type="reset"
+                      variant="danger"
+                      data-testid="cancel-button"
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </Col>
+                <Col xs={12} sm={6} md={8} lg={8}>
+                  {formData.roles.length > 0 &&
+                    formData.roles.map((val: string, i: number) => (
+                      <span className="roles" key={i}>
+                        {val}{" "}
+                        <i
+                          className="bi bi-x-circle"
+                          onClick={() => removeRole(val)}
+                        ></i>
+                      </span>
+                    ))}
+                </Col>
+              </Row>
+            </Form>
+          </Container>
+        )
+      )}
     </div>
   );
 }

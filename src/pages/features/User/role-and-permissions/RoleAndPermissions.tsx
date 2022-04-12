@@ -21,26 +21,29 @@ export default function RoleAndPermissions() {
 
   return (
     <>
-      {user.loading && <Spinner />}
-      {!user.loading && user.data && (
-        <Card className="w-75 mx-auto p-2">
-          <h1 className="mx-auto p-1">Roles & Permissions</h1>
-          <hr />
-          {user && user.data?.roles !== undefined && (
-            <RolesAndPermissions
-              heading="Roles"
-              list={user.data?.roles}
-              classes="roles"
-            />
-          )}
-          {user && user.data?.permissions !== undefined && (
-            <RolesAndPermissions
-              heading="Permissions"
-              list={user.data?.permissions}
-              classes="permissions"
-            />
-          )}
-        </Card>
+      {user.loading ? (
+        <Spinner />
+      ) : (
+        user.data && (
+          <Card className="w-75 mx-auto p-2">
+            <h1 className="mx-auto p-1">Roles & Permissions</h1>
+            <hr />
+            {user && user.data?.roles !== undefined && (
+              <RolesAndPermissions
+                heading="Roles"
+                list={user.data?.roles}
+                classes="roles"
+              />
+            )}
+            {user && user.data?.permissions !== undefined && (
+              <RolesAndPermissions
+                heading="Permissions"
+                list={user.data?.permissions}
+                classes="permissions"
+              />
+            )}
+          </Card>
+        )
       )}
     </>
   );
