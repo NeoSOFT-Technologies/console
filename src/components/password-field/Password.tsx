@@ -13,6 +13,7 @@ const PasswordButtons: React.FC<IProperties> = (properties) => {
           type="button"
           className="icon-btn"
           onClick={() => setViewPassword(false)}
+          data-testid="set-view-password-false"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -31,6 +32,7 @@ const PasswordButtons: React.FC<IProperties> = (properties) => {
           className="icon-btn"
           type="button"
           onClick={() => setViewPassword(true)}
+          data-testid="set-view-password-true"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

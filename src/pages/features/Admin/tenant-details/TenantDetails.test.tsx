@@ -17,7 +17,7 @@ it("render without crashing TenantDetails", () => {
   );
 });
 
-it("testif input box is present", () => {
+it("testif input box is present", async () => {
   render(
     <BrowserRouter>
       <Provider store={store}>
@@ -25,7 +25,7 @@ it("testif input box is present", () => {
       </Provider>
     </BrowserRouter>
   );
-  const nameBox = screen.getByTestId("name-input");
+  const nameBox = await screen.getByTestId("name-input");
   expect(nameBox).toBeInTheDocument();
   expect(nameBox).toHaveAttribute("type", "text");
 
@@ -50,7 +50,7 @@ it("testif input box is present", () => {
   expect(descBox).toHaveAttribute("type", "textarea");
 });
 
-it("test if input box take input", () => {
+it("test if input box take input", async () => {
   render(
     <BrowserRouter>
       <Provider store={store}>
@@ -59,7 +59,7 @@ it("test if input box take input", () => {
     </BrowserRouter>
   );
 
-  const nameBox = screen.getByTestId("name-input");
+  const nameBox = await screen.getByTestId("name-input");
   fireEvent.change(nameBox, { target: { value: "akhilpinni" } });
   expect(screen.getByTestId("name-input")).toHaveValue("akhilpinni");
 

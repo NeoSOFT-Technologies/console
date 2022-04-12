@@ -5,8 +5,8 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import store from "../../../../store/index";
 import RoleAndPermissions from "./RoleAndPermissions";
-it("render without crashing UserDashboard", () => {
-  render(
+it("render without crashing UserDashboard", async () => {
+  await render(
     <BrowserRouter>
       <Provider store={store}>
         <RoleAndPermissions />
@@ -14,16 +14,3 @@ it("render without crashing UserDashboard", () => {
     </BrowserRouter>
   );
 });
-// it("render without crashing UserDashboard", () => {
-//   render(
-//     <BrowserRouter>
-//       <Provider store={store}>
-//         <RoleAndPermissions />
-//       </Provider>
-//     </BrowserRouter>
-//   );
-//   const passwordBox = screen.getByTestId("hii-input");
-//   expect(passwordBox).toBeInTheDocument();
-//   const passwordBoxs = screen.getByTestId("hiii-input");
-//   expect(passwordBoxs).toBeInTheDocument();
-// });
