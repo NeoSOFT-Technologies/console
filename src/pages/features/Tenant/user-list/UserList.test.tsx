@@ -6,18 +6,18 @@ import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import store from "../../../../store/index";
-import TenantList from "./TenantList";
+import UserList from "./UserList";
 
 const mockApi = new MockAdapter(axios);
 
-it("render without crashing Tenant list", () => {
+it("render without crashing user list", () => {
   mockApi
-    .onGet("/api/tenants?page=1")
+    .onGet("/api/user?page=1")
     .reply(200, { data: [{ name: "Rohit" }], count: 1 });
   render(
     <BrowserRouter>
       <Provider store={store}>
-        <TenantList />
+        <UserList />
       </Provider>
     </BrowserRouter>
   );
@@ -25,12 +25,12 @@ it("render without crashing Tenant list", () => {
 
 it("render the active, inactive and all buttons", () => {
   mockApi
-    .onGet("/api/tenants?page=1")
+    .onGet("/api/user?page=1")
     .reply(200, { data: [{ name: "Rohit" }], count: 1 });
   render(
     <BrowserRouter>
       <Provider store={store}>
-        <TenantList />
+        <UserList />
       </Provider>
     </BrowserRouter>
   );
