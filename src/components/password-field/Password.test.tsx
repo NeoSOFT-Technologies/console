@@ -10,7 +10,12 @@ it("render without crashing Password Component", () => {
   render(
     <BrowserRouter>
       <Provider store={store}>
-        <PasswordButtons viewPassword={true} setViewPassword={(value) => {}} />
+        <PasswordButtons
+          viewPassword={true}
+          setViewPassword={(value) => {
+            console.log(value);
+          }}
+        />
       </Provider>
     </BrowserRouter>
   );
@@ -20,7 +25,12 @@ it("should have set-view-password-false button", () => {
   render(
     <BrowserRouter>
       <Provider store={store}>
-        <PasswordButtons viewPassword={true} setViewPassword={(value) => {}} />
+        <PasswordButtons
+          viewPassword={true}
+          setViewPassword={(value) => {
+            console.log(value);
+          }}
+        />
       </Provider>
     </BrowserRouter>
   );
@@ -34,7 +44,12 @@ it("should have set-view-password-true button", () => {
   render(
     <BrowserRouter>
       <Provider store={store}>
-        <PasswordButtons viewPassword={false} setViewPassword={(value) => {}} />
+        <PasswordButtons
+          viewPassword={false}
+          setViewPassword={(value) => {
+            console.log(value);
+          }}
+        />
       </Provider>
     </BrowserRouter>
   );
