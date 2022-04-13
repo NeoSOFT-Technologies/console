@@ -40,12 +40,6 @@ const TenantDetails = lazy(
 const TenantProfile = lazy(
   () => import("./pages/features/Tenant/tenant-profile/TenantProfile")
 );
-const TenantPermission = lazy(
-  () => import("./pages/features/Admin/tenant-permission/TenantPermission")
-);
-const TenantRoles = lazy(
-  () => import("./pages/features/Admin/tenant-roles/TenantRoles")
-);
 const CreatePolicy = lazy(
   () => import("./pages/features/Tenant/create-policy/CreatePolicy")
 );
@@ -89,22 +83,6 @@ function AppRoutes() {
           element={
             <AdminGuard>
               <TenantList />
-            </AdminGuard>
-          }
-        />
-        <Route
-          path="/manageroles"
-          element={
-            <AdminGuard>
-              <TenantRoles />
-            </AdminGuard>
-          }
-        />
-        <Route
-          path="/tenantpermission"
-          element={
-            <AdminGuard>
-              <TenantPermission />
             </AdminGuard>
           }
         />
