@@ -49,7 +49,7 @@ export default function UserList() {
         <Card>
           <Card.Header>
             <Button
-              data-testid="active-button"
+              data-testid="active"
               variant={checkactive.btn1 ? "dark" : "secondary"}
               className="w5"
               onClick={() =>
@@ -61,7 +61,7 @@ export default function UserList() {
             <Button
               variant={checkactive.btn2 ? "dark" : "secondary"}
               className="w5"
-              data-testid="inactive-button"
+              data-testid="inactive"
               onClick={() =>
                 setCheckactive({ btn1: false, btn2: true, btn3: false })
               }
@@ -71,7 +71,7 @@ export default function UserList() {
             <Button
               variant={checkactive.btn3 ? "dark" : "secondary"}
               className="w5"
-              data-testid="all-button"
+              data-testid="all"
               onClick={() =>
                 setCheckactive({ btn1: false, btn2: false, btn3: true })
               }

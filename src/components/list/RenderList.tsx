@@ -19,23 +19,31 @@ interface IProps {
 }
 
 interface IColumns {
+  id?: number;
   name: string;
   data?: (row: any) => void;
   width?: string;
   formatter?: (cell: any, row: any) => void;
 }
 
+let id = 0;
 const RenderList1: React.FC<IProps> = (props: IProps) => {
   const { headings, url, searchBy } = props;
-  const columns: IColumns[] = headings.map((heading) => ({
-    ...heading,
-    data: (row: any) => row[heading.data],
-    name: heading.name,
-  }));
+  const columns: IColumns[] = headings.map((heading) => {
+    id += 1;
+    return {
+      id: id,
+      ...heading,
+      data: (row: any) => row[heading.data],
+      name: heading.name,
+    };
+  });
 
   if (props.actions !== undefined) {
     // console.log(props.actions);
+    id += 1;
     columns.push({
+      id: id,
       name: "Actions",
       formatter: (cell, row) => {
         return h(
@@ -43,6 +51,8 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
           {
             className: props.actions?.classNames,
             onclick: () => props.actions?.func(row),
+            "aria-label": "action",
+            "data-testid": "action-btn",
           },
           h(
             "i",

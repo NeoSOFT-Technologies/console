@@ -127,7 +127,7 @@ export default function Createuser() {
     const temp = formData.roles.filter(function (value) {
       return value !== role;
     });
-    console.log(temp);
+    // console.log(temp);
     setFormData({ ...formData, roles: [...temp] });
   };
 
@@ -155,7 +155,7 @@ export default function Createuser() {
         rolesList.data && (
           <Container className="mt-3 w-75 bg-white p-4">
             <h1 className="text-center text-dark pb-3">Create User</h1>
-            <Form onSubmit={handleFormSubmit}>
+            <Form onSubmit={handleFormSubmit} data-testid="onsubmit">
               <Form.Group>
                 <Form.Label>Username</Form.Label>
                 <Form.Control
@@ -205,42 +205,7 @@ export default function Createuser() {
                 </Form.Control.Feedback>
               </Form.Group>
               <div className="title">Roles:</div>
-              {/* <Row>
-            <Col xs={12} sm={6} md={4} lg={4}>
-              {" "}
-              <Dropdown autoClose="outside" className="w-100">
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  Select Roles for the user
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  {rolesList?.data?.map((items, index) => (
-                    <Dropdown.Item key={index} as={Form.Label} htmlFor={items}>
-                      <Form.Check
-                        type="checkbox"
-                        label={items}
-                        id={items}
-                        value={items}
-                        checked={formData.roles.includes(items)}
-                        onChange={handleCheck}
-                      />
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
-            </Col>
-            <Col xs={12} sm={6} md={8} lg={8}>
-              {formData.roles.length > 0 &&
-                formData.roles.map((val, i) => (
-                  <span className="roles" key={i}>
-                    {val}{" "}
-                    <i
-                      className="bi bi-x-circle"
-                      onClick={() => removeRole(val)}
-                    ></i>
-                  </span>
-                ))}
-            </Col>
-          </Row> */}
+
               <MultiSelectDropdown
                 data-testid="multidrop"
                 rolesList={rolesList?.data}

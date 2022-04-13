@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 
@@ -16,7 +16,7 @@ it("render without crashing Navbar", () => {
   );
 });
 
-it("render toggle-button, navigate-button, dropdown items properly", () => {
+it("render toggle-button, navigate-button, toggle-off buttons", () => {
   render(
     <BrowserRouter>
       <Provider store={store}>
@@ -35,33 +35,37 @@ it("render toggle-button, navigate-button, dropdown items properly", () => {
   const toggleOffBtn = screen.getByTestId("toggleOff-button");
   expect(toggleOffBtn).toBeInTheDocument();
   fireEvent.click(toggleOffBtn);
-
-  const node = document.querySelectorAll(".dropdown-item.preview-item").item(0);
-  if (node) fireEvent.click(node);
 });
 
-// it("render without crashing Navbar", () => {
-//   render(
-//     <BrowserRouter>
-//       <Provider store={store}>
-//         <Navbar />
-//       </Provider>
-//     </BrowserRouter>
-//   );
+it("render dropdown menu", async () => {
+  render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <Navbar />
+      </Provider>
+    </BrowserRouter>
+  );
+  const dropdownToggleBtn = screen.getByTestId("dropdown-toggle");
+  await waitFor(() => {
+    expect(dropdownToggleBtn).toBeInTheDocument();
+    fireEvent.click(dropdownToggleBtn);
+  });
 
-//   const ddI1 = screen.getByTestId("dropdownItem1");
-//   expect(ddI1).toBeInTheDocument();
-//   fireEvent.click(ddI1);
+  const eventTodayBtn = screen.getByTestId("event-today");
+  await waitFor(() => {
+    expect(eventTodayBtn).toBeInTheDocument();
+    fireEvent.click(eventTodayBtn);
+  });
 
-//   const eventToday = screen.getByTestId("event-today");
-//   expect(eventToday).toBeInTheDocument();
-//   fireEvent.click(eventToday);
+  const settingsBtn = screen.getByTestId("settings");
+  await waitFor(() => {
+    expect(settingsBtn).toBeInTheDocument();
+    fireEvent.click(settingsBtn);
+  });
 
-//   const settings = screen.getByTestId("settings");
-//   expect(settings).toBeInTheDocument();
-//   fireEvent.click(settings);
-
-//   const launchAdmin = screen.getByTestId("launch-admin");
-//   expect(launchAdmin).toBeInTheDocument();
-//   fireEvent.click(launchAdmin);
-// });
+  const launchAdminBtn = screen.getByTestId("launch-admin");
+  await waitFor(() => {
+    expect(launchAdminBtn).toBeInTheDocument();
+    fireEvent.click(launchAdminBtn);
+  });
+});
