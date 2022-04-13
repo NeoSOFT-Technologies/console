@@ -73,6 +73,7 @@ class App extends Component<IProperty, IState> {
       "/error-pages/error-404",
       "/error-pages/error-500",
       "/error-pages/error-401",
+      "/error",
       // "/general-pages/landing-page",
     ];
     for (const fullPageLayoutRoute of fullPageLayoutRoutes) {

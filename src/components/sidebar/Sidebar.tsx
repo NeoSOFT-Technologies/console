@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import withRouter from "../../WithRouter";
 import adminRoutes from "../../routes/admin";
 import tenantRoutes from "../../routes/tenants";
 import userRoutes from "../../routes/user-routes";
 import { RootState } from "../../store";
+import { useAppSelector } from "../../store/hooks";
 import { IUserDataState } from "../../types";
 
 interface IConditions {
@@ -19,10 +19,10 @@ export const Sidebar = () => {
   const isPathActive = (path: string) => {
     return location.pathname.startsWith(path);
   };
-  const user: IUserDataState = useSelector(
+  const user: IUserDataState = useAppSelector(
     (state: RootState) => state.userData
   );
-  const loginType: IConditions = useSelector(
+  const loginType: IConditions = useAppSelector(
     (state: RootState) => state.loginType
   );
   const [routes, setRoutes] = useState([{ path: "", title: "", icon: "" }]);
@@ -45,6 +45,7 @@ export const Sidebar = () => {
               href="!#"
               className="nav-link"
               onClick={(event_) => event_.preventDefault()}
+              data-testid="nav-link-button"
             >
               <div className="nav-profile-image">
                 <img

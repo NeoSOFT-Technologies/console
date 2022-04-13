@@ -1,12 +1,10 @@
 import React from "react";
 import { Dropdown } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
 import { logo, logo_mini } from "../../resources/images";
 import { useAppDispatch } from "../../store/hooks";
 import { commonLogout } from "../../store/logout/slice";
 
 export default function Navbar() {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const toggleOffcanvas = () => {
     document?.querySelector(".sidebar-offcanvas")?.classList.toggle("active");
@@ -14,18 +12,18 @@ export default function Navbar() {
 
   const logout = async () => {
     await dispatch(commonLogout());
-    navigate("/login-page");
+    window.location.href = "/login-page";
   };
 
   return (
     <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <Link className="navbar-brand brand-logo" to="/">
+        <p className="navbar-brand brand-logo">
           <img src={logo} alt="logo" />
-        </Link>
-        <Link className="navbar-brand brand-logo-mini" to="/">
+        </p>
+        <p className="navbar-brand brand-logo-mini">
           <img src={logo_mini} alt="logo" />
-        </Link>
+        </p>
       </div>
       <div className="navbar-menu-wrapper d-flex align-items-stretch">
         <button
@@ -55,7 +53,7 @@ export default function Navbar() {
             {/* @ts-ignore */}
             <Dropdown alignright="true">
               <Dropdown.Toggle
-                data-testid="dropdownItem1"
+                data-testid="dropdown-toggle"
                 className="nav-link count-indicator"
               >
                 <i className="bi bi-bell"></i>

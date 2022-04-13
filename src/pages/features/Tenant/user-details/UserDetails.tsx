@@ -14,8 +14,14 @@ import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { regexForUser, regexForEmail } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
 import { getTenantRoles } from "../../../../store/features/admin/tenant-roles/slice";
-import { deleteUser } from "../../../../store/features/tenant/delete-user/slice";
-import { updateUser } from "../../../../store/features/user/update-user/slice";
+import {
+  deleteUser,
+  IDeleteUserState,
+} from "../../../../store/features/tenant/delete-user/slice";
+import {
+  updateUser,
+  IUpdateUserState,
+} from "../../../../store/features/user/update-user/slice";
 import {
   getUserDetails,
   IUserDetailsState,
@@ -47,6 +53,12 @@ export default function UserDetails() {
   );
   const rolesList: ITenantRolesState = useAppSelector(
     (state: RootState) => state.rolesList
+  );
+  const deleteUserState: IDeleteUserState = useAppSelector(
+    (state: RootState) => state.deleteUserState
+  );
+  const updateUserDataState: IUpdateUserState = useAppSelector(
+    (state: RootState) => state.updateUserDataState
   );
   const [userdata, setUserdata] = useState<IUserDetailsData>({
     id: "",
@@ -168,129 +180,153 @@ export default function UserDetails() {
     }
   };
 
-  return userDetails.loading ? (
-    <Spinner />
-  ) : (
-    <Container>
-      <Row className="text-right">
-        <Col>
-          <Card>
-            <Card.Header className="">
-              <Button variant="dark" onClick={() => setEditUser(true)}>
-                Edit
-              </Button>
-              <Button variant="danger" onClick={handleRemove}>
-                Remove
-              </Button>
-            </Card.Header>
-            {/* <Card.Body>This is some text within a card body.</Card.Body> */}
-          </Card>
-        </Col>
-      </Row>
-      <Row className="">
-        <Col>
-          <Card>
-            <Card.Header className="text-center">User Details</Card.Header>
-            <Card.Body>
-              <Form>
-                <Form.Group>
-                  <Form.Label>User Name :</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="username"
-                    placeholder="Enter user name"
-                    value={userdata.username}
-                    onChange={handleInputChange}
-                    className="p-1"
-                    disabled
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Label>Email :</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="email"
-                    placeholder="Enter email"
-                    value={userdata.email}
-                    onChange={handleInputChange}
-                    disabled={!editUser}
-                    className="p-1"
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Label>Tenant Name :</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="tenantName"
-                    placeholder="Enter tenant Name"
-                    value={userdata.tenantName}
-                    onChange={handleInputChange}
-                    className="p-1"
-                    disabled
-                  />
-                </Form.Group>
-                <div className="list-container  ">
-                  <h5>Roles :</h5>
-                  <Row>
-                    <Col xs={12} sm={6} md={4} lg={4}>
-                      {" "}
-                      <Dropdown autoClose="outside" className="w-100">
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                          Select Roles for the user
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {rolesList?.data?.map((role, index) => (
-                            <Dropdown.Item
-                              key={index}
-                              as={Form.Label}
-                              htmlFor={role}
+  return (
+    <>
+      {(user.loading ||
+        userDetails.loading ||
+        rolesList.loading ||
+        deleteUserState.loading ||
+        updateUserDataState.loading) && <Spinner />}
+      {user.data && userDetails.data && rolesList.data && (
+        <Container>
+          <Row className="text-right">
+            <Col>
+              <Card>
+                <Card.Header className="">
+                  <Button
+                    variant="dark"
+                    onClick={() => setEditUser(true)}
+                    data-testid="edit-user"
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={handleRemove}
+                    data-testid="remove-user"
+                  >
+                    Remove
+                  </Button>
+                </Card.Header>
+                {/* <Card.Body>This is some text within a card body.</Card.Body> */}
+              </Card>
+            </Col>
+          </Row>
+          <Row className="">
+            <Col>
+              <Card>
+                <Card.Header className="text-center">User Details</Card.Header>
+                <Card.Body>
+                  <Form>
+                    <Form.Group>
+                      <Form.Label>User Name :</Form.Label>
+                      <Form.Control
+                        data-testid="userName-input"
+                        type="text"
+                        name="username"
+                        placeholder="Enter user name"
+                        value={userdata.username}
+                        onChange={handleInputChange}
+                        className="p-1"
+                        disabled
+                      />
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>Email :</Form.Label>
+                      <Form.Control
+                        data-testid="email-input"
+                        type="text"
+                        name="email"
+                        placeholder="Enter email"
+                        value={userdata.email}
+                        onChange={handleInputChange}
+                        disabled={!editUser}
+                        className="p-1"
+                      />
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>Tenant Name :</Form.Label>
+                      <Form.Control
+                        data-testid="tenantName-input"
+                        type="text"
+                        name="tenantName"
+                        placeholder="Enter tenant Name"
+                        value={userdata.tenantName}
+                        onChange={handleInputChange}
+                        className="p-1"
+                        disabled
+                      />
+                    </Form.Group>
+                    <div className="list-container  ">
+                      <h5>Roles :</h5>
+                      <Row>
+                        <Col xs={12} sm={6} md={4} lg={4}>
+                          {" "}
+                          <Dropdown autoClose="outside" className="w-100">
+                            <Dropdown.Toggle
+                              variant="success"
+                              id="dropdown-basic"
                             >
-                              <Form.Check
-                                className="mx-4"
-                                key={`${role}`}
-                                id={`${role}`}
-                                label={role}
-                                name="role"
-                                value={`${role}`}
-                                checked={userdata.roles.includes(role)}
-                                type="checkbox"
-                                onChange={handleCheck}
-                                inline
-                              />
-                            </Dropdown.Item>
-                          ))}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </Col>
-                    <Col xs={12} sm={6} md={8} lg={8}>
-                      {userdata.roles.length > 0 &&
-                        userdata.roles.map((val, i) => (
-                          <span className="roles" key={i}>
-                            {val}{" "}
-                            <i
-                              className="bi bi-x-circle"
-                              onClick={() => removeRole(val)}
-                            ></i>
-                          </span>
-                        ))}
-                    </Col>
-                  </Row>
-                </div>
-                {editUser && (
-                  <div className="py-2">
-                    <Button variant="success" onClick={handleEditSave}>
-                      Save
-                    </Button>
-                    <Button variant="danger" onClick={() => setEditUser(false)}>
-                      Cancel
-                    </Button>
-                  </div>
-                )}
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+                              Select Roles for the user
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                              {rolesList?.data?.map((role, index) => (
+                                <Dropdown.Item
+                                  key={index}
+                                  as={Form.Label}
+                                  htmlFor={role}
+                                >
+                                  <Form.Check
+                                    className="mx-4"
+                                    key={`${role}`}
+                                    id={`${role}`}
+                                    label={role}
+                                    name="role"
+                                    value={`${role}`}
+                                    checked={userdata.roles.includes(role)}
+                                    type="checkbox"
+                                    onChange={handleCheck}
+                                    inline
+                                  />
+                                </Dropdown.Item>
+                              ))}
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        </Col>
+                        <Col xs={12} sm={6} md={8} lg={8}>
+                          {userdata.roles.length > 0 &&
+                            userdata.roles.map((val, i) => (
+                              <span className="roles" key={i}>
+                                {val}{" "}
+                                <i
+                                  className="bi bi-x-circle"
+                                  onClick={() => removeRole(val)}
+                                ></i>
+                              </span>
+                            ))}
+                        </Col>
+                      </Row>
+                    </div>
+                    {editUser && (
+                      <div className="py-2">
+                        <Button variant="success" onClick={handleEditSave}>
+                          Save
+                        </Button>
+                        <Button
+                          variant="danger"
+                          onClick={() => setEditUser(false)}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    )}
+                  </Form>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      )}
+    </>
   );
 }

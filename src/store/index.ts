@@ -26,9 +26,9 @@ const store = configureStore({
     tenantUserList: tenantUserListReducer,
     addNewTenant: addNewTenantReducer,
     deleteTenant: deleteTenantReducer,
-    deleteUser: deleteUserReducer,
-    updateTenant: updateTenantReducer,
-    addNewUser: addNewUserReducer,
+    deleteUserState: deleteUserReducer,
+    updateTenantState: updateTenantReducer,
+    addNewUserState: addNewUserReducer,
     rolesList: rolesListReducer,
     loginType: loginTypeReducer,
     userPermission: userPermissionReducer,
@@ -37,7 +37,7 @@ const store = configureStore({
     userDetails: userDetailsReducer,
     tenantDetails: tenantDetailsReducer,
     logoutState: logoutReducer,
-    updateUserData: updateUserReducer,
+    updateUserDataState: updateUserReducer,
   },
 });
 

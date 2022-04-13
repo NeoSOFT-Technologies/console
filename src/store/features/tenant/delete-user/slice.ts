@@ -5,7 +5,7 @@ import error from "../../../../utils/error";
 /**
  * ! check if delete json is correct
  */
-interface IDeleteUserState {
+export interface IDeleteUserState {
   isDeleted?: boolean | null;
   loading: boolean;
   error?: string | null;
@@ -24,7 +24,9 @@ export const deleteUser = createAsyncThunk(
       const response = await deleteUserDataService(userName);
       return response.data.data;
     } catch (error_) {
-      return error_;
+      // console.log(error_, "||", error(error_));
+      const errorMessage = error(error_);
+      throw new Error(errorMessage);
     }
   }
 );
@@ -36,15 +38,17 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(deleteUser.pending, (state) => {
       state.loading = true;
+      state.error = undefined;
     });
     builder.addCase(deleteUser.fulfilled, (state, action) => {
       state.loading = false;
       state.isDeleted = action.payload;
     });
-    builder.addCase(deleteUser.rejected, (state, action) => {
+    builder.addCase(deleteUser.rejected, (state, action: any) => {
       state.loading = false;
       // action.payload contains error information
-      state.error = error(action.payload);
+      const errorMessage = action.error.message.split(" ");
+      state.error = errorMessage[errorMessage.length - 1];
     });
   },
 });

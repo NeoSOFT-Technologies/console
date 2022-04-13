@@ -33,11 +33,11 @@
     "@types/react-dom": "^17.0.14",
     "@types/react-redux": "^7.1.23",
     "axios": "^0.26.0",
+    "axios-mock-adapter": "^1.20.0",
     "bootstrap": "^4.3.1",
     "compass-mixins": "^0.12.10",
     "gridjs": "^5.0.2",
     "gridjs-react": "^5.0.2",
-    "nouislider-react": "^3.4.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.2.0",
     "react-dom": "^17.0.2",
@@ -80,7 +80,8 @@
       "__snapshots__/*",
       "index.ts",
       "src/types/landing-page.ts",
-      "services"
+      "services",
+      "AdminDashboard.tsx"
     ],
     "collectCoverageFrom": [
       "src/**"

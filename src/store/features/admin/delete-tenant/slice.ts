@@ -21,7 +21,9 @@ export const deleteTenant = createAsyncThunk(
       const response = await deleteTenantDataService(tenantName);
       return response.data;
     } catch (error_) {
-      return error_;
+      // console.log(error_, "||", error(error_));
+      const errorMessage = error(error_);
+      throw new Error(errorMessage);
     }
   }
 );
@@ -34,16 +36,18 @@ const slice = createSlice({
     builder.addCase(deleteTenant.pending, (state) => {
       state.loading = true;
       state.isDeleted = false;
+      state.error = undefined;
     });
     builder.addCase(deleteTenant.fulfilled, (state) => {
       state.loading = false;
       state.isDeleted = true;
     });
-    builder.addCase(deleteTenant.rejected, (state, action) => {
+    builder.addCase(deleteTenant.rejected, (state, action: any) => {
       state.loading = false;
       state.isDeleted = false;
       // action.payload contains error information
-      state.error = error(action.payload);
+      const errorMessage = action.error.message.split(" ");
+      state.error = errorMessage[errorMessage.length - 1];
     });
   },
 });

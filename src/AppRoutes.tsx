@@ -8,6 +8,7 @@ const RoleAndPermissions = lazy(
 const UserDetails = lazy(
   () => import("./pages/features/Tenant/user-details/UserDetails")
 );
+const Error = lazy(() => import("./pages/error-pages/Error"));
 const UserList = lazy(
   () => import("./pages/features/Tenant/user-list/UserList")
 );
@@ -39,11 +40,8 @@ const TenantDetails = lazy(
 const TenantProfile = lazy(
   () => import("./pages/features/Tenant/tenant-profile/TenantProfile")
 );
-const TenantPermission = lazy(
-  () => import("./pages/features/Admin/tenant-permission/TenantPermission")
-);
-const TenantRoles = lazy(
-  () => import("./pages/features/Admin/tenant-roles/TenantRoles")
+const CreatePolicy = lazy(
+  () => import("./pages/features/Tenant/create-policy/CreatePolicy")
 );
 
 function AppRoutes() {
@@ -54,6 +52,7 @@ function AppRoutes() {
         <Route path="/error-pages/error-404" element={<Error404 />} />
         <Route path="/error-pages/error-500" element={<Error500 />} />
         <Route path="/error-pages/error-401" element={<Error401 />} />
+        <Route path="/error" element={<Error />} />
         {/** **********************ADMIN ROUTES***********************/}
         <Route
           path="/admindashboard"
@@ -87,23 +86,6 @@ function AppRoutes() {
             </AdminGuard>
           }
         />
-        <Route
-          path="/manageroles"
-          element={
-            <AdminGuard>
-              <TenantRoles />
-            </AdminGuard>
-          }
-        />
-        <Route
-          path="/tenantpermission"
-          element={
-            <AdminGuard>
-              <TenantPermission />
-            </AdminGuard>
-          }
-        />
-
         {/**********************************************************/}
         {/** ********************TENANT ROUTES*************************/}
         <Route
@@ -111,6 +93,14 @@ function AppRoutes() {
           element={
             <TenantGuard>
               <TenantDashboard />
+            </TenantGuard>
+          }
+        />
+        <Route
+          path="/create-policy"
+          element={
+            <TenantGuard>
+              <CreatePolicy />
             </TenantGuard>
           }
         />
@@ -165,7 +155,8 @@ function AppRoutes() {
           }
         />
         {/**********************************************************/}
-        <Route path="*" element={<Navigate to="/login-page" />} />
+        <Route path="*" element={<Navigate to="/login-page" />} />{" "}
+        {/* redirect if not match any path */}
       </Routes>
     </Suspense>
   );

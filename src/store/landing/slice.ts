@@ -22,7 +22,7 @@ export const getLandingPageDetails = createAsyncThunk(
       const response = await httpclient().get("/global/mock-data/landing.json");
       return response.data;
     } catch (error_) {
-      return error_;
+      throw new Error(error(error_));
     }
   }
 );
@@ -34,6 +34,7 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(getLandingPageDetails.pending, (state) => {
       state.loading = true;
+      state.error = undefined;
     });
     builder.addCase(getLandingPageDetails.fulfilled, (state, action) => {
       state.loading = false;

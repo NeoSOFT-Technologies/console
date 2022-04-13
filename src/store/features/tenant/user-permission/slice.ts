@@ -22,7 +22,9 @@ export const userPermission = createAsyncThunk(
       const response = await userPermissionService(tenantName);
       return response.data;
     } catch (error_) {
-      return error_;
+      // console.log(error_, "||", error(error_));
+      const errorMessage = error(error_);
+      throw new Error(errorMessage);
     }
   }
 );
@@ -34,15 +36,17 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(userPermission.pending, (state) => {
       state.loading = true;
+      state.error = undefined;
     });
     builder.addCase(userPermission.fulfilled, (state, action) => {
       state.loading = false;
       state.data = action.payload;
     });
-    builder.addCase(userPermission.rejected, (state, action) => {
+    builder.addCase(userPermission.rejected, (state, action: any) => {
       state.loading = false;
       // action.payload contains error information
-      state.error = error(action.payload);
+      const errorMessage = action.error.message.split(" ");
+      state.error = errorMessage[errorMessage.length - 1];
     });
   },
 });
