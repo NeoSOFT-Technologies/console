@@ -43,6 +43,7 @@ export default function Error() {
               <div className="col-12 text-center mt-xl-2">
                 <span
                   className="text-white font-weight-medium pointer"
+                  data-testid="error-input"
                   onClick={() => backToHome()}
                 >
                   Back to home
