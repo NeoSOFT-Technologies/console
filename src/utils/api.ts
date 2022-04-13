@@ -58,7 +58,7 @@ const apiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
       return res;
     },
     async (err) => {
-      console.log(err.config, err);
+      // console.log(err.config, err);
       const originalConfig = err.config;
 
       if (
@@ -75,7 +75,7 @@ const apiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
           });
           const accessToken = rs.data.access_token;
           tokenService.updateLocalAccessToken(accessToken);
-          console.log("inside refresh tooken");
+          // console.log("inside refresh tooken");
           return service(originalConfig);
         } catch (_error) {
           throw new Error(error(_error));
