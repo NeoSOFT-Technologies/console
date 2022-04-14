@@ -10,6 +10,7 @@ import TenantProfile from "./TenantProfile";
 const mockStore = configureStore([thunk]);
 const store = mockStore({
   userData: {
+    loading: false,
     data: {
       id: 1,
       tenantId: 2,

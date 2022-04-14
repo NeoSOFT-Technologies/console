@@ -13,6 +13,7 @@ import TenantDetails from "./TenantDetails";
 const mockStore = configureStore([thunk]);
 const store = mockStore({
   tenantDetails: {
+    loading: false,
     data: {
       createdDateTime: "13/04/2022",
       description: "tenantDeatails",
@@ -25,12 +26,8 @@ const store = mockStore({
       tenantName: " tenantadmin",
     },
   },
-  deleteTenant: {
-    data: ["deepthi"],
-  },
-  updateTenantState: {
-    data: ["deepthi"],
-  },
+  deleteTenant: { loading: false, data: true },
+  updateTenantState: { loading: false, data: true },
 });
 
 it("render without crashing TenantDetails", () => {

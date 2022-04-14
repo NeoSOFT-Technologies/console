@@ -108,7 +108,7 @@ export default function UserDetails() {
     const temp = userdata.roles.filter(function (value: string) {
       return value !== role;
     });
-    console.log(temp);
+    // console.log(temp);
     setUserdata({ ...userdata, roles: [...temp] });
   };
 
@@ -196,14 +196,14 @@ export default function UserDetails() {
                   <Button
                     variant="dark"
                     onClick={() => setEditUser(true)}
-                    data-testid="edit-user"
+                    data-testid="edit"
                   >
                     Edit
                   </Button>
                   <Button
                     variant="danger"
                     onClick={handleRemove}
-                    data-testid="remove-user"
+                    data-testid="remove"
                   >
                     Remove
                   </Button>
@@ -266,6 +266,7 @@ export default function UserDetails() {
                             <Dropdown.Toggle
                               variant="success"
                               id="dropdown-basic"
+                              data-testid="dropdown-toggler"
                             >
                               Select Roles for the user
                             </Dropdown.Toggle>
@@ -277,6 +278,7 @@ export default function UserDetails() {
                                   htmlFor={role}
                                 >
                                   <Form.Check
+                                    data-testid="role-item"
                                     className="mx-4"
                                     key={`${role}`}
                                     id={`${role}`}
@@ -301,6 +303,7 @@ export default function UserDetails() {
                                 <i
                                   className="bi bi-x-circle"
                                   onClick={() => removeRole(val)}
+                                  data-testid="remove-role-btn"
                                 ></i>
                               </span>
                             ))}
@@ -309,12 +312,17 @@ export default function UserDetails() {
                     </div>
                     {editUser && (
                       <div className="py-2">
-                        <Button variant="success" onClick={handleEditSave}>
+                        <Button
+                          variant="success"
+                          onClick={handleEditSave}
+                          data-testid="save"
+                        >
                           Save
                         </Button>
                         <Button
                           variant="danger"
                           onClick={() => setEditUser(false)}
+                          data-testid="cancel"
                         >
                           Cancel
                         </Button>

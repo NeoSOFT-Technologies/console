@@ -12,7 +12,7 @@ export default function UserList() {
   });
 
   const handleUserDetails = (value: any) => {
-    console.log(value);
+    // console.log(value);
     navigate(`/userdetails/${value._cells[0].data}`, {
       state: {
         userName: value._cells[0].data,
