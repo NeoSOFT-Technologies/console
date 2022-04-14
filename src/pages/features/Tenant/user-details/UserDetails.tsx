@@ -97,12 +97,33 @@ export default function UserDetails() {
       dispatch(getTenantRoles());
     }
   }, []);
+  useEffect(() => {
+    // console.log("inside the tennant deleted use effect");
+    if (!deleteUserState.loading && deleteUserState.error) {
+      navigate("/error", { state: deleteUserState.error });
+    }
+    if (!updateUserDataState.loading && updateUserDataState.error) {
+      navigate("/error", { state: updateUserDataState.error });
+    }
+    if (
+      !deleteUserState.loading &&
+      !deleteUserState.error &&
+      deleteUserState?.isDeleted
+    ) {
+      navigate("/tenantlist");
+    }
+  }, [deleteUserState.loading, updateUserDataState.loading]);
 
   useEffect(() => {
     if (userDetails.data) {
       setUserdata({ ...userDetails.data });
+    } else if (userDetails.error) {
+      navigate("/error", { state: userDetails.error });
     }
-  }, [userDetails.loading]);
+    if (rolesList.error) {
+      navigate("/error", { state: rolesList.error });
+    }
+  }, [userDetails.loading, rolesList.error]);
 
   const removeRole = (role: string) => {
     const temp = userdata.roles.filter(function (value: string) {

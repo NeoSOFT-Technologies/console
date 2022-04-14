@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import RenderList from "../../../../components/list/RenderList";
+import { deleteUserReset } from "../../../../store/features/tenant/delete-user/slice";
+import { useAppDispatch } from "../../../../store/hooks";
 
 export default function UserList() {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [checkactive, setCheckactive] = useState({
     btn1: false,
     btn2: false,
     btn3: true,
   });
+  useEffect(() => {
+    dispatch(deleteUserReset());
+  }, []);
 
   const handleUserDetails = (value: any) => {
     // console.log(value);
