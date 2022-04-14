@@ -12,6 +12,10 @@ import { ITenantListState } from "../../../../types/index";
 export default function TenantList() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [url, setUrl] = useState(
+    process.env.REACT_APP_API_BASEURL + "/api/tenants?" ||
+      "http://localhost:3000/api/tenants?"
+  );
   const tenantList: ITenantListState = useAppSelector(
     (state: RootState) => state.tenantList
   );
@@ -48,9 +52,9 @@ export default function TenantList() {
     },
   ];
   // console.log(process.env.REACT_APP_API_BASEURL);
-  const url =
-    process.env.REACT_APP_API_BASEURL + "/api/tenants?" ||
-    "http://localhost:3000/api/tenants?";
+  // const url =
+  //   process.env.REACT_APP_API_BASEURL + "/api/tenants?" ||
+  //   "http://localhost:3000/api/tenants?";
   const actions = {
     classNames: "btn btn-sm btn-dark",
     func: (val: any) => NavigateTenant(val),
@@ -63,21 +67,34 @@ export default function TenantList() {
           checkactive.btn1 ? "ml-4  w5 btn-light " : "ml-4  w5 btn-secondary"
         }
         data-testid="active"
-        onClick={() => setCheckactive({ btn1: true, btn2: false, btn3: false })}
+        onClick={() => {
+          setCheckactive({ btn1: true, btn2: false, btn3: false });
+          setUrl(
+            process.env.REACT_APP_API_BASEURL + "/api/tenants?isDeleted=false&"
+          );
+        }}
       >
         Active
       </Button>
       <Button
         className={checkactive.btn2 ? "  w5 btn-light " : "  w5 btn-secondary"}
         data-testid="inactive"
-        onClick={() => setCheckactive({ btn1: false, btn2: true, btn3: false })}
+        onClick={() => {
+          setCheckactive({ btn1: false, btn2: true, btn3: false });
+          setUrl(
+            process.env.REACT_APP_API_BASEURL + "/api/tenants?isDeleted=true&"
+          );
+        }}
       >
         InActive
       </Button>
       <Button
         className={checkactive.btn3 ? "  w5 btn-light " : "  w5 btn-secondary"}
         data-testid="all"
-        onClick={() => setCheckactive({ btn1: false, btn2: false, btn3: true })}
+        onClick={() => {
+          setCheckactive({ btn1: false, btn2: false, btn3: true });
+          setUrl(process.env.REACT_APP_API_BASEURL + "/api/tenants?");
+        }}
       >
         All
       </Button>

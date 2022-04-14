@@ -67,6 +67,7 @@ export interface ICreateNewUser {
   email: string;
   password: string;
   roles: string[];
+  permissions: string[];
 }
 
 export interface IUserPermission {

@@ -17,11 +17,13 @@ import {
 } from "../../../../store/features/tenant/add-user/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { ICreateNewUser, ITenantRolesState } from "../../../../types/index";
+const tempPermissions = ["view", "edit", "write", "delete"];
 interface Ierrors {
   userName: string;
   email: string;
   password: string;
   roles: string;
+  permissions: string;
 }
 
 export default function Createuser() {
@@ -38,6 +40,7 @@ export default function Createuser() {
     email: "",
     password: "",
     roles: [],
+    permissions: [],
   });
 
   const [errors, setErrors] = useState<Ierrors>({
@@ -45,6 +48,7 @@ export default function Createuser() {
     email: "",
     password: "",
     roles: "",
+    permissions: "",
   });
 
   useEffect(() => {
@@ -96,7 +100,8 @@ export default function Createuser() {
         formData.userName !== "" &&
         formData.email !== "" &&
         formData.password !== "" &&
-        formData.roles.length > 0
+        formData.roles.length > 0 &&
+        formData.permissions.length > 0
       ) {
         const newUser = {
           ...formData,
@@ -111,7 +116,7 @@ export default function Createuser() {
     }
   };
 
-  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCheckRoles = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       setFormData({
         ...formData,
@@ -122,13 +127,35 @@ export default function Createuser() {
       setFormData({ ...formData, roles: [...formData.roles] });
     }
   };
-
+  const handleCheckPermissions = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (event.target.checked) {
+      setFormData({
+        ...formData,
+        permissions: [...formData.permissions, event.target.value],
+      });
+    } else {
+      formData.permissions.splice(
+        formData.permissions.indexOf(event.target.value),
+        1
+      );
+      setFormData({ ...formData, permissions: [...formData.permissions] });
+    }
+  };
   const removeRole = (role: string) => {
     const temp = formData.roles.filter(function (value) {
       return value !== role;
     });
     // console.log(temp);
     setFormData({ ...formData, roles: [...temp] });
+  };
+  const removePermissions = (permissions: string) => {
+    const temp = formData.permissions.filter(function (value) {
+      return value !== permissions;
+    });
+    // console.log(temp);
+    setFormData({ ...formData, permissions: [...temp] });
   };
 
   useEffect(() => {
@@ -204,14 +231,23 @@ export default function Createuser() {
                   {errors.password}
                 </Form.Control.Feedback>
               </Form.Group>
-              <div className="title">Roles:</div>
+              <div className="title">Roles : </div>
 
               <MultiSelectDropdown
                 data-testid="multidrop"
-                rolesList={rolesList?.data}
+                list={rolesList?.data}
                 formData={formData.roles}
-                handleCheck={handleCheck}
+                title="roles"
+                handleCheck={handleCheckRoles}
                 removeRole={removeRole}
+              />
+              <div className="title">Permissions : </div>
+              <MultiSelectDropdown
+                list={tempPermissions}
+                formData={formData.permissions}
+                title="permissions"
+                handleCheck={handleCheckPermissions}
+                removeRole={removePermissions}
               />
               <div className="my-2">
                 <Button

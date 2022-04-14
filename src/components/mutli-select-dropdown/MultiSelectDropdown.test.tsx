@@ -17,7 +17,8 @@ it("render without crashing MultiSelect Dropdown menu", () => {
     <BrowserRouter>
       <Provider store={store}>
         <MultiSelectDropdown
-          rolesList={[]}
+          list={[]}
+          title="Roles"
           formData={[]}
           handleCheck={(event) => {
             console.log(event);
@@ -36,7 +37,8 @@ it("render the roles list in MultiSelect Dropdown menu", async () => {
     <BrowserRouter>
       <Provider store={store}>
         <MultiSelectDropdown
-          rolesList={["role1"]}
+          list={["role1"]}
+          title="Roles"
           formData={[]}
           handleCheck={(event) => {
             console.log(event);
@@ -68,7 +70,8 @@ it("render the form data", () => {
     <BrowserRouter>
       <Provider store={store}>
         <MultiSelectDropdown
-          rolesList={[]}
+          list={[]}
+          title="Roles"
           formData={["role1"]}
           handleCheck={(event) => {
             console.log(event);

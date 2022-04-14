@@ -23,6 +23,11 @@ const store = mockStore({
       policy: "some good policies",
     },
   },
+  updateTenantState: {
+    isUpdated: false,
+    loading: false,
+    error: undefined,
+  },
 });
 
 it("render without crashing TenantProfile", () => {
