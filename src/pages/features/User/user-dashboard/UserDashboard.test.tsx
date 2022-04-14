@@ -14,14 +14,3 @@ it("render without crashing UserDashboard", () => {
     </BrowserRouter>
   );
 });
-// it("render without crashing UserDashboard", () => {
-//   render(
-//     <BrowserRouter>
-//       <Provider store={store}>
-//         <UserDashboard />
-//       </Provider>
-//     </BrowserRouter>
-//   );
-//   const cancelBtn = document.querySelectorAll("btn-danger");
-//   console.log(cancelBtn);
-// });

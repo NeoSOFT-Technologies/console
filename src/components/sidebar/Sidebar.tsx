@@ -45,6 +45,7 @@ export const Sidebar = () => {
               href="!#"
               className="nav-link"
               onClick={(event_) => event_.preventDefault()}
+              data-testid="nav-link-button"
             >
               <div className="nav-profile-image">
                 <img

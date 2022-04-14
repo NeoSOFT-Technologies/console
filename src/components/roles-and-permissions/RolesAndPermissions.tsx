@@ -11,8 +11,7 @@ export default function RolesAndPermissions(props: IProps) {
       <h1>{heading}</h1>
       <div>
         {list.map((val, i) => (
-          <span key={i} className={classes}>
-            {" "}
+          <span key={i} className={classes} data-testid="role">
             {val}
           </span>
         ))}

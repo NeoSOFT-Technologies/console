@@ -225,6 +225,7 @@ const TenantProfile = () => {
                       <Button
                         className="btn btn-light mt-3"
                         type="reset"
+                        data-testid="cancel-btn"
                         onClick={() => {
                           if (user.data) setTenant({ ...user.data });
                         }}

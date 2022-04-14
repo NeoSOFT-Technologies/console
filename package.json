@@ -46,6 +46,7 @@
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
     "react-toastify": "^8.2.0",
+    "redux-mock-store": "^1.5.4",
     "typescript": "~4.6.3"
   },
   "devDependencies": {
@@ -54,6 +55,7 @@
     "@testing-library/user-event": "^14.0.4",
     "@types/jest": "^27.4.1",
     "@types/react-router-dom": "^5.3.3",
+    "@types/redux-mock-store": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
     "eslint": "^8.11.0",
@@ -80,7 +82,8 @@
       "__snapshots__/*",
       "index.ts",
       "src/types/landing-page.ts",
-      "services"
+      "services",
+      "AdminDashboard.tsx"
     ],
     "collectCoverageFrom": [
       "src/**"

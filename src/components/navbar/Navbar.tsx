@@ -53,7 +53,7 @@ export default function Navbar() {
             {/* @ts-ignore */}
             <Dropdown alignright="true">
               <Dropdown.Toggle
-                data-testid="dropdownItem1"
+                data-testid="dropdown-toggle"
                 className="nav-link count-indicator"
               >
                 <i className="bi bi-bell"></i>

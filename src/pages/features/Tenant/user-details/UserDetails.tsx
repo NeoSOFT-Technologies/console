@@ -214,10 +214,18 @@ export default function UserDetails() {
             <Col>
               <Card>
                 <Card.Header className="">
-                  <Button variant="dark" onClick={() => setEditUser(true)}>
+                  <Button
+                    variant="dark"
+                    onClick={() => setEditUser(true)}
+                    data-testid="edit-user"
+                  >
                     Edit
                   </Button>
-                  <Button variant="danger" onClick={handleRemove}>
+                  <Button
+                    variant="danger"
+                    onClick={handleRemove}
+                    data-testid="remove-user"
+                  >
                     Remove
                   </Button>
                 </Card.Header>
@@ -234,6 +242,7 @@ export default function UserDetails() {
                     <Form.Group>
                       <Form.Label>User Name :</Form.Label>
                       <Form.Control
+                        data-testid="userName-input"
                         type="text"
                         name="username"
                         placeholder="Enter user name"
@@ -246,6 +255,7 @@ export default function UserDetails() {
                     <Form.Group>
                       <Form.Label>Email :</Form.Label>
                       <Form.Control
+                        data-testid="email-input"
                         type="text"
                         name="email"
                         placeholder="Enter email"
@@ -258,6 +268,7 @@ export default function UserDetails() {
                     <Form.Group>
                       <Form.Label>Tenant Name :</Form.Label>
                       <Form.Control
+                        data-testid="tenantName-input"
                         type="text"
                         name="tenantName"
                         placeholder="Enter tenant Name"
