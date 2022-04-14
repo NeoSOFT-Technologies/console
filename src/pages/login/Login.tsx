@@ -204,7 +204,7 @@ export default function Login() {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
-                      data-testid="tenantname-input"
+                      data-testid="tenantName-input"
                       name="tenantName"
                       placeholder="Enter TenantName"
                       onChange={handle}
@@ -244,7 +244,7 @@ export default function Login() {
               </div>
               <div className="mt-3">
                 <Button
-                  data-testid="submit-button"
+                  data-testid="signin-button"
                   className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                   onClick={() => {
                     handleSubmit();
@@ -256,14 +256,18 @@ export default function Login() {
               <div className="my-2 d-flex justify-content-between align-items-center">
                 <div className="form-check">
                   <label className="form-check-label text-muted">
-                    <input type="checkbox" className="form-check-input" />
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      data-testid="keep-signed-in"
+                    />
                     <i className="input-helper"></i>
                     Keep me signed in
                   </label>
                 </div>
                 <a
                   href="!#"
-                  data-testid="link"
+                  data-testid="forgot-password"
                   onClick={(event) => event.preventDefault()}
                   className="auth-link text-black"
                 >
