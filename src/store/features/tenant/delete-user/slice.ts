@@ -8,7 +8,7 @@ import error from "../../../../utils/error";
 export interface IDeleteUserState {
   isDeleted?: boolean | null;
   loading: boolean;
-  error?: string | null;
+  error?: string;
 }
 
 const initialState: IDeleteUserState = {
@@ -21,8 +21,8 @@ export const deleteUser = createAsyncThunk(
   "tenantUser/list",
   async (userName: string) => {
     try {
-      const response = await deleteUserDataService(userName);
-      return response.data.data;
+      await deleteUserDataService(userName);
+      return true;
     } catch (error_) {
       // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
@@ -34,7 +34,16 @@ export const deleteUser = createAsyncThunk(
 const slice = createSlice({
   name: "tenantUser",
   initialState,
-  reducers: {},
+  reducers: {
+    deleteUserReset: (state) => {
+      console.log(initialState, "inside reducer", state);
+      console.log(JSON.stringify(state));
+      state.error = undefined;
+      state.isDeleted = false;
+      console.log(JSON.stringify(state));
+      // state.error = initialState.error;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(deleteUser.pending, (state) => {
       state.loading = true;
@@ -52,5 +61,5 @@ const slice = createSlice({
     });
   },
 });
-
+export const { deleteUserReset } = slice.actions;
 export default slice.reducer;

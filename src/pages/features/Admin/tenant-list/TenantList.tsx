@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import RenderList from "../../../../components/list/RenderList";
 import Spinner from "../../../../components/loader/Loader";
 import { RootState } from "../../../../store";
-import { useAppSelector } from "../../../../store/hooks";
+import { deleteTenantReset } from "../../../../store/features/admin/delete-tenant/slice";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 
 import { ITenantListState } from "../../../../types/index";
 
 export default function TenantList() {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const tenantList: ITenantListState = useAppSelector(
     (state: RootState) => state.tenantList
@@ -18,6 +20,9 @@ export default function TenantList() {
     btn2: false,
     btn3: true,
   });
+  useEffect(() => {
+    dispatch(deleteTenantReset());
+  }, []);
 
   const NavigateTenant = (value: any) => {
     // console.log(value);
