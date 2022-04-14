@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
@@ -9,17 +10,26 @@ import {
   // regexForEmail,
 } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
-import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
+import {
+  IUpdateTenantState,
+  resetUpdateTenantState,
+  updateTenant,
+} from "../../../../store/features/tenant/update-tenant/slice";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
+import { getUserData } from "../../../../store/user-data/slice";
 import {
   IErrorTenantDetail,
   ITenantDetail,
   IUserDataState,
 } from "../../../../types";
-
 const TenantProfile = () => {
+  const navigate = useNavigate();
+
   const user: IUserDataState = useAppSelector(
     (state: RootState) => state.userData
+  );
+  const updateTenantState: IUpdateTenantState = useAppSelector(
+    (state: RootState) => state.updateTenantState
   );
   // console.log(
   //   "🚀 ~ file: TenantProfile.tsx ~ line 34 ~ TenantProfile ~ user",
@@ -95,10 +105,34 @@ const TenantProfile = () => {
       }
     }
   };
+  useEffect(() => {
+    if (!user.loading && user.error) {
+      navigate("/error", { state: user.error });
+    }
+  }, [user.loading]);
+  const clearAndUpdate = async () => {
+    await dispatch(resetUpdateTenantState());
+    if (user.data?.tenantName !== undefined) {
+      await dispatch(
+        getUserData({
+          userName: "tenantadmin",
+          tenantName: user.data?.tenantName,
+          type: "tenant",
+        })
+      );
+    }
+  };
+  useEffect(() => {
+    if (!updateTenantState.isUpdated && updateTenantState.error) {
+      navigate("/error", { state: updateTenantState.error });
+    } else if (updateTenantState.isUpdated && !updateTenantState.error) {
+      clearAndUpdate();
+    }
+  }, [updateTenantState.loading]);
 
   return (
     <>
-      {user.loading ? (
+      {user.loading || updateTenantState.loading ? (
         <Spinner />
       ) : (
         user.data && (

@@ -49,9 +49,9 @@ const slice = createSlice({
       state.loading = true;
       state.error = undefined;
     });
-    builder.addCase(deleteUser.fulfilled, (state, action) => {
+    builder.addCase(deleteUser.fulfilled, (state) => {
       state.loading = false;
-      state.isDeleted = action.payload;
+      state.isDeleted = true;
     });
     builder.addCase(deleteUser.rejected, (state, action: any) => {
       state.loading = false;

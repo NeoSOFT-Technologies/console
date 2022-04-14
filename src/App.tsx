@@ -5,6 +5,7 @@ import { Navigate } from "react-router-dom";
 import AppRoutes from "./AppRoutes";
 import withRouter from "./WithRouter";
 import Footer from "./components/footer/Footer";
+// import Spinner from "./components/loader/Loader";
 import Navbar from "./components/navbar/Navbar";
 import Sidebar from "./components/sidebar/Sidebar";
 import { RootState } from "./store";
@@ -32,7 +33,9 @@ class App extends Component<IProperty, IState> {
   render() {
     const navbarComponent = !this.state.isFullPageLayout ? <Navbar /> : "";
     const sidebarComponent = !this.state.isFullPageLayout ? (
-      this.props.user.data ? (
+      this.props.user.loading ? (
+        ""
+      ) : this.props.user.data ? (
         <Sidebar />
       ) : (
         <Navigate to="/login-page" />

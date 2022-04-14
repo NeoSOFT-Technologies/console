@@ -109,7 +109,7 @@ export default function TenantDetails() {
         if (tenant.tenantName !== undefined) {
           dispatch(updateTenant({ ...tenant }));
           setEdit(false);
-          if (updateTenantState.data)
+          if (updateTenantState.isUpdated)
             ToastAlert("Tenant Details Update", "success");
         }
       } else {
