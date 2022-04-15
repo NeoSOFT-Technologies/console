@@ -17,7 +17,7 @@ interface IConditions {
 
 export const Sidebar = () => {
   const location = useLocation();
-  const naviagte = useNavigate();
+  const navigate = useNavigate();
   const isPathActive = (path: string) => {
     return location.pathname.startsWith(path);
   };
@@ -43,13 +43,13 @@ export const Sidebar = () => {
       case "route": {
         if (user.data && loginType.data === "admin") {
           setRoutes(adminRoutes);
-          naviagte("/admindashboard");
+          navigate("/admindashboard");
         } else if (user.data && loginType.data === "tenant") {
           setRoutes(tenantRoutes);
-          naviagte("/tenantdashboard");
+          navigate("/tenantdashboard");
         } else if (user.data && loginType.data === "user") {
           setRoutes(userRoutes);
-          naviagte("/userdashboard");
+          navigate("/userdashboard");
         }
 
         break;
@@ -57,13 +57,13 @@ export const Sidebar = () => {
       case "gateway": {
         if (user.data && loginType.data === "admin") {
           setRoutes(adminRoutes);
-          naviagte("/admindashboard");
+          navigate("/admindashboard");
         } else if (user.data && loginType.data === "tenant") {
           setRoutes(tenantRoutes);
-          naviagte("/tenantdashboard");
+          navigate("/tenantdashboard");
         } else if (user.data && loginType.data === "user") {
           setRoutes(userRoutes);
-          naviagte("/userdashboard");
+          navigate("/userdashboard");
         }
 
         break;
@@ -71,19 +71,19 @@ export const Sidebar = () => {
       case "saas": {
         if (user.data && loginType.data === "admin") {
           setRoutes(adminRoutes);
-          naviagte("/admindashboard");
+          navigate("/admindashboard");
         } else if (user.data && loginType.data === "tenant") {
           setRoutes(tenantRoutes);
-          naviagte("/tenantdashboard");
+          navigate("/tenantdashboard");
         } else if (user.data && loginType.data === "user") {
           setRoutes(userRoutes);
-          naviagte("/userdashboard");
+          navigate("/userdashboard");
         }
 
         break;
       }
       default: {
-        naviagte("/error-pages/error-404");
+        navigate("/error-pages/error-404");
       }
     }
     setSwitchRoutes(true);
@@ -139,7 +139,11 @@ export const Sidebar = () => {
           ) : (
             <>
               <ul className="nav">
-                <li className="nav-item" onClick={() => setSubRoutes("route")}>
+                <li
+                  className="nav-item"
+                  onClick={() => setSubRoutes("route")}
+                  data-testid="logintype"
+                >
                   <span className="nav-link">
                     <span className="menu-title ">{loginType.data}</span>
                   </span>
@@ -147,13 +151,18 @@ export const Sidebar = () => {
 
                 <li
                   className="nav-item"
+                  data-testid="gateway-item"
                   onClick={() => setSubRoutes("gateway")}
                 >
                   <span className="nav-link">
                     <span className="menu-title">Gateway</span>
                   </span>
                 </li>
-                <li className="nav-item" onClick={() => setSubRoutes("saas")}>
+                <li
+                  className="nav-item"
+                  onClick={() => setSubRoutes("saas")}
+                  data-testid="sass"
+                >
                   <span className="nav-link">
                     <span className="menu-title ">SaaS</span>
                   </span>
