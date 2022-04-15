@@ -11,7 +11,10 @@ import {
 import { useParams, useNavigate } from "react-router-dom";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
-import { regexForUser, regexForEmail } from "../../../../../resources/constants";
+import {
+  regexForUser,
+  regexForEmail,
+} from "../../../../../resources/constants";
 import { RootState } from "../../../../../store";
 import { getTenantRoles } from "../../../../../store/features/admin/tenant-roles/slice";
 import {

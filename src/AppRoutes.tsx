@@ -3,7 +3,10 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { AdminGuard, TenantGuard, UserGuard } from "./components/auth-gaurd";
 import Spinner from "./components/loader/Loader";
 const RoleAndPermissions = lazy(
-  () => import("./pages/features/tenants/user/role-and-permissions/RoleAndPermissions")
+  () =>
+    import(
+      "./pages/features/tenants/user/role-and-permissions/RoleAndPermissions"
+    )
 );
 const StatisticsDashboard = lazy(
   () => import("./components/statistics-dashborad/StatisticsDashboard")
@@ -16,7 +19,8 @@ const UserList = lazy(
   () => import("./pages/features/tenants/tenant/user-list/UserList")
 );
 const TenantDashboard = lazy(
-  () => import("./pages/features/tenants/tenant/tenant-dashboard/TenantDashboard")
+  () =>
+    import("./pages/features/tenants/tenant/tenant-dashboard/TenantDashboard")
 );
 const UserDashboard = lazy(
   () => import("./pages/features/tenants/user/user-dashboard/UserDashboard")
