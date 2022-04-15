@@ -34,7 +34,6 @@ export default function Createuser() {
   const addNewUserState: IAddUserState = useAppSelector(
     (state: RootState) => state.addNewUserState
   );
-  // console.log(rolesList);
   const [formData, setFormData] = useState<ICreateNewUser>({
     userName: "",
     email: "",
@@ -89,7 +88,8 @@ export default function Createuser() {
       errors.userName === "" &&
       errors.email === "" &&
       errors.password === "" &&
-      errors.roles === ""
+      errors.roles === "" &&
+      errors.permissions
     );
     return validate;
   };

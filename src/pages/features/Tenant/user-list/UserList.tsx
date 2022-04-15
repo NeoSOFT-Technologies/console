@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import RenderList from "../../../../components/list/RenderList";
+import { requestUserListURL } from "../../../../resources/constants";
 import { deleteUserReset } from "../../../../store/features/tenant/delete-user/slice";
 import { useAppDispatch } from "../../../../store/hooks";
 
@@ -18,7 +19,6 @@ export default function UserList() {
   }, []);
 
   const handleUserDetails = (value: any) => {
-    // console.log(value);
     navigate(`/userdetails/${value._cells[0].data}`, {
       state: {
         userName: value._cells[0].data,
@@ -42,9 +42,7 @@ export default function UserList() {
       data: "createdTimestamp",
     },
   ];
-  const url =
-    process.env.REACT_APP_API_BASEURL + "/api/user?" ||
-    "http://localhost:3000/api/user?";
+  const url = requestUserListURL || "/api/user?";
   const actions = {
     classNames: "btn btn-sm btn-dark",
     func: (val: any) => handleUserDetails(val),

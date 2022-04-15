@@ -17,6 +17,7 @@ Step 2. Calling the component  and passing the props, the component requires the
   2. formData
   3. handleCheck
   4. removeRole
+  5. title
 ```
 
 ### roleList
@@ -34,6 +35,10 @@ it requires a function without any parameter,which add/delete the value of the c
 ### removeRole 
 
 it requires a function which can remove the role from the list of `formData` 
+
+### title
+
+title to display on the dropdown button
 
 # Internal Working
 

@@ -12,7 +12,7 @@ const mockApi = new MockAdapter(axios);
 
 it("render without crashing RenderList", async () => {
   mockApi
-    .onGet("/api/tenants?page=1")
+    .onGet("/api/tenants?isDeleted=false&page=1")
     .reply(200, { data: [{ name: "Rohit" }], count: 1 });
   render(
     <BrowserRouter>
@@ -26,7 +26,7 @@ it("render without crashing RenderList", async () => {
               width: "100",
             },
           ]}
-          url="api/tenants?"
+          url="api/tenants?isDeleted=false&"
           actions={{
             classNames: "",
             func: (val) => {

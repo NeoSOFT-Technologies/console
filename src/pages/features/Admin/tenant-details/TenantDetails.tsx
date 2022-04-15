@@ -13,9 +13,8 @@ import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
-  // regexForDatabaseName,
-  // regexFortenantDeleted,
-  // regexForEmail,
+  regexForDatabaseName,
+  regexForDescription,
 } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
 import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
@@ -55,7 +54,6 @@ export default function TenantDetails() {
     tenantId: 0,
     tenantName: "",
   });
-  // console.log(tenant, tenantDetailsState.data);
   const [error, setError] = useState<IErrorTenantDetail>({
     description: "",
   });
@@ -94,9 +92,9 @@ export default function TenantDetails() {
       case "description":
         setError({
           ...error,
-          // [name]: regexForDatabaseName.test(value)
-          //   ? ""
-          //   : "description should only consist Alphabets",
+          [name]: !regexForDatabaseName.test(value)
+            ? ""
+            : "description should only consist Alphabets",
         });
         break;
       default:
@@ -112,7 +110,6 @@ export default function TenantDetails() {
 
   const handleUpdateTenant = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    // console.log(error);
     if (handleValidate()) {
       if (tenant.tenantName !== "" && tenant.databaseName !== "") {
         if (tenant.tenantName !== undefined) {
@@ -152,21 +149,11 @@ export default function TenantDetails() {
 
   return (
     <>
-      {(tenantDeleted.loading ||
-        tenantDetailsState.loading ||
-        updateTenantState.loading) && <Spinner />}
-      {/* {!tenantDeleted.loading && tenantDeleted.error && (
-        <Navigate to={`/error`} state={tenantDeleted.error} />
-      )}
-      {!tenantDetailsState.loading && tenantDetailsState.error && (
-        <Navigate to={`/error`} state={tenantDetailsState.error} />
-      )}
-      {!updateTenantState.loading && updateTenantState.error && (
-        <Navigate to={`/error`} state={updateTenantState.error} />
-      )} */}
-      {!tenantDeleted.loading &&
-        !tenantDetailsState.loading &&
-        !updateTenantState.loading &&
+      {tenantDeleted.loading ||
+      tenantDetailsState.loading ||
+      updateTenantState.loading ? (
+        <Spinner />
+      ) : (
         tenantDetailsState.data && (
           <>
             <Dropdown className="d-inline-block">
@@ -177,7 +164,6 @@ export default function TenantDetails() {
               >
                 Action
               </Dropdown.Toggle>
-
               <Dropdown.Menu>
                 <Dropdown.Item
                   onClick={() => setDeleteshow(true)}
@@ -191,20 +177,9 @@ export default function TenantDetails() {
               <Dropdown.Toggle className=" btn-danger " id="dropdown-basic">
                 Utilis
               </Dropdown.Toggle>
-
               <Dropdown.Menu>
                 <Dropdown.Item>Test</Dropdown.Item>
-                {/* <Dropdown.Item
-               data-testid="dropdownitem1"
-               onClick={() => navigate("/manageroles")}
-             >
-               Manage Roles
-             </Dropdown.Item>
-             <Dropdown.Item onClick={() => navigate("/tenantpermission")}>
-               Manage Permission
-             </Dropdown.Item> */}
                 <Dropdown.Item>Set Tenant Url</Dropdown.Item>
-                {/* <Dropdown.Item>Set InActive</Dropdown.Item> */}
                 <Dropdown.Item>Upload</Dropdown.Item>
                 <Dropdown.Item>Create tenant tables & data</Dropdown.Item>
               </Dropdown.Menu>
@@ -247,7 +222,6 @@ export default function TenantDetails() {
                           onChange={handleInputChange}
                           value={tenant.tenantName}
                           disabled
-                          // isInvalid={!!error.tenantName}
                         />
                         {tenant.tenantName &&
                           !regexForName.test(tenant.tenantName) && (
@@ -258,24 +232,6 @@ export default function TenantDetails() {
                           )}
                       </Form.Group>
                     </Col>
-                    {/* <Col md="6">
-                   <Form.Group className="mb-3">
-                     <Form.Label>email</Form.Label>
-                     <Form.Control
-                       type="email"
-                       data-testid="email-input"
-                       placeholder="email"
-                       value={tenant.email}
-                       name="email"
-                       onChange={handleInputChange}
-                       disabled={!edit}
-                       isInvalid={!!error.email}
-                     />
-                     <Form.Control.Feedback type="invalid">
-                       {error.email}
-                     </Form.Control.Feedback>
-                   </Form.Group>
-                 </Col> */}
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>databaseName :</Form.Label>
@@ -284,14 +240,12 @@ export default function TenantDetails() {
                           data-testid="databaseName-input"
                           onChange={handleInputChange}
                           name="databaseName"
-                          // disabled={!edit}
                           disabled
                           placeholder="Enter database name"
                           value={tenant.databaseName}
-                          // isInvalid={!!error.databaseName}
                         />
                         {tenant.databaseName &&
-                          !regexForName.test(tenant.databaseName) && (
+                          !regexForDatabaseName.test(tenant.databaseName) && (
                             <span className="text-danger">
                               databaseName Should Not Cantain Any Special
                               Character or Number
@@ -316,7 +270,6 @@ export default function TenantDetails() {
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>Port :</Form.Label>
-
                         <Form.Control
                           type="text"
                           data-testid="port-input"
@@ -325,15 +278,11 @@ export default function TenantDetails() {
                           name="port"
                           onChange={handleInputChange}
                           disabled
-                          // isInvalid={!!err.port}
                         />
                       </Form.Group>
                     </Col>
                     <Col md={12}>
-                      <Form.Group
-                        className="mb-3"
-                        // controlId="exampleForm.ControlTextarea1"
-                      >
+                      <Form.Group className="mb-3">
                         <Form.Label>Description:</Form.Label>
                         <Form.Control
                           as="textarea"
@@ -346,8 +295,17 @@ export default function TenantDetails() {
                           value={tenant.description}
                           disabled={!edit}
                           onChange={handleInputChange}
-                          // isInvalid={!!error.description}
+                          isInvalid={
+                            !regexForDescription.test(tenant.description)
+                          }
                         />
+                        {tenant.description &&
+                          !regexForDescription.test(tenant.description) && (
+                            <span className="text-danger">
+                              description should be characters only no Special
+                              Character or Number allowed.
+                            </span>
+                          )}
                       </Form.Group>
                     </Col>
                     {edit ? (
@@ -383,7 +341,8 @@ export default function TenantDetails() {
               </Container>
             </div>
           </>
-        )}
+        )
+      )}
     </>
   );
 }
