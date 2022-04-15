@@ -92,7 +92,7 @@ export default function TenantDetails() {
       case "description":
         setError({
           ...error,
-          [name]: !regexForDatabaseName.test(value)
+          [name]: regexForDescription.test(value)
             ? ""
             : "description should only consist Alphabets",
         });
@@ -109,6 +109,7 @@ export default function TenantDetails() {
   };
 
   const handleUpdateTenant = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(error, tenant);
     event.preventDefault();
     if (handleValidate()) {
       if (tenant.tenantName !== "" && tenant.databaseName !== "") {
