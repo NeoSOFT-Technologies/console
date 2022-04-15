@@ -7,6 +7,8 @@ import {
   regexForEmail,
   regexForName,
   regForPassword,
+  regexForDescription,
+  regexForDatabaseName,
 } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
 import { addNewTenant } from "../../../../store/features/admin/add-tenant/slice";
@@ -45,7 +47,7 @@ export default function RegisterTenant() {
       case "description":
         setError({
           ...error,
-          [name]: regexForName.test(value)
+          [name]: regexForDescription.test(value)
             ? ""
             : "description should only consist Alphabets",
         });
@@ -78,7 +80,7 @@ export default function RegisterTenant() {
       case "databaseName":
         setError({
           ...error,
-          [name]: regexForEmail.test(value)
+          [name]: regexForDatabaseName.test(value)
             ? ""
             : "database Name should not be empty",
         });
@@ -101,7 +103,7 @@ export default function RegisterTenant() {
   };
   const handleSubmitTenant = async (event: React.FormEvent) => {
     event.preventDefault();
-
+    console.log(error, tenant);
     if (handleValidate()) {
       if (
         tenant.tenantName !== "" &&
@@ -125,8 +127,6 @@ export default function RegisterTenant() {
             databaseName: "",
             databaseDescription: "",
           });
-        } else {
-          ToastAlert("Could not add tenant", "error");
         }
       } else {
         ToastAlert("Please Fill All Fields", "warning");
@@ -283,6 +283,9 @@ export default function RegisterTenant() {
                       value={tenant.databaseName}
                       onChange={handleInputChange}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {error.databaseName}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md="12">
@@ -302,6 +305,9 @@ export default function RegisterTenant() {
                       value={tenant.databaseDescription}
                       onChange={handleInputChange}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {error.databaseDescription}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>
