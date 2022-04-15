@@ -5,6 +5,9 @@ import Spinner from "./components/loader/Loader";
 const RoleAndPermissions = lazy(
   () => import("./pages/features/User/role-and-permissions/RoleAndPermissions")
 );
+const StatisticsDashboard = lazy(
+  () => import("./components/statistics-dashborad/StatisticsDashboard")
+);
 const UserDetails = lazy(
   () => import("./pages/features/Tenant/user-details/UserDetails")
 );
@@ -50,6 +53,7 @@ function AppRoutes() {
         <Route path="/error-pages/error-500" element={<Error500 />} />
         <Route path="/error-pages/error-401" element={<Error401 />} />
         <Route path="/error" element={<Error />} />
+        <Route path="/statistics" element={<StatisticsDashboard />} />
         {/** **********************ADMIN ROUTES***********************/}
         <Route
           path="/admindashboard"

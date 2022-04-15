@@ -109,17 +109,24 @@ export default function Login() {
 
   useEffect(() => {
     // console.log(type, user);
-    if (!user.loading && formdata.userName !== "" && formdata.password !== "") {
-      if (user.data && loginType.data === "tenant") {
-        ToastAlert("Logged In", "success");
-        navigate("/tenantdashboard");
-      } else if (user.data && loginType.data === "admin") {
-        ToastAlert("Logged In", "success");
-        navigate("/admindashboard");
-      } else if (user.data && loginType.data === "user") {
-        ToastAlert("Logged In", "success");
-        navigate("/userdashboard");
-      }
+    if (
+      !user.loading &&
+      formdata.userName !== "" &&
+      formdata.password !== "" && // if (user.data && loginType.data === "tenant") {
+      //   ToastAlert("Logged In", "success");
+      //   navigate("/tenantdashboard");
+      // } else if (user.data && loginType.data === "admin") {
+      //   ToastAlert("Logged In", "success");
+      //   navigate("/admindashboard");
+      // } else if (user.data && loginType.data === "user") {
+      //   ToastAlert("Logged In", "success");
+      //   navigate("/userdashboard");
+      // }
+      user.data &&
+      loginType.data
+    ) {
+      ToastAlert("Logged In", "success");
+      navigate("/statistics");
     }
   }, [user.data, user.error]);
 
