@@ -14,7 +14,6 @@ export {
   createNewUserService,
   deleteUserDataService,
   getTenantDetailsService,
-  createNewPolicyService,
 } from "./tenants";
 
 export {

@@ -40,9 +40,6 @@ const TenantDetails = lazy(
 const TenantProfile = lazy(
   () => import("./pages/features/Tenant/tenant-profile/TenantProfile")
 );
-const CreatePolicy = lazy(
-  () => import("./pages/features/Tenant/create-policy/CreatePolicy")
-);
 
 function AppRoutes() {
   return (
@@ -93,14 +90,6 @@ function AppRoutes() {
           element={
             <TenantGuard>
               <TenantDashboard />
-            </TenantGuard>
-          }
-        />
-        <Route
-          path="/create-policy"
-          element={
-            <TenantGuard>
-              <CreatePolicy />
             </TenantGuard>
           }
         />

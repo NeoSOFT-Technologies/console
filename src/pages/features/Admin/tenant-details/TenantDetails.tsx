@@ -19,7 +19,10 @@ import {
 } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
 import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
-import { tenantDetails } from "../../../../store/features/tenant/tenant-details/slice";
+import {
+  tenantDetails,
+  resetTenantDetails,
+} from "../../../../store/features/tenant/tenant-details/slice";
 import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IErrorTenantDetail, ITenantDetail } from "../../../../types/index";
@@ -60,7 +63,13 @@ export default function TenantDetails() {
   useEffect(() => {
     const { tenantName } = params;
     if (tenantName) dispatch(tenantDetails(tenantName));
-    else navigate("/error", { state: "404" });
+    else {
+      navigate("/error", { state: "404" });
+      console.log("NOT FOUND");
+    }
+    return () => {
+      dispatch(resetTenantDetails());
+    };
   }, []);
 
   useEffect(() => {

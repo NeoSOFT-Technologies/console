@@ -5,7 +5,6 @@ import tenantListReducer from "./features/admin/tenant-list/slice";
 import tenantPermissionsListReducer from "./features/admin/tenant-permissions/slice";
 import rolesListReducer from "./features/admin/tenant-roles/slice";
 import addNewUserReducer from "./features/tenant/add-user/slice";
-import createNewPolicyReducer from "./features/tenant/create-policy/slice";
 import deleteUserReducer from "./features/tenant/delete-user/slice";
 import tenantDetailsReducer from "./features/tenant/tenant-details/slice";
 import tenantUserListReducer from "./features/tenant/tenant-user-list/slice";
@@ -31,7 +30,6 @@ const store = configureStore({
     updateTenantState: updateTenantReducer,
     addNewUserState: addNewUserReducer,
     rolesList: rolesListReducer,
-    createNewPolicy: createNewPolicyReducer,
     loginType: loginTypeReducer,
     userPermission: userPermissionReducer,
     tenantPermissionsList: tenantPermissionsListReducer,

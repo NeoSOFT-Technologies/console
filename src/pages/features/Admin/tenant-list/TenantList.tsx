@@ -13,16 +13,16 @@ export default function TenantList() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [url, setUrl] = useState(
-    process.env.REACT_APP_API_BASEURL + "/api/tenants?" ||
+    process.env.REACT_APP_API_BASEURL + "/api/tenants?isDeleted=false&" ||
       "http://localhost:3000/api/tenants?"
   );
   const tenantList: ITenantListState = useAppSelector(
     (state: RootState) => state.tenantList
   );
   const [checkactive, setCheckactive] = useState({
-    btn1: false,
+    btn1: true,
     btn2: false,
-    btn3: true,
+    btn3: false,
   });
   useEffect(() => {
     dispatch(deleteTenantReset());

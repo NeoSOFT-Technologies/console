@@ -25,6 +25,7 @@ import {
 import {
   getUserDetails,
   IUserDetailsState,
+  resetgetUserDetails,
 } from "../../../../store/features/user/user-details/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
@@ -96,6 +97,9 @@ export default function UserDetails() {
       );
       dispatch(getTenantRoles());
     }
+    return () => {
+      dispatch(resetgetUserDetails());
+    };
   }, []);
   useEffect(() => {
     // console.log("inside the tennant deleted use effect");
