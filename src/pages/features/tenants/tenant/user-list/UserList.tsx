@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import RenderList from "../../../../components/list/RenderList";
-import { requestUserListURL } from "../../../../resources/constants";
-import { deleteUserReset } from "../../../../store/features/tenant/delete-user/slice";
-import { useAppDispatch } from "../../../../store/hooks";
+import RenderList from "../../../../../components/list/RenderList";
+import { requestUserListURL } from "../../../../../resources/constants";
+import { deleteUserReset } from "../../../../../store/features/tenant/delete-user/slice";
+import { useAppDispatch } from "../../../../../store/hooks";
 
 export default function UserList() {
   const dispatch = useAppDispatch();
