@@ -139,35 +139,23 @@ export const Sidebar = () => {
           ) : (
             <>
               <ul className="nav">
-                <li className="nav-item">
+                <li className="nav-item" onClick={() => setSubRoutes("route")}>
                   <span className="nav-link">
-                    <span
-                      className="menu-title "
-                      onClick={() => setSubRoutes("route")}
-                    >
-                      {loginType.data}
-                    </span>
+                    <span className="menu-title ">{loginType.data}</span>
                   </span>
                 </li>
 
-                <li className="nav-item">
+                <li
+                  className="nav-item"
+                  onClick={() => setSubRoutes("gateway")}
+                >
                   <span className="nav-link">
-                    <span
-                      className="menu-title"
-                      onClick={() => setSubRoutes("gateway")}
-                    >
-                      Gateway
-                    </span>
+                    <span className="menu-title">Gateway</span>
                   </span>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item" onClick={() => setSubRoutes("saas")}>
                   <span className="nav-link">
-                    <span
-                      className="menu-title "
-                      onClick={() => setSubRoutes("saas")}
-                    >
-                      SaaS
-                    </span>
+                    <span className="menu-title ">SaaS</span>
                   </span>
                 </li>
               </ul>
