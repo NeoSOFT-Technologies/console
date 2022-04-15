@@ -33,11 +33,11 @@ const slice = createSlice({
   initialState,
   reducers: {
     deleteTenantReset: (state) => {
-      console.log(initialState, "inside reducer", state);
-      console.log(JSON.stringify(state));
+      // console.log(initialState, "inside reducer", state);
+      // console.log(JSON.stringify(state));
       state.error = undefined;
       state.isDeleted = false;
-      console.log(JSON.stringify(state));
+      // console.log(JSON.stringify(state));
       // state.error = initialState.error;
     },
   },

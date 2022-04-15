@@ -12,7 +12,7 @@ const mockApi = new MockAdapter(axios);
 
 it("render without crashing Tenant list", () => {
   mockApi
-    .onGet("/api/tenants?page=1")
+    .onGet("/api/tenants?isDeleted=false&page=1")
     .reply(200, { data: [{ name: "Rohit" }], count: 1 });
   render(
     <BrowserRouter>
@@ -35,15 +35,41 @@ it("render the active, inactive and all buttons", () => {
     </BrowserRouter>
   );
 
-  const activeButton = screen.getByTestId("active");
-  expect(activeButton).toBeInTheDocument();
-  fireEvent.click(activeButton);
-
-  const inActiveButton = screen.getByTestId("inactive");
-  expect(inActiveButton).toBeInTheDocument();
-  fireEvent.click(inActiveButton);
-
   const allButton = screen.getByTestId("all");
+  expect(allButton).toBeInTheDocument();
+  fireEvent.click(allButton);
+});
+
+it("render the active, inactive and all buttons", () => {
+  mockApi
+    .onGet("/api/tenants?isDeleted=false&page=1")
+    .reply(200, { data: [{ name: "Rohit" }], count: 1 });
+  render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <TenantList />
+      </Provider>
+    </BrowserRouter>
+  );
+
+  const allButton = screen.getByTestId("active");
+  expect(allButton).toBeInTheDocument();
+  fireEvent.click(allButton);
+});
+
+it("render the active, inactive and all buttons", () => {
+  mockApi
+    .onGet("/api/tenants?isDeleted=true&page=1")
+    .reply(200, { data: [{ name: "Rohit" }], count: 1 });
+  render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <TenantList />
+      </Provider>
+    </BrowserRouter>
+  );
+
+  const allButton = screen.getByTestId("inactive");
   expect(allButton).toBeInTheDocument();
   fireEvent.click(allButton);
 });
