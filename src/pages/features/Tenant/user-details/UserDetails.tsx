@@ -102,7 +102,6 @@ export default function UserDetails() {
     };
   }, []);
   useEffect(() => {
-    // console.log("inside the tennant deleted use effect");
     if (!deleteUserState.loading && deleteUserState.error) {
       navigate("/error", { state: deleteUserState.error });
     }
@@ -136,7 +135,6 @@ export default function UserDetails() {
     const temp = userdata.roles.filter(function (value: string) {
       return value !== role;
     });
-    // console.log(temp);
     setUserdata({ ...userdata, roles: [...temp] });
   };
 
@@ -207,31 +205,7 @@ export default function UserDetails() {
       ToastAlert("Please Enter Valid Details", "warning");
     }
   };
-  // useEffect(() => {
-  //   if (!user.loading && user.error) {
-  //     navigate("/error", { state: user.error });
-  //   }
-  //   if (!userDetails.loading && userDetails.error) {
-  //     navigate("/error", { state: user.error });
-  //   }
-  //   if (!rolesList.loading && rolesList.error) {
-  //     navigate("/error", { state: user.error });
-  //   }
-  //   if (!deleteUserState.loading && deleteUserState.error) {
-  //     // navigate("/error", { state: user.error });
-  //     ToastAlert("user Not deleted", "error");
-  //   }
-  //   if (!updateUserDataState.loading && updateUserDataState.error) {
-  //     // navigate("/error", { state: user.error });
-  //     ToastAlert("user Not updated", "error");
-  //   }
-  // }, [
-  //   user.loading,
-  //   userDetails.loading,
-  //   rolesList.loading,
-  //   deleteUserState.loading,
-  //   updateUserDataState.loading,
-  // ]);
+
   return (
     <>
       {user.loading ||

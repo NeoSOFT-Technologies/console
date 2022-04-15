@@ -10,16 +10,6 @@ export function updateTenantDataService(data: ITenantDetail) {
   return apiFactory().patch(`/api/tenants`, body);
 }
 
-export function tenantUserListService(
-  tenantName: string,
-  userName: string,
-  currentPage: number
-) {
-  return apiFactory().get(
-    `/api/user?tenantName=${tenantName}&page=${currentPage}&userName=${userName}`
-  );
-}
-
 export function createNewUserService(data: ICreateNewUser) {
   console.log(data);
   const body = {

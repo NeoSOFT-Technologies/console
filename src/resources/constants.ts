@@ -4,14 +4,17 @@ export const div = document.createElement("div");
 // regex
 
 export const regexForEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-export const regexForName = /^[ A-Za-z]{4,29}$/;
+export const regexForName = /^[A-Za-z]{4,29}$/;
 export const regexForDatabaseName = /^[A-Za-z]+-*[A-Za-z]{4,29}$/;
+export const regexForDescription = /^[A-Za-z]*[\sA-Za-z]*$/;
 export const regexForUser =
   /^[\dA-Za-z]([._-](?![._-])|[\dA-Za-z]){3,18}[\dA-Za-z]$/;
 export const regexForPolicyName = /^[#$&@A-Za-z-]{4,29}$/;
 export const regForPassword = /^[\d!$%&*@A-Za-z]{8,15}$/;
-export const regexForDescription = /^[ A-Za-z]{4,100}$/;
-
+export const requestUserListURL = "/api/user?";
+export const requestTenantListUrlInactive = "/api/tenants?isDeleted=true&";
+export const requestTenantListUrlActive = "/api/tenants?isDeleted=false&";
+export const requestTenantListUrlAll = "/api/tenants?";
 export const errorMsg = {
   "400": "Bad Request",
   "401": "Unauthorized",
