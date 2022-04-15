@@ -138,6 +138,7 @@ export interface IErrorTenantInput {
   password: string;
   description: string;
   databaseName: string;
+  databaseDescription: string;
 }
 
 /**

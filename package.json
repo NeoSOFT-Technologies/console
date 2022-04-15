@@ -83,7 +83,10 @@
       "index.ts",
       "src/types/landing-page.ts",
       "services",
-      "AdminDashboard.tsx"
+      "AdminDashboard.tsx",
+      "src/routes/gateway",
+      "src/routes/saas"
+
     ],
     "collectCoverageFrom": [
       "src/**"

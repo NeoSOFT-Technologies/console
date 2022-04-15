@@ -14,7 +14,11 @@ export function createNewUserService(data: ICreateNewUser) {
   console.log(data);
   const body = {
     userDetails: {
-      ...data,
+      userName: data.userName,
+      email: data.email,
+      password: data.password,
+      roles: data.roles,
+      // permissions: data.permissions,
     },
   };
   return apiFactory().post(`/api/user`, body);

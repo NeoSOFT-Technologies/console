@@ -6,8 +6,9 @@ import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForEmail,
   regexForName,
-  // regexForUser,
   regForPassword,
+  regexForDescription,
+  regexForDatabaseName,
 } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
 import { addNewTenant } from "../../../../store/features/admin/add-tenant/slice";
@@ -37,16 +38,16 @@ export default function RegisterTenant() {
     password: "",
     description: "",
     databaseName: "",
+    databaseDescription: "",
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log(event.target.value);
     const { name, value } = event.target;
     switch (name) {
       case "description":
         setError({
           ...error,
-          [name]: regexForName.test(value)
+          [name]: regexForDescription.test(value)
             ? ""
             : "description should only consist Alphabets",
         });
@@ -73,13 +74,13 @@ export default function RegisterTenant() {
           ...error,
           [name]: regexForEmail.test(value)
             ? ""
-            : "Email should contains atlast @,.com",
+            : `Email should contains  "@" , ".com"`,
         });
         break;
       case "databaseName":
         setError({
           ...error,
-          [name]: regexForEmail.test(value)
+          [name]: regexForDatabaseName.test(value)
             ? ""
             : "database Name should not be empty",
         });
@@ -91,27 +92,26 @@ export default function RegisterTenant() {
   };
   const handleValidate = () => {
     const validate = !!(
-      (
-        error.tenantName === "" &&
-        error.email === "" &&
-        error.description === "" &&
-        error.password === "" &&
-        error.databaseName
-      )
-      // error.roles === ""
+      error.tenantName === "" &&
+      error.email === "" &&
+      error.description === "" &&
+      error.password === "" &&
+      error.databaseName === "" &&
+      error.databaseDescription === ""
     );
     return validate;
   };
   const handleSubmitTenant = async (event: React.FormEvent) => {
     event.preventDefault();
-
+    console.log(error, tenant);
     if (handleValidate()) {
       if (
         tenant.tenantName !== "" &&
         tenant.email !== "" &&
         tenant.description !== "" &&
         tenant.password !== "" &&
-        tenant.databaseName !== ""
+        tenant.databaseName !== "" &&
+        tenant.databaseDescription !== ""
       ) {
         const newUser = {
           ...tenant,
@@ -127,8 +127,6 @@ export default function RegisterTenant() {
             databaseName: "",
             databaseDescription: "",
           });
-        } else {
-          ToastAlert("Could not add tenant", "error");
         }
       } else {
         ToastAlert("Please Fill All Fields", "warning");
@@ -140,6 +138,7 @@ export default function RegisterTenant() {
         password: "",
         description: "",
         databaseName: "",
+        databaseDescription: "",
       });
     }
   };
@@ -156,7 +155,7 @@ export default function RegisterTenant() {
       databaseDescription: "",
     });
   };
-  // make logic here
+
   useEffect(() => {
     if (
       !tenantAdded.loading &&
@@ -172,17 +171,6 @@ export default function RegisterTenant() {
         ToastAlert("Unable to Register Tenant", "error");
       }
     }
-    // if (!tenantAdded.loading && tenantAdded.error) {
-    //   navigate("/error", { state: tenantAdded.error });
-    // }
-    // if (
-    //   !tenantAdded.loading &&
-    //   !tenantAdded.error &&
-    //   tenantAdded?.tenantAdded
-    // ) {
-    //   navigate("/tenantlist");
-    // }
-    //
   }, [tenantAdded]);
 
   return (
@@ -229,7 +217,6 @@ export default function RegisterTenant() {
                       type="email"
                       placeholder="Enter Email"
                       name="email"
-                      // id="email"
                       value={tenant.email}
                       isValid={!error.email && !!tenant.email}
                       isInvalid={!!error.email}
@@ -250,7 +237,6 @@ export default function RegisterTenant() {
                       data-testid="password-input"
                       value={tenant.password}
                       name="password"
-                      // id="password"
                       isValid={!error.password && !!tenant.password}
                       isInvalid={!!error.password}
                       onChange={handleInputChange}
@@ -276,7 +262,6 @@ export default function RegisterTenant() {
                       rows={3}
                       value={tenant.description}
                       className="form-control rounded-0"
-                      // id="description"
                       onChange={handleInputChange}
                       isInvalid={!!error.description}
                       isValid={!error.description && !!tenant.description}
@@ -295,10 +280,12 @@ export default function RegisterTenant() {
                       type="text"
                       placeholder="Enter Name"
                       name="databaseName"
-                      // id="databaseName"
                       value={tenant.databaseName}
                       onChange={handleInputChange}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {error.databaseName}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md="12">
@@ -314,11 +301,13 @@ export default function RegisterTenant() {
                       data-testid="databaseDescription-input"
                       rows={3}
                       className="form-control rounded-0"
-                      // id="description"
                       placeholder="Here...."
                       value={tenant.databaseDescription}
                       onChange={handleInputChange}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {error.databaseDescription}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>

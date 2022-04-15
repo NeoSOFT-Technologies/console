@@ -89,12 +89,13 @@ export default function Createuser() {
       errors.email === "" &&
       errors.password === "" &&
       errors.roles === "" &&
-      errors.permissions
+      errors.permissions === ""
     );
     return validate;
   };
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    console.log(errors, formData);
     if (handleValidate()) {
       if (
         formData.userName !== "" &&
@@ -107,7 +108,6 @@ export default function Createuser() {
           ...formData,
         };
         await dispatch(addNewUser(newUser));
-        // navigate("/login");
       } else {
         ToastAlert("Please Fill All Fields", "warning");
       }

@@ -12,7 +12,6 @@ export default function RoleAndPermissions() {
   const user: IUserDataState = useAppSelector(
     (state: RootState) => state.userData
   );
-  // console.log(user);
   useEffect(() => {
     if (!user.loading && user.error) {
       navigate("", { state: user.error });

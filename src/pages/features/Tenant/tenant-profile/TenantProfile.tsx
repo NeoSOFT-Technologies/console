@@ -132,8 +132,6 @@ const TenantProfile = () => {
                         name="tenantName"
                         onChange={handleInputChange}
                         value={tenant.tenantName}
-                        // disabled={!edit}
-                        // isInvalid={!!error.tenantName}
                         disabled
                       />
                       {tenant.tenantName &&
@@ -156,8 +154,6 @@ const TenantProfile = () => {
                         data-testid="databaseName-input"
                         placeholder="Enter database name"
                         value={tenant.databaseName}
-                        // isInvalid={!!error.databaseName}
-                        // disabled={!edit}
                         disabled
                       />
                       {tenant.databaseName &&
@@ -181,7 +177,6 @@ const TenantProfile = () => {
                         name="host"
                         onChange={handleInputChange}
                         disabled
-                        // isInvalid={!!error.host}
                       />
                     </Form.Group>
                   </Col>
@@ -196,7 +191,6 @@ const TenantProfile = () => {
                         name="port"
                         onChange={handleInputChange}
                         disabled
-                        // isInvalid={!!error.port}
                       />
                     </Form.Group>
                   </Col>
@@ -216,7 +210,17 @@ const TenantProfile = () => {
                         value={tenant.description}
                         disabled={!edit}
                         onChange={handleInputChange}
+                        isInvalid={
+                          !regexForDescription.test(tenant.description)
+                        }
                       />
+                      {tenant.tenantName &&
+                        !regexForDescription.test(tenant.description) && (
+                          <span className="text-danger">
+                            Name Should Not Cantain Any Special Character or
+                            Number
+                          </span>
+                        )}
                     </Form.Group>
                   </Col>
                   {edit ? (

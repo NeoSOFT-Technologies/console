@@ -46,9 +46,6 @@ const AdminDashboard = () => {
                   </span>
                 </Card.Text>
                 <Card.Text>
-                  <span> Number of Tenants:&nbsp;{user.data.count}</span>
-                </Card.Text>
-                <Card.Text>
                   <RolesAndPermissions
                     heading="Roles"
                     list={user?.data?.roles}
