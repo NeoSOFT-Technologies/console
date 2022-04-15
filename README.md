@@ -130,8 +130,11 @@ Please find below a detailed description of the app's folder structures:
 | **src/pages/features/tenant/**| Contains the pages for the tenant                                                   |
 | **src/pages/features/user/**  | Contains the pages for the user                                                     |
 | **src/pages/features/login/** | Contains the common login for all                                                   |
-| **src/resources/**        | Conatin the files for constants and asset                                               |
-| **src/routes/**   | contain the routes for the admin, tenant & user                                                 |
+| **src/resources/**        | Contains the files for constants and asset                                              |
+| **src/routes/**   | Contain the 3 folders (features , gateway , SaaS)                                               |
+| **src/routes/features**  | Contain the routes for the admin, tenant & user                                          |
+| **src/routes/gateway**  | Contain the gateway routes for the admin, tenant & user                                   |
+| **src/routes/SaaS**  | Contain the SaaS routes for the admin, tenant & user                                         |
 | **src/services/** | Contain the api calls and the token sevices                                                     |
 | **src/store/**      | Contain the redux toolkit & central store                                                     |
 | **src/store/features**      | Contain slices for admin, tenant and user                                             |

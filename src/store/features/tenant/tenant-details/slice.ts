@@ -32,7 +32,13 @@ export const tenantDetails = createAsyncThunk(
 const slice = createSlice({
   name: "tenantdetails",
   initialState,
-  reducers: {},
+  reducers: {
+    resetTenantDetails: (state) => {
+      state.data = undefined;
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(tenantDetails.pending, (state) => {
       state.loading = true;
@@ -43,6 +49,7 @@ const slice = createSlice({
       state.data = action.payload;
     });
     builder.addCase(tenantDetails.rejected, (state, action: any) => {
+      state.data = undefined;
       state.loading = false;
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];
@@ -51,3 +58,4 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
+export const { resetTenantDetails } = slice.actions;

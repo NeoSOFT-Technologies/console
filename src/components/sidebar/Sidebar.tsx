@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+// import { Button } from "react-bootstrap";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import withRouter from "../../WithRouter";
-import adminRoutes from "../../routes/admin";
-import tenantRoutes from "../../routes/tenants";
-import userRoutes from "../../routes/user-routes";
+import adminRoutes from "../../routes/features/admin";
+import tenantRoutes from "../../routes/features/tenants";
+import userRoutes from "../../routes/features/user-routes";
 import { RootState } from "../../store";
 import { useAppSelector } from "../../store/hooks";
 import { IUserDataState } from "../../types";
@@ -16,6 +17,7 @@ interface IConditions {
 
 export const Sidebar = () => {
   const location = useLocation();
+  const naviagte = useNavigate();
   const isPathActive = (path: string) => {
     return location.pathname.startsWith(path);
   };
@@ -26,16 +28,66 @@ export const Sidebar = () => {
     (state: RootState) => state.loginType
   );
   const [routes, setRoutes] = useState([{ path: "", title: "", icon: "" }]);
-  useEffect(() => {
-    if (user.data && loginType.data === "admin") {
-      setRoutes(adminRoutes);
-    } else if (user.data && loginType.data === "tenant") {
-      setRoutes(tenantRoutes);
-    } else if (user.data && loginType.data === "user") {
-      setRoutes(userRoutes);
-    }
-  }, [user.data]);
+  const [switchRoutes, setSwitchRoutes] = useState(false);
+  // useEffect(() => {
+  //   if (user.data && loginType.data === "admin") {
+  //     setRoutes(adminRoutes);
+  //   } else if (user.data && loginType.data === "tenant") {
+  //     setRoutes(tenantRoutes);
+  //   } else if (user.data && loginType.data === "user") {
+  //     setRoutes(userRoutes);
+  //   }
+  // }, [user.data]);
+  const setSubRoutes = (type: string) => {
+    switch (type) {
+      case "route": {
+        if (user.data && loginType.data === "admin") {
+          setRoutes(adminRoutes);
+          naviagte("/admindashboard");
+        } else if (user.data && loginType.data === "tenant") {
+          setRoutes(tenantRoutes);
+          naviagte("/tenantdashboard");
+        } else if (user.data && loginType.data === "user") {
+          setRoutes(userRoutes);
+          naviagte("/userdashboard");
+        }
 
+        break;
+      }
+      case "gateway": {
+        if (user.data && loginType.data === "admin") {
+          setRoutes(adminRoutes);
+          naviagte("/admindashboard");
+        } else if (user.data && loginType.data === "tenant") {
+          setRoutes(tenantRoutes);
+          naviagte("/tenantdashboard");
+        } else if (user.data && loginType.data === "user") {
+          setRoutes(userRoutes);
+          naviagte("/userdashboard");
+        }
+
+        break;
+      }
+      case "saas": {
+        if (user.data && loginType.data === "admin") {
+          setRoutes(adminRoutes);
+          naviagte("/admindashboard");
+        } else if (user.data && loginType.data === "tenant") {
+          setRoutes(tenantRoutes);
+          naviagte("/tenantdashboard");
+        } else if (user.data && loginType.data === "user") {
+          setRoutes(userRoutes);
+          naviagte("/userdashboard");
+        }
+
+        break;
+      }
+      default: {
+        naviagte("/error-pages/error-404");
+      }
+    }
+    setSwitchRoutes(true);
+  };
   return (
     <>
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
@@ -66,21 +118,49 @@ export const Sidebar = () => {
               <i className="bi bi-bookmark-star-fill text-success nav-profile-badge"></i>
             </a>
           </li>
-          {routes.map((route, index) => (
-            <li
-              key={`route${index}`}
-              className={
-                isPathActive(route.path) ? "nav-item active" : "nav-item"
-              }
-            >
-              <Link className="nav-link" to={route.path}>
-                <span className="menu-title">
-                  <>{route.title}</>
-                </span>
-                <i className={route.title}></i>
-              </Link>
-            </li>
-          ))}
+          {switchRoutes ? (
+            <>
+              {routes.map((route, index) => (
+                <li
+                  key={`route${index}`}
+                  className={
+                    isPathActive(route.path) ? "nav-item active" : "nav-item"
+                  }
+                >
+                  <Link className="nav-link" to={route.path}>
+                    <span className="menu-title">
+                      <>{route.title}</>
+                    </span>
+                    <i className={route.title}></i>
+                  </Link>
+                </li>
+              ))}
+            </>
+          ) : (
+            <>
+              <ul className="nav">
+                <li className="nav-item" onClick={() => setSubRoutes("route")}>
+                  <span className="nav-link">
+                    <span className="menu-title ">{loginType.data}</span>
+                  </span>
+                </li>
+
+                <li
+                  className="nav-item"
+                  onClick={() => setSubRoutes("gateway")}
+                >
+                  <span className="nav-link">
+                    <span className="menu-title">Gateway</span>
+                  </span>
+                </li>
+                <li className="nav-item" onClick={() => setSubRoutes("saas")}>
+                  <span className="nav-link">
+                    <span className="menu-title ">SaaS</span>
+                  </span>
+                </li>
+              </ul>
+            </>
+          )}
         </ul>
       </nav>
     </>

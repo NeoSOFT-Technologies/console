@@ -3,14 +3,14 @@ import { updateTenantDataService } from "../../../../services";
 import { ITenantDetail } from "../../../../types/index";
 import error from "../../../../utils/error";
 
-interface IUpdateTenantState {
-  data?: undefined;
+export interface IUpdateTenantState {
+  isUpdated: boolean;
   loading: boolean;
   error?: string | undefined;
 }
 
 const initialState: IUpdateTenantState = {
-  data: undefined,
+  isUpdated: false,
   loading: false,
   error: undefined,
 };
@@ -32,18 +32,26 @@ export const updateTenant = createAsyncThunk(
 const slice = createSlice({
   name: "tenantUpdate",
   initialState,
-  reducers: {},
+  reducers: {
+    resetUpdateTenantState: (state) => {
+      state.isUpdated = false;
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(updateTenant.pending, (state) => {
       state.loading = true;
       state.error = undefined;
+      state.isUpdated = false;
     });
-    builder.addCase(updateTenant.fulfilled, (state, action) => {
+    builder.addCase(updateTenant.fulfilled, (state) => {
       state.loading = false;
-      state.data = action.payload;
+      state.isUpdated = true;
     });
     builder.addCase(updateTenant.rejected, (state, action: any) => {
       state.loading = false;
+      state.isUpdated = false;
       // action.payload contains error information
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];
@@ -52,3 +60,4 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
+export const { resetUpdateTenantState } = slice.actions;

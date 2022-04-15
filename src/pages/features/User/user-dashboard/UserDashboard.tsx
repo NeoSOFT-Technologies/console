@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Container, Card } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import Spinner from "../../../../components/loader/Loader";
 import { RootState } from "../../../../store";
 import { useAppSelector } from "../../../../store/hooks";
@@ -8,18 +9,23 @@ import { IUserDataState } from "../../../../types";
 import "./userDashboard.scss";
 
 export default function UserDashboard() {
+  const navigate = useNavigate();
+
   const user: IUserDataState = useAppSelector(
     (state: RootState) => state.userData
   );
 
-  useEffect(() => {}, [user.loading]);
+  useEffect(() => {
+    if (!user.loading && user.error) {
+      navigate("/error", { state: user.error });
+    }
+  }, [user.loading]);
 
   return (
     <React.Fragment>
       {user.loading ? (
         <Spinner />
       ) : (
-        // {!user.loading && user.error && <Error500 />}
         user.data && (
           <Container>
             <Card className="mx-auto my-1 p-2 w-75">

@@ -31,7 +31,16 @@ export const deleteTenant = createAsyncThunk(
 const slice = createSlice({
   name: "deletetenant",
   initialState,
-  reducers: {},
+  reducers: {
+    deleteTenantReset: (state) => {
+      console.log(initialState, "inside reducer", state);
+      console.log(JSON.stringify(state));
+      state.error = undefined;
+      state.isDeleted = false;
+      console.log(JSON.stringify(state));
+      // state.error = initialState.error;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(deleteTenant.pending, (state) => {
       state.loading = true;
@@ -51,5 +60,5 @@ const slice = createSlice({
     });
   },
 });
-
+export const { deleteTenantReset } = slice.actions;
 export default slice.reducer;

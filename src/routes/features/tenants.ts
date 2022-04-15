@@ -15,11 +15,6 @@ const tenantRoutes = [
     icon: "bi bi-person-plus-fill",
   },
   {
-    path: "/create-policy",
-    title: "Create Policy",
-    icon: " bi bi-list",
-  },
-  {
     path: "/tenantprofile",
     title: "Profile",
     icon: "bi bi-gear",

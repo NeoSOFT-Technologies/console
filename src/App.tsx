@@ -32,7 +32,9 @@ class App extends Component<IProperty, IState> {
   render() {
     const navbarComponent = !this.state.isFullPageLayout ? <Navbar /> : "";
     const sidebarComponent = !this.state.isFullPageLayout ? (
-      this.props.user.data ? (
+      this.props.user.loading ? (
+        ""
+      ) : this.props.user.data ? (
         <Sidebar />
       ) : (
         <Navigate to="/login-page" />

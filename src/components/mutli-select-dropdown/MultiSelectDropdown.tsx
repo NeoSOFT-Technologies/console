@@ -1,13 +1,14 @@
 import React from "react";
 import { Col, Dropdown, Form, Row } from "react-bootstrap";
 interface IProps {
-  rolesList?: string[] | null;
+  list?: string[] | null;
   formData: string[];
+  title: string;
   handleCheck: (event: React.ChangeEvent<HTMLInputElement>) => void;
   removeRole: (val: any) => void;
 }
 export default function MultiSelectDropdown(props: IProps) {
-  const { rolesList, formData, handleCheck, removeRole } = props;
+  const { list, formData, title, handleCheck, removeRole } = props;
   return (
     <div>
       <Row>
@@ -19,10 +20,10 @@ export default function MultiSelectDropdown(props: IProps) {
               id="dropdown-basic"
               data-testid="dropdown-toggle"
             >
-              Select Roles for the user
+              select {title} for user
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              {rolesList?.map((items, index) => (
+              {list?.map((items, index) => (
                 <Dropdown.Item
                   key={index}
                   as={Form.Label}

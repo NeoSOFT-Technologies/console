@@ -11,6 +11,7 @@ test("calling the state of add-user", async () => {
       email: "deepthi@gmail.com",
       password: "deepthi123",
       roles: ["user"],
+      permissions: ["view", "write"],
     })
   );
 });
@@ -24,6 +25,7 @@ test("calling the state of add-user", async () => {
       email: "deepthi@gmail.com",
       password: "deepthi123",
       roles: ["user"],
+      permissions: ["view", "write"],
     })
   );
 });

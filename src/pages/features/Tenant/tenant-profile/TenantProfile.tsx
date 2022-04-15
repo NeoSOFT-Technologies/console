@@ -1,30 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
-  // regexForDatabaseName,
-  // regexForUser,
-  // regexForEmail,
+  regexForDatabaseName,
+  regexForDescription,
 } from "../../../../resources/constants";
 import { RootState } from "../../../../store";
-import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
+import {
+  IUpdateTenantState,
+  resetUpdateTenantState,
+  updateTenant,
+} from "../../../../store/features/tenant/update-tenant/slice";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
+import { getUserData } from "../../../../store/user-data/slice";
 import {
   IErrorTenantDetail,
   ITenantDetail,
   IUserDataState,
 } from "../../../../types";
-
 const TenantProfile = () => {
+  const navigate = useNavigate();
+
   const user: IUserDataState = useAppSelector(
     (state: RootState) => state.userData
   );
-  // console.log(
-  //   "🚀 ~ file: TenantProfile.tsx ~ line 34 ~ TenantProfile ~ user",
-  //   user
-  // );
+  const updateTenantState: IUpdateTenantState = useAppSelector(
+    (state: RootState) => state.updateTenantState
+  );
   const [edit, setEdit] = useState(false);
   const dispatch = useAppDispatch();
   const [tenant, setTenant] = useState<ITenantDetail>({
@@ -49,22 +54,10 @@ const TenantProfile = () => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
-      // case "tenantName":
-      //   setError({
-      //     ...error,
-      //     [name]: regexForName.test(value) ? "" : "Enter a valid tenantName",
-      //   });
-      //   break;
-      // case "email":
-      //   setError({
-      //     ...error,
-      //     [name]: regexForEmail.test(value) ? "" : "Enter a Valid Email",
-      //   });
-      //   break;
       case "description":
         setError({
           ...error,
-          [name]: regexForName.test(value)
+          [name]: regexForDescription.test(value)
             ? ""
             : "description should only consist Alphabets",
         });
@@ -81,10 +74,8 @@ const TenantProfile = () => {
   };
   const handleUpdateTenant = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    // console.log(error);
     if (handleValidate()) {
       if (tenant.tenantName !== "" && tenant.databaseName !== "") {
-        // const updated = { ...tenant };
         if (tenant.id !== undefined) {
           dispatch(updateTenant({ ...tenant }));
           setEdit(false);
@@ -95,10 +86,34 @@ const TenantProfile = () => {
       }
     }
   };
+  useEffect(() => {
+    if (!user.loading && user.error) {
+      navigate("/error", { state: user.error });
+    }
+  }, [user.loading]);
+  const clearAndUpdate = async () => {
+    await dispatch(resetUpdateTenantState());
+    if (user.data?.tenantName !== undefined) {
+      await dispatch(
+        getUserData({
+          userName: "tenantadmin",
+          tenantName: user.data?.tenantName,
+          type: "tenant",
+        })
+      );
+    }
+  };
+  useEffect(() => {
+    if (!updateTenantState.isUpdated && updateTenantState.error) {
+      navigate("/error", { state: updateTenantState.error });
+    } else if (updateTenantState.isUpdated && !updateTenantState.error) {
+      clearAndUpdate();
+    }
+  }, [updateTenantState.loading]);
 
   return (
     <>
-      {user.loading ? (
+      {user.loading || updateTenantState.loading ? (
         <Spinner />
       ) : (
         user.data && (
@@ -139,14 +154,14 @@ const TenantProfile = () => {
                         onChange={handleInputChange}
                         name="databaseName"
                         data-testid="databaseName-input"
-                        // disabled={!edit}
                         placeholder="Enter database name"
                         value={tenant.databaseName}
                         // isInvalid={!!error.databaseName}
+                        // disabled={!edit}
                         disabled
                       />
                       {tenant.databaseName &&
-                        !regexForName.test(tenant.databaseName) && (
+                        !regexForDatabaseName.test(tenant.databaseName) && (
                           <span className="text-danger">
                             databaseName Should Not Cantain Any Special
                             Character or Number
@@ -161,8 +176,6 @@ const TenantProfile = () => {
                       <Form.Control
                         type="text"
                         placeholder="host"
-                        // value={tenant.host}
-                        // defaultValue="193.168.0.1"
                         data-testid="host-input"
                         value={tenant.host}
                         name="host"
@@ -175,12 +188,9 @@ const TenantProfile = () => {
                   <Col md={6}>
                     <Form.Group className="mb-3">
                       <Form.Label>Port :</Form.Label>
-
                       <Form.Control
                         type="text"
                         placeholder="port"
-                        // value={tenant.port}
-                        // defaultValue="8989"
                         data-testid="port-input"
                         value={tenant.port}
                         name="port"
@@ -196,14 +206,12 @@ const TenantProfile = () => {
                       controlId="exampleForm.ControlTextarea1"
                     >
                       <Form.Label>Description:</Form.Label>
-
                       <Form.Control
                         as="textarea"
                         name="description"
                         rows={3}
                         className="form-control rounded-0"
                         data-testid="description-input"
-                        // id="description"
                         placeholder="Here...."
                         value={tenant.description}
                         disabled={!edit}
@@ -225,6 +233,7 @@ const TenantProfile = () => {
                       <Button
                         className="btn btn-light mt-3"
                         type="reset"
+                        data-testid="cancel-btn"
                         onClick={() => {
                           if (user.data) setTenant({ ...user.data });
                         }}

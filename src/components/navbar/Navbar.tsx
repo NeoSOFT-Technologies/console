@@ -130,11 +130,11 @@ export default function Navbar() {
               </Dropdown.Menu>
             </Dropdown>
           </li>
-          <li className="nav-item nav-settings d-none d-lg-block">
+          <li className="nav-item nav-settings d-lg-block">
             <button
               data-testid="navigate-button"
               type="button"
-              className="nav-link border-0"
+              className="nav-link border-0 mx-auto"
               onClick={() => logout()}
             >
               <i className="bi bi-power"></i>
