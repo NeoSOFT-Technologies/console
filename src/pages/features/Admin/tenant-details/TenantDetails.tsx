@@ -170,12 +170,19 @@ export default function TenantDetails() {
         tenantDetailsState.data && (
           <>
             <Dropdown className="d-inline-block">
-              <Dropdown.Toggle className="btn-success " id="dropdown-basic">
+              <Dropdown.Toggle
+                className="btn-success "
+                id="dropdown-basic"
+                data-testid="dropdown-action"
+              >
                 Action
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => setDeleteshow(true)}>
+                <Dropdown.Item
+                  onClick={() => setDeleteshow(true)}
+                  data-testid="dropdown-items"
+                >
                   Delete Tenant
                 </Dropdown.Item>
               </Dropdown.Menu>
@@ -217,6 +224,7 @@ export default function TenantDetails() {
               <Modal.Footer>
                 <Button
                   className="btn-danger"
+                  data-testid="role-items"
                   onClick={() => deleteTenantFunction()}
                 >
                   Remove

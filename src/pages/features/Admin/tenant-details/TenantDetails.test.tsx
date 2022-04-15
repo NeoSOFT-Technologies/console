@@ -48,7 +48,7 @@ it("testif input box is present", async () => {
       </Provider>
     </BrowserRouter>
   );
-  const nameBox = await screen.getByTestId("tenantName-input");
+  const nameBox = screen.getByTestId("tenantName-input");
   expect(nameBox).toBeInTheDocument();
   expect(nameBox).toHaveAttribute("type", "text");
 
