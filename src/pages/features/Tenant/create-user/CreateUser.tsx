@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Container, Form, Button } from "react-bootstrap";
+import { Container, Form, Button, InputGroup } from "react-bootstrap";
 import "./createuser.scss";
 import Spinner from "../../../../components/loader/Loader";
 import MultiSelectDropdown from "../../../../components/mutli-select-dropdown/MultiSelectDropdown";
+import PasswordButtons from "../../../../components/password-field/Password";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   regexForEmail,
@@ -28,6 +29,7 @@ interface Ierrors {
 
 export default function Createuser() {
   const dispatch = useAppDispatch();
+  const [showPassword, setShowpassword] = useState(false);
   const rolesList: ITenantRolesState = useAppSelector(
     (state: RootState) => state.rolesList
   );
@@ -93,7 +95,7 @@ export default function Createuser() {
     );
     return validate;
   };
-  const handleFormSubmit = async (event: React.FormEvent) => {
+  const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     console.log(errors, formData);
     if (handleValidate()) {
@@ -107,7 +109,7 @@ export default function Createuser() {
         const newUser = {
           ...formData,
         };
-        await dispatch(addNewUser(newUser));
+        dispatch(addNewUser(newUser));
       } else {
         ToastAlert("Please Fill All Fields", "warning");
       }
@@ -217,16 +219,22 @@ export default function Createuser() {
               </Form.Group>
               <Form.Group>
                 <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="password"
-                  data-testid="password-input"
-                  value={formData.password}
-                  name="password"
-                  onChange={handleInputChange}
-                  isInvalid={!!errors.password}
-                  isValid={!!(!errors.password && formData.password)}
-                />
+                <InputGroup>
+                  <Form.Control
+                    type={showPassword ? "text" : "password"}
+                    placeholder="password"
+                    data-testid="password-input"
+                    value={formData.password}
+                    name="password"
+                    onChange={handleInputChange}
+                    // isInvalid={!!errors.password}
+                    // isValid={!!(!errors.password && formData.password)}
+                  />
+                  <PasswordButtons
+                    viewPassword={showPassword}
+                    setViewPassword={setShowpassword}
+                  />
+                </InputGroup>
                 <Form.Control.Feedback type="invalid">
                   {errors.password}
                 </Form.Control.Feedback>

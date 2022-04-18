@@ -63,7 +63,6 @@ export default function TenantDetails() {
     if (tenantName) dispatch(tenantDetails(tenantName));
     else {
       navigate("/error", { state: "404" });
-      console.log("NOT FOUND");
     }
     return () => {
       dispatch(resetTenantDetails());
@@ -109,21 +108,41 @@ export default function TenantDetails() {
   };
 
   const handleUpdateTenant = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(error, tenant);
     event.preventDefault();
-    if (handleValidate()) {
-      if (tenant.tenantName !== "" && tenant.databaseName !== "") {
-        if (tenant.tenantName !== undefined) {
-          dispatch(updateTenant({ ...tenant }));
-          setEdit(false);
-          if (updateTenantState.isUpdated)
-            ToastAlert("Tenant Details Update", "success");
-        }
+    if (
+      handleValidate() &&
+      tenant.tenantName !== "" &&
+      tenant.databaseName !== ""
+    ) {
+      if (tenant.tenantName !== undefined) {
+        dispatch(updateTenant({ ...tenant }));
+        setEdit(false);
       } else {
         ToastAlert("Please Fill All Fields", "warning");
       }
     }
   };
+
+  useEffect(() => {
+    if (
+      !updateTenantState.loading &&
+      tenant.createdDateTime !== "" &&
+      tenant.description !== "" &&
+      tenant.host !== "" &&
+      tenant.id > 0 &&
+      tenant.policy !== "" &&
+      tenant.port > 0 &&
+      tenant.databaseName !== "" &&
+      tenant.tenantId > 0 &&
+      tenant.tenantName
+    ) {
+      if (updateTenantState.isUpdated) {
+        ToastAlert("Tenant Details Update", "success");
+      } else {
+        ToastAlert("Could not Update Tenant Details", "error");
+      }
+    }
+  }, [updateTenantState]);
 
   useEffect(() => {
     if (!tenantDeleted.loading && tenantDeleted.error) {
