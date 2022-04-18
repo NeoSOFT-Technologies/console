@@ -160,6 +160,22 @@ export default function Createuser() {
     setFormData({ ...formData, permissions: [...temp] });
   };
 
+  const clearState = () => {
+    setFormData({
+      userName: "",
+      email: "",
+      password: "",
+      roles: [],
+      permissions: [],
+    });
+    setErrors({
+      userName: "",
+      email: "",
+      password: "",
+      roles: "",
+      permissions: "",
+    });
+  };
   useEffect(() => {
     if (
       !addNewUserState.loading &&
@@ -170,6 +186,7 @@ export default function Createuser() {
     ) {
       if (addNewUserState.isAdded) {
         ToastAlert("User Registered", "success");
+        clearState();
       } else if (addNewUserState.error) {
         ToastAlert("Unable to Register User", "error");
       }
@@ -268,6 +285,7 @@ export default function Createuser() {
                 <Button
                   type="reset"
                   variant="danger"
+                  onClick={() => clearState()}
                   data-testid="cancel-button"
                 >
                   Cancel

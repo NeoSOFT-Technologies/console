@@ -135,15 +135,20 @@ export default function RegisterTenant() {
     }
   };
 
-  const clearData = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    event.preventDefault();
+  const clearData = () => {
     setTenant({
       tenantName: "",
       description: "",
       email: "",
       password: "",
+      databaseName: "",
+      databaseDescription: "",
+    });
+    setError({
+      tenantName: "",
+      email: "",
+      password: "",
+      description: "",
       databaseName: "",
       databaseDescription: "",
     });
@@ -160,14 +165,7 @@ export default function RegisterTenant() {
     ) {
       if (tenantAdded.tenantAdded) {
         ToastAlert("Tenant Registered", "success");
-        setTenant({
-          tenantName: "",
-          description: "",
-          email: "",
-          password: "",
-          databaseName: "",
-          databaseDescription: "",
-        });
+        clearData();
       } else if (tenantAdded.error) {
         ToastAlert("Unable to Register Tenant", "error");
       }
@@ -326,9 +324,7 @@ export default function RegisterTenant() {
                 className="btn btn-light"
                 type="reset"
                 data-testid="cancel-input"
-                onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-                  clearData(event)
-                }
+                onClick={() => clearData()}
               >
                 Cancel
               </Button>
