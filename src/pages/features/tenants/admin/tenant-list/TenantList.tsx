@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import RenderList from "../../../../components/list/RenderList";
+import RenderList from "../../../../../components/list/RenderList";
 import {
   requestTenantListUrlInactive,
   requestTenantListUrlActive,
   requestTenantListUrlAll,
-} from "../../../../resources/constants";
-import { deleteTenantReset } from "../../../../store/features/admin/delete-tenant/slice";
-import { useAppDispatch } from "../../../../store/hooks";
+} from "../../../../../resources/constants";
+import { deleteTenantReset } from "../../../../../store/features/admin/delete-tenant/slice";
+import { useAppDispatch } from "../../../../../store/hooks";
 
 export default function TenantList() {
   const dispatch = useAppDispatch();

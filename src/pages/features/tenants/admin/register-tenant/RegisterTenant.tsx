@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Row, Col, Container, InputGroup } from "react-bootstrap";
 // import { useNavigate } from "react-router-dom";
-import Spinner from "../../../../components/loader/Loader";
-import PasswordButtons from "../../../../components/password-field/Password";
-import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import Spinner from "../../../../../components/loader/Loader";
+import PasswordButtons from "../../../../../components/password-field/Password";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
   regexForEmail,
   regexForName,
   regForPassword,
   regexForDescription,
   regexForDatabaseName,
-} from "../../../../resources/constants";
-import { RootState } from "../../../../store";
-import { addNewTenant } from "../../../../store/features/admin/add-tenant/slice";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+} from "../../../../../resources/constants";
+import { RootState } from "../../../../../store";
+import { addNewTenant } from "../../../../../store/features/admin/add-tenant/slice";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import {
   IErrorTenantInput,
   ITenantRegisterData,
-} from "../../../../types/index";
+} from "../../../../../types/index";
 
 export default function RegisterTenant() {
   // const navigate = useNavigate();

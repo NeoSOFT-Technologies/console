@@ -3,13 +3,13 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import store from "../../../../store/index";
-import RoleAndPermissions from "./RoleAndPermissions";
+import store from "../../../../../store/index";
+import UserDashboard from "./UserDashboard";
 it("render without crashing UserDashboard", () => {
   render(
     <BrowserRouter>
       <Provider store={store}>
-        <RoleAndPermissions />
+        <UserDashboard />
       </Provider>
     </BrowserRouter>
   );

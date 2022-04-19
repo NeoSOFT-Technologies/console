@@ -9,22 +9,22 @@ import {
   Modal,
 } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router";
-import Spinner from "../../../../components/loader/Loader";
-import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import Spinner from "../../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
   regexForDatabaseName,
   regexForDescription,
-} from "../../../../resources/constants";
-import { RootState } from "../../../../store";
-import { deleteTenant } from "../../../../store/features/admin/delete-tenant/slice";
+} from "../../../../../resources/constants";
+import { RootState } from "../../../../../store";
+import { deleteTenant } from "../../../../../store/features/admin/delete-tenant/slice";
 import {
   tenantDetails,
   resetTenantDetails,
-} from "../../../../store/features/tenant/tenant-details/slice";
-import { updateTenant } from "../../../../store/features/tenant/update-tenant/slice";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { IErrorTenantDetail, ITenantDetail } from "../../../../types/index";
+} from "../../../../../store/features/tenant/tenant-details/slice";
+import { updateTenant } from "../../../../../store/features/tenant/update-tenant/slice";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import { IErrorTenantDetail, ITenantDetail } from "../../../../../types/index";
 
 export default function TenantDetails() {
   const navigate = useNavigate();

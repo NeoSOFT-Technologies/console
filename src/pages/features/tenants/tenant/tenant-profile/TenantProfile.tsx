@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../../../../components/loader/Loader";
-import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import Spinner from "../../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
   regexForDatabaseName,
   regexForDescription,
-} from "../../../../resources/constants";
-import { RootState } from "../../../../store";
+} from "../../../../../resources/constants";
+import { RootState } from "../../../../../store";
 import {
   IUpdateTenantState,
   resetUpdateTenantState,
   updateTenant,
-} from "../../../../store/features/tenant/update-tenant/slice";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
-import { getUserData } from "../../../../store/user-data/slice";
+} from "../../../../../store/features/tenant/update-tenant/slice";
+import { useAppSelector, useAppDispatch } from "../../../../../store/hooks";
+import { getUserData } from "../../../../../store/user-data/slice";
 import {
   IErrorTenantDetail,
   ITenantDetail,
   IUserDataState,
-} from "../../../../types";
+} from "../../../../../types";
 const TenantProfile = () => {
   const navigate = useNavigate();
 
