@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Navigate } from "react-router-dom";
 import AppRoutes from "./AppRoutes";
 import withRouter from "./WithRouter";
+import CustomBreadcrumbs from "./components/breadcrumbs/CustomBreadcrumbs";
 import Footer from "./components/footer/Footer";
 import Navbar from "./components/navbar/Navbar";
 import Sidebar from "./components/sidebar/Sidebar";
@@ -50,6 +51,9 @@ class App extends Component<IProperty, IState> {
           {sidebarComponent}
           <div className="main-panel">
             <div className="content-wrapper">
+              {this.props.router.location.pathname !== "/login-page" && (
+                <CustomBreadcrumbs />
+              )}
               <AppRoutes />
             </div>
             {footerComponent}
