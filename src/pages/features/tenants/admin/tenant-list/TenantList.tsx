@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import RenderList from "../../../../components/list/RenderList";
+import RenderList from "../../../../../components/list/RenderList";
 // import Spinner from "../../../../components/loader/Loader";
 import {
   requestTenantListUrlInactive,
   requestTenantListUrlActive,
   requestTenantListUrlAll,
-} from "../../../../resources/constants";
+} from "../../../../../resources/constants";
 // import { RootState } from "../../../../store";
-import { deleteTenantReset } from "../../../../store/features/admin/delete-tenant/slice";
-import { useAppDispatch } from "../../../../store/hooks";
+import { deleteTenantReset } from "../../../../../store/features/admin/delete-tenant/slice";
+import { useAppDispatch } from "../../../../../store/hooks";
 // import { ITenantListState } from "../../../../types/index";
 
 export default function TenantList() {

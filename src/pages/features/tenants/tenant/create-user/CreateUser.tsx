@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import "./createuser.scss";
-import Spinner from "../../../../components/loader/Loader";
-import MultiSelectDropdown from "../../../../components/mutli-select-dropdown/MultiSelectDropdown";
-import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import Spinner from "../../../../../components/loader/Loader";
+import MultiSelectDropdown from "../../../../../components/mutli-select-dropdown/MultiSelectDropdown";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
   regexForEmail,
   regexForUser,
   regForPassword,
-} from "../../../../resources/constants";
-import { RootState } from "../../../../store";
-import { getTenantRoles } from "../../../../store/features/admin/tenant-roles/slice";
+} from "../../../../../resources/constants";
+import { RootState } from "../../../../../store";
+import { getTenantRoles } from "../../../../../store/features/admin/tenant-roles/slice";
 import {
   addNewUser,
   IAddUserState,
-} from "../../../../store/features/tenant/add-user/slice";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { ICreateNewUser, ITenantRolesState } from "../../../../types/index";
+} from "../../../../../store/features/tenant/add-user/slice";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import { ICreateNewUser, ITenantRolesState } from "../../../../../types/index";
 const tempPermissions = ["view", "edit", "write", "delete"];
 interface Ierrors {
   userName: string;

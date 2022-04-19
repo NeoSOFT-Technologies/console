@@ -9,30 +9,33 @@ import {
   Row,
 } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
-import Spinner from "../../../../components/loader/Loader";
-import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
-import { regexForUser, regexForEmail } from "../../../../resources/constants";
-import { RootState } from "../../../../store";
-import { getTenantRoles } from "../../../../store/features/admin/tenant-roles/slice";
+import Spinner from "../../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
+import {
+  regexForUser,
+  regexForEmail,
+} from "../../../../../resources/constants";
+import { RootState } from "../../../../../store";
+import { getTenantRoles } from "../../../../../store/features/admin/tenant-roles/slice";
 import {
   deleteUser,
   IDeleteUserState,
-} from "../../../../store/features/tenant/delete-user/slice";
+} from "../../../../../store/features/tenant/delete-user/slice";
 import {
   updateUser,
   IUpdateUserState,
-} from "../../../../store/features/user/update-user/slice";
+} from "../../../../../store/features/user/update-user/slice";
 import {
   getUserDetails,
   IUserDetailsState,
   resetgetUserDetails,
-} from "../../../../store/features/user/user-details/slice";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+} from "../../../../../store/features/user/user-details/slice";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import {
   IUserDetailsData,
   ITenantRolesState,
   IUserDataState,
-} from "../../../../types/index";
+} from "../../../../../types/index";
 
 interface Ierror {
   username: string;

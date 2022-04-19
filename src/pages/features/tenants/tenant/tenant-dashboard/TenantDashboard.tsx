@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { Container, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../../../../components/loader/Loader";
-import { RootState } from "../../../../store";
-import { useAppSelector } from "../../../../store/hooks";
-import { IUserDataState } from "../../../../types";
+import Spinner from "../../../../../components/loader/Loader";
+import { RootState } from "../../../../../store";
+import { useAppSelector } from "../../../../../store/hooks";
+import { IUserDataState } from "../../../../../types";
 
 const TenantDashboard = () => {
   const navigate = useNavigate();

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Container, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../../../../components/loader/Loader";
-import RolesAndPermissions from "../../../../components/roles-and-permissions/RolesAndPermissions";
-import { RootState } from "../../../../store";
-import { useAppSelector } from "../../../../store/hooks";
-import { IUserDataState } from "../../../../types";
+import Spinner from "../../../../../components/loader/Loader";
+import RolesAndPermissions from "../../../../../components/roles-and-permissions/RolesAndPermissions";
+import { RootState } from "../../../../../store";
+import { useAppSelector } from "../../../../../store/hooks";
+import { IUserDataState } from "../../../../../types";
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const user: IUserDataState = useAppSelector(
