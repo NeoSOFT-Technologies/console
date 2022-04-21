@@ -3,9 +3,9 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import {
   regexForOverrideTarget,
   setFormErrors,
-} from "../../../../../../resources/api/api-constants";
-import { setForm } from "../../../../../../store/features/api/update/slice";
-import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
+} from "../../../../../../../resources/gateway/api/api-constants";
+import { setForm } from "../../../../../../../store/features/gateway/api/update/slice";
+import { useAppDispatch, useAppSelector } from "../../../../../../../store/hooks";
 
 export default function Versions() {
   const dispatch = useAppDispatch();

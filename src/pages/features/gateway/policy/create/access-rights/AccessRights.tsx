@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppSelector } from "../../../../../store/hooks";
+import { useAppSelector } from "../../../../../../store/hooks";
 // import { useAppSelector } from "../../../../../store/hooks";
 import GlobalLimit from "../../../common-settings/global-limit/GlobalLimit";
 import AccessList from "./api-access-rights/AccessList";

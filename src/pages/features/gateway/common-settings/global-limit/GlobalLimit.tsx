@@ -3,15 +3,15 @@ import { Accordion, Col, Form, Row } from "react-bootstrap";
 import {
   getPolicybyId,
   setForm,
-} from "../../../../store/features/policy/create/slice";
-import { setForms } from "../../../../store/features/key/create/slice";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+} from "../../../../../store/features/gateway/policy/create/slice";
+import { setForms } from "../../../../../store/features/gateway/key/create/slice";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import {
   IGetPolicyByIdData,
   IPolicyCreateState,
-} from "../../../../store/features/policy/create";
-import { IKeyCreateState } from "../../../../store/features/key/create";
-import Spinner from "../../../../components/loader/Loader";
+} from "../../../../../store/features/gateway/policy/create";
+import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
+import Spinner from "../../../../../components/loader/Loader";
 
 interface IProps {
   isDisabled: boolean;

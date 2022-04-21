@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Button, Form, Row, Col, Table } from "react-bootstrap";
-import { IKeyCreateState } from "../../../../store/features/key/create";
-import { IPolicyCreateState } from "../../../../store/features/policy/create";
-import { setForm } from "../../../../store/features/policy/create/slice";
-import { setForms } from "../../../../store/features/key/create/slice";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
+import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
+import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
+import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
+import { setForms } from "../../../../../store/features/gateway/key/create/slice";
+import { useAppSelector, useAppDispatch } from "../../../../../store/hooks";
 interface IProps {
   state?: IKeyCreateState;
   policystate?: IPolicyCreateState;

@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import {
   useAppDispatch,
   useAppSelector,
-} from "../../../../../../../store/hooks";
-import { setForm } from "../../../../../../../store/features/api/update/slice";
+} from "../../../../../../../../store/hooks";
+import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
 
 export default function BasicAuthentication() {
   const state = useAppSelector((RootState) => RootState.updateApiState);

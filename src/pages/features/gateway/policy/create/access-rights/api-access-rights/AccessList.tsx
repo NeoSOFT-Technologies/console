@@ -1,8 +1,8 @@
 import React from "react";
-import { ToastAlert } from "../../../../../../components/ToasterAlert/ToastAlert";
-import { getApiById } from "../../../../../../store/features/api/update/slice";
-import { setForm } from "../../../../../../store/features/policy/create/slice";
-import { useAppSelector, useAppDispatch } from "../../../../../../store/hooks";
+import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
+import { getApiById } from "../../../../../../../store/features/gateway/api/update/slice";
+import { setForm } from "../../../../../../../store/features/gateway/policy/create/slice";
+import { useAppSelector, useAppDispatch } from "../../../../../../../store/hooks";
 import ApiAccessList from "../../../../common-settings/api-access-List/ApiAccessList";
 
 export default function AccessList() {
