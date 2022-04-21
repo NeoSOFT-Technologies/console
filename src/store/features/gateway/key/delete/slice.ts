@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../utils/error";
+import error from "../../../../../utils/error";
 import axios, { AxiosError } from "axios";
 import { IDeleteKeyState } from ".";
-import { deleteKeyService } from "../../../../services/key/key";
+import { deleteKeyService } from "../../../../../services/gateway/key/key";
 
 const initialState: IDeleteKeyState = {
   isDeleted: false,

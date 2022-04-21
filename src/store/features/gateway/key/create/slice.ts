@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { IGetKeyByIdData } from ".";
-import { addKeyService } from "../../../../services/key/key";
-import error from "../../../../utils/error";
+import { addKeyService } from "../../../../../services/gateway/key/key";
+import error from "../../../../../utils/error";
 import { initialState } from "./payload";
 
 export const createKey = createAsyncThunk(
