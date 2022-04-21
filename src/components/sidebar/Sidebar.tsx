@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // import { Button } from "react-bootstrap";
-import Collapse from "react-bootstrap/esm/Collapse";
+import { Collapse } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import withRouter from "../../WithRouter";
 import adminRoutes from "../../routes/tenants/admin";
