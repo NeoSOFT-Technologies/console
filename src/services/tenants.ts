@@ -18,7 +18,7 @@ export function createNewUserService(data: ICreateNewUser) {
       email: data.email,
       password: data.password,
       roles: data.roles,
-      // permissions: data.permissions,
+      attributes: data.permissions,
     },
   };
   return apiFactory().post(`/api/user`, body);

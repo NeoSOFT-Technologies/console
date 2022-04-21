@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import Spinner from "../../../../../components/loader/Loader";
+import RolesAndPermissions from "../../../../../components/roles-and-permissions/RolesAndPermissions";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
   regexForUser,
@@ -116,7 +117,7 @@ export default function UserDetails() {
       !deleteUserState.error &&
       deleteUserState?.isDeleted
     ) {
-      navigate("/tenantlist");
+      navigate("/userlist");
     }
   }, [deleteUserState.loading, updateUserDataState.loading]);
 
@@ -293,56 +294,67 @@ export default function UserDetails() {
                         />
                       </Form.Group>
                       <div className="list-container  ">
-                        <h5>Roles :</h5>
                         <Row>
-                          <Col xs={12} sm={6} md={4} lg={4}>
-                            {" "}
-                            <Dropdown autoClose="outside" className="w-100">
-                              <Dropdown.Toggle
-                                variant="success"
-                                id="dropdown-basic"
-                                data-testid="dropdown-toggler"
-                              >
-                                Select Roles for the user
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                {rolesList?.data?.map((role, index) => (
-                                  <Dropdown.Item
-                                    key={index}
-                                    as={Form.Label}
-                                    htmlFor={role}
-                                    data-testid="role-item"
+                          {editUser ? (
+                            <>
+                              <Col xs={12} sm={6} md={4} lg={4}>
+                                <h5>Roles :</h5>{" "}
+                                <Dropdown autoClose="outside" className="w-100">
+                                  <Dropdown.Toggle
+                                    variant="success"
+                                    id="dropdown-basic"
+                                    data-testid="dropdown-toggler"
                                   >
-                                    <Form.Check
-                                      className="mx-4"
-                                      key={`${role}`}
-                                      id={`${role}`}
-                                      label={role}
-                                      name="role"
-                                      value={`${role}`}
-                                      checked={userdata.roles.includes(role)}
-                                      type="checkbox"
-                                      onChange={handleCheck}
-                                      inline
-                                    />
-                                  </Dropdown.Item>
-                                ))}
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </Col>
-                          <Col xs={12} sm={6} md={8} lg={8}>
-                            {userdata.roles.length > 0 &&
-                              userdata.roles.map((val, i) => (
-                                <span className="roles" key={i}>
-                                  {val}{" "}
-                                  <i
-                                    className="bi bi-x-circle"
-                                    onClick={() => removeRole(val)}
-                                    data-testid="remove-role-btn"
-                                  ></i>
-                                </span>
-                              ))}
-                          </Col>
+                                    Select Roles for the user
+                                  </Dropdown.Toggle>
+                                  <Dropdown.Menu>
+                                    {rolesList?.data?.map((role, index) => (
+                                      <Dropdown.Item
+                                        key={index}
+                                        as={Form.Label}
+                                        htmlFor={role}
+                                        data-testid="role-item"
+                                      >
+                                        <Form.Check
+                                          className="mx-4"
+                                          key={`${role}`}
+                                          id={`${role}`}
+                                          label={role}
+                                          name="role"
+                                          value={`${role}`}
+                                          checked={userdata.roles.includes(
+                                            role
+                                          )}
+                                          type="checkbox"
+                                          onChange={handleCheck}
+                                          inline
+                                        />
+                                      </Dropdown.Item>
+                                    ))}
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </Col>
+                              <Col xs={12} sm={6} md={8} lg={8}>
+                                {userdata.roles.length > 0 &&
+                                  userdata.roles.map((val, i) => (
+                                    <span className="roles" key={i}>
+                                      {val}{" "}
+                                      <i
+                                        className="bi bi-x-circle"
+                                        onClick={() => removeRole(val)}
+                                        data-testid="remove-role-btn"
+                                      ></i>
+                                    </span>
+                                  ))}
+                              </Col>
+                            </>
+                          ) : (
+                            <RolesAndPermissions
+                              heading="Roles"
+                              list={userdata.roles}
+                              classes="roles"
+                            />
+                          )}
                         </Row>
                       </div>
                       {editUser && (
@@ -356,7 +368,9 @@ export default function UserDetails() {
                           </Button>
                           <Button
                             variant="danger"
-                            onClick={() => setEditUser(false)}
+                            onClick={() => {
+                              setEditUser(false);
+                            }}
                             data-testid="cancel"
                           >
                             Cancel

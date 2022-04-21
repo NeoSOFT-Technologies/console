@@ -68,10 +68,12 @@ const TenantProfile = () => {
     }
     setTenant({ ...tenant, [name]: value });
   };
+
   const handleValidate = () => {
     const validate = !!(error.description === "");
     return validate;
   };
+
   const handleUpdateTenant = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (handleValidate()) {
@@ -79,18 +81,19 @@ const TenantProfile = () => {
         if (tenant.id !== undefined) {
           dispatch(updateTenant({ ...tenant }));
           setEdit(false);
-          ToastAlert("Tenant Details Update", "success");
         }
       } else {
         ToastAlert("Please Fill All Fields", "warning");
       }
     }
   };
+
   useEffect(() => {
     if (!user.loading && user.error) {
       navigate("/error", { state: user.error });
     }
   }, [user.loading]);
+
   const clearAndUpdate = async () => {
     await dispatch(resetUpdateTenantState());
     if (user.data?.tenantName !== undefined) {
@@ -103,11 +106,30 @@ const TenantProfile = () => {
       );
     }
   };
+
   useEffect(() => {
     if (!updateTenantState.isUpdated && updateTenantState.error) {
       navigate("/error", { state: updateTenantState.error });
     } else if (updateTenantState.isUpdated && !updateTenantState.error) {
       clearAndUpdate();
+    }
+    if (
+      !updateTenantState.loading &&
+      tenant.createdDateTime !== "" &&
+      tenant.description !== "" &&
+      tenant.host !== "" &&
+      tenant.id > 0 &&
+      tenant.policy !== "" &&
+      tenant.port > 0 &&
+      tenant.databaseName !== "" &&
+      tenant.tenantId > 0 &&
+      tenant.tenantName
+    ) {
+      if (updateTenantState.isUpdated) {
+        ToastAlert("Tenant Details Update", "success");
+      } else {
+        ToastAlert("Could not Update Tenant Details", "error");
+      }
     }
   }, [updateTenantState.loading]);
 

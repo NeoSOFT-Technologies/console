@@ -1,21 +1,21 @@
 const tenantRoutes = [
   {
-    path: "/tenantdashboard",
-    title: "TenantDashboard",
-    icon: "bi bi-person-circle",
+    path: "/tenant/dashboard",
+    title: "Dashboard",
+    icon: "bi bi-house-door-fill",
   },
   {
-    path: "/userlist",
-    title: "User List",
+    path: "/tenant/users",
+    title: "Users",
     icon: "bi bi-list-ul",
   },
   {
-    path: "/createuser",
-    title: "Add User",
+    path: "/tenant/create-user",
+    title: "Create User",
     icon: "bi bi-person-plus-fill",
   },
   {
-    path: "/tenantprofile",
+    path: "/tenant/profile",
     title: "Profile",
     icon: "bi bi-gear",
   },

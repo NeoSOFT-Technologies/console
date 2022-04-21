@@ -1,0 +1,19 @@
+.lh-2 {
+    display: block;
+    line-height: 2 !important;
+    width: 80%;
+}
+
+.r-90{
+    transform: rotate(-90deg);
+    transition: all 0.5s;
+}
+
+.r90{
+    transform: rotate(0deg);
+    transition: all 0.5s;
+}
+
+.list-unstyled{
+    list-style: none !important;
+}

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Navigate } from "react-router-dom";
 import AppRoutes from "./AppRoutes";
 import withRouter from "./WithRouter";
+import CustomBreadcrumbs from "./components/breadcrumbs/CustomBreadcrumbs";
 import Footer from "./components/footer/Footer";
 import Navbar from "./components/navbar/Navbar";
 import Sidebar from "./components/sidebar/Sidebar";
@@ -11,6 +12,7 @@ import { RootState } from "./store";
 import { IUserDataState } from "./types/index";
 interface IState {
   isFullPageLayout: boolean;
+  fullPageLayoutRoutes: string[];
 }
 interface IProperty {
   user: IUserDataState;
@@ -23,6 +25,13 @@ interface IProperty {
 class App extends Component<IProperty, IState> {
   state: IState = {
     isFullPageLayout: true,
+    fullPageLayoutRoutes: [
+      "/login-page",
+      "/error-pages/error-404",
+      "/error-pages/error-500",
+      "/error-pages/error-401",
+      "/error",
+    ],
   };
 
   componentDidMount() {
@@ -50,6 +59,9 @@ class App extends Component<IProperty, IState> {
           {sidebarComponent}
           <div className="main-panel">
             <div className="content-wrapper">
+              {!this.state.fullPageLayoutRoutes.includes(
+                this.props.router.location.pathname
+              ) && <CustomBreadcrumbs />}
               <AppRoutes />
             </div>
             {footerComponent}
@@ -66,20 +78,7 @@ class App extends Component<IProperty, IState> {
   }
 
   onRouteChanged() {
-    // console.log("ROUTE CHANGED");
-    // window.scrollTo(0, 0);
-    const fullPageLayoutRoutes = [
-      "/login-page",
-      // "/registration-page",
-      // "/user-pages/lockscreen",
-      "/error-pages/error-404",
-      "/error-pages/error-500",
-      "/error-pages/error-401",
-      "/error",
-      // "/general-pages/landing-page",
-    ];
-    for (const fullPageLayoutRoute of fullPageLayoutRoutes) {
-      // console.log(this.props.router.location.pathname);
+    for (const fullPageLayoutRoute of this.state.fullPageLayoutRoutes) {
       if (this.props.router.location.pathname === fullPageLayoutRoute) {
         this.setState({
           isFullPageLayout: true,

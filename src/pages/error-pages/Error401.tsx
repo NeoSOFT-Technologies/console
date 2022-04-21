@@ -5,7 +5,7 @@ export default function Error401() {
   return (
     <div className="h-100 d-flex justify-content-center align-items-center flex-column bg-white">
       <img src={error401} />
-      <Link className="text-danger font-weight-heavy" to="/dashboard">
+      <Link className="text-danger font-weight-heavy" to="/login-page">
         Back to home
       </Link>
     </div>

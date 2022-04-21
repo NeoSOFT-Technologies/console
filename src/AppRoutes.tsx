@@ -59,98 +59,109 @@ function AppRoutes() {
         <Route path="/error" element={<Error />} />
         <Route path="/statistics" element={<StatisticsDashboard />} />
         {/** **********************ADMIN ROUTES***********************/}
-        <Route
-          path="/admindashboard"
-          element={
-            <AdminGuard>
-              <AdminDashboard />
-            </AdminGuard>
-          }
-        />
-        <Route
-          path="/tenantdetails/:tenantName"
-          element={
-            <AdminGuard>
-              <TenantDetails />
-            </AdminGuard>
-          }
-        />
-        <Route
-          path="/registertenant"
-          element={
-            <AdminGuard>
-              <RegisterTenant />
-            </AdminGuard>
-          }
-        />
-        <Route
-          path="/tenantlist"
-          element={
-            <AdminGuard>
-              <TenantList />
-            </AdminGuard>
-          }
-        />
+        <Route path="/admin">
+          <Route path="" element={<StatisticsDashboard />} />
+
+          <Route
+            path="dashboard"
+            element={
+              <AdminGuard>
+                <AdminDashboard />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="tenants"
+            element={
+              <AdminGuard>
+                <TenantList />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="tenants/:tenantName"
+            element={
+              <AdminGuard>
+                <TenantDetails />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="register-tenant"
+            element={
+              <AdminGuard>
+                <RegisterTenant />
+              </AdminGuard>
+            }
+          />
+        </Route>
         {/**********************************************************/}
         {/** ********************TENANT ROUTES*************************/}
-        <Route
-          path="/tenantdashboard"
-          element={
-            <TenantGuard>
-              <TenantDashboard />
-            </TenantGuard>
-          }
-        />
-        <Route
-          path="/createuser"
-          element={
-            <TenantGuard>
-              <CreateUser />
-            </TenantGuard>
-          }
-        />
-        <Route
-          path="/userlist"
-          element={
-            <TenantGuard>
-              <UserList />
-            </TenantGuard>
-          }
-        />
-        <Route
-          path="/userdetails/:userName"
-          element={
-            <TenantGuard>
-              <UserDetails />
-            </TenantGuard>
-          }
-        />
-        <Route
-          path="/tenantprofile"
-          element={
-            <TenantGuard>
-              <TenantProfile />
-            </TenantGuard>
-          }
-        />
+        <Route path="/tenant">
+          <Route path="" element={<StatisticsDashboard />} />
+          <Route
+            path="dashboard"
+            element={
+              <TenantGuard>
+                <TenantDashboard />
+              </TenantGuard>
+            }
+          />
+
+          <Route
+            path="create-user"
+            element={
+              <TenantGuard>
+                <CreateUser />
+              </TenantGuard>
+            }
+          />
+          <Route
+            path="users"
+            element={
+              <TenantGuard>
+                <UserList />
+              </TenantGuard>
+            }
+          />
+          <Route
+            path="users/:userName"
+            element={
+              <TenantGuard>
+                <UserDetails />
+              </TenantGuard>
+            }
+          />
+          <Route
+            path="profile"
+            element={
+              <TenantGuard>
+                <TenantProfile />
+              </TenantGuard>
+            }
+          />
+        </Route>
         {/**********************************************************/}
-        {/** ************************USER ROUTES*********************/}
-        <Route
-          path="/userdashboard"
-          element={
-            <UserGuard>
-              <UserDashboard />
-            </UserGuard>
-          }
-        />
-        <Route
-          path="/userrolesandpermissions"
-          element={
-            <UserGuard>
-              <RoleAndPermissions />
-            </UserGuard>
-          }
-        />
+        {/** ***********************USER ROUTES*********************/}
+        <Route path="/user">
+          <Route path="" element={<StatisticsDashboard />} />
+          <Route
+            path="dashboard"
+            element={
+              <UserGuard>
+                <UserDashboard />
+              </UserGuard>
+            }
+          />
+          <Route
+            path="roles-and-permissions"
+            element={
+              <UserGuard>
+                <RoleAndPermissions />
+              </UserGuard>
+            }
+          />
+        </Route>
         {/**********************************************************/}
         <Route path="*" element={<Navigate to="/login-page" />} />{" "}
         {/* redirect if not match any path */}
