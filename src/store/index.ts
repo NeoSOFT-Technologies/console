@@ -3,6 +3,18 @@ import addNewTenantReducer from "./features/admin/add-tenant/slice";
 import deleteTenantReducer from "./features/admin/delete-tenant/slice";
 import tenantPermissionsListReducer from "./features/admin/tenant-permissions/slice";
 import rolesListReducer from "./features/admin/tenant-roles/slice";
+
+// gateway Reducers
+import addApiReducer from "./features/gateway/api/create/slice";
+import deleteApiReducer from "./features/gateway/api/delete/slice";
+import apiListReducer from "./features/gateway/api/list/slice";
+import updateApiReducer from "./features/gateway/api/update/slice";
+import createKeyReducer from "./features/gateway/key/create/slice";
+import keyListReducer from "./features/gateway/key/list/slice";
+import createPolicyReducer from "./features/gateway/policy/create/slice";
+import deletePolicyReducer from "./features/gateway/policy/delete/slice";
+import policyListReducer from "./features/gateway/policy/list/slice";
+
 import addNewUserReducer from "./features/tenant/add-user/slice";
 import deleteUserReducer from "./features/tenant/delete-user/slice";
 import tenantDetailsReducer from "./features/tenant/tenant-details/slice";
@@ -15,16 +27,6 @@ import loginTypeReducer from "./login-type/slice";
 import loginAccessTokenReducer from "./login/slice";
 import logoutReducer from "./logout/slice";
 import userDataReducer from "./user-data/slice";
-// gateway Reducers
-import apiListReducer from "./features/gateway/api/list/slice";
-import policyListReducer from "./features/gateway/policy/list/slice";
-import createPolicyReducer from "./features/gateway/policy/create/slice";
-import deletePolicyReducer from "./features/gateway/policy/delete/slice";
-import keyListReducer from "./features/gateway/key/list/slice";
-import addApiReducer from "./features/gateway/api/create/slice";
-import deleteApiReducer from "./features/gateway/api/delete/slice";
-import updateApiReducer from "./features/gateway/api/update/slice";
-import createKeyReducer from "./features/gateway/key/create/slice";
 
 const store = configureStore({
   reducer: {

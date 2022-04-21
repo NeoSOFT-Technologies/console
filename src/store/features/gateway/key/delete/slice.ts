@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+import { deleteKeyService } from "../../../../../services/gateway/key/key";
 import error from "../../../../../utils/error";
 import axios, { AxiosError } from "axios";
 import { IDeleteKeyState } from ".";
-import { deleteKeyService } from "../../../../../services/gateway/key/key";
 
 const initialState: IDeleteKeyState = {
   isDeleted: false,
   loading: false,
-  error: null,
+  error: undefined,
 };
 export const deleteKey = createAsyncThunk(
   "api/deletekey",
@@ -15,11 +16,11 @@ export const deleteKey = createAsyncThunk(
     try {
       const response = await deleteKeyService(Id);
       return response.data;
-    } catch (err) {
-      const myError = err as Error | AxiosError;
-      if (axios.isAxiosError(myError) && myError.response)
-        throw myError.response.data.Errors[0];
-      else throw myError.message;
+    } catch (error_) {
+      const myError = error_ as Error | AxiosError;
+      throw axios.isAxiosError(myError) && myError.response
+        ? myError.response.data.Errors[0]
+        : myError.message;
     }
   }
 );

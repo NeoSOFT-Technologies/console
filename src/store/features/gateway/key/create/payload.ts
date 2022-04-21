@@ -48,5 +48,5 @@ export const initialState: IKeyCreateState = {
     },
   },
   loading: false,
-  error: null,
+  error: undefined,
 };

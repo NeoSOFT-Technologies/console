@@ -1,22 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
-import { IGetKeyByIdData } from ".";
 import { addKeyService } from "../../../../../services/gateway/key/key";
 import error from "../../../../../utils/error";
 import { initialState } from "./payload";
+import { IGetKeyByIdData } from "./index";
 
 export const createKey = createAsyncThunk(
   "key/create",
   async (data: IGetKeyByIdData) => {
     try {
       const response = await addKeyService(data);
-      // console.log(response);
       return response.data;
-    } catch (err) {
-      const myError = err as Error | AxiosError;
-      if (axios.isAxiosError(myError) && myError.response)
-        throw myError.response.data.Errors[0];
-      else throw myError.message;
+    } catch (error_) {
+      const myError = error_ as Error | AxiosError;
+      throw axios.isAxiosError(myError) && myError.response
+        ? myError.response.data.Errors[0]
+        : myError.message;
     }
   }
 );
@@ -27,7 +26,7 @@ const slice = createSlice({
   reducers: {
     setForms: (state, action) => {
       state.data.form = action.payload;
-      console.log("Form - ", state.data.form);
+      console.log("Form -", state.data.form);
     },
     setFormError: (state, action) => {
       state.data.errors = action.payload;

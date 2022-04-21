@@ -1,17 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../../utils/error";
-import { IKeyListState } from "../../../../../store/features/gateway/key/list";
-import { keyListService } from "../../../../../services/gateway/key/key";
 import axios, { AxiosError } from "axios";
+import { keyListService } from "../../../../../services/gateway/key/key";
+import { IKeyListState } from "../../../../../store/features/gateway/key/list";
+import error from "../../../../../utils/error";
 
 interface IConditions {
   currentPage: number;
 }
 
 const initialState: IKeyListState = {
-  data: null,
+  data: undefined,
   loading: false,
-  error: null,
+  error: undefined,
 };
 
 export const getKeyList = createAsyncThunk(
@@ -21,11 +21,11 @@ export const getKeyList = createAsyncThunk(
     try {
       const response = await keyListService(currentPage);
       return response.data;
-    } catch (err) {
-      const myError = err as Error | AxiosError;
-      if (axios.isAxiosError(myError) && myError.response)
-        throw myError.response.data.Errors[0];
-      else throw myError.message;
+    } catch (error_) {
+      const myError = error_ as Error | AxiosError;
+      throw axios.isAxiosError(myError) && myError.response
+        ? myError.response.data.Errors[0]
+        : myError.message;
     }
   }
 );
