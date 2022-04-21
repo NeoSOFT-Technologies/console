@@ -19,7 +19,7 @@ function Configurations() {
           {
             ...state.data.errors,
             [name]:
-              regexForName.test(value) && value.length !== 0
+              regexForName.test(value) && value.length > 0
                 ? ""
                 : "Enter a Valid Name",
           },

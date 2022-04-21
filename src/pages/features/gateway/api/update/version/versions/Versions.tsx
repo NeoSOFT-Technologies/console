@@ -5,7 +5,10 @@ import {
   setFormErrors,
 } from "../../../../../../../resources/gateway/api/api-constants";
 import { setForm } from "../../../../../../../store/features/gateway/api/update/slice";
-import { useAppDispatch, useAppSelector } from "../../../../../../../store/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../../../../store/hooks";
 
 export default function Versions() {
   const dispatch = useAppDispatch();
@@ -53,7 +56,7 @@ export default function Versions() {
         GlobalRequestHeadersRemove: [],
         GlobalResponseHeaders: {},
         GlobalResponseHeadersRemove: [],
-        ExtendedPaths: null,
+        ExtendedPaths: undefined,
       },
     ];
     dispatch(setForm({ ...state.data.form, Versions: list }));

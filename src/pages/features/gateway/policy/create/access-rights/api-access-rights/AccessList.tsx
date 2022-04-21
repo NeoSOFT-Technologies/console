@@ -2,7 +2,10 @@ import React from "react";
 import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import { getApiById } from "../../../../../../../store/features/gateway/api/update/slice";
 import { setForm } from "../../../../../../../store/features/gateway/policy/create/slice";
-import { useAppSelector, useAppDispatch } from "../../../../../../../store/hooks";
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "../../../../../../../store/hooks";
 import ApiAccessList from "../../../../common-settings/api-access-List/ApiAccessList";
 
 export default function AccessList() {
@@ -22,10 +25,17 @@ export default function AccessList() {
       const selectedApi = await dispatch(getApiById(Id));
 
       const listV: string[] = [];
-      selectedApi.payload.Data.Versions.forEach((element: any) => {
-        // element: { Name: string }
+      for (const element of selectedApi.payload.Data.Versions) {
         listV.push(element.Name);
-      });
+      }
+      // (element: any) => {
+      //   // element: { Name: string }
+      //   listV.push(i.Name);
+      // };
+      // ((element: any) => {
+      //   // element: { Name: string }
+      //   listV.push(element.Name);
+      // // });
       const list = [
         ...state.data.form.ApIs,
         {

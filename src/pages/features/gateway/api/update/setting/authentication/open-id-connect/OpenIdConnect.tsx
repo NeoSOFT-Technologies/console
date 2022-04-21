@@ -1,16 +1,16 @@
-import { Form, Col, Row, Button } from "react-bootstrap";
 import React, { useState } from "react";
+import { Form, Col, Row, Button } from "react-bootstrap";
+import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
 import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../../../../../store/hooks";
-import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
 
 export default function BasicAuthentication() {
   const state = useAppSelector((RootState) => RootState.updateApiState);
   const dispatch = useAppDispatch();
   console.log("state", state);
-  console.log("provider : ", state.data.form.OpenidOptions.Providers);
+  console.log("provider :", state.data.form.OpenidOptions.Providers);
 
   const [addFormData, setAddFormData] = useState({
     issuer: "",
@@ -36,7 +36,7 @@ export default function BasicAuthentication() {
     newFormData[name] = value;
     setAddFormData(newFormData);
   };
-  console.log("addFormData : ", addFormData);
+  console.log("addFormData :", addFormData);
 
   const handleClientInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -47,7 +47,7 @@ export default function BasicAuthentication() {
     newFormData[name] = value;
     setClientAddFormData(newFormData);
   };
-  console.log("addClientFormData : ", addClientFormData);
+  console.log("addClientFormData :", addClientFormData);
 
   const handleIssuerAddClick = () => {
     const providerList = [...state.data.form.OpenidOptions.Providers];

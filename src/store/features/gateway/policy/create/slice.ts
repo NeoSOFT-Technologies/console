@@ -46,11 +46,13 @@ export const updatePolicy = createAsyncThunk(
       const response = await updatePolicyService(data);
       // console.log(response);
       return response.data;
-    } catch (err) {
-      const myError = err as Error | AxiosError;
-      if (axios.isAxiosError(myError) && myError.response)
-        throw myError.response.data.Errors[0];
-      else throw myError.message;
+    } catch (error__) {
+      const myError = error__ as Error | AxiosError;
+      const error_ =
+        axios.isAxiosError(myError) && myError.response
+          ? myError.response.data.Errors[0]
+          : myError.message;
+      throw error_;
     }
   }
 );
@@ -70,7 +72,7 @@ const slice = createSlice({
     builder.addCase(createPolicy.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(createPolicy.fulfilled, (state, action) => {
+    builder.addCase(createPolicy.fulfilled, (state) => {
       state.loading = false;
       // state.data = action.payload;
     });

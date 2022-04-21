@@ -6,7 +6,10 @@ import {
   setFormErrors,
   regexForTagetUrl,
 } from "../../../../../../../resources/gateway/api/api-constants";
-import { useAppDispatch, useAppSelector } from "../../../../../../../store/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../../../../store/hooks";
 import LoadBalancing from "./load-balacing/LoadBalancing";
 
 export default function TargetUrl() {

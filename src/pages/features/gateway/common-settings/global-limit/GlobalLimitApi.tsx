@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
+import Spinner from "../../../../../components/loader/Loader";
+import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
+import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
 import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
-import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
-import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
-import Spinner from "../../../../../components/loader/Loader";
 
 interface IProps {
   state?: IKeyCreateState | IPolicyCreateState;

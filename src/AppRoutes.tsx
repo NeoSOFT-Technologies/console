@@ -47,6 +47,26 @@ const TenantDetails = lazy(
 const TenantProfile = lazy(
   () => import("./pages/features/tenants/tenant/tenant-profile/TenantProfile")
 );
+// gateway Import
+const APIList = lazy(() => import("./pages/features/gateway/api/list/APIList"));
+const CreateApi = lazy(
+  () => import("./pages/features/gateway/api/create/CreateApi")
+);
+
+const PolicyList = lazy(
+  () => import("./pages/features/gateway/policy/list/PolicyList")
+);
+const CreateKey = lazy(
+  () => import("./pages/features/gateway/key/create/CreateKey")
+);
+const CreatePolicy = lazy(
+  () => import("./pages/features/gateway/policy/create/CreatePolicy")
+);
+const KeyList = lazy(() => import("./pages/features/gateway/key/list/KeyList"));
+const Dashboard = lazy(() => import("./pages/features/gateway/Dashboard"));
+const UpdateApi = lazy(
+  () => import("./pages/features/gateway/api/update/Update")
+);
 
 function AppRoutes() {
   return (
@@ -162,9 +182,18 @@ function AppRoutes() {
             }
           />
         </Route>
+        <Route path="/api/list" element={<APIList />} />
+        <Route path="/policy/list" element={<PolicyList />} />
+        <Route path="/key/list" element={<KeyList />} />
+        <Route path="/api/create" element={<CreateApi />} />
+        <Route path="/key/create" element={<CreateKey />} />
+        <Route path="/policy/create" element={<CreatePolicy />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/api/update/:id" element={<UpdateApi />} />
         {/**********************************************************/}
         <Route path="*" element={<Navigate to="/login-page" />} />{" "}
         {/* redirect if not match any path */}
+        {/*  gateway Routes */}
       </Routes>
     </Suspense>
   );

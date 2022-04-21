@@ -45,7 +45,7 @@ export interface IGetKeyByIdData {
         }
       ]
     | [];
-  Policies: [];
+  Policies: string[];
   PolicyByIds?: IGetPolicyByIdData[];
   Tags?: string[];
 }

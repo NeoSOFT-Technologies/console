@@ -1,7 +1,10 @@
 import React from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { setFormData } from "../../../../../../../resources/gateway/policy/policy-constants";
-import { useAppSelector, useAppDispatch } from "../../../../../../../store/hooks";
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "../../../../../../../store/hooks";
 
 export default function partitions() {
   const state = useAppSelector((RootState) => RootState.createPolicyState);

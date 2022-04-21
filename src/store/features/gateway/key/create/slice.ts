@@ -36,7 +36,7 @@ const slice = createSlice({
     builder.addCase(createKey.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(createKey.fulfilled, (state, action) => {
+    builder.addCase(createKey.fulfilled, (state) => {
       state.loading = false;
       // state.data = action.payload;
     });

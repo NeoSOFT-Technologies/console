@@ -1,8 +1,4 @@
 import React from "react";
-import ListenPath from "./listen-path/ListenPath";
-// import { Accordion } from "react-bootstrap";
-import RateLimit from "./rate-limit/RateLimit";
-import TargetUrl from "./target-url/TargetUrl";
 import { Col, Form, Row } from "react-bootstrap";
 import {
   regexForName,
@@ -11,6 +7,10 @@ import {
 } from "../../../../../../resources/gateway/api/api-constants";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import Authentication from "./authentication/Authentication";
+import ListenPath from "./listen-path/ListenPath";
+// import { Accordion } from "react-bootstrap";
+import RateLimit from "./rate-limit/RateLimit";
+import TargetUrl from "./target-url/TargetUrl";
 
 export default function Setting() {
   const state = useAppSelector((RootState) => RootState.updateApiState);

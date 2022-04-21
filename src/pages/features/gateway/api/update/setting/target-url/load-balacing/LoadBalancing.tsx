@@ -4,26 +4,29 @@ import {
   setFormErrors,
   regexForTagetUrl,
 } from "../../../../../../../../resources/gateway/api/api-constants";
+import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
 import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../../../../../store/hooks";
-import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
 // import { IApiGetByIdState } from "../../../../../../../store/features/api/update";
-
+interface IWeight {
+  weighting: number;
+  traffic: number;
+}
 export default function LoadBalancing() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  const [weight, setWeight] = useState<any>([]);
+  const [weight, setWeight] = useState<IWeight[]>([]);
   const [addFormData, setAddFormData] = useState<any>({
     LoadBalancingTargets: "",
   });
   const [loading, setLoading] = useState(true);
   const trafficCalculation = (index: number) => {
-    const weightSum: number = weight.reduce(
-      (sum: number, current: any) => (sum = sum + current.weighting),
-      0
-    );
+    let weightSum = 0;
+    for (const element of weight) {
+      weightSum += element.weighting;
+    }
     const traffic: number = 100 / weightSum;
     const percentage: number = traffic * weight[index].weighting;
     const trafficPercentage =
@@ -79,7 +82,7 @@ export default function LoadBalancing() {
     setAddFormData(formobj);
   };
   const handleAddClick = () => {
-    const weightObj: any = {
+    const weightObj: IWeight = {
       weighting: 1,
       traffic: 0,
     };

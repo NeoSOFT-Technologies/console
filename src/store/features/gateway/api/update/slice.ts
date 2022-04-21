@@ -67,7 +67,7 @@ const slice = createSlice({
     builder.addCase(updateApi.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(updateApi.fulfilled, (state, action) => {
+    builder.addCase(updateApi.fulfilled, (state) => {
       state.loading = false;
       // state.data = action.payload;
     });

@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 // import { Button } from "react-bootstrap";
-import RenderList from "../../../../../components/gateway/list/RenderList";
 import { useNavigate } from "react-router-dom";
+import RenderList from "../../../../../components/gateway/list/RenderList";
+
+import Spinner from "../../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { RootState } from "../../../../../store";
-import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
-import { getPolicyList } from "../../../../../store/features/gateway/policy/list/slice";
+import { deletePolicy } from "../../../../../store/features/gateway/policy/delete/slice";
 import {
   IPolicyListState,
   IPolicyDataList,
   IPolicyData,
 } from "../../../../../store/features/gateway/policy/list/index";
-
-import Spinner from "../../../../../components/loader/Loader";
-import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
-import { deletePolicy } from "../../../../../store/features/gateway/policy/delete/slice";
+import { getPolicyList } from "../../../../../store/features/gateway/policy/list/slice";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 
 export default function PolicyList() {
   const navigate = useNavigate();
@@ -89,16 +89,17 @@ export default function PolicyList() {
     });
   }
   const deletePolicyFunction = async (val: IPolicyData) => {
-    if (val.Id) {
-      if (window.confirm("Are you sure you want to delete this Policy ?")) {
-        const result = await dispatch(deletePolicy(val.Id));
+    if (
+      val.Id &&
+      window.confirm("Are you sure you want to delete this Policy ?")
+    ) {
+      const result = await dispatch(deletePolicy(val.Id));
 
-        if (result.meta.requestStatus === "rejected") {
-          await ToastAlert(result.payload.message, "error");
-        } else {
-          deletePolicyFromState(val.Id);
-          await ToastAlert("Policy Deleted Successfully", "success");
-        }
+      if (result.meta.requestStatus === "rejected") {
+        await ToastAlert(result.payload.message, "error");
+      } else {
+        deletePolicyFromState(val.Id);
+        await ToastAlert("Policy Deleted Successfully", "success");
       }
     }
   };

@@ -1,4 +1,4 @@
-const adminRoutes = [
+const adminGatewayRoutes = [
   {
     id: "dashboard",
     path: "/dashboard",
@@ -24,4 +24,4 @@ const adminRoutes = [
     icon: "bi bi-file-earmark-fill menu-icon",
   },
 ];
-export default adminRoutes;
+export default adminGatewayRoutes;

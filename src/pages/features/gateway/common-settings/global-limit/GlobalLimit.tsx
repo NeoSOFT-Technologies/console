@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
-import {
-  getPolicybyId,
-  setForm,
-} from "../../../../../store/features/gateway/policy/create/slice";
+import Spinner from "../../../../../components/loader/Loader";
+import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
 import { setForms } from "../../../../../store/features/gateway/key/create/slice";
-import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import {
   IGetPolicyByIdData,
   IPolicyCreateState,
 } from "../../../../../store/features/gateway/policy/create";
-import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
-import Spinner from "../../../../../components/loader/Loader";
+import {
+  getPolicybyId,
+  setForm,
+} from "../../../../../store/features/gateway/policy/create/slice";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 
 interface IProps {
   isDisabled: boolean;
@@ -50,7 +50,7 @@ export default function GlobalLimit(props: IProps) {
       loader === false &&
       state.loading === false
     ) {
-      console.log("second use effect - ", loader);
+      console.log("second use effect -", loader);
 
       const manageState = async () => {
         const policyByIdTemp = [...(states.data.form.PolicyByIds! as any[])];

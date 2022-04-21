@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Button, Form, Row, Col, Table } from "react-bootstrap";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
+import { setForms } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
 import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
-import { setForms } from "../../../../../store/features/gateway/key/create/slice";
 import { useAppSelector, useAppDispatch } from "../../../../../store/hooks";
 interface IProps {
   state?: IKeyCreateState;

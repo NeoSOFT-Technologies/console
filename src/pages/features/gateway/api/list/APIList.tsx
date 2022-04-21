@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
-import RenderList from "../../../../../components/gateway/list/RenderList";
-import { useNavigate } from "react-router-dom";
-import { RootState } from "../../../../../store";
-import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
-import { getApiList } from "../../../../../store/features/gateway/api/list/slice";
-import Spinner from "../../../../../components/loader/Loader";
-import { deleteApi } from "../../../../../store/features/gateway/api/delete/slice";
 import { useErrorHandler } from "react-error-boundary";
-// import moment from "moment";
+import { useNavigate } from "react-router-dom";
+import RenderList from "../../../../../components/gateway/list/RenderList";
+
+import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
-import statusAndDateHelper from "../../../../../utils/gateway/helper";
+import { RootState } from "../../../../../store";
+import { deleteApi } from "../../../../../store/features/gateway/api/delete/slice";
 import {
   IApiData,
   IApiListState,
   IApiDataList,
 } from "../../../../../store/features/gateway/api/list";
+import { getApiList } from "../../../../../store/features/gateway/api/list/slice";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+// import moment from "moment";
+import statusAndDateHelper from "../../../../../utils/gateway/helper";
 
 function Bomb() {
   // console.log("");
@@ -25,8 +26,8 @@ export default function APIList() {
   const handleError = useErrorHandler();
   try {
     Bomb();
-  } catch (err) {
-    handleError(err);
+  } catch (error) {
+    handleError(error);
   }
   const navigate = useNavigate();
   const [selected, setSelected] = useState(1);
@@ -49,10 +50,10 @@ export default function APIList() {
   useEffect(() => {
     if (apiList.data && apiList.data?.Apis?.length > 0) {
       const listAPI: IApiData[] = [];
-      apiList.data?.Apis.forEach((item) => {
+      for (const item of apiList.data?.Apis) {
         const api = statusAndDateHelper(item);
         listAPI.push(api);
-      });
+      }
       setDataList({
         list: [...listAPI],
         fields: ["Name", "TargetUrl", "Status", "CreatedDateTxt"],
@@ -108,16 +109,17 @@ export default function APIList() {
     });
   }
   const deleteApiFunction = async (val: IApiData) => {
-    if (val.Id) {
-      if (window.confirm("Are you sure you want to delete this Api ?")) {
-        const result = await dispatch(deleteApi(val.Id));
+    if (
+      val.Id &&
+      window.confirm("Are you sure you want to delete this Api ?")
+    ) {
+      const result = await dispatch(deleteApi(val.Id));
 
-        if (result.meta.requestStatus === "rejected") {
-          await ToastAlert(result.payload.message, "error");
-        } else {
-          deleteApiFromState(val.Id);
-          await ToastAlert("Api Deleted Successfully", "success");
-        }
+      if (result.meta.requestStatus === "rejected") {
+        await ToastAlert(result.payload.message, "error");
+      } else {
+        deleteApiFromState(val.Id);
+        await ToastAlert("Api Deleted Successfully", "success");
       }
     }
   };

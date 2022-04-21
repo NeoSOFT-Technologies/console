@@ -30,10 +30,9 @@ export default function AccessList() {
       const selectedApi = await dispatch(getApiById(Id));
 
       const listV: string[] = [];
-      selectedApi.payload.Data.Versions.forEach((element: any) => {
-        // element: { Name: string }
+      for (const element of selectedApi.payload.Data.Versions) {
         listV.push(element.Name);
-      });
+      }
 
       //   console.log(state.data.form.accessRights?.some((x) => x?.apiId === Id)); // const x = state.data.form.accessRights?.some((xx) => xx?.apiId !== Id);
 

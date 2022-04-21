@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import RenderList from "../../../../../components/gateway/list/RenderList";
+import Spinner from "../../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { RootState } from "../../../../../store";
-import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
-import { getKeyList } from "../../../../../store/features/gateway/key/list/slice";
+import { deleteKey } from "../../../../../store/features/gateway/key/delete/slice";
 import {
   IKeyData,
   IKeyListState,
   IKeyDataList,
 } from "../../../../../store/features/gateway/key/list";
+import { getKeyList } from "../../../../../store/features/gateway/key/list/slice";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 
 import statusAndDateHelper from "../../../../../utils/gateway/helper";
-import { deleteKey } from "../../../../../store/features/gateway/key/delete/slice";
-import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
-import Spinner from "../../../../../components/loader/Loader";
-import RenderList from "../../../../../components/gateway/list/RenderList";
 
 export default function KeyList() {
   const navigate = useNavigate();
@@ -40,10 +40,10 @@ export default function KeyList() {
     // console.log("UseEffect", keyList.data);
     if (keyList.data && keyList.data?.Keys?.length > 0) {
       const listKey: IKeyData[] = [];
-      keyList.data?.Keys.forEach((item) => {
+      for (const item of keyList.data?.Keys) {
         const key = statusAndDateHelper(item);
         listKey.push(key);
-      });
+      }
       setDataList({
         list: [...listKey],
         fields: ["Id", "KeyName", "Status", "CreatedDateTxt"],
@@ -92,16 +92,17 @@ export default function KeyList() {
     });
   }
   const deleteKeyFunction = async (val: IKeyData) => {
-    if (val.Id) {
-      if (window.confirm("Are you sure you want to delete this Key ?")) {
-        const result = await dispatch(deleteKey(val.Id));
+    if (
+      val.Id &&
+      window.confirm("Are you sure you want to delete this Key ?")
+    ) {
+      const result = await dispatch(deleteKey(val.Id));
 
-        if (result.meta.requestStatus === "rejected") {
-          await ToastAlert(result.payload.message, "error");
-        } else {
-          deleteKeyFromState(val.Id);
-          await ToastAlert("Key Deleted Successfully", "success");
-        }
+      if (result.meta.requestStatus === "rejected") {
+        await ToastAlert(result.payload.message, "error");
+      } else {
+        deleteKeyFromState(val.Id);
+        await ToastAlert("Key Deleted Successfully", "success");
       }
     }
   };

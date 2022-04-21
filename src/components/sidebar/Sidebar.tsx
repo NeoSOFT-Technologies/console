@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Collapse } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import withRouter from "../../WithRouter";
+import adminGatewayRoutes from "../../routes/gateway/admin";
 import adminRoutes from "../../routes/tenants/admin";
 import tenantRoutes from "../../routes/tenants/tenants";
 import userRoutes from "../../routes/tenants/user-routes";
@@ -41,7 +42,7 @@ export const Sidebar = () => {
   useEffect(() => {
     if (user.data && loginType.data === "admin") {
       setRoutes(adminRoutes);
-      setGatewayRoutes(adminRoutes);
+      setGatewayRoutes(adminGatewayRoutes);
       setSaasRoutes(adminRoutes);
     } else if (user.data && loginType.data === "tenant") {
       setRoutes(tenantRoutes);

@@ -1,18 +1,19 @@
 import React from "react";
-import { IActionsRenderList, IHeadings } from "../../../types/index";
 import {
-  IPolicyData,
-  IPolicyDataList,
-} from "../../../store/features/gateway/policy/list/index"; //../../store/features/policy/list/index
-import Pagination from "./Pagination";
+  IApiData,
+  IApiDataList,
+} from "../../../store/features/gateway/api/list";
 import {
   IKeyData,
   IKeyDataList,
 } from "../../../store/features/gateway/key/list/index";
 import {
-  IApiData,
-  IApiDataList,
-} from "../../../store/features/gateway/api/list";
+  IPolicyData,
+  IPolicyDataList,
+} from "../../../store/features/gateway/policy/list/index"; // ../../store/features/policy/list/index
+import { IActionsRenderList, IHeadings } from "../../../types/index";
+
+import Pagination from "./Pagination";
 
 interface IProps {
   headings: IHeadings[];
