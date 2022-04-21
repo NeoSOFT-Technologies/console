@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
-import { IGetPolicyByIdData } from ".";
 import {
   addPolicyService,
   getPolicyByIdService,
@@ -8,6 +7,7 @@ import {
 } from "../../../../../services/gateway/policy/policy";
 import error from "../../../../../utils/error";
 import { initialState } from "./payload";
+import { IGetPolicyByIdData } from ".";
 
 export const createPolicy = createAsyncThunk(
   "policy",
@@ -16,11 +16,11 @@ export const createPolicy = createAsyncThunk(
       const response = await addPolicyService(data);
       // console.log(response);
       return response.data;
-    } catch (err) {
-      const myError = err as Error | AxiosError;
-      if (axios.isAxiosError(myError) && myError.response)
-        throw myError.response.data.Errors[0];
-      else throw myError.message;
+    } catch (error_) {
+      const myError = error_ as Error | AxiosError;
+      throw axios.isAxiosError(myError) && myError.response
+        ? myError.response.data.Errors[0]
+        : myError.message;
     }
   }
 );
@@ -31,11 +31,11 @@ export const getPolicybyId = createAsyncThunk(
       const response = await getPolicyByIdService(id);
       // console.log("response", response.data);
       return response.data;
-    } catch (err) {
-      const myError = err as Error | AxiosError;
-      if (axios.isAxiosError(myError) && myError.response)
-        throw myError.response.data.Errors[0];
-      else throw myError.message;
+    } catch (error_) {
+      const myError = error_ as Error | AxiosError;
+      throw axios.isAxiosError(myError) && myError.response
+        ? myError.response.data.Errors[0]
+        : myError.message;
     }
   }
 );
