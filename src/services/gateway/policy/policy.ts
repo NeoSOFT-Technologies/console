@@ -1,6 +1,6 @@
 // import { IApiData } from "../../types/api/index";
-import { IGetPolicyByIdData } from "../../store/features/policy/create";
-import apiFactory from "../../utils/api";
+import { IGetPolicyByIdData } from "../../../store/features/gateway/policy/create";
+import apiFactory from "../../../utils/api";
 
 export function policyListService(currentPage: number) {
   return apiFactory().get(`Policy?pageNum=${currentPage}&pageSize=3`);

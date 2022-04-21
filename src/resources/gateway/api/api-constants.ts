@@ -1,4 +1,7 @@
-import { setFormError, setForm } from "../../store/features/api/update/slice";
+import {
+  setFormError,
+  setForm,
+} from "../../../store/features/gateway/api/update/slice";
 import { setNestedState } from "../common";
 
 export const regexForName = /^[A-Z a-z][A-Z a-z 0-9]{3,29}$/;

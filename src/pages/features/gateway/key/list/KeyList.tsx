@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
-// import { Button } from "react-bootstrap";
-import RenderList from "../../../../components/list/RenderList";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../../../store";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { getKeyList } from "../../../../store/features/key/list/slice";
-import Spinner from "../../../../components/loader/Loader";
+import { RootState } from "../../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import { getKeyList } from "../../../../../store/features/gateway/key/list/slice";
 import {
   IKeyData,
   IKeyListState,
   IKeyDataList,
-} from "../../../../store/features/key/list";
+} from "../../../../../store/features/gateway/key/list";
 
-import statusAndDateHelper from "../../../../utils/helper";
-import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
-import { deleteKey } from "../../../../store/features/key/delete/slice";
+import statusAndDateHelper from "../../../../../utils/gateway/helper";
+import { deleteKey } from "../../../../../store/features/gateway/key/delete/slice";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
+import Spinner from "../../../../../components/loader/Loader";
+import RenderList from "../../../../../components/gateway/list/RenderList";
 
 export default function KeyList() {
   const navigate = useNavigate();

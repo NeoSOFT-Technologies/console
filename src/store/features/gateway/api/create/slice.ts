@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // import error from "../../../../utils/error";
-import { addApiService } from "../../../../services/api/api";
+import { addApiService } from "../../../../../services/gateway/api/api";
 import { IAddApiState, IApiFormData } from ".";
 import axios, { AxiosError } from "axios";
 

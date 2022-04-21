@@ -1,10 +1,10 @@
 import React, { FormEvent } from "react";
 import { Form, Tab, Tabs } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
-import { IKeyCreateState } from "../../../../store/features/key/create";
-import { createKey } from "../../../../store/features/key/create/slice";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
+import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
+import { createKey } from "../../../../../store/features/gateway/key/create/slice";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import AccessRights from "./access-rights/AccessRights";
 import Configurations from "./configurations/Configurations";
 export default function CreateKey() {

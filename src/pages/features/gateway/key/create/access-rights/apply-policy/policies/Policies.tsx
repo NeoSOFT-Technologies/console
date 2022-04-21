@@ -1,6 +1,6 @@
 import React from "react";
 import { Accordion } from "react-bootstrap";
-import { useAppSelector } from "../../../../../../../store/hooks";
+import { useAppSelector } from "../../../../../../../../store/hooks";
 import GlobalLimit from "../../../../../common-settings/global-limit/GlobalLimit";
 
 export default function Policies() {

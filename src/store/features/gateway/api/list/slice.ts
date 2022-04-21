@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../utils/error";
-import { apiListService } from "../../../../services/api/api";
+import error from "../../../../../utils/error";
+import { apiListService } from "../../../../../services/gateway/api/api";
 import { IApiListState } from "./index";
 import axios, { AxiosError } from "axios";
 

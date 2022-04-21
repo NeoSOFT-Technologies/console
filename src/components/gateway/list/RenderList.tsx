@@ -1,28 +1,22 @@
 import React from "react";
-import {
-  IActionsRenderList,
-  IHeadings,
-  ITenantDataList,
-  ITenantData,
-  ITenantUserDataList,
-  ITenantUserData,
-} from "../../types/index";
+import { IActionsRenderList, IHeadings } from "../../../types/index";
 import {
   IPolicyData,
   IPolicyDataList,
-} from "../../store/features/policy/list/index";
+} from "../../../store/features/gateway/policy/list/index"; //../../store/features/policy/list/index
 import Pagination from "./Pagination";
-import { IKeyData, IKeyDataList } from "../../store/features/key/list/index";
-import { IApiData, IApiDataList } from "../../store/features/api/list";
+import {
+  IKeyData,
+  IKeyDataList,
+} from "../../../store/features/gateway/key/list/index";
+import {
+  IApiData,
+  IApiDataList,
+} from "../../../store/features/gateway/api/list";
 
 interface IProps {
   headings: IHeadings[];
-  data:
-    | ITenantDataList
-    | ITenantUserDataList
-    | IApiDataList
-    | IPolicyDataList
-    | IKeyDataList;
+  data: IApiDataList | IPolicyDataList | IKeyDataList;
   pageCount: number;
   handlePageClick: (selected: number) => void;
   actions?: IActionsRenderList[];
@@ -55,15 +49,7 @@ const RenderList: React.FC<IProps> = (props) => {
             // actions that is required on buttons
             // @ts-ignore
             data.list.map(
-              (
-                val:
-                  | ITenantData
-                  | ITenantUserData
-                  | IApiData
-                  | IPolicyData
-                  | IKeyData,
-                index1: number
-              ) => (
+              (val: IApiData | IPolicyData | IKeyData, index1: number) => (
                 <tr key={index1}>
                   {data.fields.map((field: string, index2: number) => (
                     // @ts-ignore

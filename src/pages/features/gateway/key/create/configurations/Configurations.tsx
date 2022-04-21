@@ -4,8 +4,8 @@ import {
   setFormErrors,
   setFormData,
   regexForName,
-} from "../../../../../resources/key/key-constants";
-import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+} from "../../../../../../resources/gateway/key/key-constants";
+import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
 function Configurations() {
   const dispatch = useAppDispatch();

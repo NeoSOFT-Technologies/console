@@ -1,14 +1,14 @@
 import { Grid } from "gridjs-react";
 import { h } from "gridjs";
 import React, { useEffect } from "react";
-import { setForms } from "../../../../../../../store/features/key/create/slice";
-import { IPolicyListState } from "../../../../../../../store/features/policy/list";
-import { getPolicyList } from "../../../../../../../store/features/policy/list/slice";
+import { setForms } from "../../../../../../../../store/features/gateway/key/create/slice";
+import { IPolicyListState } from "../../../../../../../../store/features/gateway/policy/list";
+import { getPolicyList } from "../../../../../../../../store/features/gateway/policy/list/slice";
 import {
   useAppDispatch,
   useAppSelector,
-} from "../../../../../../../store/hooks";
-import { ToastAlert } from "../../../../../../../components/ToasterAlert/ToastAlert";
+} from "../../../../../../../../store/hooks";
+import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 
 export default function PolicyList() {
   const accessPolicyList: IPolicyListState = useAppSelector(
@@ -23,7 +23,7 @@ export default function PolicyList() {
     mainCall(1);
   }, []);
   const handleAddClick = (Id: string) => {
-    const data = StateKey.data?.form.Policies.some((x) => x === Id);
+    const data = StateKey.data?.form.Policies.some((x: string) => x === Id);
     // console.log("policylist check before", data);
 
     if (!data) {

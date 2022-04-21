@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../utils/error";
-import { deletePolicyService } from "../../../../services/policy/policy";
+import error from "../../../../../utils/error";
+import { deletePolicyService } from "../../../../../services/gateway/policy/policy";
 import axios, { AxiosError } from "axios";
 import { IDeletePolicyState } from ".";
 

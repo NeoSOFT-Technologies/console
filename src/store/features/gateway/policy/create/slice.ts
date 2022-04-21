@@ -5,8 +5,8 @@ import {
   addPolicyService,
   getPolicyByIdService,
   updatePolicyService,
-} from "../../../../services/policy/policy";
-import error from "../../../../utils/error";
+} from "../../../../../services/gateway/policy/policy";
+import error from "../../../../../utils/error";
 import { initialState } from "./payload";
 
 export const createPolicy = createAsyncThunk(

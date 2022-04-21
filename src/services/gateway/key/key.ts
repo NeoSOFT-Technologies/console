@@ -1,5 +1,5 @@
-import { IGetKeyByIdData } from "../../store/features/key/create";
-import apiFactory from "../../utils/api";
+import { IGetKeyByIdData } from "../../../store/features/gateway/key/create";
+import apiFactory from "../../../utils/api";
 
 export function keyListService(currentPage: number) {
   return apiFactory().get(`Key/GetAllKeys?pageNum=${currentPage}&pageSize=3`);

@@ -1,7 +1,7 @@
 // import { IApiData } from "../../types/api/index";
-import { IApiFormData } from "../../store/features/api/create";
-import { IGetApiByIdData } from "../../store/features/api/update";
-import apiFactory from "../../utils/api";
+import { IApiFormData } from "../../../store/features/gateway/api/create";
+import { IGetApiByIdData } from "../../../store/features/gateway/api/update";
+import apiFactory from "../../../utils/api";
 
 export function apiListService(currentPage: number, pageSize: number) {
   return apiFactory().get(

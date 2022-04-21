@@ -1,7 +1,7 @@
 import {
   setForm,
   setFormError,
-} from "../../store/features/policy/create/slice";
+} from "../../../store/features/gateway//policy/create/slice";
 import { setNestedState } from "../common";
 
 export const regexForName = /^[A-Z a-z][A-Z a-z 0-9]{3,29}$/;
