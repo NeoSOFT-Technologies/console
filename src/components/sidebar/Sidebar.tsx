@@ -102,8 +102,10 @@ export const Sidebar = () => {
                   {loginType.data}
                 </span>
                 <i
-                  className={`bi bi-caret-left ${
-                    subMenu.logger ? "r-90" : "r90"
+                  className={` ${
+                    subMenu.logger
+                      ? "bi bi-chevron-double-left r-90"
+                      : " bi bi-chevron-left r90"
                   }`}
                 ></i>
               </div>
@@ -144,8 +146,10 @@ export const Sidebar = () => {
                   Gateway
                 </span>
                 <i
-                  className={`bi bi-caret-left ${
-                    subMenu.gateway ? "r-90" : "r90"
+                  className={` ${
+                    subMenu.gateway
+                      ? "bi bi-chevron-double-left r-90"
+                      : " bi bi-chevron-left r90"
                   }`}
                 ></i>
               </div>
@@ -186,8 +190,10 @@ export const Sidebar = () => {
                   Saas
                 </span>
                 <i
-                  className={`bi bi-caret-left ${
-                    subMenu.saas ? "r-90" : "r90"
+                  className={` ${
+                    subMenu.saas
+                      ? "bi bi-chevron-double-left r-90"
+                      : " bi bi-chevron-left r90"
                   }`}
                 ></i>
               </div>
