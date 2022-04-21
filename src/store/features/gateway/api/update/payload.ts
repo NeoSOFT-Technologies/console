@@ -33,7 +33,7 @@ export const initialState: IApiGetByIdState = {
           GlobalRequestHeadersRemove: [],
           GlobalResponseHeaders: {},
           GlobalResponseHeadersRemove: [],
-          ExtendedPaths: null,
+          ExtendedPaths: undefined,
         },
       ],
       AuthType: "",
@@ -73,5 +73,5 @@ export const initialState: IApiGetByIdState = {
     },
   },
   loading: false,
-  error: null,
+  error: undefined,
 };

@@ -1,16 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { policyListService } from "../../../../../services/gateway/policy/policy";
-import { IPolicyListState } from "./index";
-import error from "../../../../../utils/error";
 import axios, { AxiosError } from "axios";
+import { policyListService } from "../../../../../services/gateway/policy/policy";
+import error from "../../../../../utils/error";
+import { IPolicyListState } from "./index";
+
 interface IConditions {
   currentPage: number;
 }
 
 const initialState: IPolicyListState = {
-  data: null,
+  data: undefined,
   loading: false,
-  error: null,
+  error: undefined,
 };
 
 export const getPolicyList = createAsyncThunk(
@@ -20,11 +21,11 @@ export const getPolicyList = createAsyncThunk(
     try {
       const response = await policyListService(currentPage);
       return response.data;
-    } catch (err) {
-      const myError = err as Error | AxiosError;
-      if (axios.isAxiosError(myError) && myError.response)
-        throw myError.response.data.Errors[0];
-      else throw myError.message;
+    } catch (error_) {
+      const myError = error_ as Error | AxiosError;
+      throw axios.isAxiosError(myError) && myError.response
+        ? myError.response.data.Errors[0]
+        : myError.message;
     }
   }
 );

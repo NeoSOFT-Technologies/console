@@ -51,5 +51,5 @@ export const initialState: IPolicyCreateState = {
     },
   },
   loading: false,
-  error: null,
+  error: undefined,
 };

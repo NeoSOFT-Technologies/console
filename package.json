@@ -38,9 +38,11 @@
     "compass-mixins": "^0.12.10",
     "gridjs": "^5.0.2",
     "gridjs-react": "^5.0.2",
+    "moment": "^2.29.3",
     "react": "^17.0.2",
     "react-bootstrap": "^2.2.0",
     "react-dom": "^17.0.2",
+    "react-error-boundary": "^3.1.4",
     "react-image": "^4.0.3",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.2",
@@ -86,7 +88,6 @@
       "AdminDashboard.tsx",
       "src/routes/gateway",
       "src/routes/saas"
-
     ],
     "collectCoverageFrom": [
       "src/**"

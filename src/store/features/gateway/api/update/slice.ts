@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../../utils/error";
+import axios, { AxiosError } from "axios";
 import {
   getApiByIdService,
   updateApiService,
 } from "../../../../../services/gateway/api/api";
+import error from "../../../../../utils/error";
 import { initialState } from "./payload";
 import { IGetApiByIdData } from ".";
-import axios, { AxiosError } from "axios";
 
 export const getApiById = createAsyncThunk(
   "api/getApiById",
@@ -14,11 +14,11 @@ export const getApiById = createAsyncThunk(
     try {
       const response = await getApiByIdService(Id);
       return response?.data;
-    } catch (err) {
-      const myError = err as Error | AxiosError;
-      if (axios.isAxiosError(myError) && myError.response)
-        throw myError.response.data.Errors[0];
-      else throw myError.message;
+    } catch (error_) {
+      const myError = error_ as Error | AxiosError;
+      throw axios.isAxiosError(myError) && myError.response
+        ? myError.response.data.Errors[0]
+        : myError.message;
     }
   }
 );
@@ -28,11 +28,11 @@ export const updateApi = createAsyncThunk(
     try {
       const response = await updateApiService(data);
       return response.data;
-    } catch (err) {
-      const myError = err as Error | AxiosError;
-      if (axios.isAxiosError(myError) && myError.response)
-        throw myError.response.data.Errors[0];
-      else throw myError.message;
+    } catch (error_) {
+      const myError = error_ as Error | AxiosError;
+      throw axios.isAxiosError(myError) && myError.response
+        ? myError.response.data.Errors[0]
+        : myError.message;
     }
   }
 );

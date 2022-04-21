@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../../utils/error";
-import { apiListService } from "../../../../../services/gateway/api/api";
-import { IApiListState } from "./index";
 import axios, { AxiosError } from "axios";
+import { apiListService } from "../../../../../services/gateway/api/api";
+import error from "../../../../../utils/error";
+import { IApiListState } from "./index";
 
 interface IConditions {
   currentPage: number;
@@ -10,11 +10,11 @@ interface IConditions {
 }
 
 const initialState: IApiListState = {
-  data: null,
+  data: undefined,
   TotalApisCount: 0,
   // pageSize: 0,
   loading: false,
-  error: null,
+  error: undefined,
 };
 export const getApiList = createAsyncThunk(
   "api/list",
@@ -26,11 +26,11 @@ export const getApiList = createAsyncThunk(
       // initialState.pageSize = pageSize;
       // console.log(response);
       return response?.data;
-    } catch (err) {
-      const myError = err as Error | AxiosError;
-      if (axios.isAxiosError(myError) && myError.response)
-        throw myError.response.data.Errors[0];
-      else throw myError.message;
+    } catch (error_) {
+      const myError = error_ as Error | AxiosError;
+      throw axios.isAxiosError(myError) && myError.response
+        ? myError.response.data.Errors[0]
+        : myError.message;
     }
   }
 );

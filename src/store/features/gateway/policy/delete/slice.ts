@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../../utils/error";
-import { deletePolicyService } from "../../../../../services/gateway/policy/policy";
 import axios, { AxiosError } from "axios";
+import { deletePolicyService } from "../../../../../services/gateway/policy/policy";
+import error from "../../../../../utils/error";
 import { IDeletePolicyState } from ".";
 
 const initialState: IDeletePolicyState = {
   isDeleted: false,
   loading: false,
-  error: null,
+  error: undefined,
 };
 export const deletePolicy = createAsyncThunk(
   "api/deletepolicy",
@@ -15,11 +15,11 @@ export const deletePolicy = createAsyncThunk(
     try {
       const response = await deletePolicyService(Id);
       return response.data;
-    } catch (err) {
-      const myError = err as Error | AxiosError;
-      if (axios.isAxiosError(myError) && myError.response)
-        throw myError.response.data.Errors[0];
-      else throw myError.message;
+    } catch (error_) {
+      const myError = error_ as Error | AxiosError;
+      throw axios.isAxiosError(myError) && myError.response
+        ? myError.response.data.Errors[0]
+        : myError.message;
     }
   }
 );

@@ -40,7 +40,7 @@ export interface IGetApiByIdData {
       GlobalRequestHeadersRemove: [];
       GlobalResponseHeaders: {};
       GlobalResponseHeadersRemove: [];
-      ExtendedPaths: null;
+      ExtendedPaths: null | undefined;
     }
   ];
   AuthType: string;
