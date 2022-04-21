@@ -1,49 +1,57 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { commonLoginService } from "../../services";
-import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
 
 interface IConditions {
-  email: string;
+  userName: string;
   password: string;
+  tenantName: string;
+}
+export interface ITokenState {
+  loginVerified: boolean;
+  loading: boolean;
+  error?: string;
 }
 
-const initialState: IUserDataState = {
-  data: undefined,
+const initialState: ITokenState = {
+  loginVerified: false,
   loading: false,
   error: undefined,
 };
 
 export const commonLogin = createAsyncThunk(
-  "user/data",
+  "user/get_acessToken",
   async (conditions: IConditions) => {
     try {
-      const { email, password } = conditions;
-      const response = await commonLoginService(email, password);
-      console.log(response);
-      return response.data[0];
+      await commonLoginService(conditions);
+      return true;
     } catch (error_) {
-      return error_;
+      // console.log(error_, "||", error(error_));
+      const errorMessage = error(error_);
+      throw new Error(errorMessage);
     }
   }
 );
 
 const slice = createSlice({
-  name: "user",
+  name: "user_accessToken",
   initialState,
   reducers: {},
   extraReducers(builder): void {
     builder.addCase(commonLogin.pending, (state) => {
       state.loading = true;
+      state.loginVerified = false;
+      state.error = undefined;
     });
     builder.addCase(commonLogin.fulfilled, (state, action) => {
       state.loading = false;
-      state.data = action.payload;
+      state.loginVerified = action.payload;
     });
-    builder.addCase(commonLogin.rejected, (state, action) => {
+    builder.addCase(commonLogin.rejected, (state, action: any) => {
       state.loading = false;
-      // action.payload contains error information
-      state.error = error(action.payload);
+      const errorMessage = action.error.message.split(" ");
+      // console.log(Number(errorMessage[errorMessage.length - 1]), action);
+      state.error = errorMessage[errorMessage.length - 1];
     });
   },
 });

@@ -1,14 +1,19 @@
 export {
   addTenantDataService,
   deleteTenantDataService,
-  tenantListService,
+  adminLoginData,
 } from "./admin";
+
 export {
+  tenantPermissionsService,
+  tenantRolesService,
+  userPermissionService,
   updateTenantDataService,
-  tenantUserListService,
   createNewUserService,
+  deleteUserDataService,
+  getTenantDetailsService,
 } from "./tenants";
 
-export { getUserListService } from "./users";
+export { updateUserDataService, getUserDetailsService } from "./users";
 
 export { commonLoginService, commonLogoutService } from "./common";

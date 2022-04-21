@@ -2,8 +2,10 @@ import { h } from "gridjs";
 import { Grid } from "gridjs-react";
 import React from "react";
 import "./render-list.scss";
+import apiFactory from "../../utils/api";
 
 interface IProps {
+  searchBy: string;
   headings: {
     name: string;
     data: string;
@@ -17,23 +19,31 @@ interface IProps {
 }
 
 interface IColumns {
+  id?: number;
   name: string;
   data?: (row: any) => void;
   width?: string;
   formatter?: (cell: any, row: any) => void;
 }
 
+let id = 0;
 const RenderList1: React.FC<IProps> = (props: IProps) => {
-  const { headings, url } = props;
-  const columns: IColumns[] = headings.map((heading) => ({
-    ...heading,
-    data: (row: any) => row[heading.data],
-    name: heading.name,
-  }));
+  const { headings, url, searchBy } = props;
+  const columns: IColumns[] = headings.map((heading) => {
+    id += 1;
+    return {
+      id: id,
+      ...heading,
+      data: (row: any) => row[heading.data],
+      name: heading.name,
+    };
+  });
 
   if (props.actions !== undefined) {
-    console.log(props.actions);
+    // console.log(props.actions);
+    id += 1;
     columns.push({
+      id: id,
       name: "Actions",
       formatter: (cell, row) => {
         return h(
@@ -41,6 +51,8 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
           {
             className: props.actions?.classNames,
             onclick: () => props.actions?.func(row),
+            "aria-label": "action",
+            "data-testid": "action-btn",
           },
           h(
             "i",
@@ -53,27 +65,28 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
       },
     });
   }
-
   const serverConfigs = {
     url: url,
+    data: async (args: any) => {
+      const response = await apiFactory().get(`${args.url}`);
+      // console.log(args.url, response.data);
+      return { data: response.data.data, total: response.data.count };
+    },
     // eslint-disable-next-line unicorn/no-thenable
-    then: (res: any) => res.list,
-    total: (res: any) => res.count,
   };
 
   const paginationConfigs = {
     enabled: true,
     limit: 10,
     server: {
-      url: (prev: string, page: Number, limit: Number) =>
-        `${prev}_page=${page}&size=${limit}`,
+      url: (prev: string, page: number) => `${prev}page=${page + 1}`,
     },
   };
 
   const searchConfigs = {
     enabled: true,
     server: {
-      url: (prev: string, keyword: string) => `${prev}search=${keyword}&`,
+      url: (prev: string, keyword: string) => `${prev}${searchBy}=${keyword}&`,
     },
   };
 

@@ -1,27 +1,33 @@
 import React from "react";
 import { Dropdown } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
 import { logo, logo_mini } from "../../resources/images";
+import { useAppDispatch } from "../../store/hooks";
+import { commonLogout } from "../../store/logout/slice";
 
 export default function Navbar() {
-  const naviagte = useNavigate();
-
+  const dispatch = useAppDispatch();
   const toggleOffcanvas = () => {
     document?.querySelector(".sidebar-offcanvas")?.classList.toggle("active");
+  };
+
+  const logout = async () => {
+    await dispatch(commonLogout());
+    window.location.href = "/login-page";
   };
 
   return (
     <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <Link className="navbar-brand brand-logo" to="/">
+        <p className="navbar-brand brand-logo">
           <img src={logo} alt="logo" />
-        </Link>
-        <Link className="navbar-brand brand-logo-mini" to="/">
+        </p>
+        <p className="navbar-brand brand-logo-mini">
           <img src={logo_mini} alt="logo" />
-        </Link>
+        </p>
       </div>
       <div className="navbar-menu-wrapper d-flex align-items-stretch">
         <button
+          data-testid="toggle-button"
           className="navbar-toggler navbar-toggler align-self-center"
           type="button"
           onClick={() => document.body.classList.toggle("sidebar-icon-only")}
@@ -45,8 +51,11 @@ export default function Navbar() {
         <ul className="navbar-nav navbar-nav-right">
           <li className="nav-item">
             {/* @ts-ignore */}
-            <Dropdown alignRight>
-              <Dropdown.Toggle className="nav-link count-indicator">
+            <Dropdown alignright="true">
+              <Dropdown.Toggle
+                data-testid="dropdown-toggle"
+                className="nav-link count-indicator"
+              >
                 <i className="bi bi-bell"></i>
                 <span className="count-symbol bg-danger"></span>
               </Dropdown.Toggle>
@@ -56,6 +65,7 @@ export default function Navbar() {
                 </h6>
                 <div className="dropdown-divider"></div>
                 <Dropdown.Item
+                  data-testid="event-today"
                   className="dropdown-item preview-item"
                   onClick={(event_) => event_.preventDefault()}
                 >
@@ -75,6 +85,7 @@ export default function Navbar() {
                 </Dropdown.Item>
                 <div className="dropdown-divider"></div>
                 <Dropdown.Item
+                  data-testid="settings"
                   className="dropdown-item preview-item"
                   onClick={(event_) => event_.preventDefault()}
                 >
@@ -94,6 +105,7 @@ export default function Navbar() {
                 </Dropdown.Item>
                 <div className="dropdown-divider"></div>
                 <Dropdown.Item
+                  data-testid="launch-admin"
                   className="dropdown-item preview-item"
                   onClick={(event_) => event_.preventDefault()}
                 >
@@ -118,17 +130,19 @@ export default function Navbar() {
               </Dropdown.Menu>
             </Dropdown>
           </li>
-          <li className="nav-item nav-settings d-none d-lg-block">
+          <li className="nav-item nav-settings d-lg-block">
             <button
+              data-testid="navigate-button"
               type="button"
-              className="nav-link border-0"
-              onClick={() => naviagte("/login-page")}
+              className="nav-link border-0 mx-auto"
+              onClick={() => logout()}
             >
               <i className="bi bi-power"></i>
             </button>
           </li>
         </ul>
         <button
+          data-testid="toggleOff-button"
           className="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
           type="button"
           onClick={toggleOffcanvas}

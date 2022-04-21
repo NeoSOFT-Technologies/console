@@ -52,7 +52,10 @@
    
    h. connect :-  (a method used with "mapStateToProps" method to use redux in class components)   
 
+
 ## 4. Redux Toolkit
+
+
 ## 5. React-Router-Dom
 
    a.BrowserRouter      (a component which works as a wrapper for other components which use routing in react)

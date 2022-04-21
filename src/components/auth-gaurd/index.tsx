@@ -1,16 +1,18 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { RootState } from "../../store";
+import { useAppSelector } from "../../store/hooks";
 
 type component = {
   children: any;
 };
 
 export const AdminGuard = ({ children }: component) => {
-  const authenticationState = useSelector((state: RootState) => state.userData);
-  return authenticationState.data &&
-    authenticationState.data.type === "admin" ? (
+  const authenticationState = useAppSelector(
+    (state: RootState) => state.loginType
+  );
+
+  return authenticationState.data && authenticationState.data === "admin" ? (
     children
   ) : (
     <Navigate to="/error-pages/error-401" />
@@ -18,9 +20,10 @@ export const AdminGuard = ({ children }: component) => {
 };
 
 export const TenantGuard = ({ children }: component) => {
-  const authenticationState = useSelector((state: RootState) => state.userData);
-  return authenticationState.data &&
-    authenticationState.data.type === "tenant" ? (
+  const authenticationState = useAppSelector(
+    (state: RootState) => state.loginType
+  );
+  return authenticationState.data && authenticationState.data === "tenant" ? (
     children
   ) : (
     <Navigate to="/error-pages/error-401" />
@@ -28,9 +31,10 @@ export const TenantGuard = ({ children }: component) => {
 };
 
 export const UserGuard = ({ children }: component) => {
-  const authenticationState = useSelector((state: RootState) => state.userData);
-  return authenticationState.data &&
-    authenticationState.data.type === "user" ? (
+  const authenticationState = useAppSelector(
+    (state: RootState) => state.loginType
+  );
+  return authenticationState.data && authenticationState.data === "user" ? (
     children
   ) : (
     <Navigate to="/error-pages/error-401" />

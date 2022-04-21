@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { addTenantDataService } from "../../../../services";
-import { ITenantData } from "../../../../types/index";
+import { ITenantRegisterData } from "../../../../types/index";
 import error from "../../../../utils/error";
 
 interface IAddTenantState {
@@ -16,13 +16,14 @@ const initialState: IAddTenantState = {
 
 export const addNewTenant = createAsyncThunk(
   "tenant/addnewtenant",
-  async (conditions: ITenantData) => {
+  async (conditions: ITenantRegisterData) => {
     try {
       const response = await addTenantDataService(conditions);
-      console.log(response);
       return response.data;
     } catch (error_) {
-      return error_;
+      // console.log(error_, "||", error(error_));
+      const errorMessage = error(error_);
+      throw new Error(errorMessage);
     }
   }
 );
@@ -34,15 +35,18 @@ const slice = createSlice({
   extraReducers(builder): void {
     builder.addCase(addNewTenant.pending, (state) => {
       state.loading = true;
+      state.tenantAdded = false;
+      state.error = undefined;
     });
     builder.addCase(addNewTenant.fulfilled, (state) => {
       state.loading = false;
       state.tenantAdded = true;
     });
-    builder.addCase(addNewTenant.rejected, (state, action) => {
+    builder.addCase(addNewTenant.rejected, (state, action: any) => {
       state.loading = false;
-      // action.payload contains error information
-      state.error = error(action.payload);
+      // console.log(Number(errorMessage[errorMessage.length - 1]), action);
+      const errorMessage = action.error.message.split(" ");
+      state.error = errorMessage[errorMessage.length - 1];
     });
   },
 });

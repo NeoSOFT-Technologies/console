@@ -1,27 +1,45 @@
-import { ITenantData } from "../types";
+import { ICreateNewUser, ITenantDetail } from "../types";
 import apiFactory from "../utils/api";
 
-interface CreateUser {
-  username: string;
-  email: string;
-  password: string;
-  tenantname: string;
+export function updateTenantDataService(data: ITenantDetail) {
+  const body = {
+    action: {
+      ...data,
+    },
+  };
+  return apiFactory().patch(`/api/tenants`, body);
 }
 
-export function updateTenantDataService(id: number, data: ITenantData) {
-  return apiFactory().put(`/api/tenant/${id}`, data);
+export function createNewUserService(data: ICreateNewUser) {
+  console.log(data);
+  const body = {
+    userDetails: {
+      userName: data.userName,
+      email: data.email,
+      password: data.password,
+      roles: data.roles,
+      attributes: data.permissions,
+    },
+  };
+  return apiFactory().post(`/api/user`, body);
 }
 
-export function tenantUserListService(currentPage: number, search: string) {
-  return apiFactory().get(
-    `/api/tenant-user?_page=${currentPage}&name_like=${search}`
-  );
+export function deleteUserDataService(userName: string) {
+  return apiFactory().delete(`/api/user/${userName}`);
 }
 
-export function createNewUserService(data: CreateUser) {
-  return apiFactory().post(`/api/tenant-user`, data);
+export function userPermissionService(tenantName: string) {
+  return apiFactory().get(`/api/permission?tenantName=${tenantName}`);
 }
 
-export function deleteUserDataService() {
-  return apiFactory().delete(`/api/user`); // modify here
+export function tenantRolesService(tenantName: string) {
+  return apiFactory().get(`/api/roles?tenantName=${tenantName}`);
+}
+
+export function getTenantDetailsService(tenantName: string) {
+  return apiFactory().get(`/api/tenants/${tenantName}`);
+}
+
+export function tenantPermissionsService(tenantName: string) {
+  return apiFactory().get(`/api/permission?tenantName=${tenantName}`);
 }
