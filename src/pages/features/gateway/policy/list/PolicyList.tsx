@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 // import { Button } from "react-bootstrap";
-import RenderList from "../../../../components/list/RenderList";
+import RenderList from "../../../../../components/gateway/list/RenderList";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../../../store";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { getPolicyList } from "../../../../store/features/policy/list/slice";
+import { RootState } from "../../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import { getPolicyList } from "../../../../../store/features/gateway/policy/list/slice";
 import {
   IPolicyListState,
   IPolicyDataList,
   IPolicyData,
-} from "../../../../store/features/policy/list/index";
+} from "../../../../../store/features/gateway/policy/list/index";
 
-import Spinner from "../../../../components/loader/Loader";
-import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
-import { deletePolicy } from "../../../../store/features/policy/delete/slice";
+import Spinner from "../../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
+import { deletePolicy } from "../../../../../store/features/gateway/policy/delete/slice";
 
 export default function PolicyList() {
   const navigate = useNavigate();

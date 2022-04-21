@@ -4,8 +4,8 @@ import {
   setFormErrors,
   setFormData,
   regexForName,
-} from "../../../../../resources/policy/policy-constants";
-import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+} from "../../../../../../resources/gateway/policy/policy-constants";
+import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
 export default function Configurations() {
   const dispatch = useAppDispatch();

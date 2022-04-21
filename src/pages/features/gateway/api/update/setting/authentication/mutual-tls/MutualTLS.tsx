@@ -3,9 +3,9 @@ import { Row, Form } from "react-bootstrap";
 import {
   useAppSelector,
   useAppDispatch,
-} from "../../../../../../../store/hooks";
+} from "../../../../../../../../store/hooks";
 // import { setFormData } from "../../../../../../../resources/api/api-constants";
-import { setForm } from "../../../../../../../store/features/api/update/slice";
+import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
 
 export default function MutualTLS() {
   const dispatch = useAppDispatch();

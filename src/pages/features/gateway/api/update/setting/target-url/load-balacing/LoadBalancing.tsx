@@ -3,12 +3,12 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import {
   setFormErrors,
   regexForTagetUrl,
-} from "../../../../../../../resources/api/api-constants";
+} from "../../../../../../../../resources/gateway/api/api-constants";
 import {
   useAppDispatch,
   useAppSelector,
-} from "../../../../../../../store/hooks";
-import { setForm } from "../../../../../../../store/features/api/update/slice";
+} from "../../../../../../../../store/hooks";
+import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
 // import { IApiGetByIdState } from "../../../../../../../store/features/api/update";
 
 export default function LoadBalancing() {

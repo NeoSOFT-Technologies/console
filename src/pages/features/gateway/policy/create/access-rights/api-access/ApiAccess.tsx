@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppSelector } from "../../../../../../store/hooks";
+import { useAppSelector } from "../../../../../../../store/hooks";
 import PathBased from "../../../../common-settings/path-based-permission/PathBased";
 // import GlobalLimit from "../../../../common-settings-policy/global-limit/GlobalLimit";
 // import PathBased from "../../../../common-settings/path-based-permission/PathBased";

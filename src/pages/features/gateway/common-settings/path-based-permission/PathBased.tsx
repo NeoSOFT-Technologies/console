@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Accordion } from "react-bootstrap";
-import Ipathpermission from "../../../../pages/features/common-settings/path-based-permission/path-file";
-import { IKeyCreateState } from "../../../../store/features/key/create";
-import { IPolicyCreateState } from "../../../../store/features/policy/create";
-import { IApiGetByIdState } from "../../../../store/features/api/update";
+import Ipathpermission from "./path-file";
+import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
+import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
+import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
 interface IProps {
   state?: IKeyCreateState;

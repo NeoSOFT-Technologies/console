@@ -2,8 +2,8 @@ import React from "react";
 import Versions from "./versions/Versions";
 import VersionSettings from "./version-settings/VersionSettings";
 import { Col, Form } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
-import { setFormData } from "../../../../../resources/api/api-constants";
+import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
+import { setFormData } from "../../../../../../resources/gateway/api/api-constants";
 
 export default function Version() {
   const dispatch = useAppDispatch();

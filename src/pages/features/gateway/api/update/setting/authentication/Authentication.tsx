@@ -1,9 +1,9 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../../../../store/hooks";
 import AuthenticationToken from "./authentication-token/AuthenticationToken";
 import MutualTLS from "./mutual-tls/MutualTLS";
-import { setFormData } from "../../../../../../resources/api/api-constants";
+import { setFormData } from "../../../../../../../resources/gateway/api/api-constants";
 import OpenIdConnect from "./open-id-connect/OpenIdConnect";
 // import { setForm } from "../../../../../../store/features/api/update/slice";
 

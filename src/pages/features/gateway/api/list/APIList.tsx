@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import RenderList from "../../../../components/list/RenderList";
+import RenderList from "../../../../../components/gateway/list/RenderList";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../../../store";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { getApiList } from "../../../../store/features/api/list/slice";
-import Spinner from "../../../../components/loader/Loader";
-import { deleteApi } from "../../../../store/features/api/delete/slice";
+import { RootState } from "../../../../../store";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import { getApiList } from "../../../../../store/features/gateway/api/list/slice";
+import Spinner from "../../../../../components/loader/Loader";
+import { deleteApi } from "../../../../../store/features/gateway/api/delete/slice";
 import { useErrorHandler } from "react-error-boundary";
 // import moment from "moment";
-import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
-import statusAndDateHelper from "../../../../utils/helper";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
+import statusAndDateHelper from "../../../../../utils/gateway/helper";
 import {
   IApiData,
   IApiListState,
   IApiDataList,
-} from "../../../../store/features/api/list";
+} from "../../../../../store/features/gateway/api/list";
 
 function Bomb() {
   // console.log("");

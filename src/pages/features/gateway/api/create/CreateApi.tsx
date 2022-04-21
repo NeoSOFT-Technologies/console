@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { Button, Form, Row, Col } from "react-bootstrap";
-import { addNewApi } from "../../../../store/features/api/create/slice";
+import { addNewApi } from "../../../../../store/features/gateway/api/create/slice";
 import {
   regexForName,
   regexForListenPath,
   regexForTagetUrl,
-} from "../../../../resources/api/api-constants";
-import { useAppDispatch } from "../../../../store/hooks";
+} from "../../../../../resources/gateway/api/api-constants";
+import { useAppDispatch } from "../../../../../store/hooks";
 import {
   IErrorApiInput,
   IApiFormData,
-} from "../../../../store/features/api/create/index";
-import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
+} from "../../../../../store/features/gateway/api/create/index";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { useNavigate } from "react-router-dom";
-import { getApiById } from "../../../../store/features/api/update/slice";
+import { getApiById } from "../../../../../store/features/gateway/api/update/slice";
 function CreateApi() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

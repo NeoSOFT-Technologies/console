@@ -1,11 +1,11 @@
 import { Grid } from "gridjs-react";
 import moment from "moment";
 import React, { useEffect } from "react";
-import { IApiListState } from "../../../../store/features/api/list";
-import { getApiList } from "../../../../store/features/api/list/slice";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
-import { IKeyCreateState } from "../../../../store/features/key/create/index";
-import { IPolicyCreateState } from "../../../../store/features/policy/create";
+import { IApiListState } from "../../../../../store/features/gateway/api/list";
+import { getApiList } from "../../../../../store/features/gateway/api/list/slice";
+import { useAppSelector, useAppDispatch } from "../../../../../store/hooks";
+import { IKeyCreateState } from "../../../../../store/features/gateway/key/create/index";
+import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
 import { h } from "gridjs";
 
 interface IProps {

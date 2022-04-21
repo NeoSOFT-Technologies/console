@@ -4,8 +4,8 @@ import {
   setFormErrors,
   setFormData,
   regexForNumber,
-} from "../../../../../../resources/api/api-constants";
-import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
+} from "../../../../../../../resources/gateway/api/api-constants";
+import { useAppDispatch, useAppSelector } from "../../../../../../../store/hooks";
 
 export default function RateLimit() {
   const dispatch = useAppDispatch();

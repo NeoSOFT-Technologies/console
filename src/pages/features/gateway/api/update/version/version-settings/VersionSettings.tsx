@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { setFormData } from "../../../../../../resources/api/api-constants";
-import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
+import { setFormData } from "../../../../../../../resources/gateway/api/api-constants";
+import { useAppDispatch, useAppSelector } from "../../../../../../../store/hooks";
 
 export default function VersionSettings() {
   const dispatch = useAppDispatch();

@@ -2,14 +2,14 @@ import React, { FormEvent, useEffect } from "react";
 import Setting from "./setting/Setting";
 import Version from "./version/Version";
 import { Tab, Tabs, Form } from "react-bootstrap";
-import Spinner from "../../../../components/loader/Loader";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import Spinner from "../../../../../components/loader/Loader";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import {
   updateApi,
   getApiById,
-} from "../../../../store/features/api/update/slice";
-import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
-import { IApiGetByIdState } from "../../../../store/features/api/update";
+} from "../../../../../store/features/gateway/api/update/slice";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
+import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function Update() {

@@ -8,8 +8,8 @@ import {
   regexForName,
   setFormData,
   setFormErrors,
-} from "../../../../../resources/api/api-constants";
-import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+} from "../../../../../../resources/gateway/api/api-constants";
+import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import Authentication from "./authentication/Authentication";
 
 export default function Setting() {

@@ -5,8 +5,8 @@ import {
   setFormData,
   setFormErrors,
   regexForTagetUrl,
-} from "../../../../../../resources/api/api-constants";
-import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
+} from "../../../../../../../resources/gateway/api/api-constants";
+import { useAppDispatch, useAppSelector } from "../../../../../../../store/hooks";
 import LoadBalancing from "./load-balacing/LoadBalancing";
 
 export default function TargetUrl() {
