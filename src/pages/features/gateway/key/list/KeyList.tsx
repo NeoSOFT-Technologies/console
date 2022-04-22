@@ -130,7 +130,7 @@ export default function KeyList() {
       <div className="col-lg-12 grid-margin stretch-card">
         {keyList.loading ? (
           <Spinner />
-        ) : !keyList.loading && keyList.error !== null ? (
+        ) : keyList.error ? (
           <div>{failure()}</div>
         ) : (
           <div className="card">

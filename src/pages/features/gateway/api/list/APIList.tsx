@@ -143,12 +143,16 @@ export default function APIList() {
       buttonFunction: deleteApiFunction,
     },
   ];
+
+  useEffect(() => {
+    console.log(apiList);
+  }, [apiList.data, apiList.error]);
   return (
     <>
       <div className="col-lg-12 grid-margin stretch-card">
         {apiList.loading ? (
           <Spinner />
-        ) : !apiList.loading && apiList.error !== null ? (
+        ) : apiList.error ? (
           <div>{failure()}</div>
         ) : (
           <div className="card">
@@ -194,7 +198,7 @@ export default function APIList() {
               <br />
               {apiList.loading && <Spinner />}
               <div className="table-responsive">
-                {!apiList.loading && apiList.error === null && apiList.data && (
+                {!apiList.loading && !apiList.error && apiList.data && (
                   <RenderList
                     headings={headings}
                     data={datalist}
