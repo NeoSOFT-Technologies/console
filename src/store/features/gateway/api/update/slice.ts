@@ -30,6 +30,16 @@ export const updateApi = createAsyncThunk(
       return response.data;
     } catch (error_) {
       const myError = error_ as Error | AxiosError;
+      console.log(
+        "slice1",
+        axios.isAxiosError(myError) && myError.response!.data.Errors[0]
+      );
+      console.log(
+        "slice",
+        axios.isAxiosError(myError) && myError.response
+          ? myError.response.data.Errors[0]
+          : myError.message
+      );
       throw axios.isAxiosError(myError) && myError.response
         ? myError.response.data.Errors[0]
         : myError.message;
@@ -73,6 +83,7 @@ const slice = createSlice({
     });
     builder.addCase(updateApi.rejected, (state, action) => {
       state.loading = false;
+      console.log("action", action.payload);
       // action.payload contains error information
       action.payload = action.error;
       state.error = error(action.payload);

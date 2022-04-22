@@ -16,7 +16,6 @@ export default function Update() {
   const state: IApiGetByIdState = useAppSelector(
     (RootState) => RootState.updateApiState
   );
-  const failure: any = () => ToastAlert(state.error!, "error");
   const dispatch = useAppDispatch();
   const { id } = useParams();
 
@@ -57,8 +56,6 @@ export default function Update() {
     <div>
       {state.loading ? (
         <Spinner />
-      ) : !state.loading && state.error !== null ? (
-        <div>{failure()}</div>
       ) : (
         <div className="col-lg-12 grid-margin stretch-card">
           <div className="card">
