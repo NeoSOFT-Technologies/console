@@ -3,17 +3,21 @@ import { IGetPolicyByIdData } from "../../../store/features/gateway/policy/creat
 import apiFactory from "../../../utils/api";
 
 export function policyListService(currentPage: number) {
-  return apiFactory().get(`Policy?pageNum=${currentPage}&pageSize=3`);
+  return apiFactory().get(
+    `${process.env.REACT_APP_GATEWAY_API}Policy?pageNum=${currentPage}&pageSize=3`
+  );
 }
 export function addPolicyService(data: IGetPolicyByIdData) {
-  return apiFactory().post(`Policy`, data);
+  return apiFactory().post(`${process.env.REACT_APP_GATEWAY_API}Policy`, data);
 }
 export function getPolicyByIdService(id: string) {
-  return apiFactory().get(`Policy/` + id);
+  return apiFactory().get(`${process.env.REACT_APP_GATEWAY_API}Policy/` + id);
 }
 export function updatePolicyService(data: IGetPolicyByIdData) {
-  return apiFactory().put(`Policy`, data);
+  return apiFactory().put(`${process.env.REACT_APP_GATEWAY_API}Policy`, data);
 }
 export function deletePolicyService(id: string) {
-  return apiFactory().delete(`Policy/` + id);
+  return apiFactory().delete(
+    `${process.env.REACT_APP_GATEWAY_API}Policy/` + id
+  );
 }

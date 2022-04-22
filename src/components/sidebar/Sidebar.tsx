@@ -11,6 +11,7 @@ import { RootState } from "../../store";
 import { useAppSelector } from "../../store/hooks";
 import { IUserDataState } from "../../types";
 import "./Sidebar.scss";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 interface IConditions {
   data: string;
