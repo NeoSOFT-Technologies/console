@@ -29,7 +29,7 @@ export default function CreateKey() {
         ToastAlert(result.payload.message, "error");
       } else if (result.meta.requestStatus === "fulfilled") {
         ToastAlert("Key Created Successfully!!", "success");
-        navigate("/key/list");
+        navigate("/gateway/keys");
       } else {
         ToastAlert("Key Created request is not fulfilled!!", "error");
       }
@@ -42,7 +42,7 @@ export default function CreateKey() {
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
-    navigate("/key/list");
+    navigate("/gateway/keys");
   };
   return (
     <div>

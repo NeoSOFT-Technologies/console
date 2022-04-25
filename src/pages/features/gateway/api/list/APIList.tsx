@@ -85,12 +85,12 @@ export default function APIList() {
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
-    navigate("/api/create");
+    navigate("/gateway/apis/create");
   };
 
   const NavigateUpdate = (val: IApiData) => {
     if (val.Id) {
-      navigate(`/api/update/${val.Id}`);
+      navigate(`/gateway/apis/update/${val.Id}`);
     }
   };
 

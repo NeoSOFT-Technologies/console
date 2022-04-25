@@ -47,12 +47,12 @@ export const Sidebar = () => {
       setSaasRoutes(adminRoutes);
     } else if (user.data && loginType.data === "tenant") {
       setRoutes(tenantRoutes);
-      setGatewayRoutes(adminRoutes);
-      setSaasRoutes(adminRoutes);
+      setGatewayRoutes(adminGatewayRoutes);
+      setSaasRoutes(tenantRoutes);
     } else if (user.data && loginType.data === "user") {
       setRoutes(userRoutes);
-      setGatewayRoutes(adminRoutes);
-      setSaasRoutes(adminRoutes);
+      setGatewayRoutes(adminGatewayRoutes);
+      setSaasRoutes(userRoutes);
     }
   }, [user.data]);
 
@@ -101,7 +101,7 @@ export const Sidebar = () => {
                     setSubMenu({ ...subMenu, logger: !subMenu.logger })
                   }
                 >
-                  {loginType.data}
+                  Tenant
                 </span>
                 <i
                   className={` ${

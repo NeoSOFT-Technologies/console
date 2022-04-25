@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-// import { commonLoginService } from "../../services";
-// import error from "../../utils/error";
+import { commonLoginService } from "../../services";
+import error from "../../utils/error";
 
 interface IConditions {
   userName: string;
@@ -22,15 +22,15 @@ const initialState: ITokenState = {
 export const commonLogin = createAsyncThunk(
   "user/get_acessToken",
   async (conditions: IConditions) => {
-    // try {
-    //   await commonLoginService(conditions);
-    //   return true;
-    // } catch (error_) {
-    //   // console.log(error_, "||", error(error_));
-    //   const errorMessage = error(error_);
-    //   throw new Error(errorMessage);
-    // }
-    return true;
+    try {
+      await commonLoginService(conditions);
+      return true;
+    } catch (error_) {
+      // console.log(error_, "||", error(error_));
+      const errorMessage = error(error_);
+      throw new Error(errorMessage);
+    }
+    // return true;
   }
 );
 

@@ -79,117 +79,123 @@ function AppRoutes() {
         <Route path="/error" element={<Error />} />
         <Route path="/statistics" element={<StatisticsDashboard />} />
         {/** **********************ADMIN ROUTES***********************/}
-        <Route path="/admin">
-          <Route path="" element={<StatisticsDashboard />} />
-
-          <Route
-            path="dashboard"
-            element={
-              <AdminGuard>
-                <AdminDashboard />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="tenants"
-            element={
-              <AdminGuard>
-                <TenantList />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="tenants/:tenantName"
-            element={
-              <AdminGuard>
-                <TenantDetails />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="register-tenant"
-            element={
-              <AdminGuard>
-                <RegisterTenant />
-              </AdminGuard>
-            }
-          />
-        </Route>
-        {/**********************************************************/}
-        {/** ********************TENANT ROUTES*************************/}
         <Route path="/tenant">
           <Route path="" element={<StatisticsDashboard />} />
-          <Route
-            path="dashboard"
-            element={
-              <TenantGuard>
-                <TenantDashboard />
-              </TenantGuard>
-            }
-          />
+          <Route path="admin">
+            <Route path="" element={<StatisticsDashboard />} />
 
-          <Route
-            path="create-user"
-            element={
-              <TenantGuard>
-                <CreateUser />
-              </TenantGuard>
-            }
-          />
-          <Route
-            path="users"
-            element={
-              <TenantGuard>
-                <UserList />
-              </TenantGuard>
-            }
-          />
-          <Route
-            path="users/:userName"
-            element={
-              <TenantGuard>
-                <UserDetails />
-              </TenantGuard>
-            }
-          />
-          <Route
-            path="profile"
-            element={
-              <TenantGuard>
-                <TenantProfile />
-              </TenantGuard>
-            }
-          />
+            <Route
+              path="dashboard"
+              element={
+                <AdminGuard>
+                  <AdminDashboard />
+                </AdminGuard>
+              }
+            />
+            <Route
+              path="tenants"
+              element={
+                <AdminGuard>
+                  <TenantList />
+                </AdminGuard>
+              }
+            />
+            <Route
+              path="tenants/:tenantName"
+              element={
+                <AdminGuard>
+                  <TenantDetails />
+                </AdminGuard>
+              }
+            />
+            <Route
+              path="register-tenant"
+              element={
+                <AdminGuard>
+                  <RegisterTenant />
+                </AdminGuard>
+              }
+            />
+          </Route>
+          {/**********************************************************/}
+          {/** ********************TENANT ROUTES*************************/}
+          <Route path="tenant">
+            <Route path="" element={<StatisticsDashboard />} />
+            <Route
+              path="dashboard"
+              element={
+                <TenantGuard>
+                  <TenantDashboard />
+                </TenantGuard>
+              }
+            />
+
+            <Route
+              path="create-user"
+              element={
+                <TenantGuard>
+                  <CreateUser />
+                </TenantGuard>
+              }
+            />
+            <Route
+              path="users"
+              element={
+                <TenantGuard>
+                  <UserList />
+                </TenantGuard>
+              }
+            />
+            <Route
+              path="users/:userName"
+              element={
+                <TenantGuard>
+                  <UserDetails />
+                </TenantGuard>
+              }
+            />
+            <Route
+              path="profile"
+              element={
+                <TenantGuard>
+                  <TenantProfile />
+                </TenantGuard>
+              }
+            />
+          </Route>
+          {/**********************************************************/}
+          {/** ***********************USER ROUTES*********************/}
+          <Route path="user">
+            <Route path="" element={<StatisticsDashboard />} />
+            <Route
+              path="dashboard"
+              element={
+                <UserGuard>
+                  <UserDashboard />
+                </UserGuard>
+              }
+            />
+            <Route
+              path="roles-and-permissions"
+              element={
+                <UserGuard>
+                  <RoleAndPermissions />
+                </UserGuard>
+              }
+            />
+          </Route>
         </Route>
-        {/**********************************************************/}
-        {/** ***********************USER ROUTES*********************/}
-        <Route path="/user">
+        <Route path="/gateway">
           <Route path="" element={<StatisticsDashboard />} />
-          <Route
-            path="dashboard"
-            element={
-              <UserGuard>
-                <UserDashboard />
-              </UserGuard>
-            }
-          />
-          <Route
-            path="roles-and-permissions"
-            element={
-              <UserGuard>
-                <RoleAndPermissions />
-              </UserGuard>
-            }
-          />
+          <Route path="apis" element={<APIList />} />
+          <Route path="policies" element={<PolicyList />} />
+          <Route path="keys" element={<KeyList />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="apis/create" element={<CreateApi />} />
+          <Route path="keys/create" element={<CreateKey />} />
+          <Route path="policies/create" element={<CreatePolicy />} />
+          <Route path="apis/update/:id" element={<UpdateApi />} />
         </Route>
-        <Route path="/api/list" element={<APIList />} />
-        <Route path="/policy/list" element={<PolicyList />} />
-        <Route path="/key/list" element={<KeyList />} />
-        <Route path="/api/create" element={<CreateApi />} />
-        <Route path="/key/create" element={<CreateKey />} />
-        <Route path="/policy/create" element={<CreatePolicy />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/api/update/:id" element={<UpdateApi />} />
         {/**********************************************************/}
         <Route path="*" element={<Navigate to="/login-page" />} />{" "}
         {/* redirect if not match any path */}

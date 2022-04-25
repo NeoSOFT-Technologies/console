@@ -50,7 +50,7 @@ export default function Update() {
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
-    navigate("/api/list");
+    navigate("/gateway/apis");
   };
   return (
     <div>

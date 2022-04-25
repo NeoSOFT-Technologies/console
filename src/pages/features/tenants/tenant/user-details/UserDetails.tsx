@@ -117,7 +117,7 @@ export default function UserDetails() {
       !deleteUserState.error &&
       deleteUserState?.isDeleted
     ) {
-      navigate("/userlist");
+      navigate("/tenant/tenant/users");
     }
   }, [deleteUserState.loading, updateUserDataState.loading]);
 

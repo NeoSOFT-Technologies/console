@@ -4,10 +4,7 @@ import tokenService from "./token.service";
 class AuthService {
   public login(email: string, password: string) {
     const data = { email, password };
-    return apiFactory().post(
-      `${process.env.REACT_APP_NODE_API}/api/login`,
-      data
-    );
+    return apiFactory().post(`api/login`, data);
   }
 
   public logout() {

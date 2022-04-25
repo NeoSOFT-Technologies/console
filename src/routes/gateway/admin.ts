@@ -1,26 +1,26 @@
 const adminGatewayRoutes = [
   {
     id: "dashboard",
-    path: "/dashboard",
+    path: "/gateway/dashboard",
     title: "Dashboard",
     icon: "bi bi-house-fill menu-icon",
   },
   {
     id: "api",
-    path: "/api/list",
-    title: "API",
+    path: "/gateway/apis",
+    title: "APIs",
     icon: "bi bi-list menu-icon",
   },
   {
     id: "key",
-    path: "/key/list",
-    title: "Key",
+    path: "/gateway/keys",
+    title: "Keys",
     icon: "bi bi-key-fill menu-icon",
   },
   {
     id: "policy",
-    path: "/policy/list",
-    title: "Policy",
+    path: "/gateway/policies",
+    title: "Policies",
     icon: "bi bi-file-earmark-fill menu-icon",
   },
 ];
