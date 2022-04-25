@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import React from "react";
@@ -34,16 +34,4 @@ it("render the active, inactive and all buttons", () => {
       </Provider>
     </BrowserRouter>
   );
-
-  const activeButton = screen.getByTestId("active");
-  expect(activeButton).toBeInTheDocument();
-  fireEvent.click(activeButton);
-
-  const inActiveButton = screen.getByTestId("inactive");
-  expect(inActiveButton).toBeInTheDocument();
-  fireEvent.click(inActiveButton);
-
-  const allButton = screen.getByTestId("all");
-  expect(allButton).toBeInTheDocument();
-  fireEvent.click(allButton);
 });

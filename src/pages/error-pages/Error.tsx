@@ -12,13 +12,13 @@ export default function Error() {
   const backToHome = () => {
     switch (loginType.data) {
       case "admin":
-        navigate("/admindashboard");
+        navigate("/admin/dashboard");
         break;
       case "tenant":
-        navigate("/tenantdashboard");
+        navigate("/tenant/dashboard");
         break;
       case "user":
-        navigate("/userdashboard");
+        navigate("/user/dashboard");
         break;
       default:
         navigate("/login-page");

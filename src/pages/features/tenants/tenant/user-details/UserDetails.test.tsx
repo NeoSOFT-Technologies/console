@@ -132,18 +132,21 @@ it("renders role select box and remove role button", async () => {
       </Provider>
     </BrowserRouter>
   );
-
-  const dropdownToggler = screen.getByTestId("dropdown-toggler");
+  const editBtn = screen.getByTestId("edit");
+  fireEvent.click(editBtn);
   await waitFor(() => {
-    fireEvent.click(dropdownToggler);
+    const dropdownToggler = screen.getByTestId("dropdown-toggler");
+    waitFor(() => {
+      fireEvent.click(dropdownToggler);
 
-    const roleItem = screen.getByTestId("role-item");
-    expect(roleItem).toBeInTheDocument();
-    fireEvent.click(roleItem);
-    fireEvent.click(roleItem);
+      const roleItem = screen.getByTestId("role-item");
+      expect(roleItem).toBeInTheDocument();
+      fireEvent.click(roleItem);
+      fireEvent.click(roleItem);
 
-    const removeRoleBtn = screen.getByTestId("remove-role-btn");
-    expect(removeRoleBtn).toBeInTheDocument();
-    fireEvent.click(removeRoleBtn);
+      const removeRoleBtn = screen.getByTestId("remove-role-btn");
+      expect(removeRoleBtn).toBeInTheDocument();
+      fireEvent.click(removeRoleBtn);
+    });
   });
 });

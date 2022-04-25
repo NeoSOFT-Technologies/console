@@ -1,17 +1,17 @@
 const adminRoutes = [
   {
-    path: "/admindashboard",
-    title: "Master",
-    icon: "bi bi-person-circle",
+    path: "/admin/dashboard",
+    title: "Dashboard",
+    icon: "bi bi-house-door-fill",
   },
   {
-    path: "/tenantlist",
-    title: "List",
+    path: "/admin/tenants",
+    title: "Tenants",
     icon: "bi bi-list-ul",
   },
   {
-    path: "/registertenant",
-    title: "Add Tenant",
+    path: "/admin/register-tenant",
+    title: "Register Tenant",
     icon: "bi bi-person-plus-fill",
   },
 ];
