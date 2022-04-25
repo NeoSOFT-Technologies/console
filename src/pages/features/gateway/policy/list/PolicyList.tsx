@@ -127,7 +127,7 @@ export default function PolicyList() {
       <div className="col-lg-12 grid-margin stretch-card">
         {policyList.loading ? (
           <Spinner />
-        ) : !policyList.loading && policyList.error !== null ? (
+        ) : policyList.error ? (
           <div>{failure()}</div>
         ) : (
           <div className="card">
