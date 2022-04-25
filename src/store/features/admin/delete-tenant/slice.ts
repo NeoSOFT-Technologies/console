@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { deleteTenantDataService } from "../../../../services";
+import { deleteTenantDataService } from "../../../../services/tenant";
 import error from "../../../../utils/error";
 
 interface IDeleteTenantState {

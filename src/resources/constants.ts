@@ -11,10 +11,10 @@ export const regexForUser =
   /^[\dA-Za-z]([._-](?![._-])|[\dA-Za-z]){3,18}[\dA-Za-z]$/;
 export const regexForPolicyName = /^[#$&@A-Za-z-]{4,29}$/;
 export const regForPassword = /^[\d!$%&*@A-Za-z]{8,15}$/;
-export const requestUserListURL = "/api/user?";
-export const requestTenantListUrlInactive = "/api/tenants?isDeleted=true&";
-export const requestTenantListUrlActive = "/api/tenants?isDeleted=false&";
-export const requestTenantListUrlAll = "/api/tenants?";
+export const requestUserListURL = `api/user?`;
+export const requestTenantListUrlInactive = `api/tenants?isDeleted=true&`;
+export const requestTenantListUrlActive = `api/tenants?isDeleted=false&`;
+export const requestTenantListUrlAll = `api/tenants?`;
 export const errorMsg = {
   "400": "Bad Request",
   "401": "Unauthorized",

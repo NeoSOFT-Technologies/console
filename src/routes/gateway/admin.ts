@@ -1,18 +1,27 @@
-const adminRoutes = [
+const adminGatewayRoutes = [
   {
-    path: "/admindashboard",
-    title: "Master",
-    icon: "bi bi-person-circle",
+    id: "dashboard",
+    path: "/gateway/dashboard",
+    title: "Dashboard",
+    icon: "bi bi-house-fill menu-icon",
   },
   {
-    path: "/tenantlist",
-    title: "List",
-    icon: "bi bi-list-ul",
+    id: "api",
+    path: "/gateway/apis",
+    title: "APIs",
+    icon: "bi bi-list menu-icon",
   },
   {
-    path: "/registertenant",
-    title: "Add Tenant",
-    icon: "bi bi-person-plus-fill",
+    id: "key",
+    path: "/gateway/keys",
+    title: "Keys",
+    icon: "bi bi-key-fill menu-icon",
+  },
+  {
+    id: "policy",
+    path: "/gateway/policies",
+    title: "Policies",
+    icon: "bi bi-file-earmark-fill menu-icon",
   },
 ];
-export default adminRoutes;
+export default adminGatewayRoutes;

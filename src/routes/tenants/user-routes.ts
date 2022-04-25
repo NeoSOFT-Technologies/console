@@ -1,11 +1,11 @@
 const userRoutes = [
   {
-    path: "/user/dashboard",
+    path: "/tenant/user/dashboard",
     title: "Dashboard",
     icon: "bi bi-house-door-fill",
   },
   {
-    path: "/user/roles-and-permissions",
+    path: "/tenant/user/roles-and-permissions",
     title: "Roles & Permission",
     icon: "bi bi-shield-fill-check",
   },

@@ -14,7 +14,7 @@ export default function UserList() {
   }, []);
 
   const handleUserDetails = (value: any) => {
-    navigate(`/tenant/users/${value._cells[0].data}`, {
+    navigate(`/tenant/tenant/users/${value._cells[0].data}`, {
       state: {
         userName: value._cells[0].data,
         email: value._cells[1].data,

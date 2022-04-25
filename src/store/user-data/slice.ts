@@ -3,7 +3,7 @@ import {
   adminLoginData,
   getTenantDetailsService,
   getUserDetailsService,
-} from "../../services";
+} from "../../services/tenant";
 import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
 
@@ -26,6 +26,23 @@ export const getUserData = createAsyncThunk(
       switch (conditions.type) {
         case "admin":
           response = await adminLoginData();
+          // response = {
+          //   data: {
+          //     id: "72c56ed1-52d4-4add-a6f4-f3d8cb99323d",
+          //     createdTimestamp: "2022/04/20 05:39:09",
+          //     username: "admin",
+          //     enabled: true,
+          //     emailVerified: false,
+          //     access: {
+          //       manageGroupMembership: true,
+          //       view: true,
+          //       mapRoles: true,
+          //       impersonate: true,
+          //       manage: true,
+          //     },
+          //     roles: ["default-roles-master", "admin"],
+          //   },
+          // };
           break;
         case "tenant":
           response = await getTenantDetailsService(conditions.tenantName);
