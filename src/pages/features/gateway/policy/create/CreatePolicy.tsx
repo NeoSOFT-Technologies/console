@@ -29,7 +29,7 @@ export default function CreatePolicy() {
         ToastAlert(result.payload.message, "error");
       } else if (result.meta.requestStatus === "fulfilled") {
         ToastAlert("Policy Created Successfully!!", "success");
-        navigate("/policy/list");
+        navigate("/gateway/policies");
       } else {
         ToastAlert("policy Created request is not fulfilled!!", "error");
       }
@@ -41,7 +41,7 @@ export default function CreatePolicy() {
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
-    navigate("/policy/list");
+    navigate("/gateway/policies");
   };
   return (
     <div>

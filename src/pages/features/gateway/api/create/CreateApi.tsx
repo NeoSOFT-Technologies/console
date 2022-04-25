@@ -90,7 +90,7 @@ function CreateApi() {
         if (valId) {
           await new Promise((resolve) => setTimeout(resolve, 1000));
           await dispatch(getApiById(valId));
-          navigate(`/api/update/${valId}`);
+          navigate(`/gateway/apis/update/${valId}`);
         }
       }
     } else {
@@ -102,7 +102,7 @@ function CreateApi() {
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
-    navigate("/api/list");
+    navigate("/gateway/apis");
   };
   return (
     <>

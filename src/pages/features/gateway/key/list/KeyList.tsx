@@ -69,7 +69,7 @@ export default function KeyList() {
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
-    navigate("/key/create");
+    navigate("/gateway/keys/create");
   };
   //   const handleUserDetails = (val: ITenantUserData) => {
   //     console.log(val);

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getTenantDetailsService } from "../../../../services";
+import { getTenantDetailsService } from "../../../../services/tenant";
 import { ITenantDetail } from "../../../../types/index";
 import error from "../../../../utils/error";
 

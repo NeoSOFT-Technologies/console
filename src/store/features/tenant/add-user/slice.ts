@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createNewUserService } from "../../../../services";
+import { createNewUserService } from "../../../../services/tenant";
 import { ICreateNewUser } from "../../../../types/index";
 import error from "../../../../utils/error";
 

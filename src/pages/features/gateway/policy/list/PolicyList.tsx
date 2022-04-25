@@ -66,7 +66,7 @@ export default function PolicyList() {
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
-    navigate("/policy/create");
+    navigate("/gateway/policies/create");
   };
   //   const handleUserDetails = (val: ITenantUserData) => {
   //     console.log(val);

@@ -1,17 +1,36 @@
 import axios from "axios";
-import tokenService from "../services/token.service";
+import tokenService from "../services/tenant/token.service";
 import error from "./error";
 
-const defaultBaseUrl =
+const defaultHostUrl =
   process.env.REACT_APP_API_BASEURL || "http://localhost:5000";
+const defaultGatewayUrl =
+  process.env.REACT_APP_GATEWAY_API || "http://localhost:5501";
 
 // Todo : Make default URL based on Environment ['dev', 'staging', 'test', 'prod']
 
+const getDefaultPath = () => {
+  let baseUrl = "";
+  const currentURL = window.location.pathname.split("/");
+  // console.log(currentURL[1]);
+  switch (currentURL[1]) {
+    case "login-page":
+    case "tenant":
+      baseUrl = defaultHostUrl;
+      break;
+    case "gateway":
+      baseUrl = defaultGatewayUrl;
+      break;
+    default:
+      break;
+  }
+  return baseUrl;
+};
 const transformResponse = (input: string) => {
   try {
     return JSON.parse(input);
   } catch {
-    /* Ignore */
+    //  Ignore ;
   }
 };
 
@@ -24,7 +43,7 @@ const buildHeader = (obj = {}) => {
   return header;
 };
 
-const apiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
+const apiFactory = (baseUrl: string = getDefaultPath(), header = {}) => {
   const service = axios.create({
     baseURL: baseUrl,
     headers: buildHeader(header),

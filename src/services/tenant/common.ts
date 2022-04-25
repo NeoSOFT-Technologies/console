@@ -1,6 +1,7 @@
-import tokenService from "../services/token.service";
-import { ILogin } from "../types";
-import apiFactory from "../utils/api";
+import { ILogin } from "../../types";
+// import apiFactory from "../utils/api";
+import apiFactory from "../../utils/api";
+import tokenService from "./token.service";
 
 export async function commonLoginService(data: ILogin) {
   const getlogin = await apiFactory().post(

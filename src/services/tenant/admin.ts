@@ -1,5 +1,5 @@
-import { ITenantRegisterData } from "../types";
-import apiFactory from "../utils/api";
+import { ITenantRegisterData } from "../../types";
+import apiFactory from "../../utils/api";
 
 export function addTenantDataService(data: ITenantRegisterData) {
   return apiFactory().post(
