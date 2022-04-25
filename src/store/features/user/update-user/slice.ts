@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { updateUserDataService } from "../../../../services/users";
+import { updateUserDataService } from "../../../../services/tenant/users";
 import error from "../../../../utils/error";
 
 interface IConditions {

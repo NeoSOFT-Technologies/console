@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { commonLogoutService } from "../../services";
+import { commonLogoutService } from "../../services/tenant";
 import error from "../../utils/error";
 
 interface IConditions {

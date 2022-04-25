@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { deleteUserDataService } from "../../../../services";
+import { deleteUserDataService } from "../../../../services/tenant";
 import error from "../../../../utils/error";
 
 /**

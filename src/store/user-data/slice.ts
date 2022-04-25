@@ -3,7 +3,7 @@ import {
   adminLoginData,
   getTenantDetailsService,
   getUserDetailsService,
-} from "../../services";
+} from "../../services/tenant";
 import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
 

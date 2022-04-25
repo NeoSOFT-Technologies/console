@@ -1,5 +1,5 @@
-import { ICreateNewUser, ITenantDetail } from "../types";
-import apiFactory from "../utils/api";
+import { ICreateNewUser, ITenantDetail } from "../../types";
+import apiFactory from "../../utils/api";
 
 export function updateTenantDataService(data: ITenantDetail) {
   const body = {

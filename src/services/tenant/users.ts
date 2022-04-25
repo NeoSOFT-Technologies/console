@@ -1,4 +1,4 @@
-import apiFactory from "../utils/api";
+import apiFactory from "../../utils/api";
 
 interface IConditions {
   username: string;
