@@ -18,11 +18,11 @@ export default function OpenIdConnectAuthentication() {
   console.log("policyList", policyList);
   const dispatch = useAppDispatch();
 
-  const mainCall = async (currentPage: number) => {
-    dispatch(getPolicyList({ currentPage }));
+  const mainCall = async (currentPage: number, pageSize: number) => {
+    dispatch(getPolicyList({ currentPage, pageSize }));
   };
   useEffect(() => {
-    mainCall(1);
+    mainCall(1, 1000);
   }, []);
 
   const [addFormData, setAddFormData] = useState({
