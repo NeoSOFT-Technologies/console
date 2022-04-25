@@ -80,7 +80,7 @@ export default function TenantDetails() {
       await dispatch(deleteTenant(tenantName));
       if (tenantDeleted.isDeleted) {
         ToastAlert("Tenant Removed", "success");
-        navigate("/tenantlist");
+        navigate("/tenant/admin/tenants");
       }
     }
   };
@@ -159,7 +159,7 @@ export default function TenantDetails() {
       !tenantDeleted.error &&
       tenantDeleted?.isDeleted
     ) {
-      navigate("/tenantlist");
+      navigate("/tenant/admin/tenants");
     }
   }, [
     tenantDeleted.loading,
@@ -329,33 +329,44 @@ export default function TenantDetails() {
                       </Form.Group>
                     </Col>
                     {edit ? (
-                      <Button
-                        data-testid="update-button"
-                        onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-                          handleUpdateTenant(event)
-                        }
-                        className="mt-3 info ml-4"
-                      >
-                        Update
-                      </Button>
+                      <>
+                        <Button
+                          data-testid="update-button"
+                          onClick={(
+                            event: React.MouseEvent<HTMLButtonElement>
+                          ) => handleUpdateTenant(event)}
+                          className="mt-3 info ml-4"
+                        >
+                          Update
+                        </Button>
+                        <Button
+                          data-testid="update-button"
+                          onClick={() => setEdit(false)}
+                          className="mt-3 ml-4"
+                          variant="danger"
+                        >
+                          Cancel
+                        </Button>
+                      </>
                     ) : (
-                      <Button
-                        data-testid="edit-button"
-                        onClick={() => setEdit(true)}
-                        className="mt-3 info ml-4"
-                      >
-                        Edit
-                      </Button>
+                      <>
+                        <Button
+                          data-testid="edit-button"
+                          onClick={() => setEdit(true)}
+                          className="mt-3 info ml-4"
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          data-testid="cancel-button"
+                          className="btn btn-light mt-3"
+                          type="reset"
+                          onClick={() => navigate("/tenant/admin/tenants")}
+                        >
+                          Back
+                        </Button>
+                      </>
                     )}
-
-                    <Button
-                      data-testid="cancel-button"
-                      className="btn btn-light mt-3"
-                      type="reset"
-                      onClick={() => navigate("/tenantlist")}
-                    >
-                      Cancel
-                    </Button>
                   </Row>
                 </Form>
               </Container>
