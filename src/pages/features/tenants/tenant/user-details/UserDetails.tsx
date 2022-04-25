@@ -117,6 +117,7 @@ export default function UserDetails() {
       !deleteUserState.error &&
       deleteUserState?.isDeleted
     ) {
+      ToastAlert("User Deleted ", "success");
       navigate("/tenant/tenant/users");
     }
   }, [deleteUserState.loading, updateUserDataState.loading]);
@@ -144,7 +145,6 @@ export default function UserDetails() {
 
   const handleRemove = async () => {
     await dispatch(deleteUser(userdata.username));
-    navigate("/userlist");
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
