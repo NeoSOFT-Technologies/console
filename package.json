@@ -1,5 +1,5 @@
 {
-  "name": "react-redux-toolkit-typescript-boilerplate",
+  "name": "console",
   "version": "1.0.0",
   "homepage": ".",
   "author": "Santosh Shinde",
@@ -93,7 +93,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/santoshshinde2012/react-redux-typescript-boilerplate.git"
+    "url": "git+https://github.com/NeoSOFT-Technologies/console.git"
   },
   "browserslist": {
     "production": [
