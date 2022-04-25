@@ -64,7 +64,11 @@ export default function Versions() {
     // console.log("version", state.data.form);
   };
 
-  const deleteTableRows = (index: number) => {
+  const deleteTableRows = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    index: number
+  ) => {
+    e.preventDefault();
     const list = [...state.data.form.Versions];
     list.splice(index, 1);
     dispatch(setForm({ ...state.data.form, Versions: list }));
@@ -280,7 +284,9 @@ export default function Versions() {
                                     <td>
                                       <button
                                         className="btn bi bi-trash-fill"
-                                        onClick={() => deleteTableRows(index)}
+                                        onClick={(e) =>
+                                          deleteTableRows(e, index)
+                                        }
                                       ></button>
                                     </td>
                                   </tr>

@@ -4,13 +4,6 @@ import { Col, Form, Row } from "react-bootstrap";
 export default function AuthenticationToken() {
   return (
     <div>
-      <Row>
-        <Col md="12">
-          <Form.Group className="mb-3">
-            <Form.Check type="checkbox" label="Strip Authorization Data" />
-          </Form.Group>
-        </Col>
-      </Row>
       <div>
         <Row>
           <Col md="8" className="border rounded ml-3 pb-2">

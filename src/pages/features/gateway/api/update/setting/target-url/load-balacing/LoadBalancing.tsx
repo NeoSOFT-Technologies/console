@@ -96,7 +96,11 @@ export default function LoadBalancing() {
     setLoading(false);
     setAddFormData({ ...addFormData, LoadBalancingTargets: "" });
   };
-  const deleteTableRows = (index: number) => {
+  const deleteTableRows = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    index: number
+  ) => {
+    e.preventDefault();
     const weightObj = [...weight];
     weightObj.splice(index, 1);
     setWeight(weightObj);
@@ -182,7 +186,7 @@ export default function LoadBalancing() {
                           <td>
                             <button
                               className="btn btn-default bi bi-trash-fill"
-                              onClick={() => deleteTableRows(index)}
+                              onClick={(e) => deleteTableRows(e, index)}
                             ></button>
                           </td>
                         </tr>
