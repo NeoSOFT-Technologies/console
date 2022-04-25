@@ -1,9 +1,9 @@
 import { IGetKeyByIdData } from "../../../store/features/gateway/key/create";
 import apiFactory from "../../../utils/api";
 
-export function keyListService(currentPage: number) {
+export function keyListService(currentPage: number, pageSize: number) {
   return apiFactory().get(
-    `${process.env.REACT_APP_GATEWAY_API}Key/GetAllKeys?pageNum=${currentPage}&pageSize=3`
+    `${process.env.REACT_APP_GATEWAY_API}Key/GetAllKeys?pageNum=${currentPage}&pageSize=${pageSize}`
   );
 }
 export function addKeyService(data: IGetKeyByIdData) {

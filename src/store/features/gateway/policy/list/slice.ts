@@ -6,6 +6,7 @@ import { IPolicyListState } from "./index";
 
 interface IConditions {
   currentPage: number;
+  pageSize: number;
 }
 
 const initialState: IPolicyListState = {
@@ -17,9 +18,9 @@ const initialState: IPolicyListState = {
 export const getPolicyList = createAsyncThunk(
   "policy/list",
   async (conditions: IConditions) => {
-    const { currentPage } = conditions;
+    const { currentPage, pageSize } = conditions;
     try {
-      const response = await policyListService(currentPage);
+      const response = await policyListService(currentPage, pageSize);
       return response.data;
     } catch (error_) {
       const myError = error_ as Error | AxiosError;
@@ -42,7 +43,9 @@ const slice = createSlice({
       state.loading = false;
       state.data = {
         Policies: action.payload.Data.Policies,
-        TotalCount: Math.ceil(action.payload.TotalCount / 3),
+        TotalCount: Math.ceil(
+          action.payload.TotalCount / action.payload.PageSize
+        ),
       };
     });
     builder.addCase(getPolicyList.rejected, (state, action) => {

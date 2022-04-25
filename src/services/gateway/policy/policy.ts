@@ -2,9 +2,9 @@
 import { IGetPolicyByIdData } from "../../../store/features/gateway/policy/create";
 import apiFactory from "../../../utils/api";
 
-export function policyListService(currentPage: number) {
+export function policyListService(currentPage: number, pageSize: number) {
   return apiFactory().get(
-    `${process.env.REACT_APP_GATEWAY_API}Policy?pageNum=${currentPage}&pageSize=3`
+    `${process.env.REACT_APP_GATEWAY_API}Policy?pageNum=${currentPage}&pageSize=${pageSize}`
   );
 }
 export function addPolicyService(data: IGetPolicyByIdData) {
