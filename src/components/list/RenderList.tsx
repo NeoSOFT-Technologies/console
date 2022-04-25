@@ -93,8 +93,6 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
   const classNames = {
     table: "table",
     pagination: "d-flex justify-content-around",
-    paginationButton: "page-link d-inline",
-    paginationButtonCurrent: "active",
     search: "search-field",
   };
 
