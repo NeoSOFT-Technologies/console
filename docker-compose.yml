@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: console
+    image: console
+    build: .
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - '3000:3001'
+    networks:
+      - internal
+    env_file:
+      - ./.env
+networks:
+  internal:
