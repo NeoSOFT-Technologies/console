@@ -121,7 +121,6 @@ export default function Ipathpermission(props: IProps) {
               onChange={handleAddFormChange}
               value={inputData.path}
               // data-testid="name-input"
-              required
             />
             <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
           </Form.Group>
