@@ -21,7 +21,7 @@ export function createNewUserService(data: ICreateNewUser) {
       attributes: data.permissions,
     },
   };
-  return apiFactory().post(`/api/user`, body);
+  return apiFactory().post(`api/user`, body);
 }
 
 export function deleteUserDataService(userName: string) {
