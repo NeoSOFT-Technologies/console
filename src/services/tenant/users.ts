@@ -14,11 +14,11 @@ export function updateUserDataService(data: IConditions) {
       realmRoles: [...data.roles],
     },
   };
-  return apiFactory().patch(`${process.env.REACT_APP_NODE_API}/api/user`, body);
+  return apiFactory().patch(`api/user`, body);
 }
 
 export function getUserDetailsService(tenantName: string, userName: string) {
   return apiFactory().get(
-    `${process.env.REACT_APP_NODE_API}/api/user-info?tenantName=${tenantName}&userName=${userName}`
+    `api/user-info?tenantName=${tenantName}&userName=${userName}`
   );
 }
