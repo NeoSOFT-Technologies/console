@@ -81,8 +81,10 @@ const apiFactory = (baseUrl: string = defaultBaseUrl, header = {}) => {
           throw new Error(error(_error));
         }
       }
-      // console.log(err);
-      throw new Error(error(err));
+      throw err;
+      // throw axios.isAxiosError(err) && err.response
+      //   ? (err as AxiosError)
+      //   : (err as Error);
     }
   );
 

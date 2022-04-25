@@ -7,7 +7,10 @@ export function updateTenantDataService(data: ITenantDetail) {
       ...data,
     },
   };
-  return apiFactory().patch(`/api/tenants`, body);
+  return apiFactory().patch(
+    `${process.env.REACT_APP_NODE_API}/api/tenants`,
+    body
+  );
 }
 
 export function createNewUserService(data: ICreateNewUser) {
@@ -21,25 +24,35 @@ export function createNewUserService(data: ICreateNewUser) {
       attributes: data.permissions,
     },
   };
-  return apiFactory().post(`/api/user`, body);
+  return apiFactory().post(`${process.env.REACT_APP_NODE_API}/api/user`, body);
 }
 
 export function deleteUserDataService(userName: string) {
-  return apiFactory().delete(`/api/user/${userName}`);
+  return apiFactory().delete(
+    `${process.env.REACT_APP_NODE_API}/api/user/${userName}`
+  );
 }
 
 export function userPermissionService(tenantName: string) {
-  return apiFactory().get(`/api/permission?tenantName=${tenantName}`);
+  return apiFactory().get(
+    `${process.env.REACT_APP_NODE_API}/api/permission?tenantName=${tenantName}`
+  );
 }
 
 export function tenantRolesService(tenantName: string) {
-  return apiFactory().get(`/api/roles?tenantName=${tenantName}`);
+  return apiFactory().get(
+    `${process.env.REACT_APP_NODE_API}/api/roles?tenantName=${tenantName}`
+  );
 }
 
 export function getTenantDetailsService(tenantName: string) {
-  return apiFactory().get(`/api/tenants/${tenantName}`);
+  return apiFactory().get(
+    `${process.env.REACT_APP_NODE_API}/api/tenants/${tenantName}`
+  );
 }
 
 export function tenantPermissionsService(tenantName: string) {
-  return apiFactory().get(`/api/permission?tenantName=${tenantName}`);
+  return apiFactory().get(
+    `${process.env.REACT_APP_NODE_API}/api/permission?tenantName=${tenantName}`
+  );
 }

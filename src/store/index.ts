@@ -3,6 +3,18 @@ import addNewTenantReducer from "./features/admin/add-tenant/slice";
 import deleteTenantReducer from "./features/admin/delete-tenant/slice";
 import tenantPermissionsListReducer from "./features/admin/tenant-permissions/slice";
 import rolesListReducer from "./features/admin/tenant-roles/slice";
+
+// gateway Reducers
+import addApiReducer from "./features/gateway/api/create/slice";
+import deleteApiReducer from "./features/gateway/api/delete/slice";
+import apiListReducer from "./features/gateway/api/list/slice";
+import updateApiReducer from "./features/gateway/api/update/slice";
+import createKeyReducer from "./features/gateway/key/create/slice";
+import keyListReducer from "./features/gateway/key/list/slice";
+import createPolicyReducer from "./features/gateway/policy/create/slice";
+import deletePolicyReducer from "./features/gateway/policy/delete/slice";
+import policyListReducer from "./features/gateway/policy/list/slice";
+
 import addNewUserReducer from "./features/tenant/add-user/slice";
 import deleteUserReducer from "./features/tenant/delete-user/slice";
 import tenantDetailsReducer from "./features/tenant/tenant-details/slice";
@@ -34,6 +46,16 @@ const store = configureStore({
     tenantDetails: tenantDetailsReducer,
     logoutState: logoutReducer,
     updateUserDataState: updateUserReducer,
+    // gateway states
+    apiListState: apiListReducer,
+    policyListState: policyListReducer,
+    createPolicyState: createPolicyReducer,
+    deletePolicyState: deletePolicyReducer,
+    keyListState: keyListReducer,
+    addApiState: addApiReducer,
+    deleteApiState: deleteApiReducer,
+    updateApiState: updateApiReducer,
+    createKeyState: createKeyReducer,
   },
 });
 

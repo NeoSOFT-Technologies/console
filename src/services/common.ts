@@ -3,11 +3,14 @@ import { ILogin } from "../types";
 import apiFactory from "../utils/api";
 
 export async function commonLoginService(data: ILogin) {
-  const getlogin = await apiFactory().post(`/api/login`, {
-    username: data.userName,
-    password: data.password,
-    tenantName: data.tenantName,
-  });
+  const getlogin = await apiFactory().post(
+    `${process.env.REACT_APP_NODE_API}/api/login`,
+    {
+      username: data.userName,
+      password: data.password,
+      tenantName: data.tenantName,
+    }
+  );
 
   const setlogin = {
     accessToken: getlogin.data.access_token,
@@ -27,5 +30,8 @@ export function commonLogoutService() {
     refreshToken: tokenService.getLocalRefreshToken(),
   };
   tokenService.removeUser();
-  return apiFactory().post(`/api/logout`, data);
+  return apiFactory().post(
+    `${process.env.REACT_APP_NODE_API}/api/logout`,
+    data
+  );
 }
