@@ -12,6 +12,6 @@ services:
     networks:
       - internal
     env_file:
-      - ./.env
+      - ./.env.development
 networks:
   internal:
