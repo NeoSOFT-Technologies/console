@@ -15,8 +15,6 @@ const getDefaultPath = () => {
   // console.log(currentURL[1]);
   switch (currentURL[1]) {
     case "login-page":
-      baseUrl = defaultHostUrl;
-      break;
     case "tenant":
       baseUrl = defaultHostUrl;
       break;
