@@ -1,17 +1,9 @@
 version: "3.8"
 
 services:
-  app:
-    container_name: console
-    image: console
+  console:
+    container_name: console-dashboard
     build: .
-    volumes:
-      - .:/usr/src/app
     ports:
-      - '3000:3001'
-    networks:
-      - internal
-    env_file:
-      - ./.env.development
-networks:
-  internal:
+        - '4004:80'  
+  
