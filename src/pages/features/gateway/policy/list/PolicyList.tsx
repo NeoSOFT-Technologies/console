@@ -34,8 +34,8 @@ export default function PolicyList() {
     list: [],
     fields: [],
   });
-  const mainCall = (currentPage: number) => {
-    dispatch(getPolicyList({ currentPage }));
+  const mainCall = (currentPage: number, pageSize: number) => {
+    dispatch(getPolicyList({ currentPage, pageSize }));
   };
   useEffect(() => {
     // console.log("UseEffect", policyList.data);
@@ -48,18 +48,18 @@ export default function PolicyList() {
   }, [policyList.data]);
 
   useEffect(() => {
-    mainCall(1);
+    mainCall(1, 4);
   }, []);
 
   const handlePageClick = (pageSelected: number) => {
-    mainCall(pageSelected);
+    mainCall(pageSelected, 4);
     setSelected(pageSelected);
   };
 
   const searchFilter = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setSelected(1);
-    mainCall(1);
+    mainCall(1, 4);
   };
 
   const NavigateCreatePolicy = (
@@ -79,9 +79,9 @@ export default function PolicyList() {
     // console.log(newState);
     const pageCount = policyList.data?.TotalCount;
     if (newState.length === 0 && pageCount !== 1) {
-      mainCall(selected - 1);
+      mainCall(selected - 1, 4);
       setSelected(selected - 1);
-    } else mainCall(selected);
+    } else mainCall(selected, 4);
 
     setDataList({
       list: [...newState],

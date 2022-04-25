@@ -30,7 +30,7 @@ const transformResponse = (input: string) => {
   try {
     return JSON.parse(input);
   } catch {
-    /* Ignore */
+    //  Ignore ;
   }
 };
 

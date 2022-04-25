@@ -33,8 +33,8 @@ export default function KeyList() {
     list: [],
     fields: [],
   });
-  const mainCall = (currentPage: number) => {
-    dispatch(getKeyList({ currentPage }));
+  const mainCall = (currentPage: number, pageSize: number) => {
+    dispatch(getKeyList({ currentPage, pageSize }));
   };
   useEffect(() => {
     // console.log("UseEffect", keyList.data);
@@ -52,18 +52,18 @@ export default function KeyList() {
   }, [keyList.data]);
 
   useEffect(() => {
-    mainCall(1);
+    mainCall(1, 4);
   }, []);
 
   const handlePageClick = (pageSelected: number) => {
-    mainCall(pageSelected);
+    mainCall(pageSelected, 4);
     setSelected(pageSelected);
   };
 
   const searchFilter = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setSelected(1);
-    mainCall(1);
+    mainCall(1, 4);
   };
   const NavigateCreateKey = (
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -82,9 +82,9 @@ export default function KeyList() {
     // console.log(newState);
     const pageCount = keyList.data?.TotalCount;
     if (newState.length === 0 && pageCount !== 1) {
-      mainCall(selected - 1);
+      mainCall(selected - 1, 4);
       setSelected(selected - 1);
-    } else mainCall(selected);
+    } else mainCall(selected, 4);
 
     setDataList({
       list: [...newState],

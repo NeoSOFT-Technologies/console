@@ -9,6 +9,7 @@ import AuthenticationToken from "./authentication-token/AuthenticationToken";
 import MutualTLS from "./mutual-tls/MutualTLS";
 
 import OpenIdConnect from "./open-id-connect/OpenIdConnect";
+import OpenKeyless from "./open-keyless/OpenKeyLess";
 // import { setForm } from "../../../../../../store/features/api/update/slice";
 
 export default function Authentication() {
@@ -55,6 +56,7 @@ export default function Authentication() {
                             <Form.Select
                               aria-label="Default select example"
                               name="AuthType"
+                              value={state.data.form.AuthType}
                               // onClick={handleFormSelectChange}
                               onChange={(e: any) => handleFormSelectChange(e)}
                             >
@@ -64,10 +66,10 @@ export default function Authentication() {
                               <option id="mutualTls" value="mutual">
                                 Mutual TLS
                               </option>
-                              <option id="oidc" value="OpenId">
+                              <option id="openid" value="openid">
                                 OpenId Connect
                               </option>
-                              <option id="keyless" value="Keyless">
+                              <option id="keyless" value="keyless">
                                 Open (KeyLess)
                               </option>
                             </Form.Select>
@@ -79,11 +81,13 @@ export default function Authentication() {
                     <div>
                       {state.data.form.AuthType === "standard" ? (
                         <AuthenticationToken />
-                      ) : state.data.form.AuthType === "OpenId" ? (
+                      ) : state.data.form.AuthType === "openid" ? (
                         <OpenIdConnect />
                       ) : state.data.form.EnableMTLS === true ||
                         state.data.form.AuthType === "mutual" ? (
                         <MutualTLS />
+                      ) : state.data.form.AuthType === "keyless" ? (
+                        <OpenKeyless />
                       ) : (
                         <></>
                       )}
