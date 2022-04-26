@@ -1,4 +1,5 @@
 import React from "react";
+import { Accordion, AccordionButton } from "react-bootstrap";
 import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import { getApiById } from "../../../../../../../store/features/gateway/api/update/slice";
 import { setForm } from "../../../../../../../store/features/gateway/policy/create/slice";
@@ -60,39 +61,15 @@ export default function AccessList() {
   return (
     <>
       <div>
-        <div className="card mb-3">
-          <div className="align-items-center justify-content-around">
-            <div className="accordion" id="listAccordionSetting">
-              <div className="accordion-item">
-                <h2 className="accordion-header" id="headingOne">
-                  <button
-                    className="accordion-button"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#AccessListcollapseOne"
-                    aria-expanded="true"
-                    aria-controls="AccessListcollapseOne"
-                  >
-                    Add API Access Rights
-                  </button>
-                </h2>
-                <div
-                  id="AccessListcollapseOne"
-                  className="accordion-collapse collapse show"
-                  aria-labelledby="headingOne"
-                  data-bs-parent="#listAccordionSetting"
-                >
-                  <div className="accordion-body">
-                    <ApiAccessList
-                      state={state}
-                      handleAddClick={handleAddClick}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Accordion defaultActiveKey="0">
+          <Accordion.Item eventKey="0">
+            <AccordionButton>Add API Access Rights</AccordionButton>
+
+            <Accordion.Body>
+              <ApiAccessList state={state} handleAddClick={handleAddClick} />
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
       </div>
     </>
   );

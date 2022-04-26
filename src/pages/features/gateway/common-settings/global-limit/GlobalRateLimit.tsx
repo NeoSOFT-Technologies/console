@@ -232,261 +232,257 @@ export default function GlobalRateLimit(props: IProps) {
         <div className="card">
           <Accordion defaultActiveKey="0">
             <Accordion.Item eventKey="0">
-              <Accordion.Header>Global Limits and Quota</Accordion.Header>
+              <Accordion.Header>Global Limits and Quotaaaa</Accordion.Header>
 
               <Accordion.Body>
                 <Row>
-                  <Row>
-                    <Col md="4">
-                      {props.current === "globalKey-applyPolicy" ? (
-                        <Form.Group className="mb-3">
-                          <Form.Label className="mt-2">
-                            <b>Rate Limiting</b>
-                          </Form.Label>
-                          <div
-                            className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2"
-                            style={{ background: "#ADD8E6" }} // #96DED1
-                          >
-                            Rate Limit {props.message}
-                          </div>
-                        </Form.Group>
-                      ) : (
-                        <Form.Group className="mb-3">
-                          <Form.Label className="mt-2">
-                            <b>Rate Limiting</b>
-                          </Form.Label>
-                          <Form.Check
-                            type="switch"
-                            id="disableGlobalRate"
-                            name="GlobalLimit.IsDisabled"
-                            label="Disable rate limiting"
-                            // checked={rate}
-                            onChange={(e: any) => setRate(e.target.checked)}
-                          />
-                          <Form.Label className="mt-3">Rate</Form.Label>
-                          <br />
+                  <Col md="4">
+                    {props.current === "globalKey-applyPolicy" ? (
+                      <Form.Group className="mb-3">
+                        <Form.Label className="mt-2">
+                          <b>Rate Limiting</b>
+                        </Form.Label>
+                        <div
+                          className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2"
+                          style={{ background: "#ADD8E6" }} // #96DED1
+                        >
+                          Rate Limit {props.message}
+                        </div>
+                      </Form.Group>
+                    ) : (
+                      <Form.Group className="mb-3">
+                        <Form.Label className="mt-2">
+                          <b>Rate Limiting</b>
+                        </Form.Label>
+                        <Form.Check
+                          type="switch"
+                          id="disableGlobalRate"
+                          name="GlobalLimit.IsDisabled"
+                          label="Disable rate limiting"
+                          // checked={rate}
+                          onChange={(e: any) => setRate(e.target.checked)}
+                        />
+                        <Form.Label className="mt-3">Rate</Form.Label>
+                        <br />
 
-                          <Form.Control
-                            className="mt-2"
-                            type="text"
-                            id="rate"
-                            placeholder="Enter Request per period"
-                            // onChange={(e: any) => validateForm(e)}
-                            onChange={(e: any) => handlerateclick(e)}
-                            name="rate"
-                            isInvalid={
-                              props.current === "policy"
-                                ? !!state.data.errors?.Rate
-                                : !!states.data.errors?.Rate
-                            }
-                            isValid={
-                              props.current === "policy"
-                                ? !state.data.errors?.Rate
-                                : !states.data.errors?.Rate
-                            }
-                            disabled={rate}
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {" "}
-                            {props.current === "policy"
-                              ? state.data.errors?.Rate
-                              : states.data.errors?.Rate}
-                          </Form.Control.Feedback>
-                          <Form.Label className="mt-3">
-                            Per (Seconds)
-                          </Form.Label>
-                          <br />
-                          <Form.Control
-                            className="mt-2"
-                            type="text"
-                            id="per"
-                            placeholder="Enter time"
-                            onChange={(e: any) => handlerateclick(e)}
-                            name="per"
-                            isInvalid={
-                              props.current === "policy"
-                                ? !!state.data.errors?.Per
-                                : !!states.data.errors?.Per
-                            }
-                            isValid={
-                              props.current === "policy"
-                                ? !state.data.errors?.Per
-                                : !states.data.errors?.Per
-                            }
-                            disabled={rate}
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {props.current === "policy"
-                              ? state.data.errors?.Per
-                              : states.data.errors?.Per}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      )}
-                    </Col>
-                    <Col md="4">
-                      {props.current === "globalKey-applyPolicy" ? (
-                        <Form.Group className="mb-3">
-                          <Form.Label className="mt-2">
-                            <b>Throttling</b>
-                          </Form.Label>
-                          <div
-                            className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2 "
-                            style={{ background: "#ADD8E6" }}
-                          >
-                            Throttling {props.message}
-                          </div>
-                        </Form.Group>
-                      ) : (
-                        <Form.Group className="mb-3">
-                          <Form.Label className="mt-2">
-                            <b>Throttling</b>
-                          </Form.Label>
-                          <Form.Check
-                            type="switch"
-                            id="disableThrottling"
-                            name="Throttling.IsDisabled"
-                            label="Disable Throttling"
-                            checked={throttle}
-                            onChange={(e: any) => handleThrottleChange(e)}
-                          />
-                          <Form.Label className="mt-3">
-                            Throttle retry limit
-                          </Form.Label>
-                          <br />
-                          <Form.Control
-                            className="mt-2"
-                            type="text"
-                            id="retry"
-                            placeholder={throttleRetry}
-                            name="throttle_retry_limit"
-                            onChange={(e: any) => handlerateclick(e)}
-                            // value={throttleDefault}
-                            isInvalid={
-                              props.current === "policy"
-                                ? !!state.data.errors?.ThrottleRetries
-                                : !!states.data.errors?.ThrottleRetries
-                            }
-                            isValid={
-                              props.current === "policy"
-                                ? !state.data.errors?.ThrottleRetries
-                                : !states.data.errors?.ThrottleRetries
-                            }
-                            disabled={throttle}
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {props.current === "policy"
-                              ? state.data.errors?.ThrottleRetries
-                              : states.data.errors?.ThrottleRetries}
-                          </Form.Control.Feedback>
-                          <Form.Label className="mt-3">
-                            Throttle interval
-                          </Form.Label>
-                          <br />
-                          <Form.Control
-                            className="mt-2"
-                            type="text"
-                            id="interval"
-                            name="throttle_interval"
-                            placeholder={throttleInterval}
-                            onChange={(e: any) => handlerateclick(e)}
-                            isInvalid={
-                              props.current === "policy"
-                                ? !!state.data.errors?.ThrottleInterval
-                                : !!states.data.errors?.ThrottleInterval
-                            }
-                            isValid={
-                              props.current === "policy"
-                                ? !state.data.errors?.ThrottleInterval
-                                : !states.data.errors?.ThrottleInterval
-                            }
-                            disabled={throttle}
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {props.current === "policy"
-                              ? state.data.errors?.ThrottleInterval
-                              : states.data.errors?.ThrottleInterval}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      )}
-                    </Col>
-                    <Col md="4">
-                      {props.current === "globalKey-applyPolicy" ? (
-                        <Form.Group className="mb-3">
-                          <Form.Label className="mt-2">
-                            <b>Usage Quota</b>
-                          </Form.Label>
-                          <div
-                            className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2"
-                            style={{ background: "#ADD8E6" }}
-                          >
-                            Usage Quota {props.message}
-                          </div>
-                        </Form.Group>
-                      ) : (
-                        <Form.Group className="mb-3">
-                          <Form.Label className="mt-2">
-                            <b>Usage Quota</b>
-                          </Form.Label>
-                          <Form.Check
-                            type="switch"
-                            id="unlimitedRequests"
-                            name="unlimitedRequests.IsDisabled"
-                            label="Unlimited requests"
-                            checked={quota}
-                            onChange={(e: any) => handleQuotaChange(e)}
-                          />
-                          <Form.Label className="mt-3">
-                            Max requests per period
-                          </Form.Label>
-                          <br />
-                          <Form.Control
-                            className="mt-2"
-                            type="text"
-                            id="quotaPer"
-                            placeholder={quotaPerPeriod}
-                            onChange={(e: any) => handlerateclick(e)}
-                            name="quota_max"
-                            isInvalid={
-                              props.current === "policy"
-                                ? !!state.data.errors?.Quota
-                                : !!states.data.errors?.Quota
-                            }
-                            isValid={
-                              props.current === "policy"
-                                ? !state.data.errors?.Quota
-                                : !states.data.errors?.Quota
-                            }
-                            disabled={quota}
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {" "}
-                            {props.current === "policy"
-                              ? state.data.errors?.Quota
-                              : states.data.errors?.Quota}
-                          </Form.Control.Feedback>
-                          <Form.Label className="mt-3">
-                            Quota resets every
-                          </Form.Label>
-                          <Form.Select
-                            className="mt-2"
-                            style={{ height: 46 }}
-                            disabled={quota}
-                            name="quota_renews"
-                            onChange={(e: any) => handlerateclick(e)}
-                          >
-                            <option>never</option>
-                            <option>1 hour</option>
-                            <option>6 hour</option>
-                            <option>12 hour</option>
-                            <option>1 week</option>
-                            <option>1 month</option>
-                            <option>6 months</option>
-                            <option>12 months</option>
-                          </Form.Select>
-                        </Form.Group>
-                      )}
-                    </Col>
-                  </Row>
+                        <Form.Control
+                          className="mt-2"
+                          type="text"
+                          id="rate"
+                          placeholder="Enter Request per period"
+                          // onChange={(e: any) => validateForm(e)}
+                          onChange={(e: any) => handlerateclick(e)}
+                          name="rate"
+                          isInvalid={
+                            props.current === "policy"
+                              ? !!state.data.errors?.Rate
+                              : !!states.data.errors?.Rate
+                          }
+                          isValid={
+                            props.current === "policy"
+                              ? !state.data.errors?.Rate
+                              : !states.data.errors?.Rate
+                          }
+                          disabled={rate}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {" "}
+                          {props.current === "policy"
+                            ? state.data.errors?.Rate
+                            : states.data.errors?.Rate}
+                        </Form.Control.Feedback>
+                        <Form.Label className="mt-3">Per (Seconds)</Form.Label>
+                        <br />
+                        <Form.Control
+                          className="mt-2"
+                          type="text"
+                          id="per"
+                          placeholder="Enter time"
+                          onChange={(e: any) => handlerateclick(e)}
+                          name="per"
+                          isInvalid={
+                            props.current === "policy"
+                              ? !!state.data.errors?.Per
+                              : !!states.data.errors?.Per
+                          }
+                          isValid={
+                            props.current === "policy"
+                              ? !state.data.errors?.Per
+                              : !states.data.errors?.Per
+                          }
+                          disabled={rate}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {props.current === "policy"
+                            ? state.data.errors?.Per
+                            : states.data.errors?.Per}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    )}
+                  </Col>
+                  <Col md="4">
+                    {props.current === "globalKey-applyPolicy" ? (
+                      <Form.Group className="mb-3">
+                        <Form.Label className="mt-2">
+                          <b>Throttling</b>
+                        </Form.Label>
+                        <div
+                          className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2 "
+                          style={{ background: "#ADD8E6" }}
+                        >
+                          Throttling {props.message}
+                        </div>
+                      </Form.Group>
+                    ) : (
+                      <Form.Group className="mb-3">
+                        <Form.Label className="mt-2">
+                          <b>Throttling</b>
+                        </Form.Label>
+                        <Form.Check
+                          type="switch"
+                          id="disableThrottling"
+                          name="Throttling.IsDisabled"
+                          label="Disable Throttling"
+                          checked={throttle}
+                          onChange={(e: any) => handleThrottleChange(e)}
+                        />
+                        <Form.Label className="mt-3">
+                          Throttle retry limit
+                        </Form.Label>
+                        <br />
+                        <Form.Control
+                          className="mt-2"
+                          type="text"
+                          id="retry"
+                          placeholder={throttleRetry}
+                          name="throttle_retry_limit"
+                          onChange={(e: any) => handlerateclick(e)}
+                          // value={throttleDefault}
+                          isInvalid={
+                            props.current === "policy"
+                              ? !!state.data.errors?.ThrottleRetries
+                              : !!states.data.errors?.ThrottleRetries
+                          }
+                          isValid={
+                            props.current === "policy"
+                              ? !state.data.errors?.ThrottleRetries
+                              : !states.data.errors?.ThrottleRetries
+                          }
+                          disabled={throttle}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {props.current === "policy"
+                            ? state.data.errors?.ThrottleRetries
+                            : states.data.errors?.ThrottleRetries}
+                        </Form.Control.Feedback>
+                        <Form.Label className="mt-3">
+                          Throttle interval
+                        </Form.Label>
+                        <br />
+                        <Form.Control
+                          className="mt-2"
+                          type="text"
+                          id="interval"
+                          name="throttle_interval"
+                          placeholder={throttleInterval}
+                          onChange={(e: any) => handlerateclick(e)}
+                          isInvalid={
+                            props.current === "policy"
+                              ? !!state.data.errors?.ThrottleInterval
+                              : !!states.data.errors?.ThrottleInterval
+                          }
+                          isValid={
+                            props.current === "policy"
+                              ? !state.data.errors?.ThrottleInterval
+                              : !states.data.errors?.ThrottleInterval
+                          }
+                          disabled={throttle}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {props.current === "policy"
+                            ? state.data.errors?.ThrottleInterval
+                            : states.data.errors?.ThrottleInterval}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    )}
+                  </Col>
+                  <Col md="4">
+                    {props.current === "globalKey-applyPolicy" ? (
+                      <Form.Group className="mb-3">
+                        <Form.Label className="mt-2">
+                          <b>Usage Quota</b>
+                        </Form.Label>
+                        <div
+                          className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2"
+                          style={{ background: "#ADD8E6" }}
+                        >
+                          Usage Quota {props.message}
+                        </div>
+                      </Form.Group>
+                    ) : (
+                      <Form.Group className="mb-3">
+                        <Form.Label className="mt-2">
+                          <b>Usage Quota</b>
+                        </Form.Label>
+                        <Form.Check
+                          type="switch"
+                          id="unlimitedRequests"
+                          name="unlimitedRequests.IsDisabled"
+                          label="Unlimited requests"
+                          checked={quota}
+                          onChange={(e: any) => handleQuotaChange(e)}
+                        />
+                        <Form.Label className="mt-3">
+                          Max requests per period
+                        </Form.Label>
+                        <br />
+                        <Form.Control
+                          className="mt-2"
+                          type="text"
+                          id="quotaPer"
+                          placeholder={quotaPerPeriod}
+                          onChange={(e: any) => handlerateclick(e)}
+                          name="quota_max"
+                          isInvalid={
+                            props.current === "policy"
+                              ? !!state.data.errors?.Quota
+                              : !!states.data.errors?.Quota
+                          }
+                          isValid={
+                            props.current === "policy"
+                              ? !state.data.errors?.Quota
+                              : !states.data.errors?.Quota
+                          }
+                          disabled={quota}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {" "}
+                          {props.current === "policy"
+                            ? state.data.errors?.Quota
+                            : states.data.errors?.Quota}
+                        </Form.Control.Feedback>
+                        <Form.Label className="mt-3">
+                          Quota resets every
+                        </Form.Label>
+                        <Form.Select
+                          className="mt-2"
+                          style={{ height: 46 }}
+                          disabled={quota}
+                          name="quota_renews"
+                          onChange={(e: any) => handlerateclick(e)}
+                        >
+                          <option>never</option>
+                          <option>1 hour</option>
+                          <option>6 hour</option>
+                          <option>12 hour</option>
+                          <option>1 week</option>
+                          <option>1 month</option>
+                          <option>6 months</option>
+                          <option>12 months</option>
+                        </Form.Select>
+                      </Form.Group>
+                    )}
+                  </Col>
                 </Row>
               </Accordion.Body>
             </Accordion.Item>
