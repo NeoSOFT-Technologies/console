@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { commonLoginService } from "../../services";
+import { commonLoginService } from "../../services/tenant";
 import error from "../../utils/error";
 
 interface IConditions {
@@ -30,6 +30,7 @@ export const commonLogin = createAsyncThunk(
       const errorMessage = error(error_);
       throw new Error(errorMessage);
     }
+    // return true;
   }
 );
 

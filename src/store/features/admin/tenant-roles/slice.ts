@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { tenantRolesService } from "../../../../services";
+import { tenantRolesService } from "../../../../services/tenant";
 import { ITenantRolesState } from "../../../../types/index";
 import error from "../../../../utils/error";
 

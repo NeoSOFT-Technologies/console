@@ -104,6 +104,7 @@ export default function Login() {
         loginVerification.error
       );
       ToastAlert("Incorrect Credentials!", "warning");
+      navigate("/statistics");
     }
   }, [loginVerification.loginVerified, loginVerification.error]);
 

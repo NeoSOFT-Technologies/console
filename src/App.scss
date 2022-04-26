@@ -1,0 +1,111 @@
+html {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+@import "./styles/theme/variables";
+@import "~compass-mixins/lib/compass";
+@import "~compass-mixins/lib/animate";
+@import "./styles/theme/fonts";
+@import "./styles/theme/functions";
+@import "~bootstrap/scss/bootstrap";
+
+/* === Icon fonts === */
+@import "~@mdi/font/scss/materialdesignicons.scss";
+
+/* === Template mixins === */
+@import "./styles/theme/mixins/animation";
+@import "./styles/theme/mixins/badges";
+@import "./styles/theme/mixins/buttons";
+@import "./styles/theme/mixins/misc";
+@import "./styles/theme/mixins/color-functions";
+@import "./styles/theme/mixins/cards";
+@import "./styles/theme/mixins/blockqoute";
+@import "./styles/theme/mixins/popovers";
+@import "./styles/theme/mixins/tooltips";
+@import "./styles/theme/mixins/no-ui-slider";
+
+/* === Core Styles === */
+@import "./styles/theme/background";
+@import "./styles/theme/typography";
+@import "./styles/theme/reset";
+@import "./styles/theme/responsive";
+@import "./styles/theme/misc";
+@import "./styles/theme/utilities";
+@import "./styles/theme/demo";
+@import "./styles/theme/spinner";
+@import "./styles/theme/dashboard";
+
+/* === Components === */
+
+@import "./styles/theme/components/widgets";
+@import "./styles/theme/components/forms";
+@import "./styles/theme/components/checkbox-radio";
+@import "./styles/theme/components/icons";
+@import "./styles/theme/components/tables";
+@import "./styles/theme/components/accordions";
+@import "./styles/theme/components/buttons";
+@import "./styles/theme/components/breadcrumbs";
+@import "./styles/theme/components/badges";
+@import "./styles/theme/components/cards";
+@import "./styles/theme/components/preview";
+@import "./styles/theme/components/tooltips";
+@import "./styles/theme/components/user-profile";
+@import "./styles/theme/components/popovers";
+@import "./styles/theme/components/lists";
+@import "./styles/theme/components/bootstrap-progress";
+@import "./styles/theme/components/bootstrap-alerts";
+@import "./styles/theme/components/tabs";
+@import "./styles/theme/components/dropdowns";
+@import "./styles/theme/components/pagination";
+@import "./styles/theme/components/loaders/loaders";
+@import "./styles/theme/components/timeline";
+@import "./styles/theme/components/portfolio";
+@import "./styles/theme/components/pricing-table";
+@import "./styles/theme/components/email/mail-list-container";
+@import "./styles/theme/components/email/mail-sidebar";
+@import "./styles/theme/components/email/message-content";
+@import "./styles/theme/components/todo-list";
+@import "./styles/theme/components/spinner";
+@import "./styles/theme/components/tickets";
+@import "./styles/theme/components/project-list";
+@import "./styles/theme/components/product-tile";
+@import "./styles/theme/components/user-listing";
+@import "./styles/theme/components/landing";
+@import "./styles/theme/components/chats";
+@import "./styles/theme/components/kanban";
+@import "./styles/theme/components/react-table";
+@import "./styles/theme/password";
+@import "./styles/theme/components/landing-screens/auth";
+@import "./styles/theme/components/roleandpermissions.scss";
+
+/* === Plugin Overrides === */
+@import "./styles/theme/components/plugin-overrides/contex-menu";
+@import "./styles/theme/components/plugin-overrides/no-ui-slider";
+@import "./styles/theme/components/plugin-overrides/slick-carousel";
+@import "./styles/theme/components/plugin-overrides/rating";
+@import "./styles/theme/components/plugin-overrides/date-picker";
+@import "./styles/theme/components/plugin-overrides/wizard";
+@import "./styles/theme/components/plugin-overrides/react-bootstrap-table";
+@import "./styles/theme/components/plugin-overrides/sweet-alert";
+@import "./styles/theme/components/plugin-overrides/full-calendar";
+@import "./styles/theme/components/plugin-overrides/react-photo-gallery";
+@import "./styles/theme/components/plugin-overrides/react-tag-autocomplete";
+@import "./styles/theme/components/plugin-overrides/jquery-jvectormap";
+@import "./styles/theme/components/plugin-overrides/react-table";
+
+/* === Layout === */
+@import "./styles/theme/navbar";
+@import "./styles/theme/sidebar";
+@import "./styles/theme/footer";
+@import "./styles/theme/layout";
+@import "./styles/theme/settings-panel";
+
+@import "./styles/helpers/index.scss";
+@import "./styles/layout/index.scss";

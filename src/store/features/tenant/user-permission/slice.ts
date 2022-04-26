@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { userPermissionService } from "../../../../services";
+import { userPermissionService } from "../../../../services/tenant";
 import { IUserPermission } from "../../../../types/index";
 import error from "../../../../utils/error";
 

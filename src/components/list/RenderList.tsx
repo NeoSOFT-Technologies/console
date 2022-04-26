@@ -32,7 +32,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
   const columns: IColumns[] = headings.map((heading) => {
     id += 1;
     return {
-      id: id,
+      id,
       ...heading,
       data: (row: any) => row[heading.data],
       name: heading.name,
@@ -43,7 +43,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     // console.log(props.actions);
     id += 1;
     columns.push({
-      id: id,
+      id,
       name: "Actions",
       formatter: (cell, row) => {
         return h(
@@ -66,7 +66,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     });
   }
   const serverConfigs = {
-    url: url,
+    url,
     data: async (args: any) => {
       const response = await apiFactory().get(`${args.url}`);
       // console.log(args.url, response.data);

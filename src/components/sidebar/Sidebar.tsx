@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Collapse } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import withRouter from "../../WithRouter";
+import adminGatewayRoutes from "../../routes/gateway/admin";
 import adminRoutes from "../../routes/tenants/admin";
 import tenantRoutes from "../../routes/tenants/tenants";
 import userRoutes from "../../routes/tenants/user-routes";
@@ -10,6 +11,7 @@ import { RootState } from "../../store";
 import { useAppSelector } from "../../store/hooks";
 import { IUserDataState } from "../../types";
 import "./Sidebar.scss";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 interface IConditions {
   data: string;
@@ -41,16 +43,16 @@ export const Sidebar = () => {
   useEffect(() => {
     if (user.data && loginType.data === "admin") {
       setRoutes(adminRoutes);
-      setGatewayRoutes(adminRoutes);
+      setGatewayRoutes(adminGatewayRoutes);
       setSaasRoutes(adminRoutes);
     } else if (user.data && loginType.data === "tenant") {
       setRoutes(tenantRoutes);
-      setGatewayRoutes(adminRoutes);
-      setSaasRoutes(adminRoutes);
+      setGatewayRoutes(adminGatewayRoutes);
+      setSaasRoutes(tenantRoutes);
     } else if (user.data && loginType.data === "user") {
       setRoutes(userRoutes);
-      setGatewayRoutes(adminRoutes);
-      setSaasRoutes(adminRoutes);
+      setGatewayRoutes(adminGatewayRoutes);
+      setSaasRoutes(userRoutes);
     }
   }, [user.data]);
 
@@ -99,7 +101,7 @@ export const Sidebar = () => {
                     setSubMenu({ ...subMenu, logger: !subMenu.logger })
                   }
                 >
-                  {loginType.data}
+                  Tenant
                 </span>
                 <i
                   className={` ${

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { tenantPermissionsService } from "../../../../services";
+import { tenantPermissionsService } from "../../../../services/tenant";
 import { ITenantPermissionsState } from "../../../../types/index";
 import error from "../../../../utils/error";
 
