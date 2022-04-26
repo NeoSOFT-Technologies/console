@@ -1,6 +1,7 @@
 import { h } from "gridjs";
 import { Grid } from "gridjs-react";
 import React, { useEffect } from "react";
+import { Accordion } from "react-bootstrap";
 import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 import { setForms } from "../../../../../../../../store/features/gateway/key/create/slice";
 import { IPolicyListState } from "../../../../../../../../store/features/gateway/policy/list";
@@ -97,38 +98,16 @@ export default function PolicyList() {
   return (
     <div>
       <div className="card mb-3">
-        <div>
-          <div className="align-items-center justify-content-around">
-            <div className="accordion" id="accordionSetting">
-              <div className="accordion-item">
-                <h2 className="accordion-header" id="headingOne">
-                  <button
-                    className="accordion-button"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseOne"
-                    aria-expanded="true"
-                    aria-controls="collapseOne"
-                  >
-                    Apply Policy
-                  </button>
-                </h2>
-                <div
-                  id="collapseOne"
-                  className="accordion-collapse collapse show"
-                  aria-labelledby="headingOne"
-                  data-bs-parent="#accordionSetting"
-                >
-                  <div className="accordion-body">
-                    <div>
-                      <Grid {...gridTable.props} />
-                    </div>
-                  </div>
-                </div>
+        <Accordion defaultActiveKey="0">
+          <Accordion.Item eventKey="0">
+            <Accordion.Header>Apply Policy</Accordion.Header>
+            <Accordion.Body>
+              <div>
+                <Grid {...gridTable.props} />
               </div>
-            </div>
-          </div>
-        </div>
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
       </div>
     </div>
   );
