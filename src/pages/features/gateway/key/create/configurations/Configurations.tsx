@@ -87,14 +87,15 @@ function Configurations() {
                     isValid={!state.data.errors?.Expires}
                     onChange={(e: any) => validateForm(e)}
                   >
-                    <option value="-1">Select an option</option>
+                    <option value="-1">Select expiry</option>
                     <option value="0">Do not expire key</option>
-                    <option value="1">1 hour</option>
-                    <option value="2">6 hours</option>
-                    <option value="3">12 hours</option>
-                    <option value="4">24 hours</option>
-                    <option value="5">1 week</option>
-                    <option value="6">2 weeks</option>
+                    <option value="3600">1 hour</option>
+                    <option value="21600">6 hours</option>
+                    <option value="43200">12 hours</option>
+                    <option value="86400">24 hours</option>
+                    <option value="604800">1 week</option>
+                    <option value="1209600">2 weeks</option>
+                    <option value="2592000">1 month</option>
                   </Form.Select>
                   <Form.Control.Feedback type="invalid">
                     {state.data.errors?.Expires}

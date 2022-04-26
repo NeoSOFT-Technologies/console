@@ -1,6 +1,5 @@
 import React from "react";
 import { useAppSelector } from "../../../../../../store/hooks";
-// import { useAppSelector } from "../../../../../store/hooks";
 import GlobalLimit from "../../../common-settings/global-limit/GlobalLimit";
 import AccessList from "./api-access-rights/AccessList";
 import ApiAccess from "./api-access/ApiAccess";
@@ -17,7 +16,7 @@ export default function AccessRights() {
               <GlobalLimit isDisabled={false} msg={""} />
               <Partitions />
 
-              {state.data.form.ApIs?.length > 0 ? <ApiAccess /> : <></>}
+              {state.data.form.APIs?.length > 0 ? <ApiAccess /> : <></>}
             </div>
           </div>
         </div>

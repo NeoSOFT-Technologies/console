@@ -47,7 +47,7 @@ export default function GlobalLimitApi(props: IProps) {
     let fieldValue;
     const apisList =
       props.current === "policy"
-        ? [...props.state?.data.form.ApIs!]
+        ? [...props.state?.data.form.APIs!]
         : [...props.keystate?.data.form.AccessRights!];
     const fieldName = event.target.getAttribute("name");
     if (fieldName === "quota_renews") {

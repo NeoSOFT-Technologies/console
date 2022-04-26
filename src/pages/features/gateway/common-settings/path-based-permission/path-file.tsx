@@ -29,7 +29,7 @@ export default function Ipathpermission(props: IProps) {
 
   const length =
     props.current === "policy"
-      ? state.data.form.ApIs.length
+      ? state.data.form.APIs.length
       : keysstate.data.form.AccessRights.length;
 
   const handleAddclick = () => {
@@ -37,7 +37,7 @@ export default function Ipathpermission(props: IProps) {
     let filtercheck = "false";
     const apisList =
       props.current === "policy"
-        ? [...props.policystate?.data.form.ApIs!]
+        ? [...props.policystate?.data.form.APIs!]
         : [...props.state?.data.form.AccessRights!];
     const allowedList = [...apisList[value].AllowedUrls!];
 
@@ -91,7 +91,7 @@ export default function Ipathpermission(props: IProps) {
     const value = props.indexdata!;
     const apisList =
       props.current === "policy"
-        ? [...props.policystate?.data.form.ApIs!]
+        ? [...props.policystate?.data.form.APIs!]
         : [...props.state?.data.form.AccessRights!];
     const allowedList = [...apisList[value].AllowedUrls!];
     allowedList.splice(index, 1);
@@ -206,7 +206,7 @@ export default function Ipathpermission(props: IProps) {
               <tbody>
                 {length > 0 ? (
                   (props.current === "policy"
-                    ? (state.data.form.ApIs[props.indexdata!]
+                    ? (state.data.form.APIs[props.indexdata!]
                         .AllowedUrls as any[])
                     : keysstate.data.form.AccessRights[props.indexdata!]
                         .AllowedUrls
