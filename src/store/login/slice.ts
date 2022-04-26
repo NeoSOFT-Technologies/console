@@ -26,11 +26,9 @@ export const commonLogin = createAsyncThunk(
       await commonLoginService(conditions);
       return true;
     } catch (error_) {
-      // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
       throw new Error(errorMessage);
     }
-    // return true;
   }
 );
 
@@ -51,7 +49,6 @@ const slice = createSlice({
     builder.addCase(commonLogin.rejected, (state, action: any) => {
       state.loading = false;
       const errorMessage = action.error.message.split(" ");
-      // console.log(Number(errorMessage[errorMessage.length - 1]), action);
       state.error = errorMessage[errorMessage.length - 1];
     });
   },

@@ -78,12 +78,10 @@ function AppRoutes() {
         <Route path="/error-pages/error-401" element={<Error401 />} />
         <Route path="/error" element={<Error />} />
         <Route path="/statistics" element={<StatisticsDashboard />} />
-        {/** **********************ADMIN ROUTES***********************/}
         <Route path="/tenant">
           <Route path="" element={<StatisticsDashboard />} />
           <Route path="admin">
             <Route path="" element={<StatisticsDashboard />} />
-
             <Route
               path="dashboard"
               element={
@@ -117,8 +115,6 @@ function AppRoutes() {
               }
             />
           </Route>
-          {/**********************************************************/}
-          {/** ********************TENANT ROUTES*************************/}
           <Route path="tenant">
             <Route path="" element={<StatisticsDashboard />} />
             <Route
@@ -163,8 +159,6 @@ function AppRoutes() {
               }
             />
           </Route>
-          {/**********************************************************/}
-          {/** ***********************USER ROUTES*********************/}
           <Route path="user">
             <Route path="" element={<StatisticsDashboard />} />
             <Route
@@ -196,10 +190,7 @@ function AppRoutes() {
           <Route path="policies/create" element={<CreatePolicy />} />
           <Route path="apis/update/:id" element={<UpdateApi />} />
         </Route>
-        {/**********************************************************/}
         <Route path="*" element={<Navigate to="/login-page" />} />{" "}
-        {/* redirect if not match any path */}
-        {/*  gateway Routes */}
       </Routes>
     </Suspense>
   );

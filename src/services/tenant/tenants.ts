@@ -11,7 +11,6 @@ export function updateTenantDataService(data: ITenantDetail) {
 }
 
 export function createNewUserService(data: ICreateNewUser) {
-  console.log(data);
   const body = {
     userDetails: {
       userName: data.userName,

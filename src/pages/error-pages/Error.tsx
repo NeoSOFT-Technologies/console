@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { errorMsg } from "../../resources/constants";
+import { errorMsg } from "../../resources/tenant/constants";
 import { RootState } from "../../store";
 import { useAppSelector } from "../../store/hooks";
 import "./error.scss";

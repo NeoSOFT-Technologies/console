@@ -40,7 +40,6 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
   });
 
   if (props.actions !== undefined) {
-    // console.log(props.actions);
     id += 1;
     columns.push({
       id: id,
@@ -69,7 +68,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     url: url,
     data: async (args: any) => {
       const response = await apiFactory().get(`${args.url}`);
-      // console.log(args.url, response.data);
+
       return { data: response.data.data, total: response.data.count };
     },
     // eslint-disable-next-line unicorn/no-thenable

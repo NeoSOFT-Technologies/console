@@ -7,7 +7,7 @@ import {
   regexForName,
   regexForDatabaseName,
   regexForDescription,
-} from "../../../../../resources/constants";
+} from "../../../../../resources/tenant/constants";
 import { RootState } from "../../../../../store";
 import {
   IUpdateTenantState,

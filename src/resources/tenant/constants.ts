@@ -57,3 +57,4 @@ export const errorMsg = {
   "510": "Not Extended",
   "511": "Network Authentication Required",
 };
+export const circle = `${process.env.REACT_APP_HOST}/global/images/dashboard/circle.svg`;

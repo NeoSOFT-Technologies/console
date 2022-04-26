@@ -16,7 +16,6 @@ export const getTenantPermissions = createAsyncThunk(
       const response = await tenantPermissionsService(tenantName);
       return response.data;
     } catch (error_) {
-      // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
       throw new Error(errorMessage);
     }
@@ -38,7 +37,7 @@ const slice = createSlice({
     });
     builder.addCase(getTenantPermissions.rejected, (state, action: any) => {
       state.loading = false;
-      // action.payload contains error information
+
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];
     });

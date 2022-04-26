@@ -4,13 +4,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Spinner from "../../components/loader/Loader";
 import PasswordButtons from "../../components/password-field/Password";
 import { ToastAlert } from "../../components/toast-alert/toast-alert";
+import { logo } from "../../resources/tenant/images";
 // import { regexForEmail } from "../../resources/constants";
-import { logo } from "../../resources/images";
 import { RootState } from "../../store";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { checkLoginType, ILoginTypeState } from "../../store/login-type/slice";
 import { commonLogin, ITokenState } from "../../store/login/slice";
 import { getUserData } from "../../store/user-data/slice";
+
 import { IUserDataState, ILogin } from "../../types";
 
 export default function Login() {

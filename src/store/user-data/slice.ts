@@ -40,10 +40,8 @@ export const getUserData = createAsyncThunk(
           }
           break;
       }
-      // console.log(response);
       return response?.data;
     } catch (error_) {
-      // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
       throw new Error(errorMessage);
     }
@@ -61,13 +59,11 @@ const slice = createSlice({
       state.error = undefined;
     });
     builder.addCase(getUserData.fulfilled, (state, action) => {
-      // console.log("in fullfilled xyz");
       state.loading = false;
-      // console.log(action.payload);
+
       state.data = action.payload;
     });
     builder.addCase(getUserData.rejected, (state, action: any) => {
-      // console.log("in rejected");
       state.loading = false;
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];
