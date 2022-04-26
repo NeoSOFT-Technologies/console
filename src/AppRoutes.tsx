@@ -77,7 +77,6 @@ function AppRoutes() {
         <Route path="/error-pages/error-500" element={<Error500 />} />
         <Route path="/error-pages/error-401" element={<Error401 />} />
         <Route path="/error" element={<Error />} />
-        <Route path="/statistics" element={<StatisticsDashboard />} />
         <Route path="/tenant">
           <Route path="" element={<StatisticsDashboard />} />
           <Route path="admin">

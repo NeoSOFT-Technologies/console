@@ -5,7 +5,6 @@ import Spinner from "../../components/loader/Loader";
 import PasswordButtons from "../../components/password-field/Password";
 import { ToastAlert } from "../../components/toast-alert/toast-alert";
 import { logo } from "../../resources/tenant/images";
-// import { regexForEmail } from "../../resources/constants";
 import { RootState } from "../../store";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { checkLoginType, ILoginTypeState } from "../../store/login-type/slice";
@@ -63,30 +62,32 @@ export default function Login() {
     }
   };
 
-  const setLoginType = (a: string) => {
-    dispatch(checkLoginType(a));
-  };
-
-  useEffect(() => {
-    console.log(formdata);
-  });
+  // useEffect(() => {
+  //   console.log(formdata);
+  // });
 
   useEffect(() => {
     const useQuery = () => new URLSearchParams(location.search);
     const query = useQuery();
     const name = query.get("tenant");
-    console.log(name);
-    if (name && name?.length > 0) {
-      console.log("test");
+    console.log("useEffect ~ name", query, name);
+    if (name !== null) {
       setFormData({ ...formdata, tenantName: name });
-      setLoginType("tenant");
+      dispatch(checkLoginType("tenant"));
     } else {
-      setFormData({
-        tenantName: "",
-        userName: "",
-        password: "",
-      });
+      setFormData({ ...formdata, tenantName: "" });
+      dispatch(checkLoginType("admin"));
     }
+    // if (name && name?.length > 0) {
+    //   setFormData({ ...formdata, tenantName: name });
+    //   dispatch(checkLoginType("tenant"));
+    // } else {
+    //   setFormData({
+    //     tenantName: "",
+    //     userName: "",
+    //     password: "",
+    //   });
+    // }
   }, [location]);
 
   useEffect(() => {
@@ -95,13 +96,6 @@ export default function Login() {
       !loginVerification.error &&
       !loginVerification.loading
     ) {
-      console.log(
-        "in  creds loginVerification",
-        loginVerification.loginVerified,
-        !loginVerification.error,
-        !loginVerification.loading
-      );
-
       dispatch(
         getUserData({
           userName: formdata.userName,
@@ -114,16 +108,13 @@ export default function Login() {
       loginVerification.error &&
       !loginVerification.loading
     ) {
-      console.log(
-        "in incorrect creds loginVerification",
-        loginVerification.error
-      );
       ToastAlert("Incorrect Credentials!", "warning");
     }
   }, [loginVerification.loginVerified, loginVerification.error]);
 
   const validate = () => {
     let valid = false;
+    console.log(formdata, loginType.data);
     switch (loginType.data) {
       case "admin":
         valid = !(
@@ -131,10 +122,6 @@ export default function Login() {
         );
         break;
       case "tenant":
-        valid = !(
-          formdata.tenantName.length === 0 || formdata.password.length === 0
-        );
-        break;
       case "user":
         valid = !(
           formdata.userName.length === 0 ||
@@ -151,6 +138,9 @@ export default function Login() {
       ToastAlert("Logged In", "success");
       navigate("/tenant");
     }
+    if (!user.loading && user.error && loginType.data) {
+      ToastAlert(`Could not login , error ${user.error}`, "warning");
+    }
   }, [user.data, user.error]);
 
   const handleSubmit = async () => {
@@ -158,7 +148,6 @@ export default function Login() {
       await dispatch(commonLogin({ ...formdata }));
     } else {
       ToastAlert("Please fill all the fields", "error");
-      // throw new Error("Please fill all the fields ");
     }
   };
 
