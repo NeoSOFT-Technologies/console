@@ -19,7 +19,7 @@ export default function Error404() {
             </div>
             <div className="row mt-5">
               <div className="col-12 text-center mt-xl-2">
-                <Link className="text-white font-weight-medium" to="/dashboard">
+                <Link className="text-white font-weight-medium" to="/tenant">
                   Back to home
                 </Link>
               </div>

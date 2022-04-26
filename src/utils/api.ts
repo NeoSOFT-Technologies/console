@@ -12,7 +12,7 @@ const defaultGatewayUrl =
 const getDefaultPath = () => {
   let baseUrl = "";
   const currentURL = window.location.pathname.split("/");
-  // console.log(currentURL[1]);
+
   switch (currentURL[1]) {
     case "login-page":
     case "tenant":
@@ -73,11 +73,9 @@ const apiFactory = (baseUrl: string = getDefaultPath(), header = {}) => {
 
   service.interceptors.response.use(
     (res) => {
-      // console.log(" ApiFactory ~ res", res);
       return res;
     },
     async (err) => {
-      // console.log(err.config, err);
       const originalConfig = err.config;
 
       if (
@@ -94,16 +92,13 @@ const apiFactory = (baseUrl: string = getDefaultPath(), header = {}) => {
           });
           const accessToken = rs.data.access_token;
           tokenService.updateLocalAccessToken(accessToken);
-          // console.log("inside refresh tooken");
+
           return service(originalConfig);
         } catch (_error) {
           throw new Error(error(_error));
         }
       }
       throw err;
-      // throw axios.isAxiosError(err) && err.response
-      //   ? (err as AxiosError)
-      //   : (err as Error);
     }
   );
 

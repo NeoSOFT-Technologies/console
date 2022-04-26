@@ -1,6 +1,6 @@
 import React from "react";
 import { Dropdown } from "react-bootstrap";
-import { logo, logo_mini } from "../../resources/images";
+import { logo, logo_mini } from "../../resources/tenant/images";
 import { useAppDispatch } from "../../store/hooks";
 import { commonLogout } from "../../store/logout/slice";
 

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import RenderList from "../../../../../components/list/RenderList";
-import { requestUserListURL } from "../../../../../resources/constants";
+import { requestUserListURL } from "../../../../../resources/tenant/constants";
 import { deleteUserReset } from "../../../../../store/features/tenant/delete-user/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
 

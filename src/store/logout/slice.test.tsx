@@ -1,4 +1,4 @@
-import mockApi from "../../resources/testconfig";
+import mockApi from "../../resources/tenant/testconfig";
 import store from "../index";
 import { commonLogout } from "./slice";
 

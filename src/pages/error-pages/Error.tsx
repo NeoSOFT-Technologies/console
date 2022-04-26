@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { errorMsg } from "../../resources/constants";
+import { errorMsg } from "../../resources/tenant/constants";
 import { RootState } from "../../store";
 import { useAppSelector } from "../../store/hooks";
 import "./error.scss";
@@ -12,13 +12,13 @@ export default function Error() {
   const backToHome = () => {
     switch (loginType.data) {
       case "admin":
-        navigate("/admin/dashboard");
+        navigate("/tenant/admin/dashboard");
         break;
       case "tenant":
-        navigate("/tenant/dashboard");
+        navigate("/tenant/tenant/dashboard");
         break;
       case "user":
-        navigate("/user/dashboard");
+        navigate("/tenant/user/dashboard");
         break;
       default:
         navigate("/login-page");
