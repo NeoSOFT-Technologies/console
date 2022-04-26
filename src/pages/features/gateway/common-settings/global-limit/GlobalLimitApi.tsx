@@ -2,23 +2,36 @@ import React, { useState } from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
 import Spinner from "../../../../../components/loader/Loader";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
+import { setForms } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
 import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 
 interface IProps {
-  state?: IKeyCreateState | IPolicyCreateState;
+  state?: IPolicyCreateState;
+  keystate?: IKeyCreateState;
   index?: number;
+  current: string;
 }
 
 export default function GlobalLimitApi(props: IProps) {
   const dispatch = useAppDispatch();
   const states = useAppSelector((RootState) => RootState.createKeyState);
-  console.log(states, props);
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
   );
-
+  const [Limits, setLimits] = useState<any>({
+    rate: 0,
+    per: 0,
+    throttle_interval: 0,
+    throttle_retry_limit: 0,
+    max_query_depth: 0,
+    quota_max: 0,
+    quota_renews: 0,
+    quota_remaining: 0,
+    quota_renewal_rate: 0,
+    set_by_policy: false,
+  });
   const [rate, setRate] = useState(false);
   const [throttle, setThrottle] = useState(true);
   const [quota, setQuota] = useState(true);
@@ -28,13 +41,59 @@ export default function GlobalLimitApi(props: IProps) {
   );
   const [quotaPerPeriod, setQuotaPerPeriod] = useState("Unlimited");
 
-  const [rateValue, setRateValue] = useState("");
-  const [perValue, setPerValue] = useState("");
-  const [retryValue, setRetryValue] = useState("");
-  const [intervalValue, setIntervalValue] = useState("");
-  const [maxQuotaValue, setMaxQuotaValue] = useState("");
-  const [quotaResetValue, setQuotaResetValue] = useState("");
+  const handlerateclick = (event: any) => {
+    event.preventDefault();
+    const value = props.index!;
+    let fieldValue;
+    const apisList =
+      props.current === "policy"
+        ? [...props.state?.data.form.ApIs!]
+        : [...props.keystate?.data.form.AccessRights!];
+    const fieldName = event.target.getAttribute("name");
+    if (fieldName === "quota_renews") {
+      switch (event.target.value) {
+        case "1 hour":
+          fieldValue = 3600;
+          console.log(fieldValue);
+          break;
+        case "6 hour":
+          fieldValue = 21_600;
+          break;
+        case "12 hour":
+          fieldValue = 43_200;
+          break;
+        case "1 week":
+          fieldValue = 604_800;
+          break;
+        case "1 months":
+          fieldValue = 2.628e6;
+          break;
+        case "6 months":
+          fieldValue = 1.577e7;
+          break;
+        case "12 months":
+          fieldValue = 3.154e7;
+          break;
+      }
+    } else {
+      fieldValue = event.target.value;
+    }
+    console.log("ye field values -", fieldValue);
+    const newFormData: any = { ...Limits };
+    newFormData[fieldName] = fieldValue;
+    console.log("ye new form data -", newFormData);
+    setLimits(newFormData);
 
+    apisList[value] = {
+      ...apisList[value],
+      Limit: { ...newFormData },
+    };
+    props.current === "policy"
+      ? dispatch(setForm({ ...state.data.form, ApIs: apisList }))
+      : dispatch(setForms({ ...states.data.form, AccessRights: apisList }));
+  };
+  console.log("checklimit", state.data.form);
+  console.log("checklimit2", states.data.form);
   function handleThrottleChange(evt: any) {
     setThrottle(evt.target.checked);
     if (throttle === false) {
@@ -55,11 +114,11 @@ export default function GlobalLimitApi(props: IProps) {
     }
   }
 
-  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-    setRateValue(event.target.value);
-    dispatch(setForm({ ...state.data.form, [name]: value }));
-  }
+  // function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+  //   const { name, value } = event.target;
+  //   setRateValue(event.target.value);
+  //   dispatch(setForm({ ...state.data.form, [name]: value }));
+  // }
   return (
     <>
       {state.loading === false ? (
@@ -91,10 +150,9 @@ export default function GlobalLimitApi(props: IProps) {
                           className="mt-2"
                           type="text"
                           id="rate"
-                          placeholder="Enter Rate"
-                          value={rateValue}
-                          onChange={(e: any) => validateForm(e)}
-                          name="Rate"
+                          placeholder="Enter Request per period"
+                          onChange={(e: any) => handlerateclick(e)}
+                          name="rate"
                           disabled={rate}
                         />
                         <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
@@ -105,9 +163,8 @@ export default function GlobalLimitApi(props: IProps) {
                           type="text"
                           id="per"
                           placeholder="Enter time"
-                          value={perValue}
-                          onChange={(e: any) => setPerValue(e.target.value)}
-                          name="RateLimit.Per"
+                          onChange={(e: any) => handlerateclick(e)}
+                          name="per"
                           disabled={rate}
                         />
                         <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
@@ -135,9 +192,8 @@ export default function GlobalLimitApi(props: IProps) {
                           type="text"
                           id="retry"
                           placeholder={throttleRetry}
-                          name="Throttling.Retry"
-                          value={retryValue}
-                          onChange={(e: any) => setRetryValue(e.target.value)}
+                          name="throttle_retry_limit"
+                          onChange={(e: any) => handlerateclick(e)}
                           // value={throttleDefault}
                           disabled={throttle}
                         />
@@ -151,12 +207,9 @@ export default function GlobalLimitApi(props: IProps) {
                           className="mt-2"
                           type="text"
                           id="interval"
+                          name="throttle_interval"
                           placeholder={throttleInterval}
-                          value={intervalValue}
-                          onChange={(e: any) =>
-                            setIntervalValue(e.target.value)
-                          }
-                          name="Throttling.Interval"
+                          onChange={(e: any) => handlerateclick(e)}
                           disabled={throttle}
                         />
                       </Form.Group>
@@ -183,11 +236,8 @@ export default function GlobalLimitApi(props: IProps) {
                           type="text"
                           id="quotaPer"
                           placeholder={quotaPerPeriod}
-                          value={maxQuotaValue}
-                          onChange={(e: any) =>
-                            setMaxQuotaValue(e.target.value)
-                          }
-                          name="Quota.Per"
+                          onChange={(e: any) => handlerateclick(e)}
+                          name="quota_max"
                           disabled={quota}
                         />
                         <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
@@ -198,10 +248,8 @@ export default function GlobalLimitApi(props: IProps) {
                           className="mt-2"
                           style={{ height: 46 }}
                           disabled={quota}
-                          value={quotaResetValue}
-                          onChange={(e: any) =>
-                            setQuotaResetValue(e.target.value)
-                          }
+                          name="quota_renews"
+                          onChange={(e: any) => handlerateclick(e)}
                         >
                           <option>never</option>
                           <option>1 hour</option>

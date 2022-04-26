@@ -16,11 +16,11 @@ export default function PolicyList() {
   );
   const StateKey = useAppSelector((RootState) => RootState.createKeyState);
   const dispatch = useAppDispatch();
-  const mainCall = async (currentPage: number) => {
-    dispatch(getPolicyList({ currentPage }));
+  const mainCall = async (currentPage: number, pageSize: number) => {
+    dispatch(getPolicyList({ currentPage, pageSize }));
   };
   useEffect(() => {
-    mainCall(1);
+    mainCall(1, 100_000);
   }, []);
   const handleAddClick = (Id: any) => {
     console.log("policyList", StateKey.data?.form.Policies);

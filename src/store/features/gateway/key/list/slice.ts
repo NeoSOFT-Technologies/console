@@ -6,6 +6,7 @@ import error from "../../../../../utils/error";
 
 interface IConditions {
   currentPage: number;
+  pageSize: number;
 }
 
 const initialState: IKeyListState = {
@@ -17,9 +18,9 @@ const initialState: IKeyListState = {
 export const getKeyList = createAsyncThunk(
   "key/list",
   async (conditions: IConditions) => {
-    const { currentPage } = conditions;
+    const { currentPage, pageSize } = conditions;
     try {
-      const response = await keyListService(currentPage);
+      const response = await keyListService(currentPage, pageSize);
       return response.data;
     } catch (error_) {
       const myError = error_ as Error | AxiosError;
@@ -42,7 +43,9 @@ const slice = createSlice({
       state.loading = false;
       state.data = {
         Keys: action.payload.Data.Keys,
-        TotalCount: Math.ceil(action.payload.TotalCount / 3),
+        TotalCount: Math.ceil(
+          action.payload.TotalCount / action.payload.PageSize
+        ),
       };
     });
     builder.addCase(getKeyList.rejected, (state, action) => {
