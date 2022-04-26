@@ -6,7 +6,6 @@ import App from "./App";
 import ErrorBoundary from "./components/error-boundry";
 import * as serviceWorker from "./serviceWorker";
 import store from "./store/index";
-import "bootstrap/dist/js/bootstrap.bundle.min";
 import "gridjs/dist/theme/mermaid.css";
 
 ReactDOM.render(

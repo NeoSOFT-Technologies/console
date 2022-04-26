@@ -25,13 +25,8 @@ export default function PolicyList() {
   const handleAddClick = (Id: any) => {
     console.log("policyList", StateKey.data?.form.Policies);
     const data = StateKey.data.form.Policies.includes(Id);
-    // console.log("policylist check before", data);
 
     if (!data) {
-      // console.log(
-      //   "policylist check",
-      //   StateKey.data?.form.Policies.some((x) => x === Id)
-      // );
       const list = [...StateKey.data.form.Policies, Id];
       dispatch(setForms({ ...StateKey.data.form, Policies: list }));
     } else {
@@ -45,15 +40,6 @@ export default function PolicyList() {
       {
         name: "Id",
         hidden: true,
-        // attributes: (cell: string) => {
-        //   if (cell) {
-        //     return {
-        //       "data-cell-content": cell,
-        //       onclick: () => handleAddClick(cell),
-        //       style: "cursor: pointer",
-        //     };
-        //   }
-        // },
       },
       {
         name: "Name",
@@ -61,10 +47,6 @@ export default function PolicyList() {
           return h(
             "text",
             {
-              // className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
-              // onClick: () =>
-              //   alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`),
-
               onClick: () => handleAddClick(row.cells[0].data),
             },
             `${row.cells[1].data}`
@@ -79,7 +61,6 @@ export default function PolicyList() {
             };
           }
         },
-        // style: "cursor: pointer",
       },
       "State",
       "Access Rights",
@@ -99,6 +80,7 @@ export default function PolicyList() {
         : [],
     search: true,
     sort: true,
+    // height: "400px",
     className: {
       container: "table table-responsive table-bordered table-stripped",
     },
@@ -110,8 +92,6 @@ export default function PolicyList() {
       th: {
         color: "#000",
       },
-      // rowSelection: "multiple",
-      // rowMultiSelectWithClick: true,
     },
   });
   return (

@@ -1,5 +1,10 @@
 /* Layouts */
-
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 15px !important;
+  margin-left: 0px !important;
+}
 .navbar {
   &.fixed-top {
     + .page-body-wrapper {
