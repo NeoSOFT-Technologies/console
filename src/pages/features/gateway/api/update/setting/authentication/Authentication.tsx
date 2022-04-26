@@ -26,25 +26,25 @@ export default function Authentication() {
       <div className="card">
         <div>
           <div className="align-items-center justify-content-around">
-            <div className="accordion" id="accordionListenPath">
+            <div className="accordion" id="accordionAuthentication">
               <div className="accordion-item">
-                <h2 className="accordion-header" id="headingTwo">
+                <h2 className="accordion-header" id="headingSeven">
                   <button
                     className="accordion-button"
                     type="button"
                     data-bs-toggle="collapse"
-                    data-bs-target="#collapseTwo"
+                    data-bs-target="#collapseSeven"
                     aria-expanded="true"
-                    aria-controls="collapseTwo"
+                    aria-controls="collapseSeven"
                   >
                     Authentication
                   </button>
                 </h2>
                 <div
-                  id="collapseTwo"
+                  id="collapseSeven"
                   className="accordion-collapse collapse show"
-                  aria-labelledby="headingTwo"
-                  data-bs-parent="#accordionListenPath"
+                  aria-labelledby="headingSeven"
+                  data-bs-parent="#accordionAuthentication"
                 >
                   <div className="accordion-body">
                     <div>

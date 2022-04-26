@@ -55,6 +55,7 @@ export interface IGetApiByIdData {
       }[];
     }[];
   };
+  EnableRoundRobin: boolean;
   LoadBalancingTargets: [];
   IsQuotaDisabled: boolean;
 }

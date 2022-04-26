@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 // import React, { useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import {
@@ -6,6 +6,7 @@ import {
   setFormErrors,
   regexForTagetUrl,
 } from "../../../../../../../resources/gateway/api/api-constants";
+import { setForm } from "../../../../../../../store/features/gateway/api/update/slice";
 import {
   useAppDispatch,
   useAppSelector,
@@ -17,7 +18,6 @@ export default function TargetUrl() {
   const state = useAppSelector((RootState) => RootState.updateApiState);
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-
     switch (name) {
       case "TargetUrl":
         setFormErrors(
@@ -34,14 +34,20 @@ export default function TargetUrl() {
         break;
     }
     setFormData(event, dispatch, state);
+    // console.log("load1", state.data.form.EnableRoundRobin);
   }
 
-  const [check, setCheck] = useState(false);
+  // const [check, setCheck] = useState(false);
 
+  // const enableLoadBalancing = () => {
+  //   if (state.data.form.LoadBalancingTargets.length > 0) {
+  //     setCheck(true);
+  //   } else setCheck(false);
+  // };
   const enableLoadBalancing = () => {
     if (state.data.form.LoadBalancingTargets.length > 0) {
-      setCheck(true);
-    } else setCheck(false);
+      dispatch(setForm({ ...state.data.form, EnableRoundRobin: true }));
+    }
   };
   useEffect(() => {
     if (state.loading === false) {
@@ -77,13 +83,12 @@ export default function TargetUrl() {
                     <Form.Group className="mb-3">
                       <Form.Label> Target Url :</Form.Label>
                       <br />
-                      {!check ? (
+                      {!state.data.form.EnableRoundRobin ? (
                         <>
                           {" "}
                           <i className="mb-3">
-                            Supported protocol schemes:
-                            http,https,tcp,tls,h2c,tyk,ws,wss.If empty, fallback
-                            to default protocolof current API.:
+                            Supported protocol schemes: http,https.If empty,
+                            fallback to default protocol of current API.:
                           </i>
                           <Form.Control
                             className="mt-2"
@@ -116,20 +121,28 @@ export default function TargetUrl() {
                     <Form.Group className="mb-3">
                       <Form.Check
                         type="switch"
-                        id="isLoadBalancing"
-                        name="isLoadBalancing"
+                        id="EnableRoundRobin"
+                        name="EnableRoundRobin"
                         label="Enable round-robin load balancing"
-                        checked={check}
-                        onChange={(e: any) => setCheck(e.target.checked)}
+                        // checked={check}
+                        // onChange={(e: any) => setCheck(e.target.checked)}
+                        checked={state.data.form.EnableRoundRobin}
+                        onChange={(e: any) => validateForm(e)}
                       />
                     </Form.Group>
                   </Col>
                   <Col>
-                    {check === true ? <LoadBalancing /> : <span></span>}
+                    {state.data.form.EnableRoundRobin === true ? (
+                      <LoadBalancing />
+                    ) : (
+                      <span></span>
+                    )}
                   </Col>
                   <Col md="12">
                     <Form.Group className="mb-3">
                       <Form.Check
+                        hidden
+                        className="visually-hidden"
                         type="switch"
                         id="IsService"
                         name="IsService"
