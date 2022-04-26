@@ -6,6 +6,7 @@ import {
 } from "../../services/tenant";
 import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
+import { checkLoginType } from "../login-type/slice";
 
 interface IConditions {
   userName: string;
@@ -20,44 +21,27 @@ const initialState: IUserDataState = {
 
 export const getUserData = createAsyncThunk(
   "user/data",
-  async (conditions: IConditions) => {
+  async (conditions: IConditions, thunkAPI) => {
     try {
       let response;
       switch (conditions.type) {
         case "admin":
           response = await adminLoginData();
-          // response = {
-          //   data: {
-          //     id: "72c56ed1-52d4-4add-a6f4-f3d8cb99323d",
-          //     createdTimestamp: "2022/04/20 05:39:09",
-          //     username: "admin",
-          //     enabled: true,
-          //     emailVerified: false,
-          //     access: {
-          //       manageGroupMembership: true,
-          //       view: true,
-          //       mapRoles: true,
-          //       impersonate: true,
-          //       manage: true,
-          //     },
-          //     roles: ["default-roles-master", "admin"],
-          //   },
-          // };
           break;
         case "tenant":
-          response = await getTenantDetailsService(conditions.tenantName);
-          break;
-        case "user":
           response = await getUserDetailsService(
             conditions.tenantName,
             conditions.userName
           );
+          if (response.data.roles.includes("tenantadmin")) {
+            response = await getTenantDetailsService(conditions.tenantName);
+          } else {
+            await thunkAPI.dispatch(checkLoginType("user"));
+          }
           break;
       }
-      // console.log(response);
       return response?.data;
     } catch (error_) {
-      // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
       throw new Error(errorMessage);
     }
@@ -75,13 +59,11 @@ const slice = createSlice({
       state.error = undefined;
     });
     builder.addCase(getUserData.fulfilled, (state, action) => {
-      // console.log("in fullfilled xyz");
       state.loading = false;
-      // console.log(action.payload);
+
       state.data = action.payload;
     });
     builder.addCase(getUserData.rejected, (state, action: any) => {
-      // console.log("in rejected");
       state.loading = false;
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];

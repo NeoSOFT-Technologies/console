@@ -9,7 +9,7 @@ import {
   regexForEmail,
   regexForUser,
   regForPassword,
-} from "../../../../../resources/constants";
+} from "../../../../../resources/tenant/constants";
 import { RootState } from "../../../../../store";
 import { getTenantRoles } from "../../../../../store/features/admin/tenant-roles/slice";
 import {
@@ -97,7 +97,6 @@ export default function Createuser() {
   };
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(errors, formData);
     if (handleValidate()) {
       if (
         formData.userName !== "" &&
@@ -149,14 +148,12 @@ export default function Createuser() {
     const temp = formData.roles.filter(function (value) {
       return value !== role;
     });
-    // console.log(temp);
     setFormData({ ...formData, roles: [...temp] });
   };
   const removePermissions = (permissions: string) => {
     const temp = formData.permissions.filter(function (value) {
       return value !== permissions;
     });
-    // console.log(temp);
     setFormData({ ...formData, permissions: [...temp] });
   };
 
@@ -244,8 +241,6 @@ export default function Createuser() {
                     value={formData.password}
                     name="password"
                     onChange={handleInputChange}
-                    // isInvalid={!!errors.password}
-                    // isValid={!!(!errors.password && formData.password)}
                   />
                   <PasswordButtons
                     viewPassword={showPassword}

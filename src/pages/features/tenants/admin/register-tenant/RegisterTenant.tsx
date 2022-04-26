@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Row, Col, Container, InputGroup } from "react-bootstrap";
-// import { useNavigate } from "react-router-dom";
 import Spinner from "../../../../../components/loader/Loader";
 import PasswordButtons from "../../../../../components/password-field/Password";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
@@ -10,7 +9,7 @@ import {
   regForPassword,
   regexForDescription,
   regexForDatabaseName,
-} from "../../../../../resources/constants";
+} from "../../../../../resources/tenant/constants";
 import { RootState } from "../../../../../store";
 import { addNewTenant } from "../../../../../store/features/admin/add-tenant/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
@@ -20,7 +19,6 @@ import {
 } from "../../../../../types/index";
 
 export default function RegisterTenant() {
-  // const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [showPassword, setShowpassword] = useState(false);
   const tenantAdded = useAppSelector(
@@ -237,8 +235,6 @@ export default function RegisterTenant() {
                         data-testid="password-input"
                         value={tenant.password}
                         name="password"
-                        // isValid={!error.password && !!tenant.password}
-                        // isInvalid={!!error.password}
                         onChange={handleInputChange}
                         required
                       />{" "}

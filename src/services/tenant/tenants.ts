@@ -11,7 +11,6 @@ export function updateTenantDataService(data: ITenantDetail) {
 }
 
 export function createNewUserService(data: ICreateNewUser) {
-  console.log(data);
   const body = {
     userDetails: {
       userName: data.userName,
@@ -28,18 +27,10 @@ export function deleteUserDataService(userName: string) {
   return apiFactory().delete(`api/user/${userName}`);
 }
 
-export function userPermissionService(tenantName: string) {
-  return apiFactory().get(`api/permission?tenantName=${tenantName}`);
-}
-
 export function tenantRolesService(tenantName: string) {
   return apiFactory().get(`api/roles?tenantName=${tenantName}`);
 }
 
 export function getTenantDetailsService(tenantName: string) {
-  return apiFactory().get(`api/tenants/${tenantName}`);
-}
-
-export function tenantPermissionsService(tenantName: string) {
-  return apiFactory().get(`api/permission?tenantName=${tenantName}`);
+  return apiFactory().get(`api/tenant-info?tenantName=${tenantName}`);
 }

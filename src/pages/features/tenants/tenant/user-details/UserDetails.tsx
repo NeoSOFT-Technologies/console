@@ -15,7 +15,7 @@ import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
   regexForUser,
   regexForEmail,
-} from "../../../../../resources/constants";
+} from "../../../../../resources/tenant/constants";
 import { RootState } from "../../../../../store";
 import { getTenantRoles } from "../../../../../store/features/admin/tenant-roles/slice";
 import {
@@ -242,7 +242,6 @@ export default function UserDetails() {
                       Remove
                     </Button>
                   </Card.Header>
-                  {/* <Card.Body>This is some text within a card body.</Card.Body> */}
                 </Card>
               </Col>
             </Row>

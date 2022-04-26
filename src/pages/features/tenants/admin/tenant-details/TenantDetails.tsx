@@ -15,7 +15,7 @@ import {
   regexForName,
   regexForDatabaseName,
   regexForDescription,
-} from "../../../../../resources/constants";
+} from "../../../../../resources/tenant/constants";
 import { RootState } from "../../../../../store";
 import { deleteTenant } from "../../../../../store/features/admin/delete-tenant/slice";
 import {
@@ -80,7 +80,7 @@ export default function TenantDetails() {
       await dispatch(deleteTenant(tenantName));
       if (tenantDeleted.isDeleted) {
         ToastAlert("Tenant Removed", "success");
-        navigate("/tenantlist");
+        navigate("/tenant/admin/tenants");
       }
     }
   };
@@ -159,7 +159,7 @@ export default function TenantDetails() {
       !tenantDeleted.error &&
       tenantDeleted?.isDeleted
     ) {
-      navigate("/tenantlist");
+      navigate("/tenant/admin/tenants");
     }
   }, [
     tenantDeleted.loading,
@@ -352,7 +352,7 @@ export default function TenantDetails() {
                       data-testid="cancel-button"
                       className="btn btn-light mt-3"
                       type="reset"
-                      onClick={() => navigate("/tenantlist")}
+                      onClick={() => navigate("/tenant/admin/tenants")}
                     >
                       Cancel
                     </Button>

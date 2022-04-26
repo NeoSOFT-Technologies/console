@@ -6,7 +6,7 @@ import {
   requestTenantListUrlInactive,
   requestTenantListUrlActive,
   requestTenantListUrlAll,
-} from "../../../../../resources/constants";
+} from "../../../../../resources/tenant/constants";
 import { deleteTenantReset } from "../../../../../store/features/admin/delete-tenant/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
 
@@ -27,7 +27,6 @@ export default function TenantList() {
   }, []);
 
   const NavigateTenant = (value: any) => {
-    // console.log(value);
     navigate(`/tenant/admin/tenants/${value._cells[0].data}`, {
       state: {
         tenantName: value._cells[0].data,

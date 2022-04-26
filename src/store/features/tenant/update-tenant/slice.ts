@@ -22,7 +22,6 @@ export const updateTenant = createAsyncThunk(
       const response = await updateTenantDataService(data);
       return response.data;
     } catch (error_) {
-      // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
       throw new Error(errorMessage);
     }
@@ -52,7 +51,6 @@ const slice = createSlice({
     builder.addCase(updateTenant.rejected, (state, action: any) => {
       state.loading = false;
       state.isUpdated = false;
-      // action.payload contains error information
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];
     });

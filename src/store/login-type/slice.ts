@@ -39,7 +39,6 @@ const slice = createSlice({
     });
     builder.addCase(checkLoginType.rejected, (state, action) => {
       state.loading = false;
-      // action.payload contains error information
       state.error = error(action.payload);
     });
   },
