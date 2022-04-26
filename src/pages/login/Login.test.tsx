@@ -97,34 +97,6 @@ it("test if input box is present and takes inputs as a tenant", () => {
   });
 });
 
-it("test if input box is present and takes inputs as a user", () => {
-  const store = mockStore({
-    ...storeStates,
-    loginType: { loading: false, data: "user" },
-  });
-  render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <Login />
-      </Provider>
-    </BrowserRouter>
-  );
-  const emailBox = screen.getByTestId("userName-input");
-  fireEvent.change(emailBox, { target: { value: "tenantadmin" } });
-
-  const passwordBox = screen.getByTestId("password-input");
-  fireEvent.change(passwordBox, { target: { value: "Akhilpinni@123" } });
-
-  const tenantNameBox = screen.getByTestId("tenantName-input");
-  expect(tenantNameBox).toBeInTheDocument();
-  expect(tenantNameBox).toHaveAttribute("type", "text");
-  fireEvent.change(tenantNameBox, { target: { value: "tenantadmin" } });
-  expect(tenantNameBox).toHaveValue("tenantadmin");
-
-  const submitBtn = screen.getByTestId("signin-button");
-  fireEvent.click(submitBtn);
-});
-
 it("test if sign-in, keep-signed-in and forgot-password button renders", () => {
   const store = mockStore(storeStates);
 
@@ -146,43 +118,4 @@ it("test if sign-in, keep-signed-in and forgot-password button renders", () => {
   const forgotPasswordBtn = screen.getByTestId("forgot-password");
   expect(forgotPasswordBtn).toBeInTheDocument();
   fireEvent.click(forgotPasswordBtn);
-});
-
-it("test if login as tenant or user button renders or not", async () => {
-  const store = mockStore(storeStates);
-
-  render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <Login />
-      </Provider>
-    </BrowserRouter>
-  );
-
-  const tenantLoginBtn = screen.getByTestId("tenant-login");
-  expect(tenantLoginBtn).toBeInTheDocument();
-  fireEvent.click(tenantLoginBtn);
-
-  const userLoginBtn = screen.getByTestId("user-login");
-  expect(userLoginBtn).toBeInTheDocument();
-  fireEvent.click(userLoginBtn);
-});
-
-it("test if login as admin button renders or not", async () => {
-  const store = mockStore({
-    ...storeStates,
-    loginType: { loading: false, data: "tenant" },
-  });
-
-  render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <Login />
-      </Provider>
-    </BrowserRouter>
-  );
-
-  const adminLoginBtn = screen.getByTestId("admin-login");
-  expect(adminLoginBtn).toBeInTheDocument();
-  fireEvent.click(adminLoginBtn);
 });

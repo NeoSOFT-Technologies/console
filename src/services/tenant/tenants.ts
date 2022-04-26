@@ -27,18 +27,10 @@ export function deleteUserDataService(userName: string) {
   return apiFactory().delete(`api/user/${userName}`);
 }
 
-export function userPermissionService(tenantName: string) {
-  return apiFactory().get(`api/permission?tenantName=${tenantName}`);
-}
-
 export function tenantRolesService(tenantName: string) {
   return apiFactory().get(`api/roles?tenantName=${tenantName}`);
 }
 
 export function getTenantDetailsService(tenantName: string) {
   return apiFactory().get(`api/tenant-info?tenantName=${tenantName}`);
-}
-
-export function tenantPermissionsService(tenantName: string) {
-  return apiFactory().get(`api/permission?tenantName=${tenantName}`);
 }

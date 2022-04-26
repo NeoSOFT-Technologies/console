@@ -5,9 +5,7 @@ export {
 } from "./admin";
 
 export {
-  tenantPermissionsService,
   tenantRolesService,
-  userPermissionService,
   updateTenantDataService,
   createNewUserService,
   deleteUserDataService,
