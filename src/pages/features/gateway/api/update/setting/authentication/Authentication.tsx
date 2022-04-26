@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Accordion, Col, Form, Row } from "react-bootstrap";
 import { setFormData } from "../../../../../../../resources/gateway/api/api-constants";
 import {
   useAppDispatch,
@@ -26,76 +26,60 @@ export default function Authentication() {
       <div className="card">
         <div>
           <div className="align-items-center justify-content-around">
-            <div className="accordion" id="accordionAuthentication">
-              <div className="accordion-item">
-                <h2 className="accordion-header" id="headingSeven">
-                  <button
-                    className="accordion-button"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseSeven"
-                    aria-expanded="true"
-                    aria-controls="collapseSeven"
-                  >
-                    Authentication
-                  </button>
-                </h2>
-                <div
-                  id="collapseSeven"
-                  className="accordion-collapse collapse show"
-                  aria-labelledby="headingSeven"
-                  data-bs-parent="#accordionAuthentication"
-                >
-                  <div className="accordion-body">
-                    <div>
-                      <Row>
-                        <Col md="12">
-                          <Form.Group className="mb-3">
-                            <Form.Label> Authentication mode:</Form.Label>
-                            <br />
-                            <Form.Select
-                              aria-label="Default select example"
-                              name="AuthType"
-                              value={state.data.form.AuthType}
-                              // onClick={handleFormSelectChange}
-                              onChange={(e: any) => handleFormSelectChange(e)}
-                            >
-                              <option id="authToken" value="standard">
-                                Authentication Token
-                              </option>
-                              <option id="mutualTls" value="mutual">
-                                Mutual TLS
-                              </option>
-                              <option id="openid" value="openid">
-                                OpenId Connect
-                              </option>
-                              <option id="keyless" value="keyless">
-                                Open (KeyLess)
-                              </option>
-                            </Form.Select>
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                    </div>
-
-                    <div>
-                      {state.data.form.AuthType === "standard" ? (
-                        <AuthenticationToken />
-                      ) : state.data.form.AuthType === "openid" ? (
-                        <OpenIdConnect />
-                      ) : state.data.form.EnableMTLS === true ||
-                        state.data.form.AuthType === "mutual" ? (
-                        <MutualTLS />
-                      ) : state.data.form.AuthType === "keyless" ? (
-                        <OpenKeyless />
-                      ) : (
-                        <></>
-                      )}
-                    </div>
+            <Accordion defaultActiveKey="0">
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>
+                  <span>Authentication</span>
+                </Accordion.Header>
+                <Accordion.Body>
+                  <div>
+                    <Row>
+                      <Col md="12">
+                        <Form.Group className="mb-3">
+                          <Form.Label> Authentication mode:</Form.Label>
+                          <br />
+                          <Form.Select
+                            aria-label="Default select example"
+                            name="AuthType"
+                            value={state.data.form.AuthType}
+                            // onClick={handleFormSelectChange}
+                            onChange={(e: any) => handleFormSelectChange(e)}
+                          >
+                            <option id="authToken" value="standard">
+                              Authentication Token
+                            </option>
+                            <option id="mutualTls" value="mutual">
+                              Mutual TLS
+                            </option>
+                            <option id="openid" value="openid">
+                              OpenId Connect
+                            </option>
+                            <option id="keyless" value="keyless">
+                              Open (KeyLess)
+                            </option>
+                          </Form.Select>
+                        </Form.Group>
+                      </Col>
+                    </Row>
                   </div>
-                </div>
-              </div>
-            </div>
+
+                  <div>
+                    {state.data.form.AuthType === "standard" ? (
+                      <AuthenticationToken />
+                    ) : state.data.form.AuthType === "openid" ? (
+                      <OpenIdConnect />
+                    ) : state.data.form.EnableMTLS === true ||
+                      state.data.form.AuthType === "mutual" ? (
+                      <MutualTLS />
+                    ) : state.data.form.AuthType === "keyless" ? (
+                      <OpenKeyless />
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
           </div>
         </div>
       </div>

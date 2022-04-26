@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, Row, Col } from "react-bootstrap";
+import { Button, Form, Row, Col, Accordion } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
@@ -135,27 +135,13 @@ function CreateApi() {
                   <b>CREATE API</b>
                 </span>
               </div>
-              <div className="accordion" id="accordionExample">
-                <div className="card-body pt-2">
-                  <h2 className="accordion-header " id="headingOne">
-                    <button
-                      className="accordion-button"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseOne"
-                      aria-expanded="true"
-                      aria-controls="collapseOne"
-                    >
-                      CREATE API
-                    </button>
-                  </h2>
-                  <div
-                    id="collapseOne"
-                    className="accordion-item accordion-collapse collapse show"
-                    aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample"
-                  >
-                    <div className="accordion-body">
+              <div>
+                <Accordion defaultActiveKey="0">
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>
+                      <span>Create Api</span>
+                    </Accordion.Header>
+                    <Accordion.Body>
                       <Row>
                         <Col md="12">
                           <Form.Group className="mt-6">
@@ -233,9 +219,9 @@ function CreateApi() {
                           </Form.Group>
                         </Col>
                       </Row>
-                    </div>
-                  </div>
-                </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
               </div>
             </Form>
           </div>
