@@ -51,12 +51,6 @@ function Configurations() {
           </Accordion.Header>
           <Accordion.Body>
             <Row>
-              {/* <Col md="12">
-                <Form.Group className="mb-3">
-                  <Form.Label>Enabled detailed logging :</Form.Label>
-                  <Form.Check type="switch" />
-                </Form.Group>{" "}
-              </Col> */}
               <Col md="12">
                 <Form.Group className="mb-3">
                   <Form.Label> Alias :</Form.Label>
