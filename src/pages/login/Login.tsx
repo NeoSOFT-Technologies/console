@@ -10,7 +10,6 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { checkLoginType, ILoginTypeState } from "../../store/login-type/slice";
 import { commonLogin, ITokenState } from "../../store/login/slice";
 import { getUserData } from "../../store/user-data/slice";
-
 import { IUserDataState, ILogin } from "../../types";
 
 export default function Login() {
@@ -62,15 +61,10 @@ export default function Login() {
     }
   };
 
-  // useEffect(() => {
-  //   console.log(formdata);
-  // });
-
   useEffect(() => {
     const useQuery = () => new URLSearchParams(location.search);
     const query = useQuery();
     const name = query.get("tenant");
-    console.log("useEffect ~ name", query, name);
     if (name !== null) {
       setFormData({ ...formdata, tenantName: name });
       dispatch(checkLoginType("tenant"));
@@ -78,16 +72,6 @@ export default function Login() {
       setFormData({ ...formdata, tenantName: "" });
       dispatch(checkLoginType("admin"));
     }
-    // if (name && name?.length > 0) {
-    //   setFormData({ ...formdata, tenantName: name });
-    //   dispatch(checkLoginType("tenant"));
-    // } else {
-    //   setFormData({
-    //     tenantName: "",
-    //     userName: "",
-    //     password: "",
-    //   });
-    // }
   }, [location]);
 
   useEffect(() => {
@@ -114,7 +98,6 @@ export default function Login() {
 
   const validate = () => {
     let valid = false;
-    console.log(formdata, loginType.data);
     switch (loginType.data) {
       case "admin":
         valid = !(
