@@ -7,6 +7,7 @@ import { IApiGetByIdState } from "../../../../../store/features/gateway/api/upda
 import {
   updateApi,
   getApiById,
+  setForm,
 } from "../../../../../store/features/gateway/api/update/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import Setting from "./setting/Setting";
@@ -25,8 +26,18 @@ export default function Update() {
 
   const navigate = useNavigate();
 
+  // const loadFunction = () => {
+  //   console.log("load", state.data.form.EnableRoundRobin);
+  //   if (state.data.form.EnableRoundRobin === false) {
+  //     dispatch(setForm({ ...state.data.form, LoadBalancingTargets: [] }));
+  //   }
+  // };
+  // useEffect(() => {
+  //   loadFunction();
+  // }, [state.data.form.EnableRoundRobin]);
   async function handleSubmitApiUpdate(event: FormEvent) {
     event.preventDefault();
+
     let validate: any;
     if (state.data.errors !== undefined) {
       validate = Object.values(state.data.errors).every(
@@ -34,7 +45,14 @@ export default function Update() {
       );
     }
     if (validate) {
-      const result = await dispatch(updateApi(state.data.form));
+      console.log("payload for update", state.data.form);
+      const newForm = { ...state.data.form };
+      if (state.data.form.EnableRoundRobin === false) {
+        newForm.LoadBalancingTargets = [];
+        dispatch(setForm({ ...state.data.form, LoadBalancingTargets: [] }));
+      }
+      console.log("newFrom", newForm);
+      const result = await dispatch(updateApi(newForm));
       if (result.meta.requestStatus === "rejected") {
         ToastAlert(result.payload.message, "error");
       } else if (result.meta.requestStatus === "fulfilled") {

@@ -21,13 +21,13 @@ export default function Version() {
             type="switch"
             id="IsVersioningDisabled"
             name="IsVersioningDisabled"
-            label="Disable Versioning"
+            label="Enable Versioning"
             checked={state.data.form?.IsVersioningDisabled}
             onChange={(e: any) => validateForm(e)}
           />
         </Form.Group>
       </Col>
-      {state.data.form?.IsVersioningDisabled ? (
+      {!state.data.form?.IsVersioningDisabled ? (
         <></>
       ) : (
         <div>

@@ -182,6 +182,17 @@ function AppRoutes() {
             }
           />
         </Route>
+        <Route path="/gateway">
+          <Route path="" element={<StatisticsDashboard />} />
+          <Route path="apis" element={<APIList />} />
+          <Route path="policies" element={<PolicyList />} />
+          <Route path="keys" element={<KeyList />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="apis/create" element={<CreateApi />} />
+          <Route path="keys/create" element={<CreateKey />} />
+          <Route path="policies/create" element={<CreatePolicy />} />
+          <Route path="apis/update/:id" element={<UpdateApi />} />
+        </Route>
         {/**********************************************************/}
         <Route path="*" element={<Navigate to="/login-page" />} />{" "}
         {/* redirect if not match any path */}

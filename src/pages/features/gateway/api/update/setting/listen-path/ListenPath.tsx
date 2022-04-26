@@ -61,9 +61,9 @@ export default function ListenPath() {
               <Row>
                 <Col md={12} className="mb-3">
                   <p>
-                    The listen path dictates what path Tyk will listen on, if
-                    you leave this blank, it will be automatically populated by
-                    the ID of the API.
+                    The listen path dictates what path application gateway will
+                    listen on, if you leave this blank, it will be automatically
+                    populated by the ID of the API.
                   </p>
                   <Form.Group className="mb-3">
                     <Form.Label>
@@ -98,9 +98,9 @@ export default function ListenPath() {
                       <b>Strip the Listen path</b>
                     </Form.Label>
                     <p>
-                      If this setting is checked, then Tyk will remove the above
-                      listen path from the inbound URL so that it does not
-                      interfere with routing upstream.
+                      If this setting is checked, then application gateway will
+                      remove the above listen path from the inbound URL so that
+                      it does not interfere with routing upstream.
                     </p>
                     <Form.Check
                       type="switch"
