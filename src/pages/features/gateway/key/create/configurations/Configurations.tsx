@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Accordion, Row, Col } from "react-bootstrap";
 import {
-  setFormErrors,
+  setFormErrorkey,
   setFormData,
   regexForName,
 } from "../../../../../../resources/gateway/key/key-constants";
@@ -15,7 +15,7 @@ function Configurations() {
 
     switch (name) {
       case "KeyName":
-        setFormErrors(
+        setFormErrorkey(
           {
             ...state.data.errors,
             [name]:
@@ -27,7 +27,7 @@ function Configurations() {
         );
         break;
       case "Expires":
-        setFormErrors(
+        setFormErrorkey(
           {
             ...state.data.errors,
             [name]: value !== "-1" ? "" : "Enter a Valid Input",

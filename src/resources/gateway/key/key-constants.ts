@@ -1,6 +1,6 @@
 import {
   setForms,
-  setFormError,
+  setFormErrors,
 } from "../../../store/features/gateway/key/create/slice";
 import { setNestedState } from "../common";
 
@@ -11,6 +11,6 @@ export function setFormData(e: any, dispatch: any, state: any) {
   dispatch(setForms(newState));
 }
 
-export function setFormErrors(e: any, dispatch: any) {
-  dispatch(setFormError(e));
+export function setFormErrorkey(e: any, dispatch: any) {
+  dispatch(setFormErrors(e));
 }

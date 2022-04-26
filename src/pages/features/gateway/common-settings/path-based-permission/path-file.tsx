@@ -76,7 +76,7 @@ export default function Ipathpermission(props: IProps) {
         AllowedUrls: [...allowedList],
       };
       props.current === "policy"
-        ? dispatch(setForm({ ...state.data.form, ApIs: apisList }))
+        ? dispatch(setForm({ ...state.data.form, APIs: apisList }))
         : dispatch(
             setForms({ ...keysstate.data.form, AccessRights: apisList })
           );
@@ -100,7 +100,7 @@ export default function Ipathpermission(props: IProps) {
       AllowedUrls: [...allowedList],
     };
     props.current === "policy"
-      ? dispatch(setForm({ ...state.data.form, ApIs: apisList }))
+      ? dispatch(setForm({ ...state.data.form, APIs: apisList }))
       : dispatch(setForms({ ...keysstate.data.form, AccessRights: apisList }));
   };
 
