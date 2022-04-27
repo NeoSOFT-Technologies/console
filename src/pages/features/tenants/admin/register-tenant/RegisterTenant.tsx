@@ -244,8 +244,6 @@ export default function RegisterTenant() {
                         value={tenant.password}
                         name="password"
                         onChange={handleInputChange}
-                        isInvalid={!!error.password}
-                        isValid={!error.password && !!tenant.password}
                         required
                       />{" "}
                       <PasswordButtons
