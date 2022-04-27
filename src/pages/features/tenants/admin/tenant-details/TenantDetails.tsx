@@ -328,34 +328,36 @@ export default function TenantDetails() {
                           )}
                       </Form.Group>
                     </Col>
-                    {edit ? (
-                      <Button
-                        data-testid="update-button"
-                        onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-                          handleUpdateTenant(event)
-                        }
-                        className="mt-3 info ml-4"
-                      >
-                        Update
-                      </Button>
-                    ) : (
-                      <Button
-                        data-testid="edit-button"
-                        onClick={() => setEdit(true)}
-                        className="mt-3 info ml-4"
-                      >
-                        Edit
-                      </Button>
-                    )}
+                    <div>
+                      {edit ? (
+                        <Button
+                          data-testid="update-button"
+                          onClick={(
+                            event: React.MouseEvent<HTMLButtonElement>
+                          ) => handleUpdateTenant(event)}
+                          className="mt-3 info ml-4"
+                        >
+                          Update
+                        </Button>
+                      ) : (
+                        <Button
+                          data-testid="edit-button"
+                          onClick={() => setEdit(true)}
+                          className="mt-3 info "
+                        >
+                          Edit
+                        </Button>
+                      )}
 
-                    <Button
-                      data-testid="cancel-button"
-                      className="btn btn-light mt-3"
-                      type="reset"
-                      onClick={() => navigate("/tenant/admin/tenants")}
-                    >
-                      Cancel
-                    </Button>
+                      <Button
+                        data-testid="cancel-button"
+                        className="btn btn-light mt-3"
+                        type="reset"
+                        onClick={() => navigate("/tenant/admin/tenants")}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
                   </Row>
                 </Form>
               </Container>
