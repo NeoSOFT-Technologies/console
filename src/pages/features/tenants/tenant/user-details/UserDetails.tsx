@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./UserDetails.scss";
 import {
   Button,
   Card,
@@ -300,6 +301,7 @@ export default function UserDetails() {
                                 <h5>Roles :</h5>{" "}
                                 <Dropdown autoClose="outside" className="w-100">
                                   <Dropdown.Toggle
+                                    className="dynamic-w"
                                     variant="success"
                                     id="dropdown-basic"
                                     data-testid="dropdown-toggler"

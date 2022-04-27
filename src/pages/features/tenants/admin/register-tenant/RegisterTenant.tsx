@@ -44,6 +44,14 @@ export default function RegisterTenant() {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
+      case "databaseDescription":
+        setError({
+          ...error,
+          [name]: regexForDescription.test(value)
+            ? ""
+            : "description should only consist Alphabets",
+        });
+        break;
       case "description":
         setError({
           ...error,
@@ -307,6 +315,11 @@ export default function RegisterTenant() {
                       placeholder="Here...."
                       value={tenant.databaseDescription}
                       onChange={handleInputChange}
+                      isInvalid={!!error.databaseDescription}
+                      isValid={
+                        !error.databaseDescription &&
+                        !!tenant.databaseDescription
+                      }
                     />
                     <Form.Control.Feedback type="invalid">
                       {error.databaseDescription}
