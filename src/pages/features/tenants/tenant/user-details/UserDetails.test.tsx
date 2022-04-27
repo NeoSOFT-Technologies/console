@@ -1,10 +1,8 @@
-// import { Store, AnyAction } from "@reduxjs/toolkit";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-// import store from "../../../../store/index";
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import UserDetails from "./UserDetails";

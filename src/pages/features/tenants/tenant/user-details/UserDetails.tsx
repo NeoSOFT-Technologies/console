@@ -124,7 +124,7 @@ export default function UserDetails() {
 
   useEffect(() => {
     if (user.error) {
-      navigate("/error", { state: rolesList.error });
+      navigate("/error", { state: user.error });
     }
     if (userDetails.data) {
       setUserdata({ ...userDetails.data });

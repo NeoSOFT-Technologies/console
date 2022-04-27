@@ -1,5 +1,4 @@
 import React from "react";
-import { Dropdown } from "react-bootstrap";
 import { logo, logo_mini } from "../../resources/tenant/images";
 import { useAppDispatch } from "../../store/hooks";
 import { commonLogout } from "../../store/logout/slice";
@@ -49,87 +48,6 @@ export default function Navbar() {
           </form>
         </div>
         <ul className="navbar-nav navbar-nav-right">
-          <li className="nav-item">
-            {/* @ts-ignore */}
-            <Dropdown alignright="true">
-              <Dropdown.Toggle
-                data-testid="dropdown-toggle"
-                className="nav-link count-indicator"
-              >
-                <i className="bi bi-bell"></i>
-                <span className="count-symbol bg-danger"></span>
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="dropdown-menu navbar-dropdown preview-list">
-                <h6 className="p-3 mb-0">
-                  <>Notifications</>
-                </h6>
-                <div className="dropdown-divider"></div>
-                <Dropdown.Item
-                  data-testid="event-today"
-                  className="dropdown-item preview-item"
-                  onClick={(event_) => event_.preventDefault()}
-                >
-                  <div className="preview-thumbnail">
-                    <div className="preview-icon bg-success">
-                      <i className="bi bi-power"></i>
-                    </div>
-                  </div>
-                  <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                    <h6 className="preview-subject font-weight-normal mb-1">
-                      <>Event today</>
-                    </h6>
-                    <p className="text-gray ellipsis mb-0">
-                      <>Just a reminder that you have an event today</>
-                    </p>
-                  </div>
-                </Dropdown.Item>
-                <div className="dropdown-divider"></div>
-                <Dropdown.Item
-                  data-testid="settings"
-                  className="dropdown-item preview-item"
-                  onClick={(event_) => event_.preventDefault()}
-                >
-                  <div className="preview-thumbnail">
-                    <div className="preview-icon bg-warning">
-                      <i className="bi bi-gear"></i>
-                    </div>
-                  </div>
-                  <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                    <h6 className="preview-subject font-weight-normal mb-1">
-                      <>Settings</>
-                    </h6>
-                    <p className="text-gray ellipsis mb-0">
-                      <>Update dashboard</>
-                    </p>
-                  </div>
-                </Dropdown.Item>
-                <div className="dropdown-divider"></div>
-                <Dropdown.Item
-                  data-testid="launch-admin"
-                  className="dropdown-item preview-item"
-                  onClick={(event_) => event_.preventDefault()}
-                >
-                  <div className="preview-thumbnail">
-                    <div className="preview-icon bg-info">
-                      <i className="mdi mdi-link-variant"></i>
-                    </div>
-                  </div>
-                  <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                    <h6 className="preview-subject font-weight-normal mb-1">
-                      <>Launch Admin</>
-                    </h6>
-                    <p className="text-gray ellipsis mb-0">
-                      <>New admin wow</>!
-                    </p>
-                  </div>
-                </Dropdown.Item>
-                <div className="dropdown-divider"></div>
-                <h6 className="p-3 mb-0 text-center cursor-pointer">
-                  <>See all notifications</>
-                </h6>
-              </Dropdown.Menu>
-            </Dropdown>
-          </li>
           <li className="nav-item nav-settings d-lg-block">
             <button
               data-testid="navigate-button"
