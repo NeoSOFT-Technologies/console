@@ -1,4 +1,5 @@
 import React from "react";
+import "./multiselectdropdown.scss";
 import { Col, Dropdown, Form, Row } from "react-bootstrap";
 interface IProps {
   list?: string[] | null;
@@ -19,6 +20,7 @@ export default function MultiSelectDropdown(props: IProps) {
               variant="success"
               id="dropdown-basic"
               data-testid="dropdown-toggle"
+              className="dynamic-w"
             >
               select {title} for user
             </Dropdown.Toggle>

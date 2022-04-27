@@ -1,27 +1,28 @@
 import React, { useState } from "react";
-import { Accordion, Col, Form, Row } from "react-bootstrap";
+import { Accordion, Row, Col, Form } from "react-bootstrap";
 import Spinner from "../../../../../components/loader/Loader";
 import { regexForNumber } from "../../../../../resources/gateway/api/api-constants";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
 import {
-  setFormErrors,
   setForms,
+  setFormErrors,
 } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
 import {
   setForm,
   setFormError,
 } from "../../../../../store/features/gateway/policy/create/slice";
+
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 
 interface IProps {
   state?: IPolicyCreateState;
   keystate?: IKeyCreateState;
-  index?: number;
   current: string;
+  message?: string;
 }
 
-export default function GlobalLimitApi(props: IProps) {
+export default function GlobalRateLimit(props: IProps) {
   const dispatch = useAppDispatch();
   const states = useAppSelector((RootState) => RootState.createKeyState);
   const state: IPolicyCreateState = useAppSelector(
@@ -143,12 +144,8 @@ export default function GlobalLimitApi(props: IProps) {
   const handlerateclick = (event: any) => {
     event.preventDefault();
     validateForm(event);
-    const value = props.index!;
     let fieldValue;
-    const apisList =
-      props.current === "policy"
-        ? [...props.state?.data.form.APIs!]
-        : [...props.keystate?.data.form.AccessRights!];
+
     const fieldName = event.target.getAttribute("name");
     if (fieldName === "quota_renews") {
       switch (event.target.value) {
@@ -181,16 +178,31 @@ export default function GlobalLimitApi(props: IProps) {
     console.log("ye field values -", fieldValue);
     const newFormData: any = { ...Limits };
     newFormData[fieldName] = fieldValue;
-    console.log("ye new form data -", newFormData);
     setLimits(newFormData);
 
-    apisList[value] = {
-      ...apisList[value],
-      Limit: { ...newFormData },
-    };
     props.current === "policy"
-      ? dispatch(setForm({ ...state.data.form, APIs: apisList }))
-      : dispatch(setForms({ ...states.data.form, AccessRights: apisList }));
+      ? dispatch(
+          setForm({
+            ...state.data.form,
+            Rate: newFormData.rate,
+            Per: newFormData.per,
+            QuotaRate: newFormData.quota_max,
+            MaxQuota: newFormData.quota_renews,
+            ThrottleInterval: newFormData.throttle_interval,
+            ThrottleRetries: newFormData.throttle_retry_limit,
+          })
+        )
+      : dispatch(
+          setForms({
+            ...states.data.form,
+            Rate: newFormData.rate,
+            Per: newFormData.per,
+            QuotaRate: newFormData.quota_max,
+            MaxQuota: newFormData.quota_renews,
+            ThrottleInterval: newFormData.throttle_interval,
+            ThrottleRetries: newFormData.throttle_retry_limit,
+          })
+        );
   };
   console.log("checklimit", state.data.form);
   console.log("checklimit2", states.data.form);
@@ -214,23 +226,30 @@ export default function GlobalLimitApi(props: IProps) {
     }
   }
 
-  // function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
-  //   const { name, value } = event.target;
-  //   setRateValue(event.target.value);
-  //   dispatch(setForm({ ...state.data.form, [name]: value }));
-  // }
   return (
     <>
       {state.loading === false ? (
         <div className="card">
           <Accordion defaultActiveKey="0">
             <Accordion.Item eventKey="0">
-              <Accordion.Header>Global Limits and Quota</Accordion.Header>
+              <Accordion.Header>Global Limits and Quotaaaa</Accordion.Header>
 
               <Accordion.Body>
                 <Row>
-                  <Row>
-                    <Col md="4">
+                  <Col md="4">
+                    {props.current === "globalKey-applyPolicy" ? (
+                      <Form.Group className="mb-3">
+                        <Form.Label className="mt-2">
+                          <b>Rate Limiting</b>
+                        </Form.Label>
+                        <div
+                          className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2"
+                          style={{ background: "#ADD8E6" }} // #96DED1
+                        >
+                          Rate Limit {props.message}
+                        </div>
+                      </Form.Group>
+                    ) : (
                       <Form.Group className="mb-3">
                         <Form.Label className="mt-2">
                           <b>Rate Limiting</b>
@@ -299,8 +318,22 @@ export default function GlobalLimitApi(props: IProps) {
                             : states.data.errors?.Per}
                         </Form.Control.Feedback>
                       </Form.Group>
-                    </Col>
-                    <Col md="4">
+                    )}
+                  </Col>
+                  <Col md="4">
+                    {props.current === "globalKey-applyPolicy" ? (
+                      <Form.Group className="mb-3">
+                        <Form.Label className="mt-2">
+                          <b>Throttling</b>
+                        </Form.Label>
+                        <div
+                          className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2 "
+                          style={{ background: "#ADD8E6" }}
+                        >
+                          Throttling {props.message}
+                        </div>
+                      </Form.Group>
+                    ) : (
                       <Form.Group className="mb-3">
                         <Form.Label className="mt-2">
                           <b>Throttling</b>
@@ -371,8 +404,22 @@ export default function GlobalLimitApi(props: IProps) {
                             : states.data.errors?.ThrottleInterval}
                         </Form.Control.Feedback>
                       </Form.Group>
-                    </Col>
-                    <Col md="4">
+                    )}
+                  </Col>
+                  <Col md="4">
+                    {props.current === "globalKey-applyPolicy" ? (
+                      <Form.Group className="mb-3">
+                        <Form.Label className="mt-2">
+                          <b>Usage Quota</b>
+                        </Form.Label>
+                        <div
+                          className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2"
+                          style={{ background: "#ADD8E6" }}
+                        >
+                          Usage Quota {props.message}
+                        </div>
+                      </Form.Group>
+                    ) : (
                       <Form.Group className="mb-3">
                         <Form.Label className="mt-2">
                           <b>Usage Quota</b>
@@ -434,8 +481,8 @@ export default function GlobalLimitApi(props: IProps) {
                           <option>12 months</option>
                         </Form.Select>
                       </Form.Group>
-                    </Col>
-                  </Row>
+                    )}
+                  </Col>
                 </Row>
               </Accordion.Body>
             </Accordion.Item>

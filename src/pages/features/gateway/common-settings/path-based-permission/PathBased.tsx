@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Form, Row, Col, Accordion, AccordionButton } from "react-bootstrap";
 import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
+import { setForms } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
+import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
+import { useAppDispatch } from "../../../../../store/hooks";
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
 import Ipathpermission from "./path-file";
 interface IProps {
@@ -42,12 +45,40 @@ export default function PathBased(props: IProps) {
   // let ApiName = null;
   // if (props.indexdata !== null)
   //   ApiName = props.state?.data.form.accessRights[ind].apiName;
-
+  const dispatch = useAppDispatch();
   const deleteversion = (event: any, index: any) => {
     event.preventDefault();
     const rows = [...versions];
     rows.splice(index, 1);
     setversion(rows);
+  };
+  const removeAccess = (event: any, index: any, current: string) => {
+    event.preventDefault();
+    if (
+      current === "policy" &&
+      props.policystate?.data.form !== undefined &&
+      props.policystate?.data.form.APIs!.length > 0
+    ) {
+      const removeApi = [...props.policystate?.data.form.APIs!];
+
+      console.log(index, removeApi);
+      removeApi.splice(index, 1);
+      console.log("splice", removeApi);
+      dispatch(setForm({ ...props.policystate?.data.form, APIs: removeApi }));
+    } else if (
+      current === "key" &&
+      props.state?.data.form !== undefined &&
+      props.state?.data.form.AccessRights!.length > 0
+    ) {
+      const removeApi = [...props.state?.data.form.AccessRights!];
+
+      console.log(index, removeApi);
+      removeApi.splice(index, 1);
+      console.log("splicekey", removeApi);
+      dispatch(
+        setForms({ ...props.state?.data.form, AccessRights: removeApi })
+      );
+    }
   };
   return (
     <>
@@ -57,11 +88,17 @@ export default function PathBased(props: IProps) {
             <div style={{ display: "inline-flex", width: "100%" }}>
               <AccordionButton>
                 {props.current === "policy"
-                  ? props.policystate?.data.form.ApIs[props.indexdata!].Name
+                  ? props.policystate?.data.form.APIs[props.indexdata!].Name
                   : props.state?.data.form.AccessRights[props.indexdata!]
                       .ApiName}
               </AccordionButton>
-              <button type="button" style={{ width: "5%" }}>
+              <button
+                type="button"
+                style={{ width: "5%" }}
+                onClick={(e: any) =>
+                  removeAccess(e, props.indexdata, props.current)
+                }
+              >
                 <i className="bi bi-trash-fill menu-icon"></i>
               </button>
             </div>

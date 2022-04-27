@@ -71,6 +71,7 @@ export default function ApiAccessList(props: IProps) {
     ],
     search: true,
     sort: true,
+    // height: "400px",
     scrollable: "virtual",
     data:
       accessApiList.data !== undefined &&
@@ -92,7 +93,7 @@ export default function ApiAccessList(props: IProps) {
     style: {
       table: {
         width: "100%",
-        // hight: "20px",
+        // height: "30px",
         // scrollY: scroll,
         // border: "2px solid #ccc",
       },

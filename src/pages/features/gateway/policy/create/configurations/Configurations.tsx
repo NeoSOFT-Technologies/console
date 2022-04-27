@@ -96,7 +96,7 @@ export default function Configurations() {
                     value={state.data.form?.KeyExpiresIn}
                     onChange={(e: any) => validateForm(e)}
                   >
-                    <option>Select an option</option>
+                    <option>Select expiry</option>
                     <option value="0">Do not expire key</option>
                     <option value="3600">1 hour</option>
                     <option value="21600">6 hours</option>

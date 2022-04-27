@@ -181,8 +181,8 @@ const TenantProfile = () => {
                       {tenant.databaseName &&
                         !regexForDatabaseName.test(tenant.databaseName) && (
                           <span className="text-danger">
-                            databaseName Should Not Cantain Any Special
-                            Character or Number
+                            databaseName Should Not Contain Any Special
+                            Character or Number except (-).
                           </span>
                         )}
                     </Form.Group>
@@ -262,6 +262,7 @@ const TenantProfile = () => {
                         data-testid="cancel-btn"
                         onClick={() => {
                           if (user.data) setTenant({ ...user.data });
+                          setEdit(false);
                         }}
                       >
                         Cancel
