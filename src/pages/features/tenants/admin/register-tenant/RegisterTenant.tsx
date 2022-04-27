@@ -311,19 +311,26 @@ export default function RegisterTenant() {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
+                <Col>
+                  <div>
+                    <Button
+                      className="info"
+                      type="submit"
+                      data-testid="submit-input"
+                    >
+                      Submit
+                    </Button>
+                    <Button
+                      className="btn btn-light"
+                      type="reset"
+                      data-testid="cancel-input"
+                      onClick={() => clearData()}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </Col>
               </Row>
-
-              <Button className="info" type="submit" data-testid="submit-input">
-                Submit
-              </Button>
-              <Button
-                className="btn btn-light"
-                type="reset"
-                data-testid="cancel-input"
-                onClick={() => clearData()}
-              >
-                Cancel
-              </Button>
             </Form>
           </Container>
         </div>
