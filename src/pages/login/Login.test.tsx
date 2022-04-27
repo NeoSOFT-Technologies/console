@@ -96,26 +96,3 @@ it("test if input box is present and takes inputs as a tenant", () => {
     userData: { data: { name: "rohit" } },
   });
 });
-
-it("test if sign-in, keep-signed-in and forgot-password button renders", () => {
-  const store = mockStore(storeStates);
-
-  render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <Login />
-      </Provider>
-    </BrowserRouter>
-  );
-  const submitBtn = screen.getByTestId("signin-button");
-  expect(submitBtn).toBeInTheDocument();
-  fireEvent.click(submitBtn);
-
-  const keepSignedInBtn = screen.getByTestId("keep-signed-in");
-  expect(keepSignedInBtn).toBeInTheDocument();
-  fireEvent.click(keepSignedInBtn);
-
-  const forgotPasswordBtn = screen.getByTestId("forgot-password");
-  expect(forgotPasswordBtn).toBeInTheDocument();
-  fireEvent.click(forgotPasswordBtn);
-});

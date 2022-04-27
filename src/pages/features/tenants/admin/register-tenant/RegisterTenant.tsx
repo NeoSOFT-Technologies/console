@@ -283,6 +283,8 @@ export default function RegisterTenant() {
                       name="databaseName"
                       value={tenant.databaseName}
                       onChange={handleInputChange}
+                      isInvalid={!!error.databaseName}
+                      isValid={!error.databaseName && !!tenant.databaseName}
                     />
                     <Form.Control.Feedback type="invalid">
                       {error.databaseName}

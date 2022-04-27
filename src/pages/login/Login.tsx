@@ -197,27 +197,6 @@ export default function Login() {
                   SIGN IN
                 </Button>
               </div>
-              <div className="my-2 d-flex justify-content-between align-items-center">
-                <div className="form-check">
-                  <label className="form-check-label text-muted">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      data-testid="keep-signed-in"
-                    />
-                    <i className="input-helper"></i>
-                    Keep me signed in
-                  </label>
-                </div>
-                <a
-                  href="!#"
-                  data-testid="forgot-password"
-                  onClick={(event) => event.preventDefault()}
-                  className="auth-link text-black"
-                >
-                  Forgot password?
-                </a>
-              </div>
             </Form>
           </div>
         </div>

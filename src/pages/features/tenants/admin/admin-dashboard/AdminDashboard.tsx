@@ -45,13 +45,11 @@ const AdminDashboard = () => {
                     Created Date and Time :&nbsp;{user.data.createdTimestamp}
                   </span>
                 </Card.Text>
-                <Card.Text>
-                  <RolesAndPermissions
-                    heading="Roles"
-                    list={user?.data?.roles}
-                    classes="roles"
-                  />
-                </Card.Text>
+                <RolesAndPermissions
+                  heading="Roles"
+                  list={user?.data?.roles}
+                  classes="roles"
+                />
                 <hr />
               </Card.Body>
             </Card>

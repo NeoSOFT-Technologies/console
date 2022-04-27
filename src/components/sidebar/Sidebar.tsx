@@ -93,16 +93,14 @@ export const Sidebar = () => {
             </a>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="#">
+            <div
+              className="nav-link"
+              onClick={() =>
+                setSubMenu({ ...subMenu, logger: !subMenu.logger })
+              }
+            >
               <div className="d-flex justify-content-between w-100 ">
-                <span
-                  className="menu-title lh-2"
-                  onClick={() =>
-                    setSubMenu({ ...subMenu, logger: !subMenu.logger })
-                  }
-                >
-                  Tenant
-                </span>
+                <span className="menu-title lh-2">Tenant</span>
                 <i
                   className={` ${
                     subMenu.logger
@@ -111,7 +109,7 @@ export const Sidebar = () => {
                   }`}
                 ></i>
               </div>
-            </Link>
+            </div>
             <Collapse in={subMenu.logger}>
               <ul className="nav flex-column  list-unstyled p-0">
                 {routes.map((route, index) => (
@@ -137,16 +135,14 @@ export const Sidebar = () => {
             </Collapse>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="#">
+            <div
+              className="nav-link"
+              onClick={() =>
+                setSubMenu({ ...subMenu, gateway: !subMenu.gateway })
+              }
+            >
               <div className="d-flex justify-content-between w-100 ">
-                <span
-                  className="menu-title lh-2"
-                  onClick={() =>
-                    setSubMenu({ ...subMenu, gateway: !subMenu.gateway })
-                  }
-                >
-                  Gateway
-                </span>
+                <span className="menu-title lh-2">Gateway</span>
                 <i
                   className={` ${
                     subMenu.gateway
@@ -155,7 +151,7 @@ export const Sidebar = () => {
                   }`}
                 ></i>
               </div>
-            </Link>
+            </div>
             <Collapse in={subMenu.gateway}>
               <ul className="nav flex-column  list-unstyled p-0">
                 {gatewayroutes.map((route, index) => (
@@ -181,16 +177,12 @@ export const Sidebar = () => {
             </Collapse>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="#">
+            <div
+              className="nav-link"
+              onClick={() => setSubMenu({ ...subMenu, saas: !subMenu.saas })}
+            >
               <div className="d-flex justify-content-between w-100 ">
-                <span
-                  className="menu-title lh-2"
-                  onClick={() =>
-                    setSubMenu({ ...subMenu, saas: !subMenu.saas })
-                  }
-                >
-                  Saas
-                </span>
+                <span className="menu-title lh-2">Saas</span>
                 <i
                   className={` ${
                     subMenu.saas
@@ -199,7 +191,7 @@ export const Sidebar = () => {
                   }`}
                 ></i>
               </div>
-            </Link>
+            </div>
             <Collapse in={subMenu.saas}>
               <ul className="nav flex-column  list-unstyled p-0">
                 {saasroutes.map((route, index) => (
