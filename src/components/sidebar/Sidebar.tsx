@@ -92,7 +92,10 @@ export const Sidebar = () => {
           </li>
           <li className="nav-item">
             <div className="nav-link" onClick={() => navigate("/tenant")}>
-              Home
+              <div className="d-flex justify-content-between w-100">
+                <span className="menu-title lh-2">Home</span>
+                <i className="bi bi-house-door-fill"></i>
+              </div>
             </div>
           </li>
           <li className="nav-item">
