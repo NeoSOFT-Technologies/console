@@ -246,7 +246,7 @@ export default function TenantDetails() {
                         {tenant.tenantName &&
                           !regexForName.test(tenant.tenantName) && (
                             <span className="text-danger">
-                              Name Should Not Cantain Any Special Character or
+                              Name Should Not Contain Any Special Character or
                               Number
                             </span>
                           )}
@@ -335,7 +335,7 @@ export default function TenantDetails() {
                           onClick={(
                             event: React.MouseEvent<HTMLButtonElement>
                           ) => handleUpdateTenant(event)}
-                          className="mt-3 info ml-4"
+                          className="mt-3 info "
                         >
                           Update
                         </Button>

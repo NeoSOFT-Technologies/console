@@ -4,11 +4,12 @@ export const div = document.createElement("div");
 // regex
 
 export const regexForEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-export const regexForName = /^[A-Za-z]{4,29}$/;
-export const regexForDatabaseName = /^[A-Za-z]+-*[A-Za-z]{4,29}$/;
-export const regexForDescription = /^[A-Za-z]*[\sA-Za-z]*$/;
+export const regexForName =
+  /^[\dA-Za-z]([._-](?![._-])|[\dA-Za-z]){2,18}[\dA-Za-z]$/;
+export const regexForDatabaseName = /^[A-Za-z]+-*[A-Za-z]{2,29}$/;
+export const regexForDescription = /^[A-Za-z]+[\s,.A-Za-z]*$/;
 export const regexForUser =
-  /^[\dA-Za-z]([._-](?![._-])|[\dA-Za-z]){3,18}[\dA-Za-z]$/;
+  /^[\dA-Za-z]([._-](?![._-])|[\dA-Za-z]){2,18}[\dA-Za-z]$/;
 export const regForPassword = /^[\d!$%&*@A-Za-z]{8,15}$/;
 export const requestUserListURL = `api/user?`;
 export const requestTenantListUrlInactive = `api/tenants?isDeleted=true&`;

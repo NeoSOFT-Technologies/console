@@ -245,38 +245,40 @@ const TenantProfile = () => {
                         )}
                     </Form.Group>
                   </Col>
-                  {edit ? (
-                    <>
+                  <div>
+                    {edit ? (
+                      <>
+                        <Button
+                          data-testid="update-button"
+                          onClick={(
+                            event: React.MouseEvent<HTMLButtonElement>
+                          ) => handleUpdateTenant(event)}
+                          className="mt-3 info "
+                        >
+                          Update
+                        </Button>
+                        <Button
+                          className="btn btn-light mt-3"
+                          type="reset"
+                          data-testid="cancel-btn"
+                          onClick={() => {
+                            if (user.data) setTenant({ ...user.data });
+                            setEdit(false);
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </>
+                    ) : (
                       <Button
-                        data-testid="update-button"
-                        onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-                          handleUpdateTenant(event)
-                        }
-                        className="mt-3 info ml-4"
+                        data-testid="edit-button"
+                        onClick={() => setEdit(true)}
+                        className="mt-3 info"
                       >
-                        Update
+                        Edit
                       </Button>
-                      <Button
-                        className="btn btn-light mt-3"
-                        type="reset"
-                        data-testid="cancel-btn"
-                        onClick={() => {
-                          if (user.data) setTenant({ ...user.data });
-                          setEdit(false);
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    </>
-                  ) : (
-                    <Button
-                      data-testid="edit-button"
-                      onClick={() => setEdit(true)}
-                      className="mt-3 info ml-4"
-                    >
-                      Edit
-                    </Button>
-                  )}
+                    )}
+                  </div>
                 </Row>
               </Form>
             </Container>
