@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // import { Button } from "react-bootstrap";
 import { Collapse } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import withRouter from "../../WithRouter";
 import adminGatewayRoutes from "../../routes/gateway/admin";
 import adminRoutes from "../../routes/tenants/admin";
@@ -21,7 +21,7 @@ interface IConditions {
 
 export const Sidebar = () => {
   const location = useLocation();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const isPathActive = (path: string) => {
     return location.pathname.startsWith(path);
   };
@@ -39,7 +39,6 @@ export const Sidebar = () => {
     { path: "", title: "", icon: "" },
   ]);
 
-  // const [switchRoutes, setSwitchRoutes] = useState(false);
   useEffect(() => {
     if (user.data && loginType.data === "admin") {
       setRoutes(adminRoutes);
@@ -79,7 +78,6 @@ export const Sidebar = () => {
                   alt="profile"
                 />
                 <span className="login-status online"></span>{" "}
-                {/* change to offline or busy as needed */}
               </div>
               <div className="nav-profile-text">
                 <span className="font-weight-bold mb-2">
@@ -91,6 +89,11 @@ export const Sidebar = () => {
               </div>
               <i className="bi bi-bookmark-star-fill text-success nav-profile-badge"></i>
             </a>
+          </li>
+          <li className="nav-item">
+            <div className="nav-link" onClick={() => navigate("/tenant")}>
+              Home
+            </div>
           </li>
           <li className="nav-item">
             <div
