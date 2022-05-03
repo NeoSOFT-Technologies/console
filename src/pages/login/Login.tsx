@@ -174,17 +174,19 @@ export default function Login() {
                       placeholder="Enter password"
                       onChange={handle}
                     />
-                    <PasswordButtons
-                      viewPassword={showPassword}
-                      setViewPassword={setShowpassword}
-                    />
+                    <InputGroup.Text>
+                      <PasswordButtons
+                        viewPassword={showPassword}
+                        setViewPassword={setShowpassword}
+                      />
+                    </InputGroup.Text>
                   </InputGroup>
-                  {error.password.length > 0 && (
-                    <Alert variant="danger" className="mt-2">
-                      {error.password}
-                    </Alert>
-                  )}
                 </Form.Group>
+                {error.password.length > 0 && (
+                  <Alert variant="danger" className="mt-2">
+                    {error.password}
+                  </Alert>
+                )}
               </div>
               <div className="mt-3">
                 <Button

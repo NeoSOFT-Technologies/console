@@ -15,7 +15,10 @@ import {
   updateTenant,
 } from "../../../../../store/features/tenant/update-tenant/slice";
 import { useAppSelector, useAppDispatch } from "../../../../../store/hooks";
-import { getUserData } from "../../../../../store/user-data/slice";
+import {
+  // getUserData,
+  setUserData,
+} from "../../../../../store/user-data/slice";
 import {
   IErrorTenantDetail,
   ITenantDetail,
@@ -59,7 +62,7 @@ const TenantProfile = () => {
           ...error,
           [name]: regexForDescription.test(value)
             ? ""
-            : "description should only consist Alphabets",
+            : "description should only consist Alphabets and Numbers.",
         });
         break;
 
@@ -97,13 +100,14 @@ const TenantProfile = () => {
   const clearAndUpdate = async () => {
     await dispatch(resetUpdateTenantState());
     if (user.data?.tenantName !== undefined) {
-      await dispatch(
-        getUserData({
-          userName: "tenantadmin",
-          tenantName: user.data?.tenantName,
-          type: "tenant",
-        })
-      );
+      // await dispatch(
+      //   getUserData({
+      //     userName: "tenantadmin",
+      //     tenantName: user.data?.tenantName,
+      //     type: "tenant",
+      //   })
+      // );
+      dispatch(setUserData({ ...tenant }));
     }
   };
 
@@ -236,13 +240,9 @@ const TenantProfile = () => {
                           !regexForDescription.test(tenant.description)
                         }
                       />
-                      {tenant.tenantName &&
-                        !regexForDescription.test(tenant.description) && (
-                          <span className="text-danger">
-                            Name Should Not Cantain Any Special Character or
-                            Number
-                          </span>
-                        )}
+                      <Form.Control.Feedback type="invalid">
+                        {error.description}
+                      </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
                   <div>

@@ -93,7 +93,7 @@ export default function TenantDetails() {
           ...error,
           [name]: regexForDescription.test(value)
             ? ""
-            : "description should only consist Alphabets",
+            : "description should only consist Alphabets and Numbers",
         });
         break;
       default:
@@ -319,13 +319,9 @@ export default function TenantDetails() {
                             !regexForDescription.test(tenant.description)
                           }
                         />
-                        {tenant.description &&
-                          !regexForDescription.test(tenant.description) && (
-                            <span className="text-danger">
-                              description should be characters only no Special
-                              Character or Number allowed.
-                            </span>
-                          )}
+                        <Form.Control.Feedback type="invalid">
+                          {error.description}
+                        </Form.Control.Feedback>
                       </Form.Group>
                     </Col>
                     <div>

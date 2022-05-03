@@ -121,6 +121,13 @@ export default function UserDetails() {
       ToastAlert("User Deleted ", "success");
       navigate("/tenant/tenant/users");
     }
+    if (
+      !updateUserDataState.loading &&
+      !updateUserDataState.error &&
+      updateUserDataState.isUpdated
+    ) {
+      ToastAlert("User Updated ", "success");
+    }
   }, [deleteUserState.loading, updateUserDataState.loading]);
 
   useEffect(() => {
@@ -201,7 +208,6 @@ export default function UserDetails() {
             roles: userdata.roles,
           })
         );
-        ToastAlert("User Saved", "success");
         setEditUser(false);
       } else {
         ToastAlert("Please Fill All Fields", "warning");

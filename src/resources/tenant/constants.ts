@@ -7,10 +7,11 @@ export const regexForEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const regexForName =
   /^[\dA-Za-z]([._-](?![._-])|[\dA-Za-z]){2,18}[\dA-Za-z]$/;
 export const regexForDatabaseName = /^[A-Za-z]+-*[A-Za-z]{2,29}$/;
-export const regexForDescription = /^[A-Za-z]+[\s,.A-Za-z]*$/;
+export const regexForDescription = /^[A-Za-z]+[\d\s,.A-Za-z]*$/;
 export const regexForUser =
   /^[\dA-Za-z]([._-](?![._-])|[\dA-Za-z]){2,18}[\dA-Za-z]$/;
-export const regForPassword = /^[\d!$%&*@A-Za-z]{8,15}$/;
+export const regForPassword =
+  /^(?=.*?[A-Z])(?=(.*[a-z])+)(?=(.*\d)+)(?=(.*\W)+)(?!.*\s).{8,15}$/;
 export const requestUserListURL = `api/user?`;
 export const requestTenantListUrlInactive = `api/tenants?isDeleted=true&`;
 export const requestTenantListUrlActive = `api/tenants?isDeleted=false&`;
