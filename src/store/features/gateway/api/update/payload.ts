@@ -8,6 +8,7 @@ export const initialState: IApiGetByIdState = {
       ListenPath: "",
       StripListenPath: false,
       TargetUrl: "",
+      SelectedTabIndex: "",
       IsActive: true,
       IsInternal: false,
       Protocol: "http",

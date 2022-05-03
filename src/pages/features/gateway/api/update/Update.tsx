@@ -25,7 +25,14 @@ export default function Update() {
   }, []);
 
   const navigate = useNavigate();
-
+  async function setKey(a: any) {
+    dispatch(
+      setForm({
+        ...state.data.form,
+        SelectedTabIndex: a,
+      })
+    );
+  }
   async function handleSubmitApiUpdate(event: FormEvent) {
     event.preventDefault();
     let validate: any;
@@ -93,10 +100,11 @@ export default function Update() {
                   </div>
                   <div className="card-body pt-2">
                     <Tabs
-                      defaultActiveKey="setting"
+                      defaultActiveKey={state.data.form?.SelectedTabIndex}
                       id="uncontrolled-tab"
                       // transition={false}
                       className="mb-2 small"
+                      onSelect={(k) => setKey(k)}
                     >
                       <Tab eventKey="setting" title="Setting">
                         <Setting />
@@ -104,6 +112,9 @@ export default function Update() {
                       <Tab eventKey="version" title="Version">
                         <Version />
                       </Tab>
+                      {/* <Tab eventKey="advanced-options" title="Advanced Options">
+                        <AdvancedOptions />
+                      </Tab> */}
                     </Tabs>
                   </div>
                 </div>
