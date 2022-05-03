@@ -15,6 +15,7 @@ export interface IGetApiByIdData {
   ListenPath: string;
   StripListenPath: boolean;
   TargetUrl: string;
+  SelectedTabIndex: string;
   IsActive: boolean;
   IsInternal: boolean;
   Protocol: string;

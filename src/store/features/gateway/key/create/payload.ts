@@ -37,7 +37,21 @@ export const initialState: IKeyCreateState = {
       //   },
       // ],
       Policies: [],
-      PolicyByIds: [],
+      PolicyByIds: [
+        {
+          global: {
+            Name: "",
+            MaxQuota: 0,
+            QuotaRate: 0,
+            Rate: 0,
+            Per: 0,
+            ThrottleInterval: 0,
+            ThrottleRetries: 0,
+          },
+          perApi: [],
+          policyName: "",
+        },
+      ],
       Tags: [],
     },
     errors: {
@@ -50,3 +64,5 @@ export const initialState: IKeyCreateState = {
   loading: false,
   error: undefined,
 };
+
+export const emptyState: IKeyCreateState = { ...initialState };

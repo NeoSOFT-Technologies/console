@@ -41,7 +41,7 @@ export default function RateLimit() {
   }
   return (
     <div>
-      <div className="card">
+      <div>
         <div>
           <div className="align-items-center justify-content-around">
             <Accordion defaultActiveKey="0">

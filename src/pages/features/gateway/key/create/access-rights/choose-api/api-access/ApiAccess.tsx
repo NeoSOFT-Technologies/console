@@ -10,7 +10,7 @@ export default function ApiAccess() {
     <>
       <fieldset className="border p-2">
         <legend className="float-none w-auto p-2">API Access</legend>
-        {state.data.form.AccessRights !== null &&
+        {state.data.form.AccessRights !== undefined &&
         state.data.form.AccessRights?.length! > 0 &&
         Array.isArray(state.data.form.AccessRights) ? (
           (state.data.form.AccessRights as any[]).map(
