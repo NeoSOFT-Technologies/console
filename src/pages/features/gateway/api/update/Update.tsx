@@ -7,6 +7,7 @@ import { IApiGetByIdState } from "../../../../../store/features/gateway/api/upda
 import {
   updateApi,
   getApiById,
+  setForm,
 } from "../../../../../store/features/gateway/api/update/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import Setting from "./setting/Setting";
@@ -34,7 +35,13 @@ export default function Update() {
       );
     }
     if (validate) {
-      const result = await dispatch(updateApi(state.data.form));
+      const newForm = { ...state.data.form };
+      if (state.data.form.EnableRoundRobin === false) {
+        newForm.LoadBalancingTargets = [];
+        dispatch(setForm({ ...state.data.form, LoadBalancingTargets: [] }));
+      }
+      console.log("newFrom", newForm);
+      const result = await dispatch(updateApi(newForm));
       if (result.meta.requestStatus === "rejected") {
         ToastAlert(result.payload.message, "error");
       } else if (result.meta.requestStatus === "fulfilled") {

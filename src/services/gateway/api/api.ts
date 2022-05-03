@@ -23,3 +23,10 @@ export function updateApiService(data: IGetApiByIdData) {
 export function deleteApiService(Id: string) {
   return apiFactory().delete(`ApplicationGateway/` + Id);
 }
+export function addCertificateService(data: any) {
+  return apiFactory().post(`Certificate/AddCertificate`, data);
+}
+
+export function getAllCertificateService() {
+  return apiFactory().get(`Certificate/GetAllCertificates`);
+}
