@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Accordion, Col, Form, Row } from "react-bootstrap";
+import { Accordion, AccordionButton, Col, Form, Row } from "react-bootstrap";
 import Spinner from "../../../../../components/loader/Loader";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
 import { setForms } from "../../../../../store/features/gateway/key/create/slice";
@@ -111,6 +111,21 @@ export default function GlobalLimit(props: IProps) {
       manageState();
     }
   }, [loader]);
+
+  const removeAccess = (event: any, index: any) => {
+    event.preventDefault();
+    const removePolicyByIds = [...states.data.form.PolicyByIds!];
+    const removePolicies = [...states.data.form.Policies];
+    removePolicyByIds.splice(index, 1);
+    removePolicies.splice(index, 1);
+    dispatch(
+      setForms({
+        ...states.data.form,
+        PolicyByIds: removePolicyByIds,
+        Policies: removePolicies,
+      })
+    );
+  };
   console.log("states", states.data.form);
   return (
     <>
@@ -124,22 +139,19 @@ export default function GlobalLimit(props: IProps) {
         <>
           <Accordion defaultActiveKey="0">
             <Accordion.Item eventKey="0">
-              <Accordion.Header>
-                {states.data.form.PolicyByIds![props.index!].policyName}
-              </Accordion.Header>
+              <div style={{ display: "inline-flex", width: "100%" }}>
+                <AccordionButton>
+                  {states.data.form.PolicyByIds![props.index!].policyName}
+                </AccordionButton>
+                <button
+                  type="button"
+                  style={{ width: "5%" }}
+                  onClick={(e: any) => removeAccess(e, props.index)}
+                >
+                  <i className="bi bi-trash-fill menu-icon"></i>
+                </button>
+              </div>
               <Accordion.Body>
-                <Row>
-                  <Col md="12">
-                    <button
-                      className="btn btn-danger"
-                      style={{ float: "right" }}
-                      type="button"
-                    >
-                      Remove Access
-                    </button>
-                  </Col>
-                </Row>
-                <br />
                 {(
                   states.data.form.PolicyByIds![props.index!].perApi as any[]
                 ).map((data: any, index: number) => {
