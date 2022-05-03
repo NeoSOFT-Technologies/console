@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Row, Form, Col, Modal } from "react-bootstrap";
 // import Spinner from "../../../../../../../../components/loader/Loader";
-// import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
+import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
 import { addCertificate } from "../../../../../../../../store/features/gateway/certificate/create/slice";
 import { getAllCertificate } from "../../../../../../../../store/features/gateway/certificate/list/slice";
 import {
@@ -17,7 +17,7 @@ export default function MutualTLS() {
     (RootState) => RootState.getAllCertificateState
   );
   console.log("state", certificateState);
-  // const [certId, setCertId] = useState<any>([]);
+  const [certId, setCertId] = useState<any>([]);
   const [file, setFile] = useState<any>([]);
   const [radio, setRadio] = useState("uploadCert");
   const [fileName, setFileName] = useState<any>("");
@@ -36,12 +36,11 @@ export default function MutualTLS() {
       data.append("file", fileName);
       console.log("formData", data);
       dispatch(addCertificate(data));
+    } else {
+      const obj = [...updateState.data.form.CertIds, certId];
+      dispatch(setForm({ ...updateState.data.form, CertIds: obj }));
+      setCertId([""]);
     }
-    // else {
-    //   const obj = [...updateState.data.form.CertIds, certId];
-    //   dispatch(setForm({ ...updateState.data.form, CertIds: obj }));
-    //   setCertId([""]);
-    // }
   };
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -55,8 +54,8 @@ export default function MutualTLS() {
     setRadio(value);
   };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // const { value } = event.target;
-    // // setCertId(value);
+    const { value } = event.target;
+    setCertId(value);
   };
   const handlefile = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("value", e.target.files![0]);
@@ -139,7 +138,7 @@ export default function MutualTLS() {
                       type="text"
                       id="certId"
                       name="certId"
-                      // value={certId}
+                      value={certId}
                       onChange={(e: any) => handleInputChange(e)}
                     />
                     {/* <Form.Control.Feedback type="invalid">
