@@ -33,10 +33,12 @@ export default function AccessList() {
           {
             ApiId: selectedApi.payload.Data.ApiId,
             ApiName: selectedApi.payload.Data.Name,
-            Versions: listV,
+            Versions: [], // listV,
+            MasterVersions: listV,
             AllowedUrls: [],
             Limit: {
               Rate: 0,
+              Per: 0,
               Throttle_interval: 0,
               Throttle_retry_limit: 0,
               Max_query_depth: 0,

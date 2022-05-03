@@ -150,7 +150,7 @@ export default function GlobalLimitApi(props: IProps) {
         ? [...props.state?.data.form.APIs!]
         : [...props.keystate?.data.form.AccessRights!];
     const fieldName = event.target.getAttribute("name");
-    if (fieldName === "quota_renews") {
+    if (fieldName === "quota_renewal_rate") {
       switch (event.target.value) {
         case "1 hour":
           fieldValue = 3600;
@@ -194,6 +194,7 @@ export default function GlobalLimitApi(props: IProps) {
   };
   console.log("checklimit", state.data.form);
   console.log("checklimit2", states.data.form);
+
   function handleThrottleChange(evt: any) {
     setThrottle(evt.target.checked);
     if (throttle === false) {
@@ -250,6 +251,12 @@ export default function GlobalLimitApi(props: IProps) {
                           className="mt-2"
                           type="text"
                           id="rate"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.APIs[props.index!]?.Limit?.rate
+                              : states.data.form.AccessRights[props.index!]
+                                  ?.Limit?.Rate
+                          }
                           placeholder="Enter Request per period"
                           // onChange={(e: any) => validateForm(e)}
                           onChange={(e: any) => handlerateclick(e)}
@@ -281,6 +288,12 @@ export default function GlobalLimitApi(props: IProps) {
                           placeholder="Enter time"
                           onChange={(e: any) => handlerateclick(e)}
                           name="per"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.APIs[props.index!]?.Limit?.per
+                              : states.data.form.AccessRights[props.index!]
+                                  ?.Limit?.Per
+                          }
                           isInvalid={
                             props.current === "policy"
                               ? !!state.data.errors?.Per
@@ -321,6 +334,13 @@ export default function GlobalLimitApi(props: IProps) {
                           className="mt-2"
                           type="text"
                           id="retry"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.APIs[props.index!]?.Limit
+                                  ?.throttle_retry_limit
+                              : states.data.form.AccessRights[props.index!]
+                                  ?.Limit?.Throttle_retry_limit
+                          }
                           placeholder={throttleRetry}
                           name="throttle_retry_limit"
                           onChange={(e: any) => handlerateclick(e)}
@@ -351,6 +371,13 @@ export default function GlobalLimitApi(props: IProps) {
                           type="text"
                           id="interval"
                           name="throttle_interval"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.APIs[props.index!]?.Limit
+                                  ?.throttle_interval
+                              : states.data.form.AccessRights[props.index!]
+                                  ?.Limit?.Throttle_interval
+                          }
                           placeholder={throttleInterval}
                           onChange={(e: any) => handlerateclick(e)}
                           isInvalid={
@@ -396,6 +423,13 @@ export default function GlobalLimitApi(props: IProps) {
                           placeholder={quotaPerPeriod}
                           onChange={(e: any) => handlerateclick(e)}
                           name="quota_max"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.APIs[props.index!]?.Limit
+                                  ?.quota_max
+                              : states.data.form.AccessRights[props.index!]
+                                  ?.Limit?.Quota_max
+                          }
                           isInvalid={
                             props.current === "policy"
                               ? !!state.data.errors?.Quota
@@ -421,7 +455,14 @@ export default function GlobalLimitApi(props: IProps) {
                           className="mt-2"
                           style={{ height: 46 }}
                           disabled={quota}
-                          name="quota_renews"
+                          name="quota_renewal_rate"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.APIs[props.index!]?.Limit
+                                  ?.quota_renews
+                              : states.data.form.AccessRights[props.index!]
+                                  ?.Limit?.Quota_renews
+                          }
                           onChange={(e: any) => handlerateclick(e)}
                         >
                           <option>never</option>

@@ -28,3 +28,5 @@ export const initialState: IPolicyCreateState = {
   loading: false,
   error: undefined,
 };
+
+export const emptyState: IPolicyCreateState = { ...initialState };
