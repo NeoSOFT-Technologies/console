@@ -30,6 +30,7 @@
     "@types/react-bootstrap": "^0.32.29",
     "@types/react-dom": "^18.0.0",
     "@types/react-redux": "^7.1.23",
+    "autoprefixer": "10.4.5",
     "axios": "^0.26.0",
     "axios-mock-adapter": "^1.20.0",
     "bootstrap": "^4.3.1",
@@ -109,5 +110,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "overrides": {
+    "autoprefixer": "10.4.5"
   }
 }
