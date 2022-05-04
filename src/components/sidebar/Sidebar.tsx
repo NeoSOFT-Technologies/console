@@ -4,6 +4,7 @@ import { Collapse } from "react-bootstrap";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import withRouter from "../../WithRouter";
 import adminGatewayRoutes from "../../routes/gateway/admin";
+import saasRoutes from "../../routes/saas/saas";
 import adminRoutes from "../../routes/tenants/admin";
 import tenantRoutes from "../../routes/tenants/tenants";
 import userRoutes from "../../routes/tenants/user-routes";
@@ -43,7 +44,7 @@ export const Sidebar = () => {
     if (user.data && loginType.data === "admin") {
       setRoutes(adminRoutes);
       setGatewayRoutes(adminGatewayRoutes);
-      setSaasRoutes(adminRoutes);
+      setSaasRoutes(saasRoutes);
     } else if (user.data && loginType.data === "tenant") {
       setRoutes(tenantRoutes);
       setGatewayRoutes(adminGatewayRoutes);

@@ -62,6 +62,9 @@ const CreateKey = lazy(
 const CreatePolicy = lazy(
   () => import("./pages/features/gateway/policy/create/CreatePolicy")
 );
+const GetTables = lazy(
+  () => import("./pages/features/saas/get-tables/GetTables")
+);
 const KeyList = lazy(() => import("./pages/features/gateway/key/list/KeyList"));
 const Dashboard = lazy(() => import("./pages/features/gateway/Dashboard"));
 const UpdateApi = lazy(
@@ -189,6 +192,16 @@ function AppRoutes() {
           <Route path="policies/create" element={<CreatePolicy />} />
           <Route path="apis/update/:id" element={<UpdateApi />} />
           <Route path="policies/update/:id" element={<CreatePolicy />} />
+        </Route>
+        <Route path="/saas">
+          <Route
+            path="getTables"
+            element={
+              <AdminGuard>
+                <GetTables />
+              </AdminGuard>
+            }
+          />
         </Route>
         <Route path="*" element={<Navigate to="/login-page" />} />{" "}
       </Routes>

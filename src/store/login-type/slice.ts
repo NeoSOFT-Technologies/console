@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // import { IUserDataState } from "../../types/index";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../utils/error";
 
 export interface ILoginTypeState {

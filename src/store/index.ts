@@ -1,4 +1,4 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import addNewTenantReducer from "./features/admin/add-tenant/slice";
 import deleteTenantReducer from "./features/admin/delete-tenant/slice";
 import rolesListReducer from "./features/admin/tenant-roles/slice";
@@ -15,7 +15,7 @@ import keyListReducer from "./features/gateway/key/list/slice";
 import createPolicyReducer from "./features/gateway/policy/create/slice";
 import deletePolicyReducer from "./features/gateway/policy/delete/slice";
 import policyListReducer from "./features/gateway/policy/list/slice";
-
+import getTableReducer from "./features/saas/get-tables/slice";
 import addNewUserReducer from "./features/tenant/add-user/slice";
 import deleteUserReducer from "./features/tenant/delete-user/slice";
 import tenantDetailsReducer from "./features/tenant/tenant-details/slice";
@@ -56,6 +56,8 @@ const store = configureStore({
     createKeyState: createKeyReducer,
     addCertificateState: addCertificateReducer,
     getAllCertificateState: getAllCertificateReducer,
+    // saas states
+    getTableState: getTableReducer,
   },
 });
 

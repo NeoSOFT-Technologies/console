@@ -6,6 +6,8 @@ const defaultHostUrl =
   process.env.REACT_APP_API_BASEURL || "http://localhost:5000";
 const defaultGatewayUrl =
   process.env.REACT_APP_GATEWAY_API || "http://localhost:5501";
+const defaultSaasUrl =
+  process.env.REACT_APP_SAAS_API || "http://localhost:8081";
 
 // Todo : Make default URL based on Environment ['dev', 'staging', 'test', 'prod']
 
@@ -20,6 +22,9 @@ const getDefaultPath = () => {
       break;
     case "gateway":
       baseUrl = defaultGatewayUrl;
+      break;
+    case "saas":
+      baseUrl = defaultSaasUrl;
       break;
     default:
       break;
