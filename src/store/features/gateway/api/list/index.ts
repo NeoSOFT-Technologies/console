@@ -11,6 +11,7 @@ export interface ISetApiList {
   TotalCount: number;
 }
 export interface IApiData {
+  Action?: string;
   Name: string;
   CreatedDate: string;
   TargetUrl: string;

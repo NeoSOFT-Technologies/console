@@ -5,7 +5,9 @@ import React, { useEffect } from "react";
 import { IApiListState } from "../../../../../store/features/gateway/api/list";
 import { getApiList } from "../../../../../store/features/gateway/api/list/slice";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create/index";
+import { setForms } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
+import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppSelector, useAppDispatch } from "../../../../../store/hooks";
 
 interface IProps {
@@ -25,7 +27,33 @@ export default function ApiAccessList(props: IProps) {
   useEffect(() => {
     mainCall(1, 100_000);
   }, []);
-
+  const removeAccess = (Id: string) => {
+    if ((props.state as IPolicyCreateState).data.form.APIs) {
+      const removeApi = [
+        ...(props.state as IPolicyCreateState).data.form.APIs!,
+      ];
+      const index = removeApi.findIndex((a) => a.Id === Id);
+      removeApi.splice(index, 1);
+      dispatch(
+        setForm({
+          ...(props.state as IPolicyCreateState).data.form,
+          APIs: removeApi,
+        })
+      );
+    } else if ((props.state as IKeyCreateState).data.form.AccessRights) {
+      const removeApi = [
+        ...(props.state as IKeyCreateState).data.form.AccessRights!,
+      ];
+      const index = removeApi.findIndex((a) => a.ApiId === Id);
+      removeApi.splice(index, 1);
+      dispatch(
+        setForms({
+          ...(props.state as IKeyCreateState).data.form,
+          AccessRights: removeApi,
+        })
+      );
+    }
+  };
   const grid = new Grid({
     columns: [
       {
@@ -33,25 +61,37 @@ export default function ApiAccessList(props: IProps) {
         hidden: true,
       },
       {
-        name: "Name",
+        name: "Select",
         formatter: (cell: string, row: any) => {
-          return h(
-            "text",
-            {
-              onclick: () => handleAddClick(row.cells[0].data),
-            },
-            `${row.cells[1].data}`
-          );
-        },
-        attributes: (cell: string) => {
-          if (cell) {
-            return {
-              "data-cell-content": cell,
-              style: "cursor: pointer",
-            };
+          const Id = row.cells[1].data;
+          let data = false;
+          if ((props.state as IPolicyCreateState).data.form.APIs) {
+            data = (props.state as IPolicyCreateState).data.form.APIs.some(
+              (x: any) => x?.Id === Id
+            );
+          } else if ((props.state as IKeyCreateState).data.form.AccessRights) {
+            data = (
+              props.state as IKeyCreateState
+            ).data.form.AccessRights?.some((x: any) => x?.ApiId === Id);
           }
+          // StateKey.data.form?.Policies?.includes(Id);
+          // console.log(props);
+          return h("input", {
+            name: "tag_" + Id,
+            id: "tag_" + Id,
+            type: "checkbox",
+            checked: data,
+            onClick: (event: any) => {
+              if (event.target!.checked) {
+                handleAddClick(Id);
+              } else {
+                removeAccess(Id);
+              }
+            },
+          });
         },
       },
+      "Name",
       "Status",
       "CreatedDate",
     ],
@@ -64,6 +104,7 @@ export default function ApiAccessList(props: IProps) {
       accessApiList.data?.Apis?.length! > 0
         ? () =>
             accessApiList.data?.Apis!.map((data) => [
+              data.Action,
               data.Id,
               data.Name,
               data.IsActive ? "active" : "Inactive",

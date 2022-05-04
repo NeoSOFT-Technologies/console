@@ -35,6 +35,21 @@ export default function PolicyList() {
     }
   };
 
+  const removeAccess = (Id: any) => {
+    const removePolicyByIds = [...StateKey.data.form.PolicyByIds!];
+    const removePolicies = [...StateKey.data?.form.Policies];
+    const index = removePolicies.indexOf(Id);
+    removePolicyByIds.splice(index, 1);
+    removePolicies.splice(index, 1);
+    dispatch(
+      setForms({
+        ...StateKey.data.form,
+        PolicyByIds: removePolicyByIds,
+        Policies: removePolicies,
+      })
+    );
+  };
+
   // console.log(StateKey.data.form);
   const gridTable = new Grid({
     columns: [
@@ -43,25 +58,26 @@ export default function PolicyList() {
         hidden: true,
       },
       {
-        name: "Name",
+        name: "Select",
         formatter: (cell: string, row: any) => {
-          return h(
-            "text",
-            {
-              onClick: () => handleAddClick(row.cells[0].data),
+          const Id = row.cells[1].data;
+          const data = StateKey.data.form?.Policies?.includes(Id);
+          return h("input", {
+            name: "tag_" + Id,
+            id: "tag_" + Id,
+            type: "checkbox",
+            checked: data,
+            onClick: (event: any) => {
+              if (event.target!.checked) {
+                handleAddClick(Id);
+              } else {
+                removeAccess(Id);
+              }
             },
-            `${row.cells[1].data}`
-          );
-        },
-        attributes: (cell: string) => {
-          if (cell) {
-            return {
-              "data-cell-content": cell,
-              style: "cursor: pointer",
-            };
-          }
+          });
         },
       },
+      "Name",
       "State",
       "Access Rights",
       "Auth Type",
@@ -71,6 +87,7 @@ export default function PolicyList() {
       accessPolicyList.data &&
       accessPolicyList.data?.Policies?.length! > 0
         ? accessPolicyList.data?.Policies.map((data) => [
+            data.Action,
             data.Id,
             data.Name,
             data.State ? "active" : "Inactive",
