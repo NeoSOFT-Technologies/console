@@ -57,7 +57,6 @@ export default function PolicyList() {
           if (cell) {
             return {
               "data-cell-content": cell,
-              //  onclick: () => handleAddClick(cell),
               style: "cursor: pointer",
             };
           }
@@ -81,17 +80,10 @@ export default function PolicyList() {
         : [],
     search: true,
     sort: true,
-    // height: "400px",
-    className: {
-      container: "table table-responsive table-bordered table-stripped",
-    },
     style: {
       table: {
         width: "100%",
-        border: "2px solid #ccc",
-      },
-      th: {
-        color: "#000",
+        fontSize: ".875rem",
       },
     },
   });

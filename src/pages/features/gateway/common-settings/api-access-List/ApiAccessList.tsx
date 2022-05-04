@@ -31,15 +31,6 @@ export default function ApiAccessList(props: IProps) {
       {
         name: "Id",
         hidden: true,
-        // attributes: (cell: string) => {
-        //   if (cell) {
-        //     return {
-        //       "data-cell-content": cell,
-        //       onclick: () => handleAddClick(cell),
-        //       style: "cursor: pointer",
-        //     };
-        //   }
-        // },
       },
       {
         name: "Name",
@@ -47,9 +38,6 @@ export default function ApiAccessList(props: IProps) {
           return h(
             "text",
             {
-              // className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
-              // onClick: () =>
-              //   alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`),
               onclick: () => handleAddClick(row.cells[0].data),
             },
             `${row.cells[1].data}`
@@ -59,19 +47,16 @@ export default function ApiAccessList(props: IProps) {
           if (cell) {
             return {
               "data-cell-content": cell,
-              //  onclick: () => handleAddClick(cell),
               style: "cursor: pointer",
             };
           }
         },
-        // style: "cursor: pointer",
       },
       "Status",
       "CreatedDate",
     ],
     search: true,
     sort: true,
-    // height: "400px",
     scrollable: "virtual",
     data:
       accessApiList.data !== undefined &&
@@ -87,18 +72,10 @@ export default function ApiAccessList(props: IProps) {
                 : data.CreatedDate,
             ])
         : [],
-    className: {
-      container: "table table-responsive table-bordered table-stripped",
-    },
     style: {
       table: {
         width: "100%",
-        // height: "30px",
-        // scrollY: scroll,
-        // border: "2px solid #ccc",
-      },
-      th: {
-        color: "#000",
+        fontSize: ".875rem",
       },
     },
   });
