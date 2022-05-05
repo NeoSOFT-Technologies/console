@@ -16,6 +16,7 @@ export default function CreateKey() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
+  const [clipboard, setClipboard] = useState(false);
   const [keyId, setKeyId] = useState<string>();
   const state: IKeyCreateState = useAppSelector(
     (RootState) => RootState.createKeyState
@@ -85,7 +86,14 @@ export default function CreateKey() {
 
   // const handleClose = () => setShow(false);
   // const handleShow = () => setShow(true);
-
+  const copyToClipBoard = async () => {
+    try {
+      await navigator.clipboard.writeText(keyId!);
+      setClipboard(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       {/* <Modal show={show} onHide={handleClose}>
@@ -106,7 +114,7 @@ export default function CreateKey() {
       <Modal show={show} centered>
         <Modal.Header closeButton>
           <Modal.Title>
-            <span>key Generated Successfully</span>
+            <span>Key Generated Successfully</span>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -120,6 +128,14 @@ export default function CreateKey() {
           </div>
         </Modal.Body>
         <Modal.Footer>
+          {clipboard ? "Copied!" : ""}
+          <Button
+            variant="primary"
+            className="rouded-6"
+            onClick={copyToClipBoard}
+          >
+            Copy to Clipboard
+          </Button>
           <Button variant="primary" className="rouded-6" onClick={handleOk}>
             Ok
           </Button>
