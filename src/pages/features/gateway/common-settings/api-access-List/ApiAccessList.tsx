@@ -93,9 +93,10 @@ export default function ApiAccessList(props: IProps) {
           });
         },
       },
-      { name: "Name", width: "30%" },
-      { name: "Status", sort: false, width: "30%" },
-      { name: "CreatedDate", width: "30%" },
+      { name: "Name", width: "20%" },
+      { name: "Status", sort: false, width: "20%" },
+      { name: "CreatedDate", width: "20%" },
+      { name: "Auth Type", width: "20%" },
     ],
     search: true,
     sort: true,
@@ -105,15 +106,18 @@ export default function ApiAccessList(props: IProps) {
       accessApiList.data &&
       accessApiList.data?.Apis?.length! > 0
         ? () =>
-            accessApiList.data?.Apis!.map((data) => [
-              data.Action,
-              data.Id,
-              data.Name,
-              data.IsActive ? "active" : "Inactive",
-              data.CreatedDate !== null
-                ? moment(data.CreatedDate).format("DD/MM/YYYY")
-                : data.CreatedDate,
-            ])
+            accessApiList.data
+              ?.Apis!.filter((a) => a.AuthType !== "keyless")
+              .map((data) => [
+                data.Action,
+                data.Id,
+                data.Name,
+                data.IsActive ? "active" : "Inactive",
+                data.CreatedDate !== null
+                  ? moment(data.CreatedDate).format("DD/MM/YYYY")
+                  : data.CreatedDate,
+                data.AuthType,
+              ])
         : [],
     style: {
       table: {

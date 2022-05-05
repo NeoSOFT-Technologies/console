@@ -28,7 +28,6 @@ export default function PathBased(props: IProps) {
     props.current === "policy"
       ? [...props.policystate?.data.form.APIs!]
       : [...props.state?.data.form.AccessRights!];
-
   const indexValue = props.indexdata!;
   apisList[indexValue] = {
     ...apisList[indexValue],
@@ -55,11 +54,12 @@ export default function PathBased(props: IProps) {
       ...apisList[indexValue],
       Limit: { ...newFormData },
     };
-    props.current === "policy"
-      ? dispatch(setForm({ ...props.policystate?.data.form, APIs: apisList }))
-      : dispatch(
-          setForms({ ...props.state?.data.form, AccessRights: apisList })
-        );
+    dispatch(
+      setForm({
+        ...props.policystate?.data.form,
+        APIs: apisList,
+      })
+    );
   };
 
   const setNull = () => {
@@ -67,11 +67,12 @@ export default function PathBased(props: IProps) {
       ...apisList[indexValue],
       Limit: undefined,
     };
-    props.current === "policy"
-      ? dispatch(setForm({ ...props.policystate?.data.form, APIs: apisList }))
-      : dispatch(
-          setForms({ ...props.state?.data.form, AccessRights: apisList })
-        );
+    dispatch(
+      setForm({
+        ...props.policystate?.data.form,
+        APIs: apisList,
+      })
+    );
   };
 
   useEffect(() => {

@@ -260,6 +260,7 @@ export default function GlobalRateLimit(props: IProps) {
                           name="GlobalLimit.IsDisabled"
                           label="Disable rate limiting"
                           // checked={rate}
+                          className="ml-4"
                           onChange={(e: any) => setRate(e.target.checked)}
                         />
                         <Form.Label className="mt-3">Rate</Form.Label>
@@ -354,6 +355,7 @@ export default function GlobalRateLimit(props: IProps) {
                           name="Throttling.IsDisabled"
                           label="Disable Throttling"
                           checked={throttle}
+                          className="ml-4"
                           onChange={(e: any) => handleThrottleChange(e)}
                         />
                         <Form.Label className="mt-3">
@@ -450,6 +452,7 @@ export default function GlobalRateLimit(props: IProps) {
                           name="unlimitedRequests.IsDisabled"
                           label="Unlimited requests"
                           checked={quota}
+                          className="ml-4"
                           onChange={(e: any) => handleQuotaChange(e)}
                         />
                         <Form.Label className="mt-3">
