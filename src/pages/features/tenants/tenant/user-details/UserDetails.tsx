@@ -22,10 +22,12 @@ import { getTenantRoles } from "../../../../../store/features/admin/tenant-roles
 import {
   deleteUser,
   IDeleteUserState,
+  deleteUserReset,
 } from "../../../../../store/features/tenant/delete-user/slice";
 import {
   updateUser,
   IUpdateUserState,
+  resetUpdateUserState,
 } from "../../../../../store/features/user/update-user/slice";
 import {
   getUserDetails,
@@ -104,6 +106,8 @@ export default function UserDetails() {
     }
     return () => {
       dispatch(resetgetUserDetails());
+      dispatch(deleteUserReset());
+      dispatch(resetUpdateUserState());
     };
   }, []);
   useEffect(() => {

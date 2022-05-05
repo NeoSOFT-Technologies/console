@@ -1,28 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import RenderList from "../../../../../components/list/RenderList";
 import { requestUserListURL } from "../../../../../resources/tenant/constants";
-import { deleteUserReset } from "../../../../../store/features/tenant/delete-user/slice";
-import { resetUpdateUserState } from "../../../../../store/features/user/update-user/slice";
-import { useAppDispatch } from "../../../../../store/hooks";
 
 export default function UserList() {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  useEffect(() => {
-    dispatch(deleteUserReset());
-    dispatch(resetUpdateUserState());
-  }, []);
 
   const handleUserDetails = (value: any) => {
-    navigate(`/tenant/tenant/users/${value._cells[0].data}`, {
-      state: {
-        userName: value._cells[0].data,
-        email: value._cells[1].data,
-        tenantName: "Jeff",
-      },
-    });
+    navigate(`/tenant/tenant/users/${value._cells[0].data}`);
   };
 
   const headings = [
