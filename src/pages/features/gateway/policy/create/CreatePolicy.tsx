@@ -13,12 +13,10 @@ import AccessRights from "./access-rights/AccessRights";
 import Configurations from "./configurations/Configurations";
 export default function CreatePolicy() {
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
   const state: IPolicyCreateState = useAppSelector(
     (RootState) => RootState.createPolicyState
   );
-
   const { id } = useParams();
   console.log("checkid", id);
   useEffect(() => {
@@ -34,33 +32,41 @@ export default function CreatePolicy() {
       validate = Object.values(state.data.errors).every(
         (x) => x === null || x === ""
       );
-      // console.log("error", state.data);
+      // console.log("error", state.data.errors);
     }
-    if (validate) {
-      const result =
-        id === undefined
-          ? await dispatch(createPolicy(state.data.form))
-          : await dispatch(updatePolicy(state.data.form));
-      if (result.meta.requestStatus === "rejected") {
-        ToastAlert(result.payload.message, "error");
-      } else if (result.meta.requestStatus === "fulfilled") {
-        if (id === undefined) {
-          const valId: string = result.payload.Data.PolicyId;
-          ToastAlert("Policy Created Successfully!!", "success");
-          // navigate("/gateway/policies")
-          if (valId) {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            await dispatch(getPolicybyId(valId));
-            navigate(`/gateway/policies/update/${valId}`);
+    if (state.data.form.APIs.length > 0) {
+      if (validate) {
+        const result =
+          id === undefined
+            ? await dispatch(createPolicy(state.data.form))
+            : await dispatch(updatePolicy(state.data.form));
+        if (result.meta.requestStatus === "rejected") {
+          ToastAlert(result.payload.message, "error");
+        } else if (result.meta.requestStatus === "fulfilled") {
+          if (state.data.form.APIs.length > 0) {
+            if (id === undefined) {
+              const valId: string = result.payload.Data.PolicyId;
+              ToastAlert("Policy Created Successfully!!", "success");
+              // navigate("/gateway/policies")
+              if (valId) {
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+                await dispatch(getPolicybyId(valId));
+                navigate(`/gateway/policies/update/${valId}`);
+              }
+            } else {
+              ToastAlert("Policy Updated Successfully!!", "success");
+            }
+          } else {
+            ToastAlert("Please select atleast one Api!", "error");
           }
         } else {
-          ToastAlert("Policy Updated Successfully!!", "success");
+          ToastAlert("policy Created request is not fulfilled!!", "error");
         }
       } else {
-        ToastAlert("policy Created request is not fulfilled!!", "error");
+        ToastAlert("Please fill all the fields correctly! ", "error");
       }
     } else {
-      ToastAlert("Please fill all the fields correctly! ", "error");
+      ToastAlert("Please select atleast one Api ", "error");
     }
   }
   const NavigateToPolicyList = (
