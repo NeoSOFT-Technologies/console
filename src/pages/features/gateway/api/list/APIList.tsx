@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Button, Modal } from "react-bootstrap";
 import { useErrorHandler } from "react-error-boundary";
 import { useNavigate } from "react-router-dom";
 import RenderList from "../../../../../components/gateway/list/RenderList";
@@ -32,6 +33,8 @@ export default function APIList() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(1);
   const [search, setSearch] = useState(" ");
+  const [DeleteApiId, SetDeleteApiId] = useState<string>();
+  const [show, setShow] = useState(false);
   const dispatch = useAppDispatch();
   const apiList: IApiListState = useAppSelector(
     (state: RootState) => state.apiListState
@@ -108,19 +111,23 @@ export default function APIList() {
       fields: ["Name", "TargetUrl", "Status", "CreatedDateTxt"],
     });
   }
-  const deleteApiFunction = async (val: IApiData) => {
-    if (
-      val.Id &&
-      window.confirm("Are you sure you want to delete this Api ?")
-    ) {
-      const result = await dispatch(deleteApi(val.Id));
+  const handleDelete = async (Id: string) => {
+    setShow(false);
+    console.log("delete clicked", Id);
+    const result = await dispatch(deleteApi(Id));
 
-      if (result.meta.requestStatus === "rejected") {
-        await ToastAlert(result.payload.message, "error");
-      } else {
-        deleteApiFromState(val.Id);
-        await ToastAlert("Api Deleted Successfully", "success");
-      }
+    if (result.meta.requestStatus === "rejected") {
+      await ToastAlert(result.payload.message, "error");
+    } else {
+      deleteApiFromState(Id);
+      await ToastAlert("Api Deleted Successfully", "success");
+    }
+  };
+  const handleCancel = () => setShow(false);
+  const deleteApiFunction = async (val: IApiData) => {
+    if (val.Id && val.Id) {
+      setShow(true);
+      SetDeleteApiId(val.Id);
     }
   };
   const headings = [
@@ -149,6 +156,24 @@ export default function APIList() {
   }, [apiList.data, apiList.error]);
   return (
     <>
+      <Modal show={show} onHide={handleCancel} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Api</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this Api ?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCancel}>
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            className="btn-danger"
+            onClick={() => handleDelete(DeleteApiId!)}
+          >
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <div className="col-lg-12 grid-margin stretch-card">
         {apiList.loading ? (
           <Spinner />

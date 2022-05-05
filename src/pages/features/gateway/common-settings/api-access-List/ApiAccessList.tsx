@@ -62,6 +62,8 @@ export default function ApiAccessList(props: IProps) {
       },
       {
         name: "Select",
+        width: "8%",
+        sort: false,
         formatter: (cell: string, row: any) => {
           const Id = row.cells[1].data;
           let data = false;
@@ -91,9 +93,9 @@ export default function ApiAccessList(props: IProps) {
           });
         },
       },
-      "Name",
-      "Status",
-      "CreatedDate",
+      { name: "Name", width: "30%" },
+      { name: "Status", sort: false, width: "30%" },
+      { name: "CreatedDate", width: "30%" },
     ],
     search: true,
     sort: true,
