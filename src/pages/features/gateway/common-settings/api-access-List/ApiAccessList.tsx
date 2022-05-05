@@ -61,7 +61,9 @@ export default function ApiAccessList(props: IProps) {
         hidden: true,
       },
       {
-        name: "Select",
+        id: "Select",
+        width: "6%",
+        sort: false,
         formatter: (cell: string, row: any) => {
           const Id = row.cells[1].data;
           let data = false;
@@ -91,27 +93,33 @@ export default function ApiAccessList(props: IProps) {
           });
         },
       },
-      "Name",
-      "Status",
-      "CreatedDate",
+      { name: "Name", width: "20%" },
+      { name: "Status", sort: false, width: "20%" },
+      { name: "Created Date", width: "20%" },
+      { name: "Auth Type", width: "20%" },
     ],
     search: true,
     sort: true,
+    fixedHeader: true,
+    height: "300px",
     scrollable: "virtual",
     data:
       accessApiList.data !== undefined &&
       accessApiList.data &&
       accessApiList.data?.Apis?.length! > 0
         ? () =>
-            accessApiList.data?.Apis!.map((data) => [
-              data.Action,
-              data.Id,
-              data.Name,
-              data.IsActive ? "active" : "Inactive",
-              data.CreatedDate !== null
-                ? moment(data.CreatedDate).format("DD/MM/YYYY")
-                : data.CreatedDate,
-            ])
+            accessApiList.data
+              ?.Apis!.filter((a) => a.AuthType !== "keyless")
+              .map((data) => [
+                data.Action,
+                data.Id,
+                data.Name,
+                data.IsActive ? "Active" : "Inactive",
+                data.CreatedDate !== null
+                  ? moment(data.CreatedDate).format("DD/MM/YYYY")
+                  : data.CreatedDate,
+                data.AuthType,
+              ])
         : [],
     style: {
       table: {

@@ -15,11 +15,6 @@ export default function ApplyPolicy() {
             message={" is being set by each policy"}
             current="globalKey-applyPolicy"
           />
-          {/* <GlobalLimit
-            isDisabled={true}
-            msg={" is being set by each policy"}
-            // policyId="e9420aa1-eec5-4dfc-8ddf-2bc989a9a47f"
-          /> */}
           <Policies />
         </>
       ) : (

@@ -188,6 +188,7 @@ function AppRoutes() {
           <Route path="keys/create" element={<CreateKey />} />
           <Route path="policies/create" element={<CreatePolicy />} />
           <Route path="apis/update/:id" element={<UpdateApi />} />
+          <Route path="keys/update/:id" element={<CreateKey />} />
           <Route path="policies/update/:id" element={<CreatePolicy />} />
         </Route>
         <Route path="*" element={<Navigate to="/login-page" />} />{" "}

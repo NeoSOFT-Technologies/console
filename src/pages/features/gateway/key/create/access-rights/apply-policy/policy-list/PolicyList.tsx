@@ -58,7 +58,9 @@ export default function PolicyList() {
         hidden: true,
       },
       {
-        name: "Select",
+        id: "Select",
+        width: "6%",
+        sort: false,
         formatter: (cell: string, row: any) => {
           const Id = row.cells[1].data;
           const data = StateKey.data.form?.Policies?.includes(Id);
@@ -77,26 +79,34 @@ export default function PolicyList() {
           });
         },
       },
-      "Name",
-      "State",
-      "Access Rights",
-      "Auth Type",
+      { name: "Name", width: "20%" },
+      { name: "Status", width: "20%", sort: false },
+      { name: "Access Rights", width: "20%" },
+      { name: "Auth Type", width: "20%" },
     ],
     data: () =>
       accessPolicyList.data !== undefined &&
       accessPolicyList.data &&
       accessPolicyList.data?.Policies?.length! > 0
-        ? accessPolicyList.data?.Policies.map((data) => [
+        ? accessPolicyList.data?.Policies.filter(
+            (a) => a.AuthType !== "keyless"
+          ).map((data) => [
             data.Action,
             data.Id,
             data.Name,
-            data.State ? "active" : "Inactive",
+            data.State === "active"
+              ? "Active"
+              : data.State === "deny"
+              ? "Access Denied"
+              : "Draft",
             data.Apis,
             data.AuthType,
           ])
         : [],
     search: true,
     sort: true,
+    fixedHeader: true,
+    height: "300px",
     style: {
       table: {
         width: "100%",

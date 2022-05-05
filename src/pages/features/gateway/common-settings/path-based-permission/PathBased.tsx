@@ -26,6 +26,66 @@ export default function PathBased(props: IProps) {
   // const lis = props.apistate?.data.form.Versions;
   // console.log("versionslog", lis);
 
+  const apisList =
+    props.current === "policy"
+      ? [...props.policystate?.data.form.APIs!]
+      : [...props.state?.data.form.AccessRights!];
+  const indexValue = props.indexdata!;
+  apisList[indexValue] = {
+    ...apisList[indexValue],
+    Limit: undefined,
+  };
+
+  const [Limits, setLimits] = useState<any>({
+    rate: 0,
+    per: 0,
+    throttle_interval: 0,
+    throttle_retry_limit: 0,
+    max_query_depth: 0,
+    quota_max: 0,
+    quota_renews: 0,
+    quota_remaining: 0,
+    quota_renewal_rate: 0,
+    set_by_policy: false,
+  });
+  const newFormData: any = { ...Limits };
+
+  const setFieldValue = () => {
+    setLimits(newFormData);
+    apisList[indexValue] = {
+      ...apisList[indexValue],
+      Limit: { ...newFormData },
+    };
+    dispatch(
+      setForm({
+        ...props.policystate?.data.form,
+        APIs: apisList,
+      })
+    );
+  };
+
+  const setNull = () => {
+    apisList[indexValue] = {
+      ...apisList[indexValue],
+      Limit: undefined,
+    };
+    dispatch(
+      setForm({
+        ...props.policystate?.data.form,
+        APIs: apisList,
+      })
+    );
+  };
+
+  useEffect(() => {
+    console.log("isActiveAPi", isActiveApi);
+    if (isActiveApi === false) {
+      setNull();
+    } else if (isActiveApi === true) {
+      setFieldValue();
+    }
+  }, [isActiveApi]);
+
   useEffect(() => {
     // props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls ===
     //  undefined &&
@@ -52,6 +112,7 @@ export default function PathBased(props: IProps) {
       setisActive(Boolean(value));
     }
   };
+
   const handleversion = (event: any) => {
     const value = event.target.value;
     const mapped = versions;
@@ -59,25 +120,29 @@ export default function PathBased(props: IProps) {
     if (!found) {
       setversion([...versions, value]);
     }
-    const apisList =
+    const apisLists =
       props.current === "policy"
         ? [...props.policystate?.data.form.APIs!]
         : [...props.state?.data.form.AccessRights!];
-    const version = [...apisList[props.indexdata!].Versions!];
+    const version = [...apisLists[props.indexdata!].Versions!];
     const checkexisting = version.includes(value);
     if (!checkexisting) {
       version.push(value);
     }
-    apisList[props.indexdata!] = {
-      ...apisList[props.indexdata!],
+    apisLists[props.indexdata!] = {
+      ...apisLists[props.indexdata!],
       Versions: [...version],
     };
     props.current === "policy"
-      ? dispatch(setForm({ ...props.policystate?.data.form, APIs: apisList }))
+      ? dispatch(setForm({ ...props.policystate?.data.form, APIs: apisLists }))
       : dispatch(
-          setForms({ ...props.state?.data.form, AccessRights: apisList })
+          setForms({ ...props.state?.data.form, AccessRights: apisLists })
         );
   };
+  // const ind = props.indexdata;
+  // let ApiName = null;
+  // if (props.indexdata !== null)
+  //   ApiName = props.state?.data.form.accessRights[ind].apiName;
 
   const deleteversion = (event: any, index: any) => {
     event.preventDefault();
@@ -85,20 +150,20 @@ export default function PathBased(props: IProps) {
     rows.splice(index, 1);
     setversion(rows);
 
-    const apisList =
+    const apisLists =
       props.current === "policy"
         ? [...props.policystate?.data.form.APIs!]
         : [...props.state?.data.form.AccessRights!];
-    const version = [...apisList[props.indexdata!].Versions!];
+    const version = [...apisLists[props.indexdata!].Versions!];
     version.splice(index, 1);
-    apisList[props.indexdata!] = {
-      ...apisList[props.indexdata!],
+    apisLists[props.indexdata!] = {
+      ...apisLists[props.indexdata!],
       Versions: [...version],
     };
     props.current === "policy"
-      ? dispatch(setForm({ ...props.policystate?.data.form, APIs: apisList }))
+      ? dispatch(setForm({ ...props.policystate?.data.form, APIs: apisLists }))
       : dispatch(
-          setForms({ ...props.state?.data.form, AccessRights: apisList })
+          setForms({ ...props.state?.data.form, AccessRights: apisLists })
         );
   };
   const removeAccess = (event: any, index: any, current: string) => {
@@ -164,7 +229,6 @@ export default function PathBased(props: IProps) {
                           name="method"
                           onChange={(e: any) => handleversion(e)}
                         >
-                          {/* {console.log(props.)} */}
                           {props.current === "key"
                             ? props.state?.data.form.AccessRights[
                                 props.indexdata!
