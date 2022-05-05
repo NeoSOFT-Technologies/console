@@ -86,7 +86,7 @@ export default function CreatePolicy() {
                 >
                   <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
                     {" "}
-                    {id === undefined ? "CREATE" : "UPDATE"}
+                    {id === undefined ? "Create" : "Update"}
                   </button>
                   <button
                     className=" btn btn-sm btn-light btn-md d-flex float-right mb-3"
