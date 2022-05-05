@@ -24,7 +24,6 @@ export default function GlobalLimit(props: IProps) {
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
   );
-  // console.log("state", state);
   const mainCall = async (id: string) => {
     if (id !== null && id !== "" && id !== undefined) {
       await dispatch(getPolicybyId(id));
@@ -62,9 +61,10 @@ export default function GlobalLimit(props: IProps) {
         };
         let policyName = "";
         policyName = policyName + state.data.form.Name;
-
+        console.log("myApis", state);
         for (const a of state.data.form.APIs) {
-          if (a.Limit === undefined) {
+          console.log("EveryApi", a);
+          if (a.Limit === null) {
             globalItem.Name = globalItem.Name.concat(a.Name, ",");
             globalItem.MaxQuota = state.data.form.MaxQuota;
             globalItem.QuotaRate = state.data.form.QuotaRate;
@@ -74,11 +74,12 @@ export default function GlobalLimit(props: IProps) {
             globalItem.ThrottleRetries = state.data.form.ThrottleRetries;
           }
 
-          if (a.Limit !== undefined) {
+          if (a.Limit !== null) {
             const policyState = a;
             perApi.push(policyState);
           }
         }
+        // console.log("Names", globalItem.Name);
         if (globalItem.Name === "") {
           policyByIdTemp[props.index!] = {
             ...policyByIdTemp[props.index!],
@@ -328,7 +329,7 @@ export default function GlobalLimit(props: IProps) {
                                           ? states.data.form.PolicyByIds![
                                               props.index!
                                             ].global!.QuotaRate
-                                          : data.Limit.quota_renews
+                                          : data.Limit.quota_renewal_rate
                                       }
                                       disabled={true}
                                     >
