@@ -22,6 +22,67 @@ export default function PathBased(props: IProps) {
   const [versions, setversion] = useState<string[]>([]);
   // const lis = props.apistate?.data.form.Versions;
   // console.log("versionslog", lis);
+  const dispatch = useAppDispatch();
+
+  const apisList =
+    props.current === "policy"
+      ? [...props.policystate?.data.form.APIs!]
+      : [...props.state?.data.form.AccessRights!];
+  const indexValue = props.indexdata!;
+  apisList[indexValue] = {
+    ...apisList[indexValue],
+    Limit: undefined,
+  };
+
+  const [Limits, setLimits] = useState<any>({
+    rate: 0,
+    per: 0,
+    throttle_interval: 0,
+    throttle_retry_limit: 0,
+    max_query_depth: 0,
+    quota_max: 0,
+    quota_renews: 0,
+    quota_remaining: 0,
+    quota_renewal_rate: 0,
+    set_by_policy: false,
+  });
+  const newFormData: any = { ...Limits };
+
+  const setFieldValue = () => {
+    setLimits(newFormData);
+    apisList[indexValue] = {
+      ...apisList[indexValue],
+      Limit: { ...newFormData },
+    };
+    dispatch(
+      setForm({
+        ...props.policystate?.data.form,
+        APIs: apisList,
+      })
+    );
+  };
+
+  const setNull = () => {
+    apisList[indexValue] = {
+      ...apisList[indexValue],
+      Limit: undefined,
+    };
+    dispatch(
+      setForm({
+        ...props.policystate?.data.form,
+        APIs: apisList,
+      })
+    );
+  };
+
+  useEffect(() => {
+    console.log("isActiveAPi", isActiveApi);
+    if (isActiveApi === false) {
+      setNull();
+    } else if (isActiveApi === true) {
+      setFieldValue();
+    }
+  }, [isActiveApi]);
 
   useEffect(() => {
     props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls !==
@@ -45,6 +106,7 @@ export default function PathBased(props: IProps) {
       setisActive(Boolean(value));
     }
   };
+
   const handleversion = (event: any) => {
     const value = event.target.value;
     const mapped = versions;
@@ -57,7 +119,7 @@ export default function PathBased(props: IProps) {
   // let ApiName = null;
   // if (props.indexdata !== null)
   //   ApiName = props.state?.data.form.accessRights[ind].apiName;
-  const dispatch = useAppDispatch();
+
   const deleteversion = (event: any, index: any) => {
     event.preventDefault();
     const rows = [...versions];
