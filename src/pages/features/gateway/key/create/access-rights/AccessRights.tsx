@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal, Tab, Tabs } from "react-bootstrap";
-// import { IKeyCreateState } from "../../../../../../store/features/gateway/key/create";
+import { IKeyCreateState } from "../../../../../../store/features/gateway/key/create";
 // import { setForms } from "../../../../../../store/features/gateway/key/create/slice";
-// import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
+import { useAppSelector } from "../../../../../../store/hooks";
 import ApplyPolicy from "./apply-policy/ApplyPolicy";
 import ChooseApi from "./choose-api/ChooseApi";
 export default function AccessRights() {
@@ -10,10 +10,17 @@ export default function AccessRights() {
   const [ClickedTabIndex, setClickedTabIndex] = useState("");
 
   const [show, setShow] = useState(false);
-  // const dispatch = useAppDispatch();
-  // const state: IKeyCreateState = useAppSelector(
-  //   (RootState) => RootState.createKeyState
-  // );
+  // const dispatch = useAppDispatch();useAppDispatch
+  const state: IKeyCreateState = useAppSelector(
+    (RootState) => RootState.createKeyState
+  );
+  useEffect(() => {
+    if (state.data.form.Policies.length > 0) {
+      setTabIndex("applyPolicy");
+    } else {
+      setTabIndex("chooseApi");
+    }
+  }, []);
   const handleCancel = () => {
     if (ClickedTabIndex === "applyPolicy") {
       setTabIndex("chooseApi");

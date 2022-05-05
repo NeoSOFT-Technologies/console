@@ -60,7 +60,7 @@ export default function CreateKey() {
             setKeyId(valId);
             await new Promise((resolve) => setTimeout(resolve, 2000));
             // alert(`${valId}`);
-            await dispatch(getKeyById(valId));
+            // await dispatch(getKeyById(valId));
             navigate(`/gateway/keys/update/${valId}`);
           }
         } else {
