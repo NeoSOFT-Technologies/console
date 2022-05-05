@@ -97,16 +97,9 @@ const TenantProfile = () => {
     }
   }, [user.loading]);
 
-  const clearAndUpdate = async () => {
-    await dispatch(resetUpdateTenantState());
+  const clearAndUpdate = () => {
+    dispatch(resetUpdateTenantState());
     if (user.data?.tenantName !== undefined) {
-      // await dispatch(
-      //   getUserData({
-      //     userName: "tenantadmin",
-      //     tenantName: user.data?.tenantName,
-      //     type: "tenant",
-      //   })
-      // );
       dispatch(setUserData({ ...tenant }));
     }
   };

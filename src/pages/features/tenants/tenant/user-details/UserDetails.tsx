@@ -114,9 +114,6 @@ export default function UserDetails() {
     if (!deleteUserState.loading && deleteUserState.error) {
       navigate("/error", { state: deleteUserState.error });
     }
-    if (!updateUserDataState.loading && updateUserDataState.error) {
-      navigate("/error", { state: updateUserDataState.error });
-    }
     if (
       !deleteUserState.loading &&
       !deleteUserState.error &&
@@ -125,6 +122,12 @@ export default function UserDetails() {
       ToastAlert("User Deleted ", "success");
       navigate("/tenant/tenant/users");
     }
+  }, [deleteUserState.loading]);
+
+  useEffect(() => {
+    if (!updateUserDataState.loading && updateUserDataState.error) {
+      navigate("/error", { state: updateUserDataState.error });
+    }
     if (
       !updateUserDataState.loading &&
       !updateUserDataState.error &&
@@ -132,7 +135,7 @@ export default function UserDetails() {
     ) {
       ToastAlert("User Updated ", "success");
     }
-  }, [deleteUserState.loading, updateUserDataState.loading]);
+  }, [updateUserDataState.loading]);
 
   useEffect(() => {
     if (user.error) {
