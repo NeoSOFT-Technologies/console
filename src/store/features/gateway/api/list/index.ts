@@ -17,6 +17,7 @@ export interface IApiData {
   TargetUrl: string;
   IsActive: boolean;
   Id?: string;
+  AuthType: string;
 }
 
 export interface IApiDataList {

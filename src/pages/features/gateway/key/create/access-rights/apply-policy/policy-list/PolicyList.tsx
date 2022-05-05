@@ -88,7 +88,9 @@ export default function PolicyList() {
       accessPolicyList.data !== undefined &&
       accessPolicyList.data &&
       accessPolicyList.data?.Policies?.length! > 0
-        ? accessPolicyList.data?.Policies.map((data) => [
+        ? accessPolicyList.data?.Policies.filter(
+            (a) => a.AuthType !== "keyless"
+          ).map((data) => [
             data.Action,
             data.Id,
             data.Name,
