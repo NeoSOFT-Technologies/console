@@ -105,6 +105,8 @@ export default function PolicyList() {
         : [],
     search: true,
     sort: true,
+    fixedHeader: true,
+    height: "300px",
     style: {
       table: {
         width: "100%",
