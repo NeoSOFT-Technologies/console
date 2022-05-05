@@ -14,8 +14,11 @@ export default function AccessRights() {
   const state: IKeyCreateState = useAppSelector(
     (RootState) => RootState.createKeyState
   );
+  // console.log("keyId", state.data.form.KeyId);
   useEffect(() => {
-    if (state.data.form.Policies.length > 0) {
+    if (state.data.form.KeyId === undefined) {
+      setTabIndex("applyPolicy");
+    } else if (state.data.form.KeyId && state.data.form.Policies.length > 0) {
       setTabIndex("applyPolicy");
     } else {
       setTabIndex("chooseApi");
