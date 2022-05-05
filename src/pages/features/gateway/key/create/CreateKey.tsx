@@ -1,6 +1,7 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { Button, Form, Modal, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
 import {
@@ -15,6 +16,7 @@ export default function CreateKey() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
+  const [clipboard, setClipboard] = useState(false);
   const [keyId, setKeyId] = useState<string>();
   const state: IKeyCreateState = useAppSelector(
     (RootState) => RootState.createKeyState
@@ -59,7 +61,7 @@ export default function CreateKey() {
             setKeyId(valId);
             await new Promise((resolve) => setTimeout(resolve, 2000));
             // alert(`${valId}`);
-            await dispatch(getKeyById(valId));
+            // await dispatch(getKeyById(valId));
             navigate(`/gateway/keys/update/${valId}`);
           }
         } else {
@@ -84,7 +86,14 @@ export default function CreateKey() {
 
   // const handleClose = () => setShow(false);
   // const handleShow = () => setShow(true);
-
+  const copyToClipBoard = async () => {
+    try {
+      await navigator.clipboard.writeText(keyId!);
+      setClipboard(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       {/* <Modal show={show} onHide={handleClose}>
@@ -105,7 +114,7 @@ export default function CreateKey() {
       <Modal show={show} centered>
         <Modal.Header closeButton>
           <Modal.Title>
-            <span>key Generated Successfully</span>
+            <span>Key Generated Successfully</span>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -119,70 +128,82 @@ export default function CreateKey() {
           </div>
         </Modal.Body>
         <Modal.Footer>
+          {clipboard ? "Copied!" : ""}
+          <Button
+            variant="primary"
+            className="rouded-6"
+            onClick={copyToClipBoard}
+          >
+            Copy to Clipboard
+          </Button>
           <Button variant="primary" className="rouded-6" onClick={handleOk}>
             Ok
           </Button>
         </Modal.Footer>
       </Modal>
       <div>
-        <div className="col-lg-12 grid-margin stretch-card">
-          <div className="card">
-            <div>
-              {/*  className="card-body" */}
-              <Form
-                data-testid="form-input"
-                onSubmit={(e: FormEvent) => handleSubmitKey(e)}
-              >
-                <div className="align-items-center">
-                  <div
-                    className="card-header bg-white mt-3 pt-1 pb-4"
-                    style={{ padding: "0.5rem 1.5rem" }}
-                  >
-                    {/* <Button
+        {state.loading ? (
+          <Spinner />
+        ) : (
+          <div className="col-lg-12 grid-margin stretch-card">
+            <div className="card">
+              <div>
+                {/*  className="card-body" */}
+                <Form
+                  data-testid="form-input"
+                  onSubmit={(e: FormEvent) => handleSubmitKey(e)}
+                >
+                  <div className="align-items-center">
+                    <div
+                      className="card-header bg-white mt-3 pt-1 pb-4"
+                      style={{ padding: "0.5rem 1.5rem" }}
+                    >
+                      {/* <Button
                       variant="primary"
                       onClick={handleShow}
                       className="btn-sm float-right mb-3"
                     >
                       Modal
                     </Button> */}
-                    <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
-                      {" "}
-                      {id ? "Update" : "Create"}
-                    </button>
-                    <button
-                      className=" btn btn-sm btn-light btn-md d-flex float-right mb-3"
-                      onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-                        NavigateToKeyList(event)
-                      }
-                    >
-                      {" "}
-                      Cancel
-                    </button>
-                    <span>
-                      <b>{id ? "UPDATE KEY" : "CREATE KEY"} </b>
-                    </span>
+                      <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
+                        {" "}
+                        {id ? "Update" : "Create"}
+                      </button>
+                      <button
+                        className=" btn btn-sm btn-light btn-md d-flex float-right mb-3"
+                        onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
+                          NavigateToKeyList(event)
+                        }
+                      >
+                        {" "}
+                        Cancel
+                      </button>
+                      <span>
+                        <b>{id ? "UPDATE KEY" : "CREATE KEY"} </b>
+                      </span>
+                    </div>
+                    <div className="card-body pt-2">
+                      <Tabs
+                        // tab-content
+                        defaultActiveKey="accessRights"
+                        id="uncontrolled-tab"
+                        // transition={false}
+                        className="mb-0 small"
+                      >
+                        <Tab eventKey="accessRights" title="Access Rights">
+                          <AccessRights />
+                        </Tab>
+                        <Tab eventKey="configurations" title="Configurations">
+                          <Configurations />
+                        </Tab>
+                      </Tabs>
+                    </div>
                   </div>
-                  <div className="card-body pt-2">
-                    <Tabs
-                      // tab-content
-                      defaultActiveKey="accessRights"
-                      id="uncontrolled-tab"
-                      // transition={false}
-                      className="mb-0 small"
-                    >
-                      <Tab eventKey="accessRights" title="Access Rights">
-                        <AccessRights />
-                      </Tab>
-                      <Tab eventKey="configurations" title="Configurations">
-                        <Configurations />
-                      </Tab>
-                    </Tabs>
-                  </div>
-                </div>
-              </Form>
+                </Form>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

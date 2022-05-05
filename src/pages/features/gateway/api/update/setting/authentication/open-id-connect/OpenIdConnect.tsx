@@ -48,6 +48,12 @@ export default function OpenIdConnectAuthentication() {
     const newFormData: any = [...addClientFormData];
     newFormData[index] = { ...newFormData[index], [name]: value };
     setClientAddFormData(newFormData);
+    // setClientAddFormData((preState : any)  => ({
+    //   newFormData[index] : {
+    //     ...preState[index],
+    //     [name]: value,
+    //   },
+    // }));
   };
 
   const handleIssuerAddClick = () => {
@@ -120,7 +126,7 @@ export default function OpenIdConnectAuthentication() {
   const deleteClientTableRows = (
     issuerIndex: number,
     clientIndex: number,
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    event: React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
     event.preventDefault();
     const providerList = [...state.data.form.OpenidOptions.Providers];
@@ -149,14 +155,24 @@ export default function OpenIdConnectAuthentication() {
           <Row>
             <Col
               md={12}
-              className="border rounded mb-3 bg-warning bg-opacity-10 p-2"
+              className="border bg-warning bg-opacity-10 rounded mb-3  p-2"
             >
               Changing the Authentication mode on an Active API can have severe
               consequences for your users. Please be aware that this will stop
               the current keys working for this API.
             </Col>
 
-            <Col md={8} className="border rounded">
+            <Col
+              md={12}
+              className="border bg-info bg-opacity-10 rounded mb-3  p-2"
+            >
+              API Gateway can transparently handle OpenID connect JWT ID Token,
+              in order to make these works, register the issue(iss) ,
+              client(aud) to a policy ID for the API in order for dynamic
+              per-token access limits to be applied.
+            </Col>
+
+            <Col md={12} className="border rounded">
               <div>
                 <h5 className="mt-2">OpenID Connect</h5>
               </div>
@@ -204,7 +220,7 @@ export default function OpenIdConnectAuthentication() {
                 <div className="container">
                   <div className="row">
                     <div className="mb-1"></div>
-                    <div className="col-sm-11">
+                    <div className="col-sm-12">
                       {loading ? (
                         <></>
                       ) : (
@@ -237,7 +253,7 @@ export default function OpenIdConnectAuthentication() {
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <tr key={index}>
+                                                <tr>
                                                   <td>
                                                     <button
                                                       className="btn bi bi-trash-fill"
@@ -345,7 +361,7 @@ export default function OpenIdConnectAuthentication() {
                                                 <td>{ClientId}</td>
                                                 <td
                                                   style={{
-                                                    textAlign: "center",
+                                                    textAlign: "left",
                                                   }}
                                                 >
                                                   {Name} : {Id}
@@ -355,8 +371,8 @@ export default function OpenIdConnectAuthentication() {
                                                     textAlign: "center",
                                                   }}
                                                 >
-                                                  <button
-                                                    className="btn bi bi-trash-fill"
+                                                  <i
+                                                    className="bi bi-trash"
                                                     onClick={(event) =>
                                                       deleteClientTableRows(
                                                         index,
@@ -364,7 +380,7 @@ export default function OpenIdConnectAuthentication() {
                                                         event
                                                       )
                                                     }
-                                                  ></button>
+                                                  ></i>
                                                 </td>
                                               </tr>
                                             </tbody>
@@ -390,7 +406,7 @@ export default function OpenIdConnectAuthentication() {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr key={index}>
+                                    <tr>
                                       <td>
                                         <button
                                           className="btn bi bi-trash-fill"
@@ -481,15 +497,6 @@ export default function OpenIdConnectAuthentication() {
                   </div>
                 </div>
               </Row>
-            </Col>
-
-            <Col md={3} className="ml-3">
-              <div className="border rounded p-3 bg-primary bg-opacity-10">
-                API Gateway can transparently handle OpenID connect JWT ID
-                Token, in order to make these works, register the issue(iss) ,
-                client(aud) to a policy ID for the API in order for dynamic
-                per-token access limits to be applied.
-              </div>
             </Col>
           </Row>
         </div>
