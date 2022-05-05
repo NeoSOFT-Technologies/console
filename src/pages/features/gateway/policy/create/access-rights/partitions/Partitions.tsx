@@ -22,9 +22,9 @@ export default function partitions() {
               <Form.Check
                 type="switch"
                 id="accessrights"
-                name="Partitions.per_api"
+                name="Partitions.acl"
                 label="Enforce access rights"
-                checked={state.data.form.Partitions.per_api}
+                checked={state.data.form.Partitions.acl}
                 onChange={(e: any) => validateForm(e)}
                 // onChange={(e: any) => setRate(e.target.checked)}
               />

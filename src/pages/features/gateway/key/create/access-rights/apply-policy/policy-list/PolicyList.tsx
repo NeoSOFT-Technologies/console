@@ -25,7 +25,7 @@ export default function PolicyList() {
   }, []);
   const handleAddClick = (Id: any) => {
     console.log("policyList", StateKey.data?.form.Policies);
-    const data = StateKey.data.form.Policies.includes(Id);
+    const data = StateKey.data.form?.Policies?.includes(Id);
 
     if (!data) {
       const list = [...StateKey.data.form.Policies, Id];

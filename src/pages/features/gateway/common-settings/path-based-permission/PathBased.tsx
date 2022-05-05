@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Accordion, AccordionButton } from "react-bootstrap";
-import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
+// import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
 import { setForms } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
@@ -12,7 +12,7 @@ interface IProps {
   state?: IKeyCreateState;
   policystate?: IPolicyCreateState;
   apidata?: any;
-  apistate?: IApiGetByIdState;
+  apistate?: any;
   indexdata?: number;
   current: string;
 }
@@ -20,8 +20,20 @@ export default function PathBased(props: IProps) {
   const [isActive, setisActive] = useState<boolean>(false);
   const [isActiveApi, setisActiveApi] = useState<boolean>(false);
   const [versions, setversion] = useState<string[]>([]);
-  const lis = props.apistate?.data.form.Versions;
+  // const lis = props.apistate?.data.form.Versions;
   // console.log("versionslog", lis);
+
+  useEffect(() => {
+    props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls !==
+    undefined
+      ? setisActive(true)
+      : setisActive(false);
+
+    props.state?.data.form.AccessRights[props.indexdata!] !== undefined
+      ? setisActiveApi(true)
+      : setisActiveApi(false);
+  }, []);
+
   const setPathPermission = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value =
       event.target.type === "checkbox"
@@ -112,13 +124,18 @@ export default function PathBased(props: IProps) {
                         name="method"
                         onChange={(e: any) => handleversion(e)}
                       >
-                        {lis?.map((datalist: any, index: any) => {
-                          return (
-                            <option key={index} value={datalist.Name}>
-                              {datalist.Name}
-                            </option>
-                          );
-                        })}
+                        {/* {console.log(props.)} */}
+                        {props.policystate?.data.form.APIs[
+                          props.indexdata!
+                        ].MasterVersions?.map(
+                          (datalist: any, index: number) => {
+                            return (
+                              <option key={index} value={datalist}>
+                                {datalist}
+                              </option>
+                            );
+                          }
+                        )}
                       </Form.Select>
                     </Form.Group>
                   </Col>

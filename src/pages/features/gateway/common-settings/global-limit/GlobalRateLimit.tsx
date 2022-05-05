@@ -186,8 +186,8 @@ export default function GlobalRateLimit(props: IProps) {
             ...state.data.form,
             Rate: newFormData.rate,
             Per: newFormData.per,
-            QuotaRate: newFormData.quota_max,
-            MaxQuota: newFormData.quota_renews,
+            MaxQuota: newFormData.quota_max,
+            QuotaRate: newFormData.quota_renews,
             ThrottleInterval: newFormData.throttle_interval,
             ThrottleRetries: newFormData.throttle_retry_limit,
           })
@@ -197,8 +197,8 @@ export default function GlobalRateLimit(props: IProps) {
             ...states.data.form,
             Rate: newFormData.rate,
             Per: newFormData.per,
-            QuotaRate: newFormData.quota_max,
-            MaxQuota: newFormData.quota_renews,
+            Quota: newFormData.quota_max,
+            QuotaRenewalRate: newFormData.quota_renews,
             ThrottleInterval: newFormData.throttle_interval,
             ThrottleRetries: newFormData.throttle_retry_limit,
           })
@@ -232,7 +232,7 @@ export default function GlobalRateLimit(props: IProps) {
         <div className="card">
           <Accordion defaultActiveKey="0">
             <Accordion.Item eventKey="0">
-              <Accordion.Header>Global Limits and Quotaaaa</Accordion.Header>
+              <Accordion.Header>Global Limits and Quota</Accordion.Header>
 
               <Accordion.Body>
                 <Row>
@@ -273,6 +273,11 @@ export default function GlobalRateLimit(props: IProps) {
                           // onChange={(e: any) => validateForm(e)}
                           onChange={(e: any) => handlerateclick(e)}
                           name="rate"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.Rate
+                              : states.data.form.Rate
+                          }
                           isInvalid={
                             props.current === "policy"
                               ? !!state.data.errors?.Rate
@@ -300,6 +305,11 @@ export default function GlobalRateLimit(props: IProps) {
                           placeholder="Enter time"
                           onChange={(e: any) => handlerateclick(e)}
                           name="per"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.Per
+                              : states.data.form.Per
+                          }
                           isInvalid={
                             props.current === "policy"
                               ? !!state.data.errors?.Per
@@ -356,6 +366,11 @@ export default function GlobalRateLimit(props: IProps) {
                           id="retry"
                           placeholder={throttleRetry}
                           name="throttle_retry_limit"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.ThrottleRetries
+                              : states.data.form.ThrottleRetries
+                          }
                           onChange={(e: any) => handlerateclick(e)}
                           // value={throttleDefault}
                           isInvalid={
@@ -384,6 +399,11 @@ export default function GlobalRateLimit(props: IProps) {
                           type="text"
                           id="interval"
                           name="throttle_interval"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.ThrottleInterval
+                              : states.data.form.ThrottleInterval
+                          }
                           placeholder={throttleInterval}
                           onChange={(e: any) => handlerateclick(e)}
                           isInvalid={
@@ -443,6 +463,11 @@ export default function GlobalRateLimit(props: IProps) {
                           placeholder={quotaPerPeriod}
                           onChange={(e: any) => handlerateclick(e)}
                           name="quota_max"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.MaxQuota
+                              : states.data.form.Quota
+                          }
                           isInvalid={
                             props.current === "policy"
                               ? !!state.data.errors?.Quota
