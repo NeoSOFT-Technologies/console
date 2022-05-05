@@ -10,6 +10,7 @@ import {
   setForm,
 } from "../../../../../store/features/gateway/api/update/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import AdvancedOptions from "./advanced-options/AdvancedOptions";
 import Setting from "./setting/Setting";
 import Version from "./version/Version";
 
@@ -112,9 +113,9 @@ export default function Update() {
                       <Tab eventKey="version" title="Version">
                         <Version />
                       </Tab>
-                      {/* <Tab eventKey="advanced-options" title="Advanced Options">
+                      <Tab eventKey="advanced-options" title="Advanced Options">
                         <AdvancedOptions />
-                      </Tab> */}
+                      </Tab>
                     </Tabs>
                   </div>
                 </div>
