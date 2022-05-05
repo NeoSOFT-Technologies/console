@@ -50,6 +50,7 @@ export const initialState: IKeyCreateState = {
           },
           APIs: [],
           policyName: "",
+          AuthType: "",
         },
       ],
       Tags: [],

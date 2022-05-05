@@ -63,6 +63,7 @@ export interface IGetKeyByIdData {
         | undefined;
       APIs?: any[] | undefined;
       policyName: string;
+      AuthType: string;
     }
   ];
   Tags?: string[];
