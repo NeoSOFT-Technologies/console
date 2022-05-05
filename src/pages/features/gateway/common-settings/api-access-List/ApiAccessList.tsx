@@ -100,6 +100,8 @@ export default function ApiAccessList(props: IProps) {
     ],
     search: true,
     sort: true,
+    fixedHeader: true,
+    height: "300px",
     scrollable: "virtual",
     data:
       accessApiList.data !== undefined &&
