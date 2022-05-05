@@ -58,8 +58,8 @@ export default function PolicyList() {
         hidden: true,
       },
       {
-        name: "Select",
-        width: "8%",
+        id: "Select",
+        width: "6%",
         sort: false,
         formatter: (cell: string, row: any) => {
           const Id = row.cells[1].data;
@@ -80,7 +80,7 @@ export default function PolicyList() {
         },
       },
       { name: "Name", width: "20%" },
-      { name: "State", width: "20%", sort: false },
+      { name: "Status", width: "20%", sort: false },
       { name: "Access Rights", width: "20%" },
       { name: "Auth Type", width: "20%" },
     ],
@@ -94,7 +94,11 @@ export default function PolicyList() {
             data.Action,
             data.Id,
             data.Name,
-            data.State,
+            data.State === "active"
+              ? "Active"
+              : data.State === "deny"
+              ? "Access Denied"
+              : "Draft",
             data.Apis,
             data.AuthType,
           ])
