@@ -39,7 +39,7 @@ export const initialState: IKeyCreateState = {
       Policies: [],
       PolicyByIds: [
         {
-          global: {
+          Global: {
             Name: "",
             MaxQuota: 0,
             QuotaRate: 0,
@@ -48,7 +48,7 @@ export const initialState: IKeyCreateState = {
             ThrottleInterval: 0,
             ThrottleRetries: 0,
           },
-          perApi: [],
+          APIs: [],
           policyName: "",
         },
       ],

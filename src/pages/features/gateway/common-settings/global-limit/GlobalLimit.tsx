@@ -46,7 +46,7 @@ export default function GlobalLimit(props: IProps) {
       console.log("second use effect -", loader);
 
       const manageState = async () => {
-        const perApi: any[] = [];
+        const APIs: any[] = [];
 
         const policyByIdTemp = [...states.data.form.PolicyByIds!];
 
@@ -63,7 +63,6 @@ export default function GlobalLimit(props: IProps) {
         policyName = policyName + state.data.form.Name;
         console.log("myApis", state);
         for (const a of state.data.form.APIs) {
-          console.log("EveryApi", a);
           if (a.Limit === null) {
             globalItem.Name = globalItem.Name.concat(a.Name, ",");
             globalItem.MaxQuota = state.data.form.MaxQuota;
@@ -76,15 +75,15 @@ export default function GlobalLimit(props: IProps) {
 
           if (a.Limit !== null) {
             const policyState = a;
-            perApi.push(policyState);
+            APIs.push(policyState);
           }
         }
         // console.log("Names", globalItem.Name);
         if (globalItem.Name === "") {
           policyByIdTemp[props.index!] = {
             ...policyByIdTemp[props.index!],
-            global: undefined,
-            perApi,
+            Global: undefined,
+            APIs,
             policyName,
           };
 
@@ -97,8 +96,8 @@ export default function GlobalLimit(props: IProps) {
         } else {
           policyByIdTemp[props.index!] = {
             ...policyByIdTemp[props.index!],
-            global: globalItem,
-            perApi,
+            Global: globalItem,
+            APIs,
             policyName,
           };
           await dispatch(
@@ -134,8 +133,8 @@ export default function GlobalLimit(props: IProps) {
       state.loading === false &&
       states.data.form !== undefined &&
       states.data.form?.PolicyByIds!.length > props.index! &&
-      (states.data.form.PolicyByIds![props.index!].perApi!.length > 0 ||
-        Object.keys(states.data.form.PolicyByIds![props.index!].global!)
+      (states.data.form.PolicyByIds![props.index!].APIs!.length > 0 ||
+        Object.keys(states.data.form.PolicyByIds![props.index!].Global!)
           .length > 0) ? (
         <>
           <Accordion defaultActiveKey="0">
@@ -154,7 +153,7 @@ export default function GlobalLimit(props: IProps) {
               </div>
               <Accordion.Body>
                 {(
-                  states.data.form.PolicyByIds![props.index!].perApi as any[]
+                  states.data.form.PolicyByIds![props.index!].APIs as any[]
                 ).map((data: any, index: number) => {
                   return (
                     <div className="card" key={index}>
@@ -198,7 +197,7 @@ export default function GlobalLimit(props: IProps) {
                                         (data.Limit === null || undefined)
                                           ? states.data.form.PolicyByIds![
                                               props.index!
-                                            ].global!.Rate
+                                            ].Global!.Rate
                                           : data.Limit.rate
                                       }
                                       name="Rate"
@@ -219,7 +218,7 @@ export default function GlobalLimit(props: IProps) {
                                         (data.Limit === null || undefined)
                                           ? states.data.form.PolicyByIds![
                                               props.index!
-                                            ].global!.Per
+                                            ].Global!.Per
                                           : data.Limit.per
                                       }
                                       name="RateLimit.Per"
@@ -255,7 +254,7 @@ export default function GlobalLimit(props: IProps) {
                                         (data.Limit === null || undefined)
                                           ? states.data.form.PolicyByIds![
                                               props.index!
-                                            ].global!.ThrottleRetries
+                                            ].Global!.ThrottleRetries
                                           : data.Limit.throttle_retry_limit
                                       }
                                       // value={throttleDefault}
@@ -276,7 +275,7 @@ export default function GlobalLimit(props: IProps) {
                                         (data.Limit === null || undefined)
                                           ? states.data.form.PolicyByIds![
                                               props.index!
-                                            ].global!.ThrottleInterval
+                                            ].Global!.ThrottleInterval
                                           : data.Limit.throttle_interval
                                       }
                                       name="Throttling.Interval"
@@ -310,7 +309,7 @@ export default function GlobalLimit(props: IProps) {
                                         (data.Limit === null || undefined)
                                           ? states.data.form.PolicyByIds![
                                               props.index!
-                                            ].global!.MaxQuota
+                                            ].Global!.MaxQuota
                                           : data.Limit.quota_max
                                       }
                                       name="Quota.Per"
@@ -328,7 +327,7 @@ export default function GlobalLimit(props: IProps) {
                                         (data.Limit === null || undefined)
                                           ? states.data.form.PolicyByIds![
                                               props.index!
-                                            ].global!.QuotaRate
+                                            ].Global!.QuotaRate
                                           : data.Limit.quota_renewal_rate
                                       }
                                       disabled={true}
@@ -352,7 +351,7 @@ export default function GlobalLimit(props: IProps) {
                     </div>
                   );
                 })}
-                {states.data.form.PolicyByIds![props.index!].global !==
+                {states.data.form.PolicyByIds![props.index!].Global !==
                 undefined ? (
                   <>
                     <div className="card">
@@ -361,7 +360,7 @@ export default function GlobalLimit(props: IProps) {
                           <Accordion.Header>
                             {states.data.form.PolicyByIds![
                               props.index!
-                            ].global!.Name.slice(0, -1) +
+                            ].Global!.Name.slice(0, -1) +
                               " Global Limits and Quota"}
                           </Accordion.Header>
 
@@ -408,7 +407,7 @@ export default function GlobalLimit(props: IProps) {
                                         value={
                                           states.data.form.PolicyByIds![
                                             props.index!
-                                          ].global!.Rate
+                                          ].Global!.Rate
                                         }
                                         name="Rate"
                                         disabled={true}
@@ -426,7 +425,7 @@ export default function GlobalLimit(props: IProps) {
                                         value={
                                           states.data.form.PolicyByIds![
                                             props.index!
-                                          ].global!.Per
+                                          ].Global!.Per
                                         }
                                         name="RateLimit.Per"
                                         disabled={true}
@@ -474,7 +473,7 @@ export default function GlobalLimit(props: IProps) {
                                         value={
                                           states.data.form.PolicyByIds![
                                             props.index!
-                                          ].global!.ThrottleRetries
+                                          ].Global!.ThrottleRetries
                                         }
                                         // value={throttleDefault}
                                         disabled={true}
@@ -492,7 +491,7 @@ export default function GlobalLimit(props: IProps) {
                                         value={
                                           states.data.form.PolicyByIds![
                                             props.index!
-                                          ].global!.ThrottleInterval
+                                          ].Global!.ThrottleInterval
                                         }
                                         name="Throttling.Interval"
                                         disabled={true}
@@ -538,7 +537,7 @@ export default function GlobalLimit(props: IProps) {
                                         value={
                                           states.data.form.PolicyByIds![
                                             props.index!
-                                          ].global!.MaxQuota
+                                          ].Global!.MaxQuota
                                         }
                                         name="Quota.Per"
                                         disabled={true}
@@ -553,7 +552,7 @@ export default function GlobalLimit(props: IProps) {
                                         value={
                                           states.data.form.PolicyByIds![
                                             props.index!
-                                          ].global!.QuotaRate
+                                          ].Global!.QuotaRate
                                         }
                                         disabled={true}
                                       >

@@ -50,7 +50,7 @@ export interface IGetKeyByIdData {
   Policies: string[];
   PolicyByIds?: [
     {
-      global?:
+      Global?:
         | {
             Name: string;
             MaxQuota: number;
@@ -61,7 +61,7 @@ export interface IGetKeyByIdData {
             ThrottleRetries: number;
           }
         | undefined;
-      perApi?: any[] | undefined;
+      APIs?: any[] | undefined;
       policyName: string;
     }
   ];
