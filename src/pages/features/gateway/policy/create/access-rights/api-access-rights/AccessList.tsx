@@ -36,10 +36,10 @@ export default function AccessList() {
             MasterVersions: listV,
             AllowedUrls: [],
             Limit: {
-              rate: 0,
-              per: 0,
-              throttle_interval: 0,
-              throttle_retry_limit: 0,
+              rate: 1000,
+              per: 60,
+              throttle_interval: "Disabled throttling",
+              throttle_retry_limit: "Disabled throttling",
               max_query_depth: 0,
               quota_max: 0,
               quota_renews: 0,
@@ -49,7 +49,16 @@ export default function AccessList() {
             },
           },
         ];
-        dispatch(setForm({ ...state.data.form, APIs: list }));
+        dispatch(
+          setForm({
+            ...state.data.form,
+            Rate: 1000,
+            Per: 60,
+            ThrottleInterval: "Disabled throttling",
+            ThrottleRetries: "Disabled throttling",
+            APIs: list,
+          })
+        );
       } else {
         window.alert(
           "Rate limits, throttling, quota settings and path-based permissions have no effect on Open (Keyless) API ...."

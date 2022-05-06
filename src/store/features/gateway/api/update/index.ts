@@ -62,6 +62,7 @@ export interface IGetApiByIdData {
 }
 
 export interface IError {
+  AllowedOrigins: string;
   ApiId: string;
   Name: string;
   ListenPath: string;
@@ -76,4 +77,6 @@ export interface IError {
   isQuotaDisabled: string;
   LoadBalancingTargets: string;
   OverrideTarget: string;
+  Whitelist: string;
+  Blacklist: string;
 }
