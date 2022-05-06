@@ -120,18 +120,6 @@ export default function GlobalRateLimit(props: IProps) {
     }
   }
 
-  const [Limits, setLimits] = useState<any>({
-    rate: 0,
-    per: 0,
-    throttle_interval: 0,
-    throttle_retry_limit: 0,
-    max_query_depth: 0,
-    quota_max: 0,
-    quota_renews: 0,
-    quota_remaining: 0,
-    quota_renewal_rate: 0,
-    set_by_policy: false,
-  });
   const [rate, setRate] = useState(false);
   const [throttle, setThrottle] = useState(true);
   const [quota, setQuota] = useState(true);
@@ -145,7 +133,6 @@ export default function GlobalRateLimit(props: IProps) {
     event.preventDefault();
     validateForm(event);
     let fieldValue;
-
     const fieldName = event.target.getAttribute("name");
     if (fieldName === "quota_renews") {
       switch (event.target.value) {
@@ -175,37 +162,50 @@ export default function GlobalRateLimit(props: IProps) {
     } else {
       fieldValue = event.target.value;
     }
-    console.log("ye field values -", fieldValue);
-    const newFormData: any = { ...Limits };
-    newFormData[fieldName] = fieldValue;
-    setLimits(newFormData);
 
-    props.current === "policy"
-      ? dispatch(
-          setForm({
-            ...state.data.form,
-            Rate: newFormData.rate,
-            Per: newFormData.per,
-            MaxQuota: newFormData.quota_max,
-            QuotaRate: newFormData.quota_renews,
-            ThrottleInterval: newFormData.throttle_interval,
-            ThrottleRetries: newFormData.throttle_retry_limit,
-          })
-        )
-      : dispatch(
-          setForms({
-            ...states.data.form,
-            Rate: newFormData.rate,
-            Per: newFormData.per,
-            Quota: newFormData.quota_max,
-            QuotaRenewalRate: newFormData.quota_renews,
-            ThrottleInterval: newFormData.throttle_interval,
-            ThrottleRetries: newFormData.throttle_retry_limit,
-          })
-        );
+    switch (fieldName) {
+      case "rate":
+        props.current === "policy"
+          ? dispatch(setForm({ ...state.data.form, Rate: fieldValue }))
+          : dispatch(setForms({ ...states.data.form, Rate: fieldValue }));
+        break;
+      case "per":
+        props.current === "policy"
+          ? dispatch(setForm({ ...state.data.form, Per: fieldValue }))
+          : dispatch(setForms({ ...states.data.form, Per: fieldValue }));
+        break;
+      case "throttle_retry_limit":
+        props.current === "policy"
+          ? dispatch(
+              setForm({ ...state.data.form, ThrottleRetries: fieldValue })
+            )
+          : dispatch(
+              setForms({ ...states.data.form, ThrottleRetries: fieldValue })
+            );
+        break;
+      case "throttle_interval":
+        props.current === "policy"
+          ? dispatch(
+              setForm({ ...state.data.form, ThrottleInterval: fieldValue })
+            )
+          : dispatch(
+              setForms({ ...states.data.form, ThrottleInterval: fieldValue })
+            );
+        break;
+      case "quota_max":
+        props.current === "policy"
+          ? dispatch(setForm({ ...state.data.form, MaxQuota: fieldValue }))
+          : dispatch(setForms({ ...states.data.form, Quota: fieldValue }));
+        break;
+      case "quota_renews":
+        props.current === "policy"
+          ? dispatch(setForm({ ...state.data.form, MaxQuota: fieldValue }))
+          : dispatch(
+              setForms({ ...states.data.form, QuotaRenewalRate: fieldValue })
+            );
+        break;
+    }
   };
-  console.log("checklimit", state.data.form);
-  console.log("checklimit2", states.data.form);
   function handleThrottleChange(evt: any) {
     setThrottle(evt.target.checked);
     if (throttle === false) {
