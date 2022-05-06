@@ -56,7 +56,7 @@ export const Sidebar = () => {
   }, [user.data]);
 
   const [subMenu, setSubMenu] = useState({
-    logger: false,
+    tenant: false,
     gateway: false,
     saas: false,
   });
@@ -91,7 +91,11 @@ export const Sidebar = () => {
             </a>
           </li>
           <li className="nav-item">
-            <div className="nav-link" onClick={() => navigate("/tenant")}>
+            <div
+              className="nav-link"
+              onClick={() => navigate("/tenant")}
+              data-testid="home"
+            >
               <div className="d-flex justify-content-between w-100">
                 <span className="menu-title lh-2">Home</span>
                 <i className="bi bi-house-door-fill"></i>
@@ -102,21 +106,22 @@ export const Sidebar = () => {
             <div
               className="nav-link"
               onClick={() =>
-                setSubMenu({ ...subMenu, logger: !subMenu.logger })
+                setSubMenu({ ...subMenu, tenant: !subMenu.tenant })
               }
+              data-testid="tenant"
             >
               <div className="d-flex justify-content-between w-100 ">
                 <span className="menu-title lh-2">Tenant</span>
                 <i
                   className={` ${
-                    subMenu.logger
+                    subMenu.tenant
                       ? "bi bi-chevron-double-left r-90"
                       : " bi bi-chevron-left r90"
                   }`}
                 ></i>
               </div>
             </div>
-            <Collapse in={subMenu.logger}>
+            <Collapse in={subMenu.tenant}>
               <ul className="nav flex-column  list-unstyled p-0">
                 {routes.map((route, index) => (
                   <li
@@ -146,6 +151,7 @@ export const Sidebar = () => {
               onClick={() =>
                 setSubMenu({ ...subMenu, gateway: !subMenu.gateway })
               }
+              data-testid="gateway"
             >
               <div className="d-flex justify-content-between w-100 ">
                 <span className="menu-title lh-2">Gateway</span>
@@ -186,6 +192,7 @@ export const Sidebar = () => {
             <div
               className="nav-link"
               onClick={() => setSubMenu({ ...subMenu, saas: !subMenu.saas })}
+              data-testid="saas"
             >
               <div className="d-flex justify-content-between w-100 ">
                 <span className="menu-title lh-2">Saas</span>
