@@ -48,6 +48,7 @@ export const initialState: IApiGetByIdState = {
       IsQuotaDisabled: false,
     },
     errors: {
+      AllowedOrigins: "",
       ApiId: "",
       Name: "",
       ListenPath: "",
@@ -62,6 +63,8 @@ export const initialState: IApiGetByIdState = {
       isQuotaDisabled: "",
       LoadBalancingTargets: "",
       OverrideTarget: "",
+      Whitelist: "",
+      Blacklist: "",
     },
   },
   loading: false,
