@@ -30,14 +30,6 @@ jobs:
               with:
                   node-version: ${{ matrix.node }}
 
-            - name: Cache node_modules
-              uses: actions/cache@v3
-              with:
-                  path: ~/.npm
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-node-
-
             - name: Install dependencies
               run: npm install
 
@@ -48,4 +40,4 @@ jobs:
               run: npm run test
 
             - name: Run Build
-              run: npm run build
+              run: npm run build:prod
