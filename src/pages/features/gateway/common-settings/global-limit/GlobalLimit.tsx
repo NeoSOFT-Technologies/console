@@ -60,6 +60,7 @@ export default function GlobalLimit(props: IProps) {
           ThrottleRetries: 0,
         };
         let policyName = "";
+        const AuthType = "authType";
         policyName = policyName + state.data.form.Name;
         console.log("myApis", state);
         for (const a of state.data.form.APIs) {
@@ -85,6 +86,7 @@ export default function GlobalLimit(props: IProps) {
             Global: undefined,
             APIs,
             policyName,
+            AuthType,
           };
 
           await dispatch(
@@ -99,6 +101,7 @@ export default function GlobalLimit(props: IProps) {
             Global: globalItem,
             APIs,
             policyName,
+            AuthType,
           };
           await dispatch(
             setForms({
@@ -141,7 +144,12 @@ export default function GlobalLimit(props: IProps) {
             <Accordion.Item eventKey="0">
               <div style={{ display: "inline-flex", width: "100%" }}>
                 <AccordionButton>
-                  {states.data.form.PolicyByIds![props.index!].policyName}
+                  <b>
+                    {states.data.form.PolicyByIds![props.index!].policyName}
+                    &nbsp;
+                  </b>
+                  {" | "}
+                  {states.data.form.PolicyByIds![props.index!].AuthType}
                 </AccordionButton>
                 <button
                   type="button"
@@ -164,7 +172,8 @@ export default function GlobalLimit(props: IProps) {
                                 ? states.data.form.PolicyByIds![props.index!]
                                     .global!.Name + "Global Limits and Quota"
                                 : data.Name + " Per Api Limits and Quota"} */}
-                            {data.Name + " | Per Api Limits and Quota"}
+                            {data.Name}
+                            {" |"} <b> &nbsp;Per Api Limits and Quota</b>
                           </Accordion.Header>
 
                           <Accordion.Body>
@@ -363,8 +372,9 @@ export default function GlobalLimit(props: IProps) {
                           <Accordion.Header>
                             {states.data.form.PolicyByIds![
                               props.index!
-                            ].Global!.Name.slice(0, -1) +
-                              " Global Limits and Quota"}
+                            ].Global!.Name.slice(0, -1)}
+                            {" |"}
+                            <b>&nbsp;Global Limits and Quota</b>
                           </Accordion.Header>
 
                           <Accordion.Body>

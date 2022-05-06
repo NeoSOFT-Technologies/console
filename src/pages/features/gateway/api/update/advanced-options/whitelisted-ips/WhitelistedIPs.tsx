@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Accordion, Form, Col, Row, Button, Table } from "react-bootstrap";
+import {
+  setFormErrors,
+  regexForIP_Address,
+} from "../../../../../../../resources/gateway/api/api-constants";
 import { setForm } from "../../../../../../../store/features/gateway/api/update/slice";
 import {
   useAppDispatch,
@@ -35,6 +39,21 @@ export default function WhitelistedIPs() {
 
   const handleFormInputChange = (event: any) => {
     const { name, value } = event.target;
+    switch (name) {
+      case "Whitelist":
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: regexForIP_Address.test(value)
+              ? ""
+              : "Please enter a Valid IP Address",
+          },
+          dispatch
+        );
+        break;
+      default:
+        break;
+    }
     const formobj = { ...addFormData };
     formobj[name] = value;
     setAddFormData(formobj);
@@ -80,9 +99,9 @@ export default function WhitelistedIPs() {
                         </p>
                       </Col>
                       <Col md="12">
-                        <Form.Group className="mb-3">
+                        <Form.Group className="mb-3 ml-3">
                           <Form.Check
-                            type="checkbox"
+                            type="switch"
                             label="Enable Whitelisted IPs"
                             name="whitelisted"
                             checked={enableWhitelist}
@@ -94,15 +113,15 @@ export default function WhitelistedIPs() {
                     {enableWhitelist ? (
                       <div>
                         <Row>
-                          <b>Whitelisted IPs</b>
+                          {/* <b>Whitelisted IPs</b> */}
                           {whitelistLength > 0 ? (
                             <></>
                           ) : (
                             <p>No IPs selected, please add one below.</p>
                           )}
-                          <Row>
+                          <Row className="ml-3">
                             <Form.Label>
-                              <b>IP Address:</b>
+                              <b>Whitelisted IP Address:</b>
                             </Form.Label>
                             <Col md={10}>
                               <Form.Group className="mt-0">
@@ -112,10 +131,15 @@ export default function WhitelistedIPs() {
                                   id="whitelist"
                                   name="Whitelist"
                                   value={addFormData.Whitelist}
+                                  isInvalid={!!state.data.errors?.Whitelist}
+                                  isValid={!state.data.errors?.Whitelist}
                                   onChange={(event) =>
                                     handleFormInputChange(event)
                                   }
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                  {state.data.errors?.Whitelist}
+                                </Form.Control.Feedback>
                               </Form.Group>
                             </Col>
                             <Col md={2}>
@@ -134,9 +158,21 @@ export default function WhitelistedIPs() {
                         </Row>
 
                         {
-                          <Row>
+                          <Row className="ml-3 mr-5">
                             <Col md={12}>
                               <Table striped bordered hover size="lg">
+                                {whitelistLength > 0 ? (
+                                  <thead>
+                                    <tr>
+                                      <th>IP Address</th>
+                                      <th style={{ textAlign: "center" }}>
+                                        Action
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                ) : (
+                                  <></>
+                                )}
                                 <tbody>
                                   {state.data.form.Whitelist.map(
                                     (data: any, index: any) => {

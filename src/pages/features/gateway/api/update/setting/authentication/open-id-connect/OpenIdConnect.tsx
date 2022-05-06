@@ -220,7 +220,7 @@ export default function OpenIdConnectAuthentication() {
                 <div className="container">
                   <div className="row">
                     <div className="mb-1"></div>
-                    <div className="col-sm-12">
+                    <div className="col-sm-11">
                       {loading ? (
                         <></>
                       ) : (
@@ -232,29 +232,21 @@ export default function OpenIdConnectAuthentication() {
                                 index
                               ].Client_ids.map(
                                 (clientData: any, clientIndex: any) => {
-                                  const { ClientId, Policy } = clientData;
-
-                                  return Policy !== "" ? (
-                                    policyList?.data?.Policies.filter(
-                                      (p: any) => p.Id === Policy
-                                    ).map((filteredPolicy) => {
-                                      const { Name, Id } = filteredPolicy;
-                                      return (
-                                        <div key={index}>
-                                          {clientIndex === 0 ? (
-                                            <table className="table">
-                                              <thead>
-                                                <tr>
-                                                  <th></th>
-                                                  <th>Issuer:</th>
-                                                  <th>ClientID:</th>
-                                                  <th>Policy:</th>
-                                                  <th></th>
-                                                </tr>
-                                              </thead>
-                                              <tbody>
-                                                <tr>
-                                                  <td>
+                                  return (
+                                    <div key={index}>
+                                      {clientIndex === 0 ? (
+                                        <table className="table table-bordered">
+                                          <thead>
+                                            <tr>
+                                              <th>Issuer</th>
+                                              <th>ClientID</th>
+                                              <th>Policy</th>
+                                              <th>Actions</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr>
+                                              {/* <td>
                                                     <button
                                                       className="btn bi bi-trash-fill"
                                                       onClick={(event) =>
@@ -264,157 +256,192 @@ export default function OpenIdConnectAuthentication() {
                                                         )
                                                       }
                                                     ></button>
-                                                  </td>
-                                                  <td>
-                                                    <input
-                                                      type="text"
-                                                      className="form-control"
-                                                      id="issuer"
-                                                      name="issuer"
-                                                      value={Issuer}
-                                                      readOnly
-                                                    />
-                                                  </td>
-                                                  <td>
-                                                    <input
-                                                      type="text"
-                                                      className="form-control"
-                                                      placeholder="Your-client-id"
-                                                      id="clientId"
-                                                      name="clientId"
-                                                      value={
-                                                        addClientFormData[index]
-                                                          ?.clientId
-                                                      }
-                                                      onChange={(evnt) =>
-                                                        handleClientInputChange(
-                                                          evnt,
-                                                          index
-                                                        )
-                                                      }
-                                                    />{" "}
-                                                  </td>
-                                                  <td>
-                                                    <select
-                                                      className="p-2 rounded mb-0"
-                                                      name="policy"
-                                                      id="policy"
-                                                      placeholder="select policy"
-                                                      value={
-                                                        addClientFormData.policy
-                                                      }
-                                                      onChange={(evnt) =>
-                                                        handleClientInputChange(
-                                                          evnt,
-                                                          index
-                                                        )
-                                                      }
-                                                    >
-                                                      <option></option>
-                                                      {policyList.data?.Policies.map(
-                                                        (item: any) => {
-                                                          return (
-                                                            <option
-                                                              key={item.Name}
-                                                              value={item.Id}
-                                                              id={item.Name}
-                                                            >
-                                                              {item.Name}
-                                                            </option>
-                                                          );
-                                                        }
-                                                      )}
-                                                    </select>
-                                                  </td>
-                                                  <td>
-                                                    <button
-                                                      className="btn btn-outline-dark btn-dark"
-                                                      onClick={() =>
-                                                        handleClientAddClick(
-                                                          index
-                                                        )
-                                                      }
-                                                      disabled={
-                                                        !(
-                                                          addClientFormData[
-                                                            index
-                                                          ]?.clientId &&
-                                                          addClientFormData[
-                                                            index
-                                                          ]?.policy
-                                                        )
-                                                      }
-                                                    >
-                                                      Add
-                                                    </button>
-                                                  </td>
-                                                </tr>
-                                              </tbody>
-                                            </table>
-                                          ) : (
-                                            <></>
-                                          )}
-
-                                          <Table striped bordered hover>
-                                            <tbody>
-                                              <tr key={clientIndex}>
-                                                <td>{ClientId}</td>
-                                                <td
-                                                  style={{
-                                                    textAlign: "left",
-                                                  }}
+                                                  </td> */}
+                                              <td>
+                                                <input
+                                                  type="text"
+                                                  className="form-control"
+                                                  id="issuer"
+                                                  name="issuer"
+                                                  value={Issuer}
+                                                  readOnly
+                                                />
+                                              </td>
+                                              <td>
+                                                <input
+                                                  type="text"
+                                                  className="form-control"
+                                                  placeholder="Your-client-id"
+                                                  id="clientId"
+                                                  name="clientId"
+                                                  value={
+                                                    addClientFormData[index]
+                                                      ?.clientId
+                                                  }
+                                                  onChange={(evnt) =>
+                                                    handleClientInputChange(
+                                                      evnt,
+                                                      index
+                                                    )
+                                                  }
+                                                />{" "}
+                                              </td>
+                                              <td>
+                                                <select
+                                                  className="p-2 rounded mb-0"
+                                                  name="policy"
+                                                  id="policy"
+                                                  placeholder="select policy"
+                                                  value={
+                                                    addClientFormData.policy
+                                                  }
+                                                  onChange={(evnt) =>
+                                                    handleClientInputChange(
+                                                      evnt,
+                                                      index
+                                                    )
+                                                  }
                                                 >
-                                                  {Name} : {Id}
-                                                </td>
-                                                <td
-                                                  style={{
-                                                    textAlign: "center",
-                                                  }}
-                                                >
-                                                  <i
-                                                    className="bi bi-trash"
-                                                    onClick={(event) =>
-                                                      deleteClientTableRows(
-                                                        index,
-                                                        clientIndex,
-                                                        event
-                                                      )
+                                                  <option></option>
+                                                  {policyList.data?.Policies.map(
+                                                    (item: any) => {
+                                                      return (
+                                                        <option
+                                                          key={item.Name}
+                                                          value={item.Id}
+                                                          id={item.Name}
+                                                        >
+                                                          {item.Name}
+                                                        </option>
+                                                      );
                                                     }
-                                                  ></i>
-                                                </td>
-                                              </tr>
-                                            </tbody>
-                                          </Table>
-                                        </div>
-                                      );
-                                    })
-                                  ) : (
-                                    <></>
+                                                  )}
+                                                </select>
+                                              </td>
+                                              <td>
+                                                <button
+                                                  className="btn btn-outline-dark btn-dark"
+                                                  onClick={() =>
+                                                    handleClientAddClick(index)
+                                                  }
+                                                  disabled={
+                                                    !(
+                                                      addClientFormData[index]
+                                                        ?.clientId &&
+                                                      addClientFormData[index]
+                                                        ?.policy
+                                                    )
+                                                  }
+                                                >
+                                                  Add
+                                                </button>
+                                                <button
+                                                  className="btn bi bi-trash-fill"
+                                                  onClick={(event) =>
+                                                    deleteIssuerTableRows(
+                                                      index,
+                                                      event
+                                                    )
+                                                  }
+                                                ></button>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      ) : (
+                                        <></>
+                                      )}
+
+                                      {clientIndex === 0 ? (
+                                        <Table striped bordered hover>
+                                          <thead>
+                                            <tr>
+                                              <th>ClientID</th>
+                                              <th>Policy</th>
+                                              <th
+                                                style={{
+                                                  textAlign: "center",
+                                                }}
+                                              >
+                                                Action
+                                              </th>
+                                            </tr>
+                                          </thead>
+
+                                          <tbody>
+                                            {state.data.form.OpenidOptions.Providers[
+                                              index
+                                            ].Client_ids.map(
+                                              (clientObj: any, cIndex: any) => {
+                                                const { ClientId, Policy } =
+                                                  clientObj;
+                                                return policyList?.data?.Policies.filter(
+                                                  (p: any) => p.Id === Policy
+                                                ).map((filteredPolicy) => {
+                                                  const { Name, Id } =
+                                                    filteredPolicy;
+
+                                                  return (
+                                                    <tr key={clientIndex}>
+                                                      <td>{ClientId}</td>
+                                                      <td
+                                                        style={{
+                                                          textAlign: "left",
+                                                        }}
+                                                      >
+                                                        {Name} : {Id}
+                                                      </td>
+                                                      <td
+                                                        style={{
+                                                          textAlign: "center",
+                                                        }}
+                                                      >
+                                                        <i
+                                                          className="bi bi-trash"
+                                                          onClick={(event) =>
+                                                            deleteClientTableRows(
+                                                              index,
+                                                              cIndex,
+                                                              event
+                                                            )
+                                                          }
+                                                        ></i>
+                                                      </td>
+                                                    </tr>
+                                                  );
+                                                });
+                                              }
+                                            )}
+                                          </tbody>
+                                        </Table>
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </div>
                                   );
                                 }
                               )
                             ) : (
-                              <div>
-                                <table className="table">
+                              <div key={index}>
+                                <table className="table table-bordered">
                                   <thead>
                                     <tr>
-                                      <th></th>
-                                      <th>Issuer:</th>
-                                      <th>ClientID:</th>
-                                      <th>Policy:</th>
-                                      <th></th>
+                                      <th>Issuer</th>
+                                      <th>ClientID</th>
+                                      <th>Policy</th>
+                                      <th>Actions</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <td>
+                                      {/* <td>
                                         <button
                                           className="btn bi bi-trash-fill"
                                           onClick={(event) =>
                                             deleteIssuerTableRows(index, event)
                                           }
                                         ></button>
-                                      </td>
+                                      </td> */}
                                       <td>
                                         <input
                                           type="text"
@@ -483,6 +510,12 @@ export default function OpenIdConnectAuthentication() {
                                         >
                                           Add
                                         </button>
+                                        <button
+                                          className="btn bi bi-trash-fill"
+                                          onClick={(event) =>
+                                            deleteIssuerTableRows(index, event)
+                                          }
+                                        ></button>
                                       </td>
                                     </tr>
                                   </tbody>

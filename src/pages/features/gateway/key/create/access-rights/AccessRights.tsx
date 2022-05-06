@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Tab, Tabs } from "react-bootstrap";
 import { IKeyCreateState } from "../../../../../../store/features/gateway/key/create";
+import { emptyState } from "../../../../../../store/features/gateway/key/create/payload";
+import { setForms } from "../../../../../../store/features/gateway/key/create/slice";
 // import { setForms } from "../../../../../../store/features/gateway/key/create/slice";
-import { useAppSelector } from "../../../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import ApplyPolicy from "./apply-policy/ApplyPolicy";
 import ChooseApi from "./choose-api/ChooseApi";
 export default function AccessRights() {
@@ -10,7 +12,7 @@ export default function AccessRights() {
   const [ClickedTabIndex, setClickedTabIndex] = useState("");
 
   const [show, setShow] = useState(false);
-  // const dispatch = useAppDispatch();useAppDispatch
+  const dispatch = useAppDispatch();
   const state: IKeyCreateState = useAppSelector(
     (RootState) => RootState.createKeyState
   );
@@ -44,22 +46,17 @@ export default function AccessRights() {
   const handleOk = () => {
     setShow(false);
     console.log("ok selected", SelectedTabIndex, ClickedTabIndex);
-    // if (SelectedTabIndex === "applyPolicy") {
-    //   dispatch(setForms({ ...state.data.form, Policies: [], PolicyByIds: [] }));
-    // } else {
-    //   dispatch(
-    //     setForms({
-    //       ...state.data.form,
-    //       AccessRights: [],
-    //       Per: 0,
-    //       Rate: 0,
-    //       Quota: 0,
-    //       QuotaRenewalRate: 0,
-    //       ThrottleInterval: 0,
-    //       ThrottleRetries: 0,
-    //     })
-    //   );
-    // }
+    const form = {
+      ...emptyState.data.form,
+      KeyId: state.data.form.KeyId,
+      KeyName: state.data.form.KeyName,
+      Expires: state.data.form.Expires,
+      AccessRights: [],
+      Policies: [],
+      PolicyByIds: [],
+    };
+
+    dispatch(setForms(form));
     setTabIndex(ClickedTabIndex);
 
     //  if(ClickedTabIndex!==)
