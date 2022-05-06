@@ -4,6 +4,8 @@ import RenderList from "../../../../../components/gateway/list/RenderList";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { RootState } from "../../../../../store";
+import { emptyState } from "../../../../../store/features/gateway/key/create/payload";
+import { setForms } from "../../../../../store/features/gateway/key/create/slice";
 import { deleteKey } from "../../../../../store/features/gateway/key/delete/slice";
 import {
   IKeyData,
@@ -65,12 +67,18 @@ export default function KeyList() {
     setSelected(1);
     mainCall(1, 4);
   };
-  const NavigateCreateKey = (
+  const NavigateCreateKey = async (
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
+    await dispatch(setForms(emptyState.data.form));
     navigate("/gateway/keys/create");
   };
+  // const NavigateUpdate = (val: IKeyData) => {
+  //   if (val.Id) {
+  //     navigate(`/gateway/keys/update/${val.Id}`);
+  //   }
+  // };
   //   const handleUserDetails = (val: ITenantUserData) => {
   //     console.log(val);
   //     // navigate("/userdetails");
@@ -117,6 +125,7 @@ export default function KeyList() {
     {
       className: "btn btn-sm btn-light",
       iconClassName: "bi bi-pencil-square menu-icon",
+      // buttonFunction: NavigateUpdate,
     },
     {
       className: "btn btn-sm btn-light",

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./UserDetails.scss";
 import {
   Button,
   Card,
@@ -15,7 +16,7 @@ import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
   regexForUser,
   regexForEmail,
-} from "../../../../../resources/constants";
+} from "../../../../../resources/tenant/constants";
 import { RootState } from "../../../../../store";
 import { getTenantRoles } from "../../../../../store/features/admin/tenant-roles/slice";
 import {
@@ -124,7 +125,7 @@ export default function UserDetails() {
 
   useEffect(() => {
     if (user.error) {
-      navigate("/error", { state: rolesList.error });
+      navigate("/error", { state: user.error });
     }
     if (userDetails.data) {
       setUserdata({ ...userDetails.data });
@@ -242,7 +243,6 @@ export default function UserDetails() {
                       Remove
                     </Button>
                   </Card.Header>
-                  {/* <Card.Body>This is some text within a card body.</Card.Body> */}
                 </Card>
               </Col>
             </Row>
@@ -301,6 +301,7 @@ export default function UserDetails() {
                                 <h5>Roles :</h5>{" "}
                                 <Dropdown autoClose="outside" className="w-100">
                                   <Dropdown.Toggle
+                                    className="dynamic-w"
                                     variant="success"
                                     id="dropdown-basic"
                                     data-testid="dropdown-toggler"

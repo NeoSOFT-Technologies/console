@@ -1,6 +1,7 @@
 import { h } from "gridjs";
 import { Grid } from "gridjs-react";
 import React, { useEffect } from "react";
+import { Accordion } from "react-bootstrap";
 import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 import { setForms } from "../../../../../../../../store/features/gateway/key/create/slice";
 import { IPolicyListState } from "../../../../../../../../store/features/gateway/policy/list";
@@ -24,14 +25,9 @@ export default function PolicyList() {
   }, []);
   const handleAddClick = (Id: any) => {
     console.log("policyList", StateKey.data?.form.Policies);
-    const data = StateKey.data.form.Policies.includes(Id);
-    // console.log("policylist check before", data);
+    const data = StateKey.data.form?.Policies?.includes(Id);
 
     if (!data) {
-      // console.log(
-      //   "policylist check",
-      //   StateKey.data?.form.Policies.some((x) => x === Id)
-      // );
       const list = [...StateKey.data.form.Policies, Id];
       dispatch(setForms({ ...StateKey.data.form, Policies: list }));
     } else {
@@ -45,15 +41,6 @@ export default function PolicyList() {
       {
         name: "Id",
         hidden: true,
-        // attributes: (cell: string) => {
-        //   if (cell) {
-        //     return {
-        //       "data-cell-content": cell,
-        //       onclick: () => handleAddClick(cell),
-        //       style: "cursor: pointer",
-        //     };
-        //   }
-        // },
       },
       {
         name: "Name",
@@ -61,10 +48,6 @@ export default function PolicyList() {
           return h(
             "text",
             {
-              // className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
-              // onClick: () =>
-              //   alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`),
-
               onClick: () => handleAddClick(row.cells[0].data),
             },
             `${row.cells[1].data}`
@@ -79,7 +62,6 @@ export default function PolicyList() {
             };
           }
         },
-        // style: "cursor: pointer",
       },
       "State",
       "Access Rights",
@@ -99,6 +81,7 @@ export default function PolicyList() {
         : [],
     search: true,
     sort: true,
+    // height: "400px",
     className: {
       container: "table table-responsive table-bordered table-stripped",
     },
@@ -110,45 +93,21 @@ export default function PolicyList() {
       th: {
         color: "#000",
       },
-      // rowSelection: "multiple",
-      // rowMultiSelectWithClick: true,
     },
   });
   return (
     <div>
       <div className="card mb-3">
-        <div>
-          <div className="align-items-center justify-content-around">
-            <div className="accordion" id="accordionSetting">
-              <div className="accordion-item">
-                <h2 className="accordion-header" id="headingOne">
-                  <button
-                    className="accordion-button"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseOne"
-                    aria-expanded="true"
-                    aria-controls="collapseOne"
-                  >
-                    Apply Policy
-                  </button>
-                </h2>
-                <div
-                  id="collapseOne"
-                  className="accordion-collapse collapse show"
-                  aria-labelledby="headingOne"
-                  data-bs-parent="#accordionSetting"
-                >
-                  <div className="accordion-body">
-                    <div>
-                      <Grid {...gridTable.props} />
-                    </div>
-                  </div>
-                </div>
+        <Accordion defaultActiveKey="0">
+          <Accordion.Item eventKey="0">
+            <Accordion.Header>Apply Policy</Accordion.Header>
+            <Accordion.Body>
+              <div>
+                <Grid {...gridTable.props} />
               </div>
-            </div>
-          </div>
-        </div>
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
       </div>
     </div>
   );

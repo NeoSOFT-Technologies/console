@@ -6,6 +6,8 @@ import RenderList from "../../../../../components/gateway/list/RenderList";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { RootState } from "../../../../../store";
+import { emptyState } from "../../../../../store/features/gateway/policy/create/payload";
+import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
 import { deletePolicy } from "../../../../../store/features/gateway/policy/delete/slice";
 import {
   IPolicyListState,
@@ -18,18 +20,11 @@ import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 export default function PolicyList() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(1);
-  // const [search, setSearch] = useState(" ");
   const dispatch = useAppDispatch();
   const policyList: IPolicyListState = useAppSelector(
     (state: RootState) => state.policyListState
   );
-  // const failure: any = () => navigate("/error-pages/error-500");
   const failure: any = () => ToastAlert(policyList.error!, "error");
-  // const [checkactive, setCheckactive] = useState({
-  //   btn1: false,
-  //   btn2: false,
-  //   btn3: true,
-  // });
   const [datalist, setDataList] = useState<IPolicyDataList>({
     list: [],
     fields: [],
@@ -62,10 +57,12 @@ export default function PolicyList() {
     mainCall(1, 4);
   };
 
-  const NavigateCreatePolicy = (
+  const NavigateCreatePolicy = async (
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
+    console.log("emptystate", emptyState);
+    await dispatch(setForm(emptyState.data.form));
     navigate("/gateway/policies/create");
   };
   //   const handleUserDetails = (val: ITenantUserData) => {
@@ -73,6 +70,12 @@ export default function PolicyList() {
   //     // navigate("/userdetails");
   //     navigate(`/userdetails/${val.id}`, { state: { ...val } });
   //   };
+
+  const NavigateUpdate = (val: IPolicyData) => {
+    if (val.Id) {
+      navigate(`/gateway/policies/update/${val.Id}`);
+    }
+  };
 
   function deletePolicyFromState(id: string) {
     const newState = datalist.list.filter((item) => item.Id !== id);
@@ -115,6 +118,7 @@ export default function PolicyList() {
     {
       className: "btn btn-sm btn-light",
       iconClassName: "bi bi-pencil-square menu-icon",
+      buttonFunction: NavigateUpdate,
     },
     {
       className: "btn btn-sm btn-light",

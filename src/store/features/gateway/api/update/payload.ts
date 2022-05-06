@@ -8,6 +8,7 @@ export const initialState: IApiGetByIdState = {
       ListenPath: "",
       StripListenPath: false,
       TargetUrl: "",
+      SelectedTabIndex: "",
       IsActive: true,
       IsInternal: false,
       Protocol: "http",
@@ -22,7 +23,7 @@ export const initialState: IApiGetByIdState = {
         Location: "1",
         Key: "",
       },
-      IsVersioningDisabled: true,
+      IsVersioningDisabled: false,
       DefaultVersion: "",
       Versions: [
         {
@@ -42,6 +43,7 @@ export const initialState: IApiGetByIdState = {
       OpenidOptions: {
         Providers: [],
       },
+      EnableRoundRobin: false,
       LoadBalancingTargets: [],
       IsQuotaDisabled: false,
     },

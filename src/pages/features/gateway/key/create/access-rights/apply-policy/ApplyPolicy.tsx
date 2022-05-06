@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppSelector } from "../../../../../../../store/hooks";
-import GlobalLimit from "../../../../common-settings/global-limit/GlobalLimit";
+import GlobalRateLimit from "../../../../common-settings/global-limit/GlobalRateLimit";
 import Policies from "./policies/Policies";
 import PolicyList from "./policy-list/PolicyList";
 
@@ -11,11 +11,15 @@ export default function ApplyPolicy() {
       <PolicyList />
       {state.data.form.Policies?.length > 0 ? (
         <>
-          <GlobalLimit
+          <GlobalRateLimit
+            message={" is being set by each policy"}
+            current="globalKey-applyPolicy"
+          />
+          {/* <GlobalLimit
             isDisabled={true}
             msg={" is being set by each policy"}
             // policyId="e9420aa1-eec5-4dfc-8ddf-2bc989a9a47f"
-          />
+          /> */}
           <Policies />
         </>
       ) : (

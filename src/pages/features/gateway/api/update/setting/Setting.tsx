@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Accordion, Col, Form, Row } from "react-bootstrap";
 import {
   regexForName,
   setFormData,
@@ -40,69 +40,53 @@ export default function Setting() {
       <div className="card">
         <div>
           <div className="align-items-center justify-content-around">
-            <div className="accordion" id="accordionSetting">
-              <div className="accordion-item">
-                <h2 className="accordion-header" id="headingOne">
-                  <button
-                    className="accordion-button"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseOne"
-                    aria-expanded="true"
-                    aria-controls="collapseOne"
-                  >
-                    API Settings
-                  </button>
-                </h2>
-                <div
-                  id="collapseOne"
-                  className="accordion-collapse collapse show"
-                  aria-labelledby="headingOne"
-                  data-bs-parent="#accordionSetting"
-                >
-                  <div className="accordion-body">
-                    <Row>
-                      <Col md={12} className="mb-3">
-                        <div className="h-50">
-                          <Form.Group className="mb-3">
-                            <Form.Label> API Name</Form.Label>
-                            <br />
+            <Accordion defaultActiveKey="0">
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>
+                  <span>API Setting</span>
+                </Accordion.Header>
+                <Accordion.Body>
+                  <Row>
+                    <Col md={12} className="mb-3">
+                      <div className="h-50">
+                        <Form.Group className="mb-3">
+                          <Form.Label> API Name</Form.Label>
+                          <br />
 
-                            <Form.Control
-                              className="mt-2"
-                              type="text"
-                              id="apiName"
-                              placeholder="Enter API Name"
-                              name="Name"
-                              value={state.data.form?.Name}
-                              isInvalid={!!state.data.errors?.Name}
-                              isValid={!state.data.errors?.Name}
-                              onChange={(e: any) => validateForm(e)}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              {state.data.errors?.Name}
-                            </Form.Control.Feedback>
-                          </Form.Group>
-                        </div>
-                      </Col>
-                    </Row>
-                    <br />
-                    <div>
-                      <ListenPath />
-                    </div>
-                    <div>
-                      <TargetUrl />
-                    </div>
-                    <div>
-                      <RateLimit />
-                    </div>
-                    <div>
-                      <Authentication />
-                    </div>
+                          <Form.Control
+                            className="mt-2"
+                            type="text"
+                            id="apiName"
+                            placeholder="Enter API Name"
+                            name="Name"
+                            value={state.data.form?.Name}
+                            isInvalid={!!state.data.errors?.Name}
+                            isValid={!state.data.errors?.Name}
+                            onChange={(e: any) => validateForm(e)}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {state.data.errors?.Name}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                      </div>
+                    </Col>
+                  </Row>
+                  <br />
+                  <div>
+                    <ListenPath />
                   </div>
-                </div>
-              </div>
-            </div>
+                  <div>
+                    <TargetUrl />
+                  </div>
+                  <div>
+                    <RateLimit />
+                  </div>
+                  <div>
+                    <Authentication />
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
           </div>
         </div>
       </div>

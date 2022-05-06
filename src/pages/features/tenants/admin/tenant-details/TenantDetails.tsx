@@ -15,7 +15,7 @@ import {
   regexForName,
   regexForDatabaseName,
   regexForDescription,
-} from "../../../../../resources/constants";
+} from "../../../../../resources/tenant/constants";
 import { RootState } from "../../../../../store";
 import { deleteTenant } from "../../../../../store/features/admin/delete-tenant/slice";
 import {
@@ -80,7 +80,7 @@ export default function TenantDetails() {
       await dispatch(deleteTenant(tenantName));
       if (tenantDeleted.isDeleted) {
         ToastAlert("Tenant Removed", "success");
-        navigate("/tenantlist");
+        navigate("/tenant/admin/tenants");
       }
     }
   };
@@ -159,7 +159,7 @@ export default function TenantDetails() {
       !tenantDeleted.error &&
       tenantDeleted?.isDeleted
     ) {
-      navigate("/tenantlist");
+      navigate("/tenant/admin/tenants");
     }
   }, [
     tenantDeleted.loading,
@@ -246,7 +246,7 @@ export default function TenantDetails() {
                         {tenant.tenantName &&
                           !regexForName.test(tenant.tenantName) && (
                             <span className="text-danger">
-                              Name Should Not Cantain Any Special Character or
+                              Name Should Not Contain Any Special Character or
                               Number
                             </span>
                           )}
@@ -328,34 +328,36 @@ export default function TenantDetails() {
                           )}
                       </Form.Group>
                     </Col>
-                    {edit ? (
-                      <Button
-                        data-testid="update-button"
-                        onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-                          handleUpdateTenant(event)
-                        }
-                        className="mt-3 info ml-4"
-                      >
-                        Update
-                      </Button>
-                    ) : (
-                      <Button
-                        data-testid="edit-button"
-                        onClick={() => setEdit(true)}
-                        className="mt-3 info ml-4"
-                      >
-                        Edit
-                      </Button>
-                    )}
+                    <div>
+                      {edit ? (
+                        <Button
+                          data-testid="update-button"
+                          onClick={(
+                            event: React.MouseEvent<HTMLButtonElement>
+                          ) => handleUpdateTenant(event)}
+                          className="mt-3 info "
+                        >
+                          Update
+                        </Button>
+                      ) : (
+                        <Button
+                          data-testid="edit-button"
+                          onClick={() => setEdit(true)}
+                          className="mt-3 info "
+                        >
+                          Edit
+                        </Button>
+                      )}
 
-                    <Button
-                      data-testid="cancel-button"
-                      className="btn btn-light mt-3"
-                      type="reset"
-                      onClick={() => navigate("/tenantlist")}
-                    >
-                      Cancel
-                    </Button>
+                      <Button
+                        data-testid="cancel-button"
+                        className="btn btn-light mt-3"
+                        type="reset"
+                        onClick={() => navigate("/tenant/admin/tenants")}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
                   </Row>
                 </Form>
               </Container>

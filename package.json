@@ -1,12 +1,12 @@
 {
   "name": "console",
   "version": "1.0.0",
-  "homepage": ".",
+  "homepage": "/",
   "author": "Santosh Shinde",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "start:prod": "serve -s build",
+    "start:prod": "serve -s build -p 4004",
     "build": "react-scripts build",
     "clean": "rimraf {bin,build}",
     "clean:cdn": "rimraf build/global/css",

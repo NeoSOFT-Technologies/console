@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Row, Col, Container, InputGroup } from "react-bootstrap";
-// import { useNavigate } from "react-router-dom";
 import Spinner from "../../../../../components/loader/Loader";
 import PasswordButtons from "../../../../../components/password-field/Password";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
@@ -10,7 +9,7 @@ import {
   regForPassword,
   regexForDescription,
   regexForDatabaseName,
-} from "../../../../../resources/constants";
+} from "../../../../../resources/tenant/constants";
 import { RootState } from "../../../../../store";
 import { addNewTenant } from "../../../../../store/features/admin/add-tenant/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
@@ -20,7 +19,6 @@ import {
 } from "../../../../../types/index";
 
 export default function RegisterTenant() {
-  // const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [showPassword, setShowpassword] = useState(false);
   const tenantAdded = useAppSelector(
@@ -46,6 +44,14 @@ export default function RegisterTenant() {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
+      case "databaseDescription":
+        setError({
+          ...error,
+          [name]: regexForDescription.test(value)
+            ? ""
+            : "description should only consist Alphabets",
+        });
+        break;
       case "description":
         setError({
           ...error,
@@ -237,8 +243,6 @@ export default function RegisterTenant() {
                         data-testid="password-input"
                         value={tenant.password}
                         name="password"
-                        // isValid={!error.password && !!tenant.password}
-                        // isInvalid={!!error.password}
                         onChange={handleInputChange}
                         required
                       />{" "}
@@ -287,6 +291,8 @@ export default function RegisterTenant() {
                       name="databaseName"
                       value={tenant.databaseName}
                       onChange={handleInputChange}
+                      isInvalid={!!error.databaseName}
+                      isValid={!error.databaseName && !!tenant.databaseName}
                     />
                     <Form.Control.Feedback type="invalid">
                       {error.databaseName}
@@ -309,25 +315,37 @@ export default function RegisterTenant() {
                       placeholder="Here...."
                       value={tenant.databaseDescription}
                       onChange={handleInputChange}
+                      isInvalid={!!error.databaseDescription}
+                      isValid={
+                        !error.databaseDescription &&
+                        !!tenant.databaseDescription
+                      }
                     />
                     <Form.Control.Feedback type="invalid">
                       {error.databaseDescription}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
+                <Col>
+                  <div>
+                    <Button
+                      className="info"
+                      type="submit"
+                      data-testid="submit-input"
+                    >
+                      Submit
+                    </Button>
+                    <Button
+                      className="btn btn-light"
+                      type="reset"
+                      data-testid="cancel-input"
+                      onClick={() => clearData()}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </Col>
               </Row>
-
-              <Button className="info" type="submit" data-testid="submit-input">
-                Submit
-              </Button>
-              <Button
-                className="btn btn-light"
-                type="reset"
-                data-testid="cancel-input"
-                onClick={() => clearData()}
-              >
-                Cancel
-              </Button>
             </Form>
           </Container>
         </div>

@@ -70,16 +70,6 @@ export interface ICreateNewUser {
   permissions: string[];
 }
 
-export interface IUserPermission {
-  id: string;
-  name: string;
-  description: string;
-  type: string;
-  logic: string;
-  decisionStrategy: string;
-  resourceType: string;
-}
-
 export interface ITenantRolesState {
   data?: string[] | null;
   loading: boolean;
@@ -90,12 +80,6 @@ export interface ITenantUserData {
   userName: string;
   email: string;
   createdDateTime: string;
-}
-
-export interface ITenantPermissionsState {
-  data?: IUserPermission[] | null;
-  loading: boolean;
-  error?: string | null;
 }
 
 export interface ITenantUserListState {

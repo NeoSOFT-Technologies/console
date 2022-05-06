@@ -21,7 +21,6 @@ export const deleteTenant = createAsyncThunk(
       const response = await deleteTenantDataService(tenantName);
       return response.data;
     } catch (error_) {
-      // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
       throw new Error(errorMessage);
     }
@@ -33,12 +32,8 @@ const slice = createSlice({
   initialState,
   reducers: {
     deleteTenantReset: (state) => {
-      // console.log(initialState, "inside reducer", state);
-      // console.log(JSON.stringify(state));
       state.error = undefined;
       state.isDeleted = false;
-      // console.log(JSON.stringify(state));
-      // state.error = initialState.error;
     },
   },
   extraReducers(builder): void {
@@ -54,7 +49,6 @@ const slice = createSlice({
     builder.addCase(deleteTenant.rejected, (state, action: any) => {
       state.loading = false;
       state.isDeleted = false;
-      // action.payload contains error information
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];
     });

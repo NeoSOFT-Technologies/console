@@ -1,11 +1,10 @@
 import React, { useEffect, useState, ChangeEvent } from "react";
 import { Form, Button, Alert, InputGroup } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Spinner from "../../components/loader/Loader";
 import PasswordButtons from "../../components/password-field/Password";
 import { ToastAlert } from "../../components/toast-alert/toast-alert";
-// import { regexForEmail } from "../../resources/constants";
-import { logo } from "../../resources/images";
+import { logo } from "../../resources/tenant/images";
 import { RootState } from "../../store";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { checkLoginType, ILoginTypeState } from "../../store/login-type/slice";
@@ -14,6 +13,7 @@ import { getUserData } from "../../store/user-data/slice";
 import { IUserDataState, ILogin } from "../../types";
 
 export default function Login() {
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const loginType: ILoginTypeState = useAppSelector(
@@ -56,37 +56,30 @@ export default function Login() {
           password: value.length < 8 ? "password is not valid" : "",
         });
         break;
-      case "tenantName":
-        setFormData({ ...formdata, tenantName: value });
-        setError({
-          ...error,
-          tenantName: value.length < 4 ? "tenantName is not valid" : "",
-        });
-        break;
       default:
         break;
     }
   };
 
   useEffect(() => {
-    //  console.log(
-    //     loginVerification.loginVerified,
-    //     loginVerification.error,
-    //     "inside loginVerification"
-    //   );
+    const useQuery = () => new URLSearchParams(location.search);
+    const query = useQuery();
+    const name = query.get("tenant");
+    if (name !== null) {
+      setFormData({ ...formdata, tenantName: name });
+      dispatch(checkLoginType("tenant"));
+    } else {
+      setFormData({ ...formdata, tenantName: "" });
+      dispatch(checkLoginType("admin"));
+    }
+  }, [location]);
 
+  useEffect(() => {
     if (
       loginVerification.loginVerified &&
       !loginVerification.error &&
       !loginVerification.loading
     ) {
-      console.log(
-        "in  creds loginVerification",
-        loginVerification.loginVerified,
-        !loginVerification.error,
-        !loginVerification.loading
-      );
-
       dispatch(
         getUserData({
           userName: formdata.userName,
@@ -99,37 +92,9 @@ export default function Login() {
       loginVerification.error &&
       !loginVerification.loading
     ) {
-      console.log(
-        "in incorrect creds loginVerification",
-        loginVerification.error
-      );
       ToastAlert("Incorrect Credentials!", "warning");
-      navigate("/statistics");
     }
   }, [loginVerification.loginVerified, loginVerification.error]);
-
-  useEffect(() => {
-    // console.log(type, user);
-    if (
-      !user.loading &&
-      formdata.userName !== "" &&
-      formdata.password !== "" && // if (user.data && loginType.data === "tenant") {
-      //   ToastAlert("Logged In", "success");
-      //   navigate("/tenantdashboard");
-      // } else if (user.data && loginType.data === "admin") {
-      //   ToastAlert("Logged In", "success");
-      //   navigate("/admindashboard");
-      // } else if (user.data && loginType.data === "user") {
-      //   ToastAlert("Logged In", "success");
-      //   navigate("/userdashboard");
-      // }
-      user.data &&
-      loginType.data
-    ) {
-      ToastAlert("Logged In", "success");
-      navigate("/statistics");
-    }
-  }, [user.data, user.error]);
 
   const validate = () => {
     let valid = false;
@@ -140,10 +105,6 @@ export default function Login() {
         );
         break;
       case "tenant":
-        valid = !(
-          formdata.tenantName.length === 0 || formdata.password.length === 0
-        );
-        break;
       case "user":
         valid = !(
           formdata.userName.length === 0 ||
@@ -154,28 +115,23 @@ export default function Login() {
     }
     return valid;
   };
+
+  useEffect(() => {
+    if (!user.loading && validate() && user.data && loginType.data) {
+      ToastAlert("Logged In", "success");
+      navigate("/tenant");
+    }
+    if (!user.loading && user.error && loginType.data) {
+      ToastAlert(`Could not login , error ${user.error}`, "warning");
+    }
+  }, [user.data, user.error]);
+
   const handleSubmit = async () => {
     if (validate()) {
       await dispatch(commonLogin({ ...formdata }));
     } else {
       ToastAlert("Please fill all the fields", "error");
-      // throw new Error("Please fill all the fields ");
     }
-  };
-
-  const setLoginType = (a: string) => {
-    // console.log(type);
-    dispatch(checkLoginType(a));
-    setFormData({
-      userName: "",
-      password: "",
-      tenantName: "",
-    });
-    setError({
-      userName: "",
-      password: "",
-      tenantName: "",
-    });
   };
 
   return user.loading ? (
@@ -188,7 +144,7 @@ export default function Login() {
             <div className="brand-logo">
               <img src={logo} alt="logo" />
             </div>
-            <h4>Hello {loginType.data} ! let&apos;s get started</h4>
+            <h4>Hello ! let&apos;s get started</h4>
             <h6 className="font-weight-light">Sign in to continue.</h6>
             <Form className="pt-3">
               <Form.Group className="mb-3">
@@ -207,26 +163,6 @@ export default function Login() {
                   </Alert>
                 )}
               </Form.Group>
-              {loginType.data !== "admin" && (
-                <div>
-                  <Form.Group className="mb-3">
-                    <Form.Control
-                      type="text"
-                      data-testid="tenantName-input"
-                      name="tenantName"
-                      placeholder="Enter TenantName"
-                      onChange={handle}
-                      value={formdata.tenantName}
-                      required
-                    />
-                    {error.tenantName.length > 0 && (
-                      <Alert variant="danger" className="mt-2">
-                        {error.tenantName}
-                      </Alert>
-                    )}
-                  </Form.Group>
-                </div>
-              )}
               <div>
                 <Form.Group className="mb-3">
                   <InputGroup>
@@ -260,59 +196,6 @@ export default function Login() {
                 >
                   SIGN IN
                 </Button>
-              </div>
-              <div className="my-2 d-flex justify-content-between align-items-center">
-                <div className="form-check">
-                  <label className="form-check-label text-muted">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      data-testid="keep-signed-in"
-                    />
-                    <i className="input-helper"></i>
-                    Keep me signed in
-                  </label>
-                </div>
-                <a
-                  href="!#"
-                  data-testid="forgot-password"
-                  onClick={(event) => event.preventDefault()}
-                  className="auth-link text-black"
-                >
-                  Forgot password?
-                </a>
-              </div>
-              <div>
-                {loginType.data !== "admin" && (
-                  <p>
-                    <span
-                      onClick={() => setLoginType("admin")}
-                      data-testid="admin-login"
-                    >
-                      Login as admin
-                    </span>
-                  </p>
-                )}
-                {loginType.data !== "tenant" && (
-                  <p>
-                    <span
-                      onClick={() => setLoginType("tenant")}
-                      data-testid="tenant-login"
-                    >
-                      Login as tenant
-                    </span>
-                  </p>
-                )}
-                {loginType.data !== "user" && (
-                  <p>
-                    <span
-                      onClick={() => setLoginType("user")}
-                      data-testid="user-login"
-                    >
-                      Login as user
-                    </span>
-                  </p>
-                )}
               </div>
             </Form>
           </div>

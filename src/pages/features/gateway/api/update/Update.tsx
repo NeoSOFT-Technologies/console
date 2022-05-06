@@ -7,6 +7,7 @@ import { IApiGetByIdState } from "../../../../../store/features/gateway/api/upda
 import {
   updateApi,
   getApiById,
+  setForm,
 } from "../../../../../store/features/gateway/api/update/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import Setting from "./setting/Setting";
@@ -24,7 +25,14 @@ export default function Update() {
   }, []);
 
   const navigate = useNavigate();
-
+  async function setKey(a: any) {
+    dispatch(
+      setForm({
+        ...state.data.form,
+        SelectedTabIndex: a,
+      })
+    );
+  }
   async function handleSubmitApiUpdate(event: FormEvent) {
     event.preventDefault();
     let validate: any;
@@ -34,7 +42,13 @@ export default function Update() {
       );
     }
     if (validate) {
-      const result = await dispatch(updateApi(state.data.form));
+      const newForm = { ...state.data.form };
+      if (state.data.form.EnableRoundRobin === false) {
+        newForm.LoadBalancingTargets = [];
+        dispatch(setForm({ ...state.data.form, LoadBalancingTargets: [] }));
+      }
+      console.log("newFrom", newForm);
+      const result = await dispatch(updateApi(newForm));
       if (result.meta.requestStatus === "rejected") {
         ToastAlert(result.payload.message, "error");
       } else if (result.meta.requestStatus === "fulfilled") {
@@ -86,10 +100,11 @@ export default function Update() {
                   </div>
                   <div className="card-body pt-2">
                     <Tabs
-                      defaultActiveKey="setting"
+                      defaultActiveKey={state.data.form?.SelectedTabIndex}
                       id="uncontrolled-tab"
                       // transition={false}
                       className="mb-2 small"
+                      onSelect={(k) => setKey(k)}
                     >
                       <Tab eventKey="setting" title="Setting">
                         <Setting />
@@ -97,6 +112,9 @@ export default function Update() {
                       <Tab eventKey="version" title="Version">
                         <Version />
                       </Tab>
+                      {/* <Tab eventKey="advanced-options" title="Advanced Options">
+                        <AdvancedOptions />
+                      </Tab> */}
                     </Tabs>
                   </div>
                 </div>

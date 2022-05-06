@@ -40,7 +40,6 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
   });
 
   if (props.actions !== undefined) {
-    // console.log(props.actions);
     id += 1;
     columns.push({
       id,
@@ -69,7 +68,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     url,
     data: async (args: any) => {
       const response = await apiFactory().get(`${args.url}`);
-      // console.log(args.url, response.data);
+
       return { data: response.data.data, total: response.data.count };
     },
     // eslint-disable-next-line unicorn/no-thenable
@@ -93,8 +92,6 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
   const classNames = {
     table: "table",
     pagination: "d-flex justify-content-around",
-    paginationButton: "page-link d-inline",
-    paginationButtonCurrent: "active",
     search: "search-field",
   };
 

@@ -1,5 +1,3 @@
-import { IGetPolicyByIdData } from "../../policy/create";
-
 export interface IKeyCreateState {
   data: ICreateState;
   loading: boolean;
@@ -27,6 +25,7 @@ export interface IGetKeyByIdData {
           ApiId: string | null;
           ApiName: string | null;
           Versions: string[];
+          MasterVersions: string[];
           AllowedUrls:
             | {
                 url: string;
@@ -34,19 +33,36 @@ export interface IGetKeyByIdData {
               }[];
           Limit: {
             Rate?: number;
-            Rhrottle_interval?: number;
+            Per?: number;
+            Throttle_interval?: number;
             Throttle_retry_limit?: number;
             Max_query_depth?: number;
             Quota_max?: number;
             Quota_renews?: number;
             Quota_remaining?: number;
             Quota_renewal_rate?: number;
-          } | null;
+          };
         }
       ]
     | [];
   Policies: string[];
-  PolicyByIds?: IGetPolicyByIdData[];
+  PolicyByIds?: [
+    {
+      global?:
+        | {
+            Name: string;
+            MaxQuota: number;
+            QuotaRate: number;
+            Rate: number;
+            Per: number;
+            ThrottleInterval: number;
+            ThrottleRetries: number;
+          }
+        | undefined;
+      perApi?: any[] | undefined;
+      policyName: string;
+    }
+  ];
   Tags?: string[];
 }
 
