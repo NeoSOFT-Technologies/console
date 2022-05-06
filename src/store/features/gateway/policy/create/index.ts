@@ -24,9 +24,10 @@ export interface IGetPolicyByIdData {
   APIs:
     | [
         {
-          Id: string | null;
+          Id: string;
           Name: string;
           Versions: string[];
+          MasterVersions: string[];
           AllowedUrls:
             | {
                 url: string;
@@ -43,7 +44,7 @@ export interface IGetPolicyByIdData {
             quota_remaining?: number;
             quota_renewal_rate?: number;
             set_by_policy: boolean;
-          } | null;
+          };
         }
       ]
     | [];

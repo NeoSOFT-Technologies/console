@@ -8,6 +8,8 @@ import addApiReducer from "./features/gateway/api/create/slice";
 import deleteApiReducer from "./features/gateway/api/delete/slice";
 import apiListReducer from "./features/gateway/api/list/slice";
 import updateApiReducer from "./features/gateway/api/update/slice";
+import addCertificateReducer from "./features/gateway/certificate/create/slice";
+import getAllCertificateReducer from "./features/gateway/certificate/list/slice";
 import createKeyReducer from "./features/gateway/key/create/slice";
 import keyListReducer from "./features/gateway/key/list/slice";
 import createPolicyReducer from "./features/gateway/policy/create/slice";
@@ -52,6 +54,8 @@ const store = configureStore({
     deleteApiState: deleteApiReducer,
     updateApiState: updateApiReducer,
     createKeyState: createKeyReducer,
+    addCertificateState: addCertificateReducer,
+    getAllCertificateState: getAllCertificateReducer,
   },
 });
 

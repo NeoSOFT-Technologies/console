@@ -100,9 +100,9 @@ const slice = createSlice({
     builder.addCase(updatePolicy.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(updatePolicy.fulfilled, (state, action) => {
+    builder.addCase(updatePolicy.fulfilled, (state) => {
       state.loading = false;
-      state.data = action.payload;
+      // state.data = action.payload;
     });
     builder.addCase(updatePolicy.rejected, (state, action) => {
       state.loading = false;
