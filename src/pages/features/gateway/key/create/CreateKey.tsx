@@ -76,7 +76,7 @@ export default function CreateKey() {
         state.data.errors
       );
     }
-    if (validate && validateFieldValue) {
+    if (validate) {
       if (
         state.data.form.Policies.length === 0 &&
         state.data.form.AccessRights.length === 0
