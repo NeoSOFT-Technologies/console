@@ -30,6 +30,7 @@ export default function MutualTLS() {
   const [radio, setRadio] = useState("uploadCert");
   const [fileName, setFileName] = useState<any>("");
   const [show, setShow] = useState(false);
+  const [loader, setLoader] = useState(true);
   const handleClose = () => {
     setFile([]);
     setCertId1([]);
@@ -67,7 +68,10 @@ export default function MutualTLS() {
           certId.push(list);
         }
       }
+      setLoader(false);
       console.log("result", certId);
+    } else {
+      setLoader(false);
     }
   };
   const handleAddNewCertificate = async (
@@ -483,7 +487,9 @@ export default function MutualTLS() {
                 </tr>
               </thead>
               <tbody>
-                {updateState.data.form.CertIds.length > 0 ? (
+                {loader === false &&
+                updateState.data.form.CertIds.length === certId.length &&
+                updateState.data.form.CertIds.length > 0 ? (
                   updateState.data.form.CertIds.map((data: any, index: any) => {
                     return (
                       <tr key={index}>
