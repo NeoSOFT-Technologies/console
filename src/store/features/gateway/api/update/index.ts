@@ -59,6 +59,17 @@ export interface IGetApiByIdData {
   EnableRoundRobin: boolean;
   LoadBalancingTargets: [];
   IsQuotaDisabled: boolean;
+  CORS: {
+    IsEnabled: boolean;
+    AllowedOrigins: [];
+    AllowedMethods: [];
+    AllowedHeaders: [];
+    ExposedHeaders: [];
+    AllowCredentials: boolean;
+    MaxAge: number;
+    OptionsPassthrough: boolean;
+    Debug: boolean;
+  };
 }
 
 export interface IError {
