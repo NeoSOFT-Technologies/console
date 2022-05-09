@@ -71,7 +71,7 @@ export interface IGetKeyByIdData {
 
 export interface IError {
   KeyId?: string;
-  KeyName: string;
+  KeyName?: string;
   AccessRights?: string;
   Policies?: string;
   Per?: string;

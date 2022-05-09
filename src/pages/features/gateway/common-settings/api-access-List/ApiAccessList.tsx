@@ -2,6 +2,7 @@ import { h } from "gridjs";
 import { Grid } from "gridjs-react";
 import moment from "moment";
 import React, { useEffect } from "react";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IApiListState } from "../../../../../store/features/gateway/api/list";
 import { getApiList } from "../../../../../store/features/gateway/api/list/slice";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create/index";
@@ -13,6 +14,7 @@ import { useAppSelector, useAppDispatch } from "../../../../../store/hooks";
 interface IProps {
   state?: IKeyCreateState | IPolicyCreateState;
   handleAddClick: (val: any) => void;
+  // selectedAuthType?: string;
 }
 export default function ApiAccessList(props: IProps) {
   const { handleAddClick } = props;
@@ -40,7 +42,8 @@ export default function ApiAccessList(props: IProps) {
           APIs: removeApi,
         })
       );
-    } else if ((props.state as IKeyCreateState).data.form.AccessRights) {
+    }
+    if ((props.state as IKeyCreateState).data.form.AccessRights) {
       const removeApi = [
         ...(props.state as IKeyCreateState).data.form.AccessRights!,
       ];
@@ -66,6 +69,7 @@ export default function ApiAccessList(props: IProps) {
         sort: false,
         formatter: (cell: string, row: any) => {
           const Id = row.cells[1].data;
+          const Name = row.cells[2].data;
           let data = false;
           if ((props.state as IPolicyCreateState).data.form.APIs) {
             data = (props.state as IPolicyCreateState).data.form.APIs.some(
@@ -86,8 +90,10 @@ export default function ApiAccessList(props: IProps) {
             onClick: (event: any) => {
               if (event.target!.checked) {
                 handleAddClick(Id);
+                ToastAlert(`${Name} selected`, "success");
               } else {
                 removeAccess(Id);
+                ToastAlert(`${Name} removed`, "warning");
               }
             },
           });

@@ -19,7 +19,7 @@ export default function AccessList() {
     if (!data) {
       const selectedApi = await dispatch(getApiById(Id));
       if (
-        selectedApi.payload.Data.ApiId === Id &&
+        selectedApi.payload.Data?.ApiId! === Id &&
         selectedApi.payload.Data.AuthType !== "keyless"
       ) {
         const listV: string[] = [];
