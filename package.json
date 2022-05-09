@@ -46,7 +46,7 @@
     "react-redux": "^8.0.0",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.1",
-    "react-toastify": "^8.2.0",
+    "react-toastify": "^9.0.1",
     "redux-mock-store": "^1.5.4",
     "typescript": "~4.6.3"
   },
