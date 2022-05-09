@@ -427,7 +427,11 @@ export default function GlobalLimit(props: IProps) {
                                         value={
                                           states.data.form.PolicyByIds![
                                             props.index!
-                                          ].Global!.Rate
+                                          ].Global!.Rate === -1
+                                            ? "Unlimited"
+                                            : states.data.form.PolicyByIds![
+                                                props.index!
+                                              ].Global!.Rate
                                         }
                                         name="Rate"
                                         disabled={true}
@@ -445,7 +449,11 @@ export default function GlobalLimit(props: IProps) {
                                         value={
                                           states.data.form.PolicyByIds![
                                             props.index!
-                                          ].Global!.Per
+                                          ].Global!.Per === -1
+                                            ? "Unlimited"
+                                            : states.data.form.PolicyByIds![
+                                                props.index!
+                                              ].Global!.Per
                                         }
                                         name="RateLimit.Per"
                                         disabled={true}
@@ -498,7 +506,11 @@ export default function GlobalLimit(props: IProps) {
                                         value={
                                           states.data.form.PolicyByIds![
                                             props.index!
-                                          ].Global!.ThrottleRetries
+                                          ].Global!.ThrottleRetries === -1
+                                            ? "Disabled Throttling"
+                                            : states.data.form.PolicyByIds![
+                                                props.index!
+                                              ].Global!.ThrottleRetries
                                         }
                                         // value={throttleDefault}
                                         disabled={true}
@@ -516,7 +528,11 @@ export default function GlobalLimit(props: IProps) {
                                         value={
                                           states.data.form.PolicyByIds![
                                             props.index!
-                                          ].Global!.ThrottleInterval
+                                          ].Global!.ThrottleInterval === -1
+                                            ? "Disabled Throttling"
+                                            : states.data.form.PolicyByIds![
+                                                props.index!
+                                              ].Global!.ThrottleInterval
                                         }
                                         name="Throttling.Interval"
                                         disabled={true}
@@ -567,7 +583,11 @@ export default function GlobalLimit(props: IProps) {
                                         value={
                                           states.data.form.PolicyByIds![
                                             props.index!
-                                          ].Global!.MaxQuota
+                                          ].Global!.MaxQuota === -1
+                                            ? "Unlimited"
+                                            : states.data.form.PolicyByIds![
+                                                props.index!
+                                              ].Global!.MaxQuota
                                         }
                                         name="Quota.Per"
                                         disabled={true}
@@ -582,7 +602,11 @@ export default function GlobalLimit(props: IProps) {
                                         value={
                                           states.data.form.PolicyByIds![
                                             props.index!
-                                          ].Global!.QuotaRate
+                                          ].Global!.QuotaRate === -1
+                                            ? "Never"
+                                            : states.data.form.PolicyByIds![
+                                                props.index!
+                                              ].Global!.QuotaRate
                                         }
                                         disabled={true}
                                       >

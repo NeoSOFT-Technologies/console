@@ -4,6 +4,7 @@ import { ToastAlert } from "../../../../../../../../components/toast-alert/toast
 // import Spinner from "../../../../../../../../components/loader/Loader";
 import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
 import { addCertificate } from "../../../../../../../../store/features/gateway/certificate/create/slice";
+import { IGetAllCertificateData } from "../../../../../../../../store/features/gateway/certificate/list/index";
 import {
   getAllCertificate,
   setFormCert,
@@ -13,7 +14,6 @@ import {
   useAppDispatch,
 } from "../../../../../../../../store/hooks";
 // import { setFormData } from "../../../../../../../resources/api/api-constants";
-
 export default function MutualTLS() {
   const dispatch = useAppDispatch();
   const updateState = useAppSelector((RootState) => RootState.updateApiState);
@@ -30,6 +30,7 @@ export default function MutualTLS() {
   const [radio, setRadio] = useState("uploadCert");
   const [fileName, setFileName] = useState<any>("");
   const [show, setShow] = useState(false);
+  const [loader, setLoader] = useState(true);
   const handleClose = () => {
     setFile([]);
     setCertId1([]);
@@ -37,8 +38,41 @@ export default function MutualTLS() {
   };
   const mainCall = async () => {
     console.log("Before");
-    await dispatch(getAllCertificate());
+    const result1 = await dispatch(getAllCertificate());
     console.log("After");
+    if (updateState.data.form.CertIds.length > 0) {
+      //   const arr1 = updateState.data.form.CertIds.filter((element) =>
+      //     certificateState.data?.CertificateCollection.includes(element)
+      //   );
+      for (let i = 0; i < updateState.data.form.CertIds.length; i++) {
+        const arr2 = updateState.data.form.CertIds[i];
+        console.log("arr", arr2);
+        const objCertState = result1.payload.CertificateCollection.find(
+          (obj1: IGetAllCertificateData) => obj1.CertId === arr2
+        );
+        console.log(objCertState);
+        const list = {
+          CertId: objCertState?.CertId,
+          Issuer: objCertState?.Issuer,
+          SignatureAlgorithm: objCertState?.SignatureAlgorithm,
+          Subject: objCertState?.Subject,
+          Thumbprint: objCertState?.Thumbprint,
+          ValidNotAfter: objCertState?.ValidNotAfter,
+          ValidNotBefore: objCertState?.ValidNotBefore,
+          showDetails: false,
+        };
+        // setCertId([...certId, list]);
+        const idAlreadyExist = certId.some((x: any) => x?.CertId === arr2);
+        console.log("idAlreadyExist", idAlreadyExist);
+        if (!idAlreadyExist) {
+          certId.push(list);
+        }
+      }
+      setLoader(false);
+      console.log("result", certId);
+    } else {
+      setLoader(false);
+    }
   };
   const handleAddNewCertificate = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -73,6 +107,8 @@ export default function MutualTLS() {
             setForm({ ...updateState.data.form, CertIds: arrUpdateState })
           );
           handleClose();
+        } else {
+          ToastAlert("Already selected", "error");
         }
         const objCertState = certificateState.data!.CertificateCollection.find(
           (obj1) => obj1.CertId === certId1
@@ -131,10 +167,10 @@ export default function MutualTLS() {
     index: number
   ) => {
     e.preventDefault();
-    console.log(
-      "plus button",
-      certificateState.data?.CertificateCollection[index].CertId
-    );
+    // console.log(
+    //   "plus button",
+    //   certificateState.data?.CertificateCollection[index].CertId
+    // );
     const certobjId =
       certificateState.data?.CertificateCollection[index]?.CertId!;
     const certIdExistUpdateState =
@@ -161,17 +197,20 @@ export default function MutualTLS() {
           certificateState.data?.CertificateCollection[index]?.ValidNotBefore,
         showDetails: false,
       };
-      const idAlreadyExist = certId.some(
-        (x: any) => x?.CertId === updateState.data.form?.CertIds[index]
-      );
-      console.log("idAlreadyExist", idAlreadyExist);
-      if (!idAlreadyExist) {
-        setCertId([...certId, list]);
+      for (let i = 0; i < updateState.data.form.CertIds.length; i++) {
+        const arr2 = updateState.data.form.CertIds[i + 1];
+        const idAlreadyExist = certId.some((x: any) => x?.CertId === arr2);
+        console.log("idAlreadyExist", idAlreadyExist);
+        if (!idAlreadyExist) {
+          // setCertId([...certId, list]);
+          certId.push(list);
+        }
       }
+    } else {
+      ToastAlert("Already selected", "error");
     }
   };
   console.log("update", updateState.data.form);
-  // console.log("certId", certId);
   const handleMinusButton = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     index: number
@@ -448,7 +487,9 @@ export default function MutualTLS() {
                 </tr>
               </thead>
               <tbody>
-                {updateState.data.form.CertIds.length > 0 ? (
+                {loader === false &&
+                updateState.data.form.CertIds.length === certId.length &&
+                updateState.data.form.CertIds.length > 0 ? (
                   updateState.data.form.CertIds.map((data: any, index: any) => {
                     return (
                       <tr key={index}>
@@ -488,21 +529,35 @@ export default function MutualTLS() {
                             -
                           </button>
                         </td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn"
-                            onClick={(e: any) => handleDropRightTable(e, index)}
-                          >
-                            <i
-                              className={`${
-                                certId[index].showDetails
-                                  ? "bi bi-chevron-up"
-                                  : "bi bi-chevron-down"
-                              }`}
-                            ></i>
-                          </button>
-                        </td>
+                        {certId.length > 0 &&
+                        certId.length ===
+                          updateState.data.form.CertIds.length ? (
+                          <td>
+                            {certId.length ===
+                            updateState.data.form.CertIds.length ? (
+                              <button
+                                type="button"
+                                className="btn"
+                                onClick={(e: any) =>
+                                  handleDropRightTable(e, index)
+                                }
+                              >
+                                {/* <li className="bi bi-chevron-up"></li> */}
+                                <i
+                                  className={`${
+                                    certId[index].showDetails
+                                      ? "bi bi-chevron-up"
+                                      : "bi bi-chevron-down"
+                                  }`}
+                                ></i>
+                              </button>
+                            ) : (
+                              <></>
+                            )}
+                          </td>
+                        ) : (
+                          <></>
+                        )}
                       </tr>
                     );
                   })
