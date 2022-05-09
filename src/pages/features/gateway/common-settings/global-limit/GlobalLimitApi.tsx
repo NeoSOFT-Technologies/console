@@ -313,12 +313,12 @@ export default function GlobalLimitApi(props: IProps) {
                             // props.state?.data.form.APIs[props.index!].Id === !!state.data.errors?.ApIs
                             props.current === "policy"
                               ? // ? !!state.data.errors?.GlobalLimit[0].Rate
-                                !!state.data.errors?.GlobalLimit[0].Rate
+                                !!state.data.errors?.Rate
                               : !!states.data.errors?.Rate
                           }
                           isValid={
                             props.current === "policy"
-                              ? !state.data.errors?.GlobalLimit[0].Rate
+                              ? !state.data.errors?.Rate
                               : !states.data.errors?.Rate
                           }
                           disabled={rate}
@@ -326,7 +326,7 @@ export default function GlobalLimitApi(props: IProps) {
                         <Form.Control.Feedback type="invalid">
                           {" "}
                           {props.current === "policy"
-                            ? state.data.errors?.GlobalLimit[0].Rate
+                            ? state.data.errors?.Rate
                             : states.data.errors?.Rate}
                         </Form.Control.Feedback>
                         <Form.Label className="mt-3">Per (Seconds)</Form.Label>
