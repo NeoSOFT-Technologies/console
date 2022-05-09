@@ -46,7 +46,7 @@ export interface IGetApiByIdData {
   ];
   AuthType: string;
   EnableMTLS: boolean;
-  CertIds: [];
+  CertIds: string[];
   OpenidOptions: {
     Providers: {
       Issuer: string;
