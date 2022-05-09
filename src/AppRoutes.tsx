@@ -70,7 +70,9 @@ const Dashboard = lazy(() => import("./pages/features/gateway/Dashboard"));
 const UpdateApi = lazy(
   () => import("./pages/features/gateway/api/update/Update")
 );
-
+const InsertData = lazy(
+  () => import("./pages/features/saas/insert-data/InsertData")
+);
 function AppRoutes() {
   return (
     <Suspense fallback={<Spinner />}>
@@ -199,6 +201,22 @@ function AppRoutes() {
             element={
               <AdminGuard>
                 <GetTables />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="insertData"
+            element={
+              <AdminGuard>
+                <InsertData />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="insertData"
+            element={
+              <AdminGuard>
+                <InsertData />
               </AdminGuard>
             }
           />

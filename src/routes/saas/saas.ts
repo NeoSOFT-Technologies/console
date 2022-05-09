@@ -4,6 +4,11 @@ const saasRoutes = [
     title: "Get Tables",
     icon: "bi bi-list-ul",
   },
+  {
+    path: "/saas/insertData",
+    title: "Insert Data",
+    icon: "bi bi-list-ul",
+  },
   // {
   //   path: "/tenantlist",
   //   title: "List",
