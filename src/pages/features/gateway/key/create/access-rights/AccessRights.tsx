@@ -83,7 +83,7 @@ export default function AccessRights() {
             Cancel
           </Button>
           <Button variant="primary" onClick={handleOk}>
-            Ok
+            Confirm
           </Button>
         </Modal.Footer>
       </Modal>

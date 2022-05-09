@@ -99,7 +99,7 @@ export default function WhitelistedIPs() {
                         </p>
                       </Col>
                       <Col md="12">
-                        <Form.Group className="mb-3 ml-3">
+                        <Form.Group className="mb-3 ml-4">
                           <Form.Check
                             type="switch"
                             label="Enable Whitelisted IPs"

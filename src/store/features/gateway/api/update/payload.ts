@@ -46,6 +46,17 @@ export const initialState: IApiGetByIdState = {
       EnableRoundRobin: false,
       LoadBalancingTargets: [],
       IsQuotaDisabled: false,
+      CORS: {
+        IsEnabled: false,
+        AllowedOrigins: [],
+        AllowedMethods: [],
+        AllowedHeaders: [],
+        ExposedHeaders: [],
+        AllowCredentials: false,
+        MaxAge: 0,
+        OptionsPassthrough: false,
+        Debug: false,
+      },
     },
     errors: {
       AllowedOrigins: "",
