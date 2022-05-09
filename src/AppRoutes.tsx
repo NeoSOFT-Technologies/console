@@ -212,14 +212,6 @@ function AppRoutes() {
               </AdminGuard>
             }
           />
-          <Route
-            path="insertData"
-            element={
-              <AdminGuard>
-                <InsertData />
-              </AdminGuard>
-            }
-          />
         </Route>
         <Route path="*" element={<Navigate to="/login-page" />} />{" "}
       </Routes>
