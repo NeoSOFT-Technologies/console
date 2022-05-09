@@ -38,14 +38,14 @@ export default function AccessRights() {
 
   function handleOnTabSelect(key: string) {
     if (SelectedTabIndex !== key) {
-      console.log("tab selected", key, SelectedTabIndex);
+      // console.log("tab selected", key, SelectedTabIndex);
       setShow(true);
       setClickedTabIndex(key);
     }
   }
   const handleOk = () => {
     setShow(false);
-    console.log("ok selected", SelectedTabIndex, ClickedTabIndex);
+    // console.log("ok selected", SelectedTabIndex, ClickedTabIndex);
     const form = {
       ...emptyState.data.form,
       KeyId: state.data.form.KeyId,
@@ -63,7 +63,8 @@ export default function AccessRights() {
   };
   return (
     <>
-      <Modal show={show} onHide={handleCancel} centered>
+      <Modal size="lg" show={show} onHide={handleCancel} centered>
+        {/* sm" | "lg" | "xl */}
         <Modal.Header closeButton>
           <Modal.Title>
             <span>
@@ -74,8 +75,8 @@ export default function AccessRights() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          key can only have Access Rights added by either Applying Policies or
-          by manually Choosing API...
+          <b>Note: </b> key can only have Access Rights added by either Applying
+          Policies or by manually Choosing API...
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCancel}>

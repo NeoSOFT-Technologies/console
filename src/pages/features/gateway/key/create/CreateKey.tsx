@@ -3,10 +3,14 @@ import { Button, Form, Modal, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
+// import { setFormErrorkey } from "../../../../../resources/gateway/key/key-constants";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
+// import { emptyState } from "../../../../../store/features/gateway/key/create/payload";
 import {
   createKey,
   getKeyById,
+  setFormErrors,
+  // setForms,
   updateKey,
 } from "../../../../../store/features/gateway/key/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
@@ -33,44 +37,91 @@ export default function CreateKey() {
   const handleOk = () => {
     setShow(false);
   };
-
+  // let TabIcon: any;
   async function handleSubmitKey(event: FormEvent) {
     event.preventDefault();
     let validate: any;
+    const validateFieldValue = state.data.form.KeyName.length > 0;
+    if (!validateFieldValue) {
+      // setFormErrorkey(
+      //   { ...state.data.errors, KeyName: "Name is required" },
+      //   dispatch
+      // );
+      dispatch(
+        setFormErrors({ ...state.data.errors, KeyName: "Name is required" })
+      );
+      // TabIcon = <i className="bi bi-trash-fill menu-icon"></i>;
+    }
     if (state.data.errors !== undefined) {
       validate = Object.values(state.data.errors).every(
         (x) => x === null || x === ""
       );
-      // console.log("error", state.data);
+      // validateFieldValue = state.data.form.KeyName.length > 0;
+      // if (!validateFieldValue) {
+      //   // setFormErrorkey(
+      //   //   { ...state.data.errors, KeyName: "Name is required" },
+      //   //   dispatch
+      //   // );
+      //   dispatch(
+      //     setFormErrors({ ...state.data.errors, KeyName: "Name is required" })
+      //   );
+      //   // TabIcon = <i className="bi bi-trash-fill menu-icon"></i>;
+      // }
+
+      // if (state.data.form.KeyName === "") validate = false;
+      console.log(
+        "error",
+        validate,
+        state.data.form.KeyName.length,
+        state.data.errors
+      );
     }
-    if (validate) {
-      const result = id
-        ? await dispatch(updateKey(state.data.form))
-        : await dispatch(createKey(state.data.form));
-      if (result.meta.requestStatus === "rejected") {
-        ToastAlert(result.payload.message, "error");
-      } else if (result.meta.requestStatus === "fulfilled") {
-        // ToastAlert("Key Created Successfully!!", "success");
-        // navigate("/gateway/keys");
-        if (id === undefined) {
-          const valId: string = result.payload.Data.KeyId;
-          ToastAlert("Key Created Successfully!!", "success");
-          // navigate("/gateway/policies")
-          if (valId) {
-            setShow(true);
-            setKeyId(valId);
-            await new Promise((resolve) => setTimeout(resolve, 2000));
-            // alert(`${valId}`);
-            // await dispatch(getKeyById(valId));
-            navigate(`/gateway/keys/update/${valId}`);
+    if (validate && validateFieldValue) {
+      if (
+        state.data.form.Policies.length === 0 &&
+        state.data.form.AccessRights.length === 0
+      ) {
+        ToastAlert("Key can be either created on Policy or Api ...! ", "error");
+      } else {
+        console.log(
+          "error inside fullfield",
+          validate,
+          state.data.form.KeyName.length,
+          state.data.errors
+        );
+        const result = id
+          ? await dispatch(updateKey(state.data.form))
+          : await dispatch(createKey(state.data.form));
+        if (result.meta.requestStatus === "rejected") {
+          ToastAlert(result.payload.message, "error");
+        } else if (result.meta.requestStatus === "fulfilled") {
+          // ToastAlert("Key Created Successfully!!", "success");
+          // navigate("/gateway/keys");
+          if (id === undefined) {
+            const valId: string = result.payload.Data.KeyId;
+            ToastAlert("Key Created Successfully!!", "success");
+            if (valId) {
+              setShow(true);
+              setKeyId(valId);
+              await new Promise((resolve) => setTimeout(resolve, 1000));
+              // alert(`${valId}`);
+              await dispatch(getKeyById(valId));
+              navigate(`/gateway/keys/update/${valId}`);
+            }
+          } else {
+            ToastAlert("Key Updated Successfully!!", "success");
           }
         } else {
-          ToastAlert("Key Updated Successfully!!", "success");
+          ToastAlert("Request is not fulfilled!!", "error");
         }
-      } else {
-        ToastAlert("Key Created request is not fulfilled!!", "error");
       }
     } else {
+      console.log(
+        "error",
+        validate,
+        state.data.form.KeyName!.length,
+        state.data.errors
+      );
       ToastAlert("Please fill all the fields correctly! ", "error");
     }
   }
@@ -94,6 +145,9 @@ export default function CreateKey() {
       console.log(error);
     }
   };
+  const handleCancel = () => {
+    setShow(false);
+  };
   return (
     <>
       {/* <Modal show={show} onHide={handleClose}>
@@ -111,7 +165,7 @@ export default function CreateKey() {
         </Modal.Footer>
       </Modal> */}
 
-      <Modal show={show} centered>
+      <Modal size="lg" show={show} onHide={handleCancel} centered>
         <Modal.Header closeButton>
           <Modal.Title>
             <span>Key Generated Successfully</span>
@@ -119,8 +173,8 @@ export default function CreateKey() {
         </Modal.Header>
         <Modal.Body>
           <div
-            className="border p-2 rounded rounded-4"
-            style={{ backgroundColor: "#C8E6C9" }}
+            className="border p-2 rounded rounded-10"
+            style={{ backgroundColor: "#E1F5FE" }}
           >
             Your key has been created... <br />
             <br />
@@ -193,7 +247,21 @@ export default function CreateKey() {
                         <Tab eventKey="accessRights" title="Access Rights">
                           <AccessRights />
                         </Tab>
-                        <Tab eventKey="configurations" title="Configurations">
+                        <Tab
+                          eventKey="configurations"
+                          title={
+                            <span>
+                              {state.data.errors?.KeyName ? (
+                                <i className="bi bi-info-circle-fill text-danger"></i>
+                              ) : (
+                                ""
+                                // <i className=" bi bi-file-earmark-check test-info"></i>
+                              )}
+                              &nbsp; Configurations
+                            </span>
+                          }
+                        >
+                          {/* "Configurations" */}
                           <Configurations />
                         </Tab>
                       </Tabs>
