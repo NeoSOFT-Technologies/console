@@ -51,7 +51,6 @@ export default function Configurations() {
                     isInvalid={!!state.data.errors?.Name}
                     isValid={!state.data.errors?.Name}
                     onChange={(e: any) => validateForm(e)}
-                    required
                   />
                   <Form.Control.Feedback type="invalid">
                     {state.data.errors?.Name}

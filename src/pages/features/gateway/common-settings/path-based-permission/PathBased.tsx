@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Accordion, AccordionButton } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 // import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
 import Spinner from "../../../../../components/loader/Loader";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
@@ -76,13 +77,15 @@ export default function PathBased(props: IProps) {
       })
     );
   };
-
+  const { id } = useParams();
   useEffect(() => {
     console.log("isActiveAPi", isActiveApi);
-    if (isActiveApi === false) {
-      setNull();
-    } else if (isActiveApi === true) {
-      setFieldValue();
+    if (id === undefined) {
+      if (isActiveApi === false) {
+        setNull();
+      } else if (isActiveApi === true) {
+        setFieldValue();
+      }
     }
   }, [isActiveApi]);
 

@@ -60,10 +60,12 @@ export default function GlobalLimit(props: IProps) {
           ThrottleRetries: 0,
         };
         let policyName = "";
-        const AuthType = "authType";
+        let AuthType = "";
+
         policyName = policyName + state.data.form.Name;
         console.log("myApis", state);
         for (const a of state.data.form.APIs) {
+          AuthType = a.AuthType!;
           if (a.Limit === null) {
             globalItem.Name = globalItem.Name.concat(a.Name, ",");
             globalItem.MaxQuota = state.data.form.MaxQuota;
@@ -406,7 +408,11 @@ export default function GlobalLimit(props: IProps) {
                                         label="Disable rate limiting"
                                         disabled={true}
                                         className="ml-4"
-                                        // checked={rate}
+                                        checked={
+                                          states.data.form.PolicyByIds![
+                                            props.index!
+                                          ].Global!.Rate === -1
+                                        }
                                       />
                                       <Form.Label className="mt-3">
                                         Rate
@@ -474,7 +480,11 @@ export default function GlobalLimit(props: IProps) {
                                         label="Disable Throttling"
                                         disabled={true}
                                         className="ml-4"
-                                        // checked={throttle}
+                                        checked={
+                                          states.data.form.PolicyByIds![
+                                            props.index!
+                                          ].Global!.ThrottleRetries === -1
+                                        }
                                       />
                                       <Form.Label className="mt-3">
                                         Throttle retry limit
@@ -540,7 +550,11 @@ export default function GlobalLimit(props: IProps) {
                                         label="Unlimited requests"
                                         disabled={true}
                                         className="ml-4"
-                                        // checked={quota}
+                                        checked={
+                                          states.data.form.PolicyByIds![
+                                            props.index!
+                                          ].Global!.MaxQuota === -1
+                                        }
                                       />
                                       <Form.Label className="mt-3">
                                         Max requests per period

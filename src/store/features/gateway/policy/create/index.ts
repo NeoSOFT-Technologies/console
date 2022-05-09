@@ -28,6 +28,7 @@ export interface IGetPolicyByIdData {
           Name: string;
           Versions: string[];
           MasterVersions: string[];
+          AuthType: string;
           AllowedUrls:
             | {
                 url: string;

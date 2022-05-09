@@ -6,7 +6,10 @@ import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { RootState } from "../../../../../store";
 import { emptyState } from "../../../../../store/features/gateway/key/create/payload";
-import { setForms } from "../../../../../store/features/gateway/key/create/slice";
+import {
+  setFormErrors,
+  setForms,
+} from "../../../../../store/features/gateway/key/create/slice";
 import { deleteKey } from "../../../../../store/features/gateway/key/delete/slice";
 import {
   IKeyData,
@@ -64,16 +67,19 @@ export default function KeyList() {
     setSelected(1);
     mainCall(1, 4);
   };
-  const NavigateCreateKey = async (
+  const NavigateCreateKey = (
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
-    await dispatch(setForms(emptyState.data.form));
+    dispatch(setForms(emptyState.data.form));
+    dispatch(setFormErrors(emptyState.data.errors));
     navigate("/gateway/keys/create");
   };
 
   const NavigateUpdate = (val: IKeyData) => {
     if (val.Id) {
+      dispatch(setForms(emptyState.data.form));
+      dispatch(setFormErrors(emptyState.data.errors));
       navigate(`/gateway/keys/update/${val.Id}`);
     }
   };

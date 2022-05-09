@@ -19,7 +19,7 @@ export default function AccessList() {
     if (!data) {
       const selectedApi = await dispatch(getApiById(Id));
       if (
-        selectedApi.payload.Data.ApiId === Id &&
+        selectedApi.payload.Data?.ApiId! === Id &&
         selectedApi.payload.Data.AuthType !== "keyless"
       ) {
         const listV: string[] = [];
@@ -36,8 +36,8 @@ export default function AccessList() {
             MasterVersions: listV,
             AllowedUrls: [],
             Limit: {
-              rate: 0,
-              per: 0,
+              rate: 1000,
+              per: 60,
               throttle_interval: 0,
               throttle_retry_limit: 0,
               max_query_depth: 0,
@@ -49,7 +49,16 @@ export default function AccessList() {
             },
           },
         ];
-        dispatch(setForm({ ...state.data.form, APIs: list }));
+        dispatch(
+          setForm({
+            ...state.data.form,
+            Rate: 1000,
+            Per: 60,
+            ThrottleInterval: 0,
+            ThrottleRetries: 0,
+            APIs: list,
+          })
+        );
       } else {
         window.alert(
           "Rate limits, throttling, quota settings and path-based permissions have no effect on Open (Keyless) API ...."

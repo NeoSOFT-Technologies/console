@@ -18,7 +18,6 @@ export default function CreatePolicy() {
     (RootState) => RootState.createPolicyState
   );
   const { id } = useParams();
-  console.log("checkid", id);
   useEffect(() => {
     if (id !== undefined) {
       dispatch(getPolicybyId(id));
@@ -32,7 +31,6 @@ export default function CreatePolicy() {
       validate = Object.values(state.data.errors).every(
         (x) => x === null || x === ""
       );
-      // console.log("error", state.data.errors);
     }
     if (state.data.form.APIs.length > 0) {
       if (validate) {
