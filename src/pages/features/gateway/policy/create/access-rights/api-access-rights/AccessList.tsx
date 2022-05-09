@@ -19,7 +19,7 @@ export default function AccessList() {
     if (!data) {
       const selectedApi = await dispatch(getApiById(Id));
       if (
-        selectedApi.payload.Data.ApiId === Id &&
+        selectedApi.payload.Data?.ApiId! === Id &&
         selectedApi.payload.Data.AuthType !== "keyless"
       ) {
         const listV: string[] = [];
@@ -38,8 +38,8 @@ export default function AccessList() {
             Limit: {
               rate: 1000,
               per: 60,
-              throttle_interval: "Disabled throttling",
-              throttle_retry_limit: "Disabled throttling",
+              throttle_interval: 0,
+              throttle_retry_limit: 0,
               max_query_depth: 0,
               quota_max: 0,
               quota_renews: 0,
@@ -54,8 +54,8 @@ export default function AccessList() {
             ...state.data.form,
             Rate: 1000,
             Per: 60,
-            ThrottleInterval: "Disabled throttling",
-            ThrottleRetries: "Disabled throttling",
+            ThrottleInterval: 0,
+            ThrottleRetries: 0,
             APIs: list,
           })
         );

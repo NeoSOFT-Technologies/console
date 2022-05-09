@@ -12,7 +12,7 @@ import ApiAccessList from "../../../../../common-settings/api-access-List/ApiAcc
 export default function AccessList() {
   const state = useAppSelector((RootState) => RootState.createKeyState);
   const dispatch = useAppDispatch();
-
+  // let selectedAuthType = "";
   const handleAddClick = async (Id: string) => {
     const data = state.data.form.AccessRights?.some(
       (x: any) => x?.ApiId === Id
@@ -24,6 +24,7 @@ export default function AccessList() {
         selectedApi.payload.Data.ApiId === Id &&
         selectedApi.payload.Data.AuthType !== "keyless"
       ) {
+        // selectedAuthType = selectedApi.payload.Data.AuthType;
         const listV: string[] = [];
         for (const element of selectedApi.payload.Data.Versions) {
           listV.push(element.Name);
@@ -69,7 +70,11 @@ export default function AccessList() {
             <Accordion.Item eventKey="0">
               <Accordion.Header>Add API Access Rights</Accordion.Header>
               <Accordion.Body>
-                <ApiAccessList state={state} handleAddClick={handleAddClick} />
+                <ApiAccessList
+                  state={state}
+                  handleAddClick={handleAddClick}
+                  // selectedAuthType={selectedAuthType}
+                />
               </Accordion.Body>
             </Accordion.Item>
           </Accordion>

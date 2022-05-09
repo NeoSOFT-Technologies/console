@@ -8,7 +8,10 @@ import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { RootState } from "../../../../../store";
 import { emptyState } from "../../../../../store/features/gateway/policy/create/payload";
-import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
+import {
+  setForm,
+  setFormError,
+} from "../../../../../store/features/gateway/policy/create/slice";
 import { deletePolicy } from "../../../../../store/features/gateway/policy/delete/slice";
 import {
   IPolicyListState,
@@ -60,12 +63,13 @@ export default function PolicyList() {
     mainCall(1, 4);
   };
 
-  const NavigateCreatePolicy = async (
+  const NavigateCreatePolicy = (
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
     console.log("emptystate", emptyState);
-    await dispatch(setForm(emptyState.data.form));
+    dispatch(setForm(emptyState.data.form));
+    dispatch(setFormError(emptyState.data.errors));
     navigate("/gateway/policies/create");
   };
   //   const handleUserDetails = (val: ITenantUserData) => {
@@ -76,6 +80,8 @@ export default function PolicyList() {
 
   const NavigateUpdate = (val: IPolicyData) => {
     if (val.Id) {
+      dispatch(setForm(emptyState.data.form));
+      dispatch(setFormError(emptyState.data.errors));
       navigate(`/gateway/policies/update/${val.Id}`);
     }
   };

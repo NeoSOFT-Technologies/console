@@ -63,10 +63,11 @@ const slice = createSlice({
   reducers: {
     setForms: (state, action) => {
       state.data.form = action.payload;
-      console.log("Form -", state.data.form);
+      console.log("Form -", current(state.data));
     },
     setFormErrors: (state, action) => {
       state.data.errors = action.payload;
+      console.log("Form error -", state.data.errors);
     },
   },
   extraReducers(builder): void {
