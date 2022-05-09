@@ -59,6 +59,17 @@ export interface IGetPolicyByIdData {
     per_api: boolean;
   };
 }
+export interface Limiting {
+  ApiId?: string;
+  Per?: string;
+  Rate: string;
+  Quota?: string;
+  Expires?: string;
+  QuotaRenewalRate?: string;
+  ThrottleInterval?: string;
+  ThrottleRetries?: string;
+}
+
 export interface IError {
   Name: string;
   ApIs?: string;
@@ -69,4 +80,5 @@ export interface IError {
   Expires?: string;
   ThrottleInterval?: string;
   ThrottleRetries?: string;
+  GlobalLimit: Limiting[];
 }
