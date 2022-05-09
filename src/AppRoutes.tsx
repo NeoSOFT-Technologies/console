@@ -216,6 +216,7 @@ function AppRoutes() {
               </AdminGuard>
             }
           />
+
            <Route
             path="searchData"
             element={
@@ -224,6 +225,7 @@ function AppRoutes() {
               </AdminGuard>
             }
           />
+
         </Route>
         <Route path="*" element={<Navigate to="/login-page" />} />{" "}
       </Routes>
