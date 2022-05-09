@@ -68,15 +68,29 @@ export default function Authentication() {
                       <AuthenticationToken />
                     ) : state.data.form.AuthType === "openid" ? (
                       <OpenIdConnect />
-                    ) : state.data.form.EnableMTLS === true ||
-                      state.data.form.AuthType === "mutual" ? (
-                      <MutualTLS />
                     ) : state.data.form.AuthType === "keyless" ? (
                       <OpenKeyless />
                     ) : (
                       <></>
                     )}
                   </div>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group className="mb-3">
+                        <Form.Check
+                          type="switch"
+                          id="EnableMTLS"
+                          name="EnableMTLS"
+                          label="Enable Mutual TLS"
+                          // checked={check}
+                          // onChange={(e: any) => setCheck(e.target.checked)}
+                          checked={state.data.form.EnableMTLS}
+                          onChange={(e: any) => handleFormSelectChange(e)}
+                        />
+                      </Form.Group>
+                      {state.data.form.EnableMTLS ? <MutualTLS /> : <></>}
+                    </Col>
+                  </Row>
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>

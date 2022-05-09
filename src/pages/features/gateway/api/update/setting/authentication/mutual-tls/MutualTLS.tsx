@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Row, Form, Col, Modal } from "react-bootstrap";
+import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 // import Spinner from "../../../../../../../../components/loader/Loader";
 import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
 import { addCertificate } from "../../../../../../../../store/features/gateway/certificate/create/slice";
-import { getAllCertificate } from "../../../../../../../../store/features/gateway/certificate/list/slice";
+import {
+  getAllCertificate,
+  setFormCert,
+} from "../../../../../../../../store/features/gateway/certificate/list/slice";
 import {
   useAppSelector,
   useAppDispatch,
@@ -16,49 +20,103 @@ export default function MutualTLS() {
   const certificateState = useAppSelector(
     (RootState) => RootState.getAllCertificateState
   );
-  console.log("state", certificateState);
+  const addCertificateState = useAppSelector(
+    (RootState) => RootState.addCertificateState
+  );
+  // const [divShow, setDivShow] = useState<any>(false);
   const [certId, setCertId] = useState<any>([]);
+  const [certId1, setCertId1] = useState<any>([]);
   const [file, setFile] = useState<any>([]);
   const [radio, setRadio] = useState("uploadCert");
   const [fileName, setFileName] = useState<any>("");
-  const mainCall = async () => {
-    dispatch(getAllCertificate());
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setFile([]);
+    setCertId1([]);
+    setShow(false);
   };
-  useEffect(() => {
-    mainCall();
-  }, []);
-  const handleAddNewCertificate = (
+  const mainCall = async () => {
+    console.log("Before");
+    await dispatch(getAllCertificate());
+    console.log("After");
+  };
+  const handleAddNewCertificate = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
     if (radio === "uploadCert") {
       const data = new FormData();
       data.append("file", fileName);
-      console.log("formData", data);
-      dispatch(addCertificate(data));
+      const result = await dispatch(addCertificate(data));
+      mainCall();
+      setFile([]);
+      console.log("satteadd", addCertificateState);
+      if (result.meta.requestStatus === "rejected") {
+        ToastAlert(result.payload.message, "error");
+      } else if (result.meta.requestStatus === "fulfilled") {
+        ToastAlert("Certificate Added Successfully!!", "success");
+        handleClose();
+      }
     } else {
-      const obj = [...updateState.data.form.CertIds, certId];
-      dispatch(setForm({ ...updateState.data.form, CertIds: obj }));
-      setCertId([""]);
+      const certobjId = certificateState.data?.CertificateCollection;
+      const certIdExistCertState = certobjId!.some(
+        (x: any) => x?.CertId === certId1
+      );
+      console.log("certIdExistCertState", certIdExistCertState);
+      if (certIdExistCertState) {
+        const certIdExistUpdateState =
+          updateState.data.form?.CertIds?.includes(certId1);
+        console.log("certIdExistUpdateState", certIdExistUpdateState);
+        if (!certIdExistUpdateState) {
+          const arrUpdateState = [...updateState.data.form.CertIds, certId1];
+          dispatch(
+            setForm({ ...updateState.data.form, CertIds: arrUpdateState })
+          );
+          handleClose();
+        }
+        const objCertState = certificateState.data!.CertificateCollection.find(
+          (obj1) => obj1.CertId === certId1
+        );
+        const list = {
+          CertId: objCertState?.CertId,
+          Issuer: objCertState?.Issuer,
+          SignatureAlgorithm: objCertState?.SignatureAlgorithm,
+          Subject: objCertState?.Subject,
+          Thumbprint: objCertState?.Thumbprint,
+          ValidNotAfter: objCertState?.ValidNotAfter,
+          ValidNotBefore: objCertState?.ValidNotBefore,
+          showDetails: false,
+        };
+        const idAlreadyExist = certId.some((x: any) => x?.CertId === certId1);
+        console.log("idAlreadyExist", idAlreadyExist);
+        if (!idAlreadyExist) {
+          setCertId([...certId, list]);
+
+          // console.log("data2", myObj);
+        }
+      }
+      setCertId1([]);
     }
   };
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  useEffect(() => {
+    mainCall();
+  }, []);
+
   const handleShow = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setShow(true);
   };
-
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
+    setFile([]);
+    setCertId1([]);
     setRadio(value);
   };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setCertId(value);
+    setCertId1(value);
   };
   const handlefile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("value", e.target.files![0]);
     setFileName(e.target.files![0]);
     setFile(e.target.value);
   };
@@ -66,8 +124,94 @@ export default function MutualTLS() {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    setFile([]);
+    setFile([""]);
   };
+  const handlePlusButton = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    index: number
+  ) => {
+    e.preventDefault();
+    console.log(
+      "plus button",
+      certificateState.data?.CertificateCollection[index].CertId
+    );
+    const certobjId =
+      certificateState.data?.CertificateCollection[index]?.CertId!;
+    const certIdExistUpdateState =
+      updateState.data.form?.CertIds?.includes(certobjId);
+    if (!certIdExistUpdateState) {
+      // setCertId(certificateState.data?.CertificateCollection[index].CertId);
+      const arrUpdateState = [
+        ...updateState.data.form.CertIds,
+        certificateState.data?.CertificateCollection[index].CertId,
+      ];
+      dispatch(setForm({ ...updateState.data.form, CertIds: arrUpdateState }));
+      const list = {
+        CertId: certificateState.data?.CertificateCollection[index]?.CertId,
+        Issuer: certificateState.data?.CertificateCollection[index]?.Issuer,
+        SignatureAlgorithm:
+          certificateState.data?.CertificateCollection[index]
+            ?.SignatureAlgorithm,
+        Subject: certificateState.data?.CertificateCollection[index]?.Subject,
+        Thumbprint:
+          certificateState.data?.CertificateCollection[index]?.Thumbprint,
+        ValidNotAfter:
+          certificateState.data?.CertificateCollection[index]?.ValidNotAfter,
+        ValidNotBefore:
+          certificateState.data?.CertificateCollection[index]?.ValidNotBefore,
+        showDetails: false,
+      };
+      const idAlreadyExist = certId.some(
+        (x: any) => x?.CertId === updateState.data.form?.CertIds[index]
+      );
+      console.log("idAlreadyExist", idAlreadyExist);
+      if (!idAlreadyExist) {
+        setCertId([...certId, list]);
+      }
+    }
+  };
+  console.log("update", updateState.data.form);
+  // console.log("certId", certId);
+  const handleMinusButton = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    index: number
+  ) => {
+    const row = [...updateState.data.form.CertIds];
+    row.splice(index, 1);
+    dispatch(setForm({ ...updateState.data.form, CertIds: row }));
+    const row1 = [...certId];
+    row1.splice(index, 1);
+    setCertId(row1);
+  };
+  const handleDropLeftTable = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    index: number
+  ) => {
+    e.preventDefault();
+    const data = [...certificateState.data?.CertificateCollection!];
+    data[index] = {
+      ...data[index],
+      showDetails: !data[index].showDetails,
+    };
+
+    dispatch(setFormCert(data));
+    // setDivShow(!divShow);
+  };
+
+  const handleDropRightTable = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    index: number
+  ) => {
+    e.preventDefault();
+    const data = [...certId];
+    data[index] = {
+      ...data[index],
+      showDetails: !data[index].showDetails,
+    };
+    console.log("rightSideTable", data);
+    setCertId(data);
+  };
+  console.log("123", certId);
   return (
     <div>
       <>
@@ -138,7 +282,7 @@ export default function MutualTLS() {
                       type="text"
                       id="certId"
                       name="certId"
-                      value={certId}
+                      value={certId1}
                       onChange={(e: any) => handleInputChange(e)}
                     />
                     {/* <Form.Control.Feedback type="invalid">
@@ -200,44 +344,174 @@ export default function MutualTLS() {
         <br />
         <br />
         <Row className="ml-1 mr-1">
-          <table className="table table-bordered ">
-            <thead className="thead-dark">
-              <tr>
-                <th>
-                  {updateState.data.form.CertIds.length} selected Certificates{" "}
-                </th>
-                <th>Select from exisiting certificates</th>
-              </tr>
-            </thead>
-            <tbody>
-              {certificateState.loading === false ? (
-                certificateState.data?.form.map((data: any, index: any) => {
-                  return (
-                    <tr key={index}>
-                      <td>
-                        <label>
-                          {/* {data}{" "} */}
-                          <button type="button" className="btn ml-5">
+          <Col md="6">
+            <table className="table table-bordered ">
+              <thead className="thead-dark">
+                <tr>
+                  <th>Select from exisiting certificates</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {certificateState.data?.CertificateCollection !== undefined &&
+                certificateState.data?.CertificateCollection.length > 0 ? (
+                  certificateState.data?.CertificateCollection.map(
+                    (data: any, index: any) => {
+                      return (
+                        <tr key={index}>
+                          <td>
+                            <label>
+                              {data.CertId}
+                              <br />
+                              <br />
+                              {certificateState.data?.CertificateCollection[
+                                index
+                              ].showDetails ? (
+                                <div>
+                                  <label>
+                                    Not Before:
+                                    {
+                                      certificateState.data
+                                        ?.CertificateCollection[index]
+                                        .ValidNotAfter
+                                    }
+                                  </label>
+                                  <br />
+                                  <label>
+                                    Not After:
+                                    {
+                                      certificateState.data
+                                        ?.CertificateCollection[index]
+                                        .ValidNotBefore
+                                    }
+                                  </label>
+                                </div>
+                              ) : (
+                                <></>
+                              )}
+                            </label>
+                          </td>
+
+                          <td>
+                            <button
+                              type="button"
+                              disabled={
+                                certificateState.data?.CertificateCollection[
+                                  index
+                                ].addState
+                              }
+                              className="btn"
+                              onClick={(e: any) => handlePlusButton(e, index)}
+                            >
+                              +
+                            </button>
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn"
+                              onClick={(e: any) =>
+                                handleDropLeftTable(e, index)
+                              }
+                            >
+                              <i
+                                className={`${
+                                  certificateState.data?.CertificateCollection[
+                                    index
+                                  ].showDetails
+                                    ? "bi bi-chevron-up"
+                                    : "bi bi-chevron-down"
+                                }`}
+                              ></i>
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    }
+                  )
+                ) : (
+                  <></>
+                )}
+              </tbody>
+            </table>
+          </Col>
+          <Col md="6">
+            <table className="table table-bordered ">
+              <thead className="thead-dark">
+                <tr>
+                  <th>
+                    {updateState.data.form.CertIds.length} selected Certificates{" "}
+                  </th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {updateState.data.form.CertIds.length > 0 ? (
+                  updateState.data.form.CertIds.map((data: any, index: any) => {
+                    return (
+                      <tr key={index}>
+                        <td>
+                          <label>
+                            {data}
+                            <br />
+                            <br />
+                            {certId.length ===
+                            updateState.data.form.CertIds.length ? (
+                              certId[index].showDetails ? (
+                                <div>
+                                  <label>
+                                    Not Before:
+                                    {certId[index].ValidNotAfter}
+                                  </label>
+                                  <br />
+                                  <label>
+                                    Not After:
+                                    {certId[index].ValidNotBefore}
+                                  </label>
+                                </div>
+                              ) : (
+                                <></>
+                              )
+                            ) : (
+                              <></>
+                            )}
+                          </label>
+                        </td>
+                        <td>
+                          <button
+                            type="button"
+                            className="btn"
+                            onClick={(e: any) => handleMinusButton(e, index)}
+                          >
                             -
                           </button>
-                        </label>
-                      </td>
-                      <td>
-                        <label>
-                          {data[index].CertificateId}
-                          <button type="button" className="btn ml-5">
-                            +
+                        </td>
+                        <td>
+                          <button
+                            type="button"
+                            className="btn"
+                            onClick={(e: any) => handleDropRightTable(e, index)}
+                          >
+                            <i
+                              className={`${
+                                certId[index].showDetails
+                                  ? "bi bi-chevron-up"
+                                  : "bi bi-chevron-down"
+                              }`}
+                            ></i>
                           </button>
-                        </label>
-                      </td>
-                    </tr>
-                  );
-                })
-              ) : (
-                <></>
-              )}
-            </tbody>
-          </table>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <></>
+                )}
+              </tbody>
+            </table>
+          </Col>
         </Row>
       </>
     </div>

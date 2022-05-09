@@ -5,7 +5,7 @@ export interface IGetAllCertificateState {
 }
 
 export interface ICertificateState {
-  form: IGetAllCertificateData[];
+  CertificateCollection: IGetAllCertificateData[];
 }
 export interface IGetAllCertificateData {
   CertId: string;
@@ -15,4 +15,25 @@ export interface IGetAllCertificateData {
   Thumbprint: string;
   ValidNotAfter: string;
   ValidNotBefore: string;
+  showDetails: boolean;
+  addState: boolean;
 }
+
+// export const initialState: IGetAllCertificateState = {
+//   data: {
+//     CertificateCollection: [
+//       {
+//         CertId: "",
+//         Issuer: "",
+//         SignatureAlgorithm: "",
+//         Subject: "",
+//         Thumbprint: "",
+//         ValidNotAfter: "",
+//         ValidNotBefore: "",
+//         showDetails: false,
+//       },
+//     ],
+//   },
+//   loading: false,
+//   error: undefined,
+// };
