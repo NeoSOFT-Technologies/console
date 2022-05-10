@@ -70,6 +70,12 @@ const Dashboard = lazy(() => import("./pages/features/gateway/Dashboard"));
 const UpdateApi = lazy(
   () => import("./pages/features/gateway/api/update/Update")
 );
+const InsertData = lazy(
+  () => import("./pages/features/saas/insert-data/InsertData")
+);
+const SearchData = lazy(
+  () => import("./pages/features/saas/Search-Data/SearchData")
+);
 
 function AppRoutes() {
   return (
@@ -202,6 +208,24 @@ function AppRoutes() {
               </AdminGuard>
             }
           />
+          <Route
+            path="insertData"
+            element={
+              <AdminGuard>
+                <InsertData />
+              </AdminGuard>
+            }
+          />
+
+           <Route
+            path="searchData"
+            element={
+              <AdminGuard>
+                <SearchData />
+              </AdminGuard>
+            }
+          />
+
         </Route>
         <Route path="*" element={<Navigate to="/login-page" />} />{" "}
       </Routes>
