@@ -1,7 +1,7 @@
 import { h } from "gridjs";
 import { Grid } from "gridjs-react";
 import moment from "moment";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IApiListState } from "../../../../../store/features/gateway/api/list";
 import { getApiList } from "../../../../../store/features/gateway/api/list/slice";
@@ -22,6 +22,7 @@ export default function ApiAccessList(props: IProps) {
   const accessApiList: IApiListState = useAppSelector(
     (State) => State.apiListState
   );
+  const [apiAuth, setApiAuth] = useState<string>();
   const dispatch = useAppDispatch();
   const mainCall = async (currentPage: number, pageSize: number) => {
     dispatch(getApiList({ currentPage, pageSize }));
@@ -70,6 +71,7 @@ export default function ApiAccessList(props: IProps) {
         formatter: (cell: string, row: any) => {
           const Id = row.cells[1].data;
           const Name = row.cells[2].data;
+          const Auth = row.cells[5].data;
           let data = false;
           if ((props.state as IPolicyCreateState).data.form.APIs) {
             data = (props.state as IPolicyCreateState).data.form.APIs.some(
@@ -90,9 +92,11 @@ export default function ApiAccessList(props: IProps) {
             onClick: (event: any) => {
               if (event.target!.checked) {
                 handleAddClick(Id);
+                setApiAuth(Auth);
                 ToastAlert(`${Name} selected`, "success");
               } else {
                 removeAccess(Id);
+                setApiAuth("");
                 ToastAlert(`${Name} removed`, "warning");
               }
             },
@@ -115,7 +119,11 @@ export default function ApiAccessList(props: IProps) {
       accessApiList.data?.Apis?.length! > 0
         ? () =>
             accessApiList.data
-              ?.Apis!.filter((a) => a.AuthType !== "keyless")
+              ?.Apis!.filter((a) =>
+                apiAuth?.length! > 0
+                  ? a.AuthType === apiAuth && a.AuthType !== "keyless"
+                  : a.AuthType !== "keyless"
+              )
               .map((data) => [
                 data.Action,
                 data.Id,

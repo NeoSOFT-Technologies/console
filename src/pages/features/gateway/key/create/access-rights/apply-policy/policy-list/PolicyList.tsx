@@ -63,6 +63,7 @@ export default function PolicyList() {
         sort: false,
         formatter: (cell: string, row: any) => {
           const Id = row.cells[1].data;
+          const Name = row.cells[2].data;
           const data = StateKey.data.form?.Policies?.includes(Id);
           return h("input", {
             name: "tag_" + Id,
@@ -72,8 +73,10 @@ export default function PolicyList() {
             onClick: (event: any) => {
               if (event.target!.checked) {
                 handleAddClick(Id);
+                ToastAlert(`${Name} selected`, "success");
               } else {
                 removeAccess(Id);
+                ToastAlert(`${Name} removed`, "warning");
               }
             },
           });
