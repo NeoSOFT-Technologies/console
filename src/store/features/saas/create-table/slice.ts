@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getTablesService } from "../../../../services/saas/api/api";
+import { createTableService } from "../../../../services/saas/api/api";
+import { ICreateTable } from "../../../../types/saas";
 import error from "../../../../utils/error";
 
 interface IGetTableState {
@@ -13,11 +14,15 @@ const initialState: IGetTableState = {
   error: undefined,
 };
 
-export const getTables = createAsyncThunk(
-  "getTable/getTables",
-  async (id: string) => {
+export const createTable = createAsyncThunk(
+  "createTable",
+  async (data: ICreateTable) => {
+    // async (data: ITableCreateData) => {
     try {
-      const response = await getTablesService(id);
+      const response = await createTableService(
+        data.tenantId,
+        data.requestData
+      );
       console.log(
         `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
       );
@@ -25,27 +30,27 @@ export const getTables = createAsyncThunk(
     } catch (error_: any) {
       // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
-      console.log(`Error : ` + JSON.stringify(error_));
+      // console.log(`Error : ` + JSON.stringify(error_));
       throw new Error(errorMessage);
     }
   }
 );
 
 const slice = createSlice({
-  name: "getTable",
+  name: "createTable",
   initialState,
   reducers: {},
   extraReducers(builder): void {
-    builder.addCase(getTables.pending, (state) => {
+    builder.addCase(createTable.pending, (state) => {
       state.data = undefined;
       state.loading = true;
       state.error = undefined;
     });
-    builder.addCase(getTables.fulfilled, (state, action) => {
+    builder.addCase(createTable.fulfilled, (state, action) => {
       state.data = action.payload;
       state.loading = false;
     });
-    builder.addCase(getTables.rejected, (state, action: any) => {
+    builder.addCase(createTable.rejected, (state, action: any) => {
       state.loading = false;
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];
