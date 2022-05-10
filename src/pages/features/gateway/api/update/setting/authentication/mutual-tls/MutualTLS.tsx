@@ -187,20 +187,10 @@ export default function MutualTLS() {
           certificateState.data?.CertificateCollection[index]?.ValidNotBefore,
         showDetails: false,
       };
-
-      // const len =
-      //   updateState.data.form.CertIds.length === 0
-      //     ? 1
-      //     : updateState.data.form.CertIds.length;
-      for (let i = 0; i < updateState.data.form.CertIds.length; i++) {
-        const arr2 = updateState.data.form.CertIds[i + 1];
-        console.log("Arr2", arr2);
-        const idAlreadyExist = certId.some((x: any) => x?.CertId === arr2);
-        console.log("idAlreadyExist", idAlreadyExist);
-        if (!idAlreadyExist) {
-          // setCertId([...certId, list]);
-          certId.push(list);
-        }
+      const idAlreadyExist = certId.some((x: any) => x?.CertId === certobjId);
+      if (!idAlreadyExist) {
+        // setCertId([...certId, list]);
+        certId.push(list);
       }
     } else {
       ToastAlert("Already selected", "error");
