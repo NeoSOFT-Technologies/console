@@ -15,6 +15,7 @@ import keyListReducer from "./features/gateway/key/list/slice";
 import createPolicyReducer from "./features/gateway/policy/create/slice";
 import deletePolicyReducer from "./features/gateway/policy/delete/slice";
 import policyListReducer from "./features/gateway/policy/list/slice";
+import createTableReducer from "./features/saas/create-table/slice";
 import getTableReducer from "./features/saas/get-tables/slice";
 import addNewUserReducer from "./features/tenant/add-user/slice";
 import deleteUserReducer from "./features/tenant/delete-user/slice";
@@ -58,6 +59,7 @@ const store = configureStore({
     getAllCertificateState: getAllCertificateReducer,
     // saas states
     getTableState: getTableReducer,
+    createTableState: createTableReducer,
   },
 });
 
