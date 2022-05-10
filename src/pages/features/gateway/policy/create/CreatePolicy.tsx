@@ -6,6 +6,7 @@ import { IPolicyCreateState } from "../../../../../store/features/gateway/policy
 import {
   createPolicy,
   getPolicybyId,
+  setFormError,
   updatePolicy,
 } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
@@ -17,11 +18,35 @@ export default function CreatePolicy() {
   const state: IPolicyCreateState = useAppSelector(
     (RootState) => RootState.createPolicyState
   );
+
   const { id } = useParams();
-  useEffect(() => {
+  const mainCall = async () => {
     if (id !== undefined) {
-      dispatch(getPolicybyId(id));
+      const error = [];
+      const policybyid = await dispatch(getPolicybyId(id));
+      for (let i = 0; i < policybyid.payload.Data.APIs.length; i++) {
+        const perapierror = {
+          ApiId: policybyid.payload.Data.APIs[i].Id,
+          Per: "",
+          Rate: "",
+          Quota: "",
+          Expires: "",
+          QuotaRenewalRate: "",
+          ThrottleInterval: "",
+          ThrottleRetries: "",
+        };
+        error.push(perapierror);
+      }
+      dispatch(
+        setFormError({
+          ...state.data.errors,
+          PerApiLimit: error,
+        })
+      );
     }
+  };
+  useEffect(() => {
+    mainCall();
   }, []);
 
   async function handleSubmitPolicy(event: FormEvent) {
