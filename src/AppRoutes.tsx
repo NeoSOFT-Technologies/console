@@ -73,6 +73,10 @@ const UpdateApi = lazy(
 const InsertData = lazy(
   () => import("./pages/features/saas/insert-data/InsertData")
 );
+const SearchData = lazy(
+  () => import("./pages/features/saas/Search-Data/SearchData")
+);
+
 function AppRoutes() {
   return (
     <Suspense fallback={<Spinner />}>
@@ -212,6 +216,16 @@ function AppRoutes() {
               </AdminGuard>
             }
           />
+
+           <Route
+            path="searchData"
+            element={
+              <AdminGuard>
+                <SearchData />
+              </AdminGuard>
+            }
+          />
+
         </Route>
         <Route path="*" element={<Navigate to="/login-page" />} />{" "}
       </Routes>
