@@ -1,7 +1,11 @@
+import { ITableCreateData } from "../../../types/saas";
 import apiFactory from "../../../utils/api";
 
 export function getTablesService(tenantId: string) {
   return apiFactory().get(`manage/table/?tenantId=${tenantId}`);
+}
+export function createTableService(tenantId: string, data: ITableCreateData) {
+  return apiFactory().post(`manage/table/?tenantId=${tenantId}`, data);
 }
 // export function apiListService(currentPage: number, pageSize: number) {
 //   return apiFactory().get(
