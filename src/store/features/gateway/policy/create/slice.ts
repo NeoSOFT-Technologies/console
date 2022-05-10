@@ -63,7 +63,6 @@ const slice = createSlice({
   reducers: {
     setForm: (state, action) => {
       state.data.form = action.payload;
-      console.log("state policy", state.data.form);
     },
     setFormError: (state, action) => {
       state.data.errors = action.payload;

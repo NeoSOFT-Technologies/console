@@ -27,32 +27,28 @@ export default function GlobalLimitApi(props: IProps) {
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
   );
-  const limiterror = { ...state.data.errors?.GlobalLimit };
-  console.log("limiterror", limiterror);
-  const [limitcheck, setlimitcheck] = useState<any>({
-    ApiId: "",
-    Per: "",
-    Rate: "",
-    Quota: "",
-    Expires: "",
-    QuotaRenewalRate: "",
-    ThrottleInterval: "",
-    ThrottleRetries: "",
-  });
+  // let indexError: number | undefined;
 
-  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+  const limiterror = { ...props.state?.data.errors };
+  console.log("limiterror", limiterror);
+
+  function validateForm(
+    event: React.ChangeEvent<HTMLInputElement>,
+    ApiId: any
+  ) {
     const { name, value } = event.target;
-    const newlimit: any = { ...limitcheck };
-    console.log("newlimit", newlimit);
+    const perapi = [...props.state?.data.errors?.PerApiLimit!];
     switch (name) {
       case "rate":
-        newlimit.Rate = regexForNumber.test(value) ? "" : "Enter only Numbers";
-        setlimitcheck(newlimit);
+        perapi[props.index!] = {
+          ...perapi[props.index!],
+          Rate: regexForNumber.test(value) ? "" : "Enter only Numbers",
+        };
         props.current === "policy"
           ? dispatch(
               setFormError({
                 ...state.data.errors,
-                GlobalLimit: [newlimit],
+                PerApiLimit: perapi,
               })
             )
           : dispatch(
@@ -61,15 +57,18 @@ export default function GlobalLimitApi(props: IProps) {
                 Rate: regexForNumber.test(value) ? "" : "Enter only Numbers",
               })
             );
+
         break;
       case "per":
-        newlimit.Per = regexForNumber.test(value) ? "" : "Enter only Numbers";
-        setlimitcheck(newlimit);
+        perapi[props.index!] = {
+          ...perapi[props.index!],
+          Per: regexForNumber.test(value) ? "" : "Enter only Numbers",
+        };
         props.current === "policy"
           ? dispatch(
               setFormError({
                 ...state.data.errors,
-                GlobalLimit: [newlimit],
+                PerApiLimit: perapi,
               })
             )
           : dispatch(
@@ -80,18 +79,17 @@ export default function GlobalLimitApi(props: IProps) {
             );
         break;
       case "throttle_retry_limit":
-        newlimit.ThrottleRetries = regexForNumber.test(value)
-          ? ""
-          : "Enter only Numbers";
-        setlimitcheck(newlimit);
+        perapi[props.index!] = {
+          ...perapi[props.index!],
+          ThrottleRetries: regexForNumber.test(value)
+            ? ""
+            : "Enter only Numbers",
+        };
         props.current === "policy"
           ? dispatch(
               setFormError({
                 ...state.data.errors,
-                ThrottleRetries: regexForNumber.test(value)
-                  ? ""
-                  : "Enter only Numbers",
-                GlobalLimit: [newlimit],
+                PerApiLimit: perapi,
               })
             )
           : dispatch(
@@ -104,17 +102,17 @@ export default function GlobalLimitApi(props: IProps) {
             );
         break;
       case "throttle_interval":
-        newlimit.ThrottleInterval = regexForNumber.test(value)
-          ? ""
-          : "Enter only Numbers";
+        perapi[props.index!] = {
+          ...perapi[props.index!],
+          ThrottleInterval: regexForNumber.test(value)
+            ? ""
+            : "Enter only Numbers",
+        };
         props.current === "policy"
           ? dispatch(
               setFormError({
                 ...state.data.errors,
-                ThrottleInterval: regexForNumber.test(value)
-                  ? ""
-                  : "Enter only Numbers",
-                GlobalLimit: [newlimit],
+                PerApiLimit: perapi,
               })
             )
           : dispatch(
@@ -127,13 +125,15 @@ export default function GlobalLimitApi(props: IProps) {
             );
         break;
       case "quota_max":
-        newlimit.Quota = regexForNumber.test(value) ? "" : "Enter only Numbers";
+        perapi[props.index!] = {
+          ...perapi[props.index!],
+          Quota: regexForNumber.test(value) ? "" : "Enter only Numbers",
+        };
         props.current === "policy"
           ? dispatch(
               setFormError({
                 ...state.data.errors,
-                Quota: regexForNumber.test(value) ? "" : "Enter only Numbers",
-                GlobalLimit: [newlimit],
+                PerApiLimit: perapi,
               })
             )
           : dispatch(
@@ -190,9 +190,9 @@ export default function GlobalLimitApi(props: IProps) {
   );
   const [quotaPerPeriod, setQuotaPerPeriod] = useState("Unlimited");
 
-  const handlerateclick = (event: any) => {
+  const handlerateclick = (event: any, ApiId: any) => {
     event.preventDefault();
-    validateForm(event);
+    validateForm(event, ApiId);
     const value = props.index!;
     let fieldValue;
     const apisList =
@@ -307,18 +307,25 @@ export default function GlobalLimitApi(props: IProps) {
                           }
                           placeholder="Enter Request per period"
                           // onChange={(e: any) => validateForm(e)}
-                          onChange={(e: any) => handlerateclick(e)}
+                          onChange={(e: any) =>
+                            handlerateclick(
+                              e,
+                              props.state?.data.form.APIs[props.index!].Id
+                            )
+                          }
                           name="rate"
                           isInvalid={
-                            // props.state?.data.form.APIs[props.index!].Id === !!state.data.errors?.ApIs
                             props.current === "policy"
-                              ? // ? !!state.data.errors?.GlobalLimit[0].Rate
-                                !!state.data.errors?.Rate
+                              ? !!props.state?.data.errors?.PerApiLimit[
+                                  props.index!
+                                ].Rate
                               : !!states.data.errors?.Rate
                           }
                           isValid={
                             props.current === "policy"
-                              ? !state.data.errors?.Rate
+                              ? !props.state?.data.errors?.PerApiLimit[
+                                  props.index!
+                                ].Rate
                               : !states.data.errors?.Rate
                           }
                           disabled={rate}
@@ -326,7 +333,9 @@ export default function GlobalLimitApi(props: IProps) {
                         <Form.Control.Feedback type="invalid">
                           {" "}
                           {props.current === "policy"
-                            ? state.data.errors?.Rate
+                            ? props.state?.data.errors?.PerApiLimit[
+                                props.index!
+                              ].Rate
                             : states.data.errors?.Rate}
                         </Form.Control.Feedback>
                         <Form.Label className="mt-3">Per (Seconds)</Form.Label>
@@ -336,7 +345,12 @@ export default function GlobalLimitApi(props: IProps) {
                           type="text"
                           id="per"
                           placeholder="Enter time"
-                          onChange={(e: any) => handlerateclick(e)}
+                          onChange={(e: any) =>
+                            handlerateclick(
+                              e,
+                              props.state?.data.form.APIs[props.index!].Id
+                            )
+                          }
                           name="per"
                           value={
                             props.current === "policy"
@@ -348,19 +362,21 @@ export default function GlobalLimitApi(props: IProps) {
                           }
                           isInvalid={
                             props.current === "policy"
-                              ? !!state.data.errors?.Per
+                              ? !!state.data.errors?.PerApiLimit[props.index!]
+                                  .Per
                               : !!states.data.errors?.Per
                           }
                           isValid={
                             props.current === "policy"
-                              ? !state.data.errors?.Per
+                              ? !state.data.errors?.PerApiLimit[props.index!]
+                                  .Per
                               : !states.data.errors?.Per
                           }
                           disabled={rate}
                         />
                         <Form.Control.Feedback type="invalid">
                           {props.current === "policy"
-                            ? state.data.errors?.Per
+                            ? state.data.errors?.PerApiLimit[props.index!].Per
                             : states.data.errors?.Per}
                         </Form.Control.Feedback>
                       </Form.Group>
@@ -397,23 +413,31 @@ export default function GlobalLimitApi(props: IProps) {
                           }
                           placeholder={throttleRetry}
                           name="throttle_retry_limit"
-                          onChange={(e: any) => handlerateclick(e)}
+                          onChange={(e: any) =>
+                            handlerateclick(
+                              e,
+                              props.state?.data.form.APIs[props.index!].Id
+                            )
+                          }
                           // value={throttleDefault}
                           isInvalid={
                             props.current === "policy"
-                              ? !!state.data.errors?.ThrottleRetries
+                              ? !!state.data.errors?.PerApiLimit[props.index!]
+                                  .ThrottleRetries
                               : !!states.data.errors?.ThrottleRetries
                           }
                           isValid={
                             props.current === "policy"
-                              ? !state.data.errors?.ThrottleRetries
+                              ? !state.data.errors?.PerApiLimit[props.index!]
+                                  .ThrottleRetries
                               : !states.data.errors?.ThrottleRetries
                           }
                           disabled={throttle}
                         />
                         <Form.Control.Feedback type="invalid">
                           {props.current === "policy"
-                            ? state.data.errors?.ThrottleRetries
+                            ? state.data.errors?.PerApiLimit[props.index!]
+                                .ThrottleRetries
                             : states.data.errors?.ThrottleRetries}
                         </Form.Control.Feedback>
                         <Form.Label className="mt-3">
@@ -434,22 +458,30 @@ export default function GlobalLimitApi(props: IProps) {
                                 ]?.Limit?.Throttle_interval
                           }
                           placeholder={throttleInterval}
-                          onChange={(e: any) => handlerateclick(e)}
+                          onChange={(e: any) =>
+                            handlerateclick(
+                              e,
+                              props.state?.data.form.APIs[props.index!].Id
+                            )
+                          }
                           isInvalid={
                             props.current === "policy"
-                              ? !!state.data.errors?.ThrottleInterval
+                              ? !!state.data.errors?.PerApiLimit[props.index!]
+                                  .ThrottleInterval
                               : !!states.data.errors?.ThrottleInterval
                           }
                           isValid={
                             props.current === "policy"
-                              ? !state.data.errors?.ThrottleInterval
+                              ? !state.data.errors?.PerApiLimit[props.index!]
+                                  .ThrottleInterval
                               : !states.data.errors?.ThrottleInterval
                           }
                           disabled={throttle}
                         />
                         <Form.Control.Feedback type="invalid">
                           {props.current === "policy"
-                            ? state.data.errors?.ThrottleInterval
+                            ? state.data.errors?.PerApiLimit[props.index!]
+                                .ThrottleInterval
                             : states.data.errors?.ThrottleInterval}
                         </Form.Control.Feedback>
                       </Form.Group>
@@ -477,7 +509,12 @@ export default function GlobalLimitApi(props: IProps) {
                           type="text"
                           id="quotaPer"
                           placeholder={quotaPerPeriod}
-                          onChange={(e: any) => handlerateclick(e)}
+                          onChange={(e: any) =>
+                            handlerateclick(
+                              e,
+                              props.state?.data.form.APIs[props.index!].Id
+                            )
+                          }
                           name="quota_max"
                           value={
                             props.current === "policy"
@@ -489,12 +526,14 @@ export default function GlobalLimitApi(props: IProps) {
                           }
                           isInvalid={
                             props.current === "policy"
-                              ? !!state.data.errors?.Quota
+                              ? !!state.data.errors?.PerApiLimit[props.index!]
+                                  .Quota
                               : !!states.data.errors?.Quota
                           }
                           isValid={
                             props.current === "policy"
-                              ? !state.data.errors?.Quota
+                              ? !state.data.errors?.PerApiLimit[props.index!]
+                                  .Quota
                               : !states.data.errors?.Quota
                           }
                           disabled={quota}
@@ -502,7 +541,7 @@ export default function GlobalLimitApi(props: IProps) {
                         <Form.Control.Feedback type="invalid">
                           {" "}
                           {props.current === "policy"
-                            ? state.data.errors?.Quota
+                            ? state.data.errors?.PerApiLimit[props.index!].Quota
                             : states.data.errors?.Quota}
                         </Form.Control.Feedback>
                         <Form.Label className="mt-3">
@@ -521,7 +560,12 @@ export default function GlobalLimitApi(props: IProps) {
                                   props.index!
                                 ]?.Limit?.Quota_renews
                           }
-                          onChange={(e: any) => handlerateclick(e)}
+                          onChange={(e: any) =>
+                            handlerateclick(
+                              e,
+                              props.state?.data.form.APIs[props.index!].Id
+                            )
+                          }
                         >
                           <option>never</option>
                           <option>1 hour</option>
