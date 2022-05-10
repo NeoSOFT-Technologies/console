@@ -145,15 +145,16 @@ export default function PolicyList() {
                 setSelectedApi(Id);
                 const newp = [...apis];
                 newp.push({ name: accessRights, policyId: Id });
-                // newp.push(a);
-                console.log("arrrlis", newp);
-
-                // arrr.add(ApisList);
                 setApis(newp);
-                console.log("ApisList", apis);
                 ToastAlert(`${Name} selected`, "success");
               } else {
                 removeAccess(Id);
+                const SelectedPolicyList = [...apis];
+                const filterPolicyList = SelectedPolicyList.filter(
+                  (item) => item.policyId !== Id
+                );
+                // console.log("arrrlis filterList", filterPolicyList);
+                setApis(filterPolicyList);
                 ToastAlert(`${Name} removed`, "warning");
               }
             },
@@ -169,7 +170,7 @@ export default function PolicyList() {
     search: true,
     sort: true,
     fixedHeader: true,
-    height: "300px",
+    height: "30vh", // 300px
     style: {
       table: {
         width: "100%",
