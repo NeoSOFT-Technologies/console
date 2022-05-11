@@ -3,12 +3,12 @@ import { createTableService } from "../../../../services/saas/api/api";
 import { ICreateTable } from "../../../../types/saas";
 import error from "../../../../utils/error";
 
-interface IGetTableState {
-  data?: string[];
+interface ICreateTableState {
+  data?: string;
   loading: boolean;
   error?: string | null;
 }
-const initialState: IGetTableState = {
+const initialState: ICreateTableState = {
   data: undefined,
   loading: false,
   error: undefined,
@@ -26,7 +26,7 @@ export const createTable = createAsyncThunk(
       console.log(
         `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
       );
-      return response.data.data;
+      return response.data;
     } catch (error_: any) {
       // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
@@ -37,7 +37,7 @@ export const createTable = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "createTable",
+  name: "createTableSlice",
   initialState,
   reducers: {},
   extraReducers(builder): void {

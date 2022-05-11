@@ -1,23 +1,27 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getTablesService } from "../../../../services/saas/api/api";
+import { getTableSchemaService } from "../../../../services/saas/api/api";
+import { ITableSchema } from "../../../../types/saas";
 import error from "../../../../utils/error";
 
-interface IGetTableState {
-  data?: string[];
+interface IGetTableSchemaState {
+  data?: string;
   loading: boolean;
   error?: string | null;
 }
-const initialState: IGetTableState = {
+const initialState: IGetTableSchemaState = {
   data: undefined,
   loading: false,
   error: undefined,
 };
 
-export const getTables = createAsyncThunk(
-  "getTable/getTables",
-  async (id: string) => {
+export const getTableSchema = createAsyncThunk(
+  "getTableSchemaByTableName",
+  async (data: ITableSchema) => {
     try {
-      const response = await getTablesService(id);
+      const response = await getTableSchemaService(
+        data.tableName,
+        data.tenantId
+      );
       console.log(
         `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
       );
@@ -32,20 +36,20 @@ export const getTables = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "getTableSlice",
+  name: "getTableSchemaSlice",
   initialState,
   reducers: {},
   extraReducers(builder): void {
-    builder.addCase(getTables.pending, (state) => {
+    builder.addCase(getTableSchema.pending, (state) => {
       state.data = undefined;
       state.loading = true;
       state.error = undefined;
     });
-    builder.addCase(getTables.fulfilled, (state, action) => {
+    builder.addCase(getTableSchema.fulfilled, (state, action) => {
       state.data = action.payload;
       state.loading = false;
     });
-    builder.addCase(getTables.rejected, (state, action: any) => {
+    builder.addCase(getTableSchema.rejected, (state, action: any) => {
       state.loading = false;
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];
