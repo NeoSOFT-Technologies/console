@@ -11,7 +11,7 @@ export const regexForDescription = /^[A-Za-z]+[\d\s,.A-Za-z]*$/;
 export const regexForUser =
   /^[\dA-Za-z]([._-](?![._-])|[\dA-Za-z]){2,18}[\dA-Za-z]$/;
 export const regForPassword =
-  /^(?=.*?[A-Z])(?=(.*[a-z])+)(?=(.*\d)+)(?=(.*\W)+)(?!.*\s).{8,15}$/;
+  /(?=[\d!#$%&+=@A-Z^a-z]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#$%&+=@^])(?=.{8,}).*$/;
 export const requestUserListURL = `api/user?`;
 export const requestTenantListUrlInactive = `api/tenants?isDeleted=true&`;
 export const requestTenantListUrlActive = `api/tenants?isDeleted=false&`;
