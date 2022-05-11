@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Accordion, Button, Col, Form, Row } from "react-bootstrap";
+import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import {
   regexForOverrideTarget,
   setFormErrors,
@@ -46,22 +47,46 @@ export default function Versions() {
   };
 
   const handleAddClick = () => {
-    const list = [
-      ...state.data.form.Versions,
-      {
-        Name: addFormData.Name,
-        OverrideTarget: addFormData.OverrideTarget,
-        Expires: addFormData.Expires,
-        GlobalRequestHeaders: {},
-        GlobalRequestHeadersRemove: [],
-        GlobalResponseHeaders: {},
-        GlobalResponseHeadersRemove: [],
-        ExtendedPaths: undefined,
-      },
-    ];
-    dispatch(setForm({ ...state.data.form, Versions: list }));
-    setAddFormData({ Name: "", Expires: "", OverrideTarget: "" });
-    // console.log("version", state.data.form);
+    if (state.data.form.Versions.length > 0) {
+      const filtered = state.data.form.Versions.filter(
+        (x) => x.Name === addFormData.Name
+      );
+      if (filtered.length > 0) {
+        ToastAlert("This version name has been already added!", "error");
+      } else {
+        const list = [
+          ...state.data.form.Versions,
+          {
+            Name: addFormData.Name,
+            OverrideTarget: addFormData.OverrideTarget,
+            Expires: addFormData.Expires,
+            GlobalRequestHeaders: {},
+            GlobalRequestHeadersRemove: [],
+            GlobalResponseHeaders: {},
+            GlobalResponseHeadersRemove: [],
+            ExtendedPaths: undefined,
+          },
+        ];
+        dispatch(setForm({ ...state.data.form, Versions: list }));
+        setAddFormData({ Name: "", Expires: "", OverrideTarget: "" });
+      }
+    } else {
+      const list = [
+        ...state.data.form.Versions,
+        {
+          Name: addFormData.Name,
+          OverrideTarget: addFormData.OverrideTarget,
+          Expires: addFormData.Expires,
+          GlobalRequestHeaders: {},
+          GlobalRequestHeadersRemove: [],
+          GlobalResponseHeaders: {},
+          GlobalResponseHeadersRemove: [],
+          ExtendedPaths: undefined,
+        },
+      ];
+      dispatch(setForm({ ...state.data.form, Versions: list }));
+      setAddFormData({ Name: "", Expires: "", OverrideTarget: "" });
+    }
   };
 
   const deleteTableRows = (
@@ -74,11 +99,9 @@ export default function Versions() {
     dispatch(setForm({ ...state.data.form, Versions: list }));
   };
 
-  const handleTableRowsInputChange = (
-    index: number,
-    evnt: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleTableRowsInputChange = (index: number, evnt: any) => {
     const { name, value } = evnt.target;
+
     const versionsList = [...state.data.form.Versions];
     versionsList[index] = { ...versionsList[index], [name]: value };
     dispatch(setForm({ ...state.data.form, Versions: versionsList }));
@@ -236,7 +259,7 @@ export default function Versions() {
                                     />
                                   </td>
                                   <td>
-                                    <input
+                                    {/* <input
                                       type="text"
                                       value={OverrideTarget}
                                       onChange={(evnt) =>
@@ -244,7 +267,27 @@ export default function Versions() {
                                       }
                                       name="OverrideTarget"
                                       className="form-control"
-                                    />{" "}
+                                    />{" "} */}
+
+                                    <Form.Control
+                                      type="text"
+                                      placeholder="http://override-target.com"
+                                      id="overrideTarget"
+                                      name="OverrideTarget"
+                                      value={OverrideTarget}
+                                      isInvalid={
+                                        !!state.data.errors?.OverrideTarget
+                                      }
+                                      isValid={
+                                        !state.data.errors?.OverrideTarget
+                                      }
+                                      onChange={(evnt) =>
+                                        handleTableRowsInputChange(index, evnt)
+                                      }
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                      {state.data.errors?.OverrideTarget}
+                                    </Form.Control.Feedback>
                                   </td>
                                   <td>
                                     <input

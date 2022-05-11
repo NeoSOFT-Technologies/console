@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Accordion, Form, Col, Row, Button, Table } from "react-bootstrap";
+import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import {
   setFormErrors,
   regexForIP_Address,
@@ -60,12 +61,28 @@ export default function BlacklistedIPs() {
   };
 
   const handleAddClick = () => {
-    const blacklistObj: any = [
-      ...state.data.form.Blacklist,
-      addFormData.Blacklist,
-    ];
-    dispatch(setForm({ ...state.data.form, Blacklist: blacklistObj }));
-    setAddFormData({ ...addFormData, Blacklist: "" });
+    if (blacklistLength > 0) {
+      const filtered = state.data.form.Blacklist.filter(
+        (x) => x === addFormData.Blacklist
+      );
+      if (filtered.length > 0) {
+        ToastAlert("This IP address has been already added!", "error");
+      } else {
+        const blacklistObj: any = [
+          ...state.data.form.Blacklist,
+          addFormData.Blacklist,
+        ];
+        dispatch(setForm({ ...state.data.form, Blacklist: blacklistObj }));
+        setAddFormData({ ...addFormData, Blacklist: "" });
+      }
+    } else {
+      const blacklistObj: any = [
+        ...state.data.form.Blacklist,
+        addFormData.Blacklist,
+      ];
+      dispatch(setForm({ ...state.data.form, Blacklist: blacklistObj }));
+      setAddFormData({ ...addFormData, Blacklist: "" });
+    }
   };
 
   const deleteTableRows = (
@@ -119,7 +136,7 @@ export default function BlacklistedIPs() {
                           ) : (
                             <p>No IPs selected, please add one below.</p>
                           )}
-                          <Row className="ml-3">
+                          <Row>
                             <Form.Label>
                               <b>IP Address:</b>
                             </Form.Label>
@@ -158,8 +175,8 @@ export default function BlacklistedIPs() {
                         </Row>
 
                         {
-                          <Row className="ml-3 mr-5">
-                            <Col md={12}>
+                          <Row className="mr-5">
+                            <Col md={10}>
                               <Table striped bordered hover size="lg">
                                 {blacklistLength > 0 ? (
                                   <thead>

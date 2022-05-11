@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Accordion, Form, Col, Row, Button, Table } from "react-bootstrap";
+import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import {
   setFormErrors,
   regexForIP_Address,
@@ -60,12 +61,28 @@ export default function WhitelistedIPs() {
   };
 
   const handleAddClick = () => {
-    const whitelistObj: any = [
-      ...state.data.form.Whitelist,
-      addFormData.Whitelist,
-    ];
-    dispatch(setForm({ ...state.data.form, Whitelist: whitelistObj }));
-    setAddFormData({ ...addFormData, Whitelist: "" });
+    if (whitelistLength > 0) {
+      const filtered = state.data.form.Whitelist.filter(
+        (x) => x === addFormData.Whitelist
+      );
+      if (filtered.length > 0) {
+        ToastAlert("This IP address has been already added!", "error");
+      } else {
+        const whitelistObj: any = [
+          ...state.data.form.Whitelist,
+          addFormData.Whitelist,
+        ];
+        dispatch(setForm({ ...state.data.form, Whitelist: whitelistObj }));
+        setAddFormData({ ...addFormData, Whitelist: "" });
+      }
+    } else {
+      const whitelistObj: any = [
+        ...state.data.form.Whitelist,
+        addFormData.Whitelist,
+      ];
+      dispatch(setForm({ ...state.data.form, Whitelist: whitelistObj }));
+      setAddFormData({ ...addFormData, Whitelist: "" });
+    }
   };
 
   const deleteTableRows = (
@@ -119,7 +136,7 @@ export default function WhitelistedIPs() {
                           ) : (
                             <p>No IPs selected, please add one below.</p>
                           )}
-                          <Row className="ml-3">
+                          <Row>
                             <Form.Label>
                               <b>Whitelisted IP Address:</b>
                             </Form.Label>
@@ -158,8 +175,8 @@ export default function WhitelistedIPs() {
                         </Row>
 
                         {
-                          <Row className="ml-3 mr-5">
-                            <Col md={12}>
+                          <Row className="mr-5">
+                            <Col md={10}>
                               <Table striped bordered hover size="lg">
                                 {whitelistLength > 0 ? (
                                   <thead>

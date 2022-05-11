@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Accordion, Form, Col, Row, Button, Table } from "react-bootstrap";
+import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import {
   setFormErrors,
   regexForAllowedOrigins,
@@ -20,7 +21,7 @@ export default function CorsOptions() {
   });
 
   const [addAllowedMethods, setAllowedMethods] = useState<any>({
-    AllowedMethods: "",
+    AllowedMethods: "GET",
   });
 
   const [addAllowedHeaders, setAllowedHeaders] = useState<any>({
@@ -70,25 +71,54 @@ export default function CorsOptions() {
   }
 
   const handleAllowedOriginsAddClick = () => {
-    const allowedOrigins: any = [
-      ...state.data.form.CORS.AllowedOrigins,
-      addAllowedOrigins.AllowedOrigins,
-    ];
+    if (state.data.form.CORS.AllowedOrigins.length > 0) {
+      const filtered = state.data.form.CORS.AllowedOrigins.filter(
+        (x) => x === addAllowedOrigins.AllowedOrigins
+      );
+      if (filtered.length > 0) {
+        ToastAlert("This origin has been already added!", "error");
+      } else {
+        const allowedOrigins: any = [
+          ...state.data.form.CORS.AllowedOrigins,
+          addAllowedOrigins.AllowedOrigins,
+        ];
 
-    const corsObj = {
-      IsEnabled: state.data.form.CORS.IsEnabled,
-      AllowedOrigins: allowedOrigins,
-      AllowedMethods: state.data.form.CORS.AllowedMethods,
-      AllowedHeaders: state.data.form.CORS.AllowedHeaders,
-      ExposedHeaders: state.data.form.CORS.ExposedHeaders,
-      AllowCredentials: state.data.form.CORS.AllowCredentials,
-      MaxAge: state.data.form.CORS.MaxAge,
-      OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-      Debug: state.data.form.CORS.Debug,
-    };
+        const corsObj = {
+          IsEnabled: state.data.form.CORS.IsEnabled,
+          AllowedOrigins: allowedOrigins,
+          AllowedMethods: state.data.form.CORS.AllowedMethods,
+          AllowedHeaders: state.data.form.CORS.AllowedHeaders,
+          ExposedHeaders: state.data.form.CORS.ExposedHeaders,
+          AllowCredentials: state.data.form.CORS.AllowCredentials,
+          MaxAge: state.data.form.CORS.MaxAge,
+          OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
+          Debug: state.data.form.CORS.Debug,
+        };
 
-    dispatch(setForm({ ...state.data.form, CORS: corsObj }));
-    setAllowedOrigins({ ...addAllowedOrigins, AllowedOrigins: "" });
+        dispatch(setForm({ ...state.data.form, CORS: corsObj }));
+        setAllowedOrigins({ ...addAllowedOrigins, AllowedOrigins: "" });
+      }
+    } else {
+      const allowedOrigins: any = [
+        ...state.data.form.CORS.AllowedOrigins,
+        addAllowedOrigins.AllowedOrigins,
+      ];
+
+      const corsObj = {
+        IsEnabled: state.data.form.CORS.IsEnabled,
+        AllowedOrigins: allowedOrigins,
+        AllowedMethods: state.data.form.CORS.AllowedMethods,
+        AllowedHeaders: state.data.form.CORS.AllowedHeaders,
+        ExposedHeaders: state.data.form.CORS.ExposedHeaders,
+        AllowCredentials: state.data.form.CORS.AllowCredentials,
+        MaxAge: state.data.form.CORS.MaxAge,
+        OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
+        Debug: state.data.form.CORS.Debug,
+      };
+
+      dispatch(setForm({ ...state.data.form, CORS: corsObj }));
+      setAllowedOrigins({ ...addAllowedOrigins, AllowedOrigins: "" });
+    }
   };
 
   const handleAllowedOriginsDeleteRow = (
@@ -124,24 +154,52 @@ export default function CorsOptions() {
   }
 
   const handleAllowedMethodsAddClick = () => {
-    const allowedMethods: any = [
-      ...state.data.form.CORS.AllowedMethods,
-      addAllowedMethods.AllowedMethods,
-    ];
+    if (state.data.form.CORS.AllowedMethods.length > 0) {
+      const filtered = state.data.form.CORS.AllowedMethods.filter(
+        (x) => x === addAllowedMethods.AllowedMethods
+      );
+      if (filtered.length > 0) {
+        ToastAlert("This method has been already added!", "error");
+      } else {
+        const allowedMethods: any = [
+          ...state.data.form.CORS.AllowedMethods,
+          addAllowedMethods.AllowedMethods,
+        ];
 
-    const corsObj = {
-      IsEnabled: state.data.form.CORS.IsEnabled,
-      AllowedOrigins: state.data.form.CORS.AllowedOrigins,
-      AllowedMethods: allowedMethods,
-      AllowedHeaders: state.data.form.CORS.AllowedHeaders,
-      ExposedHeaders: state.data.form.CORS.ExposedHeaders,
-      AllowCredentials: state.data.form.CORS.AllowCredentials,
-      MaxAge: state.data.form.CORS.MaxAge,
-      OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-      Debug: state.data.form.CORS.Debug,
-    };
+        const corsObj = {
+          IsEnabled: state.data.form.CORS.IsEnabled,
+          AllowedOrigins: state.data.form.CORS.AllowedOrigins,
+          AllowedMethods: allowedMethods,
+          AllowedHeaders: state.data.form.CORS.AllowedHeaders,
+          ExposedHeaders: state.data.form.CORS.ExposedHeaders,
+          AllowCredentials: state.data.form.CORS.AllowCredentials,
+          MaxAge: state.data.form.CORS.MaxAge,
+          OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
+          Debug: state.data.form.CORS.Debug,
+        };
 
-    dispatch(setForm({ ...state.data.form, CORS: corsObj }));
+        dispatch(setForm({ ...state.data.form, CORS: corsObj }));
+      }
+    } else {
+      const allowedMethods: any = [
+        ...state.data.form.CORS.AllowedMethods,
+        addAllowedMethods.AllowedMethods,
+      ];
+
+      const corsObj = {
+        IsEnabled: state.data.form.CORS.IsEnabled,
+        AllowedOrigins: state.data.form.CORS.AllowedOrigins,
+        AllowedMethods: allowedMethods,
+        AllowedHeaders: state.data.form.CORS.AllowedHeaders,
+        ExposedHeaders: state.data.form.CORS.ExposedHeaders,
+        AllowCredentials: state.data.form.CORS.AllowCredentials,
+        MaxAge: state.data.form.CORS.MaxAge,
+        OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
+        Debug: state.data.form.CORS.Debug,
+      };
+
+      dispatch(setForm({ ...state.data.form, CORS: corsObj }));
+    }
   };
 
   const handleAllowedMethodsDeleteRow = (
@@ -176,25 +234,54 @@ export default function CorsOptions() {
   }
 
   const handleAllowedHeadersAddClick = () => {
-    const allowedHeaders: any = [
-      ...state.data.form.CORS.AllowedHeaders,
-      addAllowedHeaders.AllowedHeaders,
-    ];
+    if (state.data.form.CORS.AllowedHeaders.length > 0) {
+      const filtered = state.data.form.CORS.AllowedHeaders.filter(
+        (x) => x === addAllowedHeaders.AllowedHeaders
+      );
+      if (filtered.length > 0) {
+        ToastAlert("This header has been already added!", "error");
+      } else {
+        const allowedHeaders: any = [
+          ...state.data.form.CORS.AllowedHeaders,
+          addAllowedHeaders.AllowedHeaders,
+        ];
 
-    const corsObj = {
-      IsEnabled: state.data.form.CORS.IsEnabled,
-      AllowedOrigins: state.data.form.CORS.AllowedOrigins,
-      AllowedMethods: state.data.form.CORS.AllowedMethods,
-      AllowedHeaders: allowedHeaders,
-      ExposedHeaders: state.data.form.CORS.ExposedHeaders,
-      AllowCredentials: state.data.form.CORS.AllowCredentials,
-      MaxAge: state.data.form.CORS.MaxAge,
-      OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-      Debug: state.data.form.CORS.Debug,
-    };
+        const corsObj = {
+          IsEnabled: state.data.form.CORS.IsEnabled,
+          AllowedOrigins: state.data.form.CORS.AllowedOrigins,
+          AllowedMethods: state.data.form.CORS.AllowedMethods,
+          AllowedHeaders: allowedHeaders,
+          ExposedHeaders: state.data.form.CORS.ExposedHeaders,
+          AllowCredentials: state.data.form.CORS.AllowCredentials,
+          MaxAge: state.data.form.CORS.MaxAge,
+          OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
+          Debug: state.data.form.CORS.Debug,
+        };
 
-    dispatch(setForm({ ...state.data.form, CORS: corsObj }));
-    setAllowedHeaders({ ...addAllowedHeaders, AllowedHeaders: "" });
+        dispatch(setForm({ ...state.data.form, CORS: corsObj }));
+        setAllowedHeaders({ ...addAllowedHeaders, AllowedHeaders: "" });
+      }
+    } else {
+      const allowedHeaders: any = [
+        ...state.data.form.CORS.AllowedHeaders,
+        addAllowedHeaders.AllowedHeaders,
+      ];
+
+      const corsObj = {
+        IsEnabled: state.data.form.CORS.IsEnabled,
+        AllowedOrigins: state.data.form.CORS.AllowedOrigins,
+        AllowedMethods: state.data.form.CORS.AllowedMethods,
+        AllowedHeaders: allowedHeaders,
+        ExposedHeaders: state.data.form.CORS.ExposedHeaders,
+        AllowCredentials: state.data.form.CORS.AllowCredentials,
+        MaxAge: state.data.form.CORS.MaxAge,
+        OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
+        Debug: state.data.form.CORS.Debug,
+      };
+
+      dispatch(setForm({ ...state.data.form, CORS: corsObj }));
+      setAllowedHeaders({ ...addAllowedHeaders, AllowedHeaders: "" });
+    }
   };
 
   const handleAllowedHeadersDeleteRow = (
@@ -229,25 +316,54 @@ export default function CorsOptions() {
   }
 
   const handleExposedHeadersAddClick = () => {
-    const exposedHeaders: any = [
-      ...state.data.form.CORS.ExposedHeaders,
-      addExposedHeaders.ExposedHeaders,
-    ];
+    if (state.data.form.CORS.ExposedHeaders.length > 0) {
+      const filtered = state.data.form.CORS.ExposedHeaders.filter(
+        (x) => x === addExposedHeaders.ExposedHeaders
+      );
+      if (filtered.length > 0) {
+        ToastAlert("This header has been already added!", "error");
+      } else {
+        const exposedHeaders: any = [
+          ...state.data.form.CORS.ExposedHeaders,
+          addExposedHeaders.ExposedHeaders,
+        ];
 
-    const corsObj = {
-      IsEnabled: state.data.form.CORS.IsEnabled,
-      AllowedOrigins: state.data.form.CORS.AllowedOrigins,
-      AllowedMethods: state.data.form.CORS.AllowedMethods,
-      AllowedHeaders: state.data.form.CORS.AllowedHeaders,
-      ExposedHeaders: exposedHeaders,
-      AllowCredentials: state.data.form.CORS.AllowCredentials,
-      MaxAge: state.data.form.CORS.MaxAge,
-      OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-      Debug: state.data.form.CORS.Debug,
-    };
+        const corsObj = {
+          IsEnabled: state.data.form.CORS.IsEnabled,
+          AllowedOrigins: state.data.form.CORS.AllowedOrigins,
+          AllowedMethods: state.data.form.CORS.AllowedMethods,
+          AllowedHeaders: state.data.form.CORS.AllowedHeaders,
+          ExposedHeaders: exposedHeaders,
+          AllowCredentials: state.data.form.CORS.AllowCredentials,
+          MaxAge: state.data.form.CORS.MaxAge,
+          OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
+          Debug: state.data.form.CORS.Debug,
+        };
 
-    dispatch(setForm({ ...state.data.form, CORS: corsObj }));
-    setExposedHeaders({ ...addExposedHeaders, ExposedHeaders: "" });
+        dispatch(setForm({ ...state.data.form, CORS: corsObj }));
+        setExposedHeaders({ ...addExposedHeaders, ExposedHeaders: "" });
+      }
+    } else {
+      const exposedHeaders: any = [
+        ...state.data.form.CORS.ExposedHeaders,
+        addExposedHeaders.ExposedHeaders,
+      ];
+
+      const corsObj = {
+        IsEnabled: state.data.form.CORS.IsEnabled,
+        AllowedOrigins: state.data.form.CORS.AllowedOrigins,
+        AllowedMethods: state.data.form.CORS.AllowedMethods,
+        AllowedHeaders: state.data.form.CORS.AllowedHeaders,
+        ExposedHeaders: exposedHeaders,
+        AllowCredentials: state.data.form.CORS.AllowCredentials,
+        MaxAge: state.data.form.CORS.MaxAge,
+        OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
+        Debug: state.data.form.CORS.Debug,
+      };
+
+      dispatch(setForm({ ...state.data.form, CORS: corsObj }));
+      setExposedHeaders({ ...addExposedHeaders, ExposedHeaders: "" });
+    }
   };
 
   const handleExposedHeadersDeleteRow = (
@@ -376,7 +492,7 @@ export default function CorsOptions() {
                         </Col>
                       </Row>
                       {
-                        <Row className="ml-2 mr-5">
+                        <Row className="mr-5">
                           <Col md={10}>
                             <Table striped bordered hover size="lg">
                               {state.data.form.CORS.AllowedOrigins.length >
@@ -428,11 +544,11 @@ export default function CorsOptions() {
                             <Form.Select
                               name="AllowedMethods"
                               id="AllowedMethods"
-                              onChange={(e: any) =>
+                              onClick={(e: any) =>
                                 handleAllowedMethodsChange(e)
                               }
                             >
-                              <option></option>
+                              {/* <option></option> */}
                               <option>GET</option>
                               <option>POST</option>
                               <option>PUT</option>
@@ -455,7 +571,7 @@ export default function CorsOptions() {
                         </Col>
                       </Row>
                       {
-                        <Row className="ml-2 mr-5">
+                        <Row className="mr-5">
                           <Col md={10}>
                             <Table striped bordered hover size="lg">
                               {state.data.form.CORS.AllowedMethods.length >
@@ -530,7 +646,7 @@ export default function CorsOptions() {
                         </Col>
                       </Row>
                       {
-                        <Row className="ml-2 mr-5">
+                        <Row className="mr-5">
                           <Col md={10}>
                             <Table striped bordered hover size="lg">
                               {state.data.form.CORS.AllowedHeaders.length >
@@ -605,7 +721,7 @@ export default function CorsOptions() {
                         </Col>
                       </Row>
                       {
-                        <Row className="ml-2 mr-5">
+                        <Row className="mr-5">
                           <Col md={10}>
                             <Table striped bordered hover size="lg">
                               {state.data.form.CORS.ExposedHeaders.length >
