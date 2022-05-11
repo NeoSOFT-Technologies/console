@@ -60,25 +60,18 @@ export interface IGetPolicyByIdData {
   };
 }
 export interface Limiting {
-  ApiId?: string;
-  Per?: string;
+  ApiId: string;
+  Per: string;
   Rate: string;
-  Quota?: string;
-  Expires?: string;
-  QuotaRenewalRate?: string;
-  ThrottleInterval?: string;
-  ThrottleRetries?: string;
+  Quota: string;
+  Expires: string;
+  QuotaRenewalRate: string;
+  ThrottleInterval: string;
+  ThrottleRetries: string;
 }
 
 export interface IError {
-  Name: string;
-  ApIs?: string;
-  Partitions?: string;
-  Per?: string;
-  Rate?: string;
-  Quota?: string;
-  Expires?: string;
-  ThrottleInterval?: string;
-  ThrottleRetries?: string;
-  GlobalLimit: Limiting[];
+  Name: "";
+  GlobalLimit: Limiting;
+  PerApiLimit: Limiting[];
 }
