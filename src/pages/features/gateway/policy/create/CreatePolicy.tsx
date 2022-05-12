@@ -51,13 +51,27 @@ export default function CreatePolicy() {
 
   async function handleSubmitPolicy(event: FormEvent) {
     event.preventDefault();
-    let validate: any;
-    if (state.data.errors !== undefined) {
-      validate = Object.values(state.data.errors).every(
-        (x) => x === null || x === ""
+    const validateFieldValue = state.data.form.Name.length > 0;
+    if (!validateFieldValue) {
+      dispatch(
+        setFormError({ ...state.data.errors, Name: "Name is required" })
       );
     }
+
+    let validate: boolean;
+    validate = false;
+    validate = !!(
+      state.data.errors?.Name === "" &&
+      validateFieldValue === true &&
+      state.data.errors?.GlobalLimit.Rate === "" &&
+      state.data.errors?.GlobalLimit.Per === "" &&
+      state.data.errors?.GlobalLimit.ThrottleInterval === "" &&
+      state.data.errors?.GlobalLimit.ThrottleRetries === "" &&
+      state.data.errors?.GlobalLimit.Quota === ""
+    );
+
     if (state.data.form.APIs.length > 0) {
+      console.log("checkformdata", state.data.form);
       if (validate) {
         const result =
           id === undefined
@@ -142,7 +156,19 @@ export default function CreatePolicy() {
                     <Tab eventKey="accessRights" title="Access Rights">
                       <AccessRights />
                     </Tab>
-                    <Tab eventKey="configurations" title="Configurations">
+                    <Tab
+                      eventKey="configurations"
+                      title={
+                        <span>
+                          {state.data.errors?.Name ? (
+                            <i className="bi bi-info-circle-fill text-danger"></i>
+                          ) : (
+                            ""
+                          )}
+                          &nbsp; Configurations
+                        </span>
+                      }
+                    >
                       <Configurations />
                     </Tab>
                   </Tabs>
