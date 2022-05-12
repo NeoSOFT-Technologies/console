@@ -42,15 +42,26 @@ export default function WhitelistedIPs() {
     const { name, value } = event.target;
     switch (name) {
       case "Whitelist":
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: regexForIP_Address.test(value)
-              ? ""
-              : "Please enter a Valid IP Address",
-          },
-          dispatch
-        );
+        if (value === "") {
+          setFormErrors(
+            {
+              ...state.data.errors,
+              [name]: "",
+            },
+            dispatch
+          );
+        } else {
+          setFormErrors(
+            {
+              ...state.data.errors,
+              [name]: regexForIP_Address.test(value)
+                ? ""
+                : "Please enter a Valid IP Address",
+            },
+            dispatch
+          );
+        }
+
         break;
       default:
         break;
@@ -59,6 +70,7 @@ export default function WhitelistedIPs() {
     formobj[name] = value;
     setAddFormData(formobj);
   };
+  console.log("error :", state.data.errors);
 
   const handleAddClick = () => {
     if (whitelistLength > 0) {

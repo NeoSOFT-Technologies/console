@@ -52,15 +52,25 @@ export default function CorsOptions() {
     const { name, value } = event.target;
     switch (name) {
       case "AllowedOrigins":
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: regexForAllowedOrigins.test(value)
-              ? ""
-              : "Please enter a Valid URL value(i.e. http://)",
-          },
-          dispatch
-        );
+        if (value === "") {
+          setFormErrors(
+            {
+              ...state.data.errors,
+              [name]: "",
+            },
+            dispatch
+          );
+        } else {
+          setFormErrors(
+            {
+              ...state.data.errors,
+              [name]: regexForAllowedOrigins.test(value)
+                ? ""
+                : "Please enter a Valid URL value(i.e. http://)",
+            },
+            dispatch
+          );
+        }
         break;
       default:
         break;

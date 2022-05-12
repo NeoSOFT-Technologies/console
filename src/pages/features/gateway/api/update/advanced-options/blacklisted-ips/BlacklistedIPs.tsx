@@ -42,15 +42,25 @@ export default function BlacklistedIPs() {
     const { name, value } = event.target;
     switch (name) {
       case "Blacklist":
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: regexForIP_Address.test(value)
-              ? ""
-              : "Please enter a Valid IP Address",
-          },
-          dispatch
-        );
+        if (value === "") {
+          setFormErrors(
+            {
+              ...state.data.errors,
+              [name]: "",
+            },
+            dispatch
+          );
+        } else {
+          setFormErrors(
+            {
+              ...state.data.errors,
+              [name]: regexForIP_Address.test(value)
+                ? ""
+                : "Please enter a Valid IP Address",
+            },
+            dispatch
+          );
+        }
         break;
       default:
         break;

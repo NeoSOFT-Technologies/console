@@ -27,15 +27,25 @@ export default function Versions() {
 
     switch (name) {
       case "OverrideTarget":
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: regexForOverrideTarget.test(value)
-              ? ""
-              : "Enter a Valid Override Target Host",
-          },
-          dispatch
-        );
+        if (value === "") {
+          setFormErrors(
+            {
+              ...state.data.errors,
+              [name]: "",
+            },
+            dispatch
+          );
+        } else {
+          setFormErrors(
+            {
+              ...state.data.errors,
+              [name]: regexForOverrideTarget.test(value)
+                ? ""
+                : "Enter a Valid Override Target Host",
+            },
+            dispatch
+          );
+        }
         break;
       default:
         break;
@@ -259,7 +269,7 @@ export default function Versions() {
                                     />
                                   </td>
                                   <td>
-                                    {/* <input
+                                    <input
                                       type="text"
                                       value={OverrideTarget}
                                       onChange={(evnt) =>
@@ -267,9 +277,8 @@ export default function Versions() {
                                       }
                                       name="OverrideTarget"
                                       className="form-control"
-                                    />{" "} */}
-
-                                    <Form.Control
+                                    />{" "}
+                                    {/* <Form.Control
                                       type="text"
                                       placeholder="http://override-target.com"
                                       id="overrideTarget"
@@ -287,7 +296,7 @@ export default function Versions() {
                                     />
                                     <Form.Control.Feedback type="invalid">
                                       {state.data.errors?.OverrideTarget}
-                                    </Form.Control.Feedback>
+                                    </Form.Control.Feedback> */}
                                   </td>
                                   <td>
                                     <input
