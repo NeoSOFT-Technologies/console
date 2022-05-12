@@ -74,7 +74,7 @@ const InsertData = lazy(
   () => import("./pages/features/saas/insert-data/InsertData")
 );
 const SearchData = lazy(
-  () => import("./pages/features/saas/Search-Data/SearchData")
+  () => import("./pages/features/saas/search-data/SearchData")
 );
 
 function AppRoutes() {
