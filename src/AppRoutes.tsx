@@ -76,6 +76,16 @@ const InsertData = lazy(
 const SearchData = lazy(
   () => import("./pages/features/saas/Search-Data/SearchData")
 );
+const ManageTable = lazy(
+  () => import("./pages/features/saas/manage-table/ManageTable")
+);
+
+const RestoreTable = lazy(
+  () => import("./pages/features/saas/restore-table/RestoreTable")
+);
+const AddTable = lazy(
+  () => import("./pages/features/saas/restore-table/RestoreTable")
+);
 
 function AppRoutes() {
   return (
@@ -217,7 +227,7 @@ function AppRoutes() {
             }
           />
 
-           <Route
+          <Route
             path="searchData"
             element={
               <AdminGuard>
@@ -225,7 +235,24 @@ function AppRoutes() {
               </AdminGuard>
             }
           />
+          <Route
+            path="manageTable"
+            element={
+              <AdminGuard>
+                <ManageTable />
+              </AdminGuard>
+            }
+          />
 
+          <Route path="addTable" element={<AddTable />} />
+          <Route
+            path="restoreTable"
+            element={
+              <AdminGuard>
+                <RestoreTable />
+              </AdminGuard>
+            }
+          />
         </Route>
         <Route path="*" element={<Navigate to="/login-page" />} />{" "}
       </Routes>

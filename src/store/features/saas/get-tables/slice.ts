@@ -3,6 +3,7 @@ import { getTablesService } from "../../../../services/saas/api/api";
 import error from "../../../../utils/error";
 
 interface IGetTableState {
+  [x: string]: any;
   data?: string[];
   loading: boolean;
   error?: string | null;
