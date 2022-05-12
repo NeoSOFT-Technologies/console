@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { updateTableSchemaService } from "../../../../services/saas/api/api";
-import { IUpdateTable } from "../../../../types/saas";
-import error from "../../../../utils/error";
+import { updateTableSchemaService } from "../../../../../services/saas/api/api";
+import { IUpdateTable } from "../../../../../types/saas";
+import error from "../../../../../utils/error";
 
 interface IUpdateTableSchemaState {
   data?: string;

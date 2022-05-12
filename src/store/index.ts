@@ -15,13 +15,15 @@ import keyListReducer from "./features/gateway/key/list/slice";
 import createPolicyReducer from "./features/gateway/policy/create/slice";
 import deletePolicyReducer from "./features/gateway/policy/delete/slice";
 import policyListReducer from "./features/gateway/policy/list/slice";
-import createTableReducer from "./features/saas/create-table/slice";
-import deleteTableSchemaReducer from "./features/saas/delete-table/slice";
-import capacityPlansReducer from "./features/saas/get-capacity-plans/slice";
-import getTableSchemaReducer from "./features/saas/get-table-schema/slice";
-import getTableReducer from "./features/saas/get-tables/slice";
-import restoreTableSchemaReducer from "./features/saas/restore-table/slice";
-import updateTableSchemaReducer from "./features/saas/update-table-schema/slice";
+import createTableReducer from "./features/saas/manage-table/create-table/slice";
+import deleteTableSchemaReducer from "./features/saas/manage-table/delete-table/slice";
+import capacityPlansReducer from "./features/saas/manage-table/get-capacity-plans/slice";
+import getTableSchemaReducer from "./features/saas/manage-table/get-table-schema/slice";
+import getTableReducer from "./features/saas/manage-table/get-tables/slice";
+import restoreTableSchemaReducer from "./features/saas/manage-table/restore-table/slice";
+import updateTableSchemaReducer from "./features/saas/manage-table/update-table-schema/slice";
+import searchDataWithQueryFieldReducer from "./features/saas/search-data/with-query-field/slice";
+import searchDataWithQueryReducer from "./features/saas/search-data/with-query/slice";
 import addNewUserReducer from "./features/tenant/add-user/slice";
 import deleteUserReducer from "./features/tenant/delete-user/slice";
 import tenantDetailsReducer from "./features/tenant/tenant-details/slice";
@@ -70,6 +72,8 @@ const store = configureStore({
     deleteTableSchemaState: deleteTableSchemaReducer,
     restoreTableSchemaState: restoreTableSchemaReducer,
     updateTableSchemaState: updateTableSchemaReducer,
+    searchDataWithQueryFieldState: searchDataWithQueryFieldReducer,
+    searchDataWithQueryState: searchDataWithQueryReducer,
   },
 });
 

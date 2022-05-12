@@ -1,28 +1,25 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createTableService } from "../../../../services/saas/api/api";
-import { ICreateTable } from "../../../../types/saas";
-import error from "../../../../utils/error";
+import { searchDataWithQueryService } from "../../../../../services/saas/api/api";
+import { ISearchDataWithQuery } from "../../../../../types/saas";
+import error from "../../../../../utils/error";
 
-interface ICreateTableState {
+interface ISearchDataQueryState {
   data?: string;
   loading: boolean;
   error?: string | null;
 }
-const initialState: ICreateTableState = {
+const initialState: ISearchDataQueryState = {
   data: undefined,
   loading: false,
   error: undefined,
 };
 
-export const createTable = createAsyncThunk(
-  "createTable",
-  async (data: ICreateTable) => {
+export const searchDataWithQuery = createAsyncThunk(
+  "searchDataWithQuery",
+  async (data: ISearchDataWithQuery) => {
     // async (data: ITableCreateData) => {
     try {
-      const response = await createTableService(
-        data.tenantId,
-        data.requestData
-      );
+      const response = await searchDataWithQueryService(data);
       console.log(
         `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
       );
@@ -37,20 +34,20 @@ export const createTable = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "createTableSlice",
+  name: "searchDataWithQuerySlice",
   initialState,
   reducers: {},
   extraReducers(builder): void {
-    builder.addCase(createTable.pending, (state) => {
+    builder.addCase(searchDataWithQuery.pending, (state) => {
       state.data = undefined;
       state.loading = true;
       state.error = undefined;
     });
-    builder.addCase(createTable.fulfilled, (state, action) => {
+    builder.addCase(searchDataWithQuery.fulfilled, (state, action) => {
       state.data = action.payload;
       state.loading = false;
     });
-    builder.addCase(createTable.rejected, (state, action: any) => {
+    builder.addCase(searchDataWithQuery.rejected, (state, action: any) => {
       state.loading = false;
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];
