@@ -12,7 +12,7 @@ export const initialState: IPolicyCreateState = {
       Per: 0,
       ThrottleInterval: 0,
       ThrottleRetries: 0,
-      State: "",
+      State: "active",
       KeyExpiresIn: 0,
       Tags: [],
       APIs: [],
@@ -26,6 +26,7 @@ export const initialState: IPolicyCreateState = {
     },
     errors: {
       Name: "",
+      Policies: "",
       GlobalLimit: {
         ApiId: "",
         Per: "",

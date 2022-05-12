@@ -9,7 +9,7 @@ export const regexForListenPath = /^\/[\dA-Za-z]*\/$/;
 export const regexForTagetUrl =
   /^(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*(?:\([\d!#$%&+,./:=?@A-Z\\_|-]*\)|[\d#$%&+/=@A-Z\\_|])*/;
 
-export const regexForNumber = /^\d*$/;
+export const regexForNumber = /^-?\d+$/;
 
 export const regexForOverrideTarget =
   /^(?:https?|ftp|file):\/\/(?:\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*(?:\([\d!#$%&+,./:=?@A-Z\\_|-]*\)|[\d#$%&+/=@A-Z\\_|])*/;

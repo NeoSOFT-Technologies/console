@@ -208,7 +208,10 @@ export default function PathBased(props: IProps) {
               <div style={{ display: "inline-flex", width: "100%" }}>
                 <AccordionButton>
                   {props.current === "policy"
-                    ? props.policystate?.data.form.APIs[props.indexdata!].Name
+                    ? props.policystate?.data.form.APIs[props.indexdata!].Name +
+                      " | " +
+                      props.policystate?.data.form.APIs[props.indexdata!]
+                        .AuthType
                     : props.state?.data.form.AccessRights[props.indexdata!]
                         .ApiName}
                 </AccordionButton>

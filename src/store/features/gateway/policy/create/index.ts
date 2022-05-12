@@ -72,6 +72,7 @@ export interface Limiting {
 
 export interface IError {
   Name: "";
+  Policies: "";
   GlobalLimit: Limiting;
   PerApiLimit: Limiting[];
 }

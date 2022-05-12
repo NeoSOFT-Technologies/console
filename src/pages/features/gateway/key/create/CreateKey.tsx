@@ -41,34 +41,18 @@ export default function CreateKey() {
   async function handleSubmitKey(event: FormEvent) {
     event.preventDefault();
     let validate: any;
+    // noted
     const validateFieldValue = state.data.form.KeyName.length > 0;
     if (!validateFieldValue) {
-      // setFormErrorkey(
-      //   { ...state.data.errors, KeyName: "Name is required" },
-      //   dispatch
-      // );
       dispatch(
         setFormErrors({ ...state.data.errors, KeyName: "Name is required" })
       );
-      // TabIcon = <i className="bi bi-trash-fill menu-icon"></i>;
     }
     if (state.data.errors !== undefined) {
       validate = Object.values(state.data.errors).every(
         (x) => x === null || x === ""
       );
-      // validateFieldValue = state.data.form.KeyName.length > 0;
-      // if (!validateFieldValue) {
-      //   // setFormErrorkey(
-      //   //   { ...state.data.errors, KeyName: "Name is required" },
-      //   //   dispatch
-      //   // );
-      //   dispatch(
-      //     setFormErrors({ ...state.data.errors, KeyName: "Name is required" })
-      //   );
-      //   // TabIcon = <i className="bi bi-trash-fill menu-icon"></i>;
-      // }
 
-      // if (state.data.form.KeyName === "") validate = false;
       console.log(
         "error",
         validate,
@@ -255,7 +239,6 @@ export default function CreateKey() {
                                 <i className="bi bi-info-circle-fill text-danger"></i>
                               ) : (
                                 ""
-                                // <i className=" bi bi-file-earmark-check test-info"></i>
                               )}
                               &nbsp; Configurations
                             </span>

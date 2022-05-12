@@ -28,10 +28,9 @@ export default function GlobalRateLimit(props: IProps) {
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
   );
-
+  let perapi = { ...props.state?.data.errors?.GlobalLimit! };
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    let perapi = { ...props.state?.data.errors?.GlobalLimit! };
     switch (name) {
       case "rate":
         perapi = {
@@ -231,38 +230,52 @@ export default function GlobalRateLimit(props: IProps) {
   useEffect(() => {
     function setRateValue() {
       if (rate === true) {
-        console.log("Rate");
-        props.current === "policy"
-          ? dispatch(
-              setForm({
-                ...state.data.form,
-                Rate: -1,
-                Per: -1,
-              })
-            )
-          : dispatch(
-              setForms({
-                ...states.data.form,
-                Rate: -1,
-                Per: -1,
-              })
-            );
+        if (props.current === "policy") {
+          dispatch(
+            setForm({
+              ...state.data.form,
+              Rate: -1,
+              Per: -1,
+            })
+          );
+          perapi = {
+            ...perapi,
+            Rate: "",
+            Per: "",
+          };
+          dispatch(
+            setFormError({
+              ...state.data.errors,
+              GlobalLimit: perapi,
+            })
+          );
+        } else {
+          dispatch(
+            setForms({
+              ...states.data.form,
+              Rate: -1,
+              Per: -1,
+            })
+          );
+        }
       } else {
-        props.current === "policy"
-          ? dispatch(
-              setForm({
-                ...state.data.form,
-                Rate: 0,
-                Per: 0,
-              })
-            )
-          : dispatch(
-              setForms({
-                ...states.data.form,
-                Rate: 0,
-                Per: 0,
-              })
-            );
+        if (props.current === "policy") {
+          dispatch(
+            setForm({
+              ...state.data.form,
+              Rate: 0,
+              Per: 0,
+            })
+          );
+        } else {
+          dispatch(
+            setForms({
+              ...states.data.form,
+              Rate: 0,
+              Per: 0,
+            })
+          );
+        }
       }
     }
     setRateValue();
@@ -271,22 +284,34 @@ export default function GlobalRateLimit(props: IProps) {
   useEffect(() => {
     function setThrottleValue() {
       if (throttle === true) {
-        console.log("throttle");
-        props.current === "policy"
-          ? dispatch(
-              setForm({
-                ...state.data.form,
-                ThrottleInterval: -1,
-                ThrottleRetries: -1,
-              })
-            )
-          : dispatch(
-              setForms({
-                ...states.data.form,
-                ThrottleInterval: -1,
-                ThrottleRetries: -1,
-              })
-            );
+        if (props.current === "policy") {
+          dispatch(
+            setForm({
+              ...state.data.form,
+              ThrottleInterval: -1,
+              ThrottleRetries: -1,
+            })
+          );
+          perapi = {
+            ...perapi,
+            ThrottleRetries: "",
+            ThrottleInterval: "",
+          };
+          dispatch(
+            setFormError({
+              ...state.data.errors,
+              GlobalLimit: perapi,
+            })
+          );
+        } else {
+          dispatch(
+            setForms({
+              ...states.data.form,
+              ThrottleInterval: -1,
+              ThrottleRetries: -1,
+            })
+          );
+        }
       } else {
         props.current === "policy"
           ? dispatch(
@@ -311,22 +336,33 @@ export default function GlobalRateLimit(props: IProps) {
   useEffect(() => {
     function setQuotaValue() {
       if (quota === true) {
-        console.log("Quota");
-        props.current === "policy"
-          ? dispatch(
-              setForm({
-                ...state.data.form,
-                MaxQuota: -1,
-                QuotaRate: -1,
-              })
-            )
-          : dispatch(
-              setForms({
-                ...states.data.form,
-                Quota: -1,
-                QuotaRenewalRate: -1,
-              })
-            );
+        if (props.current === "policy") {
+          dispatch(
+            setForm({
+              ...state.data.form,
+              MaxQuota: -1,
+              QuotaRate: -1,
+            })
+          );
+          perapi = {
+            ...perapi,
+            Quota: "",
+          };
+          dispatch(
+            setFormError({
+              ...state.data.errors,
+              GlobalLimit: perapi,
+            })
+          );
+        } else {
+          dispatch(
+            setForms({
+              ...states.data.form,
+              Quota: -1,
+              QuotaRenewalRate: -1,
+            })
+          );
+        }
       } else {
         props.current === "policy"
           ? dispatch(
