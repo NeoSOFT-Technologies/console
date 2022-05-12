@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Form, Col, Row, Button, Table } from "react-bootstrap";
 import Spinner from "../../../../../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
+import {
+  setFormErrors,
+  regexForIssuer,
+} from "../../../../../../../../resources/gateway/api/api-constants";
 import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
 import { IPolicyListState } from "../../../../../../../../store/features/gateway/policy/list";
 import { getPolicyList } from "../../../../../../../../store/features/gateway/policy/list/slice";
@@ -37,6 +42,21 @@ export default function OpenIdConnectAuthentication() {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { name, value } = event.target;
+    switch (name) {
+      case "issuer":
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: regexForIssuer.test(value)
+              ? ""
+              : "Please enter a Valid Issuer URL",
+          },
+          dispatch
+        );
+        break;
+      default:
+        break;
+    }
     const newFormData: any = { ...addFormData };
     newFormData[name] = value;
 
@@ -48,65 +68,198 @@ export default function OpenIdConnectAuthentication() {
     const newFormData: any = [...addClientFormData];
     newFormData[index] = { ...newFormData[index], [name]: value };
     setClientAddFormData(newFormData);
-    // setClientAddFormData((preState : any)  => ({
-    //   newFormData[index] : {
-    //     ...preState[index],
-    //     [name]: value,
-    //   },
-    // }));
   };
 
   const handleIssuerAddClick = () => {
-    const clientObj: any = {
-      clientId: "",
-      policy: "",
-    };
-    setClientAddFormData([...addClientFormData, clientObj]);
+    if (state.data.form.OpenidOptions.Providers.length > 0) {
+      const filtered = state.data.form.OpenidOptions.Providers.filter(
+        (x) => x.Issuer === addFormData.issuer
+      );
+      if (filtered.length > 0) {
+        ToastAlert("This issuer has been already added!", "error");
+      } else {
+        const clientObj: any = {
+          clientId: "",
+          policy: "",
+        };
+        setClientAddFormData([...addClientFormData, clientObj]);
 
-    const providerList = [...state.data.form.OpenidOptions.Providers];
-    const list = {
-      Issuer: addFormData.issuer,
-      Client_ids: [],
-    };
-    providerList.push(list);
+        const providerList = [...state.data.form.OpenidOptions.Providers];
+        const list = {
+          Issuer: addFormData.issuer,
+          Client_ids: [],
+        };
+        providerList.push(list);
 
-    const OpenidOptionsData = {
-      Providers: providerList,
-    };
-    dispatch(setForm({ ...state.data.form, OpenidOptions: OpenidOptionsData }));
-    setAddFormData({ issuer: "", client_ids: [] });
+        const OpenidOptionsData = {
+          Providers: providerList,
+        };
+        dispatch(
+          setForm({ ...state.data.form, OpenidOptions: OpenidOptionsData })
+        );
+        setAddFormData({ issuer: "", client_ids: [] });
+      }
+    } else {
+      const clientObj: any = {
+        clientId: "",
+        policy: "",
+      };
+      setClientAddFormData([...addClientFormData, clientObj]);
+
+      const providerList = [...state.data.form.OpenidOptions.Providers];
+      const list = {
+        Issuer: addFormData.issuer,
+        Client_ids: [],
+      };
+      providerList.push(list);
+
+      const OpenidOptionsData = {
+        Providers: providerList,
+      };
+      dispatch(
+        setForm({ ...state.data.form, OpenidOptions: OpenidOptionsData })
+      );
+      setAddFormData({ issuer: "", client_ids: [] });
+    }
   };
 
-  const handleClientAddClick = (index: any) => {
-    const providerList = [...state.data.form.OpenidOptions.Providers];
+  const handleClientAddClick = (issuerIndex: any, event: any) => {
+    event.preventDefault();
+    if (
+      state.data.form.OpenidOptions.Providers[issuerIndex].Client_ids.length > 0
+    ) {
+      const filteredClientId = state.data.form.OpenidOptions.Providers[
+        issuerIndex
+      ].Client_ids.filter(
+        (x) => x.ClientId === addClientFormData[issuerIndex].clientId
+      );
+      if (filteredClientId.length > 0) {
+        if (
+          filteredClientId[0].Policy === addClientFormData[issuerIndex].policy
+        ) {
+          ToastAlert(
+            "This client with same policy name has been already added!",
+            "error"
+          );
+        } else {
+          const providerList = [...state.data.form.OpenidOptions.Providers];
 
-    const clientList = [
-      ...state.data.form.OpenidOptions.Providers[index].Client_ids,
-    ];
+          const clientList = [
+            ...state.data.form.OpenidOptions.Providers[issuerIndex].Client_ids,
+          ];
+          for (const element of state.data.form.OpenidOptions.Providers[
+            issuerIndex
+          ].Client_ids) {
+            if (element.ClientId === addClientFormData[issuerIndex].clientId) {
+              const i = clientList.findIndex(
+                (e) => e.ClientId === addClientFormData[issuerIndex].clientId
+              );
+              // const newClient = clientList[clientIndex];
+              // console.log("newClient before :", newClient);
+              // newClient.Policy = addClientFormData[issuerIndex].policy;
+              // console.log("newClient after :", newClient);
+              // clientList[clientIndex] = newClient;
+              // console.log("clientList after:", clientList);
+              // providerList[issuerIndex] = {
+              //   ...providerList[issuerIndex],
+              //   Client_ids: [...clientList],
+              // };
 
-    const list = {
-      ClientId: addClientFormData[index].clientId,
-      Policy: addClientFormData[index].policy,
-    };
-    clientList.push(list);
+              clientList.splice(i, 1);
+              const list = {
+                ClientId: addClientFormData[issuerIndex].clientId,
+                Policy: addClientFormData[issuerIndex].policy,
+              };
+              clientList.push(list);
+              providerList[issuerIndex] = {
+                ...providerList[issuerIndex],
+                Client_ids: [...clientList],
+              };
+              const OpenidOptionsData = {
+                Providers: providerList,
+              };
+              dispatch(
+                setForm({
+                  ...state.data.form,
+                  OpenidOptions: OpenidOptionsData,
+                })
+              );
 
-    providerList[index] = {
-      ...providerList[index],
-      Client_ids: [...clientList],
-    };
+              const clientObj = {
+                clientId: "",
+                policy: "",
+              };
+              const newFormData: any = [...addClientFormData];
+              newFormData[issuerIndex] = clientObj;
+              setClientAddFormData(newFormData);
+            }
+          }
+        }
+      } else {
+        const providerList = [...state.data.form.OpenidOptions.Providers];
 
-    const OpenidOptionsData = {
-      Providers: providerList,
-    };
-    dispatch(setForm({ ...state.data.form, OpenidOptions: OpenidOptionsData }));
+        const clientList = [
+          ...state.data.form.OpenidOptions.Providers[issuerIndex].Client_ids,
+        ];
 
-    const clientObj = {
-      clientId: "",
-      policy: "",
-    };
-    const newFormData: any = [...addClientFormData];
-    newFormData[index] = clientObj;
-    setClientAddFormData(newFormData);
+        const list = {
+          ClientId: addClientFormData[issuerIndex].clientId,
+          Policy: addClientFormData[issuerIndex].policy,
+        };
+        clientList.push(list);
+
+        providerList[issuerIndex] = {
+          ...providerList[issuerIndex],
+          Client_ids: [...clientList],
+        };
+
+        const OpenidOptionsData = {
+          Providers: providerList,
+        };
+        dispatch(
+          setForm({ ...state.data.form, OpenidOptions: OpenidOptionsData })
+        );
+
+        const clientObj = {
+          clientId: "",
+          policy: "",
+        };
+        const newFormData: any = [...addClientFormData];
+        newFormData[issuerIndex] = clientObj;
+        setClientAddFormData(newFormData);
+      }
+    } else {
+      const providerList = [...state.data.form.OpenidOptions.Providers];
+      const clientList = [
+        ...state.data.form.OpenidOptions.Providers[issuerIndex].Client_ids,
+      ];
+
+      const list = {
+        ClientId: addClientFormData[issuerIndex].clientId,
+        Policy: addClientFormData[issuerIndex].policy,
+      };
+      clientList.push(list);
+
+      providerList[issuerIndex] = {
+        ...providerList[issuerIndex],
+        Client_ids: [...clientList],
+      };
+
+      const OpenidOptionsData = {
+        Providers: providerList,
+      };
+      dispatch(
+        setForm({ ...state.data.form, OpenidOptions: OpenidOptionsData })
+      );
+
+      const clientObj = {
+        clientId: "",
+        policy: "",
+      };
+      const newFormData: any = [...addClientFormData];
+      newFormData[issuerIndex] = clientObj;
+      setClientAddFormData(newFormData);
+    }
   };
 
   const deleteIssuerTableRows = (
@@ -194,12 +347,17 @@ export default function OpenIdConnectAuthentication() {
                   <Form.Group className="mt-0">
                     <Form.Control
                       type="text"
-                      placeholder="accounts.google.com"
+                      placeholder="Issuer"
                       id="issuer"
                       name="issuer"
                       value={addFormData.issuer}
+                      isInvalid={!!state.data.errors?.issuer}
+                      isValid={!state.data.errors?.issuer}
                       onChange={handleIssuerInputChange}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {state.data.errors?.issuer}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md={2}>
@@ -246,17 +404,6 @@ export default function OpenIdConnectAuthentication() {
                                           </thead>
                                           <tbody>
                                             <tr>
-                                              {/* <td>
-                                                    <button
-                                                      className="btn bi bi-trash-fill"
-                                                      onClick={(event) =>
-                                                        deleteIssuerTableRows(
-                                                          index,
-                                                          event
-                                                        )
-                                                      }
-                                                    ></button>
-                                                  </td> */}
                                               <td>
                                                 <input
                                                   type="text"
@@ -322,7 +469,10 @@ export default function OpenIdConnectAuthentication() {
                                                 <button
                                                   className="btn btn-outline-dark btn-dark"
                                                   onClick={() =>
-                                                    handleClientAddClick(index)
+                                                    handleClientAddClick(
+                                                      index,
+                                                      event
+                                                    )
                                                   }
                                                   disabled={
                                                     !(
@@ -434,14 +584,6 @@ export default function OpenIdConnectAuthentication() {
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      {/* <td>
-                                        <button
-                                          className="btn bi bi-trash-fill"
-                                          onClick={(event) =>
-                                            deleteIssuerTableRows(index, event)
-                                          }
-                                        ></button>
-                                      </td> */}
                                       <td>
                                         <input
                                           type="text"
@@ -498,7 +640,7 @@ export default function OpenIdConnectAuthentication() {
                                         <button
                                           className="btn btn-outline-dark btn-dark"
                                           onClick={() =>
-                                            handleClientAddClick(index)
+                                            handleClientAddClick(index, event)
                                           }
                                           disabled={
                                             !(

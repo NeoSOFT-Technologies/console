@@ -3,6 +3,7 @@ import { Form, Row, Col, Accordion, AccordionButton } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 // import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
 import Spinner from "../../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
 import { setForms } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
@@ -192,6 +193,7 @@ export default function PathBased(props: IProps) {
       console.log(index, removeApi);
       removeApi.splice(index, 1);
       console.log("splicekey", removeApi);
+      ToastAlert("Api removed", "warning");
       dispatch(
         setForms({ ...props.state?.data.form, AccessRights: removeApi })
       );
@@ -264,12 +266,16 @@ export default function PathBased(props: IProps) {
                   </Row>
                   <Row>
                     <Col md="12">
-                      {versions.length > 0 ? (
+                      {props.state?.data.form !== undefined &&
+                      props.state?.data.form.AccessRights[props.indexdata!]
+                        .Versions?.length > 0 ? (
                         <div
                           style={{ width: 960 }}
                           className="float-lg-left border rounded p-4"
                         >
-                          {versions.map((data: any, index: any) => {
+                          {props.state?.data.form.AccessRights[
+                            props.indexdata!
+                          ].Versions.map((data: any, index: any) => {
                             return (
                               <div key={index} className="border-0">
                                 <i

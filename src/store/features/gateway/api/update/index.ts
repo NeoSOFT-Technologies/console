@@ -88,6 +88,10 @@ export interface IError {
   isQuotaDisabled: string;
   LoadBalancingTargets: string;
   OverrideTarget: string;
+
+  issuer: string;
+  ClientId: string;
+  Policy: string;
   Whitelist: string;
   Blacklist: string;
 }

@@ -74,6 +74,10 @@ export const initialState: IApiGetByIdState = {
       isQuotaDisabled: "",
       LoadBalancingTargets: "",
       OverrideTarget: "",
+
+      issuer: "",
+      ClientId: "",
+      Policy: "",
       Whitelist: "",
       Blacklist: "",
     },

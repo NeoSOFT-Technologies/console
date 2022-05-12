@@ -14,6 +14,9 @@ export const regexForNumber = /^-?\d+$/;
 export const regexForOverrideTarget =
   /^(?:https?|ftp|file):\/\/(?:\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*(?:\([\d!#$%&+,./:=?@A-Z\\_|-]*\)|[\d#$%&+/=@A-Z\\_|])*/;
 
+export const regexForIssuer =
+  /^(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*(?:\([\d!#$%&+,./:=?@A-Z\\_|-]*\)|[\d#$%&+/=@A-Z\\_|])*/;
+
 export const regexForAllowedOrigins =
   /^(?:https?|ftp|file):\/\/|\*(?:\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*(?:\([\d!#$%&+,./:=?@A-Z\\_|-]*\)|[\d#$%&+/=@A-Z\\_|])*/;
 
