@@ -2,24 +2,43 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Pagination from "react-bootstrap/Pagination";
-import { getTables } from "../../../../store/features/saas/get-tables/slice";
+import { searchDataWithQueryField } from "../../../../store/features/saas/search-data/with-query-field/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import {
+  ISearchDataWithQueryField,
+  ITableSchema,
+} from "../../../../types/saas";
 import "./style.css";
 
-export default function GetTables() {
+export default function GetSearchData() {
   const dispatch = useAppDispatch();
-  const tableData = useAppSelector((state) => state.getTableState);
+  const searchData = useAppSelector(
+    (state) => state.searchDataWithQueryFieldState
+  );
   const [tenantId, setTenantId] = useState("");
-  const getTableData: React.FormEventHandler<HTMLFormElement> = (
+  const params: ITableSchema = {
+    tenantId: "101",
+    tableName: "Employee",
+  };
+  const initialState: ISearchDataWithQueryField = {
+    queryField: "*",
+    searchTerm: "*",
+    startRecord: "0",
+    pageSize: "5",
+    orderBy: "id",
+    order: "asc",
+    requestParams: params,
+  };
+  const getSearchData: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
   ) => {
     event.preventDefault();
     // console.log(tenantId);
-    dispatch(getTables(tenantId));
+    dispatch(searchDataWithQueryField(initialState));
   };
   useEffect(() => {
-    // console.log(tableData);
-  }, [tableData.data, tableData.error]);
+    console.log("Use Effect of Search Data " + searchData);
+  }, [searchData.data, searchData.error]);
   return (
     <div>
       <div className="card">
@@ -27,7 +46,7 @@ export default function GetTables() {
           <br></br>
           <h4 className="ml-4 mb-4">Search Data</h4>
 
-          <Form onSubmit={getTableData}>
+          <Form onSubmit={getSearchData}>
             <Row className="ml-3 mr-3">
               <Col lg="2">
                 <Form.Group controlId="formBasicEmail">
@@ -182,7 +201,7 @@ export default function GetTables() {
                 </tr>
               </tbody>
             </Table>
-            {tableData.data !== undefined && (
+            {/* {tableData.data !== undefined && (
               <Table striped bordered hover>
                 <thead>
                   <tr>
@@ -203,7 +222,7 @@ export default function GetTables() {
                   ))}
                 </tbody>
               </Table>
-            )}
+            )} */}
           </div>
           <div className="table-responsive"></div>
           <Pagination className="d-flex justify-content-center">

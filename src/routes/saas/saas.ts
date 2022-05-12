@@ -10,7 +10,7 @@ const saasRoutes = [
     icon: "bi bi-list-ul",
   },
   {
-    path: "/saas/SearchData",
+    path: "/saas/searchData",
     title: "Search Data",
     icon: "bi bi-list-ul",
   },
