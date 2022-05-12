@@ -1,28 +1,31 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { restoreTableService } from "../../../../services/saas/api/api";
-import { ITableSchema } from "../../../../types/saas";
-import error from "../../../../utils/error";
+import { getTableSchemaService } from "../../../../../services/saas/api/api";
+import { ITableSchema } from "../../../../../types/saas";
+import error from "../../../../../utils/error";
 
-interface IRestoreTableState {
+interface IGetTableSchemaState {
   data?: string;
   loading: boolean;
   error?: string | null;
 }
-const initialState: IRestoreTableState = {
+const initialState: IGetTableSchemaState = {
   data: undefined,
   loading: false,
   error: undefined,
 };
 
-export const restoreTable = createAsyncThunk(
-  "restoreTableByTableName",
+export const getTableSchema = createAsyncThunk(
+  "getTableSchemaByTableName",
   async (data: ITableSchema) => {
     try {
-      const response = await restoreTableService(data.tableName, data.tenantId);
+      const response = await getTableSchemaService(
+        data.tableName,
+        data.tenantId
+      );
       console.log(
         `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
       );
-      return response.data;
+      return response.data.data;
     } catch (error_: any) {
       // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
@@ -33,20 +36,20 @@ export const restoreTable = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "restoreTableSlice",
+  name: "getTableSchemaSlice",
   initialState,
   reducers: {},
   extraReducers(builder): void {
-    builder.addCase(restoreTable.pending, (state) => {
+    builder.addCase(getTableSchema.pending, (state) => {
       state.data = undefined;
       state.loading = true;
       state.error = undefined;
     });
-    builder.addCase(restoreTable.fulfilled, (state, action) => {
+    builder.addCase(getTableSchema.fulfilled, (state, action) => {
       state.data = action.payload;
       state.loading = false;
     });
-    builder.addCase(restoreTable.rejected, (state, action: any) => {
+    builder.addCase(getTableSchema.rejected, (state, action: any) => {
       state.loading = false;
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];

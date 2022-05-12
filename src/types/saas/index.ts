@@ -34,3 +34,20 @@ export interface IInputData {
   inputData: string;
   requestParams: ITableSchema;
 }
+export interface ISearchDataWithQueryField {
+  queryField: string;
+  searchTerm: string;
+  startRecord: string;
+  pageSize: string;
+  orderBy: string;
+  order: string;
+  requestParams: ITableSchema;
+}
+export interface ISearchDataWithQuery {
+  searchQuery: string;
+  startRecord: string;
+  pageSize: string;
+  orderBy: string;
+  order: string;
+  requestParams: ITableSchema;
+}
