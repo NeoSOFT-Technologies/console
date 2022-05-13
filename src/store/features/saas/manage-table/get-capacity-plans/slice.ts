@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getCapacityPlansService } from "../../../../services/saas/api/api";
-import error from "../../../../utils/error";
+import { getCapacityPlansService } from "../../../../../services/saas/api/api";
+import error from "../../../../../utils/error";
 
 interface IGetCapacityPlanState {
   data?: string;

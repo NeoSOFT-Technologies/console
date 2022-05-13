@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import { getTables } from "../../../../store/features/saas/get-tables/slice";
+import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 
 export default function GetTables() {

@@ -1,55 +1,57 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getTableSchemaService } from "../../../../services/saas/api/api";
-import { ITableSchema } from "../../../../types/saas";
-import error from "../../../../utils/error";
+import { updateTableSchemaService } from "../../../../../services/saas/api/api";
+import { IUpdateTable } from "../../../../../types/saas";
+import error from "../../../../../utils/error";
 
-interface IGetTableSchemaState {
+interface IUpdateTableSchemaState {
   data?: string;
   loading: boolean;
   error?: string | null;
 }
-const initialState: IGetTableSchemaState = {
+const initialState: IUpdateTableSchemaState = {
   data: undefined,
   loading: false,
   error: undefined,
 };
 
-export const getTableSchema = createAsyncThunk(
-  "getTableSchemaByTableName",
-  async (data: ITableSchema) => {
+export const updateTableSchema = createAsyncThunk(
+  "updateSchemaTable",
+  async (data: IUpdateTable) => {
+    // async (data: ITableCreateData) => {
     try {
-      const response = await getTableSchemaService(
-        data.tableName,
-        data.tenantId
+      const response = await updateTableSchemaService(
+        data.requestParams.tableName,
+        data.requestParams.tenantId,
+        data.requestData
       );
       console.log(
         `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
       );
-      return response.data.data;
+      return response.data;
     } catch (error_: any) {
       // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
-      console.log(`Error : ` + JSON.stringify(error_));
+      // console.log(`Error : ` + JSON.stringify(error_));
       throw new Error(errorMessage);
     }
   }
 );
 
 const slice = createSlice({
-  name: "getTableSchemaSlice",
+  name: "updateSchemaTableSlice",
   initialState,
   reducers: {},
   extraReducers(builder): void {
-    builder.addCase(getTableSchema.pending, (state) => {
+    builder.addCase(updateTableSchema.pending, (state) => {
       state.data = undefined;
       state.loading = true;
       state.error = undefined;
     });
-    builder.addCase(getTableSchema.fulfilled, (state, action) => {
+    builder.addCase(updateTableSchema.fulfilled, (state, action) => {
       state.data = action.payload;
       state.loading = false;
     });
-    builder.addCase(getTableSchema.rejected, (state, action: any) => {
+    builder.addCase(updateTableSchema.rejected, (state, action: any) => {
       state.loading = false;
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];

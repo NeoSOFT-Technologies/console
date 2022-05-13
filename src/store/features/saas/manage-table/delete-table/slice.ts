@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { deleteTableService } from "../../../../services/saas/api/api";
-import { ITableSchema } from "../../../../types/saas";
-import error from "../../../../utils/error";
+import { deleteTableService } from "../../../../../services/saas/api/api";
+import { ITableSchema } from "../../../../../types/saas";
+import error from "../../../../../utils/error";
 
 interface IDeleteTableState {
   data?: string;

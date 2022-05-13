@@ -1,4 +1,9 @@
-import { ITableCreateData, IUpdateTableSchemaData } from "../../../types/saas";
+import {
+  ISearchDataWithQuery,
+  ISearchDataWithQueryField,
+  ITableCreateData,
+  IUpdateTableSchemaData,
+} from "../../../types/saas";
 import apiFactory from "../../../utils/api";
 
 export function getTablesService(tenantId: string) {
@@ -49,6 +54,18 @@ export function inputDataService(
   return apiFactory().post(
     `ingest/${tableName}/?tenantId=${tenantId}`,
     inputData
+  );
+}
+export function searchDataWithQueryFieldService(
+  data: ISearchDataWithQueryField
+) {
+  return apiFactory().get(
+    `${data.requestParams.tableName}?tenantId=${data.requestParams.tenantId}&queryField=${data.queryField}&searchTerm=${data.searchTerm}&startRecord=${data.startRecord}&pageSize=${data.pageSize}&orderBy=${data.orderBy}&order=${data.order}`
+  );
+}
+export function searchDataWithQueryService(data: ISearchDataWithQuery) {
+  return apiFactory().get(
+    `${data.requestParams.tableName}/?tenantId=${data.requestParams.tenantId}&searchQuery=${data.searchQuery}&startRecord=${data.startRecord}&pageSize=${data.pageSize}&orderBy=${data.orderBy}&order=${data.order}`
   );
 }
 // export function apiListService(currentPage: number, pageSize: number) {

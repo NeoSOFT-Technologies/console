@@ -1,28 +1,28 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { restoreTableService } from "../../../../services/saas/api/api";
-import { ITableSchema } from "../../../../types/saas";
-import error from "../../../../utils/error";
+import { getTablesService } from "../../../../../services/saas/api/api";
+import error from "../../../../../utils/error";
 
-interface IRestoreTableState {
-  data?: string;
+interface IGetTableState {
+  [x: string]: any;
+  data?: string[];
   loading: boolean;
   error?: string | null;
 }
-const initialState: IRestoreTableState = {
+const initialState: IGetTableState = {
   data: undefined,
   loading: false,
   error: undefined,
 };
 
-export const restoreTable = createAsyncThunk(
-  "restoreTableByTableName",
-  async (data: ITableSchema) => {
+export const getTables = createAsyncThunk(
+  "getTable/getTables",
+  async (id: string) => {
     try {
-      const response = await restoreTableService(data.tableName, data.tenantId);
+      const response = await getTablesService(id);
       console.log(
         `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
       );
-      return response.data;
+      return response.data.data;
     } catch (error_: any) {
       // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
@@ -33,20 +33,20 @@ export const restoreTable = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "restoreTableSlice",
+  name: "getTableSlice",
   initialState,
   reducers: {},
   extraReducers(builder): void {
-    builder.addCase(restoreTable.pending, (state) => {
+    builder.addCase(getTables.pending, (state) => {
       state.data = undefined;
       state.loading = true;
       state.error = undefined;
     });
-    builder.addCase(restoreTable.fulfilled, (state, action) => {
+    builder.addCase(getTables.fulfilled, (state, action) => {
       state.data = action.payload;
       state.loading = false;
     });
-    builder.addCase(restoreTable.rejected, (state, action: any) => {
+    builder.addCase(getTables.rejected, (state, action: any) => {
       state.loading = false;
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];

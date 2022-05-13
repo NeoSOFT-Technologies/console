@@ -10,8 +10,18 @@ const saasRoutes = [
     icon: "bi bi-list-ul",
   },
   {
-    path: "/saas/SearchData",
+    path: "/saas/searchData",
     title: "Search Data",
+    icon: "bi bi-list-ul",
+  },
+  {
+    path: "/saas/manageTable",
+    title: "Manage Table",
+    icon: "bi bi-list-ul",
+  },
+  {
+    path: "/saas/restoreTable",
+    title: "Restore Table",
     icon: "bi bi-list-ul",
   },
   // {
