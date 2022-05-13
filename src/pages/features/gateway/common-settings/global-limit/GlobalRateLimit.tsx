@@ -31,6 +31,7 @@ export default function GlobalRateLimit(props: IProps) {
   let perapi = { ...props.state?.data.errors?.GlobalLimit! };
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
+
     switch (name) {
       case "rate":
         perapi = {
@@ -408,27 +409,6 @@ export default function GlobalRateLimit(props: IProps) {
     }
     setInitialValue();
   }, []);
-
-  // function handleThrottleChange(evt: any) {
-  //   setThrottle(evt.target.checked);
-  //   if (throttle === false) {
-  //     setThrottleRetry("Disabled throttling");
-  //     setThrottleInterval("Disabled throttling");
-  //   } else {
-  //     setThrottleRetry("Enter retry limit");
-  //     setThrottleInterval("Enter interval");
-  //   }
-  // }
-
-  // function handleQuotaChange(evt: any) {
-  //   setQuota(evt.target.checked);
-  //   if (quota === false) {
-  //     setQuotaPerPeriod("Unlimited");
-  //   } else {
-  //     setQuotaPerPeriod("Enter request per period");
-  //   }
-  // }
-
   return (
     <>
       {state.loading === false ? (
@@ -488,12 +468,12 @@ export default function GlobalRateLimit(props: IProps) {
                           }
                           isInvalid={
                             props.current === "policy"
-                              ? !!state.data.errors?.GlobalLimit.Rate
+                              ? !!state.data.errors?.GlobalLimit.Rate!
                               : !!states.data.errors?.Rate
                           }
                           isValid={
                             props.current === "policy"
-                              ? !state.data.errors?.GlobalLimit.Rate
+                              ? !state.data.errors?.GlobalLimit.Rate!
                               : !states.data.errors?.Rate
                           }
                           disabled={rate}
