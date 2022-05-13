@@ -1,10 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { searchDataWithQueryFieldService } from "../../../../../services/saas/api/api";
-import { ISearchDataWithQueryField } from "../../../../../types/saas";
+import {
+  ISearchDataWithQueryField,
+  ISearchRecords,
+} from "../../../../../types/saas";
 import error from "../../../../../utils/error";
 
 interface ISearchDataQueryFieldState {
-  data?: string;
+  data?: ISearchRecords[];
   loading: boolean;
   error?: string | null;
 }
@@ -20,10 +23,11 @@ export const searchDataWithQueryField = createAsyncThunk(
     // async (data: ITableCreateData) => {
     try {
       const response = await searchDataWithQueryFieldService(data);
-      console.log(
-        `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
-      );
-      return response.data;
+      // console.log(
+      //   `[createAsyncThunk] Response Data : ` +
+      //     JSON.stringify(response.data.results.data)
+      // );
+      return response.data.results.data;
     } catch (error_: any) {
       // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
