@@ -24,7 +24,8 @@ export default function partitions() {
                 id="accessrights"
                 name="Partitions.acl"
                 label="Enforce access rights"
-                checked={state.data.form.Partitions?.acl!}
+                checked={true}
+                // checked={state.data.form.Partitions?.acl!}
                 onChange={(e: any) => validateForm(e)}
                 // onChange={(e: any) => setRate(e.target.checked)}
               />
@@ -39,7 +40,8 @@ export default function partitions() {
                 id="usagequota"
                 name="Partitions.quota"
                 label="Enforce usage quota"
-                checked={state.data.form.Partitions.quota}
+                checked={true}
+                // checked={state.data.form.Partitions.quota}
                 onChange={(e: any) => validateForm(e)}
                 // onChange={(e: any) => setRate(e.target.checked)}
               />
@@ -54,7 +56,8 @@ export default function partitions() {
                 id="GlobalRate"
                 name="Partitions.rate_limit"
                 label="Enforce rate limit"
-                checked={state.data.form.Partitions.rate_limit}
+                checked={true}
+                // checked={state.data.form.Partitions.rate_limit}
                 onChange={(e: any) => validateForm(e)}
               />
 

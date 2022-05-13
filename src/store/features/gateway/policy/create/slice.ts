@@ -7,8 +7,9 @@ import {
 } from "../../../../../services/gateway/policy/policy";
 import error from "../../../../../utils/error";
 import { initialState } from "./payload";
-import { IGetPolicyByIdData } from ".";
-
+import { IGetPolicyByIdData, IPolicyCreateState } from ".";
+// export const emptyState: IPolicyCreateState = { ...initialState };
+export let policystate: IPolicyCreateState;
 export const createPolicy = createAsyncThunk(
   "policy",
   async (data: IGetPolicyByIdData) => {
@@ -45,7 +46,14 @@ export const getPolicybyId = createAsyncThunk(
           response.data.Data.APIs[i].Limit = limits;
         }
       }
-      // console.log("response", response.data);
+      policystate = {
+        data: {
+          form: response.data.Data,
+        },
+        loading: false,
+        error: undefined,
+      };
+      // emptyState.data.form = response.data;
       return response.data;
     } catch (error_) {
       const myError = error_ as Error | AxiosError;
