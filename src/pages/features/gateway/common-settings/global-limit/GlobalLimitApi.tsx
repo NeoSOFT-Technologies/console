@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import Spinner from "../../../../../components/loader/Loader";
 import { regexForNumber } from "../../../../../resources/gateway/api/api-constants";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
@@ -31,6 +32,7 @@ export default function GlobalLimitApi(props: IProps) {
     (RootStates) => RootStates.createPolicyState
   );
 
+  const { id } = useParams();
   const perapi = [...props.state?.data.errors?.PerApiLimit!];
   function validateForm(
     event: React.ChangeEvent<HTMLInputElement>,
@@ -270,8 +272,14 @@ export default function GlobalLimitApi(props: IProps) {
           apisList[props.index!] = {
             ...apisList[props.index!],
             Limit: {
-              rate: policystate.data.form.APIs[props.index!].Limit?.rate,
-              per: policystate.data.form.APIs[props.index!].Limit?.per!,
+              rate:
+                id === undefined
+                  ? 0
+                  : policystate.data.form.APIs[props.index!].Limit?.rate,
+              per:
+                id === undefined
+                  ? 0
+                  : policystate.data.form.APIs[props.index!].Limit?.per!,
               throttle_interval:
                 props.state?.data.form.APIs[props.index!].Limit
                   ?.throttle_interval,
@@ -380,11 +388,15 @@ export default function GlobalLimitApi(props: IProps) {
               rate: props.state?.data.form.APIs[props.index!].Limit?.rate,
               per: props.state?.data.form.APIs[props.index!].Limit?.per!,
               throttle_interval:
-                policystate.data.form.APIs[props.index!].Limit
-                  ?.throttle_interval,
+                id === undefined
+                  ? 0
+                  : policystate.data.form.APIs[props.index!].Limit
+                      ?.throttle_interval,
               throttle_retry_limit:
-                policystate.data.form.APIs[props.index!].Limit
-                  ?.throttle_retry_limit,
+                id === undefined
+                  ? 0
+                  : policystate.data.form.APIs[props.index!].Limit
+                      ?.throttle_retry_limit,
               max_query_depth:
                 props.state?.data.form.APIs[props.index!].Limit
                   ?.max_query_depth,
@@ -500,15 +512,19 @@ export default function GlobalLimitApi(props: IProps) {
                 props.state?.data.form.APIs[props.index!].Limit
                   ?.max_query_depth,
               quota_max:
-                policystate.data.form.APIs[props.index!].Limit?.quota_max,
+                id === undefined
+                  ? 0
+                  : policystate.data.form.APIs[props.index!].Limit?.quota_max,
               quota_renews:
                 props.state?.data.form.APIs[props.index!].Limit?.quota_renews,
               quota_remaining:
                 props.state?.data.form.APIs[props.index!].Limit
                   ?.quota_remaining,
               quota_renewal_rate:
-                policystate.data.form.APIs[props.index!].Limit
-                  ?.quota_renewal_rate,
+                id === undefined
+                  ? 0
+                  : policystate.data.form.APIs[props.index!].Limit
+                      ?.quota_renewal_rate,
               set_by_policy:
                 props.state?.data.form.APIs[props.index!].Limit?.set_by_policy!,
             },

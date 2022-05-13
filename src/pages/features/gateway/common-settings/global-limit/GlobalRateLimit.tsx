@@ -144,11 +144,6 @@ export default function GlobalRateLimit(props: IProps) {
   const [rate, setRate] = useState(false);
   const [throttle, setThrottle] = useState(true);
   const [quota, setQuota] = useState(true);
-  // const [throttleRetry, setThrottleRetry] = useState("Disabled throttling");
-  // const [throttleInterval, setThrottleInterval] = useState(
-  //   "Disabled throttling"
-  // );
-  // const [quotaPerPeriod, setQuotaPerPeriod] = useState("Unlimited");
 
   const handlerateclick = (event: any) => {
     event.preventDefault();
