@@ -30,7 +30,6 @@ export const getPolicybyId = createAsyncThunk(
   async (id: string) => {
     try {
       const response = await getPolicyByIdService(id);
-      console.log("responsecheck", response.data);
       for (let i = 0; i < response.data.Data.APIs.length; i++) {
         if (response.data.Data.APIs[i].Limit === null) {
           const limits = {

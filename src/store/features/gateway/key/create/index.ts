@@ -69,16 +69,21 @@ export interface IGetKeyByIdData {
   Tags?: string[];
 }
 
+export interface Limiting {
+  ApiId: string;
+  Per: string;
+  Rate: string;
+  Quota: string;
+  Expires: string;
+  QuotaRenewalRate: string;
+  ThrottleInterval: string;
+  ThrottleRetries: string;
+}
+
 export interface IError {
-  KeyId?: string;
-  KeyName?: string;
-  AccessRights?: string;
-  Policies?: string;
-  Per?: string;
-  Rate?: string;
-  Quota?: string;
-  Expires?: string;
-  QuotaRenewalRate?: string;
-  ThrottleInterval?: string;
-  ThrottleRetries?: string;
+  Name: "";
+  Policies: "";
+  Expires: "";
+  GlobalLimit: Limiting;
+  PerApiLimit: Limiting[];
 }

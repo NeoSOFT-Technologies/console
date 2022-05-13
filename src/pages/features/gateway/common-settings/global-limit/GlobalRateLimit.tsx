@@ -28,7 +28,11 @@ export default function GlobalRateLimit(props: IProps) {
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
   );
-  let perapi = { ...props.state?.data.errors?.GlobalLimit! };
+  let perapi =
+    props.current === "policy"
+      ? { ...props.state?.data.errors?.GlobalLimit! }
+      : { ...props.keystate?.data.errors?.GlobalLimit! };
+
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
@@ -48,7 +52,7 @@ export default function GlobalRateLimit(props: IProps) {
           : dispatch(
               setFormErrors({
                 ...states.data.errors,
-                Rate: regexForNumber.test(value) ? "" : "Enter only Numbers",
+                GlobalLimit: perapi,
               })
             );
         break;
@@ -67,7 +71,7 @@ export default function GlobalRateLimit(props: IProps) {
           : dispatch(
               setFormErrors({
                 ...states.data.errors,
-                Per: regexForNumber.test(value) ? "" : "Enter only Numbers",
+                GlobalLimit: perapi,
               })
             );
         break;
@@ -88,9 +92,7 @@ export default function GlobalRateLimit(props: IProps) {
           : dispatch(
               setFormErrors({
                 ...states.data.errors,
-                ThrottleRetries: regexForNumber.test(value)
-                  ? ""
-                  : "Enter only Numbers",
+                GlobalLimit: perapi,
               })
             );
         break;
@@ -111,9 +113,7 @@ export default function GlobalRateLimit(props: IProps) {
           : dispatch(
               setFormErrors({
                 ...states.data.errors,
-                ThrottleInterval: regexForNumber.test(value)
-                  ? ""
-                  : "Enter only Numbers",
+                GlobalLimit: perapi,
               })
             );
         break;
@@ -132,7 +132,7 @@ export default function GlobalRateLimit(props: IProps) {
           : dispatch(
               setFormErrors({
                 ...states.data.errors,
-                Quota: regexForNumber.test(value) ? "" : "Enter only Numbers",
+                GlobalLimit: perapi,
               })
             );
         break;
@@ -253,6 +253,17 @@ export default function GlobalRateLimit(props: IProps) {
               Per: -1,
             })
           );
+          perapi = {
+            ...perapi,
+            Rate: "",
+            Per: "",
+          };
+          dispatch(
+            setFormErrors({
+              ...state.data.errors,
+              GlobalLimit: perapi,
+            })
+          );
         }
       } else {
         if (props.current === "policy") {
@@ -307,6 +318,17 @@ export default function GlobalRateLimit(props: IProps) {
               ThrottleRetries: -1,
             })
           );
+          perapi = {
+            ...perapi,
+            ThrottleRetries: "",
+            ThrottleInterval: "",
+          };
+          dispatch(
+            setFormErrors({
+              ...state.data.errors,
+              GlobalLimit: perapi,
+            })
+          );
         }
       } else {
         props.current === "policy"
@@ -356,6 +378,16 @@ export default function GlobalRateLimit(props: IProps) {
               ...states.data.form,
               Quota: -1,
               QuotaRenewalRate: -1,
+            })
+          );
+          perapi = {
+            ...perapi,
+            Quota: "",
+          };
+          dispatch(
+            setFormErrors({
+              ...state.data.errors,
+              GlobalLimit: perapi,
             })
           );
         }
@@ -464,12 +496,12 @@ export default function GlobalRateLimit(props: IProps) {
                           isInvalid={
                             props.current === "policy"
                               ? !!state.data.errors?.GlobalLimit.Rate!
-                              : !!states.data.errors?.Rate
+                              : !!states.data.errors?.GlobalLimit.Rate!
                           }
                           isValid={
                             props.current === "policy"
                               ? !state.data.errors?.GlobalLimit.Rate!
-                              : !states.data.errors?.Rate
+                              : !states.data.errors?.GlobalLimit.Rate!
                           }
                           disabled={rate}
                         />
@@ -477,7 +509,7 @@ export default function GlobalRateLimit(props: IProps) {
                           {" "}
                           {props.current === "policy"
                             ? state.data.errors?.GlobalLimit.Rate
-                            : states.data.errors?.Rate}
+                            : states.data.errors?.GlobalLimit.Rate!}
                         </Form.Control.Feedback>
                         <Form.Label className="mt-3">Per (Seconds)</Form.Label>
                         <br />
@@ -500,19 +532,19 @@ export default function GlobalRateLimit(props: IProps) {
                           isInvalid={
                             props.current === "policy"
                               ? !!state.data.errors?.GlobalLimit.Per
-                              : !!states.data.errors?.Per
+                              : !!states.data.errors?.GlobalLimit.Per!
                           }
                           isValid={
                             props.current === "policy"
                               ? !state.data.errors?.GlobalLimit.Per
-                              : !states.data.errors?.Per
+                              : !states.data.errors?.GlobalLimit.Per!
                           }
                           disabled={rate}
                         />
                         <Form.Control.Feedback type="invalid">
                           {props.current === "policy"
                             ? state.data.errors?.GlobalLimit.Per
-                            : states.data.errors?.Per}
+                            : states.data.errors?.GlobalLimit.Per!}
                         </Form.Control.Feedback>
                       </Form.Group>
                     )}
@@ -568,19 +600,20 @@ export default function GlobalRateLimit(props: IProps) {
                           isInvalid={
                             props.current === "policy"
                               ? !!state.data.errors?.GlobalLimit.ThrottleRetries
-                              : !!states.data.errors?.ThrottleRetries
+                              : !!states.data.errors?.GlobalLimit
+                                  .ThrottleRetries
                           }
                           isValid={
                             props.current === "policy"
                               ? !state.data.errors?.GlobalLimit.ThrottleRetries
-                              : !states.data.errors?.ThrottleRetries
+                              : !states.data.errors?.GlobalLimit.ThrottleRetries
                           }
                           disabled={throttle}
                         />
                         <Form.Control.Feedback type="invalid">
                           {props.current === "policy"
                             ? state.data.errors?.GlobalLimit.ThrottleRetries
-                            : states.data.errors?.ThrottleRetries}
+                            : states.data.errors?.GlobalLimit.ThrottleRetries}
                         </Form.Control.Feedback>
                         <Form.Label className="mt-3">
                           Throttle interval
@@ -606,19 +639,21 @@ export default function GlobalRateLimit(props: IProps) {
                             props.current === "policy"
                               ? !!state.data.errors?.GlobalLimit
                                   .ThrottleInterval
-                              : !!states.data.errors?.ThrottleInterval
+                              : !!states.data.errors?.GlobalLimit
+                                  .ThrottleInterval
                           }
                           isValid={
                             props.current === "policy"
                               ? !state.data.errors?.GlobalLimit.ThrottleInterval
-                              : !states.data.errors?.ThrottleInterval
+                              : !states.data.errors?.GlobalLimit
+                                  .ThrottleInterval
                           }
                           disabled={throttle}
                         />
                         <Form.Control.Feedback type="invalid">
                           {props.current === "policy"
                             ? state.data.errors?.GlobalLimit.ThrottleInterval
-                            : states.data.errors?.ThrottleInterval}
+                            : states.data.errors?.GlobalLimit.ThrottleInterval}
                         </Form.Control.Feedback>
                       </Form.Group>
                     )}
@@ -673,12 +708,12 @@ export default function GlobalRateLimit(props: IProps) {
                           isInvalid={
                             props.current === "policy"
                               ? !!state.data.errors?.GlobalLimit.Quota
-                              : !!states.data.errors?.Quota
+                              : !!states.data.errors?.GlobalLimit.Quota
                           }
                           isValid={
                             props.current === "policy"
                               ? !state.data.errors?.GlobalLimit.Quota
-                              : !states.data.errors?.Quota
+                              : !states.data.errors?.GlobalLimit.Quota
                           }
                           disabled={quota}
                         />
@@ -686,7 +721,7 @@ export default function GlobalRateLimit(props: IProps) {
                           {" "}
                           {props.current === "policy"
                             ? state.data.errors?.GlobalLimit.Quota
-                            : states.data.errors?.Quota}
+                            : states.data.errors?.GlobalLimit.Quota}
                         </Form.Control.Feedback>
                         <Form.Label className="mt-3">
                           Quota resets every
