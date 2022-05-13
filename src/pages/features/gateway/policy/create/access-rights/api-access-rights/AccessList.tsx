@@ -2,7 +2,10 @@ import React from "react";
 import { Accordion, AccordionButton } from "react-bootstrap";
 import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import { getApiById } from "../../../../../../../store/features/gateway/api/update/slice";
-import { setForm } from "../../../../../../../store/features/gateway/policy/create/slice";
+import {
+  setForm,
+  setFormError,
+} from "../../../../../../../store/features/gateway/policy/create/slice";
 import {
   useAppSelector,
   useAppDispatch,
@@ -19,7 +22,7 @@ export default function AccessList() {
     if (!data) {
       const selectedApi = await dispatch(getApiById(Id));
       if (
-        selectedApi.payload.Data?.ApiId! === Id &&
+        selectedApi.payload.Data.ApiId === Id &&
         selectedApi.payload.Data.AuthType !== "keyless"
       ) {
         const listV: string[] = [];
@@ -49,13 +52,28 @@ export default function AccessList() {
             },
           },
         ];
+        const error = [...state.data.errors?.PerApiLimit!];
+        const perapierror = {
+          ApiId: selectedApi.payload.Data.ApiId,
+          Per: "",
+          Rate: "",
+          Quota: "",
+          Expires: "",
+          QuotaRenewalRate: "",
+          ThrottleInterval: "",
+          ThrottleRetries: "",
+        };
+        error.push(perapierror);
+        dispatch(
+          setFormError({
+            ...state.data.errors,
+            PerApiLimit: error,
+          })
+        );
+
         dispatch(
           setForm({
             ...state.data.form,
-            Rate: 1000,
-            Per: 60,
-            ThrottleInterval: 0,
-            ThrottleRetries: 0,
             APIs: list,
           })
         );
@@ -68,6 +86,7 @@ export default function AccessList() {
       ToastAlert("Already select...", "error");
     }
   };
+
   return (
     <>
       <div>

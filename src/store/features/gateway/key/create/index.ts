@@ -33,15 +33,15 @@ export interface IGetKeyByIdData {
               }[];
           Limit?:
             | {
-                rate?: number;
-                per?: number;
-                throttle_interval?: number;
-                throttle_retry_limit?: number;
-                max_query_depth?: number;
-                quota_max?: number;
-                quota_renews?: number;
-                quota_remaining?: number;
-                quota_renewal_rate?: number;
+                Rate?: number;
+                Per?: number;
+                Throttle_interval?: number;
+                Throttle_retry_limit?: number;
+                Max_query_depth?: number;
+                Quota_max?: number;
+                Quota_renews?: number;
+                Quota_remaining?: number;
+                Quota_renewal_rate?: number;
               }
             | undefined;
         }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Accordion, Form, Col, Row, Button, Table } from "react-bootstrap";
+import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import {
   setFormErrors,
   regexForIP_Address,
@@ -41,15 +42,26 @@ export default function WhitelistedIPs() {
     const { name, value } = event.target;
     switch (name) {
       case "Whitelist":
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: regexForIP_Address.test(value)
-              ? ""
-              : "Please enter a Valid IP Address",
-          },
-          dispatch
-        );
+        if (value === "") {
+          setFormErrors(
+            {
+              ...state.data.errors,
+              [name]: "",
+            },
+            dispatch
+          );
+        } else {
+          setFormErrors(
+            {
+              ...state.data.errors,
+              [name]: regexForIP_Address.test(value)
+                ? ""
+                : "Please enter a Valid IP Address",
+            },
+            dispatch
+          );
+        }
+
         break;
       default:
         break;
@@ -58,14 +70,31 @@ export default function WhitelistedIPs() {
     formobj[name] = value;
     setAddFormData(formobj);
   };
+  console.log("error :", state.data.errors);
 
   const handleAddClick = () => {
-    const whitelistObj: any = [
-      ...state.data.form.Whitelist,
-      addFormData.Whitelist,
-    ];
-    dispatch(setForm({ ...state.data.form, Whitelist: whitelistObj }));
-    setAddFormData({ ...addFormData, Whitelist: "" });
+    if (whitelistLength > 0) {
+      const filtered = state.data.form.Whitelist.filter(
+        (x) => x === addFormData.Whitelist
+      );
+      if (filtered.length > 0) {
+        ToastAlert("This IP address has been already added!", "error");
+      } else {
+        const whitelistObj: any = [
+          ...state.data.form.Whitelist,
+          addFormData.Whitelist,
+        ];
+        dispatch(setForm({ ...state.data.form, Whitelist: whitelistObj }));
+        setAddFormData({ ...addFormData, Whitelist: "" });
+      }
+    } else {
+      const whitelistObj: any = [
+        ...state.data.form.Whitelist,
+        addFormData.Whitelist,
+      ];
+      dispatch(setForm({ ...state.data.form, Whitelist: whitelistObj }));
+      setAddFormData({ ...addFormData, Whitelist: "" });
+    }
   };
 
   const deleteTableRows = (
@@ -119,7 +148,7 @@ export default function WhitelistedIPs() {
                           ) : (
                             <p>No IPs selected, please add one below.</p>
                           )}
-                          <Row className="ml-3">
+                          <Row>
                             <Form.Label>
                               <b>Whitelisted IP Address:</b>
                             </Form.Label>
@@ -158,8 +187,8 @@ export default function WhitelistedIPs() {
                         </Row>
 
                         {
-                          <Row className="ml-3 mr-5">
-                            <Col md={12}>
+                          <Row className="mr-5">
+                            <Col md={10}>
                               <Table striped bordered hover size="lg">
                                 {whitelistLength > 0 ? (
                                   <thead>

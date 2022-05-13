@@ -53,7 +53,7 @@ export default function RateLimit() {
                   <div>
                     <Row>
                       <Col md="12">
-                        <Form.Group className="mb-3">
+                        <Form.Group className="ml-4 mb-3">
                           <Form.Check
                             type="switch"
                             id="disableRate"
@@ -126,7 +126,7 @@ export default function RateLimit() {
                         </Form.Group>
                       </Col>
                       <Col md="12">
-                        <Form.Group className="mb-3">
+                        <Form.Group className="ml-4 mb-3">
                           <Form.Check
                             type="switch"
                             id="disableQuotas"
