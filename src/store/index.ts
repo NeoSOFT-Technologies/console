@@ -15,6 +15,8 @@ import keyListReducer from "./features/gateway/key/list/slice";
 import createPolicyReducer from "./features/gateway/policy/create/slice";
 import deletePolicyReducer from "./features/gateway/policy/delete/slice";
 import policyListReducer from "./features/gateway/policy/list/slice";
+import inputDataWithNrtReducer from "./features/saas/input-data/with-nrt/slice";
+import inputDataWithOutNrtReducer from "./features/saas/input-data/without-nrt/slice";
 import createTableReducer from "./features/saas/manage-table/create-table/slice";
 import deleteTableSchemaReducer from "./features/saas/manage-table/delete-table/slice";
 import capacityPlansReducer from "./features/saas/manage-table/get-capacity-plans/slice";
@@ -74,6 +76,8 @@ const store = configureStore({
     updateTableSchemaState: updateTableSchemaReducer,
     searchDataWithQueryFieldState: searchDataWithQueryFieldReducer,
     searchDataWithQueryState: searchDataWithQueryReducer,
+    inputDataWithNrtState: inputDataWithNrtReducer,
+    inputDataWithOutNrtState: inputDataWithOutNrtReducer,
   },
 });
 
