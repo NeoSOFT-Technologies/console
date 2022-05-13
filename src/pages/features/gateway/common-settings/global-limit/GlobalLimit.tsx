@@ -193,6 +193,7 @@ export default function GlobalLimit(props: IProps) {
                                       label="Disable rate limiting"
                                       disabled={true}
                                       className="ml-4"
+                                      checked={data.Limit.rate === -1}
                                     />
                                     <Form.Label className="mt-3">
                                       Rate
@@ -210,6 +211,8 @@ export default function GlobalLimit(props: IProps) {
                                           ? states.data.form.PolicyByIds![
                                               props.index!
                                             ].Global!.Rate
+                                          : data.Limit.rate === -1
+                                          ? "Unlimited"
                                           : data.Limit.rate
                                       }
                                       name="Rate"
@@ -231,6 +234,8 @@ export default function GlobalLimit(props: IProps) {
                                           ? states.data.form.PolicyByIds![
                                               props.index!
                                             ].Global!.Per
+                                          : data.Limit.per === -1
+                                          ? "Unlimited"
                                           : data.Limit.per
                                       }
                                       name="RateLimit.Per"
@@ -251,7 +256,9 @@ export default function GlobalLimit(props: IProps) {
                                       label="Disable Throttling"
                                       disabled={true}
                                       className="ml-4"
-                                      // checked={throttle}
+                                      checked={
+                                        data.Limit.throttle_interval === -1
+                                      }
                                     />
                                     <Form.Label className="mt-3">
                                       Throttle retry limit
@@ -268,6 +275,9 @@ export default function GlobalLimit(props: IProps) {
                                           ? states.data.form.PolicyByIds![
                                               props.index!
                                             ].Global!.ThrottleRetries
+                                          : data.Limit.throttle_retry_limit ===
+                                            -1
+                                          ? "Disabled Throttling"
                                           : data.Limit.throttle_retry_limit
                                       }
                                       // value={throttleDefault}
@@ -289,6 +299,8 @@ export default function GlobalLimit(props: IProps) {
                                           ? states.data.form.PolicyByIds![
                                               props.index!
                                             ].Global!.ThrottleInterval
+                                          : data.Limit.throttle_interval === -1
+                                          ? "Disabled Throttling"
                                           : data.Limit.throttle_interval
                                       }
                                       name="Throttling.Interval"
@@ -308,7 +320,7 @@ export default function GlobalLimit(props: IProps) {
                                       label="Unlimited requests"
                                       disabled={true}
                                       className="ml-4"
-                                      // checked={quota}
+                                      checked={data.Limit.quota_max === -1}
                                     />
                                     <Form.Label className="mt-3">
                                       Max requests per period
@@ -324,6 +336,8 @@ export default function GlobalLimit(props: IProps) {
                                           ? states.data.form.PolicyByIds![
                                               props.index!
                                             ].Global!.MaxQuota
+                                          : data.Limit.quota_max === -1
+                                          ? "Unlimited"
                                           : data.Limit.quota_max
                                       }
                                       name="Quota.Per"
@@ -342,6 +356,8 @@ export default function GlobalLimit(props: IProps) {
                                           ? states.data.form.PolicyByIds![
                                               props.index!
                                             ].Global!.QuotaRate
+                                          : data.Limit.quota_renewal_rate === -1
+                                          ? "Unlimited"
                                           : data.Limit.quota_renewal_rate
                                       }
                                       disabled={true}
