@@ -75,7 +75,6 @@ const InsertData = lazy(
 );
 const SearchData = lazy(
   () => import("./pages/features/saas/search-data/SearchData")
-
 );
 const ManageTable = lazy(
   () => import("./pages/features/saas/manage-table/ManageTable")
@@ -86,7 +85,6 @@ const RestoreTable = lazy(
 );
 const AddTable = lazy(
   () => import("./pages/features/saas/restore-table/RestoreTable")
-
 );
 
 function AppRoutes() {
