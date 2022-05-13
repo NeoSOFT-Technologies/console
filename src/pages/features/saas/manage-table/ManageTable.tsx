@@ -2,7 +2,7 @@ import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Dialog from "../../../../components/dialogbox/Dialog";
-import { getTables } from "../../../../store/features/saas/get-tables/slice";
+import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import "./style.css";
 // const data = [
