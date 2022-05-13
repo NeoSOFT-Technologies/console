@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
   ISearchDataWithQueryField,
   ITableSchema,
-} from "../../../../types/saas";
+} from "../../../../types/saas/index";
 import "./style.css";
 
 export default function GetSearchData() {

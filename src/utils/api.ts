@@ -27,7 +27,7 @@ const getDefaultPath = () => {
       break;
     case "saas":
       baseUrl = defaultSaasUrl;
-      if (currentURL[2] === "inputData") {
+      if (currentURL[2] === "searchData") {
         baseUrl = defaultSaasSearchUrl;
       }
       console.log("SASS URL : " + baseUrl);
