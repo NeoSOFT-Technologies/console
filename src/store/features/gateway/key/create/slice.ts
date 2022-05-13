@@ -29,7 +29,21 @@ export const getKeyById = createAsyncThunk(
   async (id: string) => {
     try {
       const response = await getKeyByIdService(id);
-      // console.log("response", response.data);
+      for (let i = 0; i < response.data.Data.AccessRights.length; i++) {
+        if (response.data.Data.AccessRights[i].Limit === null) {
+          const limits = {
+            rate: 0,
+            per: 0,
+            throttle_interval: 0,
+            throttle_retry_limit: 0,
+            quota_max: 0,
+            quota_renews: 0,
+            quota_remaining: 0,
+            quota_renewal_rate: 0,
+          };
+          response.data.Data.AccessRights[i].Limit = limits;
+        }
+      }
       return response.data;
     } catch (error_) {
       const myError = error_ as Error | AxiosError;

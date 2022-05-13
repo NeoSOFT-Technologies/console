@@ -21,7 +21,7 @@ function Configurations() {
     //   }
     // }, []);
     switch (name) {
-      case "KeyName":
+      case "Name":
         setFormErrorkey(
           {
             ...state.data.errors,
@@ -66,12 +66,12 @@ function Configurations() {
                     // data-testid="name-input"
                     value={state.data.form?.KeyName}
                     onBlur={(e: any) => validateForm(e)}
-                    isInvalid={!!state.data.errors?.KeyName}
-                    isValid={!state.data.errors?.KeyName}
+                    isInvalid={!!state.data.errors?.Name}
+                    isValid={!state.data.errors?.Name}
                     onChange={(e: any) => validateForm(e)}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {state.data.errors?.KeyName}
+                    {state.data.errors?.Name}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
