@@ -76,6 +76,13 @@ const InsertData = lazy(
 const SearchData = lazy(
   () => import("./pages/features/saas/Search-Data/SearchData")
 );
+const CreateTables = lazy(
+  () => import("./pages/features/saas/create-table/CreateTable")
+);
+
+const EditTables = lazy(
+  () => import("./pages/features/saas/edit-table/EditTable")
+);
 
 function AppRoutes() {
   return (
@@ -222,6 +229,22 @@ function AppRoutes() {
             element={
               <AdminGuard>
                 <SearchData />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="createTables"
+            element={
+              <AdminGuard>
+                <CreateTables />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="editTables"
+            element={
+              <AdminGuard>
+                <EditTables />
               </AdminGuard>
             }
           />
