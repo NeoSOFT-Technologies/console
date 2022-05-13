@@ -9,7 +9,9 @@ import {
   setForms,
 } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
+// import { emptyState } from "../../../../../store/features/gateway/policy/create/payload";
 import {
+  policystate,
   setForm,
   setFormError,
 } from "../../../../../store/features/gateway/policy/create/slice";
@@ -25,11 +27,13 @@ interface IProps {
 export default function GlobalLimitApi(props: IProps) {
   const dispatch = useAppDispatch();
   const states = useAppSelector((RootState) => RootState.createKeyState);
-  const statePolicy: IPolicyCreateState = useAppSelector(
-    (RootStates) => RootStates.createPolicyState
-  );
-  // let state: IPolicyCreateState = props.state!;
-  const [state] = useState<IPolicyCreateState>(statePolicy);
+  // const state: IPolicyCreateState = useAppSelector(
+  //   (RootStates) => RootStates.createPolicyState
+  // );
+  console.log("policystate", policystate);
+
+  const [state] = useState<IPolicyCreateState>(policystate);
+  console.log("check state", state);
   function validateForm(
     event: React.ChangeEvent<HTMLInputElement>,
     ApiId: any
@@ -231,8 +235,8 @@ export default function GlobalLimitApi(props: IProps) {
           apisList[props.index!] = {
             ...apisList[props.index!],
             Limit: {
-              rate: props.state?.data.form.APIs[props.index!].Limit?.rate,
-              per: props.state?.data.form.APIs[props.index!].Limit?.per!,
+              rate: policystate.data.form.APIs[props.index!].Limit?.rate,
+              per: policystate.data.form.APIs[props.index!].Limit?.per!,
               throttle_interval:
                 props.state?.data.form.APIs[props.index!].Limit
                   ?.throttle_interval,
@@ -421,7 +425,7 @@ export default function GlobalLimitApi(props: IProps) {
       setQuotaPerPeriod("Enter request per period");
     }
   }
-  console.log("latetsstae", state.data.form);
+
   return (
     <>
       {state.loading === false ? (
