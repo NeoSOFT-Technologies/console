@@ -1,6 +1,10 @@
 import React, { FormEvent, useEffect } from "react";
 import { Tab, Tabs, Form } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  AuthGuard,
+  access,
+} from "../../../../../components/gateway/auth-guard";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
@@ -84,10 +88,15 @@ export default function Update() {
                     className="card-header bg-white mt-3 pt-1 pb-4"
                     style={{ padding: "0.5rem 1.5rem" }}
                   >
-                    <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
-                      {" "}
-                      Update
-                    </button>
+                    <AuthGuard
+                      resource={access.resources.Api}
+                      scope={access.scopes.Edit}
+                    >
+                      <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
+                        {" "}
+                        Update
+                      </button>
+                    </AuthGuard>
                     <button
                       className=" btn  btn-sm btn-light btn-md d-flex float-right mb-3"
                       onClick={(e) => NavigateToApisList(e)}

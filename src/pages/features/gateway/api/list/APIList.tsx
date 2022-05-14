@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useErrorHandler } from "react-error-boundary";
 import { useNavigate } from "react-router-dom";
+import {
+  AuthGuard,
+  access,
+} from "../../../../../components/gateway/auth-guard";
 import RenderList from "../../../../../components/gateway/list/RenderList";
 
 import Spinner from "../../../../../components/loader/Loader";
@@ -113,7 +117,7 @@ export default function APIList() {
   }
   const handleDelete = async (Id: string) => {
     setShow(false);
-    console.log("delete clicked", Id);
+    // console.log("delete clicked", Id);
     const result = await dispatch(deleteApi(Id));
 
     if (result.meta.requestStatus === "rejected") {
@@ -135,24 +139,40 @@ export default function APIList() {
     { title: "Target Url" },
     { title: "Status" },
     { title: "Created Date" },
-    { title: "Action" },
   ];
-  const actions = [
-    {
-      className: "btn btn-sm btn-light",
-      iconClassName: "bi bi-pencil-square menu-icon",
-      buttonFunction: NavigateUpdate,
-    },
-    {
-      className: "btn btn-sm btn-light",
-      iconClassName: "bi bi-trash-fill menu-icon",
-      // buttonFunction: () => setDeleteshow(true),
-      buttonFunction: deleteApiFunction,
-    },
-  ];
+  const actions = [];
+  const delAction = {
+    className: "btn btn-sm btn-light",
+    iconClassName: "bi bi-trash-fill menu-icon",
+    buttonFunction: deleteApiFunction,
+  };
+  const editAction = {
+    className: "btn btn-sm btn-light",
+    iconClassName: "bi bi-pencil-square menu-icon",
+    buttonFunction: NavigateUpdate,
+  };
+
+  const isViewAuthorized = AuthGuard({
+    resource: access.resources.Api,
+    scope: access.scopes.View,
+  });
+  if (isViewAuthorized) {
+    actions.push(editAction);
+  }
+  const isDelAuthorized = AuthGuard({
+    resource: access.resources.Api,
+    scope: access.scopes.Delete,
+  });
+  if (isDelAuthorized) {
+    actions.push(delAction);
+  }
+
+  if (isViewAuthorized || isDelAuthorized) {
+    headings.push({ title: "Action" });
+  }
 
   useEffect(() => {
-    console.log(apiList);
+    // console.log(apiList);
   }, [apiList.data, apiList.error]);
   return (
     <>
@@ -186,14 +206,20 @@ export default function APIList() {
               style={{ padding: "0.5rem 1.5rem" }}
             >
               <div className="align-items-center">
-                <button
-                  className=" btn btn-sm btn-success btn-sm d-flex float-right mb-2"
-                  onClick={(e) => NavigateCreateApi(e)}
+                <AuthGuard
+                  resource={access.resources.Api}
+                  scope={access.scopes.Create}
                 >
-                  {" "}
-                  Create API &nbsp;
-                  <span className="bi bi-plus-lg"></span> &nbsp;
-                </button>
+                  <button
+                    className=" btn btn-sm btn-success btn-sm d-flex float-right mb-2"
+                    onClick={(e) => NavigateCreateApi(e)}
+                  >
+                    {" "}
+                    Create API &nbsp;
+                    <span className="bi bi-plus-lg"></span> &nbsp;
+                  </button>
+                </AuthGuard>
+
                 <span>
                   <b>API LIST</b>
                 </span>

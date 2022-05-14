@@ -37,6 +37,7 @@
     "gridjs": "^5.0.2",
     "gridjs-react": "^5.0.2",
     "jquery": "^3.6.0",
+    "jwt-decode": "^3.1.2",
     "moment": "^2.29.3",
     "react": "^17.0.2",
     "react-bootstrap": "^2.3.0",
