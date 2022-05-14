@@ -28,10 +28,33 @@ export default function CreateKey() {
 
   const { id } = useParams();
   console.log("id", id);
-  useEffect(() => {
+  const mainCall = async () => {
     if (id !== undefined) {
-      dispatch(getKeyById(id));
+      const error = [];
+      const keybyid = await dispatch(getKeyById(id));
+      for (let i = 0; i < keybyid.payload.Data.APIs.length; i++) {
+        const perapierror = {
+          ApiId: keybyid.payload.Data.APIs[i].Id,
+          Per: "",
+          Rate: "",
+          Quota: "",
+          Expires: "",
+          QuotaRenewalRate: "",
+          ThrottleInterval: "",
+          ThrottleRetries: "",
+        };
+        error.push(perapierror);
+      }
+      dispatch(
+        setFormErrors({
+          ...state.data.errors,
+          PerApiLimit: error,
+        })
+      );
     }
+  };
+  useEffect(() => {
+    mainCall();
   }, []);
 
   const handleOk = () => {
@@ -51,13 +74,6 @@ export default function CreateKey() {
     if (state.data.errors !== undefined) {
       validate = Object.values(state.data.errors).every(
         (x) => x === null || x === ""
-      );
-
-      console.log(
-        "error",
-        validate,
-        state.data.form.KeyName.length,
-        state.data.errors
       );
     }
     if (validate) {
@@ -100,12 +116,6 @@ export default function CreateKey() {
         }
       }
     } else {
-      console.log(
-        "error",
-        validate,
-        state.data.form.KeyName!.length,
-        state.data.errors
-      );
       ToastAlert("Please fill all the fields correctly! ", "error");
     }
   }
@@ -235,7 +245,7 @@ export default function CreateKey() {
                           eventKey="configurations"
                           title={
                             <span>
-                              {state.data.errors?.KeyName ? (
+                              {state.data.errors?.Name ? (
                                 <i className="bi bi-info-circle-fill text-danger"></i>
                               ) : (
                                 ""

@@ -2,7 +2,10 @@ import React from "react";
 import { Accordion } from "react-bootstrap";
 import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 import { getApiById } from "../../../../../../../../store/features/gateway/api/update/slice";
-import { setForms } from "../../../../../../../../store/features/gateway/key/create/slice";
+import {
+  setFormErrors,
+  setForms,
+} from "../../../../../../../../store/features/gateway/key/create/slice";
 import {
   useAppDispatch,
   useAppSelector,
@@ -50,8 +53,25 @@ export default function AccessList() {
             },
           },
         ];
-
         dispatch(setForms({ ...state.data.form, AccessRights: list }));
+        const error = [...state.data.errors?.PerApiLimit!];
+        const perapierror = {
+          ApiId: selectedApi.payload.Data.ApiId,
+          Per: "",
+          Rate: "",
+          Quota: "",
+          Expires: "",
+          QuotaRenewalRate: "",
+          ThrottleInterval: "",
+          ThrottleRetries: "",
+        };
+        error.push(perapierror);
+        dispatch(
+          setFormErrors({
+            ...state.data.errors,
+            PerApiLimit: error,
+          })
+        );
       } else {
         window.alert(
           "Rate limits, throttling, quota settings and path-based permissions have no effect on Open (Keyless) API ...."
