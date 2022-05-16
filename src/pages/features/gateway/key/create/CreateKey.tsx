@@ -35,6 +35,7 @@ export default function CreateKey() {
         keybyid.payload.Data?.AccessRights.length > 0
       ) {
         for (let i = 0; i < keybyid.payload.Data.AccessRights.length; i++) {
+          console.log("hii");
           const perapierror = {
             ApiId: keybyid?.payload.Data?.AccessRights[i]?.ApiId!,
             Per: "",
@@ -47,7 +48,7 @@ export default function CreateKey() {
           };
           error.push(perapierror);
         }
-
+        console.log("error", error);
         dispatch(
           setFormErrors({
             ...state.data.errors,
@@ -80,18 +81,25 @@ export default function CreateKey() {
       //   (x) => x === null || x === ""
       // );
 
-      validate = !!(
-        state.data.errors?.Name === "" &&
-        validateFieldValue === true &&
-        state.data.errors?.GlobalLimit.Rate === "" &&
-        state.data.errors?.GlobalLimit.Per === "" &&
-        state.data.errors?.GlobalLimit.ThrottleInterval === "" &&
-        state.data.errors?.GlobalLimit.ThrottleRetries === "" &&
-        state.data.errors?.GlobalLimit.Quota === ""
-      );
+      // validate = !!(
+      //   state.data.errors?.Name === "" &&
+      //   validateFieldValue === true &&
+      //   state.data.errors?.GlobalLimit.Rate === "" &&
+      //   state.data.errors?.GlobalLimit.Per === "" &&
+      //   state.data.errors?.GlobalLimit.ThrottleInterval === "" &&
+      //   state.data.errors?.GlobalLimit.ThrottleRetries === "" &&
+      //   state.data.errors?.GlobalLimit.Quota === ""
+      // );
 
       for (let i = 0; i < state.data.errors?.PerApiLimit.length; i++) {
         validate = !!(
+          state.data.errors?.Name === "" &&
+          validateFieldValue === true &&
+          state.data.errors?.GlobalLimit.Rate === "" &&
+          state.data.errors?.GlobalLimit.Per === "" &&
+          state.data.errors?.GlobalLimit.ThrottleInterval === "" &&
+          state.data.errors?.GlobalLimit.ThrottleRetries === "" &&
+          state.data.errors?.GlobalLimit.Quota === "" &&
           state.data.errors?.PerApiLimit[i].Per === "" &&
           state.data.errors?.PerApiLimit[i].Rate === "" &&
           state.data.errors?.PerApiLimit[i].Quota === "" &&
