@@ -7,7 +7,7 @@ interface IProperties {
 const PasswordButtons: React.FC<IProperties> = (properties) => {
   const { viewPassword, setViewPassword } = properties;
   return (
-    <div className="icons">
+    <div className="icons-position">
       {viewPassword ? (
         <button
           type="button"
@@ -18,7 +18,7 @@ const PasswordButtons: React.FC<IProperties> = (properties) => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="23"
-            height="23"
+            height="20"
             fill="currentColor"
             className="bi bi-eye-fill"
             viewBox="0 0 16 16"
@@ -37,7 +37,7 @@ const PasswordButtons: React.FC<IProperties> = (properties) => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="23"
-            height="23"
+            height="20"
             fill="currentColor"
             className="bi bi-eye-slash-fill"
             viewBox="0 0 16 16"
