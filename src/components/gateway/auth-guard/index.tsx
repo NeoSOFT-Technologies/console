@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import Error401 from "../../../pages/error-pages/Error401";
 import getUserPermissions from "../../../utils/gateway/permission.helper";
 
 type component = {
@@ -57,7 +57,7 @@ export function AuthGuard({ children, resource, scope, protect }: component) {
   if (children) {
     // This will execute when AuthGuard is invoked from AppRoutes
     if (protect) {
-      return authorized ? children : <Navigate to="/error-pages/error-401" />;
+      return authorized ? children : <Error401 />;
     }
     // This will execute when AuthGuard is invoked from Action Buttons
     else {
