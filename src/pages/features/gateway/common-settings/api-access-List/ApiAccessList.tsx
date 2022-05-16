@@ -2,6 +2,7 @@ import { h } from "gridjs";
 import { Grid } from "gridjs-react";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IApiListState } from "../../../../../store/features/gateway/api/list";
 import { getApiList } from "../../../../../store/features/gateway/api/list/slice";
@@ -30,6 +31,32 @@ export default function ApiAccessList(props: IProps) {
   useEffect(() => {
     mainCall(1, 100_000);
   }, []);
+
+  useEffect(() => {
+    if ((props.state as IKeyCreateState).data.form.AccessRights) {
+      (props.state as IKeyCreateState).data.form.AccessRights.length > 0
+        ? setApiAuth(
+            (props.state as IKeyCreateState).data?.form.AccessRights[0]
+              ?.AuthType!
+          )
+        : setApiAuth("");
+    }
+    if ((props.state as IPolicyCreateState).data.form.APIs) {
+      // console.log(
+      //   "useEffect-[ (props.state as IPolicyCreateState).data?.form.APIs?.length!]",
+      //   (props.state as IPolicyCreateState).data?.form.APIs?.length!
+      // );
+      (props.state as IPolicyCreateState).data.form.APIs.length > 0
+        ? setApiAuth(
+            (props.state as IPolicyCreateState).data.form.APIs[0]?.AuthType!
+          )
+        : setApiAuth("");
+    }
+  }, [
+    (props.state as IKeyCreateState).data?.form.AccessRights?.length! ||
+      (props.state as IPolicyCreateState).data?.form.APIs?.length!,
+  ]);
+
   const removeAccess = (Id: string) => {
     if ((props.state as IPolicyCreateState).data.form.APIs) {
       const removeApi = [
@@ -96,7 +123,7 @@ export default function ApiAccessList(props: IProps) {
                 ToastAlert(`${Name} selected`, "success");
               } else {
                 removeAccess(Id);
-                setApiAuth("");
+                // setApiAuth("");
                 ToastAlert(`${Name} removed`, "warning");
               }
             },
@@ -145,7 +172,18 @@ export default function ApiAccessList(props: IProps) {
   // console.log(props.state);
   return (
     <div>
-      <Grid {...grid.props} />
+      {accessApiList.loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <Grid {...grid.props} />
+          <div className="mt-2">
+            {" "}
+            <b>Note :&nbsp;</b>
+            {apiAuth ? `Apis get filter based on ${apiAuth} Auth Type` : ""}
+          </div>
+        </>
+      )}
     </div>
   );
 }

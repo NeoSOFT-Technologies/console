@@ -26,6 +26,7 @@ export interface IGetKeyByIdData {
           ApiName: string | null;
           Versions: string[];
           MasterVersions: string[];
+          AuthType: string;
           AllowedUrls:
             | {
                 url: string;

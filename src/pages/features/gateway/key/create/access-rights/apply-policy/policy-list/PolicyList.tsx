@@ -59,7 +59,7 @@ export default function PolicyList() {
   };
   function containsApis() {
     const policyId: IPolicyData[] = [];
-
+    console.log("containsApis-apis", apis);
     const listPolicies = accessPolicyList.data?.Policies!.filter(
       (a) =>
         a.AuthType !== "keyless" &&
@@ -73,9 +73,13 @@ export default function PolicyList() {
 
     for (const item of selectedlistPolicies!) {
       policyId.push(item);
+      console.log("selectedlistPolicies", selectedlistPolicies);
+      console.log("selectedlistPolicies-policyId", policyId);
     }
     for (const item of listPolicies!) {
       policyId.push(item);
+      console.log("listPolicies", listPolicies);
+      console.log("listPolicies-policyId", policyId);
     }
 
     console.log("This is the list am filtering,", policyId);
@@ -92,7 +96,7 @@ export default function PolicyList() {
             : data.State === "deny"
             ? "Access Denied"
             : "Draft",
-          data.Apis,
+          data.Apis.join(", "),
           data.AuthType,
         ])
       : accessPolicyList.data !== undefined &&
@@ -109,15 +113,41 @@ export default function PolicyList() {
             : data.State === "deny"
             ? "Access Denied"
             : "Draft",
-          data.Apis,
+          data.Apis.join(", "), // ? `${data.Apis.join(", ")}` : "", // data.Apis.join(", ")
           data.AuthType,
         ])
       : [];
   }
   useEffect(() => {
+    if (StateKey?.data.form.KeyId?.length! > 0) {
+      console.log("useEffect-apis :", apis);
+      for (const p_item of StateKey?.data.form.Policies) {
+        const newp = [...apis];
+        const selectedlistPolicies2 = accessPolicyList.data?.Policies!.filter(
+          (a) => a.AuthType !== "keyless" && p_item.includes(a.Id!)
+        );
+        // console.log("useEffect-apis :", apis);
+        console.log("selectedlistPolicies2 :", selectedlistPolicies2);
+        for (const iterator of selectedlistPolicies2!) {
+          newp.push({ name: iterator.Apis, policyId: iterator.Id! });
+          setApis(newp);
+          console.log("useEffect-apis-i for :", apis);
+        }
+        // newp.push({ name: accessRights, policyId: Id });
+        // setApis(newp);
+        console.log("newpfor :", newp);
+      }
+    }
+  }, [StateKey?.data.form.Policies?.length]);
+
+  useEffect(() => {
     // alert(apis);
     bindPolicyList();
   }, [apis]);
+  // useEffect(() => {
+  //   // alert(apis);
+  //   bindPolicyList();
+  // }, [StateKey?.data.form.Policies?.length]);
   // console.log(StateKey.data.form);
   const gridTable = new Grid({
     columns: [
@@ -132,7 +162,8 @@ export default function PolicyList() {
         formatter: (cell: string, row: any) => {
           const Id = row.cells[1].data;
           const Name = row.cells[2].data;
-          const accessRights = row.cells[4].data;
+          const accessRights = row.cells[4].data.split(", "); // .split(",");
+          // console.log("accessRights", accessRights);
           const data = StateKey.data.form?.Policies?.includes(Id);
           return h("input", {
             name: "tag_" + Id,
@@ -146,6 +177,7 @@ export default function PolicyList() {
                 const newp = [...apis];
                 newp.push({ name: accessRights, policyId: Id });
                 setApis(newp);
+                console.log("newp", newp);
                 ToastAlert(`${Name} selected`, "success");
               } else {
                 removeAccess(Id);

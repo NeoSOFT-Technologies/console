@@ -189,10 +189,11 @@ export default function PathBased(props: IProps) {
     ) {
       const removeApi = [...props.state?.data.form.AccessRights!];
 
+      const ApiName = props.state?.data.form.AccessRights[index]?.ApiName;
       console.log(index, removeApi);
       removeApi.splice(index, 1);
       console.log("splicekey", removeApi);
-      ToastAlert("Api removed", "warning");
+      ToastAlert(`${ApiName} removed`, "warning");
       dispatch(
         setForms({ ...props.state?.data.form, AccessRights: removeApi })
       );
