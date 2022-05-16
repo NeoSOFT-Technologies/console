@@ -81,7 +81,7 @@ export interface Limiting {
 }
 
 export interface IError {
-  Name: "";
+  KeyName: "";
   Policies: "";
   Expires: "";
   GlobalLimit: Limiting;

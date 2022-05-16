@@ -56,7 +56,7 @@ export const initialState: IKeyCreateState = {
       Tags: [],
     },
     errors: {
-      Name: "",
+      KeyName: "",
       Expires: "",
       Policies: "",
       GlobalLimit: {

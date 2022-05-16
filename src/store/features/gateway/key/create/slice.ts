@@ -79,13 +79,6 @@ const slice = createSlice({
       state.data.form = action.payload;
     },
     setFormErrors: (state, action) => {
-      // if (
-      //   action.payload.PerApiLimit !== undefined &&
-      //   action.payload.PerApiLimit.length > 0
-      // ) {
-      //   state.data.errors = action.payload;
-      // }
-      // console.log("from alfaiz", action.payload);
       state.data.errors = action.payload;
       console.log("This is set form errors", action);
     },

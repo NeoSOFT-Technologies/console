@@ -93,7 +93,7 @@ export default function CreateKey() {
 
       for (let i = 0; i < state.data.errors?.PerApiLimit.length; i++) {
         validate = !!(
-          state.data.errors?.Name === "" &&
+          state.data.errors?.KeyName === "" &&
           validateFieldValue === true &&
           state.data.errors?.GlobalLimit.Rate === "" &&
           state.data.errors?.GlobalLimit.Per === "" &&
@@ -259,7 +259,7 @@ export default function CreateKey() {
                           eventKey="configurations"
                           title={
                             <span>
-                              {state.data.errors?.Name ? (
+                              {state.data.errors?.KeyName ? (
                                 <i className="bi bi-info-circle-fill text-danger"></i>
                               ) : (
                                 ""
