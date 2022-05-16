@@ -37,6 +37,7 @@ export default function AccessList() {
             Name: selectedApi.payload.Data.Name,
             Versions: [],
             MasterVersions: listV,
+            AuthType: selectedApi.payload.Data.AuthType,
             AllowedUrls: [],
             Limit: {
               rate: 1000,

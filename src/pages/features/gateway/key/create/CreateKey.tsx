@@ -107,7 +107,10 @@ export default function CreateKey() {
         state.data.form.Policies.length === 0 &&
         state.data.form.AccessRights.length === 0
       ) {
-        ToastAlert("Key can be either created on Policy or Api ...! ", "error");
+        ToastAlert(
+          "You need to add access rights to atleast one API \n or you need to add one Policy ...! ",
+          "error"
+        );
       } else {
         const result = id
           ? await dispatch(updateKey(state.data.form))
