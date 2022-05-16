@@ -7,10 +7,10 @@ import {
 import apiFactory from "../../../utils/api";
 
 export function getTablesService(tenantId: string) {
-  return apiFactory().get(`manage/table?tenantId=${tenantId}`);
+  return apiFactory().get(`manage/table/?tenantId=${tenantId}`);
 }
 export function createTableService(tenantId: string, data: ITableCreateData) {
-  return apiFactory().post(`manage/table?tenantId=${tenantId}`, data);
+  return apiFactory().post(`manage/table/?tenantId=${tenantId}`, data);
 }
 export function getCapacityPlansService() {
   return apiFactory().get(`manage/table/capacity-plans`);
