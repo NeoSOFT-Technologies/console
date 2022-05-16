@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import {
   addKeyService,
@@ -77,11 +77,17 @@ const slice = createSlice({
   reducers: {
     setForms: (state, action) => {
       state.data.form = action.payload;
-      console.log("Form -", current(state.data));
     },
     setFormErrors: (state, action) => {
+      // if (
+      //   action.payload.PerApiLimit !== undefined &&
+      //   action.payload.PerApiLimit.length > 0
+      // ) {
+      //   state.data.errors = action.payload;
+      // }
+      // console.log("from alfaiz", action.payload);
       state.data.errors = action.payload;
-      console.log("Form error -", state.data.errors);
+      console.log("This is set form errors", action);
     },
   },
   extraReducers(builder): void {
@@ -105,7 +111,6 @@ const slice = createSlice({
     builder.addCase(getKeyById.fulfilled, (state, action) => {
       state.loading = false;
       state.data.form = action.payload.Data;
-      console.log(" get key state", current(state));
     });
     builder.addCase(getKeyById.rejected, (state, action) => {
       state.loading = false;

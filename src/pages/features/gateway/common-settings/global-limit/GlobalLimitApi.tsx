@@ -28,6 +28,8 @@ interface IProps {
 export default function GlobalLimitApi(props: IProps) {
   const dispatch = useAppDispatch();
   const states = useAppSelector((RootState) => RootState.createKeyState);
+  console.log("key1", states);
+
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
   );
@@ -295,7 +297,7 @@ export default function GlobalLimitApi(props: IProps) {
           };
           dispatch(
             setFormErrors({
-              ...state.data.errors,
+              ...states.data.errors,
               PerApiLimit: perapi,
             })
           );
@@ -472,7 +474,7 @@ export default function GlobalLimitApi(props: IProps) {
           };
           dispatch(
             setFormErrors({
-              ...state.data.errors,
+              ...states.data.errors,
               PerApiLimit: perapi,
             })
           );
@@ -872,7 +874,7 @@ export default function GlobalLimitApi(props: IProps) {
                                   props.index!
                                 ].Rate
                               : !!states.data.errors?.PerApiLimit[props.index!]
-                                  .Rate
+                                  ?.Rate!
                           }
                           isValid={
                             props.current === "policy"
@@ -880,7 +882,7 @@ export default function GlobalLimitApi(props: IProps) {
                                   props.index!
                                 ].Rate
                               : !states.data.errors?.PerApiLimit[props.index!]
-                                  .Rate
+                                  ?.Rate!
                           }
                           disabled={rateError[props.index!]}
                         />

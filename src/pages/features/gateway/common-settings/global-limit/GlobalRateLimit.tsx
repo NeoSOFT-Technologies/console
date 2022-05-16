@@ -260,7 +260,7 @@ export default function GlobalRateLimit(props: IProps) {
           };
           dispatch(
             setFormErrors({
-              ...state.data.errors,
+              ...states.data.errors,
               GlobalLimit: perapi,
             })
           );
@@ -325,7 +325,7 @@ export default function GlobalRateLimit(props: IProps) {
           };
           dispatch(
             setFormErrors({
-              ...state.data.errors,
+              ...states.data.errors,
               GlobalLimit: perapi,
             })
           );
@@ -386,7 +386,7 @@ export default function GlobalRateLimit(props: IProps) {
           };
           dispatch(
             setFormErrors({
-              ...state.data.errors,
+              ...states.data.errors,
               GlobalLimit: perapi,
             })
           );

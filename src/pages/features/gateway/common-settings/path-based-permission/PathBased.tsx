@@ -80,7 +80,6 @@ export default function PathBased(props: IProps) {
   };
   const { id } = useParams();
   useEffect(() => {
-    console.log("isActiveAPi", isActiveApi);
     if (id === undefined) {
       if (isActiveApi === false) {
         setNull();
