@@ -24,6 +24,12 @@ const saasRoutes = [
     title: "Restore Table",
     icon: "bi bi-list-ul",
   },
+
+  {
+    path: "/saas/demoManageTable",
+    title: "Demo Manage Table",
+    icon: "bi bi-list-ul",
+  },
   // {
   //   path: "/tenantlist",
   //   title: "List",

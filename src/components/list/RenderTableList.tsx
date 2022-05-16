@@ -1,25 +1,26 @@
 import { h } from "gridjs";
 import { Grid } from "gridjs-react";
 import React from "react";
-import "./render-list.scss";
 import apiFactory from "../../utils/api";
-
 interface IProps {
   searchBy: string;
   headings: {
     name: string;
     data: string;
-    width?: string;
   }[];
   url: string;
-  actions?: {
+  action1?: {
+    classNames: string;
+    func: (val: any) => void;
+  };
+  action2?: {
     classNames: string;
     func: (val: any) => void;
   };
 }
 
-interface IColumns {
-  id?: number;
+interface IColums {
+  id: number;
   name: string;
   data?: (row: any) => void;
   width?: string;
@@ -29,7 +30,7 @@ interface IColumns {
 let id = 0;
 const RenderList1: React.FC<IProps> = (props: IProps) => {
   const { headings, url, searchBy } = props;
-  const columns: IColumns[] = headings.map((heading) => {
+  const columns: IColums[] = headings.map((heading) => {
     id += 1;
     return {
       id,
@@ -38,25 +39,24 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
       name: heading.name,
     };
   });
-
-  if (props.actions !== undefined) {
+  if (props.action1 !== undefined) {
     id += 1;
     columns.push({
       id,
-      name: "Actions",
+      name: "Edit",
       formatter: (cell, row) => {
         return h(
           "Button",
           {
-            className: props.actions?.classNames,
-            onclick: () => props.actions?.func(row),
+            className: props.action1?.classNames,
+            onclick: () => props.action1?.func(row),
             "aria-label": "action",
             "data-testid": "action-btn",
           },
           h(
             "i",
             {
-              className: "bi bi-gear-fill",
+              className: "bi bi-pencil-square",
             },
             ""
           )
@@ -64,26 +64,54 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
       },
     });
   }
+  if (props.action2 !== undefined) {
+    id += 1;
+    columns.push({
+      id,
+      name: "Delete",
+      formatter: (cell, row) => {
+        return h(
+          "Button",
+          {
+            className: props.action2?.classNames,
+            onclick: () => props.action2?.func(row),
+            "aria-label": "action",
+            "data-testid": "action-btn",
+          },
+          h(
+            "i",
+            {
+              className: "bi bi-trash-fill",
+            },
+            ""
+          )
+        );
+      },
+    });
+  }
+
   const serverConfigs = {
     url,
+
     data: async (args: any) => {
+      console.log(url);
+
       const response = await apiFactory().get(`${args.url}`);
 
       console.log(response.data.data);
       return { data: response.data.data, total: response.data.count };
     },
-    // eslint-disable-next-line unicorn/no-thenable
   };
 
   const paginationConfigs = {
     enabled: true,
     limit: 10,
     server: {
-      url: (prev: string, page: number) => `${prev}page=${page + 1}`,
+      url: (prev: string) => `${prev}`,
     },
   };
 
-  const searchConfigs = {
+  const searchConfig = {
     enabled: true,
     server: {
       url: (prev: string, keyword: string) => `${prev}${searchBy}=${keyword}&`,
@@ -102,11 +130,10 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
         columns={columns}
         server={serverConfigs}
         pagination={paginationConfigs}
-        search={searchConfigs}
+        search={searchConfig}
         className={classNames}
       />
     </div>
   );
 };
-
 export default RenderList1;
