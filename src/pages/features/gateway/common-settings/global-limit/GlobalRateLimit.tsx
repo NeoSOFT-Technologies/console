@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Row, Col, Form } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import Spinner from "../../../../../components/loader/Loader";
 import { regexForNumber } from "../../../../../resources/gateway/api/api-constants";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
@@ -9,6 +10,7 @@ import {
 } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
 import {
+  policystate,
   setForm,
   setFormError,
 } from "../../../../../store/features/gateway/policy/create/slice";
@@ -32,7 +34,7 @@ export default function GlobalRateLimit(props: IProps) {
     props.current === "policy"
       ? { ...props.state?.data.errors?.GlobalLimit! }
       : { ...props.keystate?.data.errors?.GlobalLimit! };
-
+  const { id } = useParams();
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
@@ -144,6 +146,20 @@ export default function GlobalRateLimit(props: IProps) {
   const [rate, setRate] = useState(false);
   const [throttle, setThrottle] = useState(true);
   const [quota, setQuota] = useState(true);
+
+  useEffect(() => {
+    if (id !== undefined && state.loading === false) {
+      state.data.form.Rate === -1 ? setRate(true) : setRate(false);
+      state.data.form.ThrottleInterval === -1
+        ? setThrottle(true)
+        : setThrottle(false);
+      state.data.form.MaxQuota === -1 ? setQuota(true) : setQuota(false);
+    }
+  }, [
+    state.data.form.Rate,
+    state.data.form.ThrottleInterval,
+    state.data.form.MaxQuota,
+  ]);
 
   const handlerateclick = (event: any) => {
     event.preventDefault();
@@ -270,8 +286,22 @@ export default function GlobalRateLimit(props: IProps) {
           dispatch(
             setForm({
               ...state.data.form,
-              Rate: 0,
-              Per: 0,
+              Rate:
+                id === undefined
+                  ? 0
+                  : policystate === undefined
+                  ? 0
+                  : policystate.data.form.Rate === -1
+                  ? 0
+                  : policystate.data.form.Rate,
+              Per:
+                id === undefined
+                  ? 0
+                  : policystate === undefined
+                  ? 0
+                  : policystate.data.form.Per === -1
+                  ? 0
+                  : policystate.data.form.Per,
             })
           );
         } else {
@@ -335,8 +365,22 @@ export default function GlobalRateLimit(props: IProps) {
           ? dispatch(
               setForm({
                 ...state.data.form,
-                ThrottleInterval: 0,
-                ThrottleRetries: 0,
+                ThrottleInterval:
+                  id === undefined
+                    ? 0
+                    : policystate === undefined
+                    ? 0
+                    : policystate.data.form.ThrottleInterval === -1
+                    ? 0
+                    : policystate.data.form.ThrottleInterval,
+                ThrottleRetries:
+                  id === undefined
+                    ? 0
+                    : policystate === undefined
+                    ? 0
+                    : policystate.data.form.ThrottleRetries === -1
+                    ? 0
+                    : policystate.data.form.ThrottleRetries,
               })
             )
           : dispatch(
@@ -396,8 +440,22 @@ export default function GlobalRateLimit(props: IProps) {
           ? dispatch(
               setForm({
                 ...state.data.form,
-                MaxQuota: 0,
-                QuotaRate: 0,
+                MaxQuota:
+                  id === undefined
+                    ? 0
+                    : policystate === undefined
+                    ? 0
+                    : policystate.data.form.MaxQuota === -1
+                    ? 0
+                    : policystate.data.form.MaxQuota,
+                QuotaRate:
+                  id === undefined
+                    ? 0
+                    : policystate === undefined
+                    ? 0
+                    : policystate.data.form.QuotaRate === -1
+                    ? 0
+                    : policystate.data.form.QuotaRate,
               })
             )
           : dispatch(
@@ -469,7 +527,7 @@ export default function GlobalRateLimit(props: IProps) {
                           id="disableGlobalRate"
                           name="GlobalLimit.IsDisabled"
                           label="Disable rate limiting"
-                          // checked={rate}
+                          checked={rate}
                           className="ml-4"
                           onChange={(e: any) => setRate(e.target.checked)}
                         />
