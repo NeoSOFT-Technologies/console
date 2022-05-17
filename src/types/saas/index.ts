@@ -51,12 +51,3 @@ export interface ISearchDataWithQuery {
   order: string;
   requestParams: ITableSchema;
 }
-export interface ISearchRecords {
-  id: string;
-  title: string;
-  productname: string;
-  category: string[];
-  price: string;
-  vendorid: string[];
-  _version_: string;
-}

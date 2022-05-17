@@ -3,13 +3,19 @@ import { Table, Button, Col, Row } from "react-bootstrap";
 
 import Form from "react-bootstrap/Form";
 import Pagination from "react-bootstrap/Pagination";
-import { searchDataWithQueryField } from "../../../../store/features/saas/search-data/with-query-field/slice";
+
+import Spinner from "../../../../components/loader/Loader";
+import {
+  // resetSearchDataWithQueryField,
+  searchDataWithQueryField,
+} from "../../../../store/features/saas/search-data/with-query-field/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
   ISearchDataWithQueryField,
   ITableSchema,
 } from "../../../../types/saas/index";
 import "./style.css";
+import { ToastAlert } from "./../../../../components/toast-alert/toast-alert";
 
 export default function GetSearchData() {
   const dispatch = useAppDispatch();
@@ -24,10 +30,12 @@ export default function GetSearchData() {
   const [pageSize, setPageSize] = useState("5");
   const [orderBy, setOrderBy] = useState("id");
   const [order, setOrder] = useState("asc");
+  const [tableHeader, setTableHeader] = useState<string[]>([]);
   const params: ITableSchema = {
     tenantId,
     tableName,
   };
+
   const initialState: ISearchDataWithQueryField = {
     queryField,
     searchTerm,
@@ -44,8 +52,27 @@ export default function GetSearchData() {
 
     dispatch(searchDataWithQueryField(initialState));
   };
+
   useEffect(() => {
-    console.log("Use Effect of Search Data " + JSON.stringify(searchData));
+    let keys: string[] = [];
+    if (
+      searchData !== undefined &&
+      searchData.data !== undefined &&
+      searchData.error === undefined &&
+      searchData.loading === false
+    ) {
+      keys = Object.keys(searchData?.data[0]);
+
+      setTableHeader(() => {
+        ToastAlert("Data Fetched successfully ", "success");
+        return [...keys];
+      });
+    }
+
+    // if (tableHeader.length > 0) ToastAlert("Data Fetch sucessfuly ", "success");
+    // return () => {
+    //   dispatch(resetSearchDataWithQueryField());
+    // };
   }, [searchData.data, searchData.error]);
   return (
     <div>
@@ -134,58 +161,60 @@ export default function GetSearchData() {
                 </Form.Group>
               </Col>
               <div className="col-md-12 mt-5 text-center table-responsive">
-                <Button variant="btn btn-dark btn-lg pl-5 pr-5 " type="submit">
+                <Button
+                  variant="btn btn-dark btn-lg pl-5 pr-5 "
+                  type="submit"
+                  disabled={searchData.loading}
+                >
                   Search
                 </Button>
               </div>
             </Row>
           </Form>
         </div>
-        <hr></hr>
-        <div className="card-body table-responsive ">
-          <h4 className="mb-4">Table Details</h4>
-          {searchData.data !== undefined && (
-            <Table bordered>
-              <thead>
-                <tr>
-                  <th>Sr.No</th>
-                  <th>id</th>
-                  <th>title</th>
-                  <th>productname</th>
-                  <th>price</th>
 
-                  <th>version</th>
-                </tr>
-              </thead>
-              <tbody>
-                {searchData.data.map((val, index) => (
-                  <tr key={`row${index}`}>
-                    <td>{index + 1}</td>
+        {searchData.loading ? (
+          <Spinner></Spinner>
+        ) : (
+          <>
+            <hr></hr>
+            <div className="card-body table-responsive ">
+              <h4 className="mb-5">Table Details</h4>
+              {searchData.data !== undefined && (
+                <Table bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Sr.No</th>
+                      {tableHeader.map((val, index) => (
+                        <th key={index}>{val}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {searchData.data.map((val, index) => (
+                      <tr key={`row${index}`}>
+                        <td>{index + 1}</td>
 
-                    <td>{val.id}</td>
-                    <td>{val.title}</td>
-                    <td>{val.productname}</td>
-                    <td>{val.price}</td>
+                        {tableHeader.map((h, i) => (
+                          <td key={i}>{JSON.stringify(val[h])}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              )}
+            </div>
+            <Pagination className="d-flex justify-content-center">
+              <Pagination.Prev />
+              <Pagination.Item>{1}</Pagination.Item>
+              <Pagination.Item>{2}</Pagination.Item>
+              <Pagination.Item>{3}</Pagination.Item>
+              <Pagination.Item>{4}</Pagination.Item>
 
-                    <td>{val._version_}</td>
-                    <td>
-                      <i className="bi bi-gear-fill"></i>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          )}
-        </div>
-        <Pagination className="d-flex justify-content-center">
-          <Pagination.Prev />
-          <Pagination.Item>{1}</Pagination.Item>
-          <Pagination.Item>{2}</Pagination.Item>
-          <Pagination.Item>{3}</Pagination.Item>
-          <Pagination.Item>{4}</Pagination.Item>
-
-          <Pagination.Next />
-        </Pagination>
+              <Pagination.Next />
+            </Pagination>
+          </>
+        )}
       </div>
     </div>
   );
