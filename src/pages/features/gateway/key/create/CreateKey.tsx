@@ -69,6 +69,7 @@ export default function CreateKey() {
   async function handleSubmitKey(event: FormEvent) {
     event.preventDefault();
     let validate: any;
+    validate = false;
     // noted
     const validateFieldValue = state.data.form.KeyName.length > 0;
     if (!validateFieldValue) {
@@ -90,23 +91,29 @@ export default function CreateKey() {
       //   state.data.errors?.GlobalLimit.ThrottleRetries === "" &&
       //   state.data.errors?.GlobalLimit.Quota === ""
       // );
-
-      for (let i = 0; i < state.data.errors?.PerApiLimit.length; i++) {
+      if (state.data.errors?.PerApiLimit.length > 0) {
+        for (let i = 0; i < state.data.errors?.PerApiLimit.length; i++) {
+          console.log("enetered here welcome all of you");
+          validate = !!(
+            state.data.errors?.KeyName === "" &&
+            validateFieldValue === true &&
+            state.data.errors?.GlobalLimit.Rate === "" &&
+            state.data.errors?.GlobalLimit.Per === "" &&
+            state.data.errors?.GlobalLimit.ThrottleInterval === "" &&
+            state.data.errors?.GlobalLimit.ThrottleRetries === "" &&
+            state.data.errors?.GlobalLimit.Quota === "" &&
+            state.data.errors?.PerApiLimit[i].Per === "" &&
+            state.data.errors?.PerApiLimit[i].Rate === "" &&
+            state.data.errors?.PerApiLimit[i].Quota === "" &&
+            state.data.errors?.PerApiLimit[i].Expires === "" &&
+            state.data.errors?.PerApiLimit[i].QuotaRenewalRate === "" &&
+            state.data.errors?.PerApiLimit[i].ThrottleInterval === "" &&
+            state.data.errors?.PerApiLimit[i].ThrottleRetries === ""
+          );
+        }
+      } else {
         validate = !!(
-          state.data.errors?.KeyName === "" &&
-          validateFieldValue === true &&
-          state.data.errors?.GlobalLimit.Rate === "" &&
-          state.data.errors?.GlobalLimit.Per === "" &&
-          state.data.errors?.GlobalLimit.ThrottleInterval === "" &&
-          state.data.errors?.GlobalLimit.ThrottleRetries === "" &&
-          state.data.errors?.GlobalLimit.Quota === "" &&
-          state.data.errors?.PerApiLimit[i].Per === "" &&
-          state.data.errors?.PerApiLimit[i].Rate === "" &&
-          state.data.errors?.PerApiLimit[i].Quota === "" &&
-          state.data.errors?.PerApiLimit[i].Expires === "" &&
-          state.data.errors?.PerApiLimit[i].QuotaRenewalRate === "" &&
-          state.data.errors?.PerApiLimit[i].ThrottleInterval === "" &&
-          state.data.errors?.PerApiLimit[i].ThrottleRetries === ""
+          state.data.errors?.KeyName === "" && validateFieldValue === true
         );
       }
     }
