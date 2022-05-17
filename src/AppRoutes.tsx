@@ -38,9 +38,6 @@ const RegisterTenant = lazy(
 const TenantList = lazy(
   () => import("./pages/features/tenants/admin/tenant-list/TenantList")
 );
-const TableList = lazy(
-  () => import("./pages/features/saas/manage-table/demomanage-table")
-);
 const AdminDashboard = lazy(
   () => import("./pages/features/tenants/admin/admin-dashboard/AdminDashboard")
 );
@@ -247,20 +244,19 @@ function AppRoutes() {
             }
           />
 
-          <Route path="addTable" element={<AddTable />} />
+          <Route
+            path="addTable"
+            element={
+              <AdminGuard>
+                <AddTable />
+              </AdminGuard>
+            }
+          />
           <Route
             path="restoreTable"
             element={
               <AdminGuard>
                 <RestoreTable />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="demomanageTable"
-            element={
-              <AdminGuard>
-                <TableList />
               </AdminGuard>
             }
           />
