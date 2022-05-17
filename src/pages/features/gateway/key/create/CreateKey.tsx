@@ -68,7 +68,8 @@ export default function CreateKey() {
   // let TabIcon: any;
   async function handleSubmitKey(event: FormEvent) {
     event.preventDefault();
-    let validate: any;
+    let validate: boolean;
+    validate = false;
     // noted
     const validateFieldValue = state.data.form.KeyName.length > 0;
     if (!validateFieldValue) {
@@ -76,50 +77,44 @@ export default function CreateKey() {
         setFormErrors({ ...state.data.errors, KeyName: "Name is required" })
       );
     }
+
     if (state.data.errors !== undefined) {
-      // validate = Object.values(state.data.errors).every(
-      //   (x) => x === null || x === ""
-      // );
-
-      // validate = !!(
-      //   state.data.errors?.Name === "" &&
-      //   validateFieldValue === true &&
-      //   state.data.errors?.GlobalLimit.Rate === "" &&
-      //   state.data.errors?.GlobalLimit.Per === "" &&
-      //   state.data.errors?.GlobalLimit.ThrottleInterval === "" &&
-      //   state.data.errors?.GlobalLimit.ThrottleRetries === "" &&
-      //   state.data.errors?.GlobalLimit.Quota === ""
-      // );
-
-      for (let i = 0; i < state.data.errors?.PerApiLimit.length; i++) {
+      if (state.data.errors?.PerApiLimit.length > 0) {
+        for (let i = 0; i < state.data.errors?.PerApiLimit.length; i++) {
+          validate = !!(
+            state.data.errors?.KeyName === "" &&
+            validateFieldValue === true &&
+            state.data.errors?.GlobalLimit.Rate === "" &&
+            state.data.errors?.GlobalLimit.Per === "" &&
+            state.data.errors?.GlobalLimit.ThrottleInterval === "" &&
+            state.data.errors?.GlobalLimit.ThrottleRetries === "" &&
+            state.data.errors?.GlobalLimit.Quota === "" &&
+            state.data.errors?.PerApiLimit[i].Per === "" &&
+            state.data.errors?.PerApiLimit[i].Rate === "" &&
+            state.data.errors?.PerApiLimit[i].Quota === "" &&
+            state.data.errors?.PerApiLimit[i].Expires === "" &&
+            state.data.errors?.PerApiLimit[i].QuotaRenewalRate === "" &&
+            state.data.errors?.PerApiLimit[i].ThrottleInterval === "" &&
+            state.data.errors?.PerApiLimit[i].ThrottleRetries === ""
+          );
+        }
+      } else {
         validate = !!(
-          state.data.errors?.KeyName === "" &&
-          validateFieldValue === true &&
-          state.data.errors?.GlobalLimit.Rate === "" &&
-          state.data.errors?.GlobalLimit.Per === "" &&
-          state.data.errors?.GlobalLimit.ThrottleInterval === "" &&
-          state.data.errors?.GlobalLimit.ThrottleRetries === "" &&
-          state.data.errors?.GlobalLimit.Quota === "" &&
-          state.data.errors?.PerApiLimit[i].Per === "" &&
-          state.data.errors?.PerApiLimit[i].Rate === "" &&
-          state.data.errors?.PerApiLimit[i].Quota === "" &&
-          state.data.errors?.PerApiLimit[i].Expires === "" &&
-          state.data.errors?.PerApiLimit[i].QuotaRenewalRate === "" &&
-          state.data.errors?.PerApiLimit[i].ThrottleInterval === "" &&
-          state.data.errors?.PerApiLimit[i].ThrottleRetries === ""
+          state.data.errors?.KeyName === "" && validateFieldValue === true
         );
       }
     }
-    if (validate) {
-      if (
-        state.data.form.Policies.length === 0 &&
-        state.data.form.AccessRights.length === 0
-      ) {
-        ToastAlert(
-          "You need to add access rights to atleast one API \n or you need to add one Policy ...! ",
-          "error"
-        );
+    if (
+      state.data.form.Policies.length === 0 &&
+      state.data.form.AccessRights.length === 0
+    ) {
+      if (state.data.form.SelectedTabIndex === "applyPolicy") {
+        ToastAlert(" Select at least one Policy  ...! ", "error");
       } else {
+        ToastAlert("Select at least one API ...! ", "error");
+      }
+    } else {
+      if (validate !== undefined && validate) {
         const result = id
           ? await dispatch(updateKey(state.data.form))
           : await dispatch(createKey(state.data.form));
@@ -145,9 +140,9 @@ export default function CreateKey() {
         } else {
           ToastAlert("Request is not fulfilled!!", "error");
         }
+      } else {
+        ToastAlert("Please fill all the fields correctly! ", "error");
       }
-    } else {
-      ToastAlert("Please fill all the fields correctly! ", "error");
     }
   }
 

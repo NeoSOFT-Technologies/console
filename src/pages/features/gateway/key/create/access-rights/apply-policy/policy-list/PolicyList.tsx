@@ -59,7 +59,7 @@ export default function PolicyList() {
   };
   function containsApis() {
     const policyId: IPolicyData[] = [];
-    console.log("containsApis-apis", apis);
+    //  console.log("containsApis-apis", apis);
     const listPolicies = accessPolicyList.data?.Policies!.filter(
       (a) =>
         a.AuthType !== "keyless" &&
@@ -73,13 +73,13 @@ export default function PolicyList() {
 
     for (const item of selectedlistPolicies!) {
       policyId.push(item);
-      console.log("selectedlistPolicies", selectedlistPolicies);
-      console.log("selectedlistPolicies-policyId", policyId);
+      // console.log("selectedlistPolicies", selectedlistPolicies);
+      // console.log("selectedlistPolicies-policyId", policyId);
     }
     for (const item of listPolicies!) {
       policyId.push(item);
-      console.log("listPolicies", listPolicies);
-      console.log("listPolicies-policyId", policyId);
+      // console.log("listPolicies", listPolicies);
+      // console.log("listPolicies-policyId", policyId);
     }
 
     console.log("This is the list am filtering,", policyId);
@@ -118,27 +118,27 @@ export default function PolicyList() {
         ])
       : [];
   }
-  useEffect(() => {
-    if (StateKey?.data.form.KeyId?.length! > 0) {
-      console.log("useEffect-apis :", apis);
-      for (const p_item of StateKey?.data.form.Policies) {
-        const newp = [...apis];
-        const selectedlistPolicies2 = accessPolicyList.data?.Policies!.filter(
-          (a) => a.AuthType !== "keyless" && p_item.includes(a.Id!)
-        );
-        // console.log("useEffect-apis :", apis);
-        console.log("selectedlistPolicies2 :", selectedlistPolicies2);
-        for (const iterator of selectedlistPolicies2!) {
-          newp.push({ name: iterator.Apis, policyId: iterator.Id! });
-          setApis(newp);
-          console.log("useEffect-apis-i for :", apis);
-        }
-        // newp.push({ name: accessRights, policyId: Id });
-        // setApis(newp);
-        console.log("newpfor :", newp);
-      }
-    }
-  }, [StateKey?.data.form.Policies?.length]);
+  // useEffect(() => {
+  //   if (StateKey?.data.form.KeyId?.length! > 0) {
+  //     console.log("useEffect-apis :", apis);
+  //     for (const p_item of StateKey?.data.form.Policies) {
+  //       const newp = [...apis];
+  //       const selectedlistPolicies2 = accessPolicyList.data?.Policies!.filter(
+  //         (a) => a.AuthType !== "keyless" && p_item.includes(a.Id!)
+  //       );
+  //       // console.log("useEffect-apis :", apis);
+  //       // console.log("selectedlistPolicies2 :", selectedlistPolicies2);
+  //       for (const iterator of selectedlistPolicies2!) {
+  //         newp.push({ name: iterator.Apis, policyId: iterator.Id! });
+  //         setApis(newp);
+  //       //  console.log("useEffect-apis-i for :", apis);
+  //       }
+  //       // newp.push({ name: accessRights, policyId: Id });
+  //       // setApis(newp);
+  //       console.log("newpfor :", newp);
+  //     }
+  //   }
+  // }, [StateKey?.data.form.Policies?.length]);
 
   useEffect(() => {
     // alert(apis);
