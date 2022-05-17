@@ -9,10 +9,11 @@ export default function InputData() {
   const dispatch = useAppDispatch();
   const inputDatas = useAppSelector((state) => state.inputDataWithNrtState);
 
-  const [tenantId, setTenantId] = useState("101");
-  const [tableName, setTableName] = useState("Employee");
+  const [tenantId, setTenantId] = useState("");
+  const [tableName, setTableName] = useState("");
   const [inputData, setInputData] = useState("[]");
-  console.log({ tenantId, tableName, inputData });
+  const [isNrtChecked, setIsNrtChecked] = useState(false);
+  console.log({ tenantId, tableName, isNrtChecked, inputData });
   const params: ITableSchema = {
     tenantId,
     tableName,
@@ -27,13 +28,16 @@ export default function InputData() {
     event.preventDefault();
     // console.log(tenantId);
     alert("Befor Dispatch -: " + JSON.stringify(initialState));
+
     dispatch(inputTableDataWithNrt(initialState));
   };
   useEffect(() => {
     // console.log(tableData);
     console.log("Use Effect of Input Data " + JSON.stringify(inputDatas));
   }, [inputDatas.data, inputDatas.error]);
-
+  const handleOnChange = () => {
+    setIsNrtChecked(!isNrtChecked);
+  };
   return (
     <div className=" bg-white">
       <h3 className="font-weight-normal text-justify text-center">
@@ -64,7 +68,11 @@ export default function InputData() {
             </Form.Group>
             <Form.Group className="mb-1" controlId="formBasicEmail">
               <div className="ml-4">
-                <Form.Check />
+                <Form.Check
+                  value="NRT"
+                  checked={isNrtChecked}
+                  onChange={handleOnChange}
+                />
               </div>
               <div className=" ml-4 mr-3">
                 <label className="pl-2">NRT</label>
