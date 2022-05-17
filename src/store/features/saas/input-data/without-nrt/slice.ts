@@ -4,7 +4,7 @@ import { IInputData } from "../../../../../types/saas";
 import error from "../../../../../utils/error";
 
 interface IInputDataState {
-  data?: string;
+  data?: string[];
   loading: boolean;
   error?: string | null;
 }
