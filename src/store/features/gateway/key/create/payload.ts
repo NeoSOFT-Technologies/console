@@ -4,6 +4,7 @@ export const initialState: IKeyCreateState = {
   data: {
     form: {
       KeyName: "",
+      SelectedTabIndex: "applyPolicy",
       Per: 0,
       Rate: 0,
       Quota: 0,
@@ -59,6 +60,7 @@ export const initialState: IKeyCreateState = {
       KeyName: "",
       Expires: "",
       Policies: "",
+      AccessRights: "",
       GlobalLimit: {
         ApiId: "",
         Per: "",

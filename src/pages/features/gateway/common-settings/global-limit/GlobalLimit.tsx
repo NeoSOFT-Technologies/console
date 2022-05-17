@@ -165,7 +165,7 @@ export default function GlobalLimit(props: IProps) {
                 {(
                   states.data.form.PolicyByIds![props.index!].APIs as any[]
                 ).map((data: any, index: number) => {
-                  return (
+                  return data.Limit !== null ? (
                     <div className="card" key={index}>
                       <Accordion defaultActiveKey="0">
                         <Accordion.Item eventKey="0">
@@ -379,6 +379,8 @@ export default function GlobalLimit(props: IProps) {
                         </Accordion.Item>
                       </Accordion>
                     </div>
+                  ) : (
+                    ""
                   );
                 })}
                 {states.data.form.PolicyByIds![props.index!].Global !==
