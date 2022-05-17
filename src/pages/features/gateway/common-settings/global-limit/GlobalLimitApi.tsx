@@ -32,7 +32,18 @@ export default function GlobalLimitApi(props: IProps) {
     (RootStates) => RootStates.createPolicyState
   );
 
+  console.log(
+    "Nikita Vivek",
+    props.current === "policy"
+      ? props.state?.data.errors
+      : props.keystate?.data.errors
+  );
+  console.log(
+    "Nikita alfaaiz",
+    props.current === "policy" ? props.state?.data.errors : states.data.errors
+  );
   const { id } = useParams();
+  console.log("check state of key", props.state?.data.form);
   const perapi =
     props.current === "policy"
       ? [...props.state?.data.errors?.PerApiLimit!]
@@ -207,7 +218,6 @@ export default function GlobalLimitApi(props: IProps) {
           -1
     ) {
       if (props.current === "policy") {
-        console.log("policystate", policystate);
         const apisList = [...props.state?.data.form.APIs!];
         apisList[props.index!] = {
           ...apisList[props.index!],
@@ -559,7 +569,6 @@ export default function GlobalLimitApi(props: IProps) {
           })
         );
       } else {
-        console.log("entered here Hiii key");
         const apisList = [...props.keystate?.data.form.AccessRights!];
         apisList[props.index!] = {
           ...apisList[props.index!],
@@ -810,8 +819,6 @@ export default function GlobalLimitApi(props: IProps) {
     EffectSetRateError();
   }, []);
 
-  console.log("validation error", props.state?.data.errors);
-
   const handlerateclick = (event: any, ApiId: any) => {
     event.preventDefault();
     validateForm(event, ApiId);
@@ -826,7 +833,6 @@ export default function GlobalLimitApi(props: IProps) {
       switch (event.target.value) {
         case "1 hour":
           fieldValue = 3600;
-          console.log(fieldValue);
           break;
         case "6 hour":
           fieldValue = 21_600;
@@ -882,7 +888,6 @@ export default function GlobalLimitApi(props: IProps) {
       newFormData[fieldName] = fieldValue;
     }
     // setLimits(newFormData);
-    console.log("newFormDataCheck", newFormData);
     apisList[value] = {
       ...apisList[value],
       Limit: { ...newFormData },
@@ -893,7 +898,10 @@ export default function GlobalLimitApi(props: IProps) {
   };
   return (
     <>
-      {state.loading === false ? (
+      {(props.current === "policy" &&
+        props.state?.data.errors?.PerApiLimit!.length! > 0) ||
+      (props.current !== "policy" &&
+        props.keystate?.data.errors?.PerApiLimit!.length! > 0) ? (
         <div className="card">
           <Accordion defaultActiveKey="0">
             <Accordion.Item eventKey="0">
@@ -985,8 +993,9 @@ export default function GlobalLimitApi(props: IProps) {
                             ? props.state?.data.errors?.PerApiLimit[
                                 props.index!
                               ].Rate
-                            : states.data.errors?.PerApiLimit[props.index!]
-                                .Rate}
+                            : props.keystate?.data.errors?.PerApiLimit[
+                                props.index!
+                              ].Rate}
                         </Form.Control.Feedback>
                         <Form.Label className="mt-3">Per (Seconds)</Form.Label>
                         <br />
@@ -1290,14 +1299,14 @@ export default function GlobalLimitApi(props: IProps) {
                                 ].Limit?.Quota_max! === -1
                           }
                           name="quota_renewal_rate"
-                          value={
-                            props.current === "policy"
-                              ? props.state?.data.form.APIs[props.index!]?.Limit
-                                  ?.quota_renews
-                              : props.keystate?.data.form.AccessRights[
-                                  props.index!
-                                ]?.Limit?.Quota_renews
-                          }
+                          // value={
+                          //   props.current === "policy"
+                          //     ? props.state?.data.form.APIs[props.index!]?.Limit
+                          //         ?.quota_renews
+                          //     : props.keystate?.data.form.AccessRights[
+                          //         props.index!
+                          //       ]?.Limit?.Quota_renews
+                          // }
                           onChange={(e: any) =>
                             handlerateclick(
                               e,

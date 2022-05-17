@@ -109,19 +109,25 @@ export default function PathBased(props: IProps) {
   const { id } = useParams();
 
   useEffect(() => {
-    if (props.current === "policy") {
-      if (props.policystate?.data.form.APIs[props.indexdata!].Limit !== null) {
-        setisActiveApi(true);
-      } else {
-        setisActiveApi(false);
-      }
+    if (id === undefined) {
+      setisActiveApi(false);
     } else {
-      if (
-        props.state?.data.form.AccessRights[props.indexdata!].Limit !== null
-      ) {
-        setisActiveApi(true);
+      if (props.current === "policy") {
+        if (
+          props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
+        ) {
+          setisActiveApi(true);
+        } else {
+          setisActiveApi(false);
+        }
       } else {
-        setisActiveApi(false);
+        if (
+          props.state?.data.form.AccessRights[props.indexdata!].Limit !== null
+        ) {
+          setisActiveApi(true);
+        } else {
+          setisActiveApi(false);
+        }
       }
     }
   }, []);

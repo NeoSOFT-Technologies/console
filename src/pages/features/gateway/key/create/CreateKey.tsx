@@ -48,7 +48,6 @@ export default function CreateKey() {
           };
           error.push(perapierror);
         }
-        console.log("error", error);
         dispatch(
           setFormErrors({
             ...state.data.errors,

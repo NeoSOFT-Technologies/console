@@ -65,7 +65,7 @@ const slice = createSlice({
     },
     setFormErrors: (state, action) => {
       state.data.errors = action.payload;
-      console.log("This is set form errors", action);
+      console.log("keyslice", state.data.errors);
     },
   },
   extraReducers(builder): void {
