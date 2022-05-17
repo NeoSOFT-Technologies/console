@@ -103,15 +103,16 @@ export const Sidebar = () => {
             </div>
           </li>
           <li className="nav-item">
-            <div
-              className="nav-link"
-              onClick={() =>
-                setSubMenu({ ...subMenu, tenant: !subMenu.tenant })
-              }
-              data-testid="tenant"
-            >
+            <div className="nav-link" data-testid="tenant">
               <div className="d-flex justify-content-between w-100 ">
-                <span className="menu-title lh-2">Tenant</span>
+                <span
+                  className="menu-title lh-2"
+                  onClick={() =>
+                    setSubMenu({ ...subMenu, tenant: !subMenu.tenant })
+                  }
+                >
+                  Tenant
+                </span>
                 <i
                   className={` ${
                     subMenu.tenant
@@ -146,15 +147,16 @@ export const Sidebar = () => {
             </Collapse>
           </li>
           <li className="nav-item">
-            <div
-              className="nav-link"
-              onClick={() =>
-                setSubMenu({ ...subMenu, gateway: !subMenu.gateway })
-              }
-              data-testid="gateway"
-            >
+            <div className="nav-link" data-testid="gateway">
               <div className="d-flex justify-content-between w-100 ">
-                <span className="menu-title lh-2">Gateway</span>
+                <span
+                  className="menu-title lh-2"
+                  onClick={() =>
+                    setSubMenu({ ...subMenu, gateway: !subMenu.gateway })
+                  }
+                >
+                  Gateway
+                </span>
                 <i
                   className={` ${
                     subMenu.gateway
@@ -189,13 +191,16 @@ export const Sidebar = () => {
             </Collapse>
           </li>
           <li className="nav-item">
-            <div
-              className="nav-link"
-              onClick={() => setSubMenu({ ...subMenu, saas: !subMenu.saas })}
-              data-testid="saas"
-            >
+            <div className="nav-link" data-testid="saas">
               <div className="d-flex justify-content-between w-100 ">
-                <span className="menu-title lh-2">Saas</span>
+                <span
+                  className="menu-title lh-2"
+                  onClick={() =>
+                    setSubMenu({ ...subMenu, saas: !subMenu.saas })
+                  }
+                >
+                  Saas
+                </span>
                 <i
                   className={` ${
                     subMenu.saas

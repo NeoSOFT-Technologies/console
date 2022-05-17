@@ -79,6 +79,7 @@ const apiFactory = (baseUrl: string = getDefaultPath(), header = {}) => {
       const originalConfig = err.config;
       if (
         originalConfig.url !== "/api/login" &&
+        originalConfig.url !== "/api/refresh-access-token" &&
         err.response && // Access Token was expired
         err.response.status === 401 &&
         !originalConfig._retry
