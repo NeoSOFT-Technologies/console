@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { inputTableDataWithNrt } from "../../../../store/features/saas/input-data/with-nrt/slice";
+import { inputTableDataWithoutNrt } from "../../../../store/features/saas/input-data/without-nrt/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IInputData, ITableSchema } from "../../../../types/saas";
 
@@ -29,7 +30,11 @@ export default function InputData() {
     // console.log(tenantId);
     alert("Befor Dispatch -: " + JSON.stringify(initialState));
 
-    dispatch(inputTableDataWithNrt(initialState));
+    if (isNrtChecked) {
+      dispatch(inputTableDataWithNrt(initialState));
+    } else {
+      dispatch(inputTableDataWithoutNrt(initialState));
+    }
   };
   useEffect(() => {
     // console.log(tableData);
