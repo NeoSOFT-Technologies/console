@@ -179,8 +179,13 @@ export default function ApiAccessList(props: IProps) {
           <Grid {...grid.props} />
           <div className="mt-2">
             {" "}
-            <b>Note :&nbsp;</b>
-            {apiAuth ? `Apis get filter based on ${apiAuth} Auth Type` : ""}
+            {apiAuth ? (
+              <>
+                <b>Note :&nbsp;</b> Apis get filter based on {apiAuth} Auth Type
+              </>
+            ) : (
+              ""
+            )}
           </div>
         </>
       )}

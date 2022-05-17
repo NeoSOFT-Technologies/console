@@ -26,6 +26,9 @@ export default function AccessRights() {
       setTabIndex("chooseApi");
     }
   }, []);
+  useEffect(() => {
+    dispatch(setForms({ ...state.data.form, SelectedTabIndex }));
+  }, [SelectedTabIndex]);
   const handleCancel = () => {
     if (ClickedTabIndex === "applyPolicy") {
       setTabIndex("chooseApi");

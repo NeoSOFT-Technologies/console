@@ -7,7 +7,7 @@ import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { RootState } from "../../../../../store";
 import { emptyState } from "../../../../../store/features/gateway/key/create/payload";
 import {
-  // setFormErrors,
+  setFormErrors,
   setForms,
 } from "../../../../../store/features/gateway/key/create/slice";
 import { deleteKey } from "../../../../../store/features/gateway/key/delete/slice";
@@ -72,14 +72,14 @@ export default function KeyList() {
   ) => {
     val.preventDefault();
     dispatch(setForms(emptyState.data.form));
-    // dispatch(setFormErrors(emptyState.data.errors));
+    dispatch(setFormErrors(emptyState.data.errors));
     navigate("/gateway/keys/create");
   };
 
   const NavigateUpdate = (val: IKeyData) => {
     if (val.Id) {
       dispatch(setForms(emptyState.data.form));
-      // dispatch(setFormErrors(emptyState.data.errors));
+      dispatch(setFormErrors(emptyState.data.errors));
       navigate(`/gateway/keys/update/${val.Id}`);
     }
   };

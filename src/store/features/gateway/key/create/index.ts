@@ -11,6 +11,7 @@ export interface ICreateState {
 export interface IGetKeyByIdData {
   KeyId?: string;
   KeyName: string;
+  SelectedTabIndex: string;
   Per: number;
   Rate: number;
   Quota: number;
@@ -82,9 +83,10 @@ export interface Limiting {
 }
 
 export interface IError {
-  KeyName: "";
-  Policies: "";
-  Expires: "";
+  KeyName: string;
+  Policies: string;
+  AccessRights: string;
+  Expires: string;
   GlobalLimit: Limiting;
   PerApiLimit: Limiting[];
 }
