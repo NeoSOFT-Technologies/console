@@ -761,7 +761,7 @@ export default function GlobalRateLimit(props: IProps) {
                                 : state.data.form.QuotaRate
                               : states.data.form.QuotaRenewalRate === -1
                               ? "Unlimited"
-                              : states.data.form.QuotaRenewalRate
+                              : states.data.form.Quota
                           }
                           isInvalid={
                             props.current === "policy"
