@@ -9,8 +9,8 @@ export default function InputData() {
   const dispatch = useAppDispatch();
   const inputDatas = useAppSelector((state) => state.inputDataWithNrtState);
 
-  const [tenantId, setTenantId] = useState("101");
-  const [tableName, setTableName] = useState("Employee");
+  const [tenantId, setTenantId] = useState("");
+  const [tableName, setTableName] = useState("");
   const [inputData, setInputData] = useState("[]");
   console.log({ tenantId, tableName, inputData });
   const params: ITableSchema = {
