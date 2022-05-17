@@ -4,7 +4,7 @@ import { ISearchDataWithQueryField } from "../../../../../types/saas";
 import error from "../../../../../utils/error";
 
 interface ISearchDataQueryFieldState {
-  data?: string;
+  data?: any[];
   loading: boolean;
   error?: string | null;
 }
@@ -17,17 +17,13 @@ const initialState: ISearchDataQueryFieldState = {
 export const searchDataWithQueryField = createAsyncThunk(
   "searchDataWithQueryField",
   async (data: ISearchDataWithQueryField) => {
-    // async (data: ITableCreateData) => {
     try {
       const response = await searchDataWithQueryFieldService(data);
-      console.log(
-        `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
-      );
-      return response.data;
+
+      return response.data.results.data;
     } catch (error_: any) {
-      // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
-      // console.log(`Error : ` + JSON.stringify(error_));
+
       throw new Error(errorMessage);
     }
   }
@@ -36,7 +32,13 @@ export const searchDataWithQueryField = createAsyncThunk(
 const slice = createSlice({
   name: "searchDataWithQueryFieldSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    resetSearchDataWithQueryField: (state) => {
+      state.data = undefined;
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(searchDataWithQueryField.pending, (state) => {
       state.data = undefined;
@@ -59,3 +61,4 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
+export const { resetSearchDataWithQueryField } = slice.actions;

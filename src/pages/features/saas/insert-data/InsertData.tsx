@@ -1,60 +1,83 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row, Table } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
+import { inputTableDataWithNrt } from "../../../../store/features/saas/input-data/with-nrt/slice";
+import { inputTableDataWithoutNrt } from "../../../../store/features/saas/input-data/without-nrt/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { IInputData, ITableSchema } from "../../../../types/saas";
 
-export default function GetTables() {
+export default function InputData() {
   const dispatch = useAppDispatch();
-  const tableData = useAppSelector((state) => state.getTableState);
+  const inputDatas = useAppSelector((state) => state.inputDataWithNrtState);
 
-  const [tenantId] = useState("");
-  const getTableData: React.FormEventHandler<HTMLFormElement> = (
+  const [tenantId, setTenantId] = useState("");
+  const [tableName, setTableName] = useState("");
+  const [inputData, setInputData] = useState("[]");
+  const [isNrtChecked, setIsNrtChecked] = useState(false);
+  console.log({ tenantId, tableName, isNrtChecked, inputData });
+  const params: ITableSchema = {
+    tenantId,
+    tableName,
+  };
+  const initialState: IInputData = {
+    inputData,
+    requestParams: params,
+  };
+  const getInputData: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
   ) => {
     event.preventDefault();
     // console.log(tenantId);
-    dispatch(getTables(tenantId));
+    alert("Befor Dispatch -: " + JSON.stringify(initialState));
+
+    if (isNrtChecked) {
+      dispatch(inputTableDataWithNrt(initialState));
+    } else {
+      dispatch(inputTableDataWithoutNrt(initialState));
+    }
   };
   useEffect(() => {
     // console.log(tableData);
-  }, [tableData.data, tableData.error]);
-
+    console.log("Use Effect of Input Data " + JSON.stringify(inputDatas));
+  }, [inputDatas.data, inputDatas.error]);
+  const handleOnChange = () => {
+    setIsNrtChecked(!isNrtChecked);
+  };
   return (
     <div className=" bg-white">
       <h3 className="font-weight-normal text-justify text-center">
         Insert Data
       </h3>
-      <Form onSubmit={getTableData}>
+      <Form onSubmit={getInputData}>
         <Row className="justify-content-center">
           <Col md={6} className="justify-content-center">
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>User :</Form.Label>
-              <Form.Select
-                aria-label="Default select example"
-                className="w-100 pr-3 pt-1 pb-1"
-              >
-                <option>Select User</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-              </Form.Select>
+              <Form.Control
+                type="text"
+                placeholder="user"
+                value={tenantId}
+                className="text-center"
+                onChange={(e) => setTenantId(e.target.value)}
+              />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Table Name :</Form.Label>
-              <Form.Select
-                aria-label="Default select example"
-                className="w-100 pr-3 pt-1 pb-1"
-              >
-                <option>Select Table</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-              </Form.Select>
+              <Form.Control
+                type="text"
+                placeholder="Table Name"
+                value={tableName}
+                className="text-center"
+                onChange={(e) => setTableName(e.target.value)}
+              />
             </Form.Group>
             <Form.Group className="mb-1" controlId="formBasicEmail">
               <div className="ml-4">
-                <Form.Check />
+                <Form.Check
+                  value="NRT"
+                  checked={isNrtChecked}
+                  onChange={handleOnChange}
+                />
               </div>
               <div className=" ml-4 mr-3">
                 <label className="pl-2">NRT</label>
@@ -64,8 +87,10 @@ export default function GetTables() {
               <Form.Label className="mb-2">Data</Form.Label>
               <Form.Control
                 as="textarea"
+                className="h:100"
+                value={inputData}
                 placeholder="JSON input"
-                className=""
+                onChange={(e) => setInputData(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3 mt-3 ml-5" controlId="formBasicEmail">
@@ -81,28 +106,6 @@ export default function GetTables() {
           </Col>
         </Row>
       </Form>
-      {tableData.data !== undefined && (
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Table Name</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.data.map((val, index) => (
-              <tr key={`row${index}`}>
-                <td>{index + 1}</td>
-                <td>{val}</td>
-                <td>
-                  <i className="bi bi-gear-fill"></i>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
     </div>
   );
 }
