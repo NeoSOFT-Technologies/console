@@ -244,7 +244,14 @@ function AppRoutes() {
             }
           />
 
-          <Route path="addTable" element={<AddTable />} />
+          <Route
+            path="addTable"
+            element={
+              <AdminGuard>
+                <AddTable />
+              </AdminGuard>
+            }
+          />
           <Route
             path="restoreTable"
             element={
