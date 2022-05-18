@@ -129,7 +129,9 @@ export default function ManageTables() {
           </Button>
           <Button
             variant="danger"
-            onClick={() => deleteTables({ tenantId, tableName: table })}
+            onClick={() =>
+              deleteTables({ tenantId: tenantId, tableName: table })
+            }
           >
             Yes, Delete
           </Button>
