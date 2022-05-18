@@ -103,7 +103,7 @@ export default function TargetUrl() {
                 </Col>
 
                 <Col md="12">
-                  <Form.Group className="mb-3">
+                  <Form.Group className="ml-4 mb-3">
                     <Form.Check
                       type="switch"
                       id="EnableRoundRobin"
@@ -124,7 +124,7 @@ export default function TargetUrl() {
                   )}
                 </Col>
                 <Col md="12">
-                  <Form.Group className="mb-3">
+                  <Form.Group className="ml-4 mb-3">
                     <Form.Check
                       hidden
                       className="visually-hidden"

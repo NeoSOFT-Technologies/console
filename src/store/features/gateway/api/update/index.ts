@@ -46,7 +46,7 @@ export interface IGetApiByIdData {
   ];
   AuthType: string;
   EnableMTLS: boolean;
-  CertIds: [];
+  CertIds: string[];
   OpenidOptions: {
     Providers: {
       Issuer: string;
@@ -59,9 +59,21 @@ export interface IGetApiByIdData {
   EnableRoundRobin: boolean;
   LoadBalancingTargets: [];
   IsQuotaDisabled: boolean;
+  CORS: {
+    IsEnabled: boolean;
+    AllowedOrigins: [];
+    AllowedMethods: [];
+    AllowedHeaders: [];
+    ExposedHeaders: [];
+    AllowCredentials: boolean;
+    MaxAge: number;
+    OptionsPassthrough: boolean;
+    Debug: boolean;
+  };
 }
 
 export interface IError {
+  AllowedOrigins: string;
   ApiId: string;
   Name: string;
   ListenPath: string;
@@ -76,4 +88,10 @@ export interface IError {
   isQuotaDisabled: string;
   LoadBalancingTargets: string;
   OverrideTarget: string;
+
+  issuer: string;
+  ClientId: string;
+  Policy: string;
+  Whitelist: string;
+  Blacklist: string;
 }

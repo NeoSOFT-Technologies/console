@@ -4,6 +4,7 @@ export const initialState: IKeyCreateState = {
   data: {
     form: {
       KeyName: "",
+      SelectedTabIndex: "applyPolicy",
       Per: 0,
       Rate: 0,
       Quota: 0,
@@ -39,7 +40,7 @@ export const initialState: IKeyCreateState = {
       Policies: [],
       PolicyByIds: [
         {
-          global: {
+          Global: {
             Name: "",
             MaxQuota: 0,
             QuotaRate: 0,
@@ -48,17 +49,29 @@ export const initialState: IKeyCreateState = {
             ThrottleInterval: 0,
             ThrottleRetries: 0,
           },
-          perApi: [],
+          APIs: [],
           policyName: "",
+          AuthType: "",
         },
       ],
       Tags: [],
     },
     errors: {
       KeyName: "",
-      AccessRights: "",
-      Policies: "",
       Expires: "",
+      Policies: "",
+      AccessRights: "",
+      GlobalLimit: {
+        ApiId: "",
+        Per: "",
+        Rate: "",
+        Quota: "",
+        Expires: "",
+        QuotaRenewalRate: "",
+        ThrottleInterval: "",
+        ThrottleRetries: "",
+      },
+      PerApiLimit: [],
     },
   },
   loading: false,

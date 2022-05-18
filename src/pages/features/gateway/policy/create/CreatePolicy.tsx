@@ -6,6 +6,7 @@ import { IPolicyCreateState } from "../../../../../store/features/gateway/policy
 import {
   createPolicy,
   getPolicybyId,
+  setFormError,
   updatePolicy,
 } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
@@ -13,54 +14,95 @@ import AccessRights from "./access-rights/AccessRights";
 import Configurations from "./configurations/Configurations";
 export default function CreatePolicy() {
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
   const state: IPolicyCreateState = useAppSelector(
     (RootState) => RootState.createPolicyState
   );
 
   const { id } = useParams();
-  console.log("checkid", id);
-  useEffect(() => {
+  const mainCall = async () => {
     if (id !== undefined) {
-      dispatch(getPolicybyId(id));
+      const error = [];
+      const policybyid = await dispatch(getPolicybyId(id));
+      for (let i = 0; i < policybyid.payload.Data.APIs.length; i++) {
+        const perapierror = {
+          ApiId: policybyid.payload.Data.APIs[i].Id,
+          Per: "",
+          Rate: "",
+          Quota: "",
+          Expires: "",
+          QuotaRenewalRate: "",
+          ThrottleInterval: "",
+          ThrottleRetries: "",
+        };
+        error.push(perapierror);
+      }
+      dispatch(
+        setFormError({
+          ...state.data.errors,
+          PerApiLimit: error,
+        })
+      );
     }
+  };
+  useEffect(() => {
+    mainCall();
   }, []);
 
   async function handleSubmitPolicy(event: FormEvent) {
     event.preventDefault();
-    let validate: any;
-    if (state.data.errors !== undefined) {
-      validate = Object.values(state.data.errors).every(
-        (x) => x === null || x === ""
+    const validateFieldValue = state.data.form.Name.length > 0;
+    if (!validateFieldValue) {
+      dispatch(
+        setFormError({ ...state.data.errors, Name: "Name is required" })
       );
-      // console.log("error", state.data);
     }
-    if (validate) {
-      const result =
-        id === undefined
-          ? await dispatch(createPolicy(state.data.form))
-          : await dispatch(updatePolicy(state.data.form));
-      if (result.meta.requestStatus === "rejected") {
-        ToastAlert(result.payload.message, "error");
-      } else if (result.meta.requestStatus === "fulfilled") {
-        if (id === undefined) {
-          const valId: string = result.payload.Data.PolicyId;
-          ToastAlert("Policy Created Successfully!!", "success");
-          // navigate("/gateway/policies")
-          if (valId) {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            await dispatch(getPolicybyId(valId));
-            navigate(`/gateway/policies/update/${valId}`);
+
+    let validate: boolean;
+    validate = false;
+    validate = !!(
+      state.data.errors?.Name === "" &&
+      validateFieldValue === true &&
+      state.data.errors?.GlobalLimit.Rate === "" &&
+      state.data.errors?.GlobalLimit.Per === "" &&
+      state.data.errors?.GlobalLimit.ThrottleInterval === "" &&
+      state.data.errors?.GlobalLimit.ThrottleRetries === "" &&
+      state.data.errors?.GlobalLimit.Quota === ""
+    );
+
+    if (state.data.form.APIs.length > 0) {
+      if (validate) {
+        const result =
+          id === undefined
+            ? await dispatch(createPolicy(state.data.form))
+            : await dispatch(updatePolicy(state.data.form));
+        if (result.meta.requestStatus === "rejected") {
+          ToastAlert(result.payload.message, "error");
+        } else if (result.meta.requestStatus === "fulfilled") {
+          if (state.data.form.APIs.length > 0) {
+            if (id === undefined) {
+              const valId: string = result.payload.Data.PolicyId;
+              ToastAlert("Policy Created Successfully!!", "success");
+              // navigate("/gateway/policies")
+              if (valId) {
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+                await dispatch(getPolicybyId(valId));
+                navigate(`/gateway/policies/update/${valId}`);
+              }
+            } else {
+              ToastAlert("Policy Updated Successfully!!", "success");
+            }
+          } else {
+            ToastAlert("Please select atleast one Api!", "error");
           }
         } else {
-          ToastAlert("Policy Updated Successfully!!", "success");
+          ToastAlert("policy Created request is not fulfilled!!", "error");
         }
       } else {
-        ToastAlert("policy Created request is not fulfilled!!", "error");
+        ToastAlert("Please fill all the fields correctly! ", "error");
       }
     } else {
-      ToastAlert("Please fill all the fields correctly! ", "error");
+      ToastAlert("Please select atleast one Api ", "error");
     }
   }
   const NavigateToPolicyList = (
@@ -86,7 +128,7 @@ export default function CreatePolicy() {
                 >
                   <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
                     {" "}
-                    {id === undefined ? "CREATE" : "UPDATE"}
+                    {id === undefined ? "Create" : "Update"}
                   </button>
                   <button
                     className=" btn btn-sm btn-light btn-md d-flex float-right mb-3"
@@ -113,7 +155,19 @@ export default function CreatePolicy() {
                     <Tab eventKey="accessRights" title="Access Rights">
                       <AccessRights />
                     </Tab>
-                    <Tab eventKey="configurations" title="Configurations">
+                    <Tab
+                      eventKey="configurations"
+                      title={
+                        <span>
+                          {state.data.errors?.Name ? (
+                            <i className="bi bi-info-circle-fill text-danger"></i>
+                          ) : (
+                            ""
+                          )}
+                          &nbsp; Configurations
+                        </span>
+                      }
+                    >
                       <Configurations />
                     </Tab>
                   </Tabs>

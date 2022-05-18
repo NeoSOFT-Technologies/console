@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Button, Modal } from "react-bootstrap";
 // import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import RenderList from "../../../../../components/gateway/list/RenderList";
@@ -7,7 +8,10 @@ import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { RootState } from "../../../../../store";
 import { emptyState } from "../../../../../store/features/gateway/policy/create/payload";
-import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
+import {
+  setForm,
+  setFormError,
+} from "../../../../../store/features/gateway/policy/create/slice";
 import { deletePolicy } from "../../../../../store/features/gateway/policy/delete/slice";
 import {
   IPolicyListState,
@@ -16,10 +20,13 @@ import {
 } from "../../../../../store/features/gateway/policy/list/index";
 import { getPolicyList } from "../../../../../store/features/gateway/policy/list/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import statusAndDateHelper from "../../../../../utils/gateway/helper";
 
 export default function PolicyList() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(1);
+  const [DeletePolicyId, SetDeletePolicyId] = useState<string>();
+  const [show, setShow] = useState(false);
   const dispatch = useAppDispatch();
   const policyList: IPolicyListState = useAppSelector(
     (state: RootState) => state.policyListState
@@ -35,9 +42,15 @@ export default function PolicyList() {
   useEffect(() => {
     // console.log("UseEffect", policyList.data);
     if (policyList.data && policyList.data?.Policies?.length > 0) {
+      const listPolicy: IPolicyData[] = [];
+      // const currentState = [...policyList.data.Policies];
+      for (const item of policyList.data?.Policies) {
+        const policy = statusAndDateHelper(item);
+        listPolicy.push(policy);
+      }
       setDataList({
-        list: [...policyList.data.Policies],
-        fields: ["Name", "State", "Apis", "AuthType"],
+        list: [...listPolicy],
+        fields: ["Name", "State", "ApisTxt", "AuthType"],
       });
     }
   }, [policyList.data]);
@@ -57,12 +70,13 @@ export default function PolicyList() {
     mainCall(1, 4);
   };
 
-  const NavigateCreatePolicy = async (
+  const NavigateCreatePolicy = (
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
     console.log("emptystate", emptyState);
-    await dispatch(setForm(emptyState.data.form));
+    dispatch(setForm(emptyState.data.form));
+    dispatch(setFormError(emptyState.data.errors));
     navigate("/gateway/policies/create");
   };
   //   const handleUserDetails = (val: ITenantUserData) => {
@@ -73,6 +87,8 @@ export default function PolicyList() {
 
   const NavigateUpdate = (val: IPolicyData) => {
     if (val.Id) {
+      dispatch(setForm(emptyState.data.form));
+      dispatch(setFormError(emptyState.data.errors));
       navigate(`/gateway/policies/update/${val.Id}`);
     }
   };
@@ -88,22 +104,26 @@ export default function PolicyList() {
 
     setDataList({
       list: [...newState],
-      fields: ["Name", "State", "Apis", "AuthType"],
+      fields: ["Name", "State", "ApisTxt", "AuthType"],
     });
   }
-  const deletePolicyFunction = async (val: IPolicyData) => {
-    if (
-      val.Id &&
-      window.confirm("Are you sure you want to delete this Policy ?")
-    ) {
-      const result = await dispatch(deletePolicy(val.Id));
+  const handleDelete = async (Id: string) => {
+    setShow(false);
+    console.log("delete clicked", Id);
+    const result = await dispatch(deletePolicy(Id));
 
-      if (result.meta.requestStatus === "rejected") {
-        await ToastAlert(result.payload.message, "error");
-      } else {
-        deletePolicyFromState(val.Id);
-        await ToastAlert("Policy Deleted Successfully", "success");
-      }
+    if (result.meta.requestStatus === "rejected") {
+      await ToastAlert(result.payload.message, "error");
+    } else {
+      deletePolicyFromState(Id);
+      await ToastAlert("Policy Deleted Successfully", "success");
+    }
+  };
+  const handleCancel = () => setShow(false);
+  const deletePolicyFunction = (val: IPolicyData) => {
+    if (val.Id && val.Id) {
+      setShow(true);
+      SetDeletePolicyId(val.Id);
     }
   };
 
@@ -128,6 +148,24 @@ export default function PolicyList() {
   ];
   return (
     <>
+      <Modal show={show} onHide={handleCancel} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Policy</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this Policy ?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCancel}>
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            className="btn-danger"
+            onClick={() => handleDelete(DeletePolicyId!)}
+          >
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <div className="col-lg-12 grid-margin stretch-card">
         {policyList.loading ? (
           <Spinner />

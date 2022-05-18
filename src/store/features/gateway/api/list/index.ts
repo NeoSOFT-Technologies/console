@@ -11,11 +11,13 @@ export interface ISetApiList {
   TotalCount: number;
 }
 export interface IApiData {
+  Action?: string;
   Name: string;
   CreatedDate: string;
   TargetUrl: string;
   IsActive: boolean;
   Id?: string;
+  AuthType: string;
 }
 
 export interface IApiDataList {
