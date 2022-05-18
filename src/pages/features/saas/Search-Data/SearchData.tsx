@@ -97,11 +97,6 @@ export default function GetSearchData() {
       searchData.error === undefined &&
       searchData.loading === false
     ) {
-      console.log(
-        "Dattttttttttttttttt",
-        Object.keys(searchData?.data[0]),
-        searchData
-      );
       keys = Object.keys(searchData?.data[0]);
 
       setTableHeader(() => {
@@ -222,7 +217,7 @@ export default function GetSearchData() {
               {searchData.data !== undefined && searchData.data.length > 0 ? (
                 <>
                   <hr></hr>
-                  <h4 className="mb-5">Table Details</h4>
+                  <h4 className="mt-5 mb-4">Table Details</h4>
                   <Table bordered hover>
                     <thead>
                       <tr>
@@ -246,14 +241,14 @@ export default function GetSearchData() {
                   </Table>
 
                   <nav aria-label="Page navigation example">
-                    <ul className="pagination">
+                    <ul className="pagination ">
                       <li className="page-item">
                         <a className="page-link" onClick={() => prevpage()}>
                           Previous
                         </a>
                       </li>
-                      <li className="page-item">
-                        <a className="page-link" onClick={() => nextpage()}>
+                      <li className="page-item ">
+                        <a className="page-link " onClick={() => nextpage()}>
                           Next
                         </a>
                       </li>
