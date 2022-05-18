@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Table, Button, Col, Row } from "react-bootstrap";
 
 import Form from "react-bootstrap/Form";
-import Pagination from "react-bootstrap/Pagination";
 
 import Spinner from "../../../../components/loader/Loader";
 import {
@@ -30,34 +29,71 @@ export default function GetSearchData() {
   const [pageSize, setPageSize] = useState("5");
   const [orderBy, setOrderBy] = useState("id");
   const [order, setOrder] = useState("asc");
+  const [startRecord, setStartRecord] = useState("0");
   const [tableHeader, setTableHeader] = useState<string[]>([]);
+  const [msg, setMsg] = useState(false);
   const params: ITableSchema = {
     tenantId,
     tableName,
   };
 
-  const initialState: ISearchDataWithQueryField = {
-    queryField,
-    searchTerm,
-    startRecord: "0",
-    pageSize,
-    orderBy,
-    order,
-    requestParams: params,
-  };
   const getSearchData: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
   ) => {
     event.preventDefault();
-
+    setMsg(true);
+    const initialState: ISearchDataWithQueryField = {
+      queryField,
+      searchTerm,
+      startRecord: "0",
+      pageSize,
+      orderBy,
+      order,
+      requestParams: params,
+    };
     dispatch(searchDataWithQueryField(initialState));
   };
 
+  const nextpage = () => {
+    const nextindex = Number.parseInt(startRecord) + Number.parseInt(pageSize);
+    setStartRecord(nextindex.toString());
+
+    const initialState: ISearchDataWithQueryField = {
+      queryField,
+      searchTerm,
+      startRecord: nextindex.toString(),
+      pageSize,
+      orderBy,
+      order,
+      requestParams: params,
+    };
+    dispatch(searchDataWithQueryField(initialState));
+  };
+
+  const prevpage = () => {
+    let nextindex = Number.parseInt(startRecord) - Number.parseInt(pageSize);
+    if (nextindex < 0) {
+      nextindex = 0;
+    }
+    setStartRecord(nextindex.toString());
+
+    const initialState: ISearchDataWithQueryField = {
+      queryField,
+      searchTerm,
+      startRecord: nextindex.toString(),
+      pageSize,
+      orderBy,
+      order,
+      requestParams: params,
+    };
+    dispatch(searchDataWithQueryField(initialState));
+  };
   useEffect(() => {
     let keys: string[] = [];
     if (
       searchData !== undefined &&
       searchData.data !== undefined &&
+      searchData.data?.length > 0 &&
       searchData.error === undefined &&
       searchData.loading === false
     ) {
@@ -177,42 +213,52 @@ export default function GetSearchData() {
           <Spinner></Spinner>
         ) : (
           <>
-            <hr></hr>
             <div className="card-body table-responsive ">
-              <h4 className="mb-5">Table Details</h4>
-              {searchData.data !== undefined && (
-                <Table bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Sr.No</th>
-                      {tableHeader.map((val, index) => (
-                        <th key={index}>{val}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {searchData.data.map((val, index) => (
-                      <tr key={`row${index}`}>
-                        <td>{index + 1}</td>
-
-                        {tableHeader.map((h, i) => (
-                          <td key={i}>{JSON.stringify(val[h])}</td>
+              {searchData.data !== undefined && searchData.data.length > 0 ? (
+                <>
+                  <hr></hr>
+                  <h4 className="mt-5 mb-4">Table Details</h4>
+                  <Table bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Sr.No</th>
+                        {tableHeader.map((val, index) => (
+                          <th key={index}>{val}</th>
                         ))}
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
+                    </thead>
+                    <tbody>
+                      {searchData.data.map((val, index) => (
+                        <tr key={`row${index}`}>
+                          <td>{index + 1}</td>
+
+                          {tableHeader.map((h, i) => (
+                            <td key={i}>{JSON.stringify(val[h])}</td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+
+                  <nav aria-label="Page navigation example">
+                    <ul className="pagination ">
+                      <li className="page-item">
+                        <a className="page-link" onClick={() => prevpage()}>
+                          Previous
+                        </a>
+                      </li>
+                      <li className="page-item ">
+                        <a className="page-link " onClick={() => nextpage()}>
+                          Next
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </>
+              ) : (
+                <h2>{msg && "No data "}</h2>
               )}
             </div>
-            <Pagination className="d-flex justify-content-center">
-              <Pagination.Prev />
-              <Pagination.Item>{1}</Pagination.Item>
-              <Pagination.Item>{2}</Pagination.Item>
-              <Pagination.Item>{3}</Pagination.Item>
-              <Pagination.Item>{4}</Pagination.Item>
-
-              <Pagination.Next />
-            </Pagination>
           </>
         )}
       </div>
