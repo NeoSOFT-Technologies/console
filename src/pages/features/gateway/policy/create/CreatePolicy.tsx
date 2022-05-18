@@ -8,6 +8,7 @@ import {
   getPolicybyId,
   setFormError,
   updatePolicy,
+  policystate,
 } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import AccessRights from "./access-rights/AccessRights";
@@ -72,6 +73,9 @@ export default function CreatePolicy() {
 
     if (state.data.form.APIs.length > 0) {
       if (validate) {
+        if (id !== undefined) {
+          console.log("update policy checking", policystate);
+        }
         const result =
           id === undefined
             ? await dispatch(createPolicy(state.data.form))

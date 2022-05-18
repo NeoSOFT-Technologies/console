@@ -23,7 +23,7 @@ export default function PathBased(props: IProps) {
   const [isActive, setisActive] = useState<boolean>(false);
   const [isActiveApi, setisActiveApi] = useState<boolean>(false);
   const [versions, setversion] = useState<string[]>([]);
-  console.log("policydata", props.state);
+
   const dispatch = useAppDispatch();
 
   const [Limits, setLimits] = useState<any>({
@@ -83,29 +83,6 @@ export default function PathBased(props: IProps) {
         );
   };
 
-  const setNull = () => {
-    const apisList =
-      props.current === "policy"
-        ? [...props.policystate?.data.form.APIs!]
-        : [...props.state?.data.form.AccessRights!];
-    apisList[props.indexdata!] = {
-      ...apisList[props.indexdata!],
-      Limit: undefined,
-    };
-    props.current === "policy"
-      ? dispatch(
-          setForm({
-            ...props.policystate?.data.form,
-            APIs: apisList,
-          })
-        )
-      : dispatch(
-          setForms({
-            ...props.state?.data.form,
-            AccessRights: apisList,
-          })
-        );
-  };
   const { id } = useParams();
 
   useEffect(() => {
@@ -116,7 +93,20 @@ export default function PathBased(props: IProps) {
         if (
           props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
         ) {
-          setisActiveApi(true);
+          if (
+            props.policystate?.data.form.APIs[props.indexdata!].Limit?.rate ===
+              0 &&
+            props.policystate?.data.form.APIs[props.indexdata!].Limit?.per ===
+              0 &&
+            props.policystate?.data.form.APIs[props.indexdata!].Limit
+              ?.throttle_retry_limit === -1 &&
+            props.policystate?.data.form.APIs[props.indexdata!].Limit
+              ?.quota_max === -1
+          ) {
+            setisActiveApi(false);
+          } else {
+            setisActiveApi(true);
+          }
         } else {
           setisActiveApi(false);
         }
@@ -124,7 +114,20 @@ export default function PathBased(props: IProps) {
         if (
           props.state?.data.form.AccessRights[props.indexdata!].Limit !== null
         ) {
-          setisActiveApi(true);
+          if (
+            props.state?.data.form.AccessRights[props.indexdata!].Limit
+              ?.Rate === 0 &&
+            props.state?.data.form.AccessRights[props.indexdata!].Limit?.Per ===
+              0 &&
+            props.state?.data.form.AccessRights[props.indexdata!].Limit
+              ?.Throttle_retry_limit === -1 &&
+            props.state?.data.form.AccessRights[props.indexdata!].Limit
+              ?.Quota_max === -1
+          ) {
+            setisActiveApi(false);
+          } else {
+            setisActiveApi(true);
+          }
         } else {
           setisActiveApi(false);
         }
@@ -132,10 +135,10 @@ export default function PathBased(props: IProps) {
     }
   }, []);
 
-  useEffect(() => {
+  function setfieldsvalues() {
     if (id === undefined) {
       if (isActiveApi === false) {
-        setNull();
+        setFieldValue();
       } else if (isActiveApi === true) {
         setFieldValue();
       }
@@ -143,30 +146,70 @@ export default function PathBased(props: IProps) {
       if (props.current === "policy") {
         if (
           isActiveApi === true &&
-          props.policystate?.data.form.APIs[props.indexdata!].Limit === null
+          (props.policystate?.data.form.APIs[props.indexdata!].Limit ===
+            undefined ||
+            props.policystate?.data.form.APIs[props.indexdata!].Limit === null)
         ) {
           setFieldValue();
         } else if (
           isActiveApi === false &&
-          props.policystate?.data.form.APIs[props.indexdata!].Limit === null
+          (props.policystate?.data.form.APIs[props.indexdata!].Limit !==
+            undefined ||
+            props.policystate?.data.form.APIs[props.indexdata!].Limit !== null)
         ) {
-          setNull();
+          setFieldValue();
+        } else if (
+          isActiveApi === true &&
+          (props.policystate?.data.form.APIs[props.indexdata!].Limit !==
+            undefined ||
+            props.policystate?.data.form.APIs[props.indexdata!].Limit !== null)
+        ) {
+          setFieldValue();
+        } else if (
+          isActiveApi === false &&
+          (props.policystate?.data.form.APIs[props.indexdata!].Limit ===
+            undefined ||
+            props.policystate?.data.form.APIs[props.indexdata!].Limit === null)
+        ) {
+          setFieldValue();
         }
       } else {
         if (
           isActiveApi === true &&
-          props.state?.data.form.AccessRights[props.indexdata!].Limit === null
+          (props.state?.data.form.AccessRights[props.indexdata!].Limit ===
+            undefined ||
+            props.state?.data.form.AccessRights[props.indexdata!].Limit ===
+              null)
         ) {
           setFieldValue();
         } else if (
           isActiveApi === false &&
-          props.state?.data.form.AccessRights[props.indexdata!].Limit === null
+          (props.state?.data.form.AccessRights[props.indexdata!].Limit !==
+            undefined ||
+            props.state?.data.form.AccessRights[props.indexdata!].Limit !==
+              null)
         ) {
-          setNull();
+          setFieldValue();
+        } else if (
+          isActiveApi === true &&
+          (props.state?.data.form.AccessRights[props.indexdata!].Limit !==
+            undefined ||
+            props.state?.data.form.AccessRights[props.indexdata!].Limit !==
+              null)
+        ) {
+          setFieldValue();
+        } else if (
+          isActiveApi === false &&
+          (props.state?.data.form.AccessRights[props.indexdata!].Limit ===
+            undefined ||
+            props.state?.data.form.AccessRights[props.indexdata!].Limit ===
+              null)
+        ) {
+          setFieldValue();
         }
       }
     }
-  }, [isActiveApi]);
+  }
 
   useEffect(() => {
     props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls !==
@@ -183,6 +226,7 @@ export default function PathBased(props: IProps) {
         : event.target.value;
     if (event.target.getAttribute("name") === "isActiveApi") {
       setisActiveApi(Boolean(value));
+      setfieldsvalues();
     } else {
       setisActive(Boolean(value));
     }
@@ -246,9 +290,7 @@ export default function PathBased(props: IProps) {
     ) {
       const removeApi = [...props.policystate?.data.form.APIs!];
 
-      console.log(index, removeApi);
       removeApi.splice(index, 1);
-      console.log("splice", removeApi);
       dispatch(setForm({ ...props.policystate?.data.form, APIs: removeApi }));
     } else if (
       current === "key" &&
@@ -258,9 +300,8 @@ export default function PathBased(props: IProps) {
       const removeApi = [...props.state?.data.form.AccessRights!];
 
       const ApiName = props.state?.data.form.AccessRights[index]?.ApiName;
-      console.log(index, removeApi);
       removeApi.splice(index, 1);
-      console.log("splicekey", removeApi);
+
       ToastAlert(`${ApiName} removed`, "warning");
       dispatch(
         setForms({ ...props.state?.data.form, AccessRights: removeApi })
