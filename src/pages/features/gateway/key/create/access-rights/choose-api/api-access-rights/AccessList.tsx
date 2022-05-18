@@ -44,13 +44,13 @@ export default function AccessList() {
             Limit: {
               Rate: 0,
               Per: 0,
-              Throttle_interval: 0,
-              Throttle_retry_limit: 0,
-              Max_query_depth: 0,
-              Quota_max: 0,
-              Quota_renews: 0,
-              Quota_remaining: 0,
-              Quota_renewal_rate: 0,
+              Throttle_interval: -1,
+              Throttle_retry_limit: -1,
+              Max_query_depth: -1,
+              Quota_max: -1,
+              Quota_renews: -1,
+              Quota_remaining: -1,
+              Quota_renewal_rate: -1,
             },
           },
         ];
@@ -82,6 +82,7 @@ export default function AccessList() {
       ToastAlert("Already select...", "error");
     }
   };
+
   return (
     <>
       <div>

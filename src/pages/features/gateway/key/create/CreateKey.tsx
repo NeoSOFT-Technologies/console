@@ -48,7 +48,6 @@ export default function CreateKey() {
           };
           error.push(perapierror);
         }
-        console.log("error", error);
         dispatch(
           setFormErrors({
             ...state.data.errors,
@@ -68,7 +67,9 @@ export default function CreateKey() {
   // let TabIcon: any;
   async function handleSubmitKey(event: FormEvent) {
     event.preventDefault();
+
     let validate: boolean;
+
     validate = false;
     // noted
     const validateFieldValue = state.data.form.KeyName.length > 0;

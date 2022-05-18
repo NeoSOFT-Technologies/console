@@ -23,62 +23,115 @@ export default function PathBased(props: IProps) {
   const [isActive, setisActive] = useState<boolean>(false);
   const [isActiveApi, setisActiveApi] = useState<boolean>(false);
   const [versions, setversion] = useState<string[]>([]);
-
+  console.log("policydata", props.state);
   const dispatch = useAppDispatch();
-  // const lis = props.apistate?.data.form.Versions;
-  // console.log("versionslog", lis);
-
-  const apisList =
-    props.current === "policy"
-      ? [...props.policystate?.data.form.APIs!]
-      : [...props.state?.data.form.AccessRights!];
-  const indexValue = props.indexdata!;
-  apisList[indexValue] = {
-    ...apisList[indexValue],
-    Limit: undefined,
-  };
 
   const [Limits, setLimits] = useState<any>({
     rate: 0,
     per: 0,
-    throttle_interval: 0,
-    throttle_retry_limit: 0,
-    max_query_depth: 0,
-    quota_max: 0,
-    quota_renews: 0,
-    quota_remaining: 0,
+    throttle_interval: -1,
+    throttle_retry_limit: -1,
+    max_query_depth: -1,
+    quota_max: -1,
+    quota_renews: -1,
+    quota_remaining: -1,
     quota_renewal_rate: 0,
     set_by_policy: false,
   });
+  const [LimitsKey, setLimitsKey] = useState<any>({
+    Rate: 0,
+    Per: 0,
+    Throttle_interval: -1,
+    Throttle_retry_limit: -1,
+    Max_query_depth: -1,
+    Quota_max: -1,
+    Quota_renews: -1,
+    Quota_remaining: -1,
+    Quota_renewal_rate: 0,
+    Set_by_policy: false,
+  });
   const newFormData: any = { ...Limits };
-
+  const newFormDatakey: any = { ...LimitsKey };
   const setFieldValue = () => {
+    const apisList =
+      props.current === "policy"
+        ? [...props.policystate?.data.form.APIs!]
+        : [...props.state?.data.form.AccessRights!];
     setLimits(newFormData);
-    apisList[indexValue] = {
-      ...apisList[indexValue],
-      Limit: { ...newFormData },
-    };
-    dispatch(
-      setForm({
-        ...props.policystate?.data.form,
-        APIs: apisList,
-      })
-    );
+    setLimitsKey(newFormDatakey);
+    props.current === "policy"
+      ? (apisList[props.indexdata!] = {
+          ...apisList[props.indexdata!],
+          Limit: { ...newFormData },
+        })
+      : (apisList[props.indexdata!] = {
+          ...apisList[props.indexdata!],
+          Limit: { ...newFormDatakey },
+        });
+    props.current === "policy"
+      ? dispatch(
+          setForm({
+            ...props.policystate?.data.form,
+            APIs: apisList,
+          })
+        )
+      : dispatch(
+          setForms({
+            ...props.state?.data.form,
+            AccessRights: apisList,
+          })
+        );
   };
 
   const setNull = () => {
-    apisList[indexValue] = {
-      ...apisList[indexValue],
+    const apisList =
+      props.current === "policy"
+        ? [...props.policystate?.data.form.APIs!]
+        : [...props.state?.data.form.AccessRights!];
+    apisList[props.indexdata!] = {
+      ...apisList[props.indexdata!],
       Limit: undefined,
     };
-    dispatch(
-      setForm({
-        ...props.policystate?.data.form,
-        APIs: apisList,
-      })
-    );
+    props.current === "policy"
+      ? dispatch(
+          setForm({
+            ...props.policystate?.data.form,
+            APIs: apisList,
+          })
+        )
+      : dispatch(
+          setForms({
+            ...props.state?.data.form,
+            AccessRights: apisList,
+          })
+        );
   };
   const { id } = useParams();
+
+  useEffect(() => {
+    if (id === undefined) {
+      setisActiveApi(false);
+    } else {
+      if (props.current === "policy") {
+        if (
+          props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
+        ) {
+          setisActiveApi(true);
+        } else {
+          setisActiveApi(false);
+        }
+      } else {
+        if (
+          props.state?.data.form.AccessRights[props.indexdata!].Limit !== null
+        ) {
+          setisActiveApi(true);
+        } else {
+          setisActiveApi(false);
+        }
+      }
+    }
+  }, []);
+
   useEffect(() => {
     if (id === undefined) {
       if (isActiveApi === false) {
@@ -86,22 +139,41 @@ export default function PathBased(props: IProps) {
       } else if (isActiveApi === true) {
         setFieldValue();
       }
+    } else {
+      if (props.current === "policy") {
+        if (
+          isActiveApi === true &&
+          props.policystate?.data.form.APIs[props.indexdata!].Limit === null
+        ) {
+          setFieldValue();
+        } else if (
+          isActiveApi === false &&
+          props.policystate?.data.form.APIs[props.indexdata!].Limit === null
+        ) {
+          setNull();
+        }
+      } else {
+        if (
+          isActiveApi === true &&
+          props.state?.data.form.AccessRights[props.indexdata!].Limit === null
+        ) {
+          setFieldValue();
+        } else if (
+          isActiveApi === false &&
+          props.state?.data.form.AccessRights[props.indexdata!].Limit === null
+        ) {
+          setNull();
+        }
+      }
     }
   }, [isActiveApi]);
 
   useEffect(() => {
-    // props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls ===
-    //  undefined &&
-
     props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls !==
       undefined &&
     props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls.length > 0
       ? setisActive(true)
       : setisActive(false);
-
-    props.state?.data.form.AccessRights[props.indexdata!] !== undefined
-      ? setisActiveApi(true)
-      : setisActiveApi(false);
   }, []);
 
   const setPathPermission = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,10 +214,6 @@ export default function PathBased(props: IProps) {
           setForms({ ...props.state?.data.form, AccessRights: apisLists })
         );
   };
-  // const ind = props.indexdata;
-  // let ApiName = null;
-  // if (props.indexdata !== null)
-  //   ApiName = props.state?.data.form.accessRights[ind].apiName;
 
   const deleteversion = (event: any, index: any) => {
     event.preventDefault();
