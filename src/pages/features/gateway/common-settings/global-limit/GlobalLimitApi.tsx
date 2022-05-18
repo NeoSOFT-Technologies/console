@@ -916,6 +916,7 @@ export default function GlobalLimitApi(props: IProps) {
           break;
       }
     } else {
+      console.log("fieldname", fieldName);
       newFormData[fieldName] = fieldValue;
     }
     // setLimits(newFormData);
