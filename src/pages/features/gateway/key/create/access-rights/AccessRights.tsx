@@ -4,7 +4,7 @@ import { IKeyCreateState } from "../../../../../../store/features/gateway/key/cr
 import { emptyState } from "../../../../../../store/features/gateway/key/create/payload";
 import {
   setForms,
-  setFormErrors,
+  // setFormErrors,
 } from "../../../../../../store/features/gateway/key/create/slice";
 // import { setForms } from "../../../../../../store/features/gateway/key/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
@@ -31,14 +31,14 @@ export default function AccessRights() {
   }, []);
   useEffect(() => {
     dispatch(setForms({ ...state.data.form, SelectedTabIndex }));
-    if (SelectedTabIndex === "applyPolicy") {
-      dispatch(
-        setFormErrors({
-          ...state.data.errors,
-          PerApiLimit: [],
-        })
-      );
-    }
+    // if (SelectedTabIndex === "applyPolicy") {
+    //   dispatch(
+    //     setFormErrors({
+    //       ...state.data.errors,
+    //       PerApiLimit: [],
+    //     })
+    //   );
+    // }
   }, [SelectedTabIndex]);
   const handleCancel = () => {
     if (ClickedTabIndex === "applyPolicy") {
