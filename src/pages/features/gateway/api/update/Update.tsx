@@ -46,13 +46,17 @@ export default function Update() {
         (x) => x === null || x === ""
       );
     }
-    if (validate) {
+    const val =
+      state.data.form.EnableMTLS === true &&
+      state.data.form.CertIds.length === 0;
+    console.log("val", val);
+    if (validate && !val) {
       const newForm = { ...state.data.form };
       if (state.data.form.EnableRoundRobin === false) {
         newForm.LoadBalancingTargets = [];
         dispatch(setForm({ ...state.data.form, LoadBalancingTargets: [] }));
       }
-      console.log("newFrom", newForm);
+
       const result = await dispatch(updateApi(newForm));
       if (result.meta.requestStatus === "rejected") {
         ToastAlert(result.payload.message, "error");
@@ -62,7 +66,12 @@ export default function Update() {
         ToastAlert("Api Updated request is not fulfilled!!", "error");
       }
     } else {
-      ToastAlert("Please fill all the fields correctly! ", "error");
+      if (val === true) {
+        ToastAlert("Please select atleast one certificate! ", "error");
+      }
+      if (validate === false) {
+        ToastAlert("Please fill all the fields correctly! ", "error");
+      }
     }
   }
   const NavigateToApisList = (

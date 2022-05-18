@@ -78,12 +78,12 @@ export default function CreateKey() {
         setFormErrors({ ...state.data.errors, KeyName: "Name is required" })
       );
     }
-
+    console.log("perapilimit check", state.data.errors!);
     if (state.data.errors !== undefined) {
       if (state.data.errors?.PerApiLimit.length > 0) {
         for (let i = 0; i < state.data.errors?.PerApiLimit.length; i++) {
+          console.log("hii", i);
           validate = !!(
-            state.data.errors?.KeyName === "" &&
             validateFieldValue === true &&
             state.data.errors?.GlobalLimit.Rate === "" &&
             state.data.errors?.GlobalLimit.Per === "" &&
