@@ -470,30 +470,31 @@ export default function GlobalRateLimit(props: IProps) {
     setQuotaValue();
   }, [quota]);
 
-  useEffect(() => {
-    function setInitialValue() {
-      props.current === "policy"
-        ? dispatch(
-            setForm({
-              ...state.data.form,
-              ThrottleInterval: -1,
-              ThrottleRetries: -1,
-              MaxQuota: -1,
-              QuotaRate: -1,
-            })
-          )
-        : dispatch(
-            setForms({
-              ...states.data.form,
-              ThrottleInterval: -1,
-              ThrottleRetries: -1,
-              Quota: -1,
-              QuotaRenewalRate: -1,
-            })
-          );
-    }
-    setInitialValue();
-  }, []);
+  // useEffect(() => {
+  //   console.log("initial UEF");
+  //   function setInitialValue() {
+  //     props.current === "key"
+  //       ? dispatch(
+  //           setForm({
+  //             ...state.data.form,
+  //             ThrottleInterval: -1,
+  //             ThrottleRetries: -1,
+  //             MaxQuota: -1,
+  //             QuotaRate: -1,
+  //           })
+  //         )
+  //       : dispatch(
+  //           setForms({
+  //             ...states.data.form,
+  //             ThrottleInterval: -1,
+  //             ThrottleRetries: -1,
+  //             Quota: -1,
+  //             QuotaRenewalRate: -1,
+  //           })
+  //         );
+  //   }
+  //   setInitialValue();
+  // }, []);
   return (
     <>
       {state.loading === false ? (

@@ -7,12 +7,12 @@ export const initialState: IKeyCreateState = {
       SelectedTabIndex: "applyPolicy",
       Per: 0,
       Rate: 0,
-      Quota: 0,
+      Quota: -1,
       Expires: 0,
       // isInActive: false,
-      QuotaRenewalRate: 0,
-      ThrottleInterval: 0,
-      ThrottleRetries: 0,
+      QuotaRenewalRate: -1,
+      ThrottleInterval: -1,
+      ThrottleRetries: -1,
       AccessRights: [],
       // [
       //   {
