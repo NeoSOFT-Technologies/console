@@ -260,11 +260,25 @@ export default function PathBased(props: IProps) {
   }, []);
 
   useEffect(() => {
-    props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls !==
-      undefined &&
-    props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls.length > 0
-      ? setisActive(true)
-      : setisActive(false);
+    if (id === undefined) {
+      setisActive(false);
+    } else {
+      if (props.current === "policy") {
+        props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls !==
+          undefined &&
+        props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls.length >
+          0
+          ? setisActive(true)
+          : setisActive(false);
+      } else {
+        props.state?.data.form.AccessRights[props.indexdata!].AllowedUrls !==
+          undefined &&
+        props.state?.data.form.AccessRights[props.indexdata!].AllowedUrls!
+          .length > 0
+          ? setisActive(true)
+          : setisActive(false);
+      }
+    }
   }, []);
 
   const setPathPermission = (event: React.ChangeEvent<HTMLInputElement>) => {
