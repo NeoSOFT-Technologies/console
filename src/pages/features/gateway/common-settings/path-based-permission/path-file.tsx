@@ -20,6 +20,7 @@ export default function Ipathpermission(props: IProps) {
   const keysstate: IKeyCreateState = useAppSelector(
     (RootState) => RootState.createKeyState
   );
+
   // const [rowsData, setRowsData] = useState<any>();
   const [inputData, setInputData] = useState<any>({
     path: "",
@@ -208,13 +209,19 @@ export default function Ipathpermission(props: IProps) {
                   (props.current === "policy"
                     ? (state.data.form.APIs[props.indexdata!]
                         .AllowedUrls as any[])
-                    : keysstate.data.form.AccessRights[props.indexdata!]
-                        .AllowedUrls
+                    : (keysstate.data.form.AccessRights[props.indexdata!]
+                        .AllowedUrls as any[])
                   ).map((data1: any, index1: any) => {
                     return (
                       <tr key={index1}>
-                        <td>{data1.url}</td>
-                        <td>{data1.methods}</td>
+                        <td>
+                          {props.current === "policy" ? data1.url : data1.Url}
+                        </td>
+                        <td>
+                          {props.current === "policy"
+                            ? data1.methods
+                            : data1.Methods}
+                        </td>
                         <td style={{ textAlign: "center" }}>
                           <i
                             className="bi bi-trash"

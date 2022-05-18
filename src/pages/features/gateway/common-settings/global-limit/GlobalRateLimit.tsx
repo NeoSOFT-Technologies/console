@@ -5,6 +5,7 @@ import Spinner from "../../../../../components/loader/Loader";
 import { regexForNumber } from "../../../../../resources/gateway/api/api-constants";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
 import {
+  keystate,
   setForms,
   setFormErrors,
 } from "../../../../../store/features/gateway/key/create/slice";
@@ -148,17 +149,40 @@ export default function GlobalRateLimit(props: IProps) {
   const [quota, setQuota] = useState(true);
 
   useEffect(() => {
-    if (id !== undefined && state.loading === false) {
+    if (
+      id !== undefined &&
+      state.loading === false &&
+      props.current === "policy"
+    ) {
       state.data.form.Rate === -1 ? setRate(true) : setRate(false);
       state.data.form.ThrottleInterval === -1
         ? setThrottle(true)
         : setThrottle(false);
       state.data.form.MaxQuota === -1 ? setQuota(true) : setQuota(false);
+    } else if (
+      id !== undefined &&
+      states.loading === false &&
+      props.current !== "policy"
+    ) {
+      states.data.form.Rate === -1 ? setRate(true) : setRate(false);
+      states.data.form.ThrottleInterval === -1
+        ? setThrottle(true)
+        : setThrottle(false);
+      states.data.form.Quota === -1 ? setQuota(true) : setQuota(false);
     }
   }, [
     state.data.form.Rate,
+    state.data.form.Per,
     state.data.form.ThrottleInterval,
+    state.data.form.ThrottleRetries,
     state.data.form.MaxQuota,
+    state.data.form.QuotaRate,
+    states.data.form.Rate,
+    states.data.form.Per,
+    states.data.form.ThrottleInterval,
+    states.data.form.ThrottleRetries,
+    states.data.form.Quota,
+    states.data.form.QuotaRenewalRate,
   ]);
 
   const handlerateclick = (event: any) => {
@@ -231,7 +255,7 @@ export default function GlobalRateLimit(props: IProps) {
         break;
       case "quota_renews":
         props.current === "policy"
-          ? dispatch(setForm({ ...state.data.form, MaxQuota: fieldValue }))
+          ? dispatch(setForm({ ...state.data.form, QuotaRate: fieldValue }))
           : dispatch(
               setForms({ ...states.data.form, QuotaRenewalRate: fieldValue })
             );
@@ -308,8 +332,22 @@ export default function GlobalRateLimit(props: IProps) {
           dispatch(
             setForms({
               ...states.data.form,
-              Rate: 0,
-              Per: 0,
+              Rate:
+                id === undefined
+                  ? 0
+                  : keystate === undefined
+                  ? 0
+                  : keystate.data.form.Rate === -1
+                  ? 0
+                  : keystate.data.form.Rate,
+              Per:
+                id === undefined
+                  ? 0
+                  : keystate === undefined
+                  ? 0
+                  : keystate.data.form.Per === -1
+                  ? 0
+                  : keystate.data.form.Per,
             })
           );
         }
@@ -386,8 +424,22 @@ export default function GlobalRateLimit(props: IProps) {
           : dispatch(
               setForms({
                 ...states.data.form,
-                ThrottleInterval: 0,
-                ThrottleRetries: 0,
+                ThrottleInterval:
+                  id === undefined
+                    ? 0
+                    : keystate === undefined
+                    ? 0
+                    : keystate.data.form.ThrottleInterval === -1
+                    ? 0
+                    : keystate.data.form.ThrottleInterval,
+                ThrottleRetries:
+                  id === undefined
+                    ? 0
+                    : keystate === undefined
+                    ? 0
+                    : keystate.data.form.ThrottleRetries === -1
+                    ? 0
+                    : keystate.data.form.ThrottleRetries,
               })
             );
       }
@@ -461,39 +513,28 @@ export default function GlobalRateLimit(props: IProps) {
           : dispatch(
               setForms({
                 ...states.data.form,
-                Quota: 0,
-                QuotaRenewalRate: 0,
+                Quota:
+                  id === undefined
+                    ? 0
+                    : keystate === undefined
+                    ? 0
+                    : keystate.data.form.Quota === -1
+                    ? 0
+                    : keystate.data.form.Quota,
+                QuotaRenewalRate:
+                  id === undefined
+                    ? 0
+                    : keystate === undefined
+                    ? 0
+                    : keystate.data.form.QuotaRenewalRate === -1
+                    ? 0
+                    : keystate.data.form.QuotaRenewalRate,
               })
             );
       }
     }
     setQuotaValue();
   }, [quota]);
-
-  useEffect(() => {
-    function setInitialValue() {
-      props.current === "policy"
-        ? dispatch(
-            setForm({
-              ...state.data.form,
-              ThrottleInterval: -1,
-              ThrottleRetries: -1,
-              MaxQuota: -1,
-              QuotaRate: -1,
-            })
-          )
-        : dispatch(
-            setForms({
-              ...states.data.form,
-              ThrottleInterval: -1,
-              ThrottleRetries: -1,
-              Quota: -1,
-              QuotaRenewalRate: -1,
-            })
-          );
-    }
-    setInitialValue();
-  }, []);
   return (
     <>
       {state.loading === false ? (
@@ -758,7 +799,7 @@ export default function GlobalRateLimit(props: IProps) {
                             props.current === "policy"
                               ? state.data.form.QuotaRate === -1
                                 ? "Unlimited"
-                                : state.data.form.QuotaRate
+                                : state.data.form.MaxQuota
                               : states.data.form.QuotaRenewalRate === -1
                               ? "Unlimited"
                               : states.data.form.Quota

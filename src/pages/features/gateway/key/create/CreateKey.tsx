@@ -80,10 +80,12 @@ export default function CreateKey() {
     }
 
     if (state.data.errors !== undefined) {
-      if (state.data.errors?.PerApiLimit.length > 0) {
+      if (
+        state.data.errors?.PerApiLimit.length > 0 &&
+        state.data.form.SelectedTabIndex === "chooseApi"
+      ) {
         for (let i = 0; i < state.data.errors?.PerApiLimit.length; i++) {
           validate = !!(
-            state.data.errors?.KeyName === "" &&
             validateFieldValue === true &&
             state.data.errors?.GlobalLimit.Rate === "" &&
             state.data.errors?.GlobalLimit.Per === "" &&
@@ -100,9 +102,7 @@ export default function CreateKey() {
           );
         }
       } else {
-        validate = !!(
-          state.data.errors?.KeyName === "" && validateFieldValue === true
-        );
+        validate = !!(validateFieldValue === true);
       }
     }
     if (

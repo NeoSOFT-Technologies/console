@@ -362,199 +362,209 @@ export default function MutualTLS() {
         <br />
         <Row className="ml-1 mr-1">
           <Col md="6">
-            <table className="table table-bordered responsive">
-              <thead className="thead-dark">
-                <tr>
-                  <th>Select from exisiting certificates</th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {certificateState.data?.CertificateCollection !== undefined &&
-                certificateState.data?.CertificateCollection.length > 0 ? (
-                  certificateState.data?.CertificateCollection.map(
-                    (data: any, index: any) => {
-                      return (
-                        <tr key={index}>
-                          <td>
-                            <label>
-                              {data.CertId}
-                              <br />
-                              <br />
-                              {certificateState.data?.CertificateCollection[
-                                index
-                              ].showDetails ? (
-                                <div>
-                                  <label>
-                                    Issuer Common Name :{" "}
-                                    {certificateState.data?.CertificateCollection[
-                                      index
-                                    ].Issuer.slice(3, 12)}
-                                  </label>
-                                  <br />
-                                  <label>
-                                    Subject Common Name :{" "}
-                                    {certificateState.data?.CertificateCollection[
-                                      index
-                                    ].Subject.slice(3, 12)}
-                                  </label>
-                                  <br />
-                                  <label>
-                                    Not Before :{" "}
-                                    {
-                                      certificateState.data
-                                        ?.CertificateCollection[index]
-                                        .ValidNotAfter
-                                    }
-                                  </label>
-                                  <br />
-                                  <label>
-                                    Not After :{" "}
-                                    {
-                                      certificateState.data
-                                        ?.CertificateCollection[index]
-                                        .ValidNotBefore
-                                    }
-                                  </label>
-                                </div>
-                              ) : (
-                                <></>
-                              )}
-                            </label>
-                          </td>
+            <div className="table-responsive">
+              <table className="table table-bordered">
+                <thead className="thead-dark">
+                  <tr>
+                    <th>Select from exisiting certificates</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {certificateState.data?.CertificateCollection !== undefined &&
+                  certificateState.data?.CertificateCollection.length > 0 ? (
+                    certificateState.data?.CertificateCollection.map(
+                      (data: any, index: any) => {
+                        return (
+                          <tr key={index}>
+                            <td>
+                              <label>
+                                {data.CertId}
+                                <br />
+                                <br />
+                                {certificateState.data?.CertificateCollection[
+                                  index
+                                ].showDetails ? (
+                                  <div>
+                                    <label>
+                                      Issuer Common Name :{" "}
+                                      {certificateState.data?.CertificateCollection[
+                                        index
+                                      ].Issuer.slice(3, 12)}
+                                    </label>
+                                    <br />
+                                    <label>
+                                      Subject Common Name :{" "}
+                                      {certificateState.data?.CertificateCollection[
+                                        index
+                                      ].Subject.slice(3, 12)}
+                                    </label>
+                                    <br />
+                                    <label>
+                                      Not Before :{" "}
+                                      {
+                                        certificateState.data
+                                          ?.CertificateCollection[index]
+                                          .ValidNotAfter
+                                      }
+                                    </label>
+                                    <br />
+                                    <label>
+                                      Not After :{" "}
+                                      {
+                                        certificateState.data
+                                          ?.CertificateCollection[index]
+                                          .ValidNotBefore
+                                      }
+                                    </label>
+                                  </div>
+                                ) : (
+                                  <></>
+                                )}
+                              </label>
+                            </td>
 
-                          <td>
-                            <button
-                              type="button"
-                              className="btn"
-                              onClick={(e: any) => handlePlusButton(e, index)}
-                            >
-                              <i className="bi bi-plus"></i>
-                            </button>
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              className="btn"
-                              onClick={(e: any) =>
-                                handleDropLeftTable(e, index)
-                              }
-                            >
-                              <i
-                                className={`${
-                                  certificateState.data?.CertificateCollection[
-                                    index
-                                  ].showDetails
-                                    ? "bi bi-chevron-up"
-                                    : "bi bi-chevron-down"
-                                }`}
-                              ></i>
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    }
-                  )
-                ) : (
-                  <></>
-                )}
-              </tbody>
-            </table>
+                            <td>
+                              <button
+                                type="button"
+                                className="btn"
+                                onClick={(e: any) => handlePlusButton(e, index)}
+                              >
+                                <i className="bi bi-plus"></i>
+                              </button>
+                            </td>
+                            <td>
+                              <button
+                                type="button"
+                                className="btn"
+                                onClick={(e: any) =>
+                                  handleDropLeftTable(e, index)
+                                }
+                              >
+                                <i
+                                  className={`${
+                                    certificateState.data
+                                      ?.CertificateCollection[index].showDetails
+                                      ? "bi bi-chevron-up"
+                                      : "bi bi-chevron-down"
+                                  }`}
+                                ></i>
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      }
+                    )
+                  ) : (
+                    <></>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </Col>
           <Col md="6">
-            <table className="table table-bordered ">
-              <thead className="thead-dark">
-                <tr>
-                  <th>
-                    {updateState.data.form.CertIds.length} selected Certificates{" "}
-                  </th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {loader === false &&
-                updateState.data.form.CertIds.length === certId.length &&
-                updateState.data.form.CertIds.length > 0 ? (
-                  updateState.data.form.CertIds.map((data: any, index: any) => {
-                    return (
-                      <tr key={index}>
-                        <td>
-                          <label>
-                            {data}
-                            <br />
-                            <br />
-                            {certId.length ===
-                            updateState.data.form.CertIds.length ? (
-                              certId[index].showDetails ? (
-                                <div>
-                                  <label>
-                                    Issuer Common Name :{" "}
-                                    {certId[index].Issuer.slice(3, 12)}
-                                  </label>
-                                  <br />
-                                  <label>
-                                    Subject Common Name :{" "}
-                                    {certId[index].Subject.slice(3, 12)}
-                                  </label>
-                                  <br />
-                                  <label>
-                                    Not Before : {certId[index].ValidNotAfter}
-                                  </label>
-                                  <br />
-                                  <label>
-                                    Not After : {certId[index].ValidNotBefore}
-                                  </label>
-                                </div>
-                              ) : (
-                                <></>
-                              )
+            <div className="table-responsive">
+              <table className="table table-bordered ">
+                <thead className="thead-dark">
+                  <tr>
+                    <th>
+                      {updateState.data.form.CertIds.length} selected
+                      Certificates{" "}
+                    </th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loader === false &&
+                  updateState.data.form.CertIds.length === certId.length &&
+                  updateState.data.form.CertIds.length > 0 ? (
+                    updateState.data.form.CertIds.map(
+                      (data: any, index: any) => {
+                        return (
+                          <tr key={index}>
+                            <td>
+                              <label>
+                                {data}
+                                <br />
+                                <br />
+                                {certId.length ===
+                                updateState.data.form.CertIds.length ? (
+                                  certId[index].showDetails ? (
+                                    <div>
+                                      <label>
+                                        Issuer Common Name :{" "}
+                                        {certId[index].Issuer.slice(3, 12)}
+                                      </label>
+                                      <br />
+                                      <label>
+                                        Subject Common Name :{" "}
+                                        {certId[index].Subject.slice(3, 12)}
+                                      </label>
+                                      <br />
+                                      <label>
+                                        Not Before :{" "}
+                                        {certId[index].ValidNotAfter}
+                                      </label>
+                                      <br />
+                                      <label>
+                                        Not After :{" "}
+                                        {certId[index].ValidNotBefore}
+                                      </label>
+                                    </div>
+                                  ) : (
+                                    <></>
+                                  )
+                                ) : (
+                                  <></>
+                                )}
+                              </label>
+                            </td>
+                            <td>
+                              <button
+                                type="button"
+                                className="btn"
+                                onClick={(e: any) =>
+                                  handleMinusButton(e, index)
+                                }
+                              >
+                                <i className="bi bi-dash"></i>
+                              </button>
+                            </td>
+                            {certId.length > 0 &&
+                            certId.length ===
+                              updateState.data.form.CertIds.length ? (
+                              <td>
+                                <button
+                                  type="button"
+                                  className="btn"
+                                  onClick={(e: any) =>
+                                    handleDropRightTable(e, index)
+                                  }
+                                >
+                                  <i
+                                    className={`${
+                                      certId[index].showDetails
+                                        ? "bi bi-chevron-up"
+                                        : "bi bi-chevron-down"
+                                    }`}
+                                  ></i>
+                                </button>
+                              </td>
                             ) : (
                               <></>
                             )}
-                          </label>
-                        </td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn"
-                            onClick={(e: any) => handleMinusButton(e, index)}
-                          >
-                            <i className="bi bi-dash"></i>
-                          </button>
-                        </td>
-                        {certId.length > 0 &&
-                        certId.length ===
-                          updateState.data.form.CertIds.length ? (
-                          <td>
-                            <button
-                              type="button"
-                              className="btn"
-                              onClick={(e: any) =>
-                                handleDropRightTable(e, index)
-                              }
-                            >
-                              <i
-                                className={`${
-                                  certId[index].showDetails
-                                    ? "bi bi-chevron-up"
-                                    : "bi bi-chevron-down"
-                                }`}
-                              ></i>
-                            </button>
-                          </td>
-                        ) : (
-                          <></>
-                        )}
-                      </tr>
-                    );
-                  })
-                ) : (
-                  <></>
-                )}
-              </tbody>
-            </table>
+                          </tr>
+                        );
+                      }
+                    )
+                  ) : (
+                    <></>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </Col>
         </Row>
       </>

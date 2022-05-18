@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, AccordionButton, Col, Form, Row } from "react-bootstrap";
 import Spinner from "../../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
 import { setForms } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
@@ -121,8 +122,11 @@ export default function GlobalLimit(props: IProps) {
     event.preventDefault();
     const removePolicyByIds = [...states.data.form.PolicyByIds!];
     const removePolicies = [...states.data.form.Policies];
+
+    const PolicyName = removePolicyByIds[index]?.policyName;
     removePolicyByIds.splice(index, 1);
     removePolicies.splice(index, 1);
+    ToastAlert(`${PolicyName} removed`, "warning");
     dispatch(
       setForms({
         ...states.data.form,
