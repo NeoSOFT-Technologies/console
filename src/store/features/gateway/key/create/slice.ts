@@ -7,8 +7,8 @@ import {
 } from "../../../../../services/gateway/key/key";
 import error from "../../../../../utils/error";
 import { initialState } from "./payload";
-import { IGetKeyByIdData } from "./index";
-
+import { IGetKeyByIdData, IKeyCreateState } from "./index";
+export let keystate: IKeyCreateState;
 export const createKey = createAsyncThunk(
   "key/create",
   async (data: IGetKeyByIdData) => {
@@ -29,6 +29,14 @@ export const getKeyById = createAsyncThunk(
   async (id: string) => {
     try {
       const response = await getKeyByIdService(id);
+      keystate = {
+        data: {
+          form: response.data.Data,
+        },
+        loading: false,
+        error: undefined,
+      };
+      console.log("keyState", keystate);
       return response.data;
     } catch (error_) {
       const myError = error_ as Error | AxiosError;
