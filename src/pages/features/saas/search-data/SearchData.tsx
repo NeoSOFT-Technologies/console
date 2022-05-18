@@ -4,6 +4,7 @@ import { Table, Button, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
 import Spinner from "../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   // resetSearchDataWithQueryField,
   searchDataWithQueryField,
@@ -14,7 +15,6 @@ import {
   ITableSchema,
 } from "../../../../types/saas/index";
 import "./style.css";
-import { ToastAlert } from "./../../../../components/toast-alert/toast-alert";
 
 export default function GetSearchData() {
   const dispatch = useAppDispatch();
