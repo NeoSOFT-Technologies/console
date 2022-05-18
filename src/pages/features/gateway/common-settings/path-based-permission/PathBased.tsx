@@ -114,7 +114,7 @@ export default function PathBased(props: IProps) {
   function setfieldsvalues(isActiveApis: any) {
     if (id === undefined) {
       if (isActiveApis === false) {
-        setFieldValue();
+        setNull();
       } else if (isActiveApis === true) {
         setFieldValue();
       }
