@@ -728,13 +728,8 @@ export default function GlobalLimitApi(props: IProps) {
               props.keystate?.data.form.AccessRights[props.index!].Limit
                 ?.Quota_remaining,
             Quota_renewal_rate:
-              id === undefined
-                ? 0
-                : props.keystate?.data.form.AccessRights[props.index!].Limit
-                    ?.Quota_renewal_rate === -1
-                ? 0
-                : props.keystate?.data.form.AccessRights[props.index!].Limit
-                    ?.Quota_renewal_rate,
+              props.keystate?.data.form.AccessRights[props.index!].Limit
+                ?.Quota_renewal_rate,
           },
         };
         dispatch(
@@ -823,7 +818,9 @@ export default function GlobalLimitApi(props: IProps) {
             Quota_remaining:
               props.keystate?.data.form.AccessRights[props.index!].Limit
                 ?.Quota_remaining,
-            Quota_renewal_rate: -1,
+            Quota_renewal_rate:
+              props.keystate?.data.form.AccessRights[props.index!].Limit
+                ?.Quota_renewal_rate,
           },
         };
         dispatch(
@@ -911,7 +908,7 @@ export default function GlobalLimitApi(props: IProps) {
         case "quota_max":
           newFormData.Quota_max = fieldValue;
           break;
-        case "Quota_renewal_rate":
+        case "quota_renewal_rate":
           newFormData.Quota_renewal_rate = fieldValue;
           break;
       }
