@@ -7,7 +7,7 @@ const defaultHostUrl =
 const defaultGatewayUrl =
   process.env.REACT_APP_GATEWAY_API || "http://localhost:5501";
 const defaultSaasUrl =
-  process.env.REACT_APP_SAAS_API || "http://localhost:8081/api/v1/";
+  process.env.REACT_APP_SAAS_API || "http://localhost:8083/api/v1/";
 const defaultSaasSearchUrl =
   process.env.REACT_APP_SAAS_SEARCH_API ||
   "http://localhost:8082/search/api/v1/";

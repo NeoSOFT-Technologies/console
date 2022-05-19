@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Modal, Row, Table } from "react-bootstrap";
+import { Button, Modal, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { deleteTable } from "../../../../store/features/saas/manage-table/delete-table/slice";
 
 import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
@@ -16,6 +17,7 @@ export default function ManageTables() {
   // const [tenantId, setTenantId] = useState("");
   const [show, setShow] = useState(false);
   const [table, settable] = useState("");
+
   const handleClose = () => setShow(false);
   const handleShow = (tableName: string, tenantID: string) => {
     settable(tableName);
@@ -29,39 +31,18 @@ export default function ManageTables() {
     setTenantId(tenantID);
     setShowEdit(true);
   };
-  const getTableData: React.FormEventHandler<HTMLFormElement> = (
-    event: React.FormEvent
-  ) => {
-    event.preventDefault();
-    // console.log(tenantId);
-    dispatch(getTables(tenantId));
-  };
-  useEffect(() => {}, [allTableData.data, allTableData.loading]);
+
+  useEffect(() => {
+    dispatch(getTables("1"));
+  }, []);
   const deleteTables = (obj: ITableSchema) => {
     dispatch(deleteTable(obj));
+
     handleClose();
+    ToastAlert("Table Deleted successfully ", "success");
   };
   return (
     <div className="createbody">
-      <Form onSubmit={getTableData} className="mt-5">
-        <Row>
-          <Col md={8} className="mt-5 ml-2">
-            <Form.Group controlId="formBasicEmail">
-              <Form.Control
-                type="text"
-                placeholder="Enter Tenant Id"
-                value={tenantId}
-                onChange={(e) => setTenantId(e.target.value)}
-              />
-            </Form.Group>
-          </Col>
-          <Col md={2} className="mt-5">
-            <Button btn-primary type="submit">
-              Get Tables
-            </Button>
-          </Col>
-        </Row>
-      </Form>
       <div className="text-nowrap bd-highlight m-4">
         <h5>Table Details</h5>
       </div>
@@ -150,10 +131,12 @@ export default function ManageTables() {
           Are you sure you want to edit <b>{table}</b> table?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="success" onClick={handleClose}>
+          <Button variant="success" onClick={handleEditClose}>
             No, Cancel
           </Button>
-          <Button variant="primary">Yes,Edit</Button>
+          <Button variant="primary" onClick={handleEditClose}>
+            Yes,Edit
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>
