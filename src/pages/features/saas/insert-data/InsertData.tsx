@@ -29,7 +29,6 @@ export default function InputData() {
     event.preventDefault();
     // console.log(tenantId);
     alert("Befor Dispatch -: " + JSON.stringify(initialState));
-
     if (isNrtChecked) {
       dispatch(inputTableDataWithNrt(initialState));
     } else {
@@ -78,8 +77,6 @@ export default function InputData() {
                   checked={isNrtChecked}
                   onChange={handleOnChange}
                 />
-              </div>
-              <div className=" ml-4 mr-3">
                 <label className="pl-2">NRT</label>
               </div>
             </Form.Group>
