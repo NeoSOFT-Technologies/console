@@ -250,8 +250,7 @@ export default function TenantDetails() {
                         {tenant.tenantName &&
                           !regexForName.test(tenant.tenantName) && (
                             <span className="text-danger">
-                              Name Should Not Contain Any Special Character or
-                              Number
+                              Name should only consist AlphaNumeric characters
                             </span>
                           )}
                       </Form.Group>
@@ -271,7 +270,7 @@ export default function TenantDetails() {
                         {tenant.databaseName &&
                           !regexForDatabaseName.test(tenant.databaseName) && (
                             <span className="text-danger">
-                              databaseName Should Not Cantain Any Special
+                              databaseName Should Not Contain Any Special
                               Character or Number
                             </span>
                           )}

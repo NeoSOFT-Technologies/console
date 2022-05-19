@@ -74,20 +74,24 @@ export const Sidebar = () => {
             >
               <div className="nav-profile-image">
                 <img
-                  src={`${process.env.REACT_APP_HOST}/global/images/faces/face1.jpg`}
+                  src={`${process.env.REACT_APP_HOST}global/images/faces/face1.jpg`}
                   alt="profile"
                 />
                 <span className="login-status online"></span>{" "}
               </div>
               <div className="nav-profile-text">
                 <span className="font-weight-bold mb-2">
-                  <>Santosh Shinde</>
+                  {loginType.data === "admin"
+                    ? "admin"
+                    : loginType.data === "tenant"
+                    ? user.data?.tenantName
+                    : user.data?.username}
                 </span>
                 <span className="text-secondary text-small">
-                  <>Project Manager</>
+                  <>{loginType.data}</>
                 </span>
               </div>
-              <i className="bi bi-bookmark-star-fill text-success nav-profile-badge"></i>
+              {/* <i className="bi bi-bookmark-star-fill text-success nav-profile-badge"></i> */}
             </a>
           </li>
           <li className="nav-item">
