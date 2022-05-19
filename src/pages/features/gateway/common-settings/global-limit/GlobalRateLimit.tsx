@@ -147,7 +147,6 @@ export default function GlobalRateLimit(props: IProps) {
   const [rate, setRate] = useState(false);
   const [throttle, setThrottle] = useState(true);
   const [quota, setQuota] = useState(true);
-
   useEffect(() => {
     if (
       id !== undefined &&
