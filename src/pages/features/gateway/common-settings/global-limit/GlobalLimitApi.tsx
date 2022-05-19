@@ -171,35 +171,7 @@ export default function GlobalLimitApi(props: IProps) {
       setRateError(rates);
     }
   }
-  // function handleSetRateError() {
-  //   const rates = [...rateError];
-  //   if (rates[props.index!] === true) {
-  //     rates[props.index!] = false;
-  //   } else {
-  //     rates[props.index!] = true;
-  //   }
-  //   setRateError(rates);
-  // }
 
-  // function handleSetThrottleError() {
-  //   const throttle = [...throttleError];
-  //   if (throttle[props.index!] === true) {
-  //     throttle[props.index!] = false;
-  //   } else {
-  //     throttle[props.index!] = true;
-  //   }
-  //   setThrottleError(throttle);
-  // }
-
-  // function handleSetQuotasError() {
-  //   const quotas = [...quotaError];
-  //   if (quotas[props.index!] === true) {
-  //     quotas[props.index!] = false;
-  //   } else {
-  //     quotas[props.index!] = true;
-  //   }
-  //   setQuotaError(quotas);
-  // }
   function setRateValue() {
     if (
       props.current === "policy"
@@ -874,40 +846,12 @@ export default function GlobalLimitApi(props: IProps) {
     event.preventDefault();
     validateForm(event, ApiId);
     const value = props.index!;
-    let fieldValue;
     const apisList =
       props.current === "policy"
         ? [...props.state?.data.form.APIs!]
         : [...props.keystate?.data.form.AccessRights!];
     const fieldName = event.target.getAttribute("name");
-    if (fieldName === "quota_renewal_rate") {
-      switch (event.target.value) {
-        case "1 hour":
-          fieldValue = 3600;
-          break;
-        case "6 hour":
-          fieldValue = 21_600;
-          break;
-        case "12 hour":
-          fieldValue = 43_200;
-          break;
-        case "1 week":
-          fieldValue = 604_800;
-          break;
-        case "1 months":
-          fieldValue = 2.628e6;
-          break;
-        case "6 months":
-          fieldValue = 1.577e7;
-          break;
-        case "12 months":
-          fieldValue = 3.154e7;
-          break;
-      }
-    } else {
-      fieldValue = event.target.value;
-    }
-
+    const fieldValue = event.target.value;
     const newFormData: any =
       props.current === "policy"
         ? {
@@ -1351,14 +1295,14 @@ export default function GlobalLimitApi(props: IProps) {
                                 ].Limit?.Quota_max! === -1
                           }
                           name="quota_renewal_rate"
-                          // value={
-                          //   props.current === "policy"
-                          //     ? props.state?.data.form.APIs[props.index!]?.Limit
-                          //         ?.quota_renews
-                          //     : props.keystate?.data.form.AccessRights[
-                          //         props.index!
-                          //       ]?.Limit?.Quota_renews
-                          // }
+                          value={
+                            props.current === "policy"
+                              ? props.state?.data.form.APIs[props.index!]?.Limit
+                                  ?.quota_renewal_rate
+                              : props.keystate?.data.form.AccessRights[
+                                  props.index!
+                                ]?.Limit?.Quota_renewal_rate
+                          }
                           onChange={(e: any) =>
                             handlerateclick(
                               e,
@@ -1366,14 +1310,14 @@ export default function GlobalLimitApi(props: IProps) {
                             )
                           }
                         >
-                          <option>never</option>
-                          <option>1 hour</option>
-                          <option>6 hour</option>
-                          <option>12 hour</option>
-                          <option>1 week</option>
-                          <option>1 month</option>
-                          <option>6 months</option>
-                          <option>12 months</option>
+                          <option value={0}>never</option>
+                          <option value={3600}>1 hour</option>
+                          <option value={21_600}>6 hour</option>
+                          <option value={43_200}>12 hour</option>
+                          <option value={604_800}>1 week</option>
+                          <option value={2.628e6}>1 month</option>
+                          <option value={1.577e7}>6 months</option>
+                          <option value={3.154_67}>12 months</option>
                         </Form.Select>
                       </Form.Group>
                     </Col>
