@@ -7,7 +7,9 @@ import {
 import apiFactory from "../../../utils/api";
 
 export function getTablesService(tenantId: string) {
-  return apiFactory().get(`manage/table/?tenantId=${tenantId}`);
+  return apiFactory(process.env.REACT_APP_SAAS_API).get(
+    `manage/table/?tenantId=${tenantId}`
+  );
 }
 export function createTableService(tenantId: string, data: ITableCreateData) {
   return apiFactory().post(`manage/table/?tenantId=${tenantId}`, data);
