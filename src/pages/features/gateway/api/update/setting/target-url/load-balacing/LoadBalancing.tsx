@@ -112,9 +112,9 @@ export default function LoadBalancing() {
     <div>
       <Row>
         <i className="mb-3">
-          Tyk can perform round-robin load balancing on a series of upstream
-          targets, you will need to add all of the targets using the fields
-          below.
+          Application Gateway can perform round-robin load balancing on a series
+          of upstream targets, you will need to add all of the targets using the
+          fields below.
         </i>
         <br />
         <br />

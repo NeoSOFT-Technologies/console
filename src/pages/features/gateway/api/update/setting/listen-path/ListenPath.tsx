@@ -78,7 +78,7 @@ export default function ListenPath() {
                 </i>
               </Col>
               <Col md={12}>
-                <Form.Group className="mb-3">
+                <Form.Group className="ml-4 mb-3">
                   <Form.Label>
                     <b>Strip the Listen path</b>
                   </Form.Label>
@@ -99,7 +99,7 @@ export default function ListenPath() {
                 </Form.Group>
               </Col>
               <Col md={12}>
-                <Form.Group className="mb-3">
+                <Form.Group className="ml-4 mb-3">
                   <Form.Label>
                     <b>Internal</b>
                   </Form.Label>
