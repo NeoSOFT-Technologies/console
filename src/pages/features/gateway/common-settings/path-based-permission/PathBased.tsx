@@ -11,6 +11,7 @@ import { setForm } from "../../../../../store/features/gateway/policy/create/sli
 import { useAppDispatch } from "../../../../../store/hooks";
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
 import Ipathpermission from "./path-file";
+import IpathpermissionKey from "./path-file-Key";
 interface IProps {
   state?: IKeyCreateState;
   policystate?: IPolicyCreateState;
@@ -25,10 +26,9 @@ export default function PathBased(props: IProps) {
   const [versions, setversion] = useState<string[]>([]);
 
   const dispatch = useAppDispatch();
-
   const [Limits, setLimits] = useState<any>({
-    rate: 0,
-    per: 0,
+    rate: -1,
+    per: -1,
     throttle_interval: -1,
     throttle_retry_limit: -1,
     max_query_depth: -1,
@@ -39,8 +39,8 @@ export default function PathBased(props: IProps) {
     set_by_policy: false,
   });
   const [LimitsKey, setLimitsKey] = useState<any>({
-    Rate: 0,
-    Per: 0,
+    Rate: -1,
+    Per: -1,
     Throttle_interval: -1,
     Throttle_retry_limit: -1,
     Max_query_depth: -1,
@@ -107,10 +107,7 @@ export default function PathBased(props: IProps) {
           })
         );
   };
-  console.log(
-    "ractabc",
-    props.policystate?.data.form.APIs[props.indexdata!].Limit
-  );
+
   function setfieldsvalues(isActiveApis: any) {
     if (id === undefined) {
       if (isActiveApis === false) {
@@ -124,34 +121,22 @@ export default function PathBased(props: IProps) {
           isActiveApis === true &&
           props.policystate?.data.form.APIs[props.indexdata!].Limit === null
         ) {
-          console.log("welcome faizzzzzzzzzzzzzzzzzz");
           setFieldValue();
         } else if (
           isActiveApis === false &&
           props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
         ) {
-          console.log("welcome faiz");
           setNull();
-          console.log(
-            "valueschecktest",
-            props.policystate?.data.form.APIs[props.indexdata!].Limit!
-          );
         } else if (
           isActiveApis === true &&
           props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
         ) {
-          console.log("welcome faiz");
           setFieldValue();
         } else if (
           isActiveApis === false &&
           props.policystate?.data.form.APIs[props.indexdata!].Limit === null
         ) {
-          console.log("welcome faiz");
           setNull();
-          console.log(
-            "valueschecktest",
-            props.policystate?.data.form.APIs[props.indexdata!].Limit!
-          );
         }
       } else {
         if (
@@ -187,6 +172,46 @@ export default function PathBased(props: IProps) {
       }
     }
   }
+  const setPathValuesNull = () => {
+    const apisList =
+      props.current === "policy"
+        ? [...props.policystate?.data.form.APIs!]
+        : [...props.state?.data.form.AccessRights!];
+    apisList[props.indexdata!] = {
+      ...apisList[props.indexdata!],
+      AllowedUrls: [],
+    };
+    props.current === "policy"
+      ? dispatch(
+          setForm({
+            ...props.policystate?.data.form,
+            APIs: apisList,
+          })
+        )
+      : dispatch(
+          setForms({
+            ...props.state?.data.form,
+            AccessRights: apisList,
+          })
+        );
+  };
+
+  function setpathfieldvalues(isActives: any) {
+    console.log("pathlog", isActives);
+    if (id === undefined) {
+      if (isActives === false) {
+        // console.log("pathvalues", props.state?.data.form);
+        setPathValuesNull();
+      }
+    } else {
+      if (props.current === "policy" && isActives === false) {
+        console.log("pathvalues", props.policystate?.data.form);
+        setPathValuesNull();
+      } else if (props.current !== "policy" && isActives === false) {
+        setPathValuesNull();
+      }
+    }
+  }
   useEffect(() => {
     if (id === undefined) {
       setisActiveApi(false);
@@ -196,43 +221,24 @@ export default function PathBased(props: IProps) {
         if (
           props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
         ) {
-          console.log("hyyyyyyyyyyyyyyyyyyyyyy");
           if (
             props.policystate?.data.form.APIs[props.indexdata!].Limit?.rate ===
-              0 &&
+              -1 &&
             props.policystate?.data.form.APIs[props.indexdata!].Limit?.per ===
-              0 &&
+              -1 &&
             props.policystate?.data.form.APIs[props.indexdata!].Limit
               ?.throttle_retry_limit === -1 &&
             props.policystate?.data.form.APIs[props.indexdata!].Limit
               ?.quota_max === -1
           ) {
-            console.log(
-              "valueschecktest1",
-              props.policystate?.data.form.APIs[props.indexdata!].Limit!
-            );
             setNull();
             setisActiveApi(false);
             setNull();
-            console.log(
-              "valueschecktest",
-              props.policystate?.data.form.APIs[props.indexdata!].Limit!
-            );
           } else {
-            console.log("react chadarmod");
             setisActiveApi(true);
-            setFieldValue();
           }
         } else {
-          console.log(
-            "valueschecktest1",
-            props.policystate?.data.form.APIs[props.indexdata!].Limit!
-          );
           setisActiveApi(false);
-          console.log(
-            "valueschecktest",
-            props.policystate?.data.form.APIs[props.indexdata!].Limit!
-          );
         }
       } else {
         if (
@@ -240,9 +246,9 @@ export default function PathBased(props: IProps) {
         ) {
           if (
             props.state?.data.form.AccessRights[props.indexdata!].Limit
-              ?.Rate === 0 &&
+              ?.Rate === -1 &&
             props.state?.data.form.AccessRights[props.indexdata!].Limit?.Per ===
-              0 &&
+              -1 &&
             props.state?.data.form.AccessRights[props.indexdata!].Limit
               ?.Throttle_retry_limit === -1 &&
             props.state?.data.form.AccessRights[props.indexdata!].Limit
@@ -257,7 +263,7 @@ export default function PathBased(props: IProps) {
         }
       }
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (id === undefined) {
@@ -291,6 +297,7 @@ export default function PathBased(props: IProps) {
       setisActiveApi(Boolean(value));
     } else {
       setisActive(Boolean(value));
+      setpathfieldvalues(Boolean(value));
     }
   };
 
@@ -530,13 +537,23 @@ export default function PathBased(props: IProps) {
                         </Form.Group>
                       </Col>
                       {isActive ? (
-                        <Ipathpermission
-                          state={props.state}
-                          policystate={props.policystate}
-                          apidata={props.apidata}
-                          indexdata={props.indexdata}
-                          current={props.current}
-                        />
+                        props.current === "policy" ? (
+                          <Ipathpermission
+                            state={props.state}
+                            policystate={props.policystate}
+                            apidata={props.apidata}
+                            indexdata={props.indexdata}
+                            current={props.current}
+                          />
+                        ) : (
+                          <IpathpermissionKey
+                            state={props.state}
+                            policystate={props.policystate}
+                            apidata={props.apidata}
+                            indexdata={props.indexdata}
+                            current={props.current}
+                          />
+                        )
                       ) : (
                         " "
                       )}

@@ -147,7 +147,6 @@ export default function GlobalRateLimit(props: IProps) {
   const [rate, setRate] = useState(false);
   const [throttle, setThrottle] = useState(true);
   const [quota, setQuota] = useState(true);
-
   useEffect(() => {
     if (
       id !== undefined &&
@@ -183,6 +182,7 @@ export default function GlobalRateLimit(props: IProps) {
     states.data.form.ThrottleRetries,
     states.data.form.Quota,
     states.data.form.QuotaRenewalRate,
+    id,
   ]);
 
   const handlerateclick = (event: any) => {

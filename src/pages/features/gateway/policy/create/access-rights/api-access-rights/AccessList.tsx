@@ -40,8 +40,8 @@ export default function AccessList() {
             AuthType: selectedApi.payload.Data.AuthType,
             AllowedUrls: [],
             Limit: {
-              rate: 0,
-              per: 0,
+              rate: -1,
+              per: -1,
               throttle_interval: -1,
               throttle_retry_limit: -1,
               max_query_depth: -1,

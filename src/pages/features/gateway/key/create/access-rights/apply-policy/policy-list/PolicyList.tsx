@@ -21,12 +21,14 @@ export default function PolicyList() {
   const accessPolicyList: IPolicyListState = useAppSelector(
     (state) => state.policyListState
   );
+  console.log("outside", accessPolicyList);
   const StateKey = useAppSelector((RootState) => RootState.createKeyState);
   const dispatch = useAppDispatch();
   const [apis, setApis] = useState<policyObject[]>([]);
+  const [uniqueApis, setuniqueApis] = useState<string>("");
   const [selectedApi, setSelectedApi] = useState<string>("");
   const mainCall = async (currentPage: number, pageSize: number) => {
-    dispatch(getPolicyList({ currentPage, pageSize }));
+    await dispatch(getPolicyList({ currentPage, pageSize }));
   };
   useEffect(() => {
     mainCall(1, 100_000);
@@ -59,7 +61,7 @@ export default function PolicyList() {
   };
   function containsApis() {
     const policyId: IPolicyData[] = [];
-    //  console.log("containsApis-apis", apis);
+    console.log("containsApis-apis", apis);
     const listPolicies = accessPolicyList.data?.Policies!.filter(
       (a) =>
         a.AuthType !== "keyless" &&
@@ -71,10 +73,11 @@ export default function PolicyList() {
         a.AuthType !== "keyless" && StateKey.data.form.Policies.includes(a.Id!)
     );
 
+    // const selectedlistPoliciesas = accessPolicyList.data?.Policies!.filter(
+    //   (a) => a.Apis.includes("Govind")
+    // );
     for (const item of selectedlistPolicies!) {
       policyId.push(item);
-      // console.log("selectedlistPolicies", selectedlistPolicies);
-      // console.log("selectedlistPolicies-policyId", policyId);
     }
     for (const item of listPolicies!) {
       policyId.push(item);
@@ -118,36 +121,146 @@ export default function PolicyList() {
         ])
       : [];
   }
-  // useEffect(() => {
-  //   if (StateKey?.data.form.KeyId?.length! > 0) {
-  //     console.log("useEffect-apis :", apis);
-  //     for (const p_item of StateKey?.data.form.Policies) {
-  //       const newp = [...apis];
-  //       const selectedlistPolicies2 = accessPolicyList.data?.Policies!.filter(
-  //         (a) => a.AuthType !== "keyless" && p_item.includes(a.Id!)
-  //       );
-  //       // console.log("useEffect-apis :", apis);
-  //       // console.log("selectedlistPolicies2 :", selectedlistPolicies2);
-  //       for (const iterator of selectedlistPolicies2!) {
-  //         newp.push({ name: iterator.Apis, policyId: iterator.Id! });
-  //         setApis(newp);
-  //       //  console.log("useEffect-apis-i for :", apis);
-  //       }
-  //       // newp.push({ name: accessRights, policyId: Id });
-  //       // setApis(newp);
-  //       console.log("newpfor :", newp);
-  //     }
-  //   }
-  // }, [StateKey?.data.form.Policies?.length]);
+
+  useEffect(() => {
+    console.log("useEffect");
+    if (
+      StateKey.data.form.KeyId !== undefined &&
+      apis.length === 0 &&
+      StateKey.data.form.Policies.length > 0
+    ) {
+      const newp = [...apis];
+      console.log("accessPolicyList", accessPolicyList.data?.Policies!);
+      console.log("StateKey..Policies", StateKey.data.form.Policies);
+      const accessRightList =
+        accessPolicyList !== undefined
+          ? accessPolicyList.data?.Policies!.filter(
+              (a) =>
+                a.AuthType !== "keyless" &&
+                StateKey.data.form.Policies.includes(a.Id!)
+            )
+          : undefined;
+
+      if (accessRightList !== undefined && accessRightList?.length! > 0) {
+        for (const policyItem of accessRightList!) {
+          // console.log("newsssssss", newp);
+          newp.push({ name: policyItem.Apis!, policyId: policyItem.Id! });
+          setApis(newp);
+          setSelectedApi(policyItem.Id!);
+        }
+      }
+    }
+    if (apis.length > 0 && apis.length !== StateKey.data.form.Policies.length) {
+      const filterPolicyList = apis.filter((i) =>
+        StateKey.data.form.Policies.includes(i.policyId!)
+      );
+      console.log("filterPolicyList", filterPolicyList);
+      setApis(filterPolicyList);
+      setSelectedApi(
+        StateKey.data.form.Policies[StateKey.data.form.Policies.length - 1]!
+      );
+    }
+
+    bindPolicyList();
+  }, [StateKey?.data.form.Policies?.length && accessPolicyList]);
 
   useEffect(() => {
     // alert(apis);
     bindPolicyList();
+    if (apis.length > 0) {
+      const selectedApisList = apis.map((a) => a.name);
+      console.log("filt", selectedApisList);
+      setuniqueApis(selectedApisList.join(", "));
+    } else {
+      setuniqueApis("");
+    }
   }, [apis]);
+  useEffect(() => {
+    console.log("useEffect");
+    if (
+      StateKey.data.form.KeyId !== undefined &&
+      apis.length === 0 &&
+      StateKey.data.form.Policies.length > 0
+    ) {
+      const newp = [...apis];
+      console.log("accessPolicyList", accessPolicyList.data?.Policies!);
+      console.log("StateKey..Policies", StateKey.data.form.Policies);
+      const accessRightList =
+        accessPolicyList !== undefined
+          ? accessPolicyList.data?.Policies!.filter(
+              (a) =>
+                a.AuthType !== "keyless" &&
+                StateKey.data.form.Policies.includes(a.Id!)
+            )
+          : undefined;
+
+      if (accessRightList !== undefined && accessRightList?.length! > 0) {
+        for (const policyItem of accessRightList!) {
+          // console.log("newsssssss", newp);
+          newp.push({ name: policyItem.Apis!, policyId: policyItem.Id! });
+          setApis(newp);
+          setSelectedApi(policyItem.Id!);
+        }
+      }
+    }
+    if (apis.length > 0 && apis.length !== StateKey.data.form.Policies.length) {
+      const filterPolicyList = apis.filter((i) =>
+        StateKey.data.form.Policies.includes(i.policyId!)
+      );
+      console.log("filterPolicyList", filterPolicyList);
+      setApis(filterPolicyList);
+      setSelectedApi(
+        StateKey.data.form.Policies[StateKey.data.form.Policies.length - 1]!
+      );
+    }
+
+    bindPolicyList();
+  }, [
+    accessPolicyList === undefined
+      ? StateKey?.data.form.Policies?.length && accessPolicyList
+      : StateKey?.data.form.Policies?.length,
+  ]);
   // useEffect(() => {
-  //   // alert(apis);
+  //   console.log("useEffect");
+  //   if (
+  //     StateKey.data.form.KeyId !== undefined &&
+  //     apis.length === 0 &&
+  //     StateKey.data.form.Policies.length > 0
+  //   ) {
+  //     const newp = [...apis];
+  //     console.log("accessPolicyList", accessPolicyList.data?.Policies!);
+  //     console.log("StateKey..Policies", StateKey.data.form.Policies);
+  //     const accessRightList =
+  //       accessPolicyList !== undefined
+  //         ? accessPolicyList.data?.Policies!.filter(
+  //             (a) =>
+  //               a.AuthType !== "keyless" &&
+  //               StateKey.data.form.Policies.includes(a.Id!)
+  //           )
+  //         : undefined;
+
+  //     if (accessRightList !== undefined && accessRightList?.length! > 0) {
+  //       for (const policyItem of accessRightList!) {
+  //         // console.log("newsssssss", newp);
+  //         newp.push({ name: policyItem.Apis!, policyId: policyItem.Id! });
+  //         setApis(newp);
+  //         setSelectedApi(policyItem.Id!);
+  //       }
+  //     }
+  //   }
+  //   if (apis.length > 0 && apis.length !== StateKey.data.form.Policies.length) {
+  //     const filterPolicyList = apis.filter((i) =>
+  //       StateKey.data.form.Policies.includes(i.policyId!)
+  //     );
+  //     console.log("filterPolicyList", filterPolicyList);
+  //     setApis(filterPolicyList);
+  //     setSelectedApi(
+  //       StateKey.data.form.Policies[StateKey.data.form.Policies.length - 1]!
+  //     );
+  //   }
+
   //   bindPolicyList();
-  // }, [StateKey?.data.form.Policies?.length]);
+  // }, [StateKey?.data.form.Policies?.length && accessPolicyList]);
   // console.log(StateKey.data.form);
   const gridTable = new Grid({
     columns: [
@@ -219,6 +332,18 @@ export default function PolicyList() {
             <Accordion.Body>
               <div>
                 <Grid {...gridTable.props} />
+                <div className="mt-2">
+                  {" "}
+                  {uniqueApis.length > 0 ? (
+                    <>
+                      <b>Note :&nbsp;</b> Policies get filter based on
+                      &quot;&nbsp;
+                      <i>{uniqueApis}</i>&nbsp;&quot; Apis
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             </Accordion.Body>
           </Accordion.Item>
