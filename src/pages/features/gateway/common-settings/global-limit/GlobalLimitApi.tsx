@@ -208,21 +208,24 @@ export default function GlobalLimitApi(props: IProps) {
     ) {
       if (props.current === "policy") {
         const apisList = [...props.state?.data.form.APIs!];
+        console.log("hey welcome", policystate.data.form);
         apisList[props.index!] = {
           ...apisList[props.index!],
           Limit: {
             rate:
               id === undefined
                 ? 0
-                : policystate.data.form.APIs[props.index!].Limit?.rate === -1
+                : policystate === undefined
                 ? 0
-                : policystate.data.form.APIs[props.index!].Limit?.rate,
+                : props.state?.data.form.APIs[props.index!].Limit?.rate === -1
+                ? 0
+                : props.state?.data.form.APIs[props.index!].Limit?.rate,
             per:
               id === undefined
                 ? 0
-                : policystate.data.form.APIs[props.index!].Limit?.per! === -1
+                : props.state?.data.form.APIs[props.index!].Limit?.per! === -1
                 ? 0
-                : policystate.data.form.APIs[props.index!].Limit?.per!,
+                : props.state?.data.form.APIs[props.index!].Limit?.per!,
             throttle_interval:
               props.state?.data.form.APIs[props.index!].Limit
                 ?.throttle_interval,
@@ -438,18 +441,18 @@ export default function GlobalLimitApi(props: IProps) {
             throttle_interval:
               id === undefined
                 ? 0
-                : policystate.data.form.APIs[props.index!].Limit
+                : props.state?.data.form.APIs[props.index!].Limit
                     ?.throttle_interval === -1
                 ? 0
-                : policystate.data.form.APIs[props.index!].Limit
+                : props.state?.data.form.APIs[props.index!].Limit
                     ?.throttle_interval,
             throttle_retry_limit:
               id === undefined
                 ? 0
-                : policystate.data.form.APIs[props.index!].Limit
+                : props.state?.data.form.APIs[props.index!].Limit
                     ?.throttle_retry_limit === -1
                 ? 0
-                : policystate.data.form.APIs[props.index!].Limit
+                : props.state?.data.form.APIs[props.index!].Limit
                     ?.throttle_retry_limit,
             max_query_depth:
               props.state?.data.form.APIs[props.index!].Limit?.max_query_depth,
@@ -658,10 +661,10 @@ export default function GlobalLimitApi(props: IProps) {
             quota_max:
               id === undefined
                 ? 0
-                : policystate.data.form.APIs[props.index!].Limit?.quota_max ===
+                : props.state?.data.form.APIs[props.index!].Limit?.quota_max ===
                   -1
                 ? 0
-                : policystate.data.form.APIs[props.index!].Limit?.quota_max,
+                : props.state?.data.form.APIs[props.index!].Limit?.quota_max,
             quota_renews:
               props.state?.data.form.APIs[props.index!].Limit?.quota_renews,
             quota_remaining:
@@ -669,10 +672,10 @@ export default function GlobalLimitApi(props: IProps) {
             quota_renewal_rate:
               id === undefined
                 ? 0
-                : policystate.data.form.APIs[props.index!].Limit
+                : props.state?.data.form.APIs[props.index!].Limit
                     ?.quota_renewal_rate === -1
                 ? 0
-                : policystate.data.form.APIs[props.index!].Limit
+                : props.state?.data.form.APIs[props.index!].Limit
                     ?.quota_renewal_rate,
             set_by_policy:
               props.state?.data.form.APIs[props.index!].Limit?.set_by_policy!,
