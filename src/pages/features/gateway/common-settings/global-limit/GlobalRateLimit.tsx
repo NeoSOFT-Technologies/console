@@ -189,36 +189,8 @@ export default function GlobalRateLimit(props: IProps) {
   const handlerateclick = (event: any) => {
     event.preventDefault();
     validateForm(event);
-    let fieldValue;
+    const fieldValue = event.target.value;
     const fieldName = event.target.getAttribute("name");
-    if (fieldName === "quota_renews") {
-      switch (event.target.value) {
-        case "1 hour":
-          fieldValue = 3600;
-          console.log(fieldValue);
-          break;
-        case "6 hour":
-          fieldValue = 21_600;
-          break;
-        case "12 hour":
-          fieldValue = 43_200;
-          break;
-        case "1 week":
-          fieldValue = 604_800;
-          break;
-        case "1 months":
-          fieldValue = 2.628e6;
-          break;
-        case "6 months":
-          fieldValue = 1.577e7;
-          break;
-        case "12 months":
-          fieldValue = 3.154e7;
-          break;
-      }
-    } else {
-      fieldValue = event.target.value;
-    }
 
     switch (fieldName) {
       case "rate":
@@ -447,7 +419,6 @@ export default function GlobalRateLimit(props: IProps) {
     }
     setThrottleValue();
   }, [throttle]);
-
   useEffect(() => {
     function setQuotaValue() {
       if (quota === true) {
@@ -831,16 +802,21 @@ export default function GlobalRateLimit(props: IProps) {
                           style={{ height: 46 }}
                           disabled={quota}
                           name="quota_renews"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.QuotaRate
+                              : states.data.form.QuotaRenewalRate
+                          }
                           onChange={(e: any) => handlerateclick(e)}
                         >
-                          <option>never</option>
-                          <option>1 hour</option>
-                          <option>6 hour</option>
-                          <option>12 hour</option>
-                          <option>1 week</option>
-                          <option>1 month</option>
-                          <option>6 months</option>
-                          <option>12 months</option>
+                          <option value={0}>never</option>
+                          <option value={3600}>1 hour</option>
+                          <option value={21_600}>6 hour</option>
+                          <option value={43_200}>12 hour</option>
+                          <option value={604_800}>1 week</option>
+                          <option value={2.628e6}>1 month</option>
+                          <option value={1.577e7}>6 months</option>
+                          <option value={3.154_67}>12 months</option>
                         </Form.Select>
                       </Form.Group>
                     )}
