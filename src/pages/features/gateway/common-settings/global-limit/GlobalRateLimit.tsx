@@ -183,6 +183,7 @@ export default function GlobalRateLimit(props: IProps) {
     states.data.form.ThrottleRetries,
     states.data.form.Quota,
     states.data.form.QuotaRenewalRate,
+    id,
   ]);
 
   const handlerateclick = (event: any) => {

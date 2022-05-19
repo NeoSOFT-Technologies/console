@@ -263,7 +263,7 @@ export default function PathBased(props: IProps) {
         }
       }
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (id === undefined) {
