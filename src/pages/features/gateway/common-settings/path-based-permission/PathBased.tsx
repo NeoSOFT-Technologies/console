@@ -130,14 +130,22 @@ export default function PathBased(props: IProps) {
           props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
         ) {
           setNull();
+          console.log(
+            "hey",
+            props.policystate?.data.form.APIs[props.indexdata!].Limit
+          );
         } else if (
           isActiveApis === true &&
-          props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
+          (props.policystate?.data.form.APIs[props.indexdata!].Limit !== null ||
+            props.policystate?.data.form.APIs[props.indexdata!].Limit !==
+              undefined)
         ) {
           setFieldValue();
         } else if (
           isActiveApis === false &&
-          props.policystate?.data.form.APIs[props.indexdata!].Limit === null
+          (props.policystate?.data.form.APIs[props.indexdata!].Limit === null ||
+            props.policystate?.data.form.APIs[props.indexdata!].Limit !==
+              undefined)
         ) {
           setNull();
         }
@@ -146,15 +154,7 @@ export default function PathBased(props: IProps) {
           isActiveApis === true &&
           props.state?.data.form.AccessRights[props.indexdata!].Limit === null
         ) {
-          console.log(
-            "before fieldvalue set",
-            props.state?.data.form.AccessRights[props.indexdata!].Limit
-          );
           setFieldValue();
-          console.log(
-            "After fieldvalue set",
-            props.state?.data.form.AccessRights[props.indexdata!].Limit
-          );
         } else if (
           isActiveApis === false &&
           props.state?.data.form.AccessRights[props.indexdata!].Limit !== null
@@ -167,15 +167,7 @@ export default function PathBased(props: IProps) {
             props.state?.data.form.AccessRights[props.indexdata!].Limit !==
               null)
         ) {
-          console.log(
-            "before fieldvalue set -- not null",
-            props.state?.data.form.AccessRights[props.indexdata!].Limit
-          );
           setFieldValue();
-          console.log(
-            "After fieldvalue set -- not null",
-            props.state?.data.form.AccessRights[props.indexdata!].Limit
-          );
         } else if (
           isActiveApis === false &&
           (props.state?.data.form.AccessRights[props.indexdata!].Limit ===
@@ -216,7 +208,6 @@ export default function PathBased(props: IProps) {
     console.log("pathlog", isActives);
     if (id === undefined) {
       if (isActives === false) {
-        // console.log("pathvalues", props.state?.data.form);
         setPathValuesNull();
       }
     } else {
@@ -238,21 +229,31 @@ export default function PathBased(props: IProps) {
           props.policystate?.data.form.APIs[props.indexdata!].Limit !==
           undefined
         ) {
+          console.log(
+            "hey",
+            props.policystate?.data.form.APIs[props.indexdata!].Limit
+          );
           if (
-            props.policystate?.data.form.APIs[props.indexdata!].Limit?.rate ===
-              -1 &&
-            props.policystate?.data.form.APIs[props.indexdata!].Limit?.per ===
-              -1 &&
-            props.policystate?.data.form.APIs[props.indexdata!].Limit
-              ?.throttle_retry_limit === -1 &&
-            props.policystate?.data.form.APIs[props.indexdata!].Limit
-              ?.quota_max === -1
+            props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
           ) {
-            setNull();
-            setisActiveApi(false);
-            setNull();
+            if (
+              props.policystate?.data.form.APIs[props.indexdata!].Limit
+                ?.rate === -1 &&
+              props.policystate?.data.form.APIs[props.indexdata!].Limit?.per ===
+                -1 &&
+              props.policystate?.data.form.APIs[props.indexdata!].Limit
+                ?.throttle_retry_limit === -1 &&
+              props.policystate?.data.form.APIs[props.indexdata!].Limit
+                ?.quota_max === -1
+            ) {
+              setNull();
+              setisActiveApi(false);
+              setNull();
+            } else {
+              setisActiveApi(true);
+            }
           } else {
-            setisActiveApi(true);
+            setisActiveApi(false);
           }
         } else {
           setisActiveApi(false);
