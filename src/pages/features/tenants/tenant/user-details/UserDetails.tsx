@@ -110,6 +110,7 @@ export default function UserDetails() {
       dispatch(resetUpdateUserState());
     };
   }, []);
+
   useEffect(() => {
     if (!deleteUserState.loading && deleteUserState.error) {
       navigate("/error", { state: deleteUserState.error });
@@ -189,7 +190,11 @@ export default function UserDetails() {
     setUserdata({ ...userdata, [name]: value });
   };
   const handleValidate = (errors: Ierror) => {
-    const validate = !!(errors.username === "" && errors.email === "");
+    const validate = !!(
+      errors.username === "" &&
+      errors.email === "" &&
+      userdata.roles.length > 0
+    );
     return validate;
   };
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
