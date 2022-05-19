@@ -51,3 +51,7 @@ export interface ISearchDataWithQuery {
   order: string;
   requestParams: ITableSchema;
 }
+export interface IPagination {
+  pageNumber: string;
+  pageSize: string;
+}

@@ -19,6 +19,8 @@ import inputDataWithNrtReducer from "./features/saas/input-data/with-nrt/slice";
 import inputDataWithOutNrtReducer from "./features/saas/input-data/without-nrt/slice";
 import createTableReducer from "./features/saas/manage-table/create-table/slice";
 import deleteTableSchemaReducer from "./features/saas/manage-table/delete-table/slice";
+import getAllDeletedTableReducer from "./features/saas/manage-table/get-all-deleted-tables/slice";
+import getAllTableReducer from "./features/saas/manage-table/get-all-tables/slice";
 import capacityPlansReducer from "./features/saas/manage-table/get-capacity-plans/slice";
 import getTableSchemaReducer from "./features/saas/manage-table/get-table-schema/slice";
 import getTableReducer from "./features/saas/manage-table/get-tables/slice";
@@ -78,6 +80,8 @@ const store = configureStore({
     searchDataWithQueryState: searchDataWithQueryReducer,
     inputDataWithNrtState: inputDataWithNrtReducer,
     inputDataWithOutNrtState: inputDataWithOutNrtReducer,
+    getAllTableState: getAllTableReducer,
+    getAllDeleteTableState: getAllDeletedTableReducer,
   },
 });
 
