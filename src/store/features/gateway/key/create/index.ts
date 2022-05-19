@@ -30,8 +30,8 @@ export interface IGetKeyByIdData {
           AuthType: string;
           AllowedUrls:
             | {
-                url: string;
-                methods: string[];
+                Url: string;
+                Methods: string[];
               }[];
           Limit?:
             | {

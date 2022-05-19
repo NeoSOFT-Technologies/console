@@ -11,6 +11,7 @@ import { setForm } from "../../../../../store/features/gateway/policy/create/sli
 import { useAppDispatch } from "../../../../../store/hooks";
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
 import Ipathpermission from "./path-file";
+import IpathpermissionKey from "./path-file-Key";
 interface IProps {
   state?: IKeyCreateState;
   policystate?: IPolicyCreateState;
@@ -171,6 +172,46 @@ export default function PathBased(props: IProps) {
       }
     }
   }
+  const setPathValuesNull = () => {
+    const apisList =
+      props.current === "policy"
+        ? [...props.policystate?.data.form.APIs!]
+        : [...props.state?.data.form.AccessRights!];
+    apisList[props.indexdata!] = {
+      ...apisList[props.indexdata!],
+      AllowedUrls: [],
+    };
+    props.current === "policy"
+      ? dispatch(
+          setForm({
+            ...props.policystate?.data.form,
+            APIs: apisList,
+          })
+        )
+      : dispatch(
+          setForms({
+            ...props.state?.data.form,
+            AccessRights: apisList,
+          })
+        );
+  };
+
+  function setpathfieldvalues(isActives: any) {
+    console.log("pathlog", isActives);
+    if (id === undefined) {
+      if (isActives === false) {
+        // console.log("pathvalues", props.state?.data.form);
+        setPathValuesNull();
+      }
+    } else {
+      if (props.current === "policy" && isActives === false) {
+        console.log("pathvalues", props.policystate?.data.form);
+        setPathValuesNull();
+      } else if (props.current !== "policy" && isActives === false) {
+        setPathValuesNull();
+      }
+    }
+  }
   useEffect(() => {
     if (id === undefined) {
       setisActiveApi(false);
@@ -256,6 +297,7 @@ export default function PathBased(props: IProps) {
       setisActiveApi(Boolean(value));
     } else {
       setisActive(Boolean(value));
+      setpathfieldvalues(Boolean(value));
     }
   };
 
@@ -495,13 +537,23 @@ export default function PathBased(props: IProps) {
                         </Form.Group>
                       </Col>
                       {isActive ? (
-                        <Ipathpermission
-                          state={props.state}
-                          policystate={props.policystate}
-                          apidata={props.apidata}
-                          indexdata={props.indexdata}
-                          current={props.current}
-                        />
+                        props.current === "policy" ? (
+                          <Ipathpermission
+                            state={props.state}
+                            policystate={props.policystate}
+                            apidata={props.apidata}
+                            indexdata={props.indexdata}
+                            current={props.current}
+                          />
+                        ) : (
+                          <IpathpermissionKey
+                            state={props.state}
+                            policystate={props.policystate}
+                            apidata={props.apidata}
+                            indexdata={props.indexdata}
+                            current={props.current}
+                          />
+                        )
                       ) : (
                         " "
                       )}
