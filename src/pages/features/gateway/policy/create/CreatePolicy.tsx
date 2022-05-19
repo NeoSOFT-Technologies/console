@@ -95,6 +95,7 @@ export default function CreatePolicy() {
               }
             } else {
               ToastAlert("Policy Updated Successfully!!", "success");
+              await dispatch(getPolicybyId(id));
             }
           } else {
             ToastAlert("Please select atleast one Api!", "error");

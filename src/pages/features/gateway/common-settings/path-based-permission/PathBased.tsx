@@ -7,7 +7,10 @@ import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
 import { setForms } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
-import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
+import {
+  policystate,
+  setForm,
+} from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
 import Ipathpermission from "./path-file";
@@ -143,13 +146,18 @@ export default function PathBased(props: IProps) {
           isActiveApis === true &&
           props.state?.data.form.AccessRights[props.indexdata!].Limit === null
         ) {
+          console.log(
+            "before fieldvalue set",
+            props.state?.data.form.AccessRights[props.indexdata!].Limit
+          );
           setFieldValue();
+          console.log(
+            "After fieldvalue set",
+            props.state?.data.form.AccessRights[props.indexdata!].Limit
+          );
         } else if (
           isActiveApis === false &&
-          (props.state?.data.form.AccessRights[props.indexdata!].Limit !==
-            undefined ||
-            props.state?.data.form.AccessRights[props.indexdata!].Limit !==
-              null)
+          props.state?.data.form.AccessRights[props.indexdata!].Limit !== null
         ) {
           setNull();
         } else if (
@@ -159,7 +167,15 @@ export default function PathBased(props: IProps) {
             props.state?.data.form.AccessRights[props.indexdata!].Limit !==
               null)
         ) {
+          console.log(
+            "before fieldvalue set -- not null",
+            props.state?.data.form.AccessRights[props.indexdata!].Limit
+          );
           setFieldValue();
+          console.log(
+            "After fieldvalue set -- not null",
+            props.state?.data.form.AccessRights[props.indexdata!].Limit
+          );
         } else if (
           isActiveApis === false &&
           (props.state?.data.form.AccessRights[props.indexdata!].Limit ===
@@ -219,7 +235,8 @@ export default function PathBased(props: IProps) {
     } else {
       if (props.current === "policy") {
         if (
-          props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
+          props.policystate?.data.form.APIs[props.indexdata!].Limit !==
+          undefined
         ) {
           if (
             props.policystate?.data.form.APIs[props.indexdata!].Limit?.rate ===
@@ -241,8 +258,17 @@ export default function PathBased(props: IProps) {
           setisActiveApi(false);
         }
       } else {
+        console.log(
+          "empty data set",
+          props.state?.data.form.AccessRights[props.indexdata!].Limit !==
+            undefined
+        );
+        console.log("empty data set", policystate);
         if (
-          props.state?.data.form.AccessRights[props.indexdata!].Limit !== null
+          props.state?.data.form.AccessRights[props.indexdata!].Limit !==
+            null &&
+          props.state?.data.form.AccessRights[props.indexdata!].Limit !==
+            undefined
         ) {
           if (
             props.state?.data.form.AccessRights[props.indexdata!].Limit
