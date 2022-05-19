@@ -438,9 +438,13 @@ export default function PathBased(props: IProps) {
                       <Form.Group className="mb-3 mt-3">
                         <Form.Select
                           style={{ height: 46 }}
-                          name="method"
+                          name="Versions"
                           onChange={(e: any) => handleversion(e)}
                         >
+                          <option value="" disabled selected hidden>
+                            Selected Versions
+                          </option>
+                          {/* <option></option> */}
                           {props.current === "key"
                             ? props.state?.data.form.AccessRights[
                                 props.indexdata!
@@ -470,28 +474,55 @@ export default function PathBased(props: IProps) {
                   </Row>
                   <Row>
                     <Col md="12">
-                      {props.state?.data.form !== undefined &&
-                      props.state?.data.form.AccessRights[props.indexdata!]
-                        .Versions?.length > 0 ? (
+                      {(
+                        props.current === "key"
+                          ? props.state?.data.form !== undefined &&
+                            props.state?.data.form.AccessRights[
+                              props.indexdata!
+                            ].Versions?.length > 0
+                          : props.policystate?.data.form !== undefined &&
+                            props.policystate?.data.form.APIs[props.indexdata!]
+                              .Versions?.length > 0
+                      ) ? (
                         <div
-                          style={{ width: 960 }}
+                          style={{ width: "100%" }}
                           className="float-lg-left border rounded p-4"
                         >
-                          {props.state?.data.form.AccessRights[
-                            props.indexdata!
-                          ].Versions.map((data: any, index: any) => {
-                            return (
-                              <div key={index} className="border-0">
-                                <i
-                                  className="bi bi-x-circle-fill float-left"
-                                  style={{ marginLeft: 40 }}
-                                  onClick={(e: any) => deleteversion(e, index)}
-                                >
-                                  &nbsp;&nbsp;{data}
-                                </i>
-                              </div>
-                            );
-                          })}
+                          {props.current === "key"
+                            ? props.state?.data.form.AccessRights[
+                                props.indexdata!
+                              ].Versions.map((data: any, index: any) => {
+                                return (
+                                  <div key={index} className="border-0">
+                                    <i
+                                      className="bi bi-x-circle-fill float-left"
+                                      style={{ marginLeft: 30 }}
+                                      onClick={(e: any) =>
+                                        deleteversion(e, index)
+                                      }
+                                    >
+                                      &nbsp;&nbsp;{data}
+                                    </i>
+                                  </div>
+                                );
+                              })
+                            : props.policystate?.data.form.APIs[
+                                props.indexdata!
+                              ].Versions.map((data: any, index: any) => {
+                                return (
+                                  <div key={index} className="border-0">
+                                    <i
+                                      className="bi bi-x-circle-fill float-left"
+                                      style={{ marginLeft: 30 }}
+                                      onClick={(e: any) =>
+                                        deleteversion(e, index)
+                                      }
+                                    >
+                                      &nbsp;&nbsp;{data}
+                                    </i>
+                                  </div>
+                                );
+                              })}
                         </div>
                       ) : (
                         ""
