@@ -36,6 +36,14 @@ export default function BlacklistedIPs() {
       const blacklistObj: any = [];
       dispatch(setForm({ ...state.data.form, Blacklist: blacklistObj }));
     }
+    setAddFormData({ ...addFormData, Blacklist: "" });
+    setFormErrors(
+      {
+        ...state.data.errors,
+        Blacklist: "",
+      },
+      dispatch
+    );
   }
 
   const handleFormInputChange = (event: any) => {

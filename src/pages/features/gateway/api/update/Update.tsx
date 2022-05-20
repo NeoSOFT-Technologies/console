@@ -82,7 +82,7 @@ export default function Update() {
       if (val === true) {
         ToastAlert("Please select atleast one certificate! ", "error");
       }
-      if (validateObj1 === false && validateObj2 === false) {
+      if (validateObj1 === false || validateObj2 === false) {
         ToastAlert("Please fill all the fields correctly! ", "error");
       }
     }

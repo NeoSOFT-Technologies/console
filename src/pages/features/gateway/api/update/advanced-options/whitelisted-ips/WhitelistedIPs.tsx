@@ -35,6 +35,14 @@ export default function WhitelistedIPs() {
     if (event.target.checked === false) {
       const whitelistObj: any = [];
       dispatch(setForm({ ...state.data.form, Whitelist: whitelistObj }));
+      setAddFormData({ ...addFormData, Whitelist: "" });
+      setFormErrors(
+        {
+          ...state.data.errors,
+          Whitelist: "",
+        },
+        dispatch
+      );
     }
   }
 
