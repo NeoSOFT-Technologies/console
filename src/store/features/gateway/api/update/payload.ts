@@ -70,11 +70,14 @@ export const initialState: IApiGetByIdState = {
       Per: "",
       versioningInfo: "",
       defaultVersion: "",
-      version: "",
       isQuotaDisabled: "",
       LoadBalancingTargets: "",
       OverrideTarget: "",
-
+      Versions: [
+        {
+          OverrideTarget: "",
+        },
+      ],
       issuer: "",
       ClientId: "",
       Policy: "",

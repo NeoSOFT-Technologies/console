@@ -70,7 +70,6 @@ export default function WhitelistedIPs() {
     formobj[name] = value;
     setAddFormData(formobj);
   };
-  console.log("error :", state.data.errors);
 
   const handleAddClick = () => {
     if (whitelistLength > 0) {
@@ -210,7 +209,7 @@ export default function WhitelistedIPs() {
                                           <td>{data}</td>
                                           <td style={{ textAlign: "center" }}>
                                             <i
-                                              className="bi bi-trash"
+                                              className="btn btn-sm bi bi-trash-fill"
                                               onClick={(event) =>
                                                 deleteTableRows(index, event)
                                               }
