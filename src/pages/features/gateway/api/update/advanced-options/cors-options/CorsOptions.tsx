@@ -14,7 +14,7 @@ import {
 export default function CorsOptions() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  console.log("state form :", state.data.form);
+  // console.log("state form :", state.data.form);
 
   const [addAllowedOrigins, setAllowedOrigins] = useState<any>({
     AllowedOrigins: "",
@@ -527,7 +527,7 @@ export default function CorsOptions() {
                                         <td>{data}</td>
                                         <td style={{ textAlign: "center" }}>
                                           <i
-                                            className="bi bi-trash"
+                                            className="btn btn-sm bi bi-trash-fill"
                                             onClick={(event) =>
                                               handleAllowedOriginsDeleteRow(
                                                 index,
@@ -606,7 +606,7 @@ export default function CorsOptions() {
                                         <td>{data}</td>
                                         <td style={{ textAlign: "center" }}>
                                           <i
-                                            className="bi bi-trash"
+                                            className="btn btn-sm bi bi-trash-fill"
                                             onClick={(event) =>
                                               handleAllowedMethodsDeleteRow(
                                                 index,
@@ -681,7 +681,7 @@ export default function CorsOptions() {
                                         <td>{data}</td>
                                         <td style={{ textAlign: "center" }}>
                                           <i
-                                            className="bi bi-trash"
+                                            className="btn btn-sm bi bi-trash-fill"
                                             onClick={(event) =>
                                               handleAllowedHeadersDeleteRow(
                                                 index,
@@ -756,7 +756,7 @@ export default function CorsOptions() {
                                         <td>{data}</td>
                                         <td style={{ textAlign: "center" }}>
                                           <i
-                                            className="bi bi-trash"
+                                            className="btn btn-sm bi bi-trash-fill"
                                             onClick={(event) =>
                                               handleExposedHeadersDeleteRow(
                                                 index,

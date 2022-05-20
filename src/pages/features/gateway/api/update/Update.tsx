@@ -34,21 +34,33 @@ export default function Update() {
       })
     );
   }
+
   async function handleSubmitApiUpdate(event: FormEvent) {
     event.preventDefault();
-    let validate: any;
+
+    let validateObj1: any;
+    let validateObj2: any;
     if (state.data.errors !== undefined) {
-      validate = Object.values(state.data.errors).every(
-        (x) => x === null || x === ""
-      );
+      const obj = state.data.errors;
+      const { Versions, ...rest } = obj;
+
+      validateObj1 = Object.values(rest).every((x) => x === null || x === "");
+
+      for (const Version_ of Versions) {
+        if (Version_.OverrideTarget === "") {
+          validateObj2 = true;
+        } else {
+          validateObj2 = false;
+          break;
+        }
+      }
     }
-    if (validate) {
+    if (validateObj1 && validateObj2) {
       const newForm = { ...state.data.form };
       if (state.data.form.EnableRoundRobin === false) {
         newForm.LoadBalancingTargets = [];
         dispatch(setForm({ ...state.data.form, LoadBalancingTargets: [] }));
       }
-      console.log("newFrom", newForm);
       const result = await dispatch(updateApi(newForm));
       if (result.meta.requestStatus === "rejected") {
         ToastAlert(result.payload.message, "error");

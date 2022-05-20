@@ -5,7 +5,10 @@ import {
   regexForOverrideTarget,
   setFormErrors,
 } from "../../../../../../../resources/gateway/api/api-constants";
-import { setForm } from "../../../../../../../store/features/gateway/api/update/slice";
+import {
+  setForm,
+  setFormError,
+} from "../../../../../../../store/features/gateway/api/update/slice";
 import {
   useAppDispatch,
   useAppSelector,
@@ -41,7 +44,7 @@ export default function Versions() {
               ...state.data.errors,
               [name]: regexForOverrideTarget.test(value)
                 ? ""
-                : "Enter a Valid Override Target Host",
+                : "Enter a valid Override Target Host",
             },
             dispatch
           );
@@ -79,6 +82,20 @@ export default function Versions() {
         ];
         dispatch(setForm({ ...state.data.form, Versions: list }));
         setAddFormData({ Name: "", Expires: "", OverrideTarget: "" });
+
+        const errlist = [
+          ...state.data.errors?.Versions!,
+          {
+            OverrideTarget: "",
+          },
+        ];
+
+        dispatch(
+          setFormError({
+            ...state.data.errors,
+            Versions: errlist,
+          })
+        );
       }
     } else {
       const list = [
@@ -96,6 +113,20 @@ export default function Versions() {
       ];
       dispatch(setForm({ ...state.data.form, Versions: list }));
       setAddFormData({ Name: "", Expires: "", OverrideTarget: "" });
+
+      const errlist = [
+        ...state.data.errors?.Versions!,
+        {
+          OverrideTarget: "",
+        },
+      ];
+
+      dispatch(
+        setFormError({
+          ...state.data.errors,
+          Versions: errlist,
+        })
+      );
     }
   };
 
@@ -106,11 +137,63 @@ export default function Versions() {
     e.preventDefault();
     const list = [...state.data.form.Versions];
     list.splice(index, 1);
-    dispatch(setForm({ ...state.data.form, Versions: list }));
+    const updatedDefVersion = list.length > 0 ? list[0].Name : "";
+    dispatch(
+      setForm({
+        ...state.data.form,
+        Versions: list,
+        DefaultVersion: updatedDefVersion,
+      })
+    );
+
+    const errlist = [...state.data.errors?.Versions!];
+    errlist.splice(index, 1);
+    dispatch(
+      setFormError({
+        ...state.data.errors,
+        Versions: errlist,
+      })
+    );
   };
 
-  const handleTableRowsInputChange = (index: number, evnt: any) => {
-    const { name, value } = evnt.target;
+  const handleTableRowsInputChange = (index: number, event: any) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    const errorState = [...state.data.errors?.Versions!];
+
+    switch (name) {
+      case "OverrideTarget":
+        if (value === "") {
+          errorState[index!] = {
+            ...errorState[index!],
+            OverrideTarget: "",
+          };
+
+          dispatch(
+            setFormError({
+              ...state.data.errors,
+              Versions: errorState,
+            })
+          );
+        } else {
+          errorState[index!] = {
+            ...errorState[index!],
+            OverrideTarget: regexForOverrideTarget.test(value)
+              ? ""
+              : "Enter a valid Override Target Host",
+          };
+
+          dispatch(
+            setFormError({
+              ...state.data.errors,
+              Versions: errorState,
+            })
+          );
+        }
+        break;
+      default:
+        break;
+    }
 
     const versionsList = [...state.data.form.Versions];
     versionsList[index] = { ...versionsList[index], [name]: value };
@@ -269,34 +352,30 @@ export default function Versions() {
                                     />
                                   </td>
                                   <td>
-                                    <input
-                                      type="text"
-                                      value={OverrideTarget}
-                                      onChange={(evnt) =>
-                                        handleTableRowsInputChange(index, evnt)
-                                      }
-                                      name="OverrideTarget"
-                                      className="form-control"
-                                    />{" "}
-                                    {/* <Form.Control
+                                    <Form.Control
                                       type="text"
                                       placeholder="http://override-target.com"
                                       id="overrideTarget"
                                       name="OverrideTarget"
                                       value={OverrideTarget}
                                       isInvalid={
-                                        !!state.data.errors?.OverrideTarget
+                                        !!state.data.errors?.Versions[index!]
+                                          ?.OverrideTarget
                                       }
                                       isValid={
-                                        !state.data.errors?.OverrideTarget
+                                        !state.data.errors?.Versions[index!]
+                                          ?.OverrideTarget
                                       }
                                       onChange={(evnt) =>
                                         handleTableRowsInputChange(index, evnt)
                                       }
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                      {state.data.errors?.OverrideTarget}
-                                    </Form.Control.Feedback> */}
+                                      {
+                                        state.data.errors?.Versions[index!]
+                                          ?.OverrideTarget
+                                      }
+                                    </Form.Control.Feedback>
                                   </td>
                                   <td>
                                     <input
