@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Button, Form, Row, Col, Table } from "react-bootstrap";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
+import { setForms } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
-import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppSelector, useAppDispatch } from "../../../../../store/hooks";
 interface IProps {
   state?: IKeyCreateState;
@@ -11,11 +11,13 @@ interface IProps {
   indexdata?: number;
   current: string;
 }
-export default function Ipathpermission(props: IProps) {
+export default function IpathpermissionKey(props: IProps) {
   const dispatch = useAppDispatch();
-  const state: IPolicyCreateState = useAppSelector(
-    (RootState) => RootState.createPolicyState
+
+  const keysstate: IKeyCreateState = useAppSelector(
+    (RootState) => RootState.createKeyState
   );
+
   // const [rowsData, setRowsData] = useState<any>();
   const [inputData, setInputData] = useState<any>({
     path: "",
@@ -23,12 +25,12 @@ export default function Ipathpermission(props: IProps) {
   });
   const [spanError, setspanError] = useState("");
 
-  const length = state.data.form.APIs.length;
+  const length = keysstate.data.form.AccessRights.length;
 
   const handleAddclick = () => {
     const value = props.indexdata!;
     let filtercheck = "false";
-    const apisList = [...props.policystate?.data.form.APIs!];
+    const apisList = [...props.state?.data.form.AccessRights!];
     const allowedList = [...apisList[value].AllowedUrls!];
 
     // validation function to check two array of method
@@ -41,10 +43,10 @@ export default function Ipathpermission(props: IProps) {
       );
     }
     const filteredlist = allowedList.filter((a) => {
-      console.log("aurl", a.url, a.methods);
+      console.log("aurl", a.Url, a.Methods);
       console.log("old", inputData.path, inputData.method);
-      if (a.url === inputData.path) {
-        filtercheck = arrayEquals(a.methods, inputData.method)
+      if (a.Url === inputData.path) {
+        filtercheck = arrayEquals(a.Methods, inputData.method)
           ? "true"
           : "false";
       } else {
@@ -57,15 +59,15 @@ export default function Ipathpermission(props: IProps) {
       setspanError(" ");
       console.log("filtered", filteredlist);
       const list = {
-        url: inputData.path,
-        methods: inputData.method,
+        Url: inputData.path,
+        Methods: inputData.method,
       };
       allowedList.push(list);
       apisList[value] = {
         ...apisList[value],
         AllowedUrls: [...allowedList],
       };
-      dispatch(setForm({ ...state.data.form, APIs: apisList }));
+      dispatch(setForms({ ...keysstate.data.form, AccessRights: apisList }));
       setInputData({ path: "", method: ["GET"] });
     } else {
       setspanError("Input cannot be empty or already exist");
@@ -75,14 +77,14 @@ export default function Ipathpermission(props: IProps) {
   const deleteTableRows = (event: any, index: any) => {
     event.preventDefault();
     const value = props.indexdata!;
-    const apisList = [...props.policystate?.data.form.APIs!];
+    const apisList = [...props.state?.data.form.AccessRights!];
     const allowedList = [...apisList[value].AllowedUrls!];
     allowedList.splice(index, 1);
     apisList[value] = {
       ...apisList[value],
       AllowedUrls: [...allowedList],
     };
-    dispatch(setForm({ ...state.data.form, APIs: apisList }));
+    dispatch(setForms({ ...keysstate.data.form, AccessRights: apisList }));
   };
 
   const handleAddFormChange = (event: any) => {
@@ -187,12 +189,13 @@ export default function Ipathpermission(props: IProps) {
               <tbody>
                 {length > 0 ? (
                   (
-                    state.data.form.APIs[props.indexdata!].AllowedUrls as any[]
+                    keysstate.data.form.AccessRights[props.indexdata!]
+                      .AllowedUrls as any[]
                   ).map((data1: any, index1: any) => {
                     return (
                       <tr key={index1}>
-                        <td>{data1.url}</td>
-                        <td>{data1.methods}</td>
+                        <td>{data1.Url}</td>
+                        <td>{data1.Methods}</td>
                         <td style={{ textAlign: "center" }}>
                           <i
                             className="bi bi-trash"

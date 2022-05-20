@@ -37,17 +37,18 @@ export default function AccessList() {
             Name: selectedApi.payload.Data.Name,
             Versions: [],
             MasterVersions: listV,
+            AuthType: selectedApi.payload.Data.AuthType,
             AllowedUrls: [],
             Limit: {
-              rate: 1000,
-              per: 60,
-              throttle_interval: 0,
-              throttle_retry_limit: 0,
-              max_query_depth: 0,
-              quota_max: 0,
-              quota_renews: 0,
-              quota_remaining: 0,
-              quota_renewal_rate: 0,
+              rate: -1,
+              per: -1,
+              throttle_interval: -1,
+              throttle_retry_limit: -1,
+              max_query_depth: -1,
+              quota_max: -1,
+              quota_renews: -1,
+              quota_remaining: -1,
+              quota_renewal_rate: -1,
               set_by_policy: false,
             },
           },
@@ -70,7 +71,6 @@ export default function AccessList() {
             PerApiLimit: error,
           })
         );
-
         dispatch(
           setForm({
             ...state.data.form,

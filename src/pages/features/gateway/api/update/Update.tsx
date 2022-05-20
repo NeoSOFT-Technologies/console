@@ -1,6 +1,10 @@
 import React, { FormEvent, useEffect } from "react";
 import { Tab, Tabs, Form } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  AuthGuard,
+  access,
+} from "../../../../../components/gateway/auth-guard";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
@@ -55,12 +59,17 @@ export default function Update() {
         }
       }
     }
-    if (validateObj1 && validateObj2) {
+    const val =
+      state.data.form.EnableMTLS === true &&
+      state.data.form.CertIds.length === 0;
+    console.log("val", val);
+    if (validateObj1 && validateObj2 && !val) {
       const newForm = { ...state.data.form };
       if (state.data.form.EnableRoundRobin === false) {
         newForm.LoadBalancingTargets = [];
         dispatch(setForm({ ...state.data.form, LoadBalancingTargets: [] }));
       }
+
       const result = await dispatch(updateApi(newForm));
       if (result.meta.requestStatus === "rejected") {
         ToastAlert(result.payload.message, "error");
@@ -70,7 +79,12 @@ export default function Update() {
         ToastAlert("Api Updated request is not fulfilled!!", "error");
       }
     } else {
-      ToastAlert("Please fill all the fields correctly! ", "error");
+      if (val === true) {
+        ToastAlert("Please select atleast one certificate! ", "error");
+      }
+      if (validateObj1 === false && validateObj2 === false) {
+        ToastAlert("Please fill all the fields correctly! ", "error");
+      }
     }
   }
   const NavigateToApisList = (
@@ -96,10 +110,15 @@ export default function Update() {
                     className="card-header bg-white mt-3 pt-1 pb-4"
                     style={{ padding: "0.5rem 1.5rem" }}
                   >
-                    <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
-                      {" "}
-                      Update
-                    </button>
+                    <AuthGuard
+                      resource={access.resources.Api}
+                      scope={access.scopes.Edit}
+                    >
+                      <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
+                        {" "}
+                        Update
+                      </button>
+                    </AuthGuard>
                     <button
                       className=" btn  btn-sm btn-light btn-md d-flex float-right mb-3"
                       onClick={(e) => NavigateToApisList(e)}

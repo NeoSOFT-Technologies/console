@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import {
   addKeyService,
@@ -7,8 +7,8 @@ import {
 } from "../../../../../services/gateway/key/key";
 import error from "../../../../../utils/error";
 import { initialState } from "./payload";
-import { IGetKeyByIdData } from "./index";
-
+import { IGetKeyByIdData, IKeyCreateState } from "./index";
+export let keystate: IKeyCreateState;
 export const createKey = createAsyncThunk(
   "key/create",
   async (data: IGetKeyByIdData) => {
@@ -29,7 +29,14 @@ export const getKeyById = createAsyncThunk(
   async (id: string) => {
     try {
       const response = await getKeyByIdService(id);
-      // console.log("response", response.data);
+      keystate = {
+        data: {
+          form: response.data.Data,
+        },
+        loading: false,
+        error: undefined,
+      };
+      console.log("keyState", keystate);
       return response.data;
     } catch (error_) {
       const myError = error_ as Error | AxiosError;
@@ -63,11 +70,10 @@ const slice = createSlice({
   reducers: {
     setForms: (state, action) => {
       state.data.form = action.payload;
-      console.log("Form -", current(state.data));
     },
     setFormErrors: (state, action) => {
       state.data.errors = action.payload;
-      console.log("Form error -", state.data.errors);
+      console.log("keyslice", state.data.errors);
     },
   },
   extraReducers(builder): void {
@@ -91,7 +97,6 @@ const slice = createSlice({
     builder.addCase(getKeyById.fulfilled, (state, action) => {
       state.loading = false;
       state.data.form = action.payload.Data;
-      console.log(" get key state", current(state));
     });
     builder.addCase(getKeyById.rejected, (state, action) => {
       state.loading = false;

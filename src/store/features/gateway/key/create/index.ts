@@ -11,6 +11,7 @@ export interface ICreateState {
 export interface IGetKeyByIdData {
   KeyId?: string;
   KeyName: string;
+  SelectedTabIndex: string;
   Per: number;
   Rate: number;
   Quota: number;
@@ -26,10 +27,11 @@ export interface IGetKeyByIdData {
           ApiName: string | null;
           Versions: string[];
           MasterVersions: string[];
+          AuthType: string;
           AllowedUrls:
             | {
-                url: string;
-                methods: string[];
+                Url: string;
+                Methods: string[];
               }[];
           Limit?:
             | {
@@ -69,16 +71,22 @@ export interface IGetKeyByIdData {
   Tags?: string[];
 }
 
+export interface Limiting {
+  ApiId: string;
+  Per: string;
+  Rate: string;
+  Quota: string;
+  Expires: string;
+  QuotaRenewalRate: string;
+  ThrottleInterval: string;
+  ThrottleRetries: string;
+}
+
 export interface IError {
-  KeyId?: string;
-  KeyName?: string;
-  AccessRights?: string;
-  Policies?: string;
-  Per?: string;
-  Rate?: string;
-  Quota?: string;
-  Expires?: string;
-  QuotaRenewalRate?: string;
-  ThrottleInterval?: string;
-  ThrottleRetries?: string;
+  KeyName: string;
+  Policies: string;
+  AccessRights: string;
+  Expires: string;
+  GlobalLimit: Limiting;
+  PerApiLimit: Limiting[];
 }

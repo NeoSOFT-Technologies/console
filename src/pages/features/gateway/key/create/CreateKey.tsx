@@ -25,13 +25,40 @@ export default function CreateKey() {
   const state: IKeyCreateState = useAppSelector(
     (RootState) => RootState.createKeyState
   );
-
   const { id } = useParams();
-  console.log("id", id);
-  useEffect(() => {
+  const mainCall = async () => {
     if (id !== undefined) {
-      dispatch(getKeyById(id));
+      const error = [];
+      const keybyid = await dispatch(getKeyById(id));
+      if (
+        keybyid !== undefined &&
+        keybyid.payload.Data?.AccessRights.length > 0
+      ) {
+        for (let i = 0; i < keybyid.payload.Data.AccessRights.length; i++) {
+          console.log("hii");
+          const perapierror = {
+            ApiId: keybyid?.payload.Data?.AccessRights[i]?.ApiId!,
+            Per: "",
+            Rate: "",
+            Quota: "",
+            Expires: "",
+            QuotaRenewalRate: "",
+            ThrottleInterval: "",
+            ThrottleRetries: "",
+          };
+          error.push(perapierror);
+        }
+        dispatch(
+          setFormErrors({
+            ...state.data.errors,
+            PerApiLimit: error,
+          })
+        );
+      }
     }
+  };
+  useEffect(() => {
+    mainCall();
   }, []);
 
   const handleOk = () => {
@@ -40,7 +67,10 @@ export default function CreateKey() {
   // let TabIcon: any;
   async function handleSubmitKey(event: FormEvent) {
     event.preventDefault();
-    let validate: any;
+
+    let validate: boolean;
+
+    validate = false;
     // noted
     const validateFieldValue = state.data.form.KeyName.length > 0;
     if (!validateFieldValue) {
@@ -48,31 +78,44 @@ export default function CreateKey() {
         setFormErrors({ ...state.data.errors, KeyName: "Name is required" })
       );
     }
-    if (state.data.errors !== undefined) {
-      validate = Object.values(state.data.errors).every(
-        (x) => x === null || x === ""
-      );
 
-      console.log(
-        "error",
-        validate,
-        state.data.form.KeyName.length,
-        state.data.errors
-      );
-    }
-    if (validate) {
+    if (state.data.errors !== undefined) {
       if (
-        state.data.form.Policies.length === 0 &&
-        state.data.form.AccessRights.length === 0
+        state.data.errors?.PerApiLimit.length > 0 &&
+        state.data.form.SelectedTabIndex === "chooseApi"
       ) {
-        ToastAlert("Key can be either created on Policy or Api ...! ", "error");
+        for (let i = 0; i < state.data.errors?.PerApiLimit.length; i++) {
+          validate = !!(
+            validateFieldValue === true &&
+            state.data.errors?.GlobalLimit.Rate === "" &&
+            state.data.errors?.GlobalLimit.Per === "" &&
+            state.data.errors?.GlobalLimit.ThrottleInterval === "" &&
+            state.data.errors?.GlobalLimit.ThrottleRetries === "" &&
+            state.data.errors?.GlobalLimit.Quota === "" &&
+            state.data.errors?.PerApiLimit[i].Per === "" &&
+            state.data.errors?.PerApiLimit[i].Rate === "" &&
+            state.data.errors?.PerApiLimit[i].Quota === "" &&
+            state.data.errors?.PerApiLimit[i].Expires === "" &&
+            state.data.errors?.PerApiLimit[i].QuotaRenewalRate === "" &&
+            state.data.errors?.PerApiLimit[i].ThrottleInterval === "" &&
+            state.data.errors?.PerApiLimit[i].ThrottleRetries === ""
+          );
+        }
       } else {
-        console.log(
-          "error inside fullfield",
-          validate,
-          state.data.form.KeyName.length,
-          state.data.errors
-        );
+        validate = !!(validateFieldValue === true);
+      }
+    }
+    if (
+      state.data.form.Policies.length === 0 &&
+      state.data.form.AccessRights.length === 0
+    ) {
+      if (state.data.form.SelectedTabIndex === "applyPolicy") {
+        ToastAlert(" Select at least one Policy  ...! ", "error");
+      } else {
+        ToastAlert("Select at least one API ...! ", "error");
+      }
+    } else {
+      if (validate !== undefined && validate) {
         const result = id
           ? await dispatch(updateKey(state.data.form))
           : await dispatch(createKey(state.data.form));
@@ -94,19 +137,14 @@ export default function CreateKey() {
             }
           } else {
             ToastAlert("Key Updated Successfully!!", "success");
+            await dispatch(getKeyById(id));
           }
         } else {
           ToastAlert("Request is not fulfilled!!", "error");
         }
+      } else {
+        ToastAlert("Please fill all the fields correctly! ", "error");
       }
-    } else {
-      console.log(
-        "error",
-        validate,
-        state.data.form.KeyName!.length,
-        state.data.errors
-      );
-      ToastAlert("Please fill all the fields correctly! ", "error");
     }
   }
 
@@ -132,23 +170,9 @@ export default function CreateKey() {
   const handleCancel = () => {
     setShow(false);
   };
+
   return (
     <>
-      {/* <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, youre reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
-
       <Modal size="lg" show={show} onHide={handleCancel} centered>
         <Modal.Header closeButton>
           <Modal.Title>

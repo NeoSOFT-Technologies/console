@@ -2,7 +2,10 @@ import React from "react";
 import { Accordion } from "react-bootstrap";
 import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 import { getApiById } from "../../../../../../../../store/features/gateway/api/update/slice";
-import { setForms } from "../../../../../../../../store/features/gateway/key/create/slice";
+import {
+  setFormErrors,
+  setForms,
+} from "../../../../../../../../store/features/gateway/key/create/slice";
 import {
   useAppDispatch,
   useAppSelector,
@@ -36,22 +39,40 @@ export default function AccessList() {
             ApiName: selectedApi.payload.Data.Name,
             Versions: [], // listV,
             MasterVersions: listV,
+            AuthType: selectedApi.payload.Data.AuthType,
             AllowedUrls: [],
             Limit: {
               Rate: 0,
               Per: 0,
-              Throttle_interval: 0,
-              Throttle_retry_limit: 0,
-              Max_query_depth: 0,
-              Quota_max: 0,
-              Quota_renews: 0,
-              Quota_remaining: 0,
-              Quota_renewal_rate: 0,
+              Throttle_interval: -1,
+              Throttle_retry_limit: -1,
+              Max_query_depth: -1,
+              Quota_max: -1,
+              Quota_renews: -1,
+              Quota_remaining: -1,
+              Quota_renewal_rate: -1,
             },
           },
         ];
-
         dispatch(setForms({ ...state.data.form, AccessRights: list }));
+        const error = [...state.data.errors?.PerApiLimit!];
+        const perapierror = {
+          ApiId: selectedApi.payload.Data.ApiId,
+          Per: "",
+          Rate: "",
+          Quota: "",
+          Expires: "",
+          QuotaRenewalRate: "",
+          ThrottleInterval: "",
+          ThrottleRetries: "",
+        };
+        error.push(perapierror);
+        dispatch(
+          setFormErrors({
+            ...state.data.errors,
+            PerApiLimit: error,
+          })
+        );
       } else {
         window.alert(
           "Rate limits, throttling, quota settings and path-based permissions have no effect on Open (Keyless) API ...."

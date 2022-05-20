@@ -20,6 +20,7 @@ import {
 } from "../../../../../store/features/gateway/policy/list/index";
 import { getPolicyList } from "../../../../../store/features/gateway/policy/list/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import statusAndDateHelper from "../../../../../utils/gateway/helper";
 
 export default function PolicyList() {
   const navigate = useNavigate();
@@ -41,9 +42,15 @@ export default function PolicyList() {
   useEffect(() => {
     // console.log("UseEffect", policyList.data);
     if (policyList.data && policyList.data?.Policies?.length > 0) {
+      const listPolicy: IPolicyData[] = [];
+      // const currentState = [...policyList.data.Policies];
+      for (const item of policyList.data?.Policies) {
+        const policy = statusAndDateHelper(item);
+        listPolicy.push(policy);
+      }
       setDataList({
-        list: [...policyList.data.Policies],
-        fields: ["Name", "State", "Apis", "AuthType"],
+        list: [...listPolicy],
+        fields: ["Name", "State", "ApisTxt", "AuthType"],
       });
     }
   }, [policyList.data]);
@@ -97,7 +104,7 @@ export default function PolicyList() {
 
     setDataList({
       list: [...newState],
-      fields: ["Name", "State", "Apis", "AuthType"],
+      fields: ["Name", "State", "ApisTxt", "AuthType"],
     });
   }
   const handleDelete = async (Id: string) => {

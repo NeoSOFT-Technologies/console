@@ -7,10 +7,14 @@ import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
 import { setForms } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
-import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
+import {
+  policystate,
+  setForm,
+} from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
 import Ipathpermission from "./path-file";
+import IpathpermissionKey from "./path-file-Key";
 interface IProps {
   state?: IKeyCreateState;
   policystate?: IPolicyCreateState;
@@ -25,84 +29,289 @@ export default function PathBased(props: IProps) {
   const [versions, setversion] = useState<string[]>([]);
 
   const dispatch = useAppDispatch();
-  // const lis = props.apistate?.data.form.Versions;
-  // console.log("versionslog", lis);
-
-  const apisList =
-    props.current === "policy"
-      ? [...props.policystate?.data.form.APIs!]
-      : [...props.state?.data.form.AccessRights!];
-  const indexValue = props.indexdata!;
-  apisList[indexValue] = {
-    ...apisList[indexValue],
-    Limit: undefined,
-  };
-
   const [Limits, setLimits] = useState<any>({
-    rate: 0,
-    per: 0,
-    throttle_interval: 0,
-    throttle_retry_limit: 0,
-    max_query_depth: 0,
-    quota_max: 0,
-    quota_renews: 0,
-    quota_remaining: 0,
+    rate: -1,
+    per: -1,
+    throttle_interval: -1,
+    throttle_retry_limit: -1,
+    max_query_depth: -1,
+    quota_max: -1,
+    quota_renews: -1,
+    quota_remaining: -1,
     quota_renewal_rate: 0,
     set_by_policy: false,
   });
+  const [LimitsKey, setLimitsKey] = useState<any>({
+    Rate: -1,
+    Per: -1,
+    Throttle_interval: -1,
+    Throttle_retry_limit: -1,
+    Max_query_depth: -1,
+    Quota_max: -1,
+    Quota_renews: -1,
+    Quota_remaining: -1,
+    Quota_renewal_rate: 0,
+    Set_by_policy: false,
+  });
   const newFormData: any = { ...Limits };
-
+  const newFormDatakey: any = { ...LimitsKey };
   const setFieldValue = () => {
+    const apisList =
+      props.current === "policy"
+        ? [...props.policystate?.data.form.APIs!]
+        : [...props.state?.data.form.AccessRights!];
     setLimits(newFormData);
-    apisList[indexValue] = {
-      ...apisList[indexValue],
-      Limit: { ...newFormData },
-    };
-    dispatch(
-      setForm({
-        ...props.policystate?.data.form,
-        APIs: apisList,
-      })
-    );
+    setLimitsKey(newFormDatakey);
+    props.current === "policy"
+      ? (apisList[props.indexdata!] = {
+          ...apisList[props.indexdata!],
+          Limit: { ...newFormData },
+        })
+      : (apisList[props.indexdata!] = {
+          ...apisList[props.indexdata!],
+          Limit: { ...newFormDatakey },
+        });
+    props.current === "policy"
+      ? dispatch(
+          setForm({
+            ...props.policystate?.data.form,
+            APIs: apisList,
+          })
+        )
+      : dispatch(
+          setForms({
+            ...props.state?.data.form,
+            AccessRights: apisList,
+          })
+        );
   };
 
+  const { id } = useParams();
   const setNull = () => {
-    apisList[indexValue] = {
-      ...apisList[indexValue],
+    const apisList =
+      props.current === "policy"
+        ? [...props.policystate?.data.form.APIs!]
+        : [...props.state?.data.form.AccessRights!];
+    apisList[props.indexdata!] = {
+      ...apisList[props.indexdata!],
       Limit: undefined,
     };
-    dispatch(
-      setForm({
-        ...props.policystate?.data.form,
-        APIs: apisList,
-      })
-    );
+    props.current === "policy"
+      ? dispatch(
+          setForm({
+            ...props.policystate?.data.form,
+            APIs: apisList,
+          })
+        )
+      : dispatch(
+          setForms({
+            ...props.state?.data.form,
+            AccessRights: apisList,
+          })
+        );
   };
-  const { id } = useParams();
-  useEffect(() => {
-    console.log("isActiveAPi", isActiveApi);
+
+  function setfieldsvalues(isActiveApis: any) {
     if (id === undefined) {
-      if (isActiveApi === false) {
+      if (isActiveApis === false) {
         setNull();
-      } else if (isActiveApi === true) {
+      } else if (isActiveApis === true) {
         setFieldValue();
       }
+    } else {
+      if (props.current === "policy") {
+        if (
+          isActiveApis === true &&
+          props.policystate?.data.form.APIs[props.indexdata!].Limit === null
+        ) {
+          setFieldValue();
+        } else if (
+          isActiveApis === false &&
+          props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
+        ) {
+          setNull();
+          console.log(
+            "hey",
+            props.policystate?.data.form.APIs[props.indexdata!].Limit
+          );
+        } else if (
+          isActiveApis === true &&
+          (props.policystate?.data.form.APIs[props.indexdata!].Limit !== null ||
+            props.policystate?.data.form.APIs[props.indexdata!].Limit !==
+              undefined)
+        ) {
+          setFieldValue();
+        } else if (
+          isActiveApis === false &&
+          (props.policystate?.data.form.APIs[props.indexdata!].Limit === null ||
+            props.policystate?.data.form.APIs[props.indexdata!].Limit !==
+              undefined)
+        ) {
+          setNull();
+        }
+      } else {
+        if (
+          isActiveApis === true &&
+          props.state?.data.form.AccessRights[props.indexdata!].Limit === null
+        ) {
+          setFieldValue();
+        } else if (
+          isActiveApis === false &&
+          props.state?.data.form.AccessRights[props.indexdata!].Limit !== null
+        ) {
+          setNull();
+        } else if (
+          isActiveApis === true &&
+          (props.state?.data.form.AccessRights[props.indexdata!].Limit !==
+            undefined ||
+            props.state?.data.form.AccessRights[props.indexdata!].Limit !==
+              null)
+        ) {
+          setFieldValue();
+        } else if (
+          isActiveApis === false &&
+          (props.state?.data.form.AccessRights[props.indexdata!].Limit ===
+            undefined ||
+            props.state?.data.form.AccessRights[props.indexdata!].Limit ===
+              null)
+        ) {
+          setNull();
+        }
+      }
     }
-  }, [isActiveApi]);
+  }
+  const setPathValuesNull = () => {
+    const apisList =
+      props.current === "policy"
+        ? [...props.policystate?.data.form.APIs!]
+        : [...props.state?.data.form.AccessRights!];
+    apisList[props.indexdata!] = {
+      ...apisList[props.indexdata!],
+      AllowedUrls: [],
+    };
+    props.current === "policy"
+      ? dispatch(
+          setForm({
+            ...props.policystate?.data.form,
+            APIs: apisList,
+          })
+        )
+      : dispatch(
+          setForms({
+            ...props.state?.data.form,
+            AccessRights: apisList,
+          })
+        );
+  };
+
+  function setpathfieldvalues(isActives: any) {
+    console.log("pathlog", isActives);
+    if (id === undefined) {
+      if (isActives === false) {
+        setPathValuesNull();
+      }
+    } else {
+      if (props.current === "policy" && isActives === false) {
+        console.log("pathvalues", props.policystate?.data.form);
+        setPathValuesNull();
+      } else if (props.current !== "policy" && isActives === false) {
+        setPathValuesNull();
+      }
+    }
+  }
+  useEffect(() => {
+    if (id === undefined) {
+      setisActiveApi(false);
+      setNull();
+    } else {
+      if (props.current === "policy") {
+        if (
+          props.policystate?.data.form.APIs[props.indexdata!].Limit !==
+          undefined
+        ) {
+          console.log(
+            "hey",
+            props.policystate?.data.form.APIs[props.indexdata!].Limit
+          );
+          if (
+            props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
+          ) {
+            if (
+              props.policystate?.data.form.APIs[props.indexdata!].Limit
+                ?.rate === -1 &&
+              props.policystate?.data.form.APIs[props.indexdata!].Limit?.per ===
+                -1 &&
+              props.policystate?.data.form.APIs[props.indexdata!].Limit
+                ?.throttle_retry_limit === -1 &&
+              props.policystate?.data.form.APIs[props.indexdata!].Limit
+                ?.quota_max === -1
+            ) {
+              setNull();
+              setisActiveApi(false);
+              setNull();
+            } else {
+              setisActiveApi(true);
+            }
+          } else {
+            setisActiveApi(false);
+          }
+        } else {
+          setisActiveApi(false);
+        }
+      } else {
+        console.log(
+          "empty data set",
+          props.state?.data.form.AccessRights[props.indexdata!].Limit !==
+            undefined
+        );
+        console.log("empty data set", policystate);
+        if (
+          props.state?.data.form.AccessRights[props.indexdata!].Limit !==
+            null &&
+          props.state?.data.form.AccessRights[props.indexdata!].Limit !==
+            undefined
+        ) {
+          if (
+            props.state?.data.form.AccessRights[props.indexdata!].Limit
+              ?.Rate === -1 &&
+            props.state?.data.form.AccessRights[props.indexdata!].Limit?.Per ===
+              -1 &&
+            props.state?.data.form.AccessRights[props.indexdata!].Limit
+              ?.Throttle_retry_limit === -1 &&
+            props.state?.data.form.AccessRights[props.indexdata!].Limit
+              ?.Quota_max === -1
+          ) {
+            setisActiveApi(false);
+          } else {
+            setisActiveApi(true);
+          }
+        } else {
+          setisActiveApi(false);
+        }
+      }
+    }
+  }, [id]);
 
   useEffect(() => {
-    // props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls ===
-    //  undefined &&
-
-    props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls !==
-      undefined &&
-    props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls.length > 0
-      ? setisActive(true)
-      : setisActive(false);
-
-    props.state?.data.form.AccessRights[props.indexdata!] !== undefined
-      ? setisActiveApi(true)
-      : setisActiveApi(false);
+    if (id === undefined) {
+      setisActive(false);
+    } else {
+      if (props.current === "policy") {
+        props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls !==
+          undefined &&
+        props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls.length >
+          0
+          ? setisActive(true)
+          : setisActive(false);
+      } else {
+        props.state?.data.form.AccessRights[props.indexdata!].AllowedUrls !==
+          undefined &&
+        props.state?.data.form.AccessRights[props.indexdata!].AllowedUrls!
+          .length > 0
+          ? setisActive(true)
+          : setisActive(false);
+      }
+    }
   }, []);
 
   const setPathPermission = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,9 +320,11 @@ export default function PathBased(props: IProps) {
         ? event.target.checked
         : event.target.value;
     if (event.target.getAttribute("name") === "isActiveApi") {
+      setfieldsvalues(Boolean(value));
       setisActiveApi(Boolean(value));
     } else {
       setisActive(Boolean(value));
+      setpathfieldvalues(Boolean(value));
     }
   };
 
@@ -143,10 +354,6 @@ export default function PathBased(props: IProps) {
           setForms({ ...props.state?.data.form, AccessRights: apisLists })
         );
   };
-  // const ind = props.indexdata;
-  // let ApiName = null;
-  // if (props.indexdata !== null)
-  //   ApiName = props.state?.data.form.accessRights[ind].apiName;
 
   const deleteversion = (event: any, index: any) => {
     event.preventDefault();
@@ -179,9 +386,7 @@ export default function PathBased(props: IProps) {
     ) {
       const removeApi = [...props.policystate?.data.form.APIs!];
 
-      console.log(index, removeApi);
       removeApi.splice(index, 1);
-      console.log("splice", removeApi);
       dispatch(setForm({ ...props.policystate?.data.form, APIs: removeApi }));
     } else if (
       current === "key" &&
@@ -190,10 +395,10 @@ export default function PathBased(props: IProps) {
     ) {
       const removeApi = [...props.state?.data.form.AccessRights!];
 
-      console.log(index, removeApi);
+      const ApiName = props.state?.data.form.AccessRights[index]?.ApiName;
       removeApi.splice(index, 1);
-      console.log("splicekey", removeApi);
-      ToastAlert("Api removed", "warning");
+
+      ToastAlert(`${ApiName} removed`, "warning");
       dispatch(
         setForms({ ...props.state?.data.form, AccessRights: removeApi })
       );
@@ -234,9 +439,13 @@ export default function PathBased(props: IProps) {
                       <Form.Group className="mb-3 mt-3">
                         <Form.Select
                           style={{ height: 46 }}
-                          name="method"
+                          name="Versions"
                           onChange={(e: any) => handleversion(e)}
                         >
+                          <option value="" disabled selected hidden>
+                            Selected Versions
+                          </option>
+                          {/* <option></option> */}
                           {props.current === "key"
                             ? props.state?.data.form.AccessRights[
                                 props.indexdata!
@@ -266,28 +475,55 @@ export default function PathBased(props: IProps) {
                   </Row>
                   <Row>
                     <Col md="12">
-                      {props.state?.data.form !== undefined &&
-                      props.state?.data.form.AccessRights[props.indexdata!]
-                        .Versions?.length > 0 ? (
+                      {(
+                        props.current === "key"
+                          ? props.state?.data.form !== undefined &&
+                            props.state?.data.form.AccessRights[
+                              props.indexdata!
+                            ].Versions?.length > 0
+                          : props.policystate?.data.form !== undefined &&
+                            props.policystate?.data.form.APIs[props.indexdata!]
+                              .Versions?.length > 0
+                      ) ? (
                         <div
-                          style={{ width: 960 }}
+                          style={{ width: "100%" }}
                           className="float-lg-left border rounded p-4"
                         >
-                          {props.state?.data.form.AccessRights[
-                            props.indexdata!
-                          ].Versions.map((data: any, index: any) => {
-                            return (
-                              <div key={index} className="border-0">
-                                <i
-                                  className="bi bi-x-circle-fill float-left"
-                                  style={{ marginLeft: 40 }}
-                                  onClick={(e: any) => deleteversion(e, index)}
-                                >
-                                  &nbsp;&nbsp;{data}
-                                </i>
-                              </div>
-                            );
-                          })}
+                          {props.current === "key"
+                            ? props.state?.data.form.AccessRights[
+                                props.indexdata!
+                              ].Versions.map((data: any, index: any) => {
+                                return (
+                                  <div key={index} className="border-0">
+                                    <i
+                                      className="bi bi-x-circle-fill float-left"
+                                      style={{ marginLeft: 30 }}
+                                      onClick={(e: any) =>
+                                        deleteversion(e, index)
+                                      }
+                                    >
+                                      &nbsp;&nbsp;{data}
+                                    </i>
+                                  </div>
+                                );
+                              })
+                            : props.policystate?.data.form.APIs[
+                                props.indexdata!
+                              ].Versions.map((data: any, index: any) => {
+                                return (
+                                  <div key={index} className="border-0">
+                                    <i
+                                      className="bi bi-x-circle-fill float-left"
+                                      style={{ marginLeft: 30 }}
+                                      onClick={(e: any) =>
+                                        deleteversion(e, index)
+                                      }
+                                    >
+                                      &nbsp;&nbsp;{data}
+                                    </i>
+                                  </div>
+                                );
+                              })}
                         </div>
                       ) : (
                         ""
@@ -359,13 +595,23 @@ export default function PathBased(props: IProps) {
                         </Form.Group>
                       </Col>
                       {isActive ? (
-                        <Ipathpermission
-                          state={props.state}
-                          policystate={props.policystate}
-                          apidata={props.apidata}
-                          indexdata={props.indexdata}
-                          current={props.current}
-                        />
+                        props.current === "policy" ? (
+                          <Ipathpermission
+                            state={props.state}
+                            policystate={props.policystate}
+                            apidata={props.apidata}
+                            indexdata={props.indexdata}
+                            current={props.current}
+                          />
+                        ) : (
+                          <IpathpermissionKey
+                            state={props.state}
+                            policystate={props.policystate}
+                            apidata={props.apidata}
+                            indexdata={props.indexdata}
+                            current={props.current}
+                          />
+                        )
                       ) : (
                         " "
                       )}

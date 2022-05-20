@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal, Tab, Tabs } from "react-bootstrap";
 import { IKeyCreateState } from "../../../../../../store/features/gateway/key/create";
 import { emptyState } from "../../../../../../store/features/gateway/key/create/payload";
-import { setForms } from "../../../../../../store/features/gateway/key/create/slice";
+import {
+  setForms,
+  // setFormErrors,
+} from "../../../../../../store/features/gateway/key/create/slice";
 // import { setForms } from "../../../../../../store/features/gateway/key/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import ApplyPolicy from "./apply-policy/ApplyPolicy";
@@ -26,6 +29,17 @@ export default function AccessRights() {
       setTabIndex("chooseApi");
     }
   }, []);
+  useEffect(() => {
+    dispatch(setForms({ ...state.data.form, SelectedTabIndex }));
+    // if (SelectedTabIndex === "applyPolicy") {
+    //   dispatch(
+    //     setFormErrors({
+    //       ...state.data.errors,
+    //       PerApiLimit: [],
+    //     })
+    //   );
+    // }
+  }, [SelectedTabIndex]);
   const handleCancel = () => {
     if (ClickedTabIndex === "applyPolicy") {
       setTabIndex("chooseApi");

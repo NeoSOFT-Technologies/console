@@ -8,6 +8,7 @@ import {
   getPolicybyId,
   setFormError,
   updatePolicy,
+  policystate,
 } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import AccessRights from "./access-rights/AccessRights";
@@ -71,8 +72,10 @@ export default function CreatePolicy() {
     );
 
     if (state.data.form.APIs.length > 0) {
-      console.log("checkformdata", state.data.form);
       if (validate) {
+        if (id !== undefined) {
+          console.log("update policy checking", policystate);
+        }
         const result =
           id === undefined
             ? await dispatch(createPolicy(state.data.form))
@@ -92,6 +95,7 @@ export default function CreatePolicy() {
               }
             } else {
               ToastAlert("Policy Updated Successfully!!", "success");
+              await dispatch(getPolicybyId(id));
             }
           } else {
             ToastAlert("Please select atleast one Api!", "error");
