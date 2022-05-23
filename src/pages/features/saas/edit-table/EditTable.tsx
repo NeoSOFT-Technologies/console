@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Modal, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
+import { useLocation } from "react-router-dom";
 import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import "./style.css";
 
+type LocationState = { tableName: string; tenantId: string };
 export default function GetTables() {
   const dispatch = useAppDispatch();
-  const tableData = useAppSelector((state) => state.getTableState);
+  const location = useLocation();
 
-  const [tenantId] = useState("");
+  const { tableName, tenantId } = location.state as LocationState;
+  console.log(tableName);
+  console.log(tenantId);
+  const tableData = useAppSelector((v) => v.getTableSchemaState);
+
+  // const [tenantId] = useState("");
   const getTableData: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
   ) => {
