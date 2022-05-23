@@ -133,7 +133,7 @@ export default function GetTables() {
     event.preventDefault();
     // console.log(tenantId);
     dispatch(createTable(params));
-    if (createTables.data !== undefined) alert(createTables.data.message);
+    if (createTables.data !== undefined) alert(createTables.data?.message);
     else alert("Something went to Wrong");
   };
 
