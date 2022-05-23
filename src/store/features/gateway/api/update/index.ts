@@ -84,11 +84,14 @@ export interface IError {
   Per: string;
   versioningInfo: string;
   defaultVersion: string;
-  version: string;
   isQuotaDisabled: string;
   LoadBalancingTargets: string;
   OverrideTarget: string;
-
+  Versions: [
+    {
+      OverrideTarget: string;
+    }
+  ];
   issuer: string;
   ClientId: string;
   Policy: string;

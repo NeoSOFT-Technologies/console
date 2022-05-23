@@ -38,19 +38,32 @@ export default function Update() {
       })
     );
   }
+
   async function handleSubmitApiUpdate(event: FormEvent) {
     event.preventDefault();
-    let validate: any;
+
+    let validateObj1: any;
+    let validateObj2: any;
     if (state.data.errors !== undefined) {
-      validate = Object.values(state.data.errors).every(
-        (x) => x === null || x === ""
-      );
+      const obj = state.data.errors;
+      const { Versions, ...rest } = obj;
+
+      validateObj1 = Object.values(rest).every((x) => x === null || x === "");
+
+      for (const Version_ of Versions) {
+        if (Version_.OverrideTarget === "") {
+          validateObj2 = true;
+        } else {
+          validateObj2 = false;
+          break;
+        }
+      }
     }
     const val =
       state.data.form.EnableMTLS === true &&
       state.data.form.CertIds.length === 0;
     console.log("val", val);
-    if (validate && !val) {
+    if (validateObj1 && validateObj2 && !val) {
       const newForm = { ...state.data.form };
       if (state.data.form.EnableRoundRobin === false) {
         newForm.LoadBalancingTargets = [];
@@ -69,7 +82,7 @@ export default function Update() {
       if (val === true) {
         ToastAlert("Please select atleast one certificate! ", "error");
       }
-      if (validate === false) {
+      if (validateObj1 === false || validateObj2 === false) {
         ToastAlert("Please fill all the fields correctly! ", "error");
       }
     }

@@ -366,14 +366,16 @@ export default function GlobalLimit(props: IProps) {
                                       }
                                       disabled={true}
                                     >
-                                      <option>never</option>
-                                      <option>1 hour</option>
-                                      <option>6 hour</option>
-                                      <option>12 hour</option>
-                                      <option>1 week</option>
-                                      <option>1 month</option>
-                                      <option>6 months</option>
-                                      <option>12 months</option>
+                                      <option value={0}>never</option>
+                                      <option value={3600}>1 hour</option>
+                                      <option value={21_600}>6 hour</option>
+                                      <option value={43_200}>12 hour</option>
+                                      <option value={604_800}>1 week</option>
+                                      <option value={2.628e6}>1 month</option>
+                                      <option value={1.577e7}>6 months</option>
+                                      <option value={3.154_67}>
+                                        12 months
+                                      </option>
                                     </Form.Select>
                                   </Form.Group>
                                 </Col>
@@ -632,14 +634,18 @@ export default function GlobalLimit(props: IProps) {
                                         }
                                         disabled={true}
                                       >
-                                        <option>never</option>
-                                        <option>1 hour</option>
-                                        <option>6 hour</option>
-                                        <option>12 hour</option>
-                                        <option>1 week</option>
-                                        <option>1 month</option>
-                                        <option>6 months</option>
-                                        <option>12 months</option>
+                                        <option value={0}>never</option>
+                                        <option value={3600}>1 hour</option>
+                                        <option value={21_600}>6 hour</option>
+                                        <option value={43_200}>12 hour</option>
+                                        <option value={604_800}>1 week</option>
+                                        <option value={2.628e6}>1 month</option>
+                                        <option value={1.577e7}>
+                                          6 months
+                                        </option>
+                                        <option value={3.154_67}>
+                                          12 months
+                                        </option>
                                       </Form.Select>
                                     </Form.Group>
                                   )}

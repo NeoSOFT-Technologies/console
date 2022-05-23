@@ -137,6 +137,7 @@ export default function CreateKey() {
             }
           } else {
             ToastAlert("Key Updated Successfully!!", "success");
+            await dispatch(getKeyById(id));
           }
         } else {
           ToastAlert("Request is not fulfilled!!", "error");
