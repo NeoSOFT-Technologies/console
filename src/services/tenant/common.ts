@@ -1,5 +1,4 @@
 import { ILogin } from "../../types";
-// import apiFactory from "../utils/api";
 import apiFactory from "../../utils/api";
 import tokenService from "./token.service";
 

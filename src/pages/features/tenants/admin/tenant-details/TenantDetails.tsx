@@ -197,7 +197,7 @@ export default function TenantDetails() {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            <Dropdown className="d-inline-block">
+            {/* <Dropdown className="d-inline-block">
               <Dropdown.Toggle className=" btn-danger " id="dropdown-basic">
                 Utilis
               </Dropdown.Toggle>
@@ -207,7 +207,7 @@ export default function TenantDetails() {
                 <Dropdown.Item>Upload</Dropdown.Item>
                 <Dropdown.Item>Create tenant tables & data</Dropdown.Item>
               </Dropdown.Menu>
-            </Dropdown>
+            </Dropdown> */}
             <Modal
               show={deleteshow}
               onHide={() => setDeleteshow(false)}

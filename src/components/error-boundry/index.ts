@@ -6,7 +6,7 @@ interface IProperty {
 
 class ErrorBoundary extends Component<IProperty> {
   public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    console.error("Caught error:Error FOund", error, errorInfo);
+    console.error("Caught error:Error Found", error, errorInfo);
   }
 
   public render() {
