@@ -9,16 +9,15 @@ import { IPagination, ITableSchema } from "../../../../types/saas";
 import "./style.css";
 
 export default function ManageTables() {
+  const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [tenantId, setTenantId] = useState("");
+
   const allTableData = useAppSelector((state) => state.getAllTableState);
 
-  // const [tenantId, setTenantId] = useState("");
   const [show, setShow] = useState(false);
   const [table, settable] = useState("");
-  const page = "1";
-  const [currentPage, setCurrentPage] = useState(page);
 
   const handleClose = () => setShow(false);
   const handleShow = (tableName: string, tenantID: string) => {
@@ -36,44 +35,49 @@ export default function ManageTables() {
 
   useEffect(() => {
     const pageParameters: IPagination = {
-      pageNumber: currentPage,
+      pageNumber: currentPage.toString(),
       pageSize: "5",
     };
     dispatch(getAllTables(pageParameters));
   }, []);
   const deleteTables = (obj: ITableSchema) => {
     dispatch(deleteTable(obj));
+
     handleClose();
+
     ToastAlert("Table Deleted successfully ", "success");
   };
 
-  const prevpage = (currentPage1: string) => {
-    let pageNum = Number.parseInt(currentPage1);
-    if (pageNum <= 1) {
-      setCurrentPage("1");
+  const prevpage = (currentPage1: number) => {
+    if (currentPage1 <= 1) {
+      setCurrentPage(1);
     } else {
-      pageNum = pageNum - 1;
-      setCurrentPage(pageNum.toString());
+      --currentPage1;
+      setCurrentPage(currentPage1);
     }
+
     const pageParameters: IPagination = {
-      pageNumber: currentPage,
-      pageSize: "1",
+      pageNumber: (currentPage - 1).toString(),
+      pageSize: "5",
     };
+
     dispatch(getAllTables(pageParameters));
   };
 
-  const nextpage = (currentPage1: string) => {
-    let pageNum = Number.parseInt(currentPage1);
-    if (pageNum < 10) {
-      pageNum = pageNum + 1;
-      setCurrentPage(pageNum.toString());
+  const nextpage = (currentPage1: number) => {
+    if (currentPage1 <= 10) {
+      ++currentPage1;
+
+      setCurrentPage(currentPage1);
     } else {
-      setCurrentPage(pageNum.toString());
+      setCurrentPage(currentPage1);
     }
+
     const pageParameters: IPagination = {
-      pageNumber: currentPage,
+      pageNumber: (currentPage + 1).toString(),
       pageSize: "5",
     };
+
     dispatch(getAllTables(pageParameters));
   };
   return (
@@ -83,69 +87,119 @@ export default function ManageTables() {
       </div>
       <div className="card m-4">
         <div className="card-body table-responsive">
-          <>
-            <Table bordered className="text-center">
-              <thead>
-                <tr id="test">
-                  <th>SR.NO.</th>
-                  <th>User</th>
-                  <th>Table Name</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                {allTableData.data?.map((val, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{val.tenantId}</td>
-                    <td>
-                      {val.tableName}
-                      <span className="m-4">
-                        <i className="bi bi-info-circle-fill"></i>
-                      </span>
-                    </td>
-                    <td
-                      className="text-align-middle"
-                      onClick={() => handleEditShow(val)}
-                    >
-                      <i className="bi bi-pencil-square"></i>
-                    </td>
-                    <td
-                      className="text-danger"
-                      onClick={() => handleShow(val.tableName, val.tenantId)}
-                    >
-                      <i className="bi bi-trash-fill"></i>
-                    </td>
+          {allTableData.data !== undefined && allTableData.data.length > 0 ? (
+            <>
+              <Table bordered className="text-center">
+                <thead>
+                  <tr id="test">
+                    <th>SR.NO.</th>
+                    <th>User</th>
+                    <th>Table Name</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
                   </tr>
-                ))}
-                : (<h2>No Data</h2>)
-              </tbody>
-            </Table>
-            <nav aria-label="Page navigation example">
-              <ul className="pagination ">
-                <li className="page-item">
-                  <a
-                    className="page-link"
-                    onClick={() => prevpage(currentPage)}
-                  >
-                    Previous
-                  </a>
-                </li>
-                <li className="page-item active">
-                  <a className="page-link">{currentPage}</a>
-                </li>
-                <li className="page-item ">
-                  <a
-                    className="page-link "
-                    onClick={() => nextpage(currentPage)}
-                  >
-                    Next
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </>
+                </thead>
+                <tbody>
+                  {allTableData.data?.map((val, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{val.tenantId}</td>
+                      <td>
+                        {val.tableName}
+                        <span className="m-4">
+                          <i className="bi bi-info-circle-fill"></i>
+                        </span>
+                      </td>
+                      <td
+                        className="text-align-middle"
+                        onClick={() => handleEditShow(val)}
+                      >
+                        <i className="bi bi-pencil-square"></i>
+                      </td>
+                      <td
+                        className="text-danger"
+                        onClick={() => handleShow(val.tableName, val.tenantId)}
+                      >
+                        <i className="bi bi-trash-fill"></i>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <nav aria-label="Page navigation example">
+                <ul className="pagination ">
+                  {currentPage !== 1 ? (
+                    <li className="page-item">
+                      <a
+                        className="page-link "
+                        onClick={() => prevpage(currentPage)}
+                      >
+                        Previous
+                      </a>
+                    </li>
+                  ) : (
+                    <li className="page-item disabled">
+                      <a
+                        className="page-link "
+                        onClick={() => prevpage(currentPage)}
+                      >
+                        Previous
+                      </a>
+                    </li>
+                  )}
+                  <li className="page-item active">
+                    <a className="page-link">{currentPage}</a>
+                  </li>
+                  <li className="page-item  ">
+                    <a
+                      className="page-link "
+                      onClick={() => nextpage(currentPage)}
+                    >
+                      Next
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </>
+          ) : (
+            <>
+              <h2>No Data</h2>
+              <nav aria-label="Page navigation example">
+                <ul className="pagination ">
+                  {currentPage !== 1 ? (
+                    <li className="page-item">
+                      <a
+                        className="page-link "
+                        onClick={() => prevpage(currentPage)}
+                      >
+                        Previous
+                      </a>
+                    </li>
+                  ) : (
+                    <li className="page-item disabled">
+                      <a
+                        className="page-link "
+                        onClick={() => prevpage(currentPage)}
+                      >
+                        Previous
+                      </a>
+                    </li>
+                  )}
+                  <li className="page-item active">
+                    <a className="page-link">{currentPage}</a>
+                  </li>
+                  <li className="page-item  disabled">
+                    <a
+                      className="page-link "
+                      onClick={() => nextpage(currentPage)}
+                    >
+                      Next
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </>
+          )}
         </div>
       </div>
 
@@ -199,7 +253,7 @@ export default function ManageTables() {
             variant="primary"
             onClick={() =>
               navigate("/saas/editTables", {
-                state: { tableName: table, tenantId: tenantId },
+                state: { tableName: table, tenantId },
               })
             }
           >
