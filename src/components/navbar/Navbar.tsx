@@ -1,17 +1,34 @@
 import React from "react";
 import { logo, logo_mini } from "../../resources/tenant/images";
-import { useAppDispatch } from "../../store/hooks";
+import { RootState } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { commonLogout } from "../../store/logout/slice";
+import { IUserDataState } from "../../types";
+
+interface IConditions {
+  data: string;
+  loading: boolean;
+  error?: string | null;
+}
 
 export default function Navbar() {
   const dispatch = useAppDispatch();
+  const user: IUserDataState = useAppSelector(
+    (state: RootState) => state.userData
+  );
+  const loginType: IConditions = useAppSelector(
+    (state: RootState) => state.loginType
+  );
   const toggleOffcanvas = () => {
     document?.querySelector(".sidebar-offcanvas")?.classList.toggle("active");
   };
 
   const logout = async () => {
     await dispatch(commonLogout());
-    window.location.href = "/login-page";
+    window.location.href =
+      loginType.data === "admin"
+        ? "/login-page"
+        : `/login-page?tenant=${user?.data?.tenantName}`;
   };
 
   return (
