@@ -4,15 +4,24 @@ import { ICreateTable } from "../../../../../types/saas";
 import error from "../../../../../utils/error";
 
 interface ICreateTableState {
-  data?: string;
+  data?: ICustomeMessage;
   loading: boolean;
-  error?: string | null;
+  error?: string | null | ICustomeError;
 }
 const initialState: ICreateTableState = {
   data: undefined,
   loading: false,
   error: undefined,
 };
+
+interface ICustomeMessage {
+  statusCode: string;
+  message: string;
+}
+interface ICustomeError {
+  statusCode: string;
+  message: string;
+}
 
 export const createTable = createAsyncThunk(
   "createTable",
