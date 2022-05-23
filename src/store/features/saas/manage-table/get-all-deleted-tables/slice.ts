@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getAllDeletedTableService } from "../../../../../services/saas/api/api";
-import { IPagination } from "../../../../../types/saas";
+import { IPagination, ITableSchema } from "../../../../../types/saas";
 import error from "../../../../../utils/error";
 
 interface IGetAllDeletedTableState {
-  data?: string[];
+  data?: ITableSchema[];
   loading: boolean;
   error?: string | null;
 }

@@ -84,10 +84,7 @@ const RestoreTable = lazy(
   () => import("./pages/features/saas/restore-table/RestoreTable")
 );
 const AddTable = lazy(
-  () => import("./pages/features/saas/restore-table/RestoreTable")
-);
-const CreateTables = lazy(
-  () => import("./pages/features/saas/create-table/CreateTable")
+  () => import("./pages/features/saas/add-table/CreateTable")
 );
 
 const EditTables = lazy(
@@ -202,14 +199,7 @@ function AppRoutes() {
                 </UserGuard>
               }
             />
-            <Route
-              path="createTables"
-              element={
-                <AdminGuard>
-                  <CreateTables />
-                </AdminGuard>
-              }
-            />
+
             <Route
               path="editTables"
               element={
@@ -280,14 +270,6 @@ function AppRoutes() {
             element={
               <AdminGuard>
                 <RestoreTable />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="createTables"
-            element={
-              <AdminGuard>
-                <CreateTables />
               </AdminGuard>
             }
           />
