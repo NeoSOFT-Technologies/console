@@ -14,7 +14,7 @@ import "./style.css";
 export default function GetTables() {
   const dispatch = useAppDispatch();
   const createTables = useAppSelector((state) => state.createTableState);
-  // const capacityPlans = useAppSelector((state) => state.capacityPlansState);
+
   const [modalState, setModalState] = useState<
     "modal-one" | "modal-two" | "close"
   >("close");
@@ -28,7 +28,7 @@ export default function GetTables() {
   const [multiValue, setMultiValue] = useState(true);
   const [storable, setStorable] = useState(true);
   const [partialSearch, setPartialSearch] = useState(true);
-  const [tableName, setTableName] = useState("");
+  const [tableName, setTableName] = useState("omkar");
   const [sku, setSku] = useState("B");
   const handleShowModalTwo = () => {
     setModalState("modal-two");
@@ -39,27 +39,6 @@ export default function GetTables() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  const [columnsDataArray, setColumnsDataArray]: any = useState([]);
-
-  // form submit event
-  const handleAddColumnSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    // creating an object
-    const columnData: ITableColumnData = {
-      name,
-      type,
-      required,
-      partialSearch,
-      filterable,
-      sortable,
-      multiValue,
-      storable,
-    };
-    setColumnsDataArray([...columnsDataArray, columnData]);
-    setName("");
-    setType("");
-  };
 
   // const initialState: ITableColumnData = {
   //   name,
@@ -73,57 +52,52 @@ export default function GetTables() {
   // };
 
   // let columns: { name: string, type: string, required: boolean, sortable:boolean, filterable:boolean, multiValue:boolean , storable:boolean , partialSearch:boolean }[] = [
-  // const schColumns: ITableColumnData[] = [
-  //   {
-  //     name: "abc",
-  //     type: "string",
-  //     required: true,
-  //     sortable: true,
-  //     filterable: true,
-  //     multiValue: false,
-  //     storable: true,
-  //     partialSearch: false,
-  //   },
-  //   {
-  //     name: "xyz",
-  //     type: "string",
-  //     required: true,
-  //     sortable: true,
-  //     filterable: true,
-  //     multiValue: false,
-  //     storable: true,
-  //     partialSearch: false,
-  //   },
-  //   {
-  //     name: "qwe",
-  //     type: "string",
-  //     required: true,
-  //     sortable: true,
-  //     filterable: true,
-  //     multiValue: false,
-  //     storable: true,
-  //     partialSearch: false,
-  //   },
-  // ];
+  const schColumns: ITableColumnData[] = [
+    {
+      name: "abc",
+      type: "string",
+      required: true,
+      sortable: true,
+      filterable: true,
+      multiValue: false,
+      storable: true,
+      partialSearch: false,
+    },
+    {
+      name: "xyz",
+      type: "string",
+      required: true,
+      sortable: true,
+      filterable: true,
+      multiValue: false,
+      storable: true,
+      partialSearch: false,
+    },
+    {
+      name: "qwe",
+      type: "string",
+      required: true,
+      sortable: true,
+      filterable: true,
+      multiValue: false,
+      storable: true,
+      partialSearch: false,
+    },
+  ];
 
   const params1: ITableCreateData = {
     tableName,
     sku,
-    columns: columnsDataArray,
+    columns: schColumns,
   };
 
   const params: ICreateTable = {
     tenantId: user,
     requestData: params1,
   };
-  // saving data to local storage
-  useEffect(() => {
-    console.log("here is data", columnsDataArray);
-    localStorage.setItem("columnsDataArray", JSON.stringify(columnsDataArray));
-  }, [columnsDataArray]);
 
   useEffect(() => {
-    console.log("params", params);
+    console.log(params);
   }, [createTables.data, createTables.error]);
 
   // const [tenantId] = useState("");
@@ -131,10 +105,10 @@ export default function GetTables() {
     event: React.FormEvent
   ) => {
     event.preventDefault();
+    alert("ok");
+    console.log({ type, name, required });
     // console.log(tenantId);
     dispatch(createTable(params));
-    if (createTables.data !== undefined) alert(createTables.data?.message);
-    else alert("Something went to Wrong");
   };
 
   return (
@@ -312,39 +286,26 @@ export default function GetTables() {
                     </tr>
                   </thead>
                   <tbody>
-                    {columnsDataArray.map(
-                      (
-                        val:
-                          | {
-                              name: any;
-                              type: any;
-                              required: any;
-                              partialSearch: any;
-                              filterable: any;
-                              sortable: any;
-                              multiValue: any;
-                              storable: any;
-                            }
-                          | null
-                          | undefined,
-                        index: React.Key | null | undefined
-                      ) => (
-                        <tr key={`row${index}`}>
-                          {val !== null && val !== undefined && (
-                            <>
-                              <td key={index}>{JSON.stringify(val.name)}</td>
-                              <td>{JSON.stringify(val.type)}</td>
-                              <td>{JSON.stringify(val.required)}</td>
-                              <td>{JSON.stringify(val.partialSearch)}</td>
-                              <td>{JSON.stringify(val.filterable)}</td>
-                              <td>{JSON.stringify(val.sortable)}</td>
-                              <td>{JSON.stringify(val.multiValue)}</td>
-                              <td>{JSON.stringify(val.storable)}</td>
-                            </>
-                          )}
-                        </tr>
-                      )
-                    )}
+                    <tr>
+                      <td>Ravi</td>
+                      <td>Product</td>
+                      <td>true</td>
+                      <td>false</td>
+                      <td>true </td>
+                      <td>false</td>
+                      <td>true</td>
+                      <td>true </td>
+                    </tr>
+                    <tr>
+                      <td>Sam</td>
+                      <td>Price</td>
+                      <td>true</td>
+                      <td>false</td>
+                      <td>true </td>
+                      <td>false</td>
+                      <td>true</td>
+                      <td>true </td>
+                    </tr>
                   </tbody>
                 </Table>
               </Col>
@@ -382,7 +343,7 @@ export default function GetTables() {
       </Form>
 
       <Modal show={show} onHide={handleClose} size="lg">
-        <Form onSubmit={handleAddColumnSubmit}>
+        <Form onSubmit={createTableData}>
           <Modal.Header>
             <Modal.Title className="text-center">Add Column</Modal.Title>
             <button
