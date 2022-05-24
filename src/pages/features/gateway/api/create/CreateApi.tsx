@@ -161,7 +161,7 @@ function CreateApi() {
                               id="name"
                               placeholder="Enter API Name"
                               name="name"
-                              // data-testid="name-input"
+                              data-testid="name-input"
                               value={apisForm.name}
                               isInvalid={!!err.name}
                               isValid={!err.name && !!apisForm.name}
@@ -180,7 +180,7 @@ function CreateApi() {
                               type="text"
                               name="listenPath"
                               id="listenPath"
-                              // data-testid="listenPath-input"
+                              data-testid="listenPath-input"
                               placeholder="Enter Listen Path"
                               isValid={!err.listenPath && !!apisForm.listenPath}
                               value={apisForm.listenPath}
@@ -201,6 +201,7 @@ function CreateApi() {
                               placeholder="Enter Target Url"
                               name="targetUrl"
                               id="targetUrl"
+                              data-testid="targetUrl-input"
                               isValid={!err.targetUrl && !!apisForm.targetUrl}
                               value={apisForm.targetUrl}
                               isInvalid={!!err.targetUrl}
@@ -219,6 +220,7 @@ function CreateApi() {
                             <Form.Check
                               type="switch"
                               onChange={validateForm}
+                              data-testid="isActive-input"
                               checked={apisForm.isActive}
                               name="isActive"
                               id="isActive"

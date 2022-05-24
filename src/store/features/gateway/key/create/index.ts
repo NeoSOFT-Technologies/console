@@ -28,6 +28,8 @@ export interface IGetKeyByIdData {
           Versions: string[];
           MasterVersions: string[];
           AuthType: string;
+          isRateLimitDisabled: boolean;
+          isQuotaDisbaled: boolean;
           AllowedUrls:
             | {
                 Url: string;
