@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "react-bootstrap";
+import { Button, Modal, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
@@ -16,17 +16,31 @@ import { IPagination, ITableSchema } from "../../../../types/saas";
 function RestoreTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
   const allDeleteTableData = useAppSelector(
     (state) => state.getAllDeleteTableState
   );
+
   const restoredTableData = useAppSelector(
     (state) => state.restoreTableSchemaState
   );
+
   const [restoredTableRecord, setRestoredTableRecord] = useState({
     tenantId: "",
     tableName: "",
   });
+
+  const [tenantId, setTenantId] = useState("");
+  const [show, setShow] = useState(false);
+  const [table, settable] = useState("");
+  const handleClose = () => setShow(false);
+  const handleShow = (obj: ITableSchema) => {
+    settable(obj.tableName);
+    setTenantId(obj.tenantId);
+    setShow(true);
+  };
+
   useEffect(() => {
     const pageParameters: IPagination = {
       pageNumber: currentPage.toString(),
@@ -61,6 +75,7 @@ function RestoreTable() {
   const restoreDeletedTable = (obj: ITableSchema) => {
     dispatch(restoreTable(obj));
     setRestoredTableRecord({ ...obj });
+    handleClose();
     // ToastAlert("Table Restored successfully ", "success");
   };
 
@@ -126,10 +141,11 @@ function RestoreTable() {
                         </span>
                       </td>
                       <td
-                        className="text-align-middle"
-                        onClick={() => restoreDeletedTable(val)}
+                        className="text-align-middle text-primary"
+                        aria-placeholder="Restore"
+                        onClick={() => handleShow(val)}
                       >
-                        <i className="bi bi-pencil-square"></i>
+                        <i className="bi bi-bootstrap-reboot"></i>
                       </td>
                     </tr>
                   ))}
@@ -213,18 +229,18 @@ function RestoreTable() {
         </div>
       </div>
 
-      {/* <Modal
+      <Modal
         show={show}
-        data={table}
+        data={{ table, tenantId }}
         onHide={handleClose}
         backdrop="static"
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Delete Confirmation</Modal.Title>
+          <Modal.Title>Restore Confirmation</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to delete <b>{table}</b> table?
+          Are you sure you want to restore <b>{table}</b> table?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="success" onClick={handleClose}>
@@ -232,38 +248,12 @@ function RestoreTable() {
           </Button>
           <Button
             variant="danger"
-            onClick={() => deleteTables({ tenantId, tableName: table })}
+            onClick={() => restoreDeletedTable({ tenantId, tableName: table })}
           >
-            Yes, Delete
+            Yes, Restore
           </Button>
         </Modal.Footer>
       </Modal>
-
-      <Modal
-        show={showEdit}
-        data={table}
-        onHide={handleEditClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Confirmation</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Are you sure you want to edit <b>{table}</b> table?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="success" onClick={handleEditClose}>
-            No, Cancel
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => navigate("/saas/editTables")}
-          >
-            Yes,Edit
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
     </div>
   );
 }
