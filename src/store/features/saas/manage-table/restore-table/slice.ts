@@ -35,7 +35,13 @@ export const restoreTable = createAsyncThunk(
 const slice = createSlice({
   name: "restoreTableSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    restoreTableReset: (state) => {
+      state.data = undefined;
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(restoreTable.pending, (state) => {
       state.data = undefined;
@@ -56,5 +62,5 @@ const slice = createSlice({
     });
   },
 });
-
+export const { restoreTableReset } = slice.actions;
 export default slice.reducer;
