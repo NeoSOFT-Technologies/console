@@ -111,7 +111,7 @@ export default function ManageTables() {
                         </span>
                       </td>
                       <td
-                        className="text-align-middle"
+                        className="text-align-middle  text-primary"
                         onClick={() => handleEditShow(val)}
                       >
                         <i className="bi bi-pencil-square"></i>
@@ -203,7 +203,10 @@ export default function ManageTables() {
         </div>
       </div>
 
-      <Button onClick={() => navigate("/saas/addTable")} className="m-4">
+      <Button
+        onClick={() => navigate("/saas/addTable")}
+        className="m-4 btn-success"
+      >
         Add New
       </Button>
       <Modal
