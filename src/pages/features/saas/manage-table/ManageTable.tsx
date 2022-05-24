@@ -2,8 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
-import { deleteTable } from "../../../../store/features/saas/manage-table/delete-table/slice";
-import { getAllTables } from "../../../../store/features/saas/manage-table/get-all-tables/slice";
+import {
+  deleteTable,
+  deleteTableReset,
+} from "../../../../store/features/saas/manage-table/delete-table/slice";
+import {
+  getAllTables,
+  setTableData,
+} from "../../../../store/features/saas/manage-table/get-all-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IPagination, ITableSchema } from "../../../../types/saas";
 import "./style.css";
@@ -13,8 +19,14 @@ export default function ManageTables() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [tenantId, setTenantId] = useState("");
-
+  const [deletedTableRecord, setDeletedTableRecord] = useState({
+    tenantId: "",
+    tableName: "",
+  });
   const allTableData = useAppSelector((state) => state.getAllTableState);
+  const deleteTableData = useAppSelector(
+    (state) => state.deleteTableSchemaState
+  );
 
   const [show, setShow] = useState(false);
   const [table, settable] = useState("");
@@ -39,13 +51,35 @@ export default function ManageTables() {
       pageSize: "5",
     };
     dispatch(getAllTables(pageParameters));
+    return () => {
+      dispatch(deleteTableReset());
+    };
   }, []);
+
+  useEffect(() => {
+    if (!deleteTableData.loading && deleteTableData.error) {
+      navigate("/error", { state: deleteTableData.error });
+    }
+    if (
+      !deleteTableData.loading &&
+      !deleteTableData.error &&
+      deleteTableData?.data
+    ) {
+      const newTableList = allTableData.data?.filter((obj) => {
+        return (
+          obj.tenantId !== deletedTableRecord.tenantId ||
+          obj.tableName !== deletedTableRecord.tableName
+        );
+      });
+      dispatch(setTableData(newTableList));
+      ToastAlert("Table Deleted successfully ", "success");
+    }
+  }, [deleteTableData.loading]);
+
   const deleteTables = (obj: ITableSchema) => {
     dispatch(deleteTable(obj));
-
+    setDeletedTableRecord({ ...obj });
     handleClose();
-
-    ToastAlert("Table Deleted successfully ", "success");
   };
 
   const prevpage = (currentPage1: number) => {

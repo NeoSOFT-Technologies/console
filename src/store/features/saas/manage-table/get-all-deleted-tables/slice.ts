@@ -35,7 +35,13 @@ export const getAllDeletedTables = createAsyncThunk(
 const slice = createSlice({
   name: "getAllDeleteTableSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    setDeletedTableData: (state, action) => {
+      state.data = [...action.payload];
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(getAllDeletedTables.pending, (state) => {
       state.data = undefined;
@@ -56,5 +62,5 @@ const slice = createSlice({
     });
   },
 });
-
+export const { setDeletedTableData } = slice.actions;
 export default slice.reducer;

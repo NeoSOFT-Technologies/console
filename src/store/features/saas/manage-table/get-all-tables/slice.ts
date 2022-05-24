@@ -35,7 +35,14 @@ export const getAllTables = createAsyncThunk(
 const slice = createSlice({
   name: "getAllTableSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    setTableData: (state, action) => {
+      // alert("inside get-all-table slice : " + JSON.stringify(action.payload));
+      state.data = [...action.payload];
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(getAllTables.pending, (state) => {
       state.data = undefined;
@@ -56,5 +63,5 @@ const slice = createSlice({
     });
   },
 });
-
+export const { setTableData } = slice.actions;
 export default slice.reducer;

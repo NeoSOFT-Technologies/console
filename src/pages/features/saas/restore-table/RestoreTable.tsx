@@ -1,26 +1,67 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
-import { getAllDeletedTables } from "../../../../store/features/saas/manage-table/get-all-deleted-tables/slice";
-import { restoreTable } from "../../../../store/features/saas/manage-table/restore-table/slice";
+import {
+  getAllDeletedTables,
+  setDeletedTableData,
+} from "../../../../store/features/saas/manage-table/get-all-deleted-tables/slice";
+import {
+  restoreTable,
+  restoreTableReset,
+} from "../../../../store/features/saas/manage-table/restore-table/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IPagination, ITableSchema } from "../../../../types/saas";
 
 function RestoreTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useAppDispatch();
-  const allTableData = useAppSelector((state) => state.getAllDeleteTableState);
-
+  const navigate = useNavigate();
+  const allDeleteTableData = useAppSelector(
+    (state) => state.getAllDeleteTableState
+  );
+  const restoredTableData = useAppSelector(
+    (state) => state.restoreTableSchemaState
+  );
+  const [restoredTableRecord, setRestoredTableRecord] = useState({
+    tenantId: "",
+    tableName: "",
+  });
   useEffect(() => {
     const pageParameters: IPagination = {
       pageNumber: currentPage.toString(),
       pageSize: "5",
     };
     dispatch(getAllDeletedTables(pageParameters));
+    return () => {
+      dispatch(restoreTableReset());
+    };
   }, []);
+
+  useEffect(() => {
+    if (!restoredTableData.loading && restoredTableData.error) {
+      navigate("/error", { state: restoredTableData.error });
+    }
+    if (
+      !restoredTableData.loading &&
+      !restoredTableData.error &&
+      restoredTableData?.data
+    ) {
+      const newTableList = allDeleteTableData.data?.filter((obj) => {
+        return (
+          obj.tenantId !== restoredTableRecord.tenantId ||
+          obj.tableName !== restoredTableRecord.tableName
+        );
+      });
+      dispatch(setDeletedTableData(newTableList));
+      ToastAlert("Table restored successfully ", "success");
+    }
+  }, [restoredTableData.loading]);
+
   const restoreDeletedTable = (obj: ITableSchema) => {
     dispatch(restoreTable(obj));
-    ToastAlert("Table Restored successfully ", "success");
+    setRestoredTableRecord({ ...obj });
+    // ToastAlert("Table Restored successfully ", "success");
   };
 
   const prevpage = (currentPage1: number) => {
@@ -61,7 +102,8 @@ function RestoreTable() {
       </div>
       <div className="card m-4">
         <div className="card-body table-responsive">
-          {allTableData.data !== undefined && allTableData.data.length > 0 ? (
+          {allDeleteTableData.data !== undefined &&
+          allDeleteTableData.data.length > 0 ? (
             <>
               <Table bordered className="text-center">
                 <thead>
@@ -73,7 +115,7 @@ function RestoreTable() {
                   </tr>
                 </thead>
                 <tbody>
-                  {allTableData.data?.map((val, index) => (
+                  {allDeleteTableData.data?.map((val, index) => (
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{val.tenantId}</td>

@@ -35,7 +35,13 @@ export const deleteTable = createAsyncThunk(
 const slice = createSlice({
   name: "deleteTableSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    deleteTableReset: (state) => {
+      state.data = undefined;
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(deleteTable.pending, (state) => {
       state.data = undefined;
@@ -57,4 +63,5 @@ const slice = createSlice({
   },
 });
 
+export const { deleteTableReset } = slice.actions;
 export default slice.reducer;
