@@ -354,19 +354,10 @@ export default function GlobalLimit(props: IProps) {
                                     <Form.Select
                                       className="mt-2"
                                       style={{ height: 46 }}
-                                      value={
-                                        props.isDisabled &&
-                                        (data.Limit === null || undefined)
-                                          ? states.data.form.PolicyByIds![
-                                              props.index!
-                                            ].Global!.QuotaRate
-                                          : data.Limit.quota_renewal_rate === -1
-                                          ? "Unlimited"
-                                          : data.Limit.quota_renewal_rate
-                                      }
+                                      value={data.Limit.quota_renewal_rate}
                                       disabled={true}
                                     >
-                                      <option value={0}>never</option>
+                                      <option value={-1}>never</option>
                                       <option value={3600}>1 hour</option>
                                       <option value={21_600}>6 hour</option>
                                       <option value={43_200}>12 hour</option>
@@ -626,15 +617,11 @@ export default function GlobalLimit(props: IProps) {
                                         value={
                                           states.data.form.PolicyByIds![
                                             props.index!
-                                          ].Global!.QuotaRate === -1
-                                            ? "Never"
-                                            : states.data.form.PolicyByIds![
-                                                props.index!
-                                              ].Global!.QuotaRate
+                                          ].Global!.QuotaRate
                                         }
                                         disabled={true}
                                       >
-                                        <option value={0}>never</option>
+                                        <option value={-1}>never</option>
                                         <option value={3600}>1 hour</option>
                                         <option value={21_600}>6 hour</option>
                                         <option value={43_200}>12 hour</option>
