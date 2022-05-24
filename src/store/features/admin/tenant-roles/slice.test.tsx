@@ -2,14 +2,17 @@ import mockApi from "../../../../resources/tenant/testconfig";
 import store from "../../../index";
 import { getTenantRoles } from "./slice";
 
-test("calling the state of tenant-roles", async () => {
-  mockApi.onGet(" /api/roles?tenantName=").reply(200, {});
+test("calling the state of tenant-role", async () => {
+  mockApi.onGet("/api/roles?tenantName=").reply(200, {});
 
-  await store.dispatch(getTenantRoles());
+  const result = await store.dispatch(getTenantRoles());
+  // console.log(result);
+  expect(result.type).toBe("tenant/roles/fulfilled");
 });
 
 test("calling the state of tenant-roles", async () => {
-  mockApi.onGet(" /api/roles?tenantName=").reply(404);
+  mockApi.onGet("/api/roles?tenantName=").reply(404);
 
-  await store.dispatch(getTenantRoles());
+  const result = await store.dispatch(getTenantRoles());
+  expect(result.type).toBe("tenant/roles/rejected");
 });

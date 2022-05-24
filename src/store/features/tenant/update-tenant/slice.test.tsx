@@ -37,7 +37,7 @@ test("calling the state of  update-tenant", async () => {
 
 test("calling the state of update-tenant", async () => {
   mockApi.onPatch("/api/tenants").reply(404, response);
-  await store.dispatch(
+  const result = await store.dispatch(
     updateTenant({
       id: 2,
       tenantId: 2,
@@ -50,4 +50,5 @@ test("calling the state of update-tenant", async () => {
       policy: "",
     })
   );
+  expect(result.type).toBe("tenant/update/rejected");
 });

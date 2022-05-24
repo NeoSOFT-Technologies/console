@@ -9,13 +9,14 @@ test("should fetch the detail of admin", async () => {
     count: 1,
     roles: [""],
   });
-  await store.dispatch(
+  const result = await store.dispatch(
     getUserData({
       userName: "",
       tenantName: "",
       type: "admin",
     })
   );
+  expect(result.type).toBe("user/data/fulfilled");
 });
 
 test("calling the state of user-data", async () => {
@@ -29,28 +30,32 @@ test("calling the state of user-data", async () => {
 });
 
 test("should fetch the detail of user", async () => {
-  mockApi.onGet("/api/user-info?tenantName=rohit&userName=rohit").reply(200, {
-    username: "",
-    createdTimestamp: "",
-    count: 1,
-    roles: [""],
-  });
-  await store.dispatch(
+  mockApi
+    .onGet("/api/user-info?tenantName=Tenant2&userName=tenantadmin")
+    .reply(200, {
+      username: "",
+      createdTimestamp: "",
+      count: 1,
+      roles: [""],
+    });
+  const result = await store.dispatch(
     getUserData({
-      userName: "rohit",
-      tenantName: "rohit",
+      userName: "tenantadmin",
+      tenantName: "Tenant2",
       type: "user",
     })
   );
+  expect(result.type).toBe("user/data/fulfilled");
 });
 
 test("should give error while fetching the detail of admin", async () => {
   mockApi.onGet("/api/admin").reply(404);
-  await store.dispatch(
+  const result = await store.dispatch(
     getUserData({
       userName: "",
       tenantName: "",
       type: "admin",
     })
   );
+  expect(result.type).toBe("user/data/rejected");
 });
