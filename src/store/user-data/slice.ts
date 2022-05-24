@@ -33,8 +33,34 @@ export const getUserData = createAsyncThunk(
             conditions.tenantName,
             conditions.userName
           );
+          // {
+          //   "createdTimestamp": "2022/05/19 09:45:23",
+          //   "username": "tenantadmin",
+          //   "email": "tenant2@gmail.com",
+          //   "tenantName": "Tenant2",
+          //   "roles": [
+          //     "default-roles-tenant2",
+          //     "tenantadmin"
+          //   ],
+          //   "permissions": [
+          //     "create",
+          //     "view",
+          //     "edit",
+          //     "delete"
+          //   ]
+          // }
           if (response.data.roles.includes("tenantadmin")) {
             response = await getTenantDetailsService(conditions.tenantName);
+
+            // {
+            //   "tenantName": "Tenant2",
+            //   "description": "hi this is Tenant2.",
+            //   "createdDateTime": "2022/05/19 09:45:24",
+            //   "databaseName": "db-Tenanttwo",
+            //   "host": "103.224.242.138",
+            //   "port": 3306,
+            //   "policy": "{ max_size: 30 }"
+            // }
           } else {
             await thunkAPI.dispatch(checkLoginType("user"));
           }
@@ -72,6 +98,7 @@ const slice = createSlice({
       state.loading = false;
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];
+      // state.errorMessage = errorMessage[errorMessage.length - 1];
     });
   },
 });

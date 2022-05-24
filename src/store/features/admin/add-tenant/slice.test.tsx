@@ -13,6 +13,7 @@ test("calling the state of add-tenant", async () => {
       description: "i am Test",
       databaseName: "db-Test",
       databaseDescription: "",
+      username: "",
     })
   );
 });
@@ -28,6 +29,7 @@ test("calling the state of add-tenant", async () => {
       description: "i am Test",
       databaseName: "db-Test",
       databaseDescription: "",
+      username: "",
     })
   );
 });

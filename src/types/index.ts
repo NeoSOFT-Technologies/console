@@ -60,6 +60,7 @@ export interface ITenantRegisterData {
   description: string;
   databaseName: string;
   databaseDescription: string;
+  username: string;
 }
 
 export interface ICreateNewUser {
@@ -123,6 +124,7 @@ export interface IErrorTenantInput {
   description: string;
   databaseName: string;
   databaseDescription: string;
+  username: string;
 }
 
 /**
