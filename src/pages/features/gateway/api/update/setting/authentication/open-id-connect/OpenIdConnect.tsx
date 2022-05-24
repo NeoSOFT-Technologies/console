@@ -20,6 +20,7 @@ export default function OpenIdConnectAuthentication() {
   const policyList: IPolicyListState = useAppSelector(
     (RootState) => RootState.policyListState
   );
+
   const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,7 @@ export default function OpenIdConnectAuthentication() {
   });
 
   const [addClientFormData, setClientAddFormData] = useState<any>([]);
+  console.log("addClientFormData :", addClientFormData);
 
   const handleIssuerInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -44,15 +46,25 @@ export default function OpenIdConnectAuthentication() {
     const { name, value } = event.target;
     switch (name) {
       case "issuer":
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: regexForIssuer.test(value)
-              ? ""
-              : "Please enter a Valid Issuer URL",
-          },
-          dispatch
-        );
+        if (value === "") {
+          setFormErrors(
+            {
+              ...state.data.errors,
+              [name]: "",
+            },
+            dispatch
+          );
+        } else {
+          setFormErrors(
+            {
+              ...state.data.errors,
+              [name]: regexForIssuer.test(value)
+                ? ""
+                : "Please enter a Valid Issuer URL",
+            },
+            dispatch
+          );
+        }
         break;
       default:
         break;
@@ -124,7 +136,7 @@ export default function OpenIdConnectAuthentication() {
   };
 
   const handleClientAddClick = (issuerIndex: any, event: any) => {
-    event.preventDefault();
+    // event.preventDefault();
     if (
       state.data.form.OpenidOptions.Providers[issuerIndex].Client_ids.length > 0
     ) {
@@ -154,17 +166,6 @@ export default function OpenIdConnectAuthentication() {
               const i = clientList.findIndex(
                 (e) => e.ClientId === addClientFormData[issuerIndex].clientId
               );
-              // const newClient = clientList[clientIndex];
-              // console.log("newClient before :", newClient);
-              // newClient.Policy = addClientFormData[issuerIndex].policy;
-              // console.log("newClient after :", newClient);
-              // clientList[clientIndex] = newClient;
-              // console.log("clientList after:", clientList);
-              // providerList[issuerIndex] = {
-              //   ...providerList[issuerIndex],
-              //   Client_ids: [...clientList],
-              // };
-
               clientList.splice(i, 1);
               const list = {
                 ClientId: addClientFormData[issuerIndex].clientId,
@@ -404,16 +405,7 @@ export default function OpenIdConnectAuthentication() {
                                           </thead>
                                           <tbody>
                                             <tr>
-                                              <td>
-                                                <input
-                                                  type="text"
-                                                  className="form-control"
-                                                  id="issuer"
-                                                  name="issuer"
-                                                  value={Issuer}
-                                                  readOnly
-                                                />
-                                              </td>
+                                              <td>{Issuer}</td>
                                               <td>
                                                 <input
                                                   type="text"
@@ -423,7 +415,7 @@ export default function OpenIdConnectAuthentication() {
                                                   name="clientId"
                                                   value={
                                                     addClientFormData[index]
-                                                      ?.clientId
+                                                      ?.clientId || ""
                                                   }
                                                   onChange={(evnt) =>
                                                     handleClientInputChange(
@@ -450,11 +442,11 @@ export default function OpenIdConnectAuthentication() {
                                                   }
                                                 >
                                                   <option></option>
-                                                  {policyList.data?.Policies.map(
+                                                  {/* {policyList.data?.Policies.map(
                                                     (item: any) => {
                                                       return (
                                                         <option
-                                                          key={item.Name}
+                                                          key={item.Id}
                                                           value={item.Id}
                                                           id={item.Name}
                                                         >
@@ -462,7 +454,28 @@ export default function OpenIdConnectAuthentication() {
                                                         </option>
                                                       );
                                                     }
-                                                  )}
+                                                  )} */}
+
+                                                  {policyList.data?.Policies.filter(
+                                                    (a) =>
+                                                      a.Apis.includes(
+                                                        state.data.form.Name
+                                                      )
+                                                  ).map((item: any) => {
+                                                    // console.log(
+                                                    //   "filtered policy :",
+                                                    //   item
+                                                    // );
+                                                    return (
+                                                      <option
+                                                        key={item.Id}
+                                                        value={item.Id}
+                                                        id={item.Name}
+                                                      >
+                                                        {item.Name}
+                                                      </option>
+                                                    );
+                                                  })}
                                                 </select>
                                               </td>
                                               <td>
@@ -526,40 +539,49 @@ export default function OpenIdConnectAuthentication() {
                                                 const { ClientId, Policy } =
                                                   clientObj;
                                                 return policyList?.data?.Policies.filter(
-                                                  (p: any) => p.Id === Policy
-                                                ).map((filteredPolicy) => {
-                                                  const { Name, Id } =
-                                                    filteredPolicy;
+                                                  (p) => p.Id === Policy
+                                                ).map(
+                                                  (
+                                                    filteredPolicy,
+                                                    newindex
+                                                  ) => {
+                                                    const { Name, Id } =
+                                                      filteredPolicy;
+                                                    console.log(
+                                                      "newindex",
+                                                      newindex
+                                                    );
 
-                                                  return (
-                                                    <tr key={clientIndex}>
-                                                      <td>{ClientId}</td>
-                                                      <td
-                                                        style={{
-                                                          textAlign: "left",
-                                                        }}
-                                                      >
-                                                        {Name} : {Id}
-                                                      </td>
-                                                      <td
-                                                        style={{
-                                                          textAlign: "center",
-                                                        }}
-                                                      >
-                                                        <i
-                                                          className="bi bi-trash"
-                                                          onClick={(event) =>
-                                                            deleteClientTableRows(
-                                                              index,
-                                                              cIndex,
-                                                              event
-                                                            )
-                                                          }
-                                                        ></i>
-                                                      </td>
-                                                    </tr>
-                                                  );
-                                                });
+                                                    return (
+                                                      <tr key={clientIndex}>
+                                                        <td>{ClientId}</td>
+                                                        <td
+                                                          style={{
+                                                            textAlign: "left",
+                                                          }}
+                                                        >
+                                                          {Name} : {Id}
+                                                        </td>
+                                                        <td
+                                                          style={{
+                                                            textAlign: "center",
+                                                          }}
+                                                        >
+                                                          <i
+                                                            className="btn btn-sm bi bi-trash-fill"
+                                                            onClick={(event) =>
+                                                              deleteClientTableRows(
+                                                                index,
+                                                                cIndex,
+                                                                event
+                                                              )
+                                                            }
+                                                          ></i>
+                                                        </td>
+                                                      </tr>
+                                                    );
+                                                  }
+                                                );
                                               }
                                             )}
                                           </tbody>
@@ -584,16 +606,7 @@ export default function OpenIdConnectAuthentication() {
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <td>
-                                        <input
-                                          type="text"
-                                          className="form-control"
-                                          id="issuer"
-                                          name="issuer"
-                                          value={Issuer}
-                                          readOnly
-                                        />
-                                      </td>
+                                      <td>{Issuer}</td>
                                       <td>
                                         <input
                                           type="text"
@@ -602,7 +615,8 @@ export default function OpenIdConnectAuthentication() {
                                           id="clientId"
                                           name="clientId"
                                           value={
-                                            addClientFormData[index]?.clientId
+                                            addClientFormData[index]
+                                              ?.clientId || ""
                                           }
                                           onChange={(evnt) =>
                                             handleClientInputChange(evnt, index)
@@ -621,11 +635,11 @@ export default function OpenIdConnectAuthentication() {
                                           }
                                         >
                                           <option></option>
-                                          {policyList.data?.Policies.map(
+                                          {/* {policyList.data?.Policies.map(
                                             (item: any) => {
                                               return (
                                                 <option
-                                                  key={item.Name}
+                                                  key={item.Id}
                                                   value={item.Id}
                                                   id={item.Name}
                                                 >
@@ -633,7 +647,28 @@ export default function OpenIdConnectAuthentication() {
                                                 </option>
                                               );
                                             }
-                                          )}
+                                          )} */}
+
+                                          {policyList.data?.Policies.filter(
+                                            (a) =>
+                                              a.Apis.includes(
+                                                state.data.form.Name
+                                              )
+                                          ).map((item: any) => {
+                                            // console.log(
+                                            //   "filtered policy :",
+                                            //   item
+                                            // );
+                                            return (
+                                              <option
+                                                key={item.Id}
+                                                value={item.Id}
+                                                id={item.Name}
+                                              >
+                                                {item.Name}
+                                              </option>
+                                            );
+                                          })}
                                         </select>
                                       </td>
                                       <td>

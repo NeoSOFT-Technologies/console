@@ -36,6 +36,14 @@ export default function BlacklistedIPs() {
       const blacklistObj: any = [];
       dispatch(setForm({ ...state.data.form, Blacklist: blacklistObj }));
     }
+    setAddFormData({ ...addFormData, Blacklist: "" });
+    setFormErrors(
+      {
+        ...state.data.errors,
+        Blacklist: "",
+      },
+      dispatch
+    );
   }
 
   const handleFormInputChange = (event: any) => {
@@ -208,7 +216,7 @@ export default function BlacklistedIPs() {
                                           <td>{data}</td>
                                           <td style={{ textAlign: "center" }}>
                                             <i
-                                              className="bi bi-trash"
+                                              className="btn btn-sm bi bi-trash-fill"
                                               onClick={(event) =>
                                                 deleteTableRows(index, event)
                                               }
