@@ -55,3 +55,10 @@ export interface IPagination {
   pageNumber: string;
   pageSize: string;
 }
+
+export interface ICapacityPlans {
+  sku: string;
+  name: string;
+  replicas: string;
+  shards: string;
+}

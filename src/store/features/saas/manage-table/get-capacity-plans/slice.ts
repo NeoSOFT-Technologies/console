@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getCapacityPlansService } from "../../../../../services/saas/api/api";
+import { ICapacityPlans } from "../../../../../types/saas";
 import error from "../../../../../utils/error";
 
 interface IGetCapacityPlanState {
-  data?: string;
+  data?: ICapacityPlans[];
   loading: boolean;
   error?: string | null;
 }
@@ -20,7 +21,7 @@ export const capacityPlans = createAsyncThunk("getCapacityPlans", async () => {
     console.log(
       `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
     );
-    return response.data;
+    return response.data.plans;
   } catch (error_: any) {
     // console.log(error_, "||", error(error_));
     const errorMessage = error(error_);
