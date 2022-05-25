@@ -4,20 +4,22 @@ import { getUserDetails } from "./slice";
 
 test("calling the state of user-details", async () => {
   mockApi
-    .onGet("/api/user-info?tenantName=deepthi&userName=deepthi")
+    .onGet("/api/user-info?tenantName=Tenant2&userName=tenantadmin")
     .reply(200, {});
 
-  await store.dispatch(
-    getUserDetails({ tenantName: "deepthi", userName: "deepthi" })
+  const result = await store.dispatch(
+    getUserDetails({ tenantName: "Tenant2", userName: "tenantadmin" })
   );
+  expect(result.type).toBe("user/details/fulfilled");
 });
 
 test("calling the state of user-details", async () => {
   mockApi
-    .onGet("/api/user-info?tenantName=deepthi&userName=deepthi")
+    .onGet("/api/user-info?tenantName=Tenant2&userName=tenantadmin")
     .reply(404);
 
-  await store.dispatch(
-    getUserDetails({ tenantName: "deepthi", userName: "deepthi" })
+  const result = await store.dispatch(
+    getUserDetails({ tenantName: "Tenant2", userName: "tenantadmin" })
   );
+  expect(result.type).toBe("user/details/rejected");
 });
