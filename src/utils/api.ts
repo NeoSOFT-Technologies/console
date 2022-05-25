@@ -3,7 +3,7 @@ import tokenService from "../services/tenant/token.service";
 import error from "./error";
 
 const defaultHostUrl =
-  process.env.REACT_APP_API_BASEURL || "http://localhost:5000";
+  process.env.REACT_APP_API_BASEURL || "http://localhost:5000/";
 const defaultGatewayUrl =
   process.env.REACT_APP_GATEWAY_API || "http://localhost:5501";
 
@@ -77,9 +77,9 @@ const apiFactory = (baseUrl: string = getDefaultPath(), header = {}) => {
     },
     async (err) => {
       const originalConfig = err.config;
-
       if (
         originalConfig.url !== "/api/login" &&
+        originalConfig.url !== "/api/refresh-access-token" &&
         err.response && // Access Token was expired
         err.response.status === 401 &&
         !originalConfig._retry
@@ -87,9 +87,12 @@ const apiFactory = (baseUrl: string = getDefaultPath(), header = {}) => {
         originalConfig._retry = true;
 
         try {
-          const rs = await service.post("/api/refresh-access-token", {
-            refreshToken: tokenService.getLocalRefreshToken(),
-          });
+          const rs = await service.post(
+            `${defaultHostUrl}api/refresh-access-token`,
+            {
+              refreshToken: tokenService.getLocalRefreshToken(),
+            }
+          );
           const accessToken = rs.data.access_token;
           tokenService.updateLocalAccessToken(accessToken);
 

@@ -10,7 +10,7 @@ const initialState: IGetAllCertificateState = {
   error: undefined,
 };
 export const getAllCertificate = createAsyncThunk(
-  "add/certificate",
+  "get/certificate",
   async () => {
     try {
       const response = await getAllCertificateService();
@@ -28,17 +28,25 @@ export const getAllCertificate = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "apiUpdate",
+  name: "getcertificate",
   initialState,
-  reducers: {},
+  reducers: {
+    setFormCert: (state, action) => {
+      console.log("action", action);
+      state.data!.CertificateCollection = action.payload;
+
+      console.log("form data :", state.data);
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(getAllCertificate.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(getAllCertificate.fulfilled, (state, action) => {
       state.loading = false;
-      state.data!.form = action.payload.data.CertificateCollection;
-      console.log("slice", state.data!.form);
+      state.data = {
+        CertificateCollection: action.payload.CertificateCollection,
+      };
     });
     builder.addCase(getAllCertificate.rejected, (state, action) => {
       state.loading = false;
@@ -49,4 +57,5 @@ const slice = createSlice({
   },
 });
 
+export const { setFormCert } = slice.actions;
 export default slice.reducer;

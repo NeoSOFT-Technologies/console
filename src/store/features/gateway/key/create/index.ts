@@ -11,6 +11,7 @@ export interface ICreateState {
 export interface IGetKeyByIdData {
   KeyId?: string;
   KeyName: string;
+  SelectedTabIndex: string;
   Per: number;
   Rate: number;
   Quota: number;
@@ -26,29 +27,32 @@ export interface IGetKeyByIdData {
           ApiName: string | null;
           Versions: string[];
           MasterVersions: string[];
+          AuthType: string;
           AllowedUrls:
             | {
-                url: string;
-                methods: string[];
+                Url: string;
+                Methods: string[];
               }[];
-          Limit: {
-            Rate?: number;
-            Per?: number;
-            Throttle_interval?: number;
-            Throttle_retry_limit?: number;
-            Max_query_depth?: number;
-            Quota_max?: number;
-            Quota_renews?: number;
-            Quota_remaining?: number;
-            Quota_renewal_rate?: number;
-          };
+          Limit?:
+            | {
+                Rate?: number;
+                Per?: number;
+                Throttle_interval?: number;
+                Throttle_retry_limit?: number;
+                Max_query_depth?: number;
+                Quota_max?: number;
+                Quota_renews?: number;
+                Quota_remaining?: number;
+                Quota_renewal_rate?: number;
+              }
+            | undefined;
         }
       ]
     | [];
   Policies: string[];
   PolicyByIds?: [
     {
-      global?:
+      Global?:
         | {
             Name: string;
             MaxQuota: number;
@@ -59,23 +63,30 @@ export interface IGetKeyByIdData {
             ThrottleRetries: number;
           }
         | undefined;
-      perApi?: any[] | undefined;
+      APIs?: any[] | undefined;
       policyName: string;
+      AuthType: string;
     }
   ];
   Tags?: string[];
 }
 
+export interface Limiting {
+  ApiId: string;
+  Per: string;
+  Rate: string;
+  Quota: string;
+  Expires: string;
+  QuotaRenewalRate: string;
+  ThrottleInterval: string;
+  ThrottleRetries: string;
+}
+
 export interface IError {
-  KeyId?: string;
   KeyName: string;
-  AccessRights?: string;
-  Policies?: string;
-  Per?: string;
-  Rate?: string;
-  Quota?: string;
-  Expires?: string;
-  QuotaRenewalRate?: string;
-  ThrottleInterval?: string;
-  ThrottleRetries?: string;
+  Policies: string;
+  AccessRights: string;
+  Expires: string;
+  GlobalLimit: Limiting;
+  PerApiLimit: Limiting[];
 }

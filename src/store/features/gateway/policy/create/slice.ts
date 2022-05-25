@@ -7,8 +7,9 @@ import {
 } from "../../../../../services/gateway/policy/policy";
 import error from "../../../../../utils/error";
 import { initialState } from "./payload";
-import { IGetPolicyByIdData } from ".";
-
+import { IGetPolicyByIdData, IPolicyCreateState } from ".";
+// export const emptyState: IPolicyCreateState = { ...initialState };
+export let policystate: IPolicyCreateState;
 export const createPolicy = createAsyncThunk(
   "policy",
   async (data: IGetPolicyByIdData) => {
@@ -29,7 +30,14 @@ export const getPolicybyId = createAsyncThunk(
   async (id: string) => {
     try {
       const response = await getPolicyByIdService(id);
-      // console.log("response", response.data);
+      policystate = {
+        data: {
+          form: response.data.Data,
+        },
+        loading: false,
+        error: undefined,
+      };
+      // emptyState.data.form = response.data;
       return response.data;
     } catch (error_) {
       const myError = error_ as Error | AxiosError;
@@ -44,6 +52,7 @@ export const updatePolicy = createAsyncThunk(
   async (data: IGetPolicyByIdData) => {
     try {
       const response = await updatePolicyService(data);
+
       // console.log(response);
       return response.data;
     } catch (error__) {
@@ -63,7 +72,6 @@ const slice = createSlice({
   reducers: {
     setForm: (state, action) => {
       state.data.form = action.payload;
-      console.log("state policy", state.data.form);
     },
     setFormError: (state, action) => {
       state.data.errors = action.payload;
