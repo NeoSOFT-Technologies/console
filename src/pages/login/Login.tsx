@@ -122,7 +122,7 @@ export default function Login() {
       navigate("/tenant");
     }
     if (!user.loading && user.error && loginType.data) {
-      ToastAlert(`Could not login , error ${user.error}`, "warning");
+      ToastAlert(`Could not login , error ${user.error.message}`, "warning");
     }
   }, [user.data, user.error]);
 

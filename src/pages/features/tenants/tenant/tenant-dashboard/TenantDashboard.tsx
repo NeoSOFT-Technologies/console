@@ -24,7 +24,7 @@ const TenantDashboard = () => {
       ) : (
         user.data && (
           <Container>
-            <Card style={{ width: "550px" }} className="m-1 p-2">
+            <Card className="m-1 p-2 fit-to-content">
               <Card.Title style={{ fontSize: "32px" }} className="text-center">
                 Tenant Details
               </Card.Title>

@@ -5,7 +5,6 @@ import Spinner from "../../../../../components/loader/Loader";
 import { RootState } from "../../../../../store";
 import { useAppSelector } from "../../../../../store/hooks";
 import { IUserDataState } from "../../../../../types";
-// import Error500 from "../../../error-pages/Error500";
 import "./userDashboard.scss";
 
 export default function UserDashboard() {

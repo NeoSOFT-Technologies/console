@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import errorHandler from "../../../../resources/tenant/error-handler";
 import { updateUserDataService } from "../../../../services/tenant/users";
 // import error from "../../../../utils/error";
 
@@ -11,7 +12,7 @@ interface IConditions {
 export interface IUpdateUserState {
   isUpdated: boolean;
   loading: boolean;
-  error?: string;
+  error?: any;
 }
 
 const initialState: IUpdateUserState = {
@@ -33,7 +34,7 @@ export const updateUser = createAsyncThunk(
 
       return response.data;
     } catch (error_: any) {
-      const errorMessage = JSON.stringify(error_.response.data);
+      const errorMessage = errorHandler(error_);
       throw new Error(errorMessage);
     }
   }
@@ -61,7 +62,6 @@ const slice = createSlice({
     });
     builder.addCase(updateUser.rejected, (state, action: any) => {
       state.loading = false;
-      console.log(action.error.message);
       const errorMessage = JSON.parse(action.error.message);
       state.error = errorMessage;
     });

@@ -13,7 +13,7 @@ test("calling the state of add-tenant", async () => {
       description: "i am Test",
       databaseName: "db-Test",
       databaseDescription: "",
-      username: "",
+      userName: "",
     })
   );
   // console.log(result);
@@ -31,7 +31,7 @@ test("calling the state of add-tenant", async () => {
       description: "i am Test",
       databaseName: "db-Test",
       databaseDescription: "",
-      username: "",
+      userName: "",
     })
   );
   expect(result.type).toBe("tenant/addnewtenant/rejected");

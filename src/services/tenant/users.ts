@@ -17,7 +17,10 @@ export function updateUserDataService(data: IConditions) {
   return apiFactory().patch(`api/user`, body);
 }
 
-export function getUserDetailsService(tenantName: string, userName: string) {
+export function getUserDetailsService(
+  tenantName: string = "",
+  userName: string = ""
+) {
   return apiFactory().get(
     `api/user-info?tenantName=${tenantName}&userName=${userName}`
   );
