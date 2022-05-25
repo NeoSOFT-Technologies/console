@@ -3,7 +3,6 @@ import store from "../../../../index";
 import { createTable } from "./slice";
 
 describe("SAAS - CREATE Table Slice", () => {
-
   test("SAAS - CREATE TABLE Success", async () => {
     mockApi.onPost("manage/table/?tenantId=1").reply(200, {});
 
@@ -33,7 +32,6 @@ describe("SAAS - CREATE Table Slice", () => {
     expect(result.type).toBe("createTable/fulfilled");
   });
 
-
   test("SAAS - CREATE TABLE Failure", async () => {
     mockApi.onPost("manage/table/?tenantId=1").reply(400, {});
 
@@ -62,6 +60,4 @@ describe("SAAS - CREATE Table Slice", () => {
     // console.log(result.type);
     expect(result.type).toBe("createTable/rejected");
   });
-
-
 });
