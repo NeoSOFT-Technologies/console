@@ -90,6 +90,12 @@ const AddTable = lazy(
 const EditTables = lazy(
   () => import("./pages/features/saas/edit-table/EditTable")
 );
+const CreateTables = lazy(
+  () => import("./pages/features/saas/create-table/CreateTable")
+);
+const CapacityPlans = lazy(
+  () => import("./pages/features/saas/create-table/CapacityPlan")
+);
 
 function AppRoutes() {
   return (
@@ -278,6 +284,22 @@ function AppRoutes() {
             element={
               <AdminGuard>
                 <EditTables />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="createTables"
+            element={
+              <AdminGuard>
+                <CreateTables />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="capacityPlans"
+            element={
+              <AdminGuard>
+                <CapacityPlans />
               </AdminGuard>
             }
           />
