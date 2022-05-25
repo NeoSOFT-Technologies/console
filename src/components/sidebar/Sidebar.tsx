@@ -40,6 +40,7 @@ export const Sidebar = () => {
   ]);
 
   useEffect(() => {
+    console.log(user.data, loginType.data);
     if (user.data && loginType.data === "admin") {
       setRoutes(adminRoutes);
       setGatewayRoutes(adminGatewayRoutes);
@@ -81,14 +82,21 @@ export const Sidebar = () => {
               </div>
               <div className="nav-profile-text">
                 <span className="font-weight-bold mb-2">
-                  {loginType.data === "admin"
-                    ? "admin"
-                    : loginType.data === "tenant"
-                    ? user.data?.tenantName
-                    : user.data?.username}
+                  {
+                    JSON.parse(localStorage.getItem("user_info") || "undefined")
+                      ?.roles[0]
+                  }
                 </span>
                 <span className="text-secondary text-small">
-                  <>{loginType.data}</>
+                  <>
+                    {loginType.data !== "admin" &&
+                      `${user.data?.tenantName} - `}
+                    {
+                      JSON.parse(
+                        localStorage.getItem("user_info") || "undefined"
+                      )?.roles[0]
+                    }
+                  </>
                 </span>
               </div>
               {/* <i className="bi bi-bookmark-star-fill text-success nav-profile-badge"></i> */}

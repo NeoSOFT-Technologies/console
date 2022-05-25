@@ -25,6 +25,12 @@ export const updateUser = createAsyncThunk(
   async (condition: IConditions) => {
     try {
       const response = await updateUserDataService(condition);
+      let data = JSON.parse(localStorage.getItem("user_info") || "{}");
+      if (data.username === condition.username) {
+        data = { ...data, ...condition };
+        localStorage.setItem("user_info", JSON.stringify(data));
+      }
+
       return response.data;
     } catch (error_: any) {
       const errorMessage = JSON.stringify(error_.response.data);

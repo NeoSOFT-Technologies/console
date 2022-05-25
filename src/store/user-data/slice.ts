@@ -27,6 +27,7 @@ export const getUserData = createAsyncThunk(
       switch (conditions.type) {
         case "admin":
           response = await adminLoginData();
+          localStorage.setItem("user_info", JSON.stringify(response.data));
           break;
         case "tenant":
           response = await getUserDetailsService(
@@ -49,6 +50,7 @@ export const getUserData = createAsyncThunk(
           //     "delete"
           //   ]
           // }
+          localStorage.setItem("user_info", JSON.stringify(response.data));
           if (response.data.roles.includes("tenantadmin")) {
             response = await getTenantDetailsService(conditions.tenantName);
 
@@ -61,9 +63,9 @@ export const getUserData = createAsyncThunk(
             //   "port": 3306,
             //   "policy": "{ max_size: 30 }"
             // }
-          } else {
-            await thunkAPI.dispatch(checkLoginType("user"));
+            localStorage.setItem("tenant_info", JSON.stringify(response.data));
           }
+          await thunkAPI.dispatch(checkLoginType());
           break;
       }
       return response?.data;
@@ -82,10 +84,24 @@ const slice = createSlice({
       state.data = { ...action.payload };
       state.loading = false;
       state.error = undefined;
+      const data = JSON.parse(localStorage.getItem("user_info") || "{}");
+      if (data.roles.includes("tenantadmin"))
+        localStorage.setItem("tenant_info", JSON.stringify(action.payload));
+      else localStorage.setItem("user_info", JSON.stringify(action.payload));
+    },
+    setLocalStorageData: (state) => {
+      state.loading = false;
+      state.error = undefined;
+      state.data = JSON.parse(
+        localStorage.getItem("tenant_info") ||
+          localStorage.getItem("user_info") ||
+          "undefined"
+      );
     },
   },
   extraReducers(builder): void {
     builder.addCase(getUserData.pending, (state) => {
+      console.log(getUserData);
       state.loading = true;
       state.data = undefined;
       state.error = undefined;
@@ -104,4 +120,4 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
-export const { setUserData } = slice.actions;
+export const { setUserData, setLocalStorageData } = slice.actions;
