@@ -5,12 +5,12 @@
 }
 
 .r-90 {
-  transform: rotate(-90deg);
+  transform: rotate(-90deg) !important;
   transition: all 0.5s;
 }
 
 .r90 {
-  transform: rotate(0deg);
+  transform: rotate(0deg) !important;
   transition: all 0.5s;
 }
 

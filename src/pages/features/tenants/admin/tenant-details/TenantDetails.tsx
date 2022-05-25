@@ -17,7 +17,10 @@ import {
   regexForDescription,
 } from "../../../../../resources/tenant/constants";
 import { RootState } from "../../../../../store";
-import { deleteTenant } from "../../../../../store/features/admin/delete-tenant/slice";
+import {
+  deleteTenant,
+  deleteTenantReset,
+} from "../../../../../store/features/admin/delete-tenant/slice";
 import {
   tenantDetails,
   resetTenantDetails,
@@ -66,6 +69,7 @@ export default function TenantDetails() {
     }
     return () => {
       dispatch(resetTenantDetails());
+      dispatch(deleteTenantReset());
     };
   }, []);
 
@@ -93,7 +97,7 @@ export default function TenantDetails() {
           ...error,
           [name]: regexForDescription.test(value)
             ? ""
-            : "description should only consist Alphabets",
+            : "description should only consist Alphabets and Numbers",
         });
         break;
       default:
@@ -319,13 +323,9 @@ export default function TenantDetails() {
                             !regexForDescription.test(tenant.description)
                           }
                         />
-                        {tenant.description &&
-                          !regexForDescription.test(tenant.description) && (
-                            <span className="text-danger">
-                              description should be characters only no Special
-                              Character or Number allowed.
-                            </span>
-                          )}
+                        <Form.Control.Feedback type="invalid">
+                          {error.description}
+                        </Form.Control.Feedback>
                       </Form.Group>
                     </Col>
                     <div>
