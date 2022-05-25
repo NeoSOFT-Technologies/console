@@ -5,11 +5,15 @@ import { useParams } from "react-router-dom";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
-import { setForms } from "../../../../../store/features/gateway/key/create/slice";
+import {
+  setFormErrors,
+  setForms,
+} from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
 import {
   policystate,
   setForm,
+  setFormError,
 } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
@@ -330,29 +334,33 @@ export default function PathBased(props: IProps) {
 
   const handleversion = (event: any) => {
     const value = event.target.value;
-    const mapped = versions;
-    const found = mapped.includes(value);
-    if (!found) {
-      setversion([...versions, value]);
-    }
-    const apisLists =
+    if (value.length > 0) {
+      const mapped = versions;
+      const found = mapped.includes(value);
+      if (!found) {
+        setversion([...versions, value]);
+      }
+      const apisLists =
+        props.current === "policy"
+          ? [...props.policystate?.data.form.APIs!]
+          : [...props.state?.data.form.AccessRights!];
+      const version = [...apisLists[props.indexdata!].Versions!];
+      const checkexisting = version.includes(value);
+      if (!checkexisting) {
+        version.push(value);
+      }
+      apisLists[props.indexdata!] = {
+        ...apisLists[props.indexdata!],
+        Versions: [...version],
+      };
       props.current === "policy"
-        ? [...props.policystate?.data.form.APIs!]
-        : [...props.state?.data.form.AccessRights!];
-    const version = [...apisLists[props.indexdata!].Versions!];
-    const checkexisting = version.includes(value);
-    if (!checkexisting) {
-      version.push(value);
+        ? dispatch(
+            setForm({ ...props.policystate?.data.form, APIs: apisLists })
+          )
+        : dispatch(
+            setForms({ ...props.state?.data.form, AccessRights: apisLists })
+          );
     }
-    apisLists[props.indexdata!] = {
-      ...apisLists[props.indexdata!],
-      Versions: [...version],
-    };
-    props.current === "policy"
-      ? dispatch(setForm({ ...props.policystate?.data.form, APIs: apisLists }))
-      : dispatch(
-          setForms({ ...props.state?.data.form, AccessRights: apisLists })
-        );
   };
 
   const deleteversion = (event: any, index: any) => {
@@ -388,6 +396,14 @@ export default function PathBased(props: IProps) {
 
       removeApi.splice(index, 1);
       dispatch(setForm({ ...props.policystate?.data.form, APIs: removeApi }));
+      const error = [...props.policystate?.data.errors?.PerApiLimit!];
+      error.splice(index, 1);
+      dispatch(
+        setFormError({
+          ...props.policystate.data.errors,
+          PerApiLimit: error,
+        })
+      );
     } else if (
       current === "key" &&
       props.state?.data.form !== undefined &&
@@ -401,6 +417,14 @@ export default function PathBased(props: IProps) {
       ToastAlert(`${ApiName} removed`, "warning");
       dispatch(
         setForms({ ...props.state?.data.form, AccessRights: removeApi })
+      );
+      const error = [...props.state?.data.errors?.PerApiLimit!];
+      error.splice(index, 1);
+      dispatch(
+        setFormErrors({
+          ...props.state.data.errors,
+          PerApiLimit: error,
+        })
       );
     }
   };
@@ -440,10 +464,11 @@ export default function PathBased(props: IProps) {
                         <Form.Select
                           style={{ height: 46 }}
                           name="Versions"
+                          value=""
                           onChange={(e: any) => handleversion(e)}
                         >
-                          <option value="" disabled selected hidden>
-                            Selected Versions
+                          <option value="" className="bg-light">
+                            --- Select Versions ---
                           </option>
                           {/* <option></option> */}
                           {props.current === "key"
