@@ -32,98 +32,100 @@
 
 ## 3. Redux
 
-   a. actions :- ( Actions have a type field that tells what kind of action to perform and all other fields contain 
+      a. actions :- ( Actions have a type field that tells what kind of action to perform and all other fields contain 
                   information or data. in "src/app/redux/actions" folder contains files with redux actions)
                   
-   b. reducer :- (a reducer is a pure function that takes an action and the previous state of the application and
+      b. reducer :- (a reducer is a pure function that takes an action and the previous state of the application and
                   returns the new state. in "src/app/redux/reducers" contains file with reducer functions)
                   
-   c. store :-    ("src/app/redux/store" contains a file in which store is created.)
-   
-   d. createStore :-  (a method used to create a storage space where data would be stored and provided to application)
-   
-   e. combineReducers :- (method used to combine multiple reducers)
-   
-   f. Provider  :-  (a component which works as a wrapper for other components where redux storage needs 
-                     to be accessed by any component not encapsulated inside this wrapper would not be able 
-                     to access redux storage.)
-                     
-   g. useSelector,useDispatch :-  (hookes used in function components to access and manipulate redux storage)
-   
-   h. connect :-  (a method used with "mapStateToProps" method to use redux in class components)   
+      c. store :-    ("src/app/redux/store" contains a file in which store is created.)
+      
+      d. createStore :-  (a method used to create a storage space where data would be stored and provided to application)
+      
+      e. combineReducers :- (method used to combine multiple reducers)
+      
+      f. Provider  :-  (a component which works as a wrapper for other components where redux storage needs 
+                        to be accessed by any component not encapsulated inside this wrapper would not be able 
+                        to access redux storage.)
+                        
+      g. useSelector,useDispatch :-  (hookes used in function components to access and manipulate redux storage)
+      
+      h. connect :-  (a method used with "mapStateToProps" method to use redux in class components)   
 
 
 ## 4. Redux Toolkit
 
+      a. Slice
+      b. createSlice
+      c. createAsyncThunk
+      d. extraReducers      
 
 ## 5. React-Router-Dom
 
-   a.BrowserRouter      (a component which works as a wrapper for other components which use routing in react)
-   
-   b.Routes       (a Routes component is similar to a "switch" statement in many programming languages ,    
-                  it switches between components according to route path, hence it encapsulates all components 
-                  which need to be switched between each other.)
-                  
-   c.Route         (it defines a particular path for a component to be displayed in react-dom)
-   
-   e.useLocation   (hook used to access location and data passed through previous component)
-   
-   f.useNavigate   (hook used to navigate )
-   
-   g.Navigate (a component used to navigate through react-dom)
-   
-   h.Link (a component used to navigate through react-dom)
+      a. BrowserRouter      (a component which works as a wrapper for other components which use routing in react)
+      
+      b. Routes       (a Routes component is similar to a "switch" statement in many programming languages ,    
+                     it switches between components according to route path, hence it encapsulates all components 
+                     which need to be switched between each other.)
+                     
+      c. Route         (it defines a particular path for a component to be displayed in react-dom)
+      
+      e. useLocation   (hook used to access location and data passed through previous component)
+      
+      f. useNavigate   (hook used to navigate )
+      
+      g. Navigate (a component used to navigate through react-dom)
+      
+      h. Link (a component used to navigate through react-dom)
 
 ## 6. React-Bootstrap
 
-   a.React-Bootstrap Components     
-   b.inline styling   
-   c.bootstrap classes
+      a. React-Bootstrap Components                 
+      b. inline styling   
+      c. bootstrap classes
 
 ## 7. Bootstrap 
 
-   a.bootstrap components   
-   b.bootstrap classes
-
+      a. bootstrap components
+      b. bootstrap classes
 
 ## 8. Regular Expression
    
-   a.create a regular expression   
-   b.test data against regular
-   
+      a. create a regular expression
+      b. test data against regular
 
 ## 9. Axios
 
-   a.GET,POST,PUT,DELETE requests  
-   b.headers      
-   c.params   
-   d.query   
-   e.request body
+      a. GET,POST,PUT,DELETE requests  
+      b. headers      
+      c. params   
+      d. query   
+      e. request body
 
 ## 10.Sass
 
-   a. preprocessing
-   b. using variables
-   c. nesting
-   d. partials
-   e. modules
-   f. extend/inheritance
-   g. operators
-   h. mixins
+      a. preprocessing
+      b. using variables
+      c. nesting
+      d. partials
+      e. modules
+      f. extend/inheritance
+      g. operators
+      h. mixins
 
 ## 11. GridJs
 
-   a.Grid  
-   b.data     
-   c.columns   
-   d.pagination   
-   e.searching & sorting
+      a.Grid  
+      b.data     
+      c.columns   
+      d.pagination   
+      e.searching & sorting
 
 ## 12. Reuseable Components :- 
-   (These components are like a template which can be used multiple times in our project and used with props to pass data into it.)
+      (These components are like a template which can be used multiple times in our project and used with props to pass data into it.)
 
 ## 13. Environmental files :- 
-   (these files are used to store sensitive data like certain tokens and PORT numbers, connection links ,etc.)
+      (these files are used to store sensitive data like certain tokens and PORT numbers, connection links ,etc.)
 
 
 ## NPM Modules
