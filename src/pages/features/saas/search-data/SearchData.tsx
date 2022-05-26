@@ -6,7 +6,7 @@ import Form from "react-bootstrap/Form";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
-  // resetSearchDataWithQueryField,
+  resetSearchDataWithQueryField,
   searchDataWithQueryField,
 } from "../../../../store/features/saas/search-data/with-query-field/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
@@ -15,13 +15,14 @@ import {
   ITableSchema,
 } from "../../../../types/saas/index";
 import "./style.css";
+import { getTables } from "./../../../../store/features/saas/manage-table/get-tables/slice";
 
 export default function GetSearchData() {
   const dispatch = useAppDispatch();
   const searchData = useAppSelector(
     (state) => state.searchDataWithQueryFieldState
   );
-
+  const tableData = useAppSelector((state) => state.getTableState);
   const [tenantId, setTenantId] = useState("");
   const [tableName, setTableName] = useState("");
   const [queryField, setQueryField] = useState("*");
@@ -106,10 +107,18 @@ export default function GetSearchData() {
     }
 
     // if (tableHeader.length > 0) ToastAlert("Data Fetch sucessfuly ", "success");
-    // return () => {
-    //   dispatch(resetSearchDataWithQueryField());
-    // };
   }, [searchData.data, searchData.error]);
+
+  useEffect(() => {
+    dispatch(getTables(tenantId));
+  }, [tenantId]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetSearchDataWithQueryField());
+    };
+  }, []);
+
   return (
     <div>
       <div className="card">
@@ -132,13 +141,25 @@ export default function GetSearchData() {
               </Col>
               <Col lg="2">
                 <Form.Group controlId="formBasicEmail">
-                  <Form.Control
+                  <Form.Select
+                    aria-label="Default select example"
+                    onChange={(e) => setTableName(e.target.value)}
+                  >
+                    <option>Table Name</option>
+                    {tableData.data?.map((val, index) => (
+                      <option key={`option${index}`} value={val}>
+                        {val}
+                      </option>
+                    ))}
+                  </Form.Select>
+
+                  {/* <Form.Control
                     type="text"
                     placeholder="Table Name"
                     value={tableName}
                     className="text-center"
                     onChange={(e) => setTableName(e.target.value)}
-                  />
+                  /> */}
                 </Form.Group>
               </Col>
               <Col>
@@ -233,14 +254,17 @@ export default function GetSearchData() {
                           <td>{index + 1}</td>
 
                           {tableHeader.map((h, i) => (
-                            <td key={i}>{JSON.stringify(val[h])}</td>
+                            <td key={i}>{val[h].toString()}</td>
                           ))}
                         </tr>
                       ))}
                     </tbody>
                   </Table>
 
-                  <nav aria-label="Page navigation example">
+                  <nav
+                    aria-label="Page navigation example "
+                    className="d-flex w-100 justify-content-center"
+                  >
                     <ul className="pagination ">
                       <li className="page-item">
                         <a className="page-link" onClick={() => prevpage()}>
