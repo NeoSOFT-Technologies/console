@@ -67,7 +67,8 @@ export default function TenantDetails() {
     else {
       navigate("/error", {
         state: {
-          code: "404",
+          statusCode: "404",
+          message: "Tenant not found",
         },
       });
     }
@@ -156,7 +157,7 @@ export default function TenantDetails() {
     if (!tenantDeleted.loading && tenantDeleted.error) {
       navigate("/error", {
         state: {
-          code: tenantDeleted.error.statusCode,
+          statusCode: tenantDeleted.error.statusCode,
           message: tenantDeleted.error.message,
         },
       });
@@ -164,7 +165,7 @@ export default function TenantDetails() {
     if (!tenantDetailsState.loading && tenantDetailsState.error) {
       navigate("/error", {
         state: {
-          code: tenantDetailsState.error.statusCode,
+          statusCode: tenantDetailsState.error.statusCode,
           message: tenantDetailsState.error.message,
         },
       });
@@ -172,7 +173,7 @@ export default function TenantDetails() {
     if (!updateTenantState.loading && updateTenantState.error) {
       navigate("/error", {
         state: {
-          code: updateTenantState.error.statusCode,
+          statusCode: updateTenantState.error.statusCode,
           message: updateTenantState.error.message,
         },
       });

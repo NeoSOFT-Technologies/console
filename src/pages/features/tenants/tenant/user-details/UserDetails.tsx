@@ -133,7 +133,7 @@ export default function UserDetails() {
     if (!updateUserDataState.loading && updateUserDataState.error) {
       navigate("/error", {
         state: {
-          code: updateUserDataState.error.statusCode,
+          statusCode: updateUserDataState.error.statusCode,
           message: updateUserDataState.error.message,
         },
       });
@@ -151,7 +151,7 @@ export default function UserDetails() {
     if (user.error) {
       navigate("/error", {
         state: {
-          code: user.error.statusCode,
+          statusCode: user.error.statusCode,
           message: user.error.message,
         },
       });
@@ -161,7 +161,7 @@ export default function UserDetails() {
     } else if (userDetails.error) {
       navigate("/error", {
         state: {
-          code: userDetails.error.statusCode,
+          statusCode: userDetails.error.statusCode,
           message: userDetails.error.message,
         },
       });
@@ -169,7 +169,7 @@ export default function UserDetails() {
     if (rolesList.error) {
       navigate("/error", {
         state: {
-          code: userDetails.error.statusCode,
+          statusCode: userDetails.error.statusCode,
           message: userDetails.error.message,
         },
       });

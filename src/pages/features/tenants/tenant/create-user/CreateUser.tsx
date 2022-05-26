@@ -192,7 +192,7 @@ export default function Createuser() {
     if (!rolesList.loading && rolesList.error) {
       navigate("/error", {
         state: {
-          code: rolesList.error.statusCode,
+          statusCode: rolesList.error.statusCode,
           message: rolesList.error.message,
         },
       });

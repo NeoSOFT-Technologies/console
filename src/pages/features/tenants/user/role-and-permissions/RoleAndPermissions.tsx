@@ -16,7 +16,7 @@ export default function RoleAndPermissions() {
     if (!user.loading && user.error) {
       navigate("/error", {
         state: {
-          code: user.error.statusCode,
+          statusCode: user.error.statusCode,
           message: user.error.message,
         },
       });

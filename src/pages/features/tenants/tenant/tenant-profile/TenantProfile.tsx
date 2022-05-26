@@ -95,7 +95,7 @@ const TenantProfile = () => {
     if (!user.loading && user.error) {
       navigate("/error", {
         state: {
-          code: user.error.statusCode,
+          statusCode: user.error.statusCode,
           message: user.error.message,
         },
       });
@@ -113,7 +113,7 @@ const TenantProfile = () => {
     if (!updateTenantState.isUpdated && updateTenantState.error) {
       navigate("/error", {
         state: {
-          code: updateTenantState.error.statusCode,
+          statusCode: updateTenantState.error.statusCode,
           message: updateTenantState.error.message,
         },
       });

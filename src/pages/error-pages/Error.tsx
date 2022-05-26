@@ -6,7 +6,7 @@ import { useAppSelector } from "../../store/hooks";
 import "./error.scss";
 
 interface ILocationState {
-  code: string;
+  statusCode: string;
   message?: string;
 }
 
@@ -17,7 +17,7 @@ interface IErrorMessage {
 export default function Error() {
   const errorMessage: IErrorMessage = errorMsg;
   const location = useLocation();
-  const { code, message } = location.state as ILocationState;
+  const { statusCode, message } = location.state as ILocationState;
   const loginType = useAppSelector((state: RootState) => state.loginType);
   const navigate = useNavigate();
   const backToHome = () => {
@@ -42,7 +42,7 @@ export default function Error() {
           <div className="col-lg-8 mx-auto text-white">
             <div className="row align-items-center d-flex flex-row">
               <div className="col-lg-6 text-lg-right pr-lg-4">
-                <h1 className="display-1 mb-0">{code}</h1>
+                <h1 className="display-1 mb-0">{statusCode}</h1>
               </div>
               <div className="col-lg-6 error-page-divider text-lg-left pl-lg-4">
                 <h2>SORRY!</h2>
@@ -51,7 +51,9 @@ export default function Error() {
                 {message !== undefined ? (
                   <h3 className="font-weight-light">{message}</h3>
                 ) : (
-                  <h3 className="font-weight-light">{errorMessage[code]}</h3>
+                  <h3 className="font-weight-light">
+                    {errorMessage[statusCode]}
+                  </h3>
                 )}
               </div>
             </div>
