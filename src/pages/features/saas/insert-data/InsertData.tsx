@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { inputTableDataWithNrt } from "../../../../store/features/saas/input-data/with-nrt/slice";
+import { inputTableDataWithoutNrt } from "../../../../store/features/saas/input-data/without-nrt/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IInputData, ITableSchema } from "../../../../types/saas";
 
@@ -12,7 +13,8 @@ export default function InputData() {
   const [tenantId, setTenantId] = useState("");
   const [tableName, setTableName] = useState("");
   const [inputData, setInputData] = useState("[]");
-  console.log({ tenantId, tableName, inputData });
+  const [isNrtChecked, setIsNrtChecked] = useState(false);
+  console.log({ tenantId, tableName, isNrtChecked, inputData });
   const params: ITableSchema = {
     tenantId,
     tableName,
@@ -27,13 +29,19 @@ export default function InputData() {
     event.preventDefault();
     // console.log(tenantId);
     alert("Befor Dispatch -: " + JSON.stringify(initialState));
-    dispatch(inputTableDataWithNrt(initialState));
+    if (isNrtChecked) {
+      dispatch(inputTableDataWithNrt(initialState));
+    } else {
+      dispatch(inputTableDataWithoutNrt(initialState));
+    }
   };
   useEffect(() => {
     // console.log(tableData);
     console.log("Use Effect of Input Data " + JSON.stringify(inputDatas));
   }, [inputDatas.data, inputDatas.error]);
-
+  const handleOnChange = () => {
+    setIsNrtChecked(!isNrtChecked);
+  };
   return (
     <div className=" bg-white">
       <h3 className="font-weight-normal text-justify text-center">
@@ -64,9 +72,11 @@ export default function InputData() {
             </Form.Group>
             <Form.Group className="mb-1" controlId="formBasicEmail">
               <div className="ml-4">
-                <Form.Check />
-              </div>
-              <div className=" ml-4 mr-3">
+                <Form.Check
+                  value="NRT"
+                  checked={isNrtChecked}
+                  onChange={handleOnChange}
+                />
                 <label className="pl-2">NRT</label>
               </div>
             </Form.Group>

@@ -1,4 +1,5 @@
 import {
+  IPagination,
   ISearchDataWithQuery,
   ISearchDataWithQueryField,
   ITableCreateData,
@@ -68,6 +69,16 @@ export function searchDataWithQueryFieldService(
 export function searchDataWithQueryService(data: ISearchDataWithQuery) {
   return apiFactory().get(
     `${data.requestParams.tableName}?tenantId=${data.requestParams.tenantId}&searchQuery=${data.searchQuery}&startRecord=${data.startRecord}&pageSize=${data.pageSize}&orderBy=${data.orderBy}&order=${data.order}`
+  );
+}
+export function getAllTablesService(data: IPagination) {
+  return apiFactory().get(
+    `manage/table/all-tables?pageNumber=${data.pageNumber}&pageSize=${data.pageSize}`
+  );
+}
+export function getAllDeletedTableService(data: IPagination) {
+  return apiFactory().get(
+    `manage/table/deletion/all-tables?pageNumber=${data.pageNumber}&pageSize=${data.pageSize}`
   );
 }
 // export function apiListService(currentPage: number, pageSize: number) {

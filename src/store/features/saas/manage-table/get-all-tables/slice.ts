@@ -1,28 +1,28 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { restoreTableService } from "../../../../../services/saas/api/api";
-import { ITableSchema } from "../../../../../types/saas";
+import { getAllTablesService } from "../../../../../services/saas/api/api";
+import { IPagination, ITableSchema } from "../../../../../types/saas";
 import error from "../../../../../utils/error";
 
-interface IRestoreTableState {
-  data?: string;
+interface IGetAllTableState {
+  data?: ITableSchema[];
   loading: boolean;
   error?: string | null;
 }
-const initialState: IRestoreTableState = {
+const initialState: IGetAllTableState = {
   data: undefined,
   loading: false,
   error: undefined,
 };
 
-export const restoreTable = createAsyncThunk(
-  "restoreTableByTableName",
-  async (data: ITableSchema) => {
+export const getAllTables = createAsyncThunk(
+  "getAllTable",
+  async (data: IPagination) => {
     try {
-      const response = await restoreTableService(data.tableName, data.tenantId);
+      const response = await getAllTablesService(data);
       console.log(
         `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
       );
-      return response.data;
+      return response.data.tableList;
     } catch (error_: any) {
       // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
@@ -33,26 +33,27 @@ export const restoreTable = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "restoreTableSlice",
+  name: "getAllTableSlice",
   initialState,
   reducers: {
-    restoreTableReset: (state) => {
-      state.data = undefined;
+    setTableData: (state, action) => {
+      // alert("inside get-all-table slice : " + JSON.stringify(action.payload));
+      state.data = [...action.payload];
       state.loading = false;
       state.error = undefined;
     },
   },
   extraReducers(builder): void {
-    builder.addCase(restoreTable.pending, (state) => {
+    builder.addCase(getAllTables.pending, (state) => {
       state.data = undefined;
       state.loading = true;
       state.error = undefined;
     });
-    builder.addCase(restoreTable.fulfilled, (state, action) => {
+    builder.addCase(getAllTables.fulfilled, (state, action) => {
       state.data = action.payload;
       state.loading = false;
     });
-    builder.addCase(restoreTable.rejected, (state, action: any) => {
+    builder.addCase(getAllTables.rejected, (state, action: any) => {
       state.loading = false;
       const errorMessage = action.error.message.split(" ");
       state.error = errorMessage[errorMessage.length - 1];
@@ -62,5 +63,5 @@ const slice = createSlice({
     });
   },
 });
-export const { restoreTableReset } = slice.actions;
+export const { setTableData } = slice.actions;
 export default slice.reducer;
