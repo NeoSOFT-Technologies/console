@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
+import Spinner from "../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { inputTableDataWithNrt } from "../../../../store/features/saas/input-data/with-nrt/slice";
 import { inputTableDataWithoutNrt } from "../../../../store/features/saas/input-data/without-nrt/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
@@ -8,11 +10,16 @@ import { IInputData, ITableSchema } from "../../../../types/saas";
 
 export default function InputData() {
   const dispatch = useAppDispatch();
-  const inputDatas = useAppSelector((state) => state.inputDataWithNrtState);
+  const inputDataWithNrt = useAppSelector(
+    (state) => state.inputDataWithNrtState
+  );
+  const inputDataWithoutNrt = useAppSelector(
+    (state) => state.inputDataWithOutNrtState
+  );
 
   const [tenantId, setTenantId] = useState("");
   const [tableName, setTableName] = useState("");
-  const [inputData, setInputData] = useState("[]");
+  const [inputData, setInputData] = useState("");
   const [isNrtChecked, setIsNrtChecked] = useState(false);
   console.log({ tenantId, tableName, isNrtChecked, inputData });
   const params: ITableSchema = {
@@ -23,86 +30,133 @@ export default function InputData() {
     inputData,
     requestParams: params,
   };
+
+  function isValidJSONObject() {
+    try {
+      if (
+        inputData !== null &&
+        inputData.trim().startsWith("[{") &&
+        JSON.parse(inputData) &&
+        inputData.trim().endsWith("}]")
+      ) {
+        console.log("JSON object true");
+        return true;
+      } else {
+        console.log("JSON object false");
+        return false;
+      }
+    } catch (error) {
+      console.log("error" + error);
+      return false;
+    }
+  }
+
   const getInputData: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
   ) => {
     event.preventDefault();
-    // console.log(tenantId);
-    alert("Befor Dispatch -: " + JSON.stringify(initialState));
-    if (isNrtChecked) {
-      dispatch(inputTableDataWithNrt(initialState));
+    if (isValidJSONObject()) {
+      if (isNrtChecked) {
+        dispatch(inputTableDataWithNrt(initialState));
+      } else {
+        dispatch(inputTableDataWithoutNrt(initialState));
+      }
     } else {
-      dispatch(inputTableDataWithoutNrt(initialState));
+      ToastAlert("Data is invalid", "error");
     }
   };
   useEffect(() => {
-    // console.log(tableData);
-    console.log("Use Effect of Input Data " + JSON.stringify(inputDatas));
-  }, [inputDatas.data, inputDatas.error]);
+    if (
+      (!inputDataWithNrt.loading &&
+        !inputDataWithNrt.error &&
+        inputDataWithNrt?.data) ||
+      (!inputDataWithoutNrt.loading &&
+        !inputDataWithoutNrt.error &&
+        inputDataWithoutNrt?.data)
+    ) {
+      ToastAlert("Data Saved successfully", "success");
+    }
+  }, [inputDataWithNrt.loading, inputDataWithoutNrt.loading]);
   const handleOnChange = () => {
     setIsNrtChecked(!isNrtChecked);
   };
   return (
-    <div className=" bg-white">
-      <h3 className="font-weight-normal text-justify text-center">
-        Insert Data
-      </h3>
-      <Form onSubmit={getInputData}>
-        <Row className="justify-content-center">
-          <Col md={6} className="justify-content-center">
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>User :</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="user"
-                value={tenantId}
-                className="text-center"
-                onChange={(e) => setTenantId(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Table Name :</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Table Name"
-                value={tableName}
-                className="text-center"
-                onChange={(e) => setTableName(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-1" controlId="formBasicEmail">
-              <div className="ml-4">
-                <Form.Check
-                  value="NRT"
-                  checked={isNrtChecked}
-                  onChange={handleOnChange}
-                />
-                <label className="pl-2">NRT</label>
-              </div>
-            </Form.Group>
-            <Form.Group controlId="jsonInput">
-              <Form.Label className="mb-2">Data</Form.Label>
-              <Form.Control
-                as="textarea"
-                className="h:100"
-                value={inputData}
-                placeholder="JSON input"
-                onChange={(e) => setInputData(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3 mt-3 ml-5" controlId="formBasicEmail">
-              <Button
-                className="w-50 ml-5"
-                variant="primary"
-                type="submit"
-                id="save"
-              >
-                Save
-              </Button>
-            </Form.Group>
-          </Col>
-        </Row>
-      </Form>
+    <div>
+      {inputDataWithNrt.loading || inputDataWithoutNrt.loading ? (
+        <Spinner />
+      ) : (
+        <div>
+          <div className="bg-white">
+            <div className="mb-4 mt-3">
+              <h3 className="font-weight-normal text-justify text-center">
+                Insert Data
+              </h3>
+              <Form onSubmit={getInputData}>
+                <Row className="justify-content-center">
+                  <Col md={6} className="justify-content-center">
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Label>User :</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="user"
+                        value={tenantId}
+                        className="text-center"
+                        onChange={(e) => setTenantId(e.target.value)}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Label>Table Name :</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Table Name"
+                        value={tableName}
+                        className="text-center"
+                        onChange={(e) => setTableName(e.target.value)}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-1" controlId="formBasicEmail">
+                      <div className="ml-4">
+                        <Form.Check
+                          value="NRT"
+                          checked={isNrtChecked}
+                          onChange={handleOnChange}
+                        />
+                        <label className="pl-2">NRT</label>
+                      </div>
+                    </Form.Group>
+                    <Form.Group controlId="jsonInput">
+                      <Form.Label className="mb-2">Data</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        className="h:100"
+                        value={inputData}
+                        placeholder="JSON input"
+                        onChange={(e) => setInputData(e.target.value)}
+                      />
+                    </Form.Group>
+                    <Form.Group
+                      className="mb-3 mt-3"
+                      controlId="formBasicEmail"
+                    >
+                      <Button
+                        className="btn btn-block btn-primary btn-md font-weight-medium auth-form-btn btn btn-primary"
+                        type="submit"
+                        id="save"
+                        disabled={
+                          inputDataWithNrt.loading ||
+                          inputDataWithoutNrt.loading
+                        }
+                      >
+                        Save
+                      </Button>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
