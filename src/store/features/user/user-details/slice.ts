@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import errorHandler from "../../../../resources/tenant/error-handler";
 import { getUserDetailsService } from "../../../../services/tenant/users";
 import { IUserDetailsData } from "../../../../types";
+import errorHandler from "../../../../utils/error-handler";
 
 interface IConditions {
   tenantName: string;
@@ -11,7 +11,7 @@ interface IConditions {
 export interface IUserDetailsState {
   data?: IUserDetailsData;
   loading: boolean;
-  error?: undefined;
+  error?: any;
 }
 
 const initialState: IUserDetailsState = {

@@ -4,9 +4,20 @@ import { errorMsg } from "../../resources/tenant/constants";
 import { RootState } from "../../store";
 import { useAppSelector } from "../../store/hooks";
 import "./error.scss";
+
+interface ILocationState {
+  code: string;
+  message?: string;
+}
+
+interface IErrorMessage {
+  [key: string]: string;
+}
+
 export default function Error() {
+  const errorMessage: IErrorMessage = errorMsg;
   const location = useLocation();
-  const code: string = location.state as string;
+  const { code, message } = location.state as ILocationState;
   const loginType = useAppSelector((state: RootState) => state.loginType);
   const navigate = useNavigate();
   const backToHome = () => {
@@ -36,7 +47,12 @@ export default function Error() {
               <div className="col-lg-6 error-page-divider text-lg-left pl-lg-4">
                 <h2>SORRY!</h2>
                 {/* @ts-ignore */}
-                <h3 className="font-weight-light">{errorMsg[code]}</h3>
+
+                {message !== undefined ? (
+                  <h3 className="font-weight-light">{message}</h3>
+                ) : (
+                  <h3 className="font-weight-light">{errorMessage[code]}</h3>
+                )}
               </div>
             </div>
             <div className="row mt-5">

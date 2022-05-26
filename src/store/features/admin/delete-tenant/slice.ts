@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import errorHandler from "../../../../resources/tenant/error-handler";
 import { deleteTenantDataService } from "../../../../services/tenant";
+import errorHandler from "../../../../utils/error-handler";
 
 interface IDeleteTenantState {
   isDeleted?: boolean;
   loading: boolean;
-  error?: string | null;
+  error?: any;
 }
 
 const initialState: IDeleteTenantState = {

@@ -33,7 +33,6 @@ export const checkLoginType = createAsyncThunk(
       if (user_data) {
         type = getType();
       }
-      console.log(type);
       return type;
     } catch (error_) {
       return error_;

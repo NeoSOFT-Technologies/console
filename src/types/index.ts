@@ -12,7 +12,7 @@ export interface IHeadings {
 export interface IUserDataState {
   data?: (IAdminData & ITenantDetail & IUserDetailsData) | null;
   loading: boolean;
-  error?: undefined;
+  error?: any;
 }
 
 export interface IAdminData {

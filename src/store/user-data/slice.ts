@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import errorHandler from "../../resources/tenant/error-handler";
 import {
   adminLoginData,
   getTenantDetailsService,
   getUserDetailsService,
 } from "../../services/tenant";
 import { IUserDataState } from "../../types/index";
+import errorHandler from "../../utils/error-handler";
 import { checkLoginType } from "../login-type/slice";
 
 interface IConditions {

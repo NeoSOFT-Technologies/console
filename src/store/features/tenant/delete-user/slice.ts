@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import errorHandler from "../../../../resources/tenant/error-handler";
 import { deleteUserDataService } from "../../../../services/tenant";
+import errorHandler from "../../../../utils/error-handler";
 
 /**
  * ! check if delete json is correct
@@ -8,7 +8,7 @@ import { deleteUserDataService } from "../../../../services/tenant";
 export interface IDeleteUserState {
   isDeleted?: boolean | null;
   loading: boolean;
-  error?: undefined;
+  error?: any;
 }
 
 const initialState: IDeleteUserState = {

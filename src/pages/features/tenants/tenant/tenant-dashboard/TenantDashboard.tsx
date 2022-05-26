@@ -13,7 +13,12 @@ const TenantDashboard = () => {
   );
   useEffect(() => {
     if (!user.loading && user.error) {
-      navigate("/error", { state: user.error });
+      navigate("/error", {
+        state: {
+          code: user.error.statusCode,
+          message: user.error.message,
+        },
+      });
     }
   }, [user.loading]);
 

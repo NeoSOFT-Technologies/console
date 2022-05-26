@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import errorHandler from "../../../../resources/tenant/error-handler";
 import { updateUserDataService } from "../../../../services/tenant/users";
+import errorHandler from "../../../../utils/error-handler";
 // import error from "../../../../utils/error";
 
 interface IConditions {

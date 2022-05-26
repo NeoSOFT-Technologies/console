@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import errorHandler from "../../../../resources/tenant/error-handler";
 import { addTenantDataService } from "../../../../services/tenant";
 import { ITenantRegisterData } from "../../../../types/index";
+import errorHandler from "../../../../utils/error-handler";
 
 interface IAddTenantState {
   tenantAdded?: boolean;

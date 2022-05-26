@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import errorHandler from "../../../../resources/tenant/error-handler";
 import { tenantRolesService } from "../../../../services/tenant";
 import { ITenantRolesState } from "../../../../types/index";
+import errorHandler from "../../../../utils/error-handler";
 
 const initialState: ITenantRolesState = {
   data: undefined,

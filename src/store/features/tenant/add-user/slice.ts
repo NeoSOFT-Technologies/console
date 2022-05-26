@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import errorHandler from "../../../../resources/tenant/error-handler";
 import { createNewUserService } from "../../../../services/tenant";
 import { ICreateNewUser } from "../../../../types/index";
+import errorHandler from "../../../../utils/error-handler";
 
 export interface IAddUserState {
   isAdded: boolean;

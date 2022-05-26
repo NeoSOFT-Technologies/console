@@ -1,4 +1,4 @@
-import error from "../../utils/error";
+import error from "./error";
 
 export default function errorHandler(error_: any) {
   let tmp;

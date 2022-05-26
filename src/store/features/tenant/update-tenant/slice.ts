@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import errorHandler from "../../../../resources/tenant/error-handler";
 import { updateTenantDataService } from "../../../../services/tenant";
 import { ITenantDetail } from "../../../../types/index";
+import errorHandler from "../../../../utils/error-handler";
 
 export interface IUpdateTenantState {
   isUpdated: boolean;
   loading: boolean;
-  error?: string | undefined;
+  error?: any;
 }
 
 const initialState: IUpdateTenantState = {
