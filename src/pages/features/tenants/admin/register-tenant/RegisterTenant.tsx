@@ -49,7 +49,7 @@ export default function RegisterTenant() {
           ...error,
           [name]: regexForDescription.test(value)
             ? ""
-            : "description should only consist Alphabets",
+            : "description should only consist Alphabets and numbers .",
         });
         break;
       case "description":
@@ -57,7 +57,7 @@ export default function RegisterTenant() {
           ...error,
           [name]: regexForDescription.test(value)
             ? ""
-            : "description should only consist Alphabets",
+            : "description should only consist Alphabets and numbers .",
         });
         break;
 
@@ -66,7 +66,7 @@ export default function RegisterTenant() {
           ...error,
           [name]: regexForName.test(value)
             ? ""
-            : "Name should only consist Alphabets",
+            : "Name should only consist AlphaNumeric characters",
         });
         break;
       case "password":
@@ -74,7 +74,7 @@ export default function RegisterTenant() {
           ...error,
           [name]: regForPassword.test(value)
             ? ""
-            : "Password should contains Alphabet,special Charater,Number",
+            : "Password should contains minimum one Number,uppercase,lowercase,special Character (8-15).",
         });
         break;
       case "email":
@@ -90,7 +90,7 @@ export default function RegisterTenant() {
           ...error,
           [name]: regexForDatabaseName.test(value)
             ? ""
-            : "database Name should not be empty",
+            : "database Name can have alphabets and a dash(-) only.",
         });
         break;
       default:
@@ -244,14 +244,18 @@ export default function RegisterTenant() {
                         value={tenant.password}
                         name="password"
                         onChange={handleInputChange}
+                        isValid={!error.password && !!tenant.password}
+                        isInvalid={!!error.password}
                         required
                       />{" "}
-                      <PasswordButtons
-                        viewPassword={showPassword}
-                        setViewPassword={setShowpassword}
-                      />
+                      <InputGroup.Text>
+                        <PasswordButtons
+                          viewPassword={showPassword}
+                          setViewPassword={setShowpassword}
+                        />
+                      </InputGroup.Text>
                     </InputGroup>
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Control.Feedback type="invalid" className="d-block">
                       {error.password}
                     </Form.Control.Feedback>
                   </Form.Group>

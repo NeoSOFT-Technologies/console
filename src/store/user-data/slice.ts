@@ -51,7 +51,13 @@ export const getUserData = createAsyncThunk(
 const slice = createSlice({
   name: "userData",
   initialState,
-  reducers: {},
+  reducers: {
+    setUserData: (state, action) => {
+      state.data = { ...action.payload };
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(getUserData.pending, (state) => {
       state.loading = true;
@@ -60,7 +66,6 @@ const slice = createSlice({
     });
     builder.addCase(getUserData.fulfilled, (state, action) => {
       state.loading = false;
-
       state.data = action.payload;
     });
     builder.addCase(getUserData.rejected, (state, action: any) => {
@@ -72,3 +77,4 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
+export const { setUserData } = slice.actions;

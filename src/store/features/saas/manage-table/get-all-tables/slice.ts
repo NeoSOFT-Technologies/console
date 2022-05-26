@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getAllTablesService } from "../../../../../services/saas/api/api";
-import { IPagination } from "../../../../../types/saas";
+import { IPagination, ITableSchema } from "../../../../../types/saas";
 import error from "../../../../../utils/error";
 
 interface IGetAllTableState {
-  data?: string[];
+  data?: ITableSchema[];
   loading: boolean;
   error?: string | null;
 }
@@ -35,7 +35,14 @@ export const getAllTables = createAsyncThunk(
 const slice = createSlice({
   name: "getAllTableSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    setTableData: (state, action) => {
+      // alert("inside get-all-table slice : " + JSON.stringify(action.payload));
+      state.data = [...action.payload];
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(getAllTables.pending, (state) => {
       state.data = undefined;
@@ -56,5 +63,5 @@ const slice = createSlice({
     });
   },
 });
-
+export const { setTableData } = slice.actions;
 export default slice.reducer;

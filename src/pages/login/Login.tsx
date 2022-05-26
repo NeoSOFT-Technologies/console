@@ -39,7 +39,7 @@ export default function Login() {
 
   const [showPassword, setShowpassword] = useState(false);
 
-  const handle = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
       case "userName":
@@ -146,7 +146,7 @@ export default function Login() {
             </div>
             <h4>Hello ! let&apos;s get started</h4>
             <h6 className="font-weight-light">Sign in to continue.</h6>
-            <Form className="pt-3">
+            <Form className="pt-3" onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
                 <Form.Control
                   data-testid="userName-input"
@@ -154,7 +154,7 @@ export default function Login() {
                   name="userName"
                   value={formdata.userName}
                   placeholder="Enter Username"
-                  onChange={handle}
+                  onChange={handleInputChange}
                   required
                 />
                 {error.userName.length > 0 && (
@@ -172,19 +172,21 @@ export default function Login() {
                       name="password"
                       value={formdata.password}
                       placeholder="Enter password"
-                      onChange={handle}
+                      onChange={handleInputChange}
                     />
-                    <PasswordButtons
-                      viewPassword={showPassword}
-                      setViewPassword={setShowpassword}
-                    />
+                    <InputGroup.Text>
+                      <PasswordButtons
+                        viewPassword={showPassword}
+                        setViewPassword={setShowpassword}
+                      />
+                    </InputGroup.Text>
                   </InputGroup>
-                  {error.password.length > 0 && (
-                    <Alert variant="danger" className="mt-2">
-                      {error.password}
-                    </Alert>
-                  )}
                 </Form.Group>
+                {error.password.length > 0 && (
+                  <Alert variant="danger" className="mt-2">
+                    {error.password}
+                  </Alert>
+                )}
               </div>
               <div className="mt-3">
                 <Button

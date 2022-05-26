@@ -18,7 +18,7 @@ import {
 } from "../../../../../store/features/tenant/add-user/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import { ICreateNewUser, ITenantRolesState } from "../../../../../types/index";
-const tempPermissions = ["view", "edit", "write", "delete"];
+const tempPermissions = ["view", "edit", "create", "delete"];
 interface Ierrors {
   userName: string;
   email: string;
@@ -77,7 +77,7 @@ export default function Createuser() {
           ...errors,
           [name]: regForPassword.test(value)
             ? ""
-            : "Enter a Valid Password (must include 8 character)",
+            : "Enter a Valid Password must contains minimum one Number,uppercase,lowercase,special Character (8-15).",
         });
         break;
       default:
@@ -173,6 +173,7 @@ export default function Createuser() {
       permissions: "",
     });
   };
+
   useEffect(() => {
     if (
       !addNewUserState.loading &&
@@ -241,13 +242,17 @@ export default function Createuser() {
                     value={formData.password}
                     name="password"
                     onChange={handleInputChange}
+                    isInvalid={!!errors.password}
+                    isValid={!!(!errors.password && formData.password)}
                   />
-                  <PasswordButtons
-                    viewPassword={showPassword}
-                    setViewPassword={setShowpassword}
-                  />
+                  <InputGroup.Text>
+                    <PasswordButtons
+                      viewPassword={showPassword}
+                      setViewPassword={setShowpassword}
+                    />
+                  </InputGroup.Text>
                 </InputGroup>
-                <Form.Control.Feedback type="invalid">
+                <Form.Control.Feedback type="invalid" className="d-block">
                   {errors.password}
                 </Form.Control.Feedback>
               </Form.Group>
