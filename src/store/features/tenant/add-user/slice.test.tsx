@@ -5,7 +5,7 @@ import { addNewUser } from "./slice";
 test("calling the state of add-user", async () => {
   mockApi.onPost("/api/user").reply(200, {});
 
-  await store.dispatch(
+  const result = await store.dispatch(
     addNewUser({
       userName: "deepthi",
       email: "deepthi@gmail.com",
@@ -14,12 +14,13 @@ test("calling the state of add-user", async () => {
       permissions: ["view", "write"],
     })
   );
+  expect(result.type).toBe("tenantUser/addUser/fulfilled");
 });
 
 test("calling the state of add-user", async () => {
   mockApi.onPost("/api/user").reply(404);
 
-  await store.dispatch(
+  const result = await store.dispatch(
     addNewUser({
       userName: "deepthi",
       email: "deepthi@gmail.com",
@@ -28,4 +29,5 @@ test("calling the state of add-user", async () => {
       permissions: ["view", "write"],
     })
   );
+  expect(result.type).toBe("tenantUser/addUser/rejected");
 });

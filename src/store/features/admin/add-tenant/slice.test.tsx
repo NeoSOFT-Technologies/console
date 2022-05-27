@@ -5,7 +5,7 @@ import { addNewTenant } from "./slice";
 test("calling the state of add-tenant", async () => {
   mockApi.onPost("/api/tenants").reply(200, {});
 
-  await store.dispatch(
+  const result = await store.dispatch(
     addNewTenant({
       tenantName: "Test",
       email: "Test@gmail.com",
@@ -13,14 +13,17 @@ test("calling the state of add-tenant", async () => {
       description: "i am Test",
       databaseName: "db-Test",
       databaseDescription: "",
+      userName: "",
     })
   );
+  // console.log(result);
+  expect(result.type).toBe("tenant/addnewtenant/fulfilled");
 });
 
 test("calling the state of add-tenant", async () => {
   mockApi.onPost("/api/tenants").reply(404);
 
-  await store.dispatch(
+  const result = await store.dispatch(
     addNewTenant({
       tenantName: "Test",
       email: "Test@gmail.com",
@@ -28,6 +31,8 @@ test("calling the state of add-tenant", async () => {
       description: "i am Test",
       databaseName: "db-Test",
       databaseDescription: "",
+      userName: "",
     })
   );
+  expect(result.type).toBe("tenant/addnewtenant/rejected");
 });
