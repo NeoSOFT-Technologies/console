@@ -16,7 +16,24 @@ Here we use apiFactory() following with methods like GET,PUT,POST,DELETE,etc. ac
 like  example below
 ```
 export function functionName(parameter1: type) {
-  return apiFactory().get(`api`,{parameter1});
+  return apiFactory().get(`api`);
+}
+```
+
+Below are some examples of apiFactory() - 
+```
+export function functionName(parameter1: string,) {
+  return apiFactory().get(`api?query=parameter1`);
+}
+```
+```
+export function functionName(parameter1: string,) {
+  return apiFactory().get(`api/parameter1`);
+}
+```
+```
+export function functionName(parameter1: <interface>) {
+  return apiFactory().post(`api`,{parameter1});
 }
 ```
 

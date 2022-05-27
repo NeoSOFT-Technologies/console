@@ -62,6 +62,10 @@ export default function Login() {
   };
 
   useEffect(() => {
+    localStorage.clear();
+  }, []);
+
+  useEffect(() => {
     const useQuery = () => new URLSearchParams(location.search);
     const query = useQuery();
     const name = query.get("tenant");
