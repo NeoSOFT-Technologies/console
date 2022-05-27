@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getTableSchemaService } from "../../../../../services/saas/api/api";
-import { ITableSchema } from "../../../../../types/saas";
+import { ITableColumnData, ITableSchema } from "../../../../../types/saas";
 import error from "../../../../../utils/error";
-
 interface IGetTableSchemaState {
-  data?: string;
+  data?: ITableColumnData[];
   loading: boolean;
   error?: string | null;
 }
@@ -25,7 +24,7 @@ export const getTableSchema = createAsyncThunk(
       console.log(
         `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
       );
-      return response.data.data;
+      return response.data.data.columns;
     } catch (error_: any) {
       // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
@@ -38,7 +37,13 @@ export const getTableSchema = createAsyncThunk(
 const slice = createSlice({
   name: "getTableSchemaSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    setTableColNames: (state, action) => {
+      state.data = [...action.payload];
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(getTableSchema.pending, (state) => {
       state.data = undefined;
@@ -59,5 +64,5 @@ const slice = createSlice({
     });
   },
 });
-
+export const { setTableColNames } = slice.actions;
 export default slice.reducer;
