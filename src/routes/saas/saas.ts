@@ -29,11 +29,11 @@ const saasRoutes = [
     title: "Create Table",
     icon: "bi bi-list-ul",
   },
-  {
-    path: "/saas/capacityPlans",
-    title: "Capacity Plan",
-    icon: "bi bi-list-ul",
-  },
+  // {
+  //   path: "/saas/capacityPlans",
+  //   title: "Capacity Plan",
+  //   icon: "bi bi-list-ul",
+  // },
   // {
   //   path: "/tenantlist",
   //   title: "List",

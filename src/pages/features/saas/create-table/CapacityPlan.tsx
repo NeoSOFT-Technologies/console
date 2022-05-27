@@ -1,39 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { capacityPlans } from "../../../../store/features/saas/manage-table/get-capacity-plans/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { ICapacityPlan } from "../../../../types/saas";
 
 export default function GetTables() {
   const dispatch = useAppDispatch();
-  const tableData = useAppSelector((state) => state.capacityPlansState);
+  const capacityData = useAppSelector((state) => state.capacityPlansState);
 
-  const [sku] = useState("");
-  const [name] = useState("");
-  const [replicas] = useState("");
-  const [shards] = useState("");
+  // const [tableHeader] = useState<string[]>([]);
 
-  const para1: ICapacityPlan = {
-    sku,
-    name,
-    replicas,
-    shards,
-  };
-
-  const getTableData: React.FormEventHandler<HTMLFormElement> = (
+  const getCapacityData: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
   ) => {
     event.preventDefault();
-    console.log("asdasdasd", para1);
+    console.log("table data", capacityData.data);
     dispatch(capacityPlans());
   };
   useEffect(() => {
-    console.log("table data", tableData.data);
-  }, [tableData.data, tableData.error]);
+    console.log(capacityData.data);
+  }, [capacityData.data, capacityData.error]);
 
   return (
-    <Form onSubmit={getTableData}>
+    <Form onSubmit={getCapacityData}>
       {" "}
       <Button variant="btn  btn-success" type="submit" className=" pl-4 pr-4">
         Save
@@ -48,12 +37,79 @@ export default function GetTables() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Ravi</td>
-            <td>Mark</td>
-            <td>true</td>
-            <td>false</td>
-          </tr>
+          {capacityData.data !== undefined && (
+            <>
+              {capacityData.data.map(
+                (
+                  val:
+                    | {
+                        sku:
+                          | string
+                          | number
+                          | boolean
+                          | React.ReactElement<
+                              any,
+                              string | React.JSXElementConstructor<any>
+                            >
+                          | React.ReactFragment
+                          | React.ReactPortal
+                          | null
+                          | undefined;
+                        name:
+                          | string
+                          | number
+                          | boolean
+                          | React.ReactElement<
+                              any,
+                              string | React.JSXElementConstructor<any>
+                            >
+                          | React.ReactFragment
+                          | React.ReactPortal
+                          | null
+                          | undefined;
+                        replicas:
+                          | string
+                          | number
+                          | boolean
+                          | React.ReactElement<
+                              any,
+                              string | React.JSXElementConstructor<any>
+                            >
+                          | React.ReactFragment
+                          | React.ReactPortal
+                          | null
+                          | undefined;
+                        shards:
+                          | string
+                          | number
+                          | boolean
+                          | React.ReactElement<
+                              any,
+                              string | React.JSXElementConstructor<any>
+                            >
+                          | React.ReactFragment
+                          | React.ReactPortal
+                          | null
+                          | undefined;
+                      }
+                    | null
+                    | undefined,
+                  index: React.Key | null | undefined
+                ) => (
+                  <tr key={`row${index}`}>
+                    {val !== null && val !== undefined && (
+                      <>
+                        <td key={index}>{val.sku}</td>
+                        <td key={index}>{val.name}</td>
+                        <td key={index}>{val.replicas}</td>
+                        <td key={index}>{val.shards}</td>
+                      </>
+                    )}
+                  </tr>
+                )
+              )}
+            </>
+          )}
         </tbody>
       </Table>
     </Form>

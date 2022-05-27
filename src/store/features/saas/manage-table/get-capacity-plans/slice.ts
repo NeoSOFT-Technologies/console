@@ -3,7 +3,7 @@ import { getCapacityPlansService } from "../../../../../services/saas/api/api";
 import error from "../../../../../utils/error";
 
 interface IGetCapacityPlanState {
-  data?: string;
+  data?: string[] | CapacityPalanProperties;
   loading: boolean;
   error?: string | null;
 }
@@ -13,6 +13,14 @@ const initialState: IGetCapacityPlanState = {
   error: undefined,
 };
 
+interface CapacityPalanProperties {
+  map: any;
+  sku: string;
+  name: string;
+  replicas: string;
+  shards: string;
+}
+
 export const capacityPlans = createAsyncThunk("getCapacityPlans", async () => {
   // async (data: ITableCreateData) => {
   try {
@@ -20,7 +28,7 @@ export const capacityPlans = createAsyncThunk("getCapacityPlans", async () => {
     console.log(
       `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
     );
-    return response.data;
+    return response.data.plans;
   } catch (error_: any) {
     // console.log(error_, "||", error(error_));
     const errorMessage = error(error_);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Dropdown, Modal, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { createTable } from "../../../../store/features/saas/manage-table/create-table/slice";
-// import { capacityPlans } from "../../../../store/features/saas/manage-table/get-capacity-plans/slice";
+import { capacityPlans } from "../../../../store/features/saas/manage-table/get-capacity-plans/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
   ICreateTable,
@@ -14,6 +14,7 @@ import "./style.css";
 export default function GetTables() {
   const dispatch = useAppDispatch();
   const createTables = useAppSelector((state) => state.createTableState);
+  const capacityData = useAppSelector((state) => state.capacityPlansState);
   // const capacityPlans = useAppSelector((state) => state.capacityPlansState);
   const [modalState, setModalState] = useState<
     "modal-one" | "modal-two" | "close"
@@ -136,6 +137,14 @@ export default function GetTables() {
     dispatch(createTable(params));
   };
 
+  const getCapacityData: React.FormEventHandler<HTMLFormElement> = (
+    event: React.FormEvent
+  ) => {
+    event.preventDefault();
+    console.log("table data", capacityData.data);
+    dispatch(capacityPlans());
+  };
+
   return (
     <div className="createbody">
       <h4 className="pl-5 pt-5">Add Table</h4>
@@ -233,61 +242,142 @@ export default function GetTables() {
                 </Dropdown>
               </Col>
               <Form.Label column="lg" lg={2} className="p-1 m-0">
-                <i
-                  className="bi bi-info-circle-fill"
-                  onClick={handleShowModalTwo}
-                ></i>
+                <Form onClick={getCapacityData}>
+                  <i
+                    className="bi bi-info-circle-fill"
+                    onClick={handleShowModalTwo}
+                  ></i>
+                  <Modal
+                    show={modalState === "modal-two"}
+                    onHide={handleShowModalTwoclose}
+                    size="lg"
+                  >
+                    <Modal.Header>
+                      <Modal.Title className="text-center">
+                        Add Column
+                      </Modal.Title>
+                      <button
+                        type="button"
+                        className="close"
+                        onClick={handleShowModalTwoclose}
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </Modal.Header>
+                    <Modal.Body>
+                      {" "}
+                      {/* <Button
+                    variant="btn  btn-success"
+                    type="submit"
+                    className=" pl-4 pr-4"
+                  >
+                    Save
+                  </Button> */}
+                      <Table bordered className="pt-2 createbody text-center">
+                        <thead>
+                          <tr id="test">
+                            <th>Capacity</th>
+                            <th>Name</th>
+                            <th>Replicas</th>
+                            <th>Shards</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {capacityData.data !== undefined && (
+                            <>
+                              {capacityData.data.map(
+                                (
+                                  val:
+                                    | {
+                                        sku:
+                                          | string
+                                          | number
+                                          | boolean
+                                          | React.ReactElement<
+                                              any,
+                                              | string
+                                              | React.JSXElementConstructor<any>
+                                            >
+                                          | React.ReactFragment
+                                          | React.ReactPortal
+                                          | null
+                                          | undefined;
+                                        name:
+                                          | string
+                                          | number
+                                          | boolean
+                                          | React.ReactElement<
+                                              any,
+                                              | string
+                                              | React.JSXElementConstructor<any>
+                                            >
+                                          | React.ReactFragment
+                                          | React.ReactPortal
+                                          | null
+                                          | undefined;
+                                        replicas:
+                                          | string
+                                          | number
+                                          | boolean
+                                          | React.ReactElement<
+                                              any,
+                                              | string
+                                              | React.JSXElementConstructor<any>
+                                            >
+                                          | React.ReactFragment
+                                          | React.ReactPortal
+                                          | null
+                                          | undefined;
+                                        shards:
+                                          | string
+                                          | number
+                                          | boolean
+                                          | React.ReactElement<
+                                              any,
+                                              | string
+                                              | React.JSXElementConstructor<any>
+                                            >
+                                          | React.ReactFragment
+                                          | React.ReactPortal
+                                          | null
+                                          | undefined;
+                                      }
+                                    | null
+                                    | undefined,
+                                  index: React.Key | null | undefined
+                                ) => (
+                                  <tr key={`row${index}`}>
+                                    {val !== null && val !== undefined && (
+                                      <>
+                                        <td key={index}>{val.sku}</td>
+                                        <td key={index}>{val.name}</td>
+                                        <td key={index}>{val.replicas}</td>
+                                        <td key={index}>{val.shards}</td>
+                                      </>
+                                    )}
+                                  </tr>
+                                )
+                              )}
+                            </>
+                          )}
+                        </tbody>
+                      </Table>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button
+                        variant="danger"
+                        onClick={handleShowModalTwoclose}
+                      >
+                        Close
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+                </Form>
               </Form.Label>
             </Row>
             <br></br>
-            <Modal
-              show={modalState === "modal-two"}
-              onHide={handleShowModalTwoclose}
-              size="lg"
-            >
-              <Modal.Header>
-                <Modal.Title className="text-center">Add Column</Modal.Title>
-                <button
-                  type="button"
-                  className="close"
-                  onClick={handleShowModalTwoclose}
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </Modal.Header>
-              <Modal.Body>
-                <Table bordered className="pt-2 createbody text-center">
-                  <thead>
-                    <tr id="test">
-                      <th>Capacity</th>
-                      <th>Name</th>
-                      <th>Replicas</th>
-                      <th>Shards</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Ravi</td>
-                      <td>Mark</td>
-                      <td>true</td>
-                      <td>false</td>
-                    </tr>
-                    <tr>
-                      <td>SHubham</td>
-                      <td>Mark</td>
-                      <td>true</td>
-                      <td>false</td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="danger" onClick={handleShowModalTwoclose}>
-                  Close
-                </Button>
-              </Modal.Footer>
-            </Modal>
+
             <Row>
               <Form.Label
                 column="lg"
