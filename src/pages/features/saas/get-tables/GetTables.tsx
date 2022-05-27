@@ -35,7 +35,11 @@ export default function GetTables() {
             </Form.Group>
           </Col>
           <Col md={2}>
-            <Button variant="primary" type="submit">
+            <Button
+              variant="primary"
+              type="submit"
+              data-testid="get-tables-btn"
+            >
               Get Tables
             </Button>
           </Col>
@@ -54,7 +58,7 @@ export default function GetTables() {
             {tableData.data.map((val, index) => (
               <tr key={`row${index}`}>
                 <td>{index + 1}</td>
-                <td>{val}</td>
+                <td data-testid="table-data">{val}</td>
                 <td>
                   <i className="bi bi-gear-fill"></i>
                 </td>
