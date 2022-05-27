@@ -225,7 +225,7 @@ function AppRoutes() {
           <Route path="keys/update/:id" element={<CreateKey />} />
           <Route path="policies/update/:id" element={<CreatePolicy />} />
         </Route>
-        <Route path="*" element={<Navigate to="/login-page" />} />{" "}
+        <Route path="*" element={<Navigate to="/error-pages/error-404" />} />{" "}
       </Routes>
     </Suspense>
   );

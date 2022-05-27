@@ -62,6 +62,10 @@ export default function Login() {
   };
 
   useEffect(() => {
+    localStorage.clear();
+  }, []);
+
+  useEffect(() => {
     const useQuery = () => new URLSearchParams(location.search);
     const query = useQuery();
     const name = query.get("tenant");
@@ -122,7 +126,7 @@ export default function Login() {
       navigate("/tenant");
     }
     if (!user.loading && user.error && loginType.data) {
-      ToastAlert(`Could not login , error ${user.error}`, "warning");
+      ToastAlert(`Could not login , error ${user.error.message}`, "warning");
     }
   }, [user.data, user.error]);
 

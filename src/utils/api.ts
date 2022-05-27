@@ -1,6 +1,5 @@
 import axios from "axios";
 import tokenService from "../services/tenant/token.service";
-import error from "./error";
 
 const defaultHostUrl =
   process.env.REACT_APP_API_BASEURL || "http://localhost:5000/";
@@ -97,8 +96,8 @@ const apiFactory = (baseUrl: string = getDefaultPath(), header = {}) => {
           tokenService.updateLocalAccessToken(accessToken);
 
           return service(originalConfig);
-        } catch (_error) {
-          throw new Error(error(_error));
+        } catch (_error: any) {
+          throw new Error(JSON.stringify(_error.response));
         }
       }
       throw err;

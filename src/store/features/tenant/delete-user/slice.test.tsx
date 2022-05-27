@@ -4,10 +4,12 @@ import { deleteUser } from "./slice";
 
 test("calling the state of delete-user", async () => {
   mockApi.onDelete("/api/user/deepthi").reply(200, {});
-  await store.dispatch(deleteUser("deepthi"));
+  const result = await store.dispatch(deleteUser("deepthi"));
+  expect(result.type).toBe("tenantUser/list/fulfilled");
 });
 
 test("calling the state of delete-user", async () => {
   mockApi.onDelete("/api/user/deepthi").reply(404, {});
-  await store.dispatch(deleteUser("deepthi"));
+  const result = await store.dispatch(deleteUser("deepthi"));
+  expect(result.type).toBe("tenantUser/list/rejected");
 });

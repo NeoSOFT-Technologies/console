@@ -3,20 +3,55 @@
 ## Description
 
 - Admin templates are a set of web pages, built with HTML, CSS, and Javascript or any javascript libraries used to create the user interface of the backend of a web application. These pre-built pages are integrated with the web application for doing backend tasks like maintaining the website, user and content management, installation and configuration of website software, and tracking data like network traffic and user visits to the website, to improve the performance of the website.
-- ### Features of React js
 
-  - Virtual DOM.
-  - Easy to use, learn and master
-  - JavaScript XML or JSX
-  - Versatile
-  - Progressive
-  - One-Way Data Binding
-  - Declarative UI
-  - Component Based Architecture
-  - Enables Building Rich UI
-  - Documentation
-  - Open Source
-  - Large & Active Community
+## Exciting Features
+
+### Quick start
+
+Create components, containers, routes and redux-toolkit and their tests - right from the CLI!
+
+### Integrated eslint, prettier and husky
+
+Integrated ESLint, Prettier and Husky helps to take care of your code style, code formatting respectively and is a tool that allows us to easily wrangle Git hooks and run the scripts we want at those stages respectively.
+
+- [Learn more about Eslint](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/modules/eslint.md)
+- [Learn more about Prettier](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/modules/prettier.md)
+- [Learn more about Husky](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/modules/husky.md)
+
+### Instant feedback
+
+Enjoy the best DX (Developer eXperience) and code your app at the speed of thought! Your saved changes to the JS are reflected instantaneously without refreshing the page. Preserve application state even when you update something in the underlying code!
+
+### Integrated Redux Toolkit
+
+Makes easier to write good redux applications and speeds up development.
+
+- [Learn more about redux-toolkit](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/modules/redux-toolkit.md)
+  v
+
+  ### Based on TypeScript
+
+  Use template strings, object destructuring, arrow functions, Interfaces, JSX syntax and more.
+
+- [Learn more about TypeScript](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/features/typescript.md)
+
+  ### Next generation SaaS
+
+  Variables, nested rules, inline imports, and more are all possible with Sass. It also aids organisation and allows us to develop style sheets more quickly. All versions of CSS are supported by Sass.
+
+- [Learn more about Sass](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/features/sass.md)
+
+  ### Offline-first
+
+  The next frontier in performant web apps: availability without a network connection from the instant your users load the app.
+
+  ### Static code analysis
+
+  Focus on writing new features without worrying about formatting or code quality. With the right editor setup, your code will automatically be formatted and linted as you work.
+
+  ### Production Ready Skeleton
+
+  The ease of usability, reliability and availability of software to the users
 
 ## Motivation
 
@@ -25,60 +60,11 @@
 
 Take it for a test drive. We'd love to hear any feedback you have or if you've thought of a new feature.
 
-## Common Features
+## Start the application
 
-- Quick start
-- Integrated ESLint, Prettier and Husky
-- Common Error Handler
-- Simple and Standard scaffolding
-- Production-Ready Skeleton
-
-
-## Getting started
-
-Skeleton for REST API applications written in Node JS & Nest JS with TypeScript
-
-### Prerequisites
-
-- Node <https://nodejs.org/en/> _use the LTS version_
-- NPM
-
-### Create Development Environment
-
-To get started, clone the repository to your local computer. Use the following command to run in your terminal.
-
-#### Clone The Application
-
-bash
-// clone the application
-$ git clone https://github.com/NeoSOFT-Technologies/console.git
-
-#### Quick Installation
-
-Next, install the packages that are required for this project.
-
-bash
-// Install the required npm modules
-$ npm install
-
-### Running the app
-
-bash
-
-# development
-
-$ npm run start
-
-### Test
-
-For this project, We chose [Jest](https://facebook.github.io/jest/) as our test framework.
-While Mocha is probably more common, Mocha seems to be looking for a new maintainer and setting up TypeScript testing in Jest is wicked simple.
-
-bash
-
-# unit tests
-
-$ npm run test
+- Clone the Application git clone `https://github.com/NeoSOFT-Technologies/console.git`
+- Install the dependencies `npm install`
+- Start the application `npm run start` or simply `npm start`
 
 ### Running the build
 
@@ -90,65 +76,100 @@ To call a script, simply run `npm run <script-name>` from the command line.
 You'll notice that npm scripts can call each other which makes it easy to compose complex builds out of simple individual build scripts.
 Below is a list of all the scripts this template has available:
 
-| Npm Script | Description                                                       |
-| ---------- | ----------------------------------------------------------------- |
-| `build`    | Full build. Runs ALL build tasks                                  |
-| `lint`     | Runs ESLint on project files                                      |
-| `start`    | Does the same as 'npm run serve'. Can be invoked with `npm start` |
-| `test`     | Runs tests using Jest test runner                                 |
-| `clean`    | On Run clean the installed node packages                          |
-| `clean:cdn`     | Runs tests using Jest test runner                            |
-| `build:css`     | Runs clean, clean:cdn and building/minifying the scss files  |
-| `watch:css`     | Runs build:css with sass watch                               |
-| `build:prod`    | Runs build and build:css together                            |
-| `dev`      | Runs the whole script                                             |
-| `eject`    | Runs react-scripts eject                                          |
-| `format`   | Runs prettier roles on project files                              |
-| `test:coverage` | Gives the code covergae infrom to table                      |
-| `lint:fix` | Runs lint and fix the resolve able errors                         |
-| `lint:quiet`    | Run lint to show errors only                                 |
-| `prepare`  | install husky                                                     |
-| `precommit`| Runs lint:fix and format before commit                            |
-| `prepush`  | Runs lint before push                                             |
+| Npm Script      | Description                                                       |
+| --------------- | ----------------------------------------------------------------- |
+| `start`         | Start project in development mode                                 |
+| `start:prod`    | this script runs project in production mode                       |
+| `build`         | Full build. Runs ALL build tasks                                  |
+| `clean`         | On Run clean the installed node packages                          |
+| `clean:cdn`     | On Run clean css from build                                       |
+| `build:prod`    | Runs build and build:css together                                 |
+| `test`          | Runs tests using Jest test runner                                 |
+| `eject`         | Runs react-scripts eject                                          |
+| `format`        | Runs prettier roles on project files                              |
+| `test:coverage` | Gives the code coverage infrom to table                           |
+| `lint`          | Runs ESLint on project files                                      |
+| `lint:fix`      | Runs lint and fix the resolve able errors                         |
+| `lint:quiet`    | Run lint to show errors only                                      |
+| `prepare`       | install husky                                                     |
+| `precommit`     | Runs lint:fix and format before commit                            |
+| `prepush`       | Runs lint before push                                             |
+
+## NPM Modules
+
+Node Modules folder is the repository of modules/library which you are using inside your project. What ever you are importing in your project that module or library should present inside the mode_module folder.When you do npm install that time that module or the library install inside the node_module folder and one entry added in package.json file. In your case frontend and backend are different project than obviously there will be 2 different node_modules folder for each of them.
+To check the list of modules used by us in this boilerplate click [here](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/npm_modules/index.md)
 
 ## Project Structure
 
 Please find below a detailed description of the app's folder structures:
 
-| Name                     | Description                                                                              |
-| ------------------------ | ---------------------------------------------------------------------------------------- |
-| **.github**              | Contains GitHub settings and configurations, including the GitHub Actions workflows      |
-| **.husky**               | Contains precommit and prepush rules                                                     |
-| **.vscode**              | vscode settings                                                                          |
-| **node_modules**         | Contains all your npm dependencies                                                       |
-| **src**                  | Contains your source code that will be compiled to the dist dir                          |
-| **src/components/**      | Contains the compoments for the template                                                 |
-| **src/pages/**           | Contains the template common and specfic pages                                           |
-| **src/pages/error-pages/**| Contains the all the error pages(400,401,etc)                                           |
-| **src/pages/features/**  | Contains the pages for the admin, tenant & user                                          |
-| **src/pages/features/admin/**| Contains the pages for the admin                                                     |
-| **src/pages/features/tenant/**| Contains the pages for the tenant                                                   |
-| **src/pages/features/user/**  | Contains the pages for the user                                                     |
-| **src/pages/features/login/** | Contains the common login for all                                                   |
-| **src/resources/**        | Contains the files for constants and asset                                              |
-| **src/routes/**   | Contain the 3 folders (features , gateway , SaaS)                                               |
-| **src/routes/features**  | Contain the routes for the admin, tenant & user                                          |
-| **src/routes/gateway**  | Contain the gateway routes for the admin, tenant & user                                   |
-| **src/routes/SaaS**  | Contain the SaaS routes for the admin, tenant & user                                         |
-| **src/services/** | Contain the api calls and the token sevices                                                     |
-| **src/store/**      | Contain the redux toolkit & central store                                                     |
-| **src/store/features**      | Contain slices for admin, tenant and user                                             |
-| **src/styles/**   | Contain the common sass file for the template                                                   |
-| **src/type/**   | Contain the interface for the template                                                            |
-| **src/util/**   | Contain the interface for the utilities                                                           |
-| **wiki**    | Contain concepts and npm modules documentation                                                        |
-| .eslintignore            | Contain the file which are ignored by lint                                               |
-| .eslintrc                | Config settings for ESLint code style checking                                           |
-| .gitignore                | file specifies intentionally untracked files that Git should ignore                     |
-| .prettierignore                | Contain the file which are ignored by prettier                                     |
-| prettierrc.json                | Config settings for prettier code style checking                                   |
-|tsconfig.json               | Config settings for Typescript                                                         |
-| package.json             | File that contains npm dependencies                                                      |
+| Name                           | Description                                                                         |
+| ------------------------------ | ----------------------------------------------------------------------------------- |
+| **.github**                    | Contains GitHub settings and configurations, including the GitHub Actions workflows |
+| **.husky**                     | Contains precommit and prepush rules                                                |
+| **node_modules**               | Contains all your npm dependencies                                                  |
+| **public**                     | Contains static files and images                                                    |
+| **public/global/**             | Contains static files and images at global scope                                    |
+| **public/global/css**          | Contains css files at global scope                                                  |
+| **public/global/images**       | Contains static  images                                                             |
+| **src**                        | Contains your source code that will be compiled to the dist dir                     |
+| **src/components/**            | Contains the compoments for the template                                            |
+| **src/pages/**                 | Contains the template common and specfic pages                                      |
+| **src/pages/error-pages/**     | Contains the all the error pages(400,401,etc)                                       |
+| **src/pages/features/**        | Contains the pages for the admin, tenant & user                                     |
+| **src/pages/features/admin/**  | Contains the pages for the admin                                                    |
+| **src/pages/features/tenant/** | Contains the pages for the tenant                                                   |
+| **src/pages/features/user/**   | Contains the pages for the user                                                     |
+| **src/pages/features/login/**  | Contains the common login for all                                                   |
+| **src/resources/**             | Contains the files for constants and asset                                          |
+| **src/routes/**                | Contain the 3 folders (features , gateway , SaaS)                                   |
+| **src/routes/features**        | Contain the routes for the admin, tenant & user                                     |
+| **src/routes/gateway**         | Contain the gateway routes for the admin, tenant & user                             |
+| **src/routes/saas**            | Contain the SaaS routes for the admin, tenant & user                                |
+| **src/services/**              | Contain the api calls and the token sevices                                         |
+| **src/store/**                 | Contain the redux toolkit & central store                                           |
+| **src/store/features**         | Contain slices for admin, tenant and user                                           |
+| **src/styles/**                | Contain the common sass file for the template                                       |
+| **src/type/**                  | Contain the interface for the template                                              |
+| **src/util/**                  | Contain the interface for the utilities                                             |
+| **wiki**                       | Contain concepts and npm modules documentation                                      |
+| .eslintignore                  | Contain the file which are ignored by lint                                          |
+| .eslintrc                      | Config settings for ESLint code style checking                                      |
+| .env                           | contains the enviroment variables                                                   |
+| .env.production                | File that contains enviroment variables at production                               |
+| .env.test                      | File that contains enviroment variables at testing                                  |
+| .env.staging                   | File that contains enviroment variables at staging                                  |
+| Dockerfile                     | File that contains commands to build docker image                                   |
+| docker-compose.yml             | File that contains command to build the docker container                            |
+| .dockerignore                  | Ignore files from adding into an image when building a docker image                 |
+| .gitignore                     | file specifies intentionally untracked files that Git should ignore                 |
+| .prettierignore                | Contain the file which are ignored by prettier                                      |
+| prettierrc.json                | Config settings for prettier code style checking                                    |
+| package.json                   | File that contains npm dependencies                                                 |
+| package-lock.json              | File that contains complete npm dependency tree                                     |
+| tsconfig.json                  | Config settings for Typescript                                                      |
+## Training
+
+- [Concepts](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/setup/concepts.md)
+- [Getting started /Installation](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/howto/getting_started.md)
+- [How to create components]()
+- [Redux Toolkit Flow of implementation]()
+- [Unit Test cases]()
+- [How to implement]()
+- [API Factory]()
+- [Auth Guard Strategy]()
+
+## Video Tutorials
+
+- [Concepts](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/setup/concepts.md)
+- [Getting started /Installation](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/howto/getting_started.md)
+- [How to create components]()
+- [Redux Toolkit Flow of implementation]()
+- [Unit Test cases]()
+- [How to implement]()
+- [API Factory]()
+- [Auth Guard Strategy](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/howto/authguard.md)
 
 ## Stay in touch
 
@@ -157,4 +178,4 @@ Please find below a detailed description of the app's folder structures:
 - Meetup - [https://www.meetup.com/neosoft-technologies/](https://www.meetup.com/neosoft-technologies/)
 - Medium - [https://medium.com/@neosofttech-technologies-blog](https://medium.com/@neosofttech-technologies-blog)
 - GitHub - [https://github.com/NeoSOFT-Technologies](https://github.com/NeoSOFT-Technologies)
-- Discord - [NodeJS](https://discord.gg/9xW5gQhQa4)
+- Discord - [https://discord.gg/9xW5gQhQa4](https://discord.gg/9xW5gQhQa4)

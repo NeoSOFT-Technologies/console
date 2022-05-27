@@ -14,7 +14,12 @@ export default function RoleAndPermissions() {
   );
   useEffect(() => {
     if (!user.loading && user.error) {
-      navigate("", { state: user.error });
+      navigate("/error", {
+        state: {
+          statusCode: user.error.statusCode,
+          message: user.error.message,
+        },
+      });
     }
   }, [user.loading]);
 
