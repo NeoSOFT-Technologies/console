@@ -1,8 +1,9 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import { createBrowserHistory } from "history";
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Router } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import store from "../../store/index";
@@ -36,13 +37,16 @@ it("render without crashing Error500", () => {
     </BrowserRouter>
   );
 });
+
 it("render without crashing Error", () => {
+  const history = createBrowserHistory();
+  history.push("/error", { statusCode: "401", message: "Unauthorized Access" });
   render(
-    <BrowserRouter>
+    <Router location={history.location} navigator={history}>
       <Provider store={store}>
         <Error />
       </Provider>
-    </BrowserRouter>
+    </Router>
   );
   const BacktohomeBtn = screen.getByTestId("error-input");
   expect(BacktohomeBtn).toBeInTheDocument();
@@ -54,12 +58,14 @@ it("render without crashing Errors", () => {
     ...storeStates,
     loginType: { loading: false, data: "tenant" },
   });
+  const history = createBrowserHistory();
+  history.push("/error", { statusCode: "404", message: "Not Found" });
   render(
-    <BrowserRouter>
+    <Router location={history.location} navigator={history}>
       <Provider store={stores}>
         <Error />
       </Provider>
-    </BrowserRouter>
+    </Router>
   );
   const BacktohomeBtn = screen.getByTestId("error-input");
   expect(BacktohomeBtn).toBeInTheDocument();
@@ -71,12 +77,14 @@ it("render without crashing Errors", () => {
     ...storeStates,
     loginType: { loading: false, data: "user" },
   });
+  const history = createBrowserHistory();
+  history.push("/error", { statusCode: "404", message: "Not Found" });
   render(
-    <BrowserRouter>
+    <Router location={history.location} navigator={history}>
       <Provider store={stores}>
         <Error />
       </Provider>
-    </BrowserRouter>
+    </Router>
   );
   const BacktohomeBtn = screen.getByTestId("error-input");
   expect(BacktohomeBtn).toBeInTheDocument();
@@ -87,12 +95,14 @@ it("render without crashing Errors", () => {
     ...storeStates,
     loginType: { loading: false, data: "test" },
   });
+  const history = createBrowserHistory();
+  history.push("/error", { statusCode: "404", message: "Not Found" });
   render(
-    <BrowserRouter>
+    <Router location={history.location} navigator={history}>
       <Provider store={stores}>
         <Error />
       </Provider>
-    </BrowserRouter>
+    </Router>
   );
   const BacktohomeBtn = screen.getByTestId("error-input");
   expect(BacktohomeBtn).toBeInTheDocument();

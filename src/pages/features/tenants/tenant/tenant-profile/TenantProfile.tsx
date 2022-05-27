@@ -93,7 +93,12 @@ const TenantProfile = () => {
 
   useEffect(() => {
     if (!user.loading && user.error) {
-      navigate("/error", { state: user.error });
+      navigate("/error", {
+        state: {
+          statusCode: user.error.statusCode,
+          message: user.error.message,
+        },
+      });
     }
   }, [user.loading]);
 
@@ -106,7 +111,12 @@ const TenantProfile = () => {
 
   useEffect(() => {
     if (!updateTenantState.isUpdated && updateTenantState.error) {
-      navigate("/error", { state: updateTenantState.error });
+      navigate("/error", {
+        state: {
+          statusCode: updateTenantState.error.statusCode,
+          message: updateTenantState.error.message,
+        },
+      });
     } else if (updateTenantState.isUpdated && !updateTenantState.error) {
       clearAndUpdate();
     }

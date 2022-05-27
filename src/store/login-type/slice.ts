@@ -7,17 +7,32 @@ export interface ILoginTypeState {
   loading: boolean;
   error?: string | null;
 }
-
+const getType = () => {
+  let type = "";
+  const user_data = localStorage.getItem("user_info");
+  if (user_data) {
+    type = JSON.parse(user_data).roles.includes("admin")
+      ? "admin"
+      : JSON.parse(user_data).roles.includes("tenantadmin")
+      ? "tenant"
+      : "user";
+  }
+  return type;
+};
 const initialState: ILoginTypeState = {
-  data: "admin",
+  data: getType(),
   loading: false,
   error: undefined,
 };
 
 export const checkLoginType = createAsyncThunk(
   "login/type",
-  async (type: string) => {
+  async (type: string = "") => {
     try {
+      const user_data = localStorage.getItem("user_info");
+      if (user_data) {
+        type = getType();
+      }
       return type;
     } catch (error_) {
       return error_;

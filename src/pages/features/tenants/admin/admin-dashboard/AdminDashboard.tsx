@@ -6,6 +6,7 @@ import RolesAndPermissions from "../../../../../components/roles-and-permissions
 import { RootState } from "../../../../../store";
 import { useAppSelector } from "../../../../../store/hooks";
 import { IUserDataState } from "../../../../../types";
+
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const user: IUserDataState = useAppSelector(
@@ -14,7 +15,12 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     if (!user.loading && user.error) {
-      navigate("/error", { state: user.error });
+      navigate("/error", {
+        state: {
+          statusCode: user.error.statusCode,
+          message: user.error.message,
+        },
+      });
     }
   }, [user.loading]);
 
@@ -25,7 +31,7 @@ const AdminDashboard = () => {
       ) : (
         user.data && (
           <Container>
-            <Card style={{ width: "550px" }} className="m-1 p-2">
+            <Card className="m-1 p-2 fit-to-content">
               <Card.Title style={{ fontSize: "32px" }} className="text-center">
                 Admin Details
               </Card.Title>

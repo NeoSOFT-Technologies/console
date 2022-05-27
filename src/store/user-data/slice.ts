@@ -5,7 +5,7 @@ import {
   getUserDetailsService,
 } from "../../services/tenant";
 import { IUserDataState } from "../../types/index";
-import error from "../../utils/error";
+import errorHandler from "../../utils/error-handler";
 import { checkLoginType } from "../login-type/slice";
 
 interface IConditions {
@@ -27,22 +27,21 @@ export const getUserData = createAsyncThunk(
       switch (conditions.type) {
         case "admin":
           response = await adminLoginData();
+          localStorage.setItem("user_info", JSON.stringify(response.data));
           break;
         case "tenant":
-          response = await getUserDetailsService(
-            conditions.tenantName,
-            conditions.userName
-          );
+          response = await getUserDetailsService();
+          localStorage.setItem("user_info", JSON.stringify(response.data));
           if (response.data.roles.includes("tenantadmin")) {
             response = await getTenantDetailsService(conditions.tenantName);
-          } else {
-            await thunkAPI.dispatch(checkLoginType("user"));
+            localStorage.setItem("tenant_info", JSON.stringify(response.data));
           }
+          await thunkAPI.dispatch(checkLoginType());
           break;
       }
       return response?.data;
     } catch (error_) {
-      const errorMessage = error(error_);
+      const errorMessage = errorHandler(error_);
       throw new Error(errorMessage);
     }
   }
@@ -56,6 +55,19 @@ const slice = createSlice({
       state.data = { ...action.payload };
       state.loading = false;
       state.error = undefined;
+      const data = JSON.parse(localStorage.getItem("user_info") || "{}");
+      if (data.roles.includes("tenantadmin"))
+        localStorage.setItem("tenant_info", JSON.stringify(action.payload));
+      else localStorage.setItem("user_info", JSON.stringify(action.payload));
+    },
+    setLocalStorageData: (state) => {
+      state.loading = false;
+      state.error = undefined;
+      state.data = JSON.parse(
+        localStorage.getItem("tenant_info") ||
+          localStorage.getItem("user_info") ||
+          "undefined"
+      );
     },
   },
   extraReducers(builder): void {
@@ -70,11 +82,11 @@ const slice = createSlice({
     });
     builder.addCase(getUserData.rejected, (state, action: any) => {
       state.loading = false;
-      const errorMessage = action.error.message.split(" ");
-      state.error = errorMessage[errorMessage.length - 1];
+      const errorMessage = JSON.parse(action.error.message);
+      state.error = errorMessage;
     });
   },
 });
 
 export default slice.reducer;
-export const { setUserData } = slice.actions;
+export const { setUserData, setLocalStorageData } = slice.actions;

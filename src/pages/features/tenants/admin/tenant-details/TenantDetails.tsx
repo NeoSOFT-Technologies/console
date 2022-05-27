@@ -65,7 +65,12 @@ export default function TenantDetails() {
     const { tenantName } = params;
     if (tenantName) dispatch(tenantDetails(tenantName));
     else {
-      navigate("/error", { state: "404" });
+      navigate("/error", {
+        state: {
+          statusCode: "404",
+          message: "Tenant not found",
+        },
+      });
     }
     return () => {
       dispatch(resetTenantDetails());
@@ -150,13 +155,28 @@ export default function TenantDetails() {
 
   useEffect(() => {
     if (!tenantDeleted.loading && tenantDeleted.error) {
-      navigate("/error", { state: tenantDeleted.error });
+      navigate("/error", {
+        state: {
+          statusCode: tenantDeleted.error.statusCode,
+          message: tenantDeleted.error.message,
+        },
+      });
     }
     if (!tenantDetailsState.loading && tenantDetailsState.error) {
-      navigate("/error", { state: tenantDetailsState.error });
+      navigate("/error", {
+        state: {
+          statusCode: tenantDetailsState.error.statusCode,
+          message: tenantDetailsState.error.message,
+        },
+      });
     }
     if (!updateTenantState.loading && updateTenantState.error) {
-      navigate("/error", { state: updateTenantState.error });
+      navigate("/error", {
+        state: {
+          statusCode: updateTenantState.error.statusCode,
+          message: updateTenantState.error.message,
+        },
+      });
     }
     if (
       !tenantDeleted.loading &&
