@@ -1,4 +1,4 @@
-# React Admin template
+# Console - Admin Panel[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NeoSOFT-Technologies_console&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=NeoSOFT-Technologies_console) [![CI](https://github.com/NeoSOFT-Technologies/console/actions/workflows/ci.yml/badge.svg)](https://github.com/NeoSOFT-Technologies/console/actions/workflows/ci.yml)
 
 ## Description
 
