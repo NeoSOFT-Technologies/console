@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import {
+  AuthGuard,
+  access,
+} from "../../../../../components/gateway/auth-guard";
 import RenderList from "../../../../../components/gateway/list/RenderList";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
@@ -129,21 +133,37 @@ export default function KeyList() {
     { title: "Key Name" },
     { title: "Status" },
     { title: "Created Date" },
-    { title: "Action", className: "text-center" },
   ];
-  const actions = [
-    {
-      className: "btn btn-sm btn-light",
-      iconClassName: "bi bi-pencil-square menu-icon",
-      buttonFunction: NavigateUpdate,
-    },
-    {
-      className: "btn btn-sm btn-light",
-      iconClassName: "bi bi-trash-fill menu-icon",
-      // buttonFunction: () => setDeleteshow(true),
-      buttonFunction: deleteKeyFunction,
-    },
-  ];
+  const actions = [];
+  const editAction = {
+    className: "btn btn-sm btn-light",
+    iconClassName: "bi bi-pencil-square menu-icon",
+    buttonFunction: NavigateUpdate,
+  };
+  const delAction = {
+    className: "btn btn-sm btn-light",
+    iconClassName: "bi bi-trash-fill menu-icon",
+    // buttonFunction: () => setDeleteshow(true),
+    buttonFunction: deleteKeyFunction,
+  };
+  const isViewAuthorized = AuthGuard({
+    resource: access.resources.Key,
+    scope: access.scopes.view,
+  });
+  if (isViewAuthorized) {
+    actions.push(editAction);
+  }
+  const isDelAuthorized = AuthGuard({
+    resource: access.resources.Key,
+    scope: access.scopes.Delete,
+  });
+  if (isDelAuthorized) {
+    actions.push(delAction);
+  }
+
+  if (isViewAuthorized || isDelAuthorized) {
+    headings.push({ title: "Action" });
+  }
   return (
     <>
       <div className="col-lg-12 grid-margin stretch-card">
@@ -179,14 +199,19 @@ export default function KeyList() {
             >
               <div className="align-items-center">
                 <div>
-                  <button
-                    className=" btn  btn-success btn-sm d-flex float-right mb-4"
-                    onClick={(e) => NavigateCreateKey(e)}
+                  <AuthGuard
+                    resource={access.resources.Key}
+                    scope={access.scopes.Create}
                   >
-                    {" "}
-                    Create Key &nbsp;
-                    <span className="bi bi-plus-lg"></span> &nbsp;
-                  </button>
+                    <button
+                      className=" btn  btn-success btn-sm d-flex float-right mb-4"
+                      onClick={(e) => NavigateCreateKey(e)}
+                    >
+                      {" "}
+                      Create Key &nbsp;
+                      <span className="bi bi-plus-lg"></span> &nbsp;
+                    </button>
+                  </AuthGuard>
                   <h5>
                     <b>KEY LIST</b>
                   </h5>

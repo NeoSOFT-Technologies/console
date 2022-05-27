@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 // import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import {
+  AuthGuard,
+  access,
+} from "../../../../../components/gateway/auth-guard";
 import RenderList from "../../../../../components/gateway/list/RenderList";
-
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { RootState } from "../../../../../store";
@@ -132,20 +135,36 @@ export default function PolicyList() {
     { title: "Status" },
     { title: "Access Rights" },
     { title: "Authentication Type" },
-    { title: "Action", className: "text-center" },
   ];
-  const actions = [
-    {
-      className: "btn btn-sm btn-light",
-      iconClassName: "bi bi-pencil-square menu-icon",
-      buttonFunction: NavigateUpdate,
-    },
-    {
-      className: "btn btn-sm btn-light",
-      iconClassName: "bi bi-trash-fill menu-icon",
-      buttonFunction: deletePolicyFunction,
-    },
-  ];
+  const actions = [];
+  const editAction = {
+    className: "btn btn-sm btn-light",
+    iconClassName: "bi bi-pencil-square menu-icon",
+    buttonFunction: NavigateUpdate,
+  };
+  const delAction = {
+    className: "btn btn-sm btn-light",
+    iconClassName: "bi bi-trash-fill menu-icon",
+    buttonFunction: deletePolicyFunction,
+  };
+  const isViewAuthorized = AuthGuard({
+    resource: access.resources.Policy,
+    scope: access.scopes.View,
+  });
+  if (isViewAuthorized) {
+    actions.push(editAction);
+  }
+  const isDelAuthorized = AuthGuard({
+    resource: access.resources.Policy,
+    scope: access.scopes.Delete,
+  });
+  if (isDelAuthorized) {
+    actions.push(delAction);
+  }
+
+  if (isViewAuthorized || isDelAuthorized) {
+    headings.push({ title: "Action" });
+  }
   return (
     <>
       <Modal show={show} onHide={handleCancel} centered>
@@ -178,14 +197,19 @@ export default function PolicyList() {
               style={{ padding: "0.5rem 2.5rem" }}
             >
               <div className="align-items-center">
-                <button
-                  className=" btn  btn-success btn-sm d-flex float-right mb-4"
-                  onClick={(e) => NavigateCreatePolicy(e)}
+                <AuthGuard
+                  resource={access.resources.Policy}
+                  scope={access.scopes.Create}
                 >
-                  {" "}
-                  Create Policy &nbsp;
-                  <span className="bi bi-plus-lg"></span> &nbsp;
-                </button>
+                  <button
+                    className=" btn  btn-success btn-sm d-flex float-right mb-4"
+                    onClick={(e) => NavigateCreatePolicy(e)}
+                  >
+                    {" "}
+                    Create Policy &nbsp;
+                    <span className="bi bi-plus-lg"></span> &nbsp;
+                  </button>
+                </AuthGuard>
                 <h5>
                   <b>POLICY LIST</b>
                 </h5>
