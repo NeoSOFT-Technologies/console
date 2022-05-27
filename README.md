@@ -1,4 +1,6 @@
-# Nest JS Skeleton for REST Application  [![CI](https://github.com/NeoSOFT-Technologies/console/actions/workflows/ci.yml/badge.svg)](https://github.com/NeoSOFT-Technologies/console/actions/workflows/ci.yml)
+# Console - Admin Panel[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NeoSOFT-Technologies_console&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=NeoSOFT-Technologies_console) [![CI](https://github.com/NeoSOFT-Technologies/console/actions/workflows/ci.yml/badge.svg)](https://github.com/NeoSOFT-Technologies/console/actions/workflows/ci.yml)
+
+
 
 ## Overview
  - Console is an Admin template which is basically a set of web pages, built with HTML, CSS, and Javascript or any javascript libraries (in our case ReactJS in conjunction with typescript) used to create the user interface of the backend of a web application. These pre-built pages are integrated with the web application for doing backend tasks like maintaining the website, user and content management, installation and configuration of website software, and tracking data like network traffic and user visits to the website, to improve the performance of the website.
@@ -206,6 +208,13 @@ Please find below a detailed description of the app's folder structures:
 
 ## Documentation
 
+### Console Overview
+
+![Console Overview](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/images/console.drawio.png?raw=true)
+
+### Route based Request Response WorkFlow:-
+
+![Request and Response Cycle](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/images/tenant-login-flow.png?raw=true)
 ### NPM Modules
 
 - [Axios](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/axios.md)
@@ -237,7 +246,6 @@ Please find below a detailed description of the app's folder structures:
 - [Redux toolkit](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/HowToAddReduxToolkitSlice.md)
 - [Routes for Page setup](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/HowToAddRouteForPage.md)
 - [Routes for SideBar](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/HowToAddRouteInSidebar.md)
-- []
 
 ## Contributing To This Project
 
