@@ -237,7 +237,6 @@ Please find below a detailed description of the app's folder structures:
 - [Redux toolkit](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/HowToAddReduxToolkitSlice.md)
 - [Routes for Page setup](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/HowToAddRouteForPage.md)
 - [Routes for SideBar](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/HowToAddRouteInSidebar.md)
-- []
 
 ## Contributing To This Project
 
