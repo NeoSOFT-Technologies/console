@@ -5,6 +5,7 @@ import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { inputTableDataWithNrt } from "../../../../store/features/saas/input-data/with-nrt/slice";
 import { inputTableDataWithoutNrt } from "../../../../store/features/saas/input-data/without-nrt/slice";
+import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IInputData, ITableSchema } from "../../../../types/saas";
 
@@ -21,6 +22,7 @@ export default function InputData() {
   const [tableName, setTableName] = useState("");
   const [inputData, setInputData] = useState("");
   const [isNrtChecked, setIsNrtChecked] = useState(false);
+  const tableData = useAppSelector((state) => state.getTableState);
   console.log({ tenantId, tableName, isNrtChecked, inputData });
   const params: ITableSchema = {
     tenantId,
@@ -62,9 +64,12 @@ export default function InputData() {
         dispatch(inputTableDataWithoutNrt(initialState));
       }
     } else {
-      ToastAlert("Data is invalid", "error");
+      ToastAlert("Invalid Data", "error");
     }
   };
+  useEffect(() => {
+    dispatch(getTables(tenantId));
+  }, [tenantId]);
   useEffect(() => {
     if (
       (!inputDataWithNrt.loading &&
@@ -80,6 +85,7 @@ export default function InputData() {
   const handleOnChange = () => {
     setIsNrtChecked(!isNrtChecked);
   };
+
   return (
     <div>
       {inputDataWithNrt.loading || inputDataWithoutNrt.loading ? (
@@ -106,13 +112,18 @@ export default function InputData() {
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                       <Form.Label>Table Name :</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Table Name"
-                        value={tableName}
+                      <Form.Select
+                        aria-label="Default select example"
                         className="text-center"
                         onChange={(e) => setTableName(e.target.value)}
-                      />
+                      >
+                        <option>Table Name</option>
+                        {tableData.data?.map((val, index) => (
+                          <option key={`option${index}`} value={val}>
+                            {val}
+                          </option>
+                        ))}
+                      </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-1" controlId="formBasicEmail">
                       <div className="ml-4">
