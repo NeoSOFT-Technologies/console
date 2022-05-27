@@ -178,4 +178,4 @@ Please find below a detailed description of the app's folder structures:
 - Meetup - [https://www.meetup.com/neosoft-technologies/](https://www.meetup.com/neosoft-technologies/)
 - Medium - [https://medium.com/@neosofttech-technologies-blog](https://medium.com/@neosofttech-technologies-blog)
 - GitHub - [https://github.com/NeoSOFT-Technologies](https://github.com/NeoSOFT-Technologies)
-- Discord - [NodeJS](https://discord.gg/9xW5gQhQa4)
+- Discord - [https://discord.gg/9xW5gQhQa4](https://discord.gg/9xW5gQhQa4)
