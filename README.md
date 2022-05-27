@@ -1,72 +1,126 @@
 # Console - Admin Panel[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NeoSOFT-Technologies_console&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=NeoSOFT-Technologies_console) [![CI](https://github.com/NeoSOFT-Technologies/console/actions/workflows/ci.yml/badge.svg)](https://github.com/NeoSOFT-Technologies/console/actions/workflows/ci.yml)
 
-## Description
 
-- Admin templates are a set of web pages, built with HTML, CSS, and Javascript or any javascript libraries used to create the user interface of the backend of a web application. These pre-built pages are integrated with the web application for doing backend tasks like maintaining the website, user and content management, installation and configuration of website software, and tracking data like network traffic and user visits to the website, to improve the performance of the website.
 
-## Exciting Features
+## Overview
+ - Console is an Admin template which is basically a set of web pages, built with HTML, CSS, and Javascript or any javascript libraries (in our case ReactJS in conjunction with typescript) used to create the user interface of the backend of a web application. These pre-built pages are integrated with the web application for doing backend tasks like maintaining the website, user and content management, installation and configuration of website software, and tracking data like network traffic and user visits to the website, to improve the performance of the website.
 
-### Quick start
+- [REACT JS](https://github.com/NeoSOFT-Technologies/frontend-reactjs) library Starter repository.
 
-Create components, containers, routes and redux-toolkit and their tests - right from the CLI!
+- ReactJS improves performance due to virtual DOM. The DOM is a cross-platform and programming API which deals with HTML, XML or XHTML. Most of the developers faced the problem when the DOM was updated, which slowed down the performance of the application. ReactJS solved this problem by introducing virtual DOM.
 
-### Integrated eslint, prettier and husky
+- ReactJS is choosen by most of the web developers. It is because it offers a very rich JavaScript library. The JavaScript library provides more flexibility to the web developers to choose the approch they want to follow.
 
-Integrated ESLint, Prettier and Husky helps to take care of your code style, code formatting respectively and is a tool that allows us to easily wrangle Git hooks and run the scripts we want at those stages respectively.
+Take it for a test drive. We'd love to hear any feedback you have or if you've thought of a new feature.
 
-- [Learn more about Eslint](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/modules/eslint.md)
-- [Learn more about Prettier](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/modules/prettier.md)
-- [Learn more about Husky](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/modules/husky.md)
+## Motivation
 
-### Instant feedback
+- With this template, you can easily start a Admin template using Reactjs.
+- Rather than spending time on the project setup, get on with the important stuff right away. 
 
-Enjoy the best DX (Developer eXperience) and code your app at the speed of thought! Your saved changes to the JS are reflected instantaneously without refreshing the page. Preserve application state even when you update something in the underlying code!
+## Table of Contents
 
-### Integrated Redux Toolkit
+- [Features](#features)
+- [Getting started](#getting-started)
+- [Project Structure](#project-structure)
+- [Documentation](#documentation)
+- [Miscellaneous](#miscellaneous)
+- [Trainings](#trainings)
+- [Video Tutorials](#video-tutorials)
+- [Contributing To This Project](#contributing-to-this-project)
+- [Issues and Discussions](#issues-and-discussions)
+- [Stay in touch](#stay-in-touch)
+
+## Features
+
+- **Quick start**
+- **Integrated ESLint, Prettier and Husky**
+- **Simple and Standard scaffolding**
+- **Production-Ready Skeleton**
+- **Common Error Handler**
+- **Authentication and authorization**
+- **Form Validation Using Regex**
+- **Testing**: unit and integration tests using [Jest](https://jestjs.io)
+- **Environment variables**: segregated env files for easier variable management.
+- **Santizing**: sanitize request data against xss and query injection
+- **CI**: Continuous integration
+- **Docker support**
+- **Git hooks**: with [husky](https://github.com/typicode/husky) 
+- **Linting**: with [ESLint](https://eslint.org) and [Prettier](https://prettier.io)
+
+## Getting started
 
 Makes easier to write good redux applications and speeds up development.
 
-- [Learn more about redux-toolkit](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/modules/redux-toolkit.md)
-  v
+- Node <https://nodejs.org/en/> *use the LTS version*
+- NPM
 
-  ### Based on TypeScript
+### ### Create Development Environment
 
   Use template strings, object destructuring, arrow functions, Interfaces, JSX syntax and more.
 
 - [Learn more about TypeScript](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/features/typescript.md)
 
-  ### Next generation SaaS
-
-  Variables, nested rules, inline imports, and more are all possible with Sass. It also aids organisation and allows us to develop style sheets more quickly. All versions of CSS are supported by Sass.
+```bash
+// clone the application
+$ git clone https://github.com/NeoSOFT-Technologies/console.git
+```
+#### Install The Dependencies
 
 - [Learn more about Sass](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/features/sass.md)
 
-  ### Offline-first
+```bash
+// Install the required npm modules
+$ npm install
+```
 
-  The next frontier in performant web apps: availability without a network connection from the instant your users load the app.
+#### Create The Environment Variables
 
-  ### Static code analysis
+The `env` file should be placed in root folder with the following variables.
 
-  Focus on writing new features without worrying about formatting or code quality. With the right editor setup, your code will automatically be formatted and linted as you work.
+- `.env` : Default Environment File
+- `.env.test` : Test Environment File
+- `.env.production` : Production Environment File
+- `.env.staging` : Staging Environment File
 
-  ### Production Ready Skeleton
 
-  The ease of usability, reliability and availability of software to the users
+```
+# .env example
 
-## Motivation
+PORT= <port_no_for_application>
+REACT_APP_API_BASEURL=<backend_api_base_url>
+REACT_APP_CDN_URL=/global
+REACT_APP_IMAGES_CDN_URL=<baseurl_where_images_is_situated>
+REACT_APP_HOST=<frontend_api_base_url>
+```
 
-- With this template, we can easily start a Admin template using Node.js, JavaScript and Reactjs.
-- Rather than spending time on the project setup, get on with the important stuff right away.
 
-Take it for a test drive. We'd love to hear any feedback you have or if you've thought of a new feature.
+#### Running the app
 
-## Start the application
+```bash
+# development
+$ npm run start
 
-- Clone the Application git clone `https://github.com/NeoSOFT-Technologies/console.git`
-- Install the dependencies `npm install`
-- Start the application `npm run start` or simply `npm start`
+# production mode
+$ npm run start:prod
+```
 
-### Running the build
+#### Test
+
+For this project, We chose [Jest](https://facebook.github.io/jest/) as our test framework.
+
+
+
+```bash
+# unit tests
+$ npm run test
+
+# test coverage
+$ npm run test:coverage
+```
+
+
+#### Running the build
 
 All the different build steps are orchestrated via [npm scripts](https://docs.npmjs.com/misc/scripts).
 Npm scripts basically allow us to call (and chain) terminal commands via npm.
@@ -100,7 +154,11 @@ Below is a list of all the scripts this template has available:
 Node Modules folder is the repository of modules/library which you are using inside your project. What ever you are importing in your project that module or library should present inside the mode_module folder.When you do npm install that time that module or the library install inside the node_module folder and one entry added in package.json file. In your case frontend and backend are different project than obviously there will be 2 different node_modules folder for each of them.
 To check the list of modules used by us in this boilerplate click [here](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/npm_modules/index.md)
 
+
+
+
 ## Project Structure
+
 
 Please find below a detailed description of the app's folder structures:
 
@@ -149,33 +207,68 @@ Please find below a detailed description of the app's folder structures:
 | package.json                   | File that contains npm dependencies                                                 |
 | package-lock.json              | File that contains complete npm dependency tree                                     |
 | tsconfig.json                  | Config settings for Typescript                                                      |
-## Training
 
-- [Concepts](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/setup/concepts.md)
-- [Getting started /Installation](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/howto/getting_started.md)
-- [How to create components]()
-- [Redux Toolkit Flow of implementation]()
-- [Unit Test cases]()
-- [How to implement]()
-- [API Factory]()
-- [Auth Guard Strategy]()
 
-## Video Tutorials
+## Documentation
 
-- [Concepts](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/setup/concepts.md)
-- [Getting started /Installation](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/howto/getting_started.md)
-- [How to create components]()
-- [Redux Toolkit Flow of implementation]()
-- [Unit Test cases]()
-- [How to implement]()
-- [API Factory]()
-- [Auth Guard Strategy](https://github.com/NeoSOFT-Technologies/frontend-reactjs/blob/main/wiki/howto/authguard.md)
+### Console Overview
+
+![Console Overview](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/images/console.drawio.png?raw=true)
+
+### Route based Request Response WorkFlow:-
+
+![Request and Response Cycle](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/images/tenant-login-flow.png?raw=true)
+### NPM Modules
+
+- [Axios](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/axios.md)
+- [Bootstrap](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/bootstrap.md)
+- [compass-mixins](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/compass-mixins.md)
+- [data-grid](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/data-grid.md)
+- [eslint](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/eslint.md)
+- [husky](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/husky.md)
+- [prettier](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/prettier.md)
+- [react-dom](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/react-dom.md)
+- [react-redux](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/react-redux.md)
+- [react-router-dom](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/react-router-dom.md)
+- [react-scripts](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/react-scripts.md)
+- [react-toastify](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/react-toastify.md)
+- [redux-mock-store](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/redux-mock-store.md)
+- [redux-toolkit](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/npm-modules/redux-toolkit.md)
+
+## Miscellaneous
+
+- [Known Issues](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/issues/known-issues.md)
+
+
+## Trainings
+
+- [Concepts Required](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/setup/concepts.md)
+- [setup](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/HowtoGetStarted.md)
+- [`env` Usage](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/setup/.env.md)
+- [How to add a component](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/ComponentAndPages.md)
+- [Redux toolkit](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/HowToAddReduxToolkitSlice.md)
+- [Routes for Page setup](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/HowToAddRouteForPage.md)
+- [Routes for SideBar](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/HowToAddRouteInSidebar.md)
+
+## Contributing To This Project
+
+Contributions are welcome from anyone and everyone. We encourage you to review the [guiding principles for contributing](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/contribution/contribution.md)
+
+* [Bug reports](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/contribution/bug-reports.md)
+* [Feature requests](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/contribution/feature-requests.md)
+* [Pull requests](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/contribution/pull-requests.md)
+
+## Issues and Discussions
+
+- [Create New Issue](https://github.com/NeoSOFT-Technologies/console/issues/new)
+- [Check Existing Issues](https://github.com/NeoSOFT-Technologies/console/issues)
+- [Discussions](https://github.com/NeoSOFT-Technologies/console/discussions)
 
 ## Stay in touch
 
-- Website - [https://www.neosofttech.com/](https://www.neosofttech.com/)
-- Twitter - [@neosofttech](https://twitter.com/neosofttech)
-- Meetup - [https://www.meetup.com/neosoft-technologies/](https://www.meetup.com/neosoft-technologies/)
-- Medium - [https://medium.com/@neosofttech-technologies-blog](https://medium.com/@neosofttech-technologies-blog)
-- GitHub - [https://github.com/NeoSOFT-Technologies](https://github.com/NeoSOFT-Technologies)
-- Discord - [https://discord.gg/9xW5gQhQa4](https://discord.gg/9xW5gQhQa4)
+* Website - [https://www.neosofttech.com/](https://www.neosofttech.com/)
+* Twitter - [@neosofttech](https://twitter.com/neosofttech)
+* Meetup -  [https://www.meetup.com/neosoft-technologies/](https://www.meetup.com/neosoft-technologies/)
+* Medium -  [https://medium.com/@neosofttech-technologies-blog](https://medium.com/@neosofttech-technologies-blog)
+* GitHub - [https://github.com/NeoSOFT-Technologies](https://github.com/NeoSOFT-Technologies)
+* Discord - [Nesoft Technologies](https://discord.gg/9xW5gQhQa4)
