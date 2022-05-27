@@ -1,4 +1,4 @@
-# Nest JS Skeleton for REST Application  [![CI](https://github.com/NeoSOFT-Technologies/console/actions/workflows/ci.yml/badge.svg)](https://github.com/NeoSOFT-Technologies/console/actions/workflows/ci.yml)
+# Console admin Pannel Template  [![CI](https://github.com/NeoSOFT-Technologies/console/actions/workflows/ci.yml/badge.svg)](https://github.com/NeoSOFT-Technologies/console/actions/workflows/ci.yml)
 
 ## Overview
  - Console is an Admin template which is basically a set of web pages, built with HTML, CSS, and Javascript or any javascript libraries (in our case ReactJS in conjunction with typescript) used to create the user interface of the backend of a web application. These pre-built pages are integrated with the web application for doing backend tasks like maintaining the website, user and content management, installation and configuration of website software, and tracking data like network traffic and user visits to the website, to improve the performance of the website.
