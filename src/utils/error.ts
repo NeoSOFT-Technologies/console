@@ -6,7 +6,7 @@ const error = (object: any): any => {
     message = object.message;
   }
   if (object && object.statusCode) {
-    statusCode = object.statusCode;
+    statusCode = object.statusCode.toString();
   }
   return { ...object, statusCode, message };
 };

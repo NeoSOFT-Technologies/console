@@ -35,6 +35,7 @@ export default function Error() {
         navigate("/login-page");
     }
   };
+
   return (
     <div>
       <div className="d-flex align-items-center text-center error-page bg-primary pt-5 pb-4 h-100">

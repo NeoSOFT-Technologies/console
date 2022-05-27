@@ -114,7 +114,7 @@ export default function UserDetails() {
     if (!deleteUserState.loading && deleteUserState.error) {
       navigate("/error", {
         state: {
-          code: deleteUserState.error.statusCode,
+          statusCode: deleteUserState.error.statusCode,
           message: deleteUserState.error.message,
         },
       });
@@ -169,8 +169,8 @@ export default function UserDetails() {
     if (rolesList.error) {
       navigate("/error", {
         state: {
-          statusCode: userDetails.error.statusCode,
-          message: userDetails.error.message,
+          statusCode: rolesList.error.statusCode,
+          message: rolesList.error.message,
         },
       });
     }
