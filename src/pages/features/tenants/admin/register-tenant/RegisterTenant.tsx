@@ -31,6 +31,7 @@ export default function RegisterTenant() {
     password: "",
     databaseName: "",
     databaseDescription: "",
+    userName: "",
   });
   const [error, setError] = useState<IErrorTenantInput>({
     tenantName: "",
@@ -39,6 +40,7 @@ export default function RegisterTenant() {
     description: "",
     databaseName: "",
     databaseDescription: "",
+    userName: "",
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +51,7 @@ export default function RegisterTenant() {
           ...error,
           [name]: regexForDescription.test(value)
             ? ""
-            : "description should only consist Alphabets",
+            : "description should only consist Alphabets and numbers .",
         });
         break;
       case "description":
@@ -57,7 +59,15 @@ export default function RegisterTenant() {
           ...error,
           [name]: regexForDescription.test(value)
             ? ""
-            : "description should only consist Alphabets",
+            : "description should only consist Alphabets and numbers .",
+        });
+        break;
+      case "userName":
+        setError({
+          ...error,
+          [name]: regexForName.test(value)
+            ? ""
+            : "Name should only consist AlphaNumeric characters.",
         });
         break;
 
@@ -66,7 +76,7 @@ export default function RegisterTenant() {
           ...error,
           [name]: regexForName.test(value)
             ? ""
-            : "Name should only consist Alphabets",
+            : "Name should only consist AlphaNumeric characters",
         });
         break;
       case "password":
@@ -74,7 +84,7 @@ export default function RegisterTenant() {
           ...error,
           [name]: regForPassword.test(value)
             ? ""
-            : "Password should contains Alphabet,special Charater,Number",
+            : "Password should contains minimum one Number,uppercase,lowercase,special Character (8-15).",
         });
         break;
       case "email":
@@ -90,7 +100,7 @@ export default function RegisterTenant() {
           ...error,
           [name]: regexForDatabaseName.test(value)
             ? ""
-            : "database Name should not be empty",
+            : "database Name can have alphabets and a dash(-) only.",
         });
         break;
       default:
@@ -106,7 +116,8 @@ export default function RegisterTenant() {
       error.description === "" &&
       error.password === "" &&
       error.databaseName === "" &&
-      error.databaseDescription === ""
+      error.databaseDescription === "" &&
+      error.userName === ""
     );
     return validate;
   };
@@ -137,6 +148,7 @@ export default function RegisterTenant() {
         description: "",
         databaseName: "",
         databaseDescription: "",
+        userName: "",
       });
     }
   };
@@ -149,6 +161,7 @@ export default function RegisterTenant() {
       password: "",
       databaseName: "",
       databaseDescription: "",
+      userName: "",
     });
     setError({
       tenantName: "",
@@ -157,6 +170,7 @@ export default function RegisterTenant() {
       description: "",
       databaseName: "",
       databaseDescription: "",
+      userName: "",
     });
   };
 
@@ -167,7 +181,8 @@ export default function RegisterTenant() {
       tenant.email !== "" &&
       tenant.description !== "" &&
       tenant.password !== "" &&
-      tenant.databaseName !== ""
+      tenant.databaseName !== "" &&
+      tenant.userName !== ""
     ) {
       if (tenantAdded.tenantAdded) {
         ToastAlert("Tenant Registered", "success");
@@ -235,6 +250,25 @@ export default function RegisterTenant() {
                 </Col>
                 <Col md="6">
                   <Form.Group className="mb-3">
+                    <Form.Label>Username :</Form.Label>
+                    <Form.Control
+                      data-testid="userName-input"
+                      type="text"
+                      placeholder="Enter Username"
+                      name="userName"
+                      value={tenant.userName}
+                      isValid={!error.userName && !!tenant.userName}
+                      isInvalid={!!error.userName}
+                      onChange={handleInputChange}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {error.userName}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col md="6">
+                  <Form.Group className="mb-3">
                     <Form.Label>Password :</Form.Label>
                     <InputGroup>
                       <Form.Control
@@ -244,14 +278,18 @@ export default function RegisterTenant() {
                         value={tenant.password}
                         name="password"
                         onChange={handleInputChange}
+                        isValid={!error.password && !!tenant.password}
+                        isInvalid={!!error.password}
                         required
                       />{" "}
-                      <PasswordButtons
-                        viewPassword={showPassword}
-                        setViewPassword={setShowpassword}
-                      />
+                      <InputGroup.Text>
+                        <PasswordButtons
+                          viewPassword={showPassword}
+                          setViewPassword={setShowpassword}
+                        />
+                      </InputGroup.Text>
                     </InputGroup>
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Control.Feedback type="invalid" className="d-block">
                       {error.password}
                     </Form.Control.Feedback>
                   </Form.Group>

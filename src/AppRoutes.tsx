@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AdminGuard, TenantGuard, UserGuard } from "./components/auth-gaurd";
+import { AuthGuard, access } from "./components/gateway/auth-guard";
 import Spinner from "./components/loader/Loader";
 const RoleAndPermissions = lazy(
   () =>
@@ -180,17 +181,51 @@ function AppRoutes() {
         </Route>
         <Route path="/gateway">
           <Route path="" element={<StatisticsDashboard />} />
-          <Route path="apis" element={<APIList />} />
+          <Route
+            path="apis"
+            element={
+              <AuthGuard
+                resource={access.resources.Api}
+                scope={access.scopes.View}
+                protect={access.protect}
+              >
+                <APIList />
+              </AuthGuard>
+            }
+          />
           <Route path="policies" element={<PolicyList />} />
           <Route path="keys" element={<KeyList />} />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="apis/create" element={<CreateApi />} />
+          <Route
+            path="apis/create"
+            element={
+              <AuthGuard
+                resource={access.resources.Api}
+                scope={access.scopes.Create}
+                protect={access.protect}
+              >
+                <CreateApi />
+              </AuthGuard>
+            }
+          />
           <Route path="keys/create" element={<CreateKey />} />
           <Route path="policies/create" element={<CreatePolicy />} />
-          <Route path="apis/update/:id" element={<UpdateApi />} />
+          <Route
+            path="apis/update/:id"
+            element={
+              <AuthGuard
+                resource={access.resources.Api}
+                scope={access.scopes.View}
+                protect={access.protect}
+              >
+                <UpdateApi />
+              </AuthGuard>
+            }
+          />
+          <Route path="keys/update/:id" element={<CreateKey />} />
           <Route path="policies/update/:id" element={<CreatePolicy />} />
         </Route>
-        <Route path="*" element={<Navigate to="/login-page" />} />{" "}
+        <Route path="*" element={<Navigate to="/error-pages/error-404" />} />{" "}
       </Routes>
     </Suspense>
   );

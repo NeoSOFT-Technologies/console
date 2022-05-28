@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { updateUserDataService } from "../../../../services/tenant/users";
-import error from "../../../../utils/error";
+import errorHandler from "../../../../utils/error-handler";
+// import error from "../../../../utils/error";
 
 interface IConditions {
   username: string;
@@ -11,7 +12,7 @@ interface IConditions {
 export interface IUpdateUserState {
   isUpdated: boolean;
   loading: boolean;
-  error?: string;
+  error?: any;
 }
 
 const initialState: IUpdateUserState = {
@@ -25,9 +26,15 @@ export const updateUser = createAsyncThunk(
   async (condition: IConditions) => {
     try {
       const response = await updateUserDataService(condition);
+      let data = JSON.parse(localStorage.getItem("user_info") || "{}");
+      if (data.username === condition.username) {
+        data = { ...data, ...condition };
+        localStorage.setItem("user_info", JSON.stringify(data));
+      }
+
       return response.data;
-    } catch (error_) {
-      const errorMessage = error(error_);
+    } catch (error_: any) {
+      const errorMessage = errorHandler(error_);
       throw new Error(errorMessage);
     }
   }
@@ -36,7 +43,13 @@ export const updateUser = createAsyncThunk(
 const slice = createSlice({
   name: "userUpdate",
   initialState,
-  reducers: {},
+  reducers: {
+    resetUpdateUserState: (state) => {
+      state.isUpdated = false;
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(updateUser.pending, (state) => {
       state.loading = true;
@@ -49,10 +62,11 @@ const slice = createSlice({
     });
     builder.addCase(updateUser.rejected, (state, action: any) => {
       state.loading = false;
-      const errorMessage = action.error.message.split(" ");
-      state.error = errorMessage[errorMessage.length - 1];
+      const errorMessage = JSON.parse(action.error.message);
+      state.error = errorMessage;
     });
   },
 });
 
 export default slice.reducer;
+export const { resetUpdateUserState } = slice.actions;

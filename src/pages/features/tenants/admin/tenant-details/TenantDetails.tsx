@@ -17,7 +17,10 @@ import {
   regexForDescription,
 } from "../../../../../resources/tenant/constants";
 import { RootState } from "../../../../../store";
-import { deleteTenant } from "../../../../../store/features/admin/delete-tenant/slice";
+import {
+  deleteTenant,
+  deleteTenantReset,
+} from "../../../../../store/features/admin/delete-tenant/slice";
 import {
   tenantDetails,
   resetTenantDetails,
@@ -62,10 +65,16 @@ export default function TenantDetails() {
     const { tenantName } = params;
     if (tenantName) dispatch(tenantDetails(tenantName));
     else {
-      navigate("/error", { state: "404" });
+      navigate("/error", {
+        state: {
+          statusCode: "404",
+          message: "Tenant not found",
+        },
+      });
     }
     return () => {
       dispatch(resetTenantDetails());
+      dispatch(deleteTenantReset());
     };
   }, []);
 
@@ -93,7 +102,7 @@ export default function TenantDetails() {
           ...error,
           [name]: regexForDescription.test(value)
             ? ""
-            : "description should only consist Alphabets",
+            : "description should only consist Alphabets and Numbers",
         });
         break;
       default:
@@ -146,13 +155,28 @@ export default function TenantDetails() {
 
   useEffect(() => {
     if (!tenantDeleted.loading && tenantDeleted.error) {
-      navigate("/error", { state: tenantDeleted.error });
+      navigate("/error", {
+        state: {
+          statusCode: tenantDeleted.error.statusCode,
+          message: tenantDeleted.error.message,
+        },
+      });
     }
     if (!tenantDetailsState.loading && tenantDetailsState.error) {
-      navigate("/error", { state: tenantDetailsState.error });
+      navigate("/error", {
+        state: {
+          statusCode: tenantDetailsState.error.statusCode,
+          message: tenantDetailsState.error.message,
+        },
+      });
     }
     if (!updateTenantState.loading && updateTenantState.error) {
-      navigate("/error", { state: updateTenantState.error });
+      navigate("/error", {
+        state: {
+          statusCode: updateTenantState.error.statusCode,
+          message: updateTenantState.error.message,
+        },
+      });
     }
     if (
       !tenantDeleted.loading &&
@@ -193,7 +217,7 @@ export default function TenantDetails() {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            <Dropdown className="d-inline-block">
+            {/* <Dropdown className="d-inline-block">
               <Dropdown.Toggle className=" btn-danger " id="dropdown-basic">
                 Utilis
               </Dropdown.Toggle>
@@ -203,7 +227,7 @@ export default function TenantDetails() {
                 <Dropdown.Item>Upload</Dropdown.Item>
                 <Dropdown.Item>Create tenant tables & data</Dropdown.Item>
               </Dropdown.Menu>
-            </Dropdown>
+            </Dropdown> */}
             <Modal
               show={deleteshow}
               onHide={() => setDeleteshow(false)}
@@ -246,8 +270,7 @@ export default function TenantDetails() {
                         {tenant.tenantName &&
                           !regexForName.test(tenant.tenantName) && (
                             <span className="text-danger">
-                              Name Should Not Contain Any Special Character or
-                              Number
+                              Name should only consist AlphaNumeric characters
                             </span>
                           )}
                       </Form.Group>
@@ -267,7 +290,7 @@ export default function TenantDetails() {
                         {tenant.databaseName &&
                           !regexForDatabaseName.test(tenant.databaseName) && (
                             <span className="text-danger">
-                              databaseName Should Not Cantain Any Special
+                              databaseName Should Not Contain Any Special
                               Character or Number
                             </span>
                           )}
@@ -319,13 +342,9 @@ export default function TenantDetails() {
                             !regexForDescription.test(tenant.description)
                           }
                         />
-                        {tenant.description &&
-                          !regexForDescription.test(tenant.description) && (
-                            <span className="text-danger">
-                              description should be characters only no Special
-                              Character or Number allowed.
-                            </span>
-                          )}
+                        <Form.Control.Feedback type="invalid">
+                          {error.description}
+                        </Form.Control.Feedback>
                       </Form.Group>
                     </Col>
                     <div>

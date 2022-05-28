@@ -12,7 +12,7 @@ export interface IHeadings {
 export interface IUserDataState {
   data?: (IAdminData & ITenantDetail & IUserDetailsData) | null;
   loading: boolean;
-  error?: string | null;
+  error?: any;
 }
 
 export interface IAdminData {
@@ -60,6 +60,7 @@ export interface ITenantRegisterData {
   description: string;
   databaseName: string;
   databaseDescription: string;
+  userName: string;
 }
 
 export interface ICreateNewUser {
@@ -73,7 +74,7 @@ export interface ICreateNewUser {
 export interface ITenantRolesState {
   data?: string[] | null;
   loading: boolean;
-  error?: string | null;
+  error?: any;
 }
 
 export interface ITenantUserData {
@@ -123,6 +124,7 @@ export interface IErrorTenantInput {
   description: string;
   databaseName: string;
   databaseDescription: string;
+  userName: string;
 }
 
 /**

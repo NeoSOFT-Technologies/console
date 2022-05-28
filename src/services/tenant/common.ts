@@ -1,5 +1,4 @@
 import { ILogin } from "../../types";
-// import apiFactory from "../utils/api";
 import apiFactory from "../../utils/api";
 import tokenService from "./token.service";
 
@@ -28,5 +27,5 @@ export function commonLogoutService() {
     refreshToken: tokenService.getLocalRefreshToken(),
   };
   tokenService.removeUser();
-  return apiFactory().post(`api/logout`, data);
+  return apiFactory(process.env.REACT_APP_API_BASEURL).post(`api/logout`, data);
 }

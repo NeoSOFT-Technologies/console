@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { commonLoginService } from "../../services/tenant";
-import error from "../../utils/error";
+import errorHandler from "../../utils/error-handler";
 
 interface IConditions {
   userName: string;
@@ -10,7 +10,7 @@ interface IConditions {
 export interface ITokenState {
   loginVerified: boolean;
   loading: boolean;
-  error?: string;
+  error?: any;
 }
 
 const initialState: ITokenState = {
@@ -26,7 +26,7 @@ export const commonLogin = createAsyncThunk(
       await commonLoginService(conditions);
       return true;
     } catch (error_) {
-      const errorMessage = error(error_);
+      const errorMessage = errorHandler(error_);
       throw new Error(errorMessage);
     }
   }
@@ -48,8 +48,8 @@ const slice = createSlice({
     });
     builder.addCase(commonLogin.rejected, (state, action: any) => {
       state.loading = false;
-      const errorMessage = action.error.message.split(" ");
-      state.error = errorMessage[errorMessage.length - 1];
+      const errorMessage = JSON.parse(action.error.message);
+      state.error = errorMessage;
     });
   },
 });

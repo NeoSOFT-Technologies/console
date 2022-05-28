@@ -18,13 +18,13 @@ export default function partitions() {
       <Row>
         <Row>
           <Col md="4">
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-3 ml-4">
               <Form.Check
                 type="switch"
                 id="accessrights"
                 name="Partitions.acl"
                 label="Enforce access rights"
-                checked={state.data.form.Partitions.acl}
+                checked={state.data.form.Partitions?.acl!}
                 onChange={(e: any) => validateForm(e)}
                 // onChange={(e: any) => setRate(e.target.checked)}
               />
@@ -33,7 +33,7 @@ export default function partitions() {
             </Form.Group>
           </Col>
           <Col md="4">
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-3 ml-4">
               <Form.Check
                 type="switch"
                 id="usagequota"
@@ -48,7 +48,7 @@ export default function partitions() {
             </Form.Group>
           </Col>{" "}
           <Col md="4">
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-3 ml-4">
               <Form.Check
                 type="switch"
                 id="GlobalRate"

@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Button, Form, Row, Col, Accordion } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import {
+  AuthGuard,
+  access,
+} from "../../../../../components/gateway/auth-guard";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
@@ -114,13 +118,19 @@ function CreateApi() {
                 className="card-header bg-white mt-3 pt-1 pb-4"
                 style={{ padding: "0.5rem 1.5rem" }}
               >
-                <Button
-                  className="btn btn-sm btn-success btn-md d-flex float-right mb-3 mr-3"
-                  type="submit"
-                  data-testid="submit-input"
+                <AuthGuard
+                  resource={access.resources.Api}
+                  scope={access.scopes.Create}
                 >
-                  Save
-                </Button>
+                  <Button
+                    className="btn btn-sm btn-success btn-md d-flex float-right mb-3 mr-3"
+                    type="submit"
+                    data-testid="submit-input"
+                  >
+                    Save
+                  </Button>
+                </AuthGuard>
+
                 <Button
                   className="btn btn-sm btn-light btn-md d-flex float-right mb-3"
                   type="button"
@@ -204,7 +214,7 @@ function CreateApi() {
                         </Col>
 
                         <Col md="12">
-                          <Form.Group className="mb-3 mt-3">
+                          <Form.Group className="mb-3 mt-3 ml-4">
                             <Form.Label>API Status :</Form.Label>
                             <Form.Check
                               type="switch"

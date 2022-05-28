@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Container, Form, Button, InputGroup } from "react-bootstrap";
 import "./createuser.scss";
+import { useNavigate } from "react-router-dom";
 import Spinner from "../../../../../components/loader/Loader";
 import MultiSelectDropdown from "../../../../../components/mutli-select-dropdown/MultiSelectDropdown";
 import PasswordButtons from "../../../../../components/password-field/Password";
+import RadioButton from "../../../../../components/radio/RadioButton";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
   regexForEmail,
@@ -18,7 +20,7 @@ import {
 } from "../../../../../store/features/tenant/add-user/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import { ICreateNewUser, ITenantRolesState } from "../../../../../types/index";
-const tempPermissions = ["view", "edit", "write", "delete"];
+const tempPermissions = ["view", "edit", "create", "delete"];
 interface Ierrors {
   userName: string;
   email: string;
@@ -28,6 +30,7 @@ interface Ierrors {
 }
 
 export default function Createuser() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [showPassword, setShowpassword] = useState(false);
   const rolesList: ITenantRolesState = useAppSelector(
@@ -77,7 +80,7 @@ export default function Createuser() {
           ...errors,
           [name]: regForPassword.test(value)
             ? ""
-            : "Enter a Valid Password (must include 8 character)",
+            : "Enter a Valid Password must contains minimum one Number,uppercase,lowercase,special Character (8-15).",
         });
         break;
       default:
@@ -118,15 +121,10 @@ export default function Createuser() {
   };
 
   const handleCheckRoles = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      setFormData({
-        ...formData,
-        roles: [...formData.roles, event.target.value],
-      });
-    } else {
-      formData.roles.splice(formData.roles.indexOf(event.target.value), 1);
-      setFormData({ ...formData, roles: [...formData.roles] });
-    }
+    setFormData({
+      ...formData,
+      roles: [event.target.value],
+    });
   };
   const handleCheckPermissions = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -144,12 +142,11 @@ export default function Createuser() {
       setFormData({ ...formData, permissions: [...formData.permissions] });
     }
   };
-  const removeRole = (role: string) => {
-    const temp = formData.roles.filter(function (value) {
-      return value !== role;
-    });
-    setFormData({ ...formData, roles: [...temp] });
+
+  const removeRole = () => {
+    setFormData({ ...formData, roles: [] });
   };
+
   const removePermissions = (permissions: string) => {
     const temp = formData.permissions.filter(function (value) {
       return value !== permissions;
@@ -173,6 +170,7 @@ export default function Createuser() {
       permissions: "",
     });
   };
+
   useEffect(() => {
     if (
       !addNewUserState.loading &&
@@ -189,6 +187,17 @@ export default function Createuser() {
       }
     }
   }, [addNewUserState]);
+
+  useEffect(() => {
+    if (!rolesList.loading && rolesList.error) {
+      navigate("/error", {
+        state: {
+          statusCode: rolesList.error.statusCode,
+          message: rolesList.error.message,
+        },
+      });
+    }
+  }, [rolesList.loading]);
 
   return (
     <div>
@@ -241,20 +250,23 @@ export default function Createuser() {
                     value={formData.password}
                     name="password"
                     onChange={handleInputChange}
+                    isInvalid={!!errors.password}
+                    isValid={!!(!errors.password && formData.password)}
                   />
-                  <PasswordButtons
-                    viewPassword={showPassword}
-                    setViewPassword={setShowpassword}
-                  />
+                  <InputGroup.Text>
+                    <PasswordButtons
+                      viewPassword={showPassword}
+                      setViewPassword={setShowpassword}
+                    />
+                  </InputGroup.Text>
                 </InputGroup>
-                <Form.Control.Feedback type="invalid">
+                <Form.Control.Feedback type="invalid" className="d-block">
                   {errors.password}
                 </Form.Control.Feedback>
               </Form.Group>
               <div className="title">Roles : </div>
 
-              <MultiSelectDropdown
-                data-testid="multidrop"
+              <RadioButton
                 list={rolesList?.data}
                 formData={formData.roles}
                 title="roles"
@@ -263,6 +275,7 @@ export default function Createuser() {
               />
               <div className="title">Permissions : </div>
               <MultiSelectDropdown
+                data-testid="multidrop"
                 list={tempPermissions}
                 formData={formData.permissions}
                 title="permissions"

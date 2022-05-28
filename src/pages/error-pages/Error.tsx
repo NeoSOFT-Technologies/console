@@ -4,9 +4,20 @@ import { errorMsg } from "../../resources/tenant/constants";
 import { RootState } from "../../store";
 import { useAppSelector } from "../../store/hooks";
 import "./error.scss";
+
+interface ILocationState {
+  statusCode: string;
+  message?: string;
+}
+
+interface IErrorMessage {
+  [key: string]: string;
+}
+
 export default function Error() {
+  const errorMessage: IErrorMessage = errorMsg;
   const location = useLocation();
-  const code: string = location.state as string;
+  const { statusCode, message } = location.state as ILocationState;
   const loginType = useAppSelector((state: RootState) => state.loginType);
   const navigate = useNavigate();
   const backToHome = () => {
@@ -24,6 +35,7 @@ export default function Error() {
         navigate("/login-page");
     }
   };
+
   return (
     <div>
       <div className="d-flex align-items-center text-center error-page bg-primary pt-5 pb-4 h-100">
@@ -31,12 +43,19 @@ export default function Error() {
           <div className="col-lg-8 mx-auto text-white">
             <div className="row align-items-center d-flex flex-row">
               <div className="col-lg-6 text-lg-right pr-lg-4">
-                <h1 className="display-1 mb-0">{code}</h1>
+                <h1 className="display-1 mb-0">{statusCode}</h1>
               </div>
               <div className="col-lg-6 error-page-divider text-lg-left pl-lg-4">
                 <h2>SORRY!</h2>
                 {/* @ts-ignore */}
-                <h3 className="font-weight-light">{errorMsg[code]}</h3>
+
+                {message !== undefined ? (
+                  <h3 className="font-weight-light">{message}</h3>
+                ) : (
+                  <h3 className="font-weight-light">
+                    {errorMessage[statusCode]}
+                  </h3>
+                )}
               </div>
             </div>
             <div className="row mt-5">

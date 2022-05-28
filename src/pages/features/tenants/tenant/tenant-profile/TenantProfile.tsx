@@ -15,7 +15,10 @@ import {
   updateTenant,
 } from "../../../../../store/features/tenant/update-tenant/slice";
 import { useAppSelector, useAppDispatch } from "../../../../../store/hooks";
-import { getUserData } from "../../../../../store/user-data/slice";
+import {
+  // getUserData,
+  setUserData,
+} from "../../../../../store/user-data/slice";
 import {
   IErrorTenantDetail,
   ITenantDetail,
@@ -59,7 +62,7 @@ const TenantProfile = () => {
           ...error,
           [name]: regexForDescription.test(value)
             ? ""
-            : "description should only consist Alphabets",
+            : "description should only consist Alphabets and Numbers.",
         });
         break;
 
@@ -90,26 +93,30 @@ const TenantProfile = () => {
 
   useEffect(() => {
     if (!user.loading && user.error) {
-      navigate("/error", { state: user.error });
+      navigate("/error", {
+        state: {
+          statusCode: user.error.statusCode,
+          message: user.error.message,
+        },
+      });
     }
   }, [user.loading]);
 
-  const clearAndUpdate = async () => {
-    await dispatch(resetUpdateTenantState());
+  const clearAndUpdate = () => {
+    dispatch(resetUpdateTenantState());
     if (user.data?.tenantName !== undefined) {
-      await dispatch(
-        getUserData({
-          userName: "tenantadmin",
-          tenantName: user.data?.tenantName,
-          type: "tenant",
-        })
-      );
+      dispatch(setUserData({ ...tenant }));
     }
   };
 
   useEffect(() => {
     if (!updateTenantState.isUpdated && updateTenantState.error) {
-      navigate("/error", { state: updateTenantState.error });
+      navigate("/error", {
+        state: {
+          statusCode: updateTenantState.error.statusCode,
+          message: updateTenantState.error.message,
+        },
+      });
     } else if (updateTenantState.isUpdated && !updateTenantState.error) {
       clearAndUpdate();
     }
@@ -236,13 +243,9 @@ const TenantProfile = () => {
                           !regexForDescription.test(tenant.description)
                         }
                       />
-                      {tenant.tenantName &&
-                        !regexForDescription.test(tenant.description) && (
-                          <span className="text-danger">
-                            Name Should Not Cantain Any Special Character or
-                            Number
-                          </span>
-                        )}
+                      <Form.Control.Feedback type="invalid">
+                        {error.description}
+                      </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
                   <div>

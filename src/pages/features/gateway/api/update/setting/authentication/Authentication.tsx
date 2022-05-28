@@ -1,6 +1,7 @@
 import React from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
 import { setFormData } from "../../../../../../../resources/gateway/api/api-constants";
+import { setForm } from "../../../../../../../store/features/gateway/api/update/slice";
 import {
   useAppDispatch,
   useAppSelector,
@@ -10,16 +11,27 @@ import MutualTLS from "./mutual-tls/MutualTLS";
 
 import OpenIdConnect from "./open-id-connect/OpenIdConnect";
 import OpenKeyless from "./open-keyless/OpenKeyLess";
-// import { setForm } from "../../../../../../store/features/api/update/slice";
 
 export default function Authentication() {
   const dispatch = useAppDispatch();
 
   const state = useAppSelector((RootState) => RootState.updateApiState);
   const handleFormSelectChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setFormData(event, dispatch, state);
+    const { name } = event.target;
+    if (name === "EnableMTLS" && event.target.checked === false) {
+      const list: string[] = [];
+      dispatch(
+        setForm({
+          ...state.data.form,
+          EnableMTLS: event.target.checked,
+          CertIds: list,
+        })
+      );
+    } else {
+      setFormData(event, dispatch, state);
+    }
   };
   return (
     <div>
@@ -48,9 +60,6 @@ export default function Authentication() {
                             <option id="authToken" value="standard">
                               Authentication Token
                             </option>
-                            <option id="mutualTls" value="mutual">
-                              Mutual TLS
-                            </option>
                             <option id="openid" value="openid">
                               OpenId Connect
                             </option>
@@ -68,15 +77,29 @@ export default function Authentication() {
                       <AuthenticationToken />
                     ) : state.data.form.AuthType === "openid" ? (
                       <OpenIdConnect />
-                    ) : state.data.form.EnableMTLS === true ||
-                      state.data.form.AuthType === "mutual" ? (
-                      <MutualTLS />
                     ) : state.data.form.AuthType === "keyless" ? (
                       <OpenKeyless />
                     ) : (
                       <></>
                     )}
                   </div>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group className="mb-3 ml-4">
+                        <Form.Check
+                          type="switch"
+                          id="EnableMTLS"
+                          name="EnableMTLS"
+                          label="Enable Mutual TLS"
+                          // checked={check}
+                          // onChange={(e: any) => setCheck(e.target.checked)}
+                          checked={state.data.form.EnableMTLS}
+                          onChange={(e: any) => handleFormSelectChange(e)}
+                        />
+                      </Form.Group>
+                      {state.data.form.EnableMTLS ? <MutualTLS /> : <></>}
+                    </Col>
+                  </Row>
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>
