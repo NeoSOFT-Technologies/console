@@ -15,7 +15,7 @@ import {
   ITableColumnData,
   ITableSchema,
 } from "../../../../types/saas/index";
-import "./style.css";
+
 import {
   getTableSchema,
   setTableColNames,
