@@ -186,44 +186,27 @@ export default function CreateTables() {
                       <Dropdown.Item
                         className="w-100"
                         onClick={() => {
-                          setSku("");
+                          setSku("B");
                         }}
                       >
-                        {capacitysku.sku}
+                        B
                       </Dropdown.Item>
-                      <Dropdown.Toggle
-                        id="dropdown-basic"
-                        className="w-100 text-dark bg-white"
+                      <Dropdown.Item
+                        className="w-100"
+                        onClick={() => {
+                          setSku("S1");
+                        }}
                       >
-                        {sku.toString()}
-                      </Dropdown.Toggle>
-
-                      <Dropdown.Menu className="w-100">
-                        <Dropdown.Item
-                          className="w-100"
-                          onClick={() => {
-                            setSku("B");
-                          }}
-                        >
-                          B
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className="w-100"
-                          onClick={() => {
-                            setSku("S1");
-                          }}
-                        >
-                          S1
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          className="w-100"
-                          onClick={() => {
-                            setSku("S2");
-                          }}
-                        >
-                          S2
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
+                        S1
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="w-100"
+                        onClick={() => {
+                          setSku("S2");
+                        }}
+                      >
+                        S2
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </Form>
