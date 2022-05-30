@@ -11,7 +11,7 @@ import {
 } from "../../../../types/saas";
 import "./style.css";
 
-export default function GetTables() {
+export default function CreateTables() {
   const dispatch = useAppDispatch();
   const createTables = useAppSelector((state) => state.createTableState);
   const capacityData = useAppSelector((state) => state.capacityPlansState);
