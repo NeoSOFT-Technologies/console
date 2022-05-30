@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getCapacityPlansService } from "../../../../../services/saas/api/api";
-import { ICapacityPlans } from "../../../../../types/saas";
 import error from "../../../../../utils/error";
 
 interface IGetCapacityPlanState {
-  data?: ICapacityPlans[];
+  data?: string[] | CapacityPalanProperties;
+
   loading: boolean;
   error?: string | null;
 }
@@ -13,6 +13,14 @@ const initialState: IGetCapacityPlanState = {
   loading: false,
   error: undefined,
 };
+
+interface CapacityPalanProperties {
+  map: any;
+  sku: string;
+  name: string;
+  replicas: string;
+  shards: string;
+}
 
 export const capacityPlans = createAsyncThunk("getCapacityPlans", async () => {
   // async (data: ITableCreateData) => {
