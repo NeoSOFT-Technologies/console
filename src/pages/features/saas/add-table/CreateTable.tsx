@@ -207,6 +207,22 @@ export default function CreateTables() {
                       >
                         S2
                       </Dropdown.Item>
+                      <Dropdown.Item
+                        className="w-100"
+                        onClick={() => {
+                          setSku("S3");
+                        }}
+                      >
+                        S3
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="w-100"
+                        onClick={() => {
+                          setSku("p");
+                        }}
+                      >
+                        p
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </Form>
