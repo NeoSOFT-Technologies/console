@@ -56,6 +56,10 @@ export interface IPagination {
   pageSize: string;
 }
 
+export interface ICapacityPlan {
+  sku: string;
+}
+
 export interface ICapacityPlans {
   sku: string;
   name: string;

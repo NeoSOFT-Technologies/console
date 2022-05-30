@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Dropdown, Modal, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { createTable } from "../../../../store/features/saas/manage-table/create-table/slice";
-// import { capacityPlans } from "../../../../store/features/saas/manage-table/get-capacity-plans/slice";
+import { capacityPlans } from "../../../../store/features/saas/manage-table/get-capacity-plans/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
   ICreateTable,
@@ -11,10 +11,11 @@ import {
 } from "../../../../types/saas";
 import "./style.css";
 
-export default function GetTables() {
+export default function CreateTables() {
   const dispatch = useAppDispatch();
   const createTables = useAppSelector((state) => state.createTableState);
-
+  const capacityData = useAppSelector((state) => state.capacityPlansState);
+  // const capacityPlans = useAppSelector((state) => state.capacityPlansState);
   const [modalState, setModalState] = useState<
     "modal-one" | "modal-two" | "close"
   >("close");
@@ -28,8 +29,8 @@ export default function GetTables() {
   const [multiValue, setMultiValue] = useState(true);
   const [storable, setStorable] = useState(true);
   const [partialSearch, setPartialSearch] = useState(true);
-  const [tableName, setTableName] = useState("omkar");
-  const [sku, setSku] = useState("B");
+  const [tableName, setTableName] = useState("");
+  const [sku, setSku] = useState("");
   const handleShowModalTwo = () => {
     setModalState("modal-two");
   };
@@ -39,56 +40,44 @@ export default function GetTables() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [capacitysku, setcapcitysku]: any = useState([]);
 
-  // const initialState: ITableColumnData = {
-  //   name,
-  //   type,
-  //   required,
-  //   sortable,
-  //   filterable,
-  //   multiValue,
-  //   storable,
-  //   partialSearch,
-  // };
+  const [columnsDataArray, setColumnsDataArray]: any = useState([]);
 
-  // let columns: { name: string, type: string, required: boolean, sortable:boolean, filterable:boolean, multiValue:boolean , storable:boolean , partialSearch:boolean }[] = [
-  const schColumns: ITableColumnData[] = [
-    {
-      name: "abc",
-      type: "string",
-      required: true,
-      sortable: true,
-      filterable: true,
-      multiValue: false,
-      storable: true,
-      partialSearch: false,
-    },
-    {
-      name: "xyz",
-      type: "string",
-      required: true,
-      sortable: true,
-      filterable: true,
-      multiValue: false,
-      storable: true,
-      partialSearch: false,
-    },
-    {
-      name: "qwe",
-      type: "string",
-      required: true,
-      sortable: true,
-      filterable: true,
-      multiValue: false,
-      storable: true,
-      partialSearch: false,
-    },
-  ];
+  const capacityDropDown = (e: any) => {
+    e.preventDefault();
+    dispatch(capacityPlans());
+    const options = capacityData.data?.map((d: { sku: any }) => ({
+      setcapcitysku: d.sku,
+    }));
+    if (capacitysku !== undefined) {
+      setcapcitysku([...capacitysku, options]);
+    } else setcapcitysku([]);
+    console.log("options", options);
+  };
+  // form submit event
+  const handleAddColumnSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    // creating an object
+    const columnData: ITableColumnData = {
+      name,
+      type,
+      required,
+      partialSearch,
+      filterable,
+      sortable,
+      multiValue,
+      storable,
+    };
+    setColumnsDataArray([...columnsDataArray, columnData]);
+    setName("");
+    setType("");
+  };
 
   const params1: ITableCreateData = {
     tableName,
     sku,
-    columns: schColumns,
+    columns: columnsDataArray,
   };
 
   const params: ICreateTable = {
@@ -96,8 +85,15 @@ export default function GetTables() {
     requestData: params1,
   };
 
+  // saving data to local storage
   useEffect(() => {
-    console.log(params);
+    console.log("here is data", capacityDropDown);
+    console.log("capacitysku", capacitysku);
+    localStorage.setItem("columnsDataArray", JSON.stringify(columnsDataArray));
+  }, [columnsDataArray]);
+
+  useEffect(() => {
+    // console.log("capacitysku", capacitysku);
   }, [createTables.data, createTables.error]);
 
   // const [tenantId] = useState("");
@@ -105,10 +101,16 @@ export default function GetTables() {
     event: React.FormEvent
   ) => {
     event.preventDefault();
-    alert("ok");
-    console.log({ type, name, required });
     // console.log(tenantId);
     dispatch(createTable(params));
+  };
+
+  const getCapacityData: React.FormEventHandler<HTMLFormElement> = (
+    event: React.FormEvent
+  ) => {
+    event.preventDefault();
+    console.log("table data", capacityData.data);
+    dispatch(capacityPlans());
   };
 
   return (
@@ -171,98 +173,197 @@ export default function GetTables() {
                 Capacity
               </Form.Label>
               <Col sm lg="4">
-                <Dropdown>
-                  <Dropdown.Toggle
-                    id="dropdown-basic"
-                    className="w-100 text-dark bg-white"
-                  >
-                    {sku.toString()}
-                  </Dropdown.Toggle>
+                <Form onClick={capacityDropDown}>
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      id="dropdown-basic"
+                      className="w-100 text-dark bg-white"
+                    >
+                      {sku.toString()}
+                    </Dropdown.Toggle>
 
-                  <Dropdown.Menu className="w-100">
-                    <Dropdown.Item
-                      className="w-100"
-                      onClick={() => {
-                        setSku("B");
-                      }}
-                    >
-                      B
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      className="w-100"
-                      onClick={() => {
-                        setSku("S1");
-                      }}
-                    >
-                      S1
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      className="w-100"
-                      onClick={() => {
-                        setSku("S2");
-                      }}
-                    >
-                      S2
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                    <Dropdown.Menu className="w-100">
+                      <Dropdown.Item
+                        className="w-100"
+                        onClick={() => {
+                          setSku("B");
+                        }}
+                      >
+                        B
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="w-100"
+                        onClick={() => {
+                          setSku("S1");
+                        }}
+                      >
+                        S1
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="w-100"
+                        onClick={() => {
+                          setSku("S2");
+                        }}
+                      >
+                        S2
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="w-100"
+                        onClick={() => {
+                          setSku("S3");
+                        }}
+                      >
+                        S3
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className="w-100"
+                        onClick={() => {
+                          setSku("p");
+                        }}
+                      >
+                        p
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Form>
               </Col>
               <Form.Label column="lg" lg={2} className="p-1 m-0">
-                <i
-                  className="bi bi-info-circle-fill"
-                  onClick={handleShowModalTwo}
-                ></i>
+                <Form onClick={getCapacityData}>
+                  <i
+                    className="bi bi-info-circle-fill"
+                    onClick={handleShowModalTwo}
+                  ></i>
+                  <Modal
+                    show={modalState === "modal-two"}
+                    onHide={handleShowModalTwoclose}
+                    size="lg"
+                  >
+                    <Modal.Header>
+                      <Modal.Title className="text-center">
+                        Add Column
+                      </Modal.Title>
+                      <button
+                        type="button"
+                        className="close"
+                        onClick={handleShowModalTwoclose}
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </Modal.Header>
+                    <Modal.Body>
+                      {" "}
+                      {/* <Button
+                    variant="btn  btn-success"
+                    type="submit"
+                    className=" pl-4 pr-4"
+                  >
+                    Save
+                  </Button> */}
+                      <Table bordered className="pt-2 createbody text-center">
+                        <thead>
+                          <tr id="test">
+                            <th>Capacity</th>
+                            <th>Name</th>
+                            <th>Replicas</th>
+                            <th>Shards</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {capacityData.data !== undefined && (
+                            <>
+                              {capacityData.data.map(
+                                (
+                                  val:
+                                    | {
+                                        sku:
+                                          | string
+                                          | number
+                                          | boolean
+                                          | React.ReactElement<
+                                              any,
+                                              | string
+                                              | React.JSXElementConstructor<any>
+                                            >
+                                          | React.ReactFragment
+                                          | React.ReactPortal
+                                          | null
+                                          | undefined;
+                                        name:
+                                          | string
+                                          | number
+                                          | boolean
+                                          | React.ReactElement<
+                                              any,
+                                              | string
+                                              | React.JSXElementConstructor<any>
+                                            >
+                                          | React.ReactFragment
+                                          | React.ReactPortal
+                                          | null
+                                          | undefined;
+                                        replicas:
+                                          | string
+                                          | number
+                                          | boolean
+                                          | React.ReactElement<
+                                              any,
+                                              | string
+                                              | React.JSXElementConstructor<any>
+                                            >
+                                          | React.ReactFragment
+                                          | React.ReactPortal
+                                          | null
+                                          | undefined;
+                                        shards:
+                                          | string
+                                          | number
+                                          | boolean
+                                          | React.ReactElement<
+                                              any,
+                                              | string
+                                              | React.JSXElementConstructor<any>
+                                            >
+                                          | React.ReactFragment
+                                          | React.ReactPortal
+                                          | null
+                                          | undefined;
+                                      }
+                                    | null
+                                    | undefined,
+                                  index: React.Key | null | undefined
+                                ) => (
+                                  <tr key={`row${index}`}>
+                                    {val !== null && val !== undefined && (
+                                      <>
+                                        <td key={index}>{val.sku}</td>
+                                        <td key={index}>{val.name}</td>
+                                        <td key={index}>{val.replicas}</td>
+                                        <td key={index}>{val.shards}</td>
+                                      </>
+                                    )}
+                                  </tr>
+                                )
+                              )}
+                            </>
+                          )}
+                        </tbody>
+                      </Table>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button
+                        variant="danger"
+                        onClick={handleShowModalTwoclose}
+                      >
+                        Close
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+                </Form>
               </Form.Label>
             </Row>
             <br></br>
-            <Modal
-              show={modalState === "modal-two"}
-              onHide={handleShowModalTwoclose}
-              size="lg"
-            >
-              <Modal.Header>
-                <Modal.Title className="text-center">Add Column</Modal.Title>
-                <button
-                  type="button"
-                  className="close"
-                  onClick={handleShowModalTwoclose}
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </Modal.Header>
-              <Modal.Body>
-                <Table bordered className="pt-2 createbody text-center">
-                  <thead>
-                    <tr id="test">
-                      <th>Capacity</th>
-                      <th>Name</th>
-                      <th>Replicas</th>
-                      <th>Shards</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Ravi</td>
-                      <td>Mark</td>
-                      <td>true</td>
-                      <td>false</td>
-                    </tr>
-                    <tr>
-                      <td>SHubham</td>
-                      <td>Mark</td>
-                      <td>true</td>
-                      <td>false</td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="danger" onClick={handleShowModalTwoclose}>
-                  Close
-                </Button>
-              </Modal.Footer>
-            </Modal>
+
             <Row>
               <Form.Label
                 column="lg"
@@ -286,26 +387,39 @@ export default function GetTables() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Ravi</td>
-                      <td>Product</td>
-                      <td>true</td>
-                      <td>false</td>
-                      <td>true </td>
-                      <td>false</td>
-                      <td>true</td>
-                      <td>true </td>
-                    </tr>
-                    <tr>
-                      <td>Sam</td>
-                      <td>Price</td>
-                      <td>true</td>
-                      <td>false</td>
-                      <td>true </td>
-                      <td>false</td>
-                      <td>true</td>
-                      <td>true </td>
-                    </tr>
+                    {columnsDataArray.map(
+                      (
+                        val:
+                          | {
+                              name: any;
+                              type: any;
+                              required: any;
+                              partialSearch: any;
+                              filterable: any;
+                              sortable: any;
+                              multiValue: any;
+                              storable: any;
+                            }
+                          | null
+                          | undefined,
+                        index: React.Key | null | undefined
+                      ) => (
+                        <tr key={`row${index}`}>
+                          {val !== null && val !== undefined && (
+                            <>
+                              <td key={index}>{val.name}</td>
+                              <td>{val.type}</td>
+                              <td>{JSON.stringify(val.required)}</td>
+                              <td>{JSON.stringify(val.partialSearch)}</td>
+                              <td>{JSON.stringify(val.filterable)}</td>
+                              <td>{JSON.stringify(val.sortable)}</td>
+                              <td>{JSON.stringify(val.multiValue)}</td>
+                              <td>{JSON.stringify(val.storable)}</td>
+                            </>
+                          )}
+                        </tr>
+                      )
+                    )}
                   </tbody>
                 </Table>
               </Col>
@@ -343,7 +457,7 @@ export default function GetTables() {
       </Form>
 
       <Modal show={show} onHide={handleClose} size="lg">
-        <Form onSubmit={createTableData}>
+        <Form onSubmit={handleAddColumnSubmit}>
           <Modal.Header>
             <Modal.Title className="text-center">Add Column</Modal.Title>
             <button
