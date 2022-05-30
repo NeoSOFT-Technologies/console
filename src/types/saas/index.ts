@@ -59,3 +59,10 @@ export interface IPagination {
 export interface ICapacityPlan {
   sku: string;
 }
+
+export interface ICapacityPlans {
+  sku: string;
+  name: string;
+  replicas: string;
+  shards: string;
+}

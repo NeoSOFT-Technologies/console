@@ -18,7 +18,6 @@ describe("SAAS - CREATE Table Slice", () => {
     const result = await store.dispatch(
       deleteTable({ tenantId: "1", tableName: "testTable" })
     );
-
     // console.log(result.type)
     expect(result.type).toBe("deleteTableByTableName/rejected");
   });

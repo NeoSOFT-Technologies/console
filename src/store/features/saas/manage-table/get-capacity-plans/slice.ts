@@ -4,6 +4,7 @@ import error from "../../../../../utils/error";
 
 interface IGetCapacityPlanState {
   data?: string[] | CapacityPalanProperties;
+
   loading: boolean;
   error?: string | null;
 }
