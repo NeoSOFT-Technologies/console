@@ -26,7 +26,6 @@ Take it for a test drive. We'd love to hear any feedback you have or if you've t
 - [Documentation](#documentation)
 - [Miscellaneous](#miscellaneous)
 - [Trainings](#trainings)
-- [Video Tutorials](#video-tutorials)
 - [Contributing To This Project](#contributing-to-this-project)
 - [Issues and Discussions](#issues-and-discussions)
 - [Stay in touch](#stay-in-touch)
@@ -47,6 +46,8 @@ Take it for a test drive. We'd love to hear any feedback you have or if you've t
 - **Docker support**
 - **Git hooks**: with [husky](https://github.com/typicode/husky) 
 - **Linting**: with [ESLint](https://eslint.org) and [Prettier](https://prettier.io)
+- **[Api Interceptor](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/Features/api-interceptor.md)**
+- **[Refresh Token](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/Features/api-interceptor.md/refreshtoken.md)**
 
 ## Getting started
 
@@ -55,7 +56,7 @@ Makes easier to write good redux applications and speeds up development.
 - Node <https://nodejs.org/en/> *use the LTS version*
 - NPM
 
-### ### Create Development Environment
+### Create Development Environment
 
   Use template strings, object destructuring, arrow functions, Interfaces, JSX syntax and more.
 
@@ -249,6 +250,7 @@ Please find below a detailed description of the app's folder structures:
 - [Redux toolkit](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/HowToAddReduxToolkitSlice.md)
 - [Routes for Page setup](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/HowToAddRouteForPage.md)
 - [Routes for SideBar](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/HowToAddRouteInSidebar.md)
+- [How to Use Api Factory](https://github.com/NeoSOFT-Technologies/console/blob/main/wiki/trainings/HowToUseApiFactory.md)
 
 ## Contributing To This Project
 
