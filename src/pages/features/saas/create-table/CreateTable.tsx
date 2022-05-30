@@ -30,7 +30,7 @@ export default function GetTables() {
   const [storable, setStorable] = useState(true);
   const [partialSearch, setPartialSearch] = useState(true);
   const [tableName, setTableName] = useState("");
-  const [sku, setSku] = useState("S1");
+  const [sku, setSku] = useState("");
   const handleShowModalTwo = () => {
     setModalState("modal-two");
   };
@@ -40,9 +40,21 @@ export default function GetTables() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [capacitysku, setcapcitysku]: any = useState([]);
 
   const [columnsDataArray, setColumnsDataArray]: any = useState([]);
 
+  const capacityDropDown = (e: any) => {
+    e.preventDefault();
+    dispatch(capacityPlans());
+    const options = capacityData.data?.map((d: { sku: any }) => ({
+      setcapcitysku: d.sku,
+    }));
+    if (capacitysku !== undefined) {
+      setcapcitysku([...capacitysku, options]);
+    } else setcapcitysku([]);
+    console.log("options", options);
+  };
   // form submit event
   const handleAddColumnSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -62,51 +74,6 @@ export default function GetTables() {
     setType("");
   };
 
-  // const initialState: ITableColumnData = {
-  //   name,
-  //   type,
-  //   required,
-  //   sortable,
-  //   filterable,
-  //   multiValue,
-  //   storable,
-  //   partialSearch,
-  // };
-
-  // let columns: { name: string, type: string, required: boolean, sortable:boolean, filterable:boolean, multiValue:boolean , storable:boolean , partialSearch:boolean }[] = [
-  // const schColumns: ITableColumnData[] = [
-  //   {
-  //     name: "abc",
-  //     type: "string",
-  //     required: true,
-  //     sortable: true,
-  //     filterable: true,
-  //     multiValue: false,
-  //     storable: true,
-  //     partialSearch: false,
-  //   },
-  //   {
-  //     name: "xyz",
-  //     type: "string",
-  //     required: true,
-  //     sortable: true,
-  //     filterable: true,
-  //     multiValue: false,
-  //     storable: true,
-  //     partialSearch: false,
-  //   },
-  //   {
-  //     name: "qwe",
-  //     type: "string",
-  //     required: true,
-  //     sortable: true,
-  //     filterable: true,
-  //     multiValue: false,
-  //     storable: true,
-  //     partialSearch: false,
-  //   },
-  // ];
-
   const params1: ITableCreateData = {
     tableName,
     sku,
@@ -120,12 +87,13 @@ export default function GetTables() {
 
   // saving data to local storage
   useEffect(() => {
-    console.log("here is data", columnsDataArray);
+    console.log("here is data", capacityDropDown);
+    console.log("capacitysku", capacitysku);
     localStorage.setItem("columnsDataArray", JSON.stringify(columnsDataArray));
   }, [columnsDataArray]);
 
   useEffect(() => {
-    console.log("params", params);
+    // console.log("capacitysku", capacitysku);
   }, [createTables.data, createTables.error]);
 
   // const [tenantId] = useState("");
@@ -205,41 +173,60 @@ export default function GetTables() {
                 Capacity
               </Form.Label>
               <Col sm lg="4">
-                <Dropdown>
-                  <Dropdown.Toggle
-                    id="dropdown-basic"
-                    className="w-100 text-dark bg-white"
-                  >
-                    {sku.toString()}
-                  </Dropdown.Toggle>
+                <Form onClick={capacityDropDown}>
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      id="dropdown-basic"
+                      className="w-100 text-dark bg-white"
+                    >
+                      {sku.toString()}
+                    </Dropdown.Toggle>
 
-                  <Dropdown.Menu className="w-100">
-                    <Dropdown.Item
-                      className="w-100"
-                      onClick={() => {
-                        setSku("B");
-                      }}
-                    >
-                      B
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      className="w-100"
-                      onClick={() => {
-                        setSku("S1");
-                      }}
-                    >
-                      S1
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      className="w-100"
-                      onClick={() => {
-                        setSku("S2");
-                      }}
-                    >
-                      S2
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                    <Dropdown.Menu className="w-100">
+                      <Dropdown.Item
+                        className="w-100"
+                        onClick={() => {
+                          setSku("");
+                        }}
+                      >
+                        {capacitysku.sku}
+                      </Dropdown.Item>
+                      <Dropdown.Toggle
+                        id="dropdown-basic"
+                        className="w-100 text-dark bg-white"
+                      >
+                        {sku.toString()}
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu className="w-100">
+                        <Dropdown.Item
+                          className="w-100"
+                          onClick={() => {
+                            setSku("B");
+                          }}
+                        >
+                          B
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          className="w-100"
+                          onClick={() => {
+                            setSku("S1");
+                          }}
+                        >
+                          S1
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          className="w-100"
+                          onClick={() => {
+                            setSku("S2");
+                          }}
+                        >
+                          S2
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Form>
               </Col>
               <Form.Label column="lg" lg={2} className="p-1 m-0">
                 <Form onClick={getCapacityData}>
@@ -421,8 +408,8 @@ export default function GetTables() {
                         <tr key={`row${index}`}>
                           {val !== null && val !== undefined && (
                             <>
-                              <td key={index}>{JSON.stringify(val.name)}</td>
-                              <td>{JSON.stringify(val.type)}</td>
+                              <td key={index}>{val.name}</td>
+                              <td>{val.type}</td>
                               <td>{JSON.stringify(val.required)}</td>
                               <td>{JSON.stringify(val.partialSearch)}</td>
                               <td>{JSON.stringify(val.filterable)}</td>

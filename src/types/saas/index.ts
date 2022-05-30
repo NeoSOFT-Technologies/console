@@ -58,7 +58,4 @@ export interface IPagination {
 
 export interface ICapacityPlan {
   sku: string;
-  name: string;
-  replicas: string;
-  shards: string;
 }
