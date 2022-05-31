@@ -116,8 +116,7 @@ export default function GetTables() {
                 columns :
               </Form.Label>
               <Col sm lg="8" className="ml-2 mt-5 pl-1 pr-0 table-responsive ">
-                {tableData.data !== undefined &&
-                tableData.data.columns.length > 0 ? (
+                {tableData.data !== undefined && tableData.data.length > 0 ? (
                   <Table bordered className="text-center pr-0">
                     <thead>
                       <tr id="test">
@@ -133,7 +132,7 @@ export default function GetTables() {
                       </tr>
                     </thead>
                     <tbody>
-                      {tableData.data.columns.map((val) => (
+                      {tableData.data.map((val) => (
                         <>
                           <tr>
                             <td>{val.name}</td>
