@@ -138,12 +138,7 @@ export default function ManageTables() {
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{val.tenantId}</td>
-                      <td>
-                        {val.tableName}
-                        <span className="m-4">
-                          <i className="bi bi-info-circle-fill"></i>
-                        </span>
-                      </td>
+                      <td>{val.tableName}</td>
                       <td
                         className="text-align-middle  text-primary"
                         onClick={() => handleEditShow(val)}

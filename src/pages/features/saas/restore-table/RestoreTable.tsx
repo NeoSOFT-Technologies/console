@@ -134,15 +134,9 @@ function RestoreTable() {
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{val.tenantId}</td>
-                      <td className="">
-                        {val.tableName}
-                        <span className="m-4">
-                          <i className="bi bi-info-circle-fill"></i>
-                        </span>
-                      </td>
+                      <td>{val.tableName}</td>
                       <td
                         className="text-align-middle text-primary"
-                        aria-placeholder="Restore"
                         onClick={() => handleShow(val)}
                       >
                         <i className="bi bi-bootstrap-reboot"></i>
