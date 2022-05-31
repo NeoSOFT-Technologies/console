@@ -4,15 +4,24 @@ import { ICreateTable } from "../../../../../types/saas";
 import error from "../../../../../utils/error";
 
 interface ICreateTableState {
-  data?: string;
+  data?: ICustomeMessage;
   loading: boolean;
-  error?: string | null;
+  error?: string | null | ICustomeError;
 }
 const initialState: ICreateTableState = {
   data: undefined,
   loading: false,
   error: undefined,
 };
+
+interface ICustomeMessage {
+  statusCode: string;
+  message: string;
+}
+interface ICustomeError {
+  statusCode: string;
+  message: string;
+}
 
 export const createTable = createAsyncThunk(
   "createTable",
@@ -23,13 +32,16 @@ export const createTable = createAsyncThunk(
         data.tenantId,
         data.requestData
       );
+
       console.log(
         `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
       );
+      alert(JSON.stringify(response.data));
       return response.data;
     } catch (error_: any) {
       // console.log(error_, "||", error(error_));
       const errorMessage = error(error_);
+      alert("something went to wrong");
       // console.log(`Error : ` + JSON.stringify(error_));
       throw new Error(errorMessage);
     }
