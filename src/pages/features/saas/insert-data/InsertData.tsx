@@ -109,6 +109,7 @@ export default function InputData() {
                         placeholder="user"
                         value={tenantId}
                         className="text-center"
+                        required
                         onChange={(e) => setTenantId(e.target.value)}
                       />
                     </Form.Group>
