@@ -18,8 +18,8 @@ export default function GetTables() {
   console.log(tableData);
 
   const obj: ITableSchema = {
-    tenantId: tenantId,
-    tableName: tableName,
+    tenantId,
+    tableName,
   };
   const [name, setName] = useState("");
   const [type, setType] = useState("");
@@ -49,14 +49,14 @@ export default function GetTables() {
     setShow(true);
   };
   const obj2: ITableColumnData = {
-    name: name,
-    type: type,
-    required: required,
-    partialSearch: partialSearch,
-    filterable: filterable,
-    sortable: sortable,
-    multiValue: multiValue,
-    storable: storable,
+    name,
+    type,
+    required,
+    partialSearch,
+    filterable,
+    sortable,
+    multiValue,
+    storable,
   };
 
   return (
