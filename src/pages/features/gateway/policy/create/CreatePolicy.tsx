@@ -155,7 +155,7 @@ export default function CreatePolicy() {
                   </button>
                   <span>
                     <b>
-                      {id === undefined ? "CREATE POLICY" : "UPDTAE POLICY"}
+                      {id === undefined ? "CREATE POLICY" : "UPDATE POLICY"}
                     </b>
                   </span>
                 </div>
