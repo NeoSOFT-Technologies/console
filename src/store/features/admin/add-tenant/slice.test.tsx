@@ -16,7 +16,6 @@ test("calling the state of add-tenant", async () => {
       userName: "",
     })
   );
-  // console.log(result);
   expect(result.type).toBe("tenant/addnewtenant/fulfilled");
 });
 

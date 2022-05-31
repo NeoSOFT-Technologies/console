@@ -46,15 +46,8 @@ export default function RegisterTenant() {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
-      case "databaseDescription":
-        setError({
-          ...error,
-          [name]: regexForDescription.test(value)
-            ? ""
-            : "description should only consist Alphabets and numbers .",
-        });
-        break;
       case "description":
+      case "databaseDescription":
         setError({
           ...error,
           [name]: regexForDescription.test(value)
@@ -110,7 +103,7 @@ export default function RegisterTenant() {
   };
 
   const handleValidate = () => {
-    const validate = !!(
+    return !!(
       error.tenantName === "" &&
       error.email === "" &&
       error.description === "" &&
@@ -119,7 +112,6 @@ export default function RegisterTenant() {
       error.databaseDescription === "" &&
       error.userName === ""
     );
-    return validate;
   };
 
   const handleSubmitTenant = async (event: React.FormEvent) => {
@@ -141,15 +133,7 @@ export default function RegisterTenant() {
         ToastAlert("Please Fill All Fields", "warning");
       }
     } else {
-      setError({
-        tenantName: "",
-        email: "",
-        password: "",
-        description: "",
-        databaseName: "",
-        databaseDescription: "",
-        userName: "",
-      });
+      ToastAlert("Some fields are incorrect", "warning");
     }
   };
 

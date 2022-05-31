@@ -21,8 +21,8 @@ export const tenantDetails = createAsyncThunk(
     try {
       const response = await getTenantDetailsService(tenantName);
       return response.data;
-    } catch (error_: any) {
-      const errorMessage = errorHandler(error_);
+    } catch (_error: any) {
+      const errorMessage = errorHandler(_error);
       throw new Error(errorMessage);
     }
   }

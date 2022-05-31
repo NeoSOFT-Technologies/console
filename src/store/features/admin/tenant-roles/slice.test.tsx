@@ -6,7 +6,6 @@ test("calling the state of tenant-role", async () => {
   mockApi.onGet("/api/roles?tenantName=").reply(200, {});
 
   const result = await store.dispatch(getTenantRoles());
-  // console.log(result);
   expect(result.type).toBe("tenant/roles/fulfilled");
 });
 

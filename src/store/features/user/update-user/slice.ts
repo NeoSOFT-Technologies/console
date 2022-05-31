@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { updateUserDataService } from "../../../../services/tenant/users";
 import errorHandler from "../../../../utils/error-handler";
-// import error from "../../../../utils/error";
 
 interface IConditions {
   username: string;
@@ -33,8 +32,8 @@ export const updateUser = createAsyncThunk(
       }
 
       return response.data;
-    } catch (error_: any) {
-      const errorMessage = errorHandler(error_);
+    } catch (_error: any) {
+      const errorMessage = errorHandler(_error);
       throw new Error(errorMessage);
     }
   }
