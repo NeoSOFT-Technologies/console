@@ -57,7 +57,9 @@ export default function InputData() {
     event: React.FormEvent
   ) => {
     event.preventDefault();
-    if (isValidJSONObject()) {
+    if (inputData.toString() === "") {
+      ToastAlert("Please Enter atleast one data", "error");
+    } else if (isValidJSONObject()) {
       if (isNrtChecked) {
         dispatch(inputTableDataWithNrt(initialState));
       } else {
@@ -115,9 +117,10 @@ export default function InputData() {
                       <Form.Select
                         aria-label="Default select example"
                         className="text-center"
+                        required
                         onChange={(e) => setTableName(e.target.value)}
                       >
-                        <option>Table Name</option>
+                        <option value=""> Select Table</option>
                         {tableData.data?.map((val, index) => (
                           <option key={`option${index}`} value={val}>
                             {val}
