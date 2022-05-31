@@ -60,6 +60,7 @@ export default function Authentication() {
                             <option id="authToken" value="standard">
                               Authentication Token
                             </option>
+
                             <option id="openid" value="openid">
                               OpenId Connect
                             </option>
@@ -85,7 +86,7 @@ export default function Authentication() {
                   </div>
                   <Row>
                     <Col md="12">
-                      <Form.Group className="mb-3 ml-4">
+                      <Form.Group className="mb-3 ml-4 mt-4">
                         <Form.Check
                           type="switch"
                           id="EnableMTLS"

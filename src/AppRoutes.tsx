@@ -193,8 +193,30 @@ function AppRoutes() {
               </AuthGuard>
             }
           />
-          <Route path="policies" element={<PolicyList />} />
-          <Route path="keys" element={<KeyList />} />
+          <Route
+            path="policies"
+            element={
+              <AuthGuard
+                resource={access.resources.Policy}
+                scope={access.scopes.View}
+                protect={access.protect}
+              >
+                <PolicyList />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="keys"
+            element={
+              <AuthGuard
+                resource={access.resources.Key}
+                scope={access.scopes.View}
+                protect={access.protect}
+              >
+                <KeyList />
+              </AuthGuard>
+            }
+          />
           <Route path="dashboard" element={<Dashboard />} />
           <Route
             path="apis/create"
@@ -208,8 +230,30 @@ function AppRoutes() {
               </AuthGuard>
             }
           />
-          <Route path="keys/create" element={<CreateKey />} />
-          <Route path="policies/create" element={<CreatePolicy />} />
+          <Route
+            path="keys/create"
+            element={
+              <AuthGuard
+                resource={access.resources.Key}
+                scope={access.scopes.Create}
+                protect={access.protect}
+              >
+                <CreateKey />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="policies/create"
+            element={
+              <AuthGuard
+                resource={access.resources.Policy}
+                scope={access.scopes.Create}
+                protect={access.protect}
+              >
+                <CreatePolicy />
+              </AuthGuard>
+            }
+          />
           <Route
             path="apis/update/:id"
             element={
@@ -222,8 +266,30 @@ function AppRoutes() {
               </AuthGuard>
             }
           />
-          <Route path="keys/update/:id" element={<CreateKey />} />
-          <Route path="policies/update/:id" element={<CreatePolicy />} />
+          <Route
+            path="keys/update/:id"
+            element={
+              <AuthGuard
+                resource={access.resources.Key}
+                scope={access.scopes.View}
+                protect={access.protect}
+              >
+                <CreateKey />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="policies/update/:id"
+            element={
+              <AuthGuard
+                resource={access.resources.Policy}
+                scope={access.scopes.View}
+                protect={access.protect}
+              >
+                <CreatePolicy />
+              </AuthGuard>
+            }
+          />
         </Route>
         <Route path="*" element={<Navigate to="/login-page" />} />{" "}
       </Routes>
