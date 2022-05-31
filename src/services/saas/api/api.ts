@@ -19,7 +19,9 @@ export function getCapacityPlansService() {
   return apiFactory().get(`manage/table/capacity-plans`);
 }
 export function getTableSchemaService(tableName: string, tenantId: string) {
-  return apiFactory().get(`manage/table/${tableName}?tenantId=${tenantId}`);
+  return apiFactory(process.env.REACT_APP_SAAS_API).get(
+    `manage/table/${tableName}?tenantId=${tenantId}`
+  );
 }
 export function deleteTableService(tableName: string, tenantId: string) {
   return apiFactory().delete(`manage/table/${tableName}?tenantId=${tenantId}`);
