@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Row, Form, Col, Modal } from "react-bootstrap";
+import {
+  access,
+  AuthGuard,
+} from "../../../../../../../../components/gateway/auth-guard";
 import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 // import Spinner from "../../../../../../../../components/loader/Loader";
 import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
@@ -247,12 +251,14 @@ export default function MutualTLS() {
           Only clients with whitelisted SSL certificates will be allowed to
           access your API.
         </p>
-        <button
-          className=" btn btn-sm btn-dark btn-sm float-right mb-2"
-          onClick={(e) => handleShow(e)}
-        >
-          <span className="bi bi-plus-lg"></span>&nbsp;Add new Certificate
-        </button>
+        <AuthGuard resource={access.resources.Api} scope={access.scopes.Edit}>
+          <button
+            className=" btn btn-sm btn-dark btn-sm float-right mb-2"
+            onClick={(e) => handleShow(e)}
+          >
+            <span className="bi bi-plus-lg"></span>&nbsp;Add new Certificate
+          </button>
+        </AuthGuard>
 
         <Modal show={show} onHide={handleClose} backdrop="static">
           <Modal.Header closeButton>

@@ -1,6 +1,10 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { Button, Form, Modal, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  AuthGuard,
+  access,
+} from "../../../../../components/gateway/auth-guard";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 // import { setFormErrorkey } from "../../../../../resources/gateway/key/key-constants";
@@ -227,10 +231,15 @@ export default function CreateKey() {
                     >
                       Modal
                     </Button> */}
-                      <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
-                        {" "}
-                        {id ? "Update" : "Create"}
-                      </button>
+                      <AuthGuard
+                        resource={access.resources.Key}
+                        scope={id ? access.scopes.Edit : access.scopes.Create}
+                      >
+                        <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
+                          {" "}
+                          {id ? "Update" : "Create"}
+                        </button>
+                      </AuthGuard>
                       <button
                         className=" btn btn-sm btn-light btn-md d-flex float-right mb-3"
                         onClick={(event: React.MouseEvent<HTMLButtonElement>) =>

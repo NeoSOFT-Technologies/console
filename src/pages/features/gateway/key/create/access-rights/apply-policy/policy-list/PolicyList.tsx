@@ -116,42 +116,42 @@ export default function PolicyList() {
       : [];
   }
 
-  // useEffect(() => {
-  //   if (
-  //     StateKey.data.form.KeyId !== undefined &&
-  //     apis.length === 0 &&
-  //     StateKey.data.form.Policies.length > 0
-  //   ) {
-  //     const policyApis = [...apis];
-  //     const accessRightList =
-  //       accessPolicyList !== undefined
-  //         ? accessPolicyList.data?.Policies!.filter(
-  //             (a) =>
-  //               a.AuthType !== "keyless" &&
-  //               StateKey.data.form.Policies.includes(a.Id!)
-  //           )
-  //         : undefined;
+  useEffect(() => {
+    if (
+      StateKey.data.form.KeyId !== undefined &&
+      apis.length === 0 &&
+      StateKey.data.form.Policies.length > 0
+    ) {
+      const policyApis = [...apis];
+      const accessRightList =
+        accessPolicyList !== undefined
+          ? accessPolicyList.data?.Policies!.filter(
+              (a) =>
+                a.AuthType !== "keyless" &&
+                StateKey.data.form.Policies.includes(a.Id!)
+            )
+          : undefined;
 
-  //     if (accessRightList !== undefined && accessRightList?.length! > 0) {
-  //       for (const policyItem of accessRightList!) {
-  //         policyApis.push({ name: policyItem.Apis!, policyId: policyItem.Id! });
-  //         setApis(policyApis);
-  //         setSelectedApi(policyItem.Id!);
-  //       }
-  //     }
-  //   }
-  //   if (apis.length > 0 && apis.length !== StateKey.data.form.Policies.length) {
-  //     const filterPolicyList = apis.filter((i) =>
-  //       StateKey.data.form.Policies.includes(i.policyId!)
-  //     );
-  //     setApis(filterPolicyList);
-  //     setSelectedApi(
-  //       StateKey.data.form.Policies[StateKey.data.form.Policies.length - 1]!
-  //     );
-  //   }
+      if (accessRightList !== undefined && accessRightList?.length! > 0) {
+        for (const policyItem of accessRightList!) {
+          policyApis.push({ name: policyItem.Apis!, policyId: policyItem.Id! });
+          setApis(policyApis);
+          setSelectedApi(policyItem.Id!);
+        }
+      }
+    }
+    if (apis.length > 0 && apis.length !== StateKey.data.form.Policies.length) {
+      const filterPolicyList = apis.filter((i) =>
+        StateKey.data.form.Policies.includes(i.policyId!)
+      );
+      setApis(filterPolicyList);
+      setSelectedApi(
+        StateKey.data.form.Policies[StateKey.data.form.Policies.length - 1]!
+      );
+    }
 
-  //   bindPolicyList();
-  // }, [StateKey?.data.form.Policies?.length && accessPolicyList]);
+    bindPolicyList();
+  }, [StateKey?.data.form.Policies?.length && accessPolicyList]);
 
   useEffect(() => {
     // alert(apis);
