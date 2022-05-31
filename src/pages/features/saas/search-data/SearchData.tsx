@@ -148,6 +148,7 @@ export default function GetSearchData() {
                     placeholder="User"
                     value={tenantId}
                     className="text-center"
+                    required
                     onChange={(e) => setTenantId(e.target.value)}
                   />
                 </Form.Group>
@@ -157,9 +158,10 @@ export default function GetSearchData() {
                   <Form.Select
                     aria-label="Default select example"
                     className="text-center"
+                    required
                     onChange={(e) => setTableName(e.target.value)}
                   >
-                    <option>Table Name</option>
+                    <option value="">Table Name</option>
                     {tableData.data?.map((val, index) => (
                       <option key={`option${index}`} value={val}>
                         {val}
@@ -206,9 +208,10 @@ export default function GetSearchData() {
                   <Form.Select
                     aria-label="Default select example"
                     className="text-center"
+                    required
                     onChange={(e) => setOrderBy(e.target.value)}
                   >
-                    <option>Order By</option>
+                    <option value="">Order By</option>
                     {tableColName.data?.map((val, index) => (
                       <option key={`option${index}`} value={val.name}>
                         {val.name}
@@ -292,7 +295,7 @@ export default function GetSearchData() {
                   </nav>
                 </>
               ) : (
-                <h2>{msg && "No data "}</h2>
+                <h2> {msg && "No Data "}</h2>
               )}
             </div>
           </>
