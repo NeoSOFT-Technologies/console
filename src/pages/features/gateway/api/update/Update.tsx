@@ -44,6 +44,8 @@ export default function Update() {
 
     let validateObj1: any;
     let validateObj2: any;
+    let versionVal = false;
+
     if (state.data.errors !== undefined) {
       const obj = state.data.errors;
       const { Versions, ...rest } = obj;
@@ -62,8 +64,17 @@ export default function Update() {
     const val =
       state.data.form.EnableMTLS === true &&
       state.data.form.CertIds.length === 0;
-    console.log("val", val);
-    if (validateObj1 && validateObj2 && !val) {
+
+    if (
+      state.data.form.IsVersioningDisabled === false &&
+      (state.data.form.VersioningInfo.Location === 0 ||
+        state.data.form.VersioningInfo.Key === "")
+    ) {
+      versionVal = true;
+    }
+    console.log("versionVal", versionVal);
+
+    if (validateObj1 && validateObj2 && !val && !versionVal) {
       const newForm = { ...state.data.form };
       if (state.data.form.EnableRoundRobin === false) {
         newForm.LoadBalancingTargets = [];
@@ -81,6 +92,12 @@ export default function Update() {
     } else {
       if (val === true) {
         ToastAlert("Please select atleast one certificate! ", "error");
+      }
+      if (versionVal === true) {
+        ToastAlert(
+          "Version Data Location and Version Name both fields are required! ",
+          "error"
+        );
       }
       if (validateObj1 === false || validateObj2 === false) {
         ToastAlert("Please fill all the fields correctly! ", "error");
