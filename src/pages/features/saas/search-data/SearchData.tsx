@@ -12,9 +12,14 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
   ISearchDataWithQueryField,
+  ITableColumnData,
   ITableSchema,
 } from "../../../../types/saas/index";
-import "./style.css";
+
+import {
+  getTableSchema,
+  setTableColNames,
+} from "./../../../../store/features/saas/manage-table/get-table-schema/slice";
 import { getTables } from "./../../../../store/features/saas/manage-table/get-tables/slice";
 
 export default function GetSearchData() {
@@ -23,12 +28,14 @@ export default function GetSearchData() {
     (state) => state.searchDataWithQueryFieldState
   );
   const tableData = useAppSelector((state) => state.getTableState);
+  const tableColName = useAppSelector((state) => state.getTableSchemaState);
+
   const [tenantId, setTenantId] = useState("");
   const [tableName, setTableName] = useState("");
   const [queryField, setQueryField] = useState("*");
   const [searchTerm, setSearchTerm] = useState("*");
   const [pageSize, setPageSize] = useState("5");
-  const [orderBy, setOrderBy] = useState("id");
+  const [orderBy, setOrderBy] = useState("");
   const [order, setOrder] = useState("asc");
   const [startRecord, setStartRecord] = useState("0");
   const [tableHeader, setTableHeader] = useState<string[]>([]);
@@ -110,9 +117,15 @@ export default function GetSearchData() {
   }, [searchData.data, searchData.error]);
 
   useEffect(() => {
+    const newTableColList: ITableColumnData[] = [];
+    dispatch(setTableColNames(newTableColList));
     dispatch(getTables(tenantId));
   }, [tenantId]);
 
+  useEffect(() => {
+    console.log(tableColName);
+    dispatch(getTableSchema({ tableName, tenantId }));
+  }, [tableName]);
   useEffect(() => {
     return () => {
       dispatch(resetSearchDataWithQueryField());
@@ -135,6 +148,7 @@ export default function GetSearchData() {
                     placeholder="User"
                     value={tenantId}
                     className="text-center"
+                    required
                     onChange={(e) => setTenantId(e.target.value)}
                   />
                 </Form.Group>
@@ -143,23 +157,17 @@ export default function GetSearchData() {
                 <Form.Group controlId="formBasicEmail">
                   <Form.Select
                     aria-label="Default select example"
+                    className="text-center"
+                    required
                     onChange={(e) => setTableName(e.target.value)}
                   >
-                    <option>Table Name</option>
+                    <option value="">Table Name</option>
                     {tableData.data?.map((val, index) => (
                       <option key={`option${index}`} value={val}>
                         {val}
                       </option>
                     ))}
                   </Form.Select>
-
-                  {/* <Form.Control
-                    type="text"
-                    placeholder="Table Name"
-                    value={tableName}
-                    className="text-center"
-                    onChange={(e) => setTableName(e.target.value)}
-                  /> */}
                 </Form.Group>
               </Col>
               <Col>
@@ -197,24 +205,31 @@ export default function GetSearchData() {
               </Col>
               <Col>
                 <Form.Group controlId="formBasicEmail">
-                  <Form.Control
-                    type="text"
-                    placeholder="Order By"
-                    value={orderBy}
+                  <Form.Select
+                    aria-label="Default select example"
                     className="text-center"
+                    required
                     onChange={(e) => setOrderBy(e.target.value)}
-                  />
+                  >
+                    <option value="">Order By</option>
+                    {tableColName.data?.map((val, index) => (
+                      <option key={`option${index}`} value={val.name}>
+                        {val.name}
+                      </option>
+                    ))}
+                  </Form.Select>
                 </Form.Group>
               </Col>
               <Col lg="2">
                 <Form.Group controlId="formBasicEmail">
-                  <Form.Control
-                    type="text"
-                    placeholder="Asc"
-                    value={order}
+                  <Form.Select
+                    aria-label="Default select example"
                     className="text-center"
                     onChange={(e) => setOrder(e.target.value)}
-                  />
+                  >
+                    <option value="asc">ASC</option>
+                    <option value="desc">DESC</option>
+                  </Form.Select>
                 </Form.Group>
               </Col>
               <div className="col-md-12 mt-5 text-center table-responsive">
@@ -280,7 +295,7 @@ export default function GetSearchData() {
                   </nav>
                 </>
               ) : (
-                <h2>{msg && "No data "}</h2>
+                <h2> {msg && "No Data "}</h2>
               )}
             </div>
           </>
