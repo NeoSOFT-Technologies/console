@@ -1,6 +1,10 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { Button, Form, Modal, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  AuthGuard,
+  access,
+} from "../../../../../components/gateway/auth-guard";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 // import { setFormErrorkey } from "../../../../../resources/gateway/key/key-constants";
@@ -21,6 +25,7 @@ export default function CreateKey() {
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
   const [clipboard, setClipboard] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [keyId, setKeyId] = useState<string>();
   const state: IKeyCreateState = useAppSelector(
     (RootState) => RootState.createKeyState
@@ -61,6 +66,13 @@ export default function CreateKey() {
     mainCall();
   }, []);
 
+  // to hide copied message after timeout
+  useEffect(() => {
+    setTimeout(() => {
+      setVisible(false);
+      setClipboard(false);
+    }, 2000);
+  }, [clipboard]);
   const handleOk = () => {
     setShow(false);
   };
@@ -161,8 +173,13 @@ export default function CreateKey() {
   // const handleShow = () => setShow(true);
   const copyToClipBoard = async () => {
     try {
+      if (keyId === undefined) {
+        setKeyId(id);
+      }
+      console.log(keyId);
       await navigator.clipboard.writeText(keyId!);
       setClipboard(true);
+      setVisible(true);
     } catch (error) {
       console.log(error);
     }
@@ -170,7 +187,6 @@ export default function CreateKey() {
   const handleCancel = () => {
     setShow(false);
   };
-
   return (
     <>
       <Modal size="lg" show={show} onHide={handleCancel} centered>
@@ -190,7 +206,7 @@ export default function CreateKey() {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          {clipboard ? "Copied!" : ""}
+          {visible ? "Copied!" : ""}
           <Button
             variant="primary"
             className="rouded-6"
@@ -227,10 +243,15 @@ export default function CreateKey() {
                     >
                       Modal
                     </Button> */}
-                      <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
-                        {" "}
-                        {id ? "Update" : "Create"}
-                      </button>
+                      <AuthGuard
+                        resource={access.resources.Key}
+                        scope={id ? access.scopes.Edit : access.scopes.Create}
+                      >
+                        <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
+                          {" "}
+                          {id ? "Update" : "Create"}
+                        </button>
+                      </AuthGuard>
                       <button
                         className=" btn btn-sm btn-light btn-md d-flex float-right mb-3"
                         onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
@@ -243,6 +264,21 @@ export default function CreateKey() {
                       <span>
                         <b>{id ? "UPDATE KEY" : "CREATE KEY"} </b>
                       </span>
+                      <div className="pt-2">
+                        {id ? (
+                          <>
+                            <b>KEY ID:</b> {id}{" "}
+                            <i
+                              className="btn btn-sm bi bi-clipboard"
+                              // onClick={copyToClipBoard(state.data.form.ApiId)}
+                              onClick={copyToClipBoard}
+                            ></i>
+                            {visible ? "Copied!" : ""}
+                          </>
+                        ) : (
+                          <></>
+                        )}{" "}
+                      </div>
                     </div>
                     <div className="card-body pt-2">
                       <Tabs

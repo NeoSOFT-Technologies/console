@@ -1,6 +1,10 @@
 import React, { FormEvent, useEffect } from "react";
 import { Form, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  AuthGuard,
+  access,
+} from "../../../../../components/gateway/auth-guard";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
 import {
@@ -131,10 +135,15 @@ export default function CreatePolicy() {
                   className="card-header bg-white mt-3 pt-1 pb-4"
                   style={{ padding: "0.5rem 1.5rem" }}
                 >
-                  <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
-                    {" "}
-                    {id === undefined ? "Create" : "Update"}
-                  </button>
+                  <AuthGuard
+                    resource={access.resources.Policy}
+                    scope={id ? access.scopes.Edit : access.scopes.Create}
+                  >
+                    <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
+                      {" "}
+                      {id === undefined ? "Create" : "Update"}
+                    </button>
+                  </AuthGuard>
                   <button
                     className=" btn btn-sm btn-light btn-md d-flex float-right mb-3"
                     onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
@@ -146,7 +155,7 @@ export default function CreatePolicy() {
                   </button>
                   <span>
                     <b>
-                      {id === undefined ? "CREATE POLICY" : "UPDTAE POLICY"}
+                      {id === undefined ? "CREATE POLICY" : "UPDATE POLICY"}
                     </b>
                   </span>
                 </div>

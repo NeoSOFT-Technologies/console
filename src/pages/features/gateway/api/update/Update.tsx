@@ -61,20 +61,23 @@ export default function Update() {
         }
       }
     }
-    const val =
+    const validateMTLs =
       state.data.form.EnableMTLS === true &&
       state.data.form.CertIds.length === 0;
+    const validateLoad =
+      state.data.form.EnableRoundRobin === true &&
+      state.data.form.LoadBalancingTargets.length === 0;
+      console.log("val", validateLoad);
 
-    if (
-      state.data.form.IsVersioningDisabled === false &&
-      (state.data.form.VersioningInfo.Location === 0 ||
-        state.data.form.VersioningInfo.Key === "")
-    ) {
-      versionVal = true;
-    }
-    console.log("versionVal", versionVal);
+      if (
+          state.data.form.IsVersioningDisabled === false &&
+          (state.data.form.VersioningInfo.Location === 0 ||
+              state.data.form.VersioningInfo.Key === "")
+      ) {
+          versionVal = true;
+      }
 
-    if (validateObj1 && validateObj2 && !val && !versionVal) {
+      if (validateObj1 && validateObj2 && !validateMTLs && !validateLoad && !versionVal) {
       const newForm = { ...state.data.form };
       if (state.data.form.EnableRoundRobin === false) {
         newForm.LoadBalancingTargets = [];
@@ -90,8 +93,11 @@ export default function Update() {
         ToastAlert("Api Updated request is not fulfilled!!", "error");
       }
     } else {
-      if (val === true) {
-        ToastAlert("Please select atleast one certificate! ", "error");
+      if (validateMTLs === true) {
+        ToastAlert(
+          "MTLS is enable. Please select atleast one certificate! ",
+          "error"
+        );
       }
       if (versionVal === true) {
         ToastAlert(
@@ -101,6 +107,12 @@ export default function Update() {
       }
       if (validateObj1 === false || validateObj2 === false) {
         ToastAlert("Please fill all the fields correctly! ", "error");
+      }
+      if (validateLoad === true) {
+        ToastAlert(
+          "Round-Robin Load Balancing is enable. Please add atleast one TargetUrl! ",
+          "error"
+        );
       }
     }
   }

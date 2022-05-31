@@ -40,6 +40,8 @@ export default function AccessList() {
             Versions: [], // listV,
             MasterVersions: listV,
             AuthType: selectedApi.payload.Data.AuthType,
+            isRateLimitDisabled: selectedApi.payload.Data.RateLimit.IsDisabled,
+            isQuotaDisbaled: selectedApi.payload.Data.IsQuotaDisabled,
             AllowedUrls: [],
             Limit: {
               Rate: 0,
@@ -54,6 +56,7 @@ export default function AccessList() {
             },
           },
         ];
+        console.log("list access", list);
         dispatch(setForms({ ...state.data.form, AccessRights: list }));
         const error = [...state.data.errors?.PerApiLimit!];
         const perapierror = {
