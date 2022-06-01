@@ -23,8 +23,8 @@ export const deleteUser = createAsyncThunk(
     try {
       await deleteUserDataService(userName);
       return true;
-    } catch (error_: any) {
-      const errorMessage = errorHandler(error_);
+    } catch (_error: any) {
+      const errorMessage = errorHandler(_error);
       throw new Error(errorMessage);
     }
   }

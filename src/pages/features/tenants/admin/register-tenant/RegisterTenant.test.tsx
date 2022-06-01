@@ -29,6 +29,10 @@ it("test if input box is present", () => {
   expect(nameBox).toBeInTheDocument();
   expect(nameBox).toHaveAttribute("type", "text");
 
+  const userName = screen.getByTestId("userName-input");
+  expect(userName).toBeInTheDocument();
+  expect(userName).toHaveAttribute("type", "text");
+
   const emailBox = screen.getByTestId("email-input");
   expect(emailBox).toBeInTheDocument();
   expect(emailBox).toHaveAttribute("type", "email");
@@ -63,6 +67,9 @@ it("test if input box take input", () => {
   fireEvent.change(nameBox, { target: { value: "akhilpinni" } });
   expect(screen.getByTestId("tenantName-input")).toHaveValue("akhilpinni");
 
+  const userName = screen.getByTestId("userName-input");
+  fireEvent.change(userName, { target: { value: "tenantadmin" } });
+  expect(screen.getByTestId("userName-input")).toHaveValue("tenantadmin");
   const emailBox = screen.getByTestId("email-input");
   fireEvent.change(emailBox, { target: { value: "akhilpinni123@gmail.com" } });
   expect(screen.getByTestId("email-input")).toHaveValue(

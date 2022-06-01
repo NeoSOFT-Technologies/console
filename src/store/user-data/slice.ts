@@ -56,9 +56,11 @@ const slice = createSlice({
       state.loading = false;
       state.error = undefined;
       const data = JSON.parse(localStorage.getItem("user_info") || "{}");
-      if (data.roles.includes("tenantadmin"))
+      if (data.roles.includes("tenantadmin")) {
         localStorage.setItem("tenant_info", JSON.stringify(action.payload));
-      else localStorage.setItem("user_info", JSON.stringify(action.payload));
+      } else {
+        localStorage.setItem("user_info", JSON.stringify(action.payload));
+      }
     },
     setLocalStorageData: (state) => {
       state.loading = false;

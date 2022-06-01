@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-// import { IUserDataState } from "../../types/index";
 import error from "../../utils/error";
 
 export interface ILoginTypeState {
@@ -11,11 +10,13 @@ const getType = () => {
   let type = "";
   const user_data = localStorage.getItem("user_info");
   if (user_data) {
-    type = JSON.parse(user_data).roles.includes("admin")
-      ? "admin"
-      : JSON.parse(user_data).roles.includes("tenantadmin")
-      ? "tenant"
-      : "user";
+    if (JSON.parse(user_data).roles.includes("admin")) {
+      type = "admin";
+    } else if (JSON.parse(user_data).roles.includes("tenantadmin")) {
+      type = "tenant";
+    } else {
+      type = "user";
+    }
   }
   return type;
 };
@@ -27,13 +28,10 @@ const initialState: ILoginTypeState = {
 
 export const checkLoginType = createAsyncThunk(
   "login/type",
-  async (type: string = "") => {
+  async (_loginType: string = "") => {
     try {
       const user_data = localStorage.getItem("user_info");
-      if (user_data) {
-        type = getType();
-      }
-      return type;
+      return user_data ? getType() : _loginType;
     } catch (error_) {
       return error_;
     }

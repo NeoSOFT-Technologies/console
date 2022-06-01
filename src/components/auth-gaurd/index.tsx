@@ -20,8 +20,8 @@ export const AdminGuard = ({ children }: component) => {
 };
 
 export const TenantGuard = ({ children }: component) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  console.log(searchParams);
+  const [searchParamsTenant, setSearchParamsTenant] = useSearchParams();
+  console.log(searchParamsTenant);
   const authenticationState = useAppSelector(
     (state: RootState) => state.loginType
   );
@@ -31,7 +31,7 @@ export const TenantGuard = ({ children }: component) => {
     if (userData.data?.tenantName) {
       const currentURL = window.location.pathname.split("/");
       if (currentURL[1] === "tenant") {
-        setSearchParams({ tenant: userData.data.tenantName });
+        setSearchParamsTenant({ tenant: userData.data.tenantName });
       }
     }
   }, [location.pathname, userData]);
@@ -43,8 +43,8 @@ export const TenantGuard = ({ children }: component) => {
 };
 
 export const UserGuard = ({ children }: component) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  console.log(searchParams);
+  const [searchParamsUser, setSearchParamsUser] = useSearchParams();
+  console.log(searchParamsUser);
   const authenticationState = useAppSelector(
     (state: RootState) => state.loginType
   );
@@ -54,7 +54,7 @@ export const UserGuard = ({ children }: component) => {
     if (userData.data?.tenantName) {
       const currentURL = window.location.pathname.split("/");
       if (currentURL[1] === "tenant") {
-        setSearchParams({ tenant: userData.data.tenantName });
+        setSearchParamsUser({ tenant: userData.data.tenantName });
       }
     }
   }, [location.pathname, userData]);
