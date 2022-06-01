@@ -65,6 +65,7 @@ export default function InputData() {
       } else {
         dispatch(inputTableDataWithoutNrt(initialState));
       }
+      setInputData("");
     } else {
       ToastAlert("Invalid Data", "error");
     }
