@@ -352,7 +352,7 @@ export default function OpenIdConnectAuthentication() {
                   <Form.Group className="mt-0">
                     <Form.Control
                       type="text"
-                      placeholder="http://issuer.com"
+                      placeholder="https://issuer.com"
                       id="issuer"
                       name="issuer"
                       value={addFormData.issuer}

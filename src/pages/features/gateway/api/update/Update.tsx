@@ -67,17 +67,23 @@ export default function Update() {
     const validateLoad =
       state.data.form.EnableRoundRobin === true &&
       state.data.form.LoadBalancingTargets.length === 0;
-      console.log("val", validateLoad);
+    console.log("val", validateLoad);
 
-      if (
-          state.data.form.IsVersioningDisabled === false &&
-          (state.data.form.VersioningInfo.Location === 0 ||
-              state.data.form.VersioningInfo.Key === "")
-      ) {
-          versionVal = true;
-      }
+    if (
+      state.data.form.IsVersioningDisabled === false &&
+      (state.data.form.VersioningInfo.Location === 0 ||
+        state.data.form.VersioningInfo.Key === "")
+    ) {
+      versionVal = true;
+    }
 
-      if (validateObj1 && validateObj2 && !validateMTLs && !validateLoad && !versionVal) {
+    if (
+      validateObj1 &&
+      validateObj2 &&
+      !validateMTLs &&
+      !validateLoad &&
+      !versionVal
+    ) {
       const newForm = { ...state.data.form };
       if (state.data.form.EnableRoundRobin === false) {
         newForm.LoadBalancingTargets = [];
