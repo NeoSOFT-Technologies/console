@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, InputGroup, Modal, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { useLocation } from "react-router-dom";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   getTableSchema,
   setTableColumns,
 } from "../../../../store/features/saas/manage-table/get-table-schema/slice";
+import { updateTableSchema } from "../../../../store/features/saas/manage-table/update-table-schema/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { ITableColumnData, ITableSchema } from "../../../../types/saas";
 import "./style.css";
@@ -18,31 +20,16 @@ export default function GetTables() {
   const { tableName, tenantId } = location.state as LocationState;
 
   const tableData = useAppSelector((state) => state.getTableSchemaState);
-  console.log(tableData);
+
+  const updateTableSchemaState = useAppSelector(
+    (state) => state.updateTableSchemaState
+  );
+  // console.log(tableData);
 
   const tableSchemaObject: ITableSchema = {
     tenantId,
     tableName,
   };
-  // const [name, setName] = useState("");
-  // const [type, setType] = useState("");
-  // const [required, setRequired] = useState(Boolean);
-  // const [partialSearch, setPartialSearch] = useState(Boolean);
-  // const [filterable, setFilterable] = useState(Boolean);
-  // const [sortable, setSortable] = useState(Boolean);
-  // const [multiValue, setMultiValue] = useState(Boolean);
-  // const [storable, setStorable] = useState(Boolean);
-
-  // const obj2: ITableColumnData = {
-  //   name,
-  //   type,
-  //   required,
-  //   partialSearch,
-  //   filterable,
-  //   sortable,
-  //   multiValue,
-  //   storable,
-  // };
   const [selectedColumnData, setSelectedColumnData] =
     useState<ITableColumnData>({
       name: "",
@@ -59,35 +46,63 @@ export default function GetTables() {
     dispatch(getTableSchema(tableSchemaObject));
   }, []);
 
+  useEffect(() => {
+    if (
+      !updateTableSchemaState.loading &&
+      !updateTableSchemaState.error &&
+      updateTableSchemaState?.data
+    ) {
+      ToastAlert("Table updated successfully", "success");
+    }
+  }, [updateTableSchemaState.loading]);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
-    console.log("Obj2 = " + JSON.stringify(selectedColumnData));
-    const newColumnNames = tableData.data;
-    // alert("name : " + name);
-    const objIndex: Number | any = newColumnNames?.findIndex(
+    setShow(false);
+  };
+
+  const saveColumnData = () => {
+    const objIndex: Number | any = tableData.data?.findIndex(
       (item: ITableColumnData) => item.name === selectedColumnData.name
     );
-    // alert("objIndex : " + objIndex);
     const payload = { selectedColumnData, objIndex };
-    // newColumnNames = newColumnNames?.splice(objIndex, 1, obj2);
-    // console.log("After Change : " + JSON.stringify(newColumnNames));
     dispatch(setTableColumns(payload));
     setShow(false);
   };
   const handleShow = (columData: ITableColumnData) => {
-    // setName(columData.name);
-    // setType(columData.type);
-    // setRequired(columData.required);
-    // setPartialSearch(columData.partialSearch);
-    // setFilterable(columData.filterable);
-    // setSortable(columData.sortable);
-    // setMultiValue(columData.multiValue);
-    // setStorable(columData.storable);
     setSelectedColumnData(columData);
-    // alert("columData  : " + JSON.stringify(typeof columData.required));
-    alert("selectedColumnData : " + JSON.stringify(selectedColumnData));
     setShow(true);
+  };
+
+  // const updateTable = () => {
+  //   alert("inside button click");
+  //   console.log("inside button click");
+  //   dispatch(
+  //     updateTableSchema({
+  //       requestParams: tableSchemaObject,
+  //       requestData: {
+  //         tableName: tableName,
+  //         columns: tableData.data as ITableColumnData[],
+  //       },
+  //     })
+  //   );
+  // };
+
+  const updateTable: React.FormEventHandler<HTMLFormElement> = (
+    event: React.FormEvent
+  ) => {
+    event.preventDefault();
+    alert("inside button click");
+    dispatch(
+      updateTableSchema({
+        requestParams: tableSchemaObject,
+        requestData: {
+          tableName: tableName,
+          columns: tableData.data as ITableColumnData[],
+        },
+      })
+    );
   };
 
   return (
@@ -95,7 +110,7 @@ export default function GetTables() {
       <h4 className="pl-5 pt-5">Edit Table</h4>
       <br></br>
 
-      <Form className="pl-5">
+      <Form onSubmit={updateTable} className="pl-5">
         <Row>
           <Col>
             <Row>
@@ -197,19 +212,20 @@ export default function GetTables() {
           <br></br>
           <br></br>
         </Row>
-      </Form>
-      <Row className="mb-5">
-        <div className=" text-center ml-0 pl-0 col-md-12  text-right pr-5 mt-5">
-          <Button
-            variant="btn btn-success"
-            type="submit"
-            className="float-center pr-5 pl-5"
-          >
-            Save
-          </Button>
-        </div>
-      </Row>
 
+        <Row className="mb-5">
+          <div className=" text-center ml-0 pl-0 col-md-12  text-right pr-5 mt-5">
+            <Button
+              variant="btn btn-success"
+              type="submit"
+              className="float-center pr-5 pl-5"
+              // onClick={updateTable}
+            >
+              Save
+            </Button>
+          </div>
+        </Row>
+      </Form>
       <Modal
         show={show}
         data={selectedColumnData}
@@ -283,19 +299,10 @@ export default function GetTables() {
                   id="box"
                   value={selectedColumnData.required.toString()}
                   onChange={(e) => {
-                    alert("Required onchange : " + e.target.value);
-                    // if (e.target.value === "true") {
                     setSelectedColumnData({
                       ...selectedColumnData,
                       required: JSON.parse(e.target.value),
                     });
-                    // } else {
-                    //   setSelectedColumnData({
-                    //     ...selectedColumnData,
-                    //     required: false,
-                    //   });
-                    // }
-                    alert("Required : " + JSON.stringify(selectedColumnData));
                   }}
                 >
                   <option
@@ -325,8 +332,12 @@ export default function GetTables() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   id="box"
+                  value={selectedColumnData.partialSearch.toString()}
                   onChange={(e) => {
-                    alert("Partial Search onchange : " + e.target.value);
+                    setSelectedColumnData({
+                      ...selectedColumnData,
+                      partialSearch: JSON.parse(e.target.value),
+                    });
                   }}
                 >
                   <option
@@ -356,8 +367,12 @@ export default function GetTables() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   id="box"
+                  value={selectedColumnData.filterable.toString()}
                   onChange={(e) => {
-                    alert("Filterable onchange : " + e.target.value);
+                    setSelectedColumnData({
+                      ...selectedColumnData,
+                      filterable: JSON.parse(e.target.value),
+                    });
                   }}
                 >
                   <option
@@ -386,8 +401,12 @@ export default function GetTables() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   id="box"
+                  value={selectedColumnData.sortable.toString()}
                   onChange={(e) => {
-                    alert("Sortable onchange : " + e.target.value);
+                    setSelectedColumnData({
+                      ...selectedColumnData,
+                      sortable: JSON.parse(e.target.value),
+                    });
                   }}
                 >
                   <option
@@ -416,8 +435,12 @@ export default function GetTables() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   id="box"
+                  value={selectedColumnData.multiValue.toString()}
                   onChange={(e) => {
-                    alert("Multivalue onchange : " + e.target.value);
+                    setSelectedColumnData({
+                      ...selectedColumnData,
+                      multiValue: JSON.parse(e.target.value),
+                    });
                   }}
                 >
                   <option
@@ -446,8 +469,12 @@ export default function GetTables() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   id="box"
+                  value={selectedColumnData.storable.toString()}
                   onChange={(e) => {
-                    alert("Storable onchange : " + e.target.value);
+                    setSelectedColumnData({
+                      ...selectedColumnData,
+                      storable: JSON.parse(e.target.value),
+                    });
                   }}
                 >
                   <option
@@ -468,7 +495,7 @@ export default function GetTables() {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="success" onClick={handleClose}>
+          <Button variant="success" onClick={saveColumnData}>
             Save changes
           </Button>
         </Modal.Footer>

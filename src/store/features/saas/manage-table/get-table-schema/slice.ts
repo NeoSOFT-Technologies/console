@@ -44,9 +44,11 @@ const slice = createSlice({
       state.error = undefined;
     },
     setTableColumns: (state, action) => {
-      console.log("inside slice " + JSON.stringify(action.payload));
-      // newColumnNames = newColumnNames?.splice(objIndex, 1, obj2);
-      // console.log("After Change : " + JSON.stringify(newColumnNames));
+      state.data?.splice(
+        action.payload.objIndex,
+        1,
+        action.payload.selectedColumnData
+      );
     },
   },
   extraReducers(builder): void {
