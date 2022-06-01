@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Row, Form, Col, Modal } from "react-bootstrap";
+import {
+  AuthGuard,
+  access,
+} from "../../../../../../../../components/gateway/auth-guard";
 import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 // import Spinner from "../../../../../../../../components/loader/Loader";
 import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
@@ -25,7 +29,7 @@ export default function MutualTLS() {
   );
   // const [divShow, setDivShow] = useState<any>(false);
   const [certId, setCertId] = useState<any>([]);
-  const [certId1, setCertId1] = useState<any>([]);
+  const [certId1, setCertId1] = useState<any>("");
   const [file, setFile] = useState<any>([]);
   const [radio, setRadio] = useState("uploadCert");
   const [fileName, setFileName] = useState<any>("");
@@ -34,7 +38,7 @@ export default function MutualTLS() {
   // const [loader1, setLoader1] = useState(true);
   const handleClose = () => {
     setFile([]);
-    setCertId1([]);
+    setCertId1("");
     setShow(false);
   };
   const mainCall = async () => {
@@ -104,7 +108,7 @@ export default function MutualTLS() {
           );
           handleClose();
         } else {
-          ToastAlert("Already selected", "error");
+          ToastAlert("Certificate already selected", "error");
         }
         const objCertState = certificateState.data!.CertificateCollection.find(
           (obj1) => obj1.CertId === certId1
@@ -124,8 +128,11 @@ export default function MutualTLS() {
         if (!idAlreadyExist) {
           setCertId([...certId, list]);
         }
+      } else {
+        ToastAlert("Please upload Certificate ", "error");
       }
-      setCertId1([]);
+
+      setCertId1("");
     }
   };
   useEffect(() => {
@@ -139,7 +146,7 @@ export default function MutualTLS() {
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setFile([]);
-    setCertId1([]);
+    setCertId1("");
     setRadio(value);
   };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -233,7 +240,6 @@ export default function MutualTLS() {
     };
     setCertId(data);
   };
-  console.log("123", certId);
   return (
     <div>
       <>
@@ -247,12 +253,14 @@ export default function MutualTLS() {
           Only clients with whitelisted SSL certificates will be allowed to
           access your API.
         </p>
-        <button
-          className=" btn btn-sm btn-dark btn-sm float-right mb-2"
-          onClick={(e) => handleShow(e)}
-        >
-          <span className="bi bi-plus-lg"></span>&nbsp;Add new Certificate
-        </button>
+        <AuthGuard resource={access.resources.Api} scope={access.scopes.Edit}>
+          <button
+            className=" btn btn-sm btn-dark btn-sm float-right mb-2"
+            onClick={(e) => handleShow(e)}
+          >
+            <span className="bi bi-plus-lg"></span>&nbsp;Add new Certificate
+          </button>
+        </AuthGuard>
 
         <Modal show={show} onHide={handleClose} backdrop="static">
           <Modal.Header closeButton>
@@ -353,6 +361,7 @@ export default function MutualTLS() {
               type="button"
               className="btn-success rounded float-end"
               onClick={handleAddNewCertificate}
+              disabled={file.length === 0 && certId1 === ""}
             >
               Add
             </button>

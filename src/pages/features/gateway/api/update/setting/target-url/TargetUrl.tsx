@@ -109,20 +109,33 @@ export default function TargetUrl() {
                       id="EnableRoundRobin"
                       name="EnableRoundRobin"
                       label="Enable round-robin load balancing"
-                      // checked={check}
-                      // onChange={(e: any) => setCheck(e.target.checked)}
-                      checked={state.data.form.EnableRoundRobin}
+                      disabled={!state.data.form.IsVersioningDisabled}
+                      checked={
+                        state.data.form.EnableRoundRobin === undefined
+                          ? false
+                          : state.data.form.EnableRoundRobin
+                      }
                       onChange={(e: any) => validateForm(e)}
                     />
                   </Form.Group>
                 </Col>
+                {!state.data.form.IsVersioningDisabled ? (
+                  <h6>
+                    Note: Version is enable so you can&apos;t apply Round-Robin
+                    LoadBalacing{" "}
+                  </h6>
+                ) : (
+                  <></>
+                )}
                 <Col>
-                  {state.data.form.EnableRoundRobin === true ? (
+                  {state.data.form.EnableRoundRobin === true &&
+                  state.data.form.IsVersioningDisabled ? (
                     <LoadBalancing />
                   ) : (
                     <span></span>
                   )}
                 </Col>
+
                 <Col md="12">
                   <Form.Group className="ml-4 mb-3">
                     <Form.Check

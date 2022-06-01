@@ -20,7 +20,7 @@ export const initialState: IApiGetByIdState = {
       Blacklist: [],
       Whitelist: [],
       VersioningInfo: {
-        Location: "1",
+        Location: 1,
         Key: "",
       },
       IsVersioningDisabled: false,

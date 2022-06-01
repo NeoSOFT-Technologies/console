@@ -78,7 +78,7 @@ export default function ListenPath() {
                 </i>
               </Col>
               <Col md={12}>
-                <Form.Group className="ml-4 mb-3">
+                <Form.Group className="mb-3">
                   <Form.Label>
                     <b>Strip the Listen path</b>
                   </Form.Label>
@@ -89,6 +89,7 @@ export default function ListenPath() {
                   </p>
                   <Form.Check
                     type="switch"
+                    className="ml-4"
                     id="stripListenPath"
                     name="StripListenPath"
                     label="Strip the Listen path"
@@ -99,7 +100,7 @@ export default function ListenPath() {
                 </Form.Group>
               </Col>
               <Col md={12}>
-                <Form.Group className="ml-4 mb-3">
+                <Form.Group className="mb-3">
                   <Form.Label>
                     <b>Internal</b>
                   </Form.Label>
@@ -110,6 +111,7 @@ export default function ListenPath() {
 
                   <Form.Check
                     type="switch"
+                    className="ml-4"
                     id="activated"
                     name="IsInternal"
                     label="Activated"

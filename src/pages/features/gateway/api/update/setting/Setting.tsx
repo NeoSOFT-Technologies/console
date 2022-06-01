@@ -19,8 +19,7 @@ export default function Setting() {
   const [clipboardApiId, setClipboardApiId] = useState(false);
   const [clipboardApiUrl, setClipboardApiUrl] = useState(false);
 
-  // const url = "//www.google.com";
-  const url = "https://4ef8-103-66-212-154.in.ngrok.io";
+  const hostUrl = process.env.REACT_APP_GATEWAY_HOST || "http://localhost:8080";
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -46,8 +45,16 @@ export default function Setting() {
       await navigator.clipboard.writeText(copyText);
       if (copyText === state.data.form.ApiId) {
         setClipboardApiId(true);
-      } else if (copyText === url + state.data.form.ListenPath) {
+
+        setTimeout(() => {
+          setClipboardApiId(false);
+        }, 5000);
+      } else if (copyText === hostUrl + state.data.form.ListenPath) {
         setClipboardApiUrl(true);
+
+        setTimeout(() => {
+          setClipboardApiUrl(false);
+        }, 5000);
       }
     } catch (error) {
       console.log(error);
@@ -66,7 +73,6 @@ export default function Setting() {
                     <b>API ID:</b> {state.data.form.ApiId}
                     <i
                       className="btn btn-sm bi bi-clipboard"
-                      // onClick={copyToClipBoard(state.data.form.ApiId)}
                       onClick={() => copyToClipBoard(state.data.form.ApiId)}
                     ></i>
                     {clipboardApiId ? "Copied!" : ""}
@@ -75,16 +81,16 @@ export default function Setting() {
                   <div>
                     <b>API URL: </b>
                     <a
-                      href={url + state.data.form.ListenPath}
+                      href={hostUrl + state.data.form.ListenPath}
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {url + state.data.form.ListenPath}
+                      {hostUrl + state.data.form.ListenPath}
                     </a>
                     <i
                       className="btn btn-sm bi bi-clipboard"
                       onClick={() =>
-                        copyToClipBoard(url + state.data.form.ListenPath)
+                        copyToClipBoard(hostUrl + state.data.form.ListenPath)
                       }
                     ></i>
                     {clipboardApiUrl ? "Copied!" : ""}
@@ -93,7 +99,6 @@ export default function Setting() {
               </Col>
               <Col md={2}>
                 <Form.Group className="mb-3 mt-2 ">
-                  <Form.Label>API Status :</Form.Label>
                   <Form.Check
                     className="ml-3"
                     type="switch"

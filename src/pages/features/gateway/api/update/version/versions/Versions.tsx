@@ -1,5 +1,9 @@
+import moment from "moment";
 import React, { useState } from "react";
 import { Accordion, Button, Col, Form, Row } from "react-bootstrap";
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import {
   regexForOverrideTarget,
@@ -18,6 +22,9 @@ export default function Versions() {
   const dispatch = useAppDispatch();
 
   const state = useAppSelector((RootState) => RootState.updateApiState);
+  console.log("form data :", state.data.form);
+  // const [startDate, setStartDate] = useState(new Date());
+  // console.log("startDate:", startDate);
 
   const [addFormData, setAddFormData] = useState({
     Name: "",
@@ -59,7 +66,14 @@ export default function Versions() {
     setAddFormData(newFormData);
   };
 
+  // const handleDateChange = (date: any) => {
+  //   console.log("date :", date);
+  //   const beginDate = moment(date).format("YYYY-MM-DD HH:MM");
+  //   console.log(beginDate);
+  // };
+
   const handleAddClick = () => {
+    let newdate: any;
     if (state.data.form.Versions.length > 0) {
       const filtered = state.data.form.Versions.filter(
         (x) => x.Name === addFormData.Name
@@ -67,12 +81,18 @@ export default function Versions() {
       if (filtered.length > 0) {
         ToastAlert("This version name has been already added!", "error");
       } else {
+        newdate = addFormData.Expires;
+        // console.log("newdate:", newdate);
+
+        const beginDate = moment(newdate).format("YYYY-MM-DD HH:MM");
+        console.log(beginDate);
+
         const list = [
           ...state.data.form.Versions,
           {
             Name: addFormData.Name,
             OverrideTarget: addFormData.OverrideTarget,
-            Expires: addFormData.Expires,
+            Expires: beginDate,
             GlobalRequestHeaders: {},
             GlobalRequestHeadersRemove: [],
             GlobalResponseHeaders: {},
@@ -98,12 +118,18 @@ export default function Versions() {
         );
       }
     } else {
+      newdate = addFormData.Expires;
+      // console.log("newdate:", newdate);
+
+      const beginDate = moment(newdate).format("YYYY-MM-DD HH:MM");
+      console.log(beginDate);
+
       const list = [
         ...state.data.form.Versions,
         {
           Name: addFormData.Name,
           OverrideTarget: addFormData.OverrideTarget,
-          Expires: addFormData.Expires,
+          Expires: beginDate,
           GlobalRequestHeaders: {},
           GlobalRequestHeadersRemove: [],
           GlobalResponseHeaders: {},
@@ -195,9 +221,27 @@ export default function Versions() {
         break;
     }
 
-    const versionsList = [...state.data.form.Versions];
-    versionsList[index] = { ...versionsList[index], [name]: value };
-    dispatch(setForm({ ...state.data.form, Versions: versionsList }));
+    let newdate: any;
+    if (name === "Expires") {
+      // console.log("name and value :", name, value);
+      newdate = value;
+      // console.log("newdate:", newdate);
+
+      const beginDate = moment(newdate).format("YYYY-MM-DD HH:MM");
+      console.log(beginDate);
+
+      const versionsList = [...state.data.form.Versions];
+      versionsList[index] = { ...versionsList[index], [name]: beginDate };
+      dispatch(setForm({ ...state.data.form, Versions: versionsList }));
+    } else {
+      const versionsList = [...state.data.form.Versions];
+      versionsList[index] = { ...versionsList[index], [name]: value };
+      dispatch(setForm({ ...state.data.form, Versions: versionsList }));
+    }
+
+    // const versionsList = [...state.data.form.Versions];
+    // versionsList[index] = { ...versionsList[index], [name]: value };
+    // dispatch(setForm({ ...state.data.form, Versions: versionsList }));
   };
 
   const handleFormSelectChange = (
@@ -303,6 +347,15 @@ export default function Versions() {
                       value={addFormData.Expires}
                       onChange={handleInputChange}
                     />
+
+                    {/* <DatePicker
+                      className="form-control"
+                      // showTimeSelect
+                      dateFormat="yyyy-MM-dd HH:mm"
+                      // selected={addFormData.Expires}
+                      // value={addFormData.Expires}
+                      onChange={(date) => handleDateChange(date)}
+                    /> */}
                   </Form.Group>
                 </Col>
                 <Col md={2} className="pt-2">
@@ -338,6 +391,9 @@ export default function Versions() {
                           {state.data.form?.Versions.map(
                             (data: any, index: any) => {
                               const { Name, OverrideTarget, Expires } = data;
+                              const beginDate =
+                                moment(Expires).format("YYYY-MM-DD");
+                              console.log(beginDate);
                               return (
                                 <tr key={index}>
                                   <td>
@@ -380,7 +436,7 @@ export default function Versions() {
                                   <td>
                                     <input
                                       type="date"
-                                      value={Expires}
+                                      value={beginDate}
                                       onChange={(evnt) =>
                                         handleTableRowsInputChange(index, evnt)
                                       }

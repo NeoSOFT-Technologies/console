@@ -11,7 +11,7 @@ import Versions from "./versions/Versions";
 export default function Version() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-
+  console.log("version", state.data.form);
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.checked === false) {
       const versionInfoList = {
@@ -65,17 +65,25 @@ export default function Version() {
   return (
     <div>
       <Col md="12">
-        <Form.Group className="ml-4 mb-3">
+        <Form.Group className="ml-3 mb-3">
           <Form.Check
             type="switch"
             id="IsVersioningDisabled"
             name="IsVersioningDisabled"
             label="Enable Versioning"
+            disabled={state.data.form.EnableRoundRobin}
             checked={!state.data.form?.IsVersioningDisabled}
             onChange={(e: any) => validateForm(e)}
           />
         </Form.Group>
       </Col>
+      {state.data.form.EnableRoundRobin &&
+      state.data.form?.IsVersioningDisabled ? (
+        <h6>Note: Version doesn&apos;t works with Round-Robin LoadBalacing</h6>
+      ) : (
+        <></>
+      )}
+
       {state.data.form?.IsVersioningDisabled ? (
         <></>
       ) : (

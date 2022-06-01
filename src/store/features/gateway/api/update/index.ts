@@ -27,7 +27,7 @@ export interface IGetApiByIdData {
   Blacklist: [];
   Whitelist: [];
   VersioningInfo: {
-    Location: string;
+    Location: number;
     Key: string;
   };
   IsVersioningDisabled: boolean;

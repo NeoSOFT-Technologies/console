@@ -85,7 +85,11 @@ export default function RateLimit() {
                             disabled={
                               state.data.form?.RateLimit.IsDisabled === true
                             }
-                            value={state.data.form?.RateLimit.Rate}
+                            value={
+                              !state.data.form.RateLimit.IsDisabled
+                                ? state.data.form?.RateLimit.Rate
+                                : "Unlimited"
+                            }
                             isInvalid={!!state.data.errors?.Rate}
                             isValid={!state.data.errors?.Rate}
                             onChange={(e: any) => validateForm(e)}
@@ -114,7 +118,11 @@ export default function RateLimit() {
                             disabled={
                               state.data.form?.RateLimit.IsDisabled === true
                             }
-                            value={state.data.form?.RateLimit.Per}
+                            value={
+                              !state.data.form.RateLimit.IsDisabled
+                                ? state.data.form?.RateLimit.Per
+                                : "Unlimited"
+                            }
                             isInvalid={!!state.data.errors?.Per}
                             isValid={!state.data.errors?.Per}
                             onChange={(e: any) => validateForm(e)}
