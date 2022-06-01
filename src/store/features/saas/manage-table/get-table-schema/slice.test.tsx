@@ -4,7 +4,23 @@ import { getTableSchema } from "./slice";
 
 describe("SAAS - GET Table Schema Slice", () => {
   test("SAAS - GET Table Schema Success", async () => {
-    mockApi.onGet("manage/table/testTable?tenantId=1").reply(200, {});
+    mockApi.onGet("manage/table/testTable?tenantId=1").reply(200, {
+      data: {
+        tableName: "valid",
+        columns: [
+          {
+            name: "category",
+            type: "strings",
+            required: false,
+            sortable: false,
+            storable: true,
+            filterable: true,
+            multiValue: true,
+            partialSearch: false,
+          },
+        ],
+      },
+    });
 
     const result = await store.dispatch(
       getTableSchema({ tenantId: "1", tableName: "testTable" })

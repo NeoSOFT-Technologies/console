@@ -40,6 +40,8 @@ export default function GetSearchData() {
   const [startRecord, setStartRecord] = useState("0");
   const [tableHeader, setTableHeader] = useState<string[]>([]);
   const [msg, setMsg] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [filterdata, setFilterData] = useState<any[]>();
   const params: ITableSchema = {
     tenantId,
     tableName,
@@ -131,7 +133,24 @@ export default function GetSearchData() {
       dispatch(resetSearchDataWithQueryField());
     };
   }, []);
-
+  const searchFilterValue = (search: string) => {
+    const results: any[] = [];
+    let check = 0;
+    // eslint-disable-next-line array-callback-return
+    searchData.data?.map((val) => {
+      check = 0;
+      // eslint-disable-next-line array-callback-return
+      tableHeader.map((xyz) => {
+        if (val[xyz].toString().includes(search)) {
+          check = 1;
+        }
+      });
+      if (check === 1) {
+        results.push(val);
+      }
+    });
+    setFilterData(results);
+  };
   return (
     <div>
       <div className="card">
@@ -143,6 +162,7 @@ export default function GetSearchData() {
             <Row className="ml-3 mr-3">
               <Col lg="2">
                 <Form.Group controlId="formBasicEmail">
+                  <Form.Label>User :</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="User"
@@ -155,6 +175,7 @@ export default function GetSearchData() {
               </Col>
               <Col lg="2">
                 <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Table Name :</Form.Label>
                   <Form.Select
                     aria-label="Default select example"
                     className="text-center"
@@ -172,17 +193,25 @@ export default function GetSearchData() {
               </Col>
               <Col>
                 <Form.Group controlId="formBasicEmail">
-                  <Form.Control
-                    type="text"
-                    placeholder="Search Field"
-                    value={queryField}
+                  <Form.Label>Query Field :</Form.Label>
+                  <Form.Select
+                    aria-label="Default select example"
                     className="text-center"
+                    required
                     onChange={(e) => setQueryField(e.target.value)}
-                  />
+                  >
+                    <option value="">SearchField</option>
+                    {tableColName.data?.map((val, index) => (
+                      <option key={`option${index}`} value={val.name}>
+                        {val.name}
+                      </option>
+                    ))}
+                  </Form.Select>
                 </Form.Group>
               </Col>
               <Col>
                 <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Search Field :</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Search Field Value"
@@ -194,17 +223,24 @@ export default function GetSearchData() {
               </Col>
               <Col>
                 <Form.Group controlId="formBasicEmail">
-                  <Form.Control
-                    type="text"
-                    placeholder="No Of Records"
-                    value={pageSize}
+                  <Form.Label>No Of Records :</Form.Label>
+                  <Form.Select
+                    aria-label="Default select example"
                     className="text-center"
                     onChange={(e) => setPageSize(e.target.value)}
-                  />
+                  >
+                    <option value=""> No Of Records</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </Form.Select>
                 </Form.Group>
               </Col>
               <Col>
                 <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Order By :</Form.Label>
                   <Form.Select
                     aria-label="Default select example"
                     className="text-center"
@@ -222,6 +258,7 @@ export default function GetSearchData() {
               </Col>
               <Col lg="2">
                 <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Order by :</Form.Label>
                   <Form.Select
                     aria-label="Default select example"
                     className="text-center"
@@ -254,6 +291,20 @@ export default function GetSearchData() {
                 <>
                   <hr></hr>
                   <h4 className="mt-5 mb-4">Table Details</h4>
+                  <div className="form-outline mt-5 mb-4 pr-6">
+                    <input
+                      type="search"
+                      id="form1"
+                      className="form-control"
+                      placeholder="Type query"
+                      aria-label="Search"
+                      value={searchValue}
+                      onChange={(e) => {
+                        setSearchValue(e.target.value);
+                        searchFilterValue(e.target.value);
+                      }}
+                    />
+                  </div>
                   <Table bordered hover>
                     <thead>
                       <tr>
@@ -264,15 +315,27 @@ export default function GetSearchData() {
                       </tr>
                     </thead>
                     <tbody>
-                      {searchData.data.map((val, index) => (
-                        <tr key={`row${index}`}>
-                          <td>{index + 1}</td>
+                      {searchValue === "" &&
+                        searchData.data.map((val, index) => (
+                          <tr key={`row${index}`}>
+                            <td>{index + 1}</td>
 
-                          {tableHeader.map((h, i) => (
-                            <td key={i}>{val[h].toString()}</td>
-                          ))}
-                        </tr>
-                      ))}
+                            {tableHeader.map((h, i) => (
+                              <td key={i}>{val[h].toString()}</td>
+                            ))}
+                          </tr>
+                        ))}
+                      {searchValue !== "" &&
+                        filterdata &&
+                        filterdata?.map((val, index) => (
+                          <tr key={`row${index}`}>
+                            <td>{index + 1}</td>
+
+                            {tableHeader.map((h, i) => (
+                              <td key={i}>{val[h].toString()}</td>
+                            ))}
+                          </tr>
+                        ))}
                     </tbody>
                   </Table>
 
