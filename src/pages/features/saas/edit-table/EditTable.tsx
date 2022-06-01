@@ -75,20 +75,6 @@ export default function GetTables() {
     setShow(true);
   };
 
-  // const updateTable = () => {
-  //   alert("inside button click");
-  //   console.log("inside button click");
-  //   dispatch(
-  //     updateTableSchema({
-  //       requestParams: tableSchemaObject,
-  //       requestData: {
-  //         tableName: tableName,
-  //         columns: tableData.data as ITableColumnData[],
-  //       },
-  //     })
-  //   );
-  // };
-
   const updateTable: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
   ) => {
@@ -98,7 +84,7 @@ export default function GetTables() {
       updateTableSchema({
         requestParams: tableSchemaObject,
         requestData: {
-          tableName: tableName,
+          tableName,
           columns: tableData.data as ITableColumnData[],
         },
       })
