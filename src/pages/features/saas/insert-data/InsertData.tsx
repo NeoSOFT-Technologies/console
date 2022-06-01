@@ -3,6 +3,7 @@ import { Button, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
 import { inputTableDataWithNrt } from "../../../../store/features/saas/input-data/with-nrt/slice";
 import { inputTableDataWithoutNrt } from "../../../../store/features/saas/input-data/without-nrt/slice";
 import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
@@ -17,7 +18,7 @@ export default function InputData() {
   const inputDataWithoutNrt = useAppSelector(
     (state) => state.inputDataWithOutNrtState
   );
-
+  const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
   const [tenantId, setTenantId] = useState("");
   const [tableName, setTableName] = useState("");
   const [inputData, setInputData] = useState("");
@@ -70,6 +71,11 @@ export default function InputData() {
       ToastAlert("Invalid Data", "error");
     }
   };
+  useEffect(() => {
+    dispatch(getTenantDetails());
+    alert("Tenant Details : " + JSON.stringify(tenantDetails.data));
+  }, []);
+
   useEffect(() => {
     dispatch(getTables(tenantId));
   }, [tenantId]);

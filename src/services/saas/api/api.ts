@@ -83,6 +83,10 @@ export function getAllDeletedTableService(data: IPagination) {
     `manage/table/deletion/all-tables?pageNumber=${data.pageNumber}&pageSize=${data.pageSize}`
   );
 }
+
+export function getTenantListService() {
+  return apiFactory(process.env.REACT_APP_API_BASEURL).get(`/api/tenants`);
+}
 // export function apiListService(currentPage: number, pageSize: number) {
 //   return apiFactory().get(
 //     `ApplicationGateway?pageNum=${currentPage}&pageSize=${pageSize}`

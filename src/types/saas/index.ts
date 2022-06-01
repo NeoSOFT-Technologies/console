@@ -66,3 +66,13 @@ export interface ICapacityPlans {
   replicas: string;
   shards: string;
 }
+
+export interface ITenantDetails {
+  id: Number;
+  tenantName: string;
+  email: string;
+  description: string;
+  databaseName: string;
+  databaseDescription: string;
+  createdDateTime: string;
+}
