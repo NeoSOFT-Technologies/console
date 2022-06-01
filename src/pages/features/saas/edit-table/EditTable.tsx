@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, InputGroup, Modal, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { useLocation } from "react-router-dom";
-import { getTableSchema } from "../../../../store/features/saas/manage-table/get-table-schema/slice";
+import {
+  getTableSchema,
+  setTableColumns,
+} from "../../../../store/features/saas/manage-table/get-table-schema/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { ITableColumnData, ITableSchema } from "../../../../types/saas";
 import "./style.css";
@@ -17,46 +20,74 @@ export default function GetTables() {
   const tableData = useAppSelector((state) => state.getTableSchemaState);
   console.log(tableData);
 
-  const obj: ITableSchema = {
+  const tableSchemaObject: ITableSchema = {
     tenantId,
     tableName,
   };
-  const [name, setName] = useState("");
-  const [type, setType] = useState("");
-  const [required, setRequired] = useState(Boolean);
-  const [partialSearch, setPartialSearch] = useState(Boolean);
-  const [filterable, setFilterable] = useState(Boolean);
-  const [sortable, setSortable] = useState(Boolean);
-  const [multiValue, setMultiValue] = useState(Boolean);
-  const [storable, setStorable] = useState(Boolean);
+  // const [name, setName] = useState("");
+  // const [type, setType] = useState("");
+  // const [required, setRequired] = useState(Boolean);
+  // const [partialSearch, setPartialSearch] = useState(Boolean);
+  // const [filterable, setFilterable] = useState(Boolean);
+  // const [sortable, setSortable] = useState(Boolean);
+  // const [multiValue, setMultiValue] = useState(Boolean);
+  // const [storable, setStorable] = useState(Boolean);
+
+  // const obj2: ITableColumnData = {
+  //   name,
+  //   type,
+  //   required,
+  //   partialSearch,
+  //   filterable,
+  //   sortable,
+  //   multiValue,
+  //   storable,
+  // };
+  const [selectedColumnData, setSelectedColumnData] =
+    useState<ITableColumnData>({
+      name: "",
+      type: "",
+      required: false,
+      partialSearch: false,
+      filterable: false,
+      sortable: false,
+      multiValue: false,
+      storable: false,
+    });
 
   useEffect(() => {
-    dispatch(getTableSchema(obj));
+    dispatch(getTableSchema(tableSchemaObject));
   }, []);
+
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = (columData: ITableColumnData) => {
-    setName(columData.name);
-    setType(columData.type);
-    setRequired(columData.required);
-    setPartialSearch(columData.partialSearch);
-    setFilterable(columData.filterable);
-    setSortable(columData.sortable);
-    setMultiValue(columData.multiValue);
-    setStorable(columData.storable);
-
-    setShow(true);
+  const handleClose = () => {
+    console.log("Obj2 = " + JSON.stringify(selectedColumnData));
+    let newColumnNames = tableData.data;
+    // alert("name : " + name);
+    const objIndex: Number | any = newColumnNames?.findIndex(
+      (item: ITableColumnData) => item.name === selectedColumnData.name
+    );
+    // alert("objIndex : " + objIndex);
+    let payload = { selectedColumnData, objIndex };
+    // newColumnNames = newColumnNames?.splice(objIndex, 1, obj2);
+    // console.log("After Change : " + JSON.stringify(newColumnNames));
+    dispatch(setTableColumns(payload));
+    setShow(false);
   };
-  const obj2: ITableColumnData = {
-    name,
-    type,
-    required,
-    partialSearch,
-    filterable,
-    sortable,
-    multiValue,
-    storable,
+  const handleShow = (columData: ITableColumnData) => {
+    // setName(columData.name);
+    // setType(columData.type);
+    // setRequired(columData.required);
+    // setPartialSearch(columData.partialSearch);
+    // setFilterable(columData.filterable);
+    // setSortable(columData.sortable);
+    // setMultiValue(columData.multiValue);
+    // setStorable(columData.storable);
+    setSelectedColumnData(columData);
+    // alert("columData  : " + JSON.stringify(typeof columData.required));
+    alert("selectedColumnData : " + JSON.stringify(selectedColumnData));
+    setShow(true);
   };
 
   return (
@@ -132,27 +163,25 @@ export default function GetTables() {
                       </tr>
                     </thead>
                     <tbody>
-                      {tableData.data.map((val) => (
-                        <>
-                          <tr>
-                            <td>{val.name}</td>
-                            <td>{val.type}</td>
-                            <td>{val.required.toString()}</td>
-                            <td>{val.partialSearch.toString()}</td>
-                            <td>{val.filterable.toString()}</td>
-                            <td>{val.sortable.toString()}</td>
-                            <td>{val.multiValue.toString()}</td>
-                            <td>{val.storable.toString()} </td>
-                            <td>
-                              <i
-                                className="bi bi-pencil-square "
-                                data-toggle="modal"
-                                data-target="#exampleModalCenter"
-                                onClick={() => handleShow(val)}
-                              ></i>
-                            </td>
-                          </tr>
-                        </>
+                      {tableData.data.map((val, index) => (
+                        <tr key={`row${index}`}>
+                          <td>{val.name}</td>
+                          <td>{val.type}</td>
+                          <td>{val.required.toString()}</td>
+                          <td>{val.partialSearch.toString()}</td>
+                          <td>{val.filterable.toString()}</td>
+                          <td>{val.sortable.toString()}</td>
+                          <td>{val.multiValue.toString()}</td>
+                          <td>{val.storable.toString()} </td>
+                          <td>
+                            <i
+                              className="bi bi-pencil-square "
+                              data-toggle="modal"
+                              data-target="#exampleModalCenter"
+                              onClick={() => handleShow(val)}
+                            ></i>
+                          </td>
+                        </tr>
                       ))}
                     </tbody>
                   </Table>
@@ -181,7 +210,12 @@ export default function GetTables() {
         </div>
       </Row>
 
-      <Modal show={show} data={obj2} onHide={handleClose} size="lg">
+      <Modal
+        show={show}
+        data={selectedColumnData}
+        onHide={handleClose}
+        size="lg"
+      >
         <Modal.Header>
           <Modal.Title className="text-center">Add Column</Modal.Title>
           <button
@@ -206,9 +240,10 @@ export default function GetTables() {
                     type="text"
                     className="form-control text-center read-only"
                     placeholder="Name"
-                    value={obj2.name}
+                    value={selectedColumnData.name}
                     aria-label="Name"
                     aria-describedby="basic-addon"
+                    readOnly
                   />
                 </div>
               </Col>
@@ -225,10 +260,11 @@ export default function GetTables() {
                   <input
                     type="text"
                     className="form-control text-center read-only"
-                    value={obj2.type}
+                    value={selectedColumnData.type}
                     placeholder="Title"
                     aria-label="Title"
                     aria-describedby="basic-addon"
+                    readOnly
                   />
                 </div>
               </Col>
@@ -245,18 +281,34 @@ export default function GetTables() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   id="box"
+                  value={selectedColumnData.required.toString()}
+                  onChange={(e) => {
+                    alert("Required onchange : " + e.target.value);
+                    // if (e.target.value === "true") {
+                    setSelectedColumnData({
+                      ...selectedColumnData,
+                      required: JSON.parse(e.target.value),
+                    });
+                    // } else {
+                    //   setSelectedColumnData({
+                    //     ...selectedColumnData,
+                    //     required: false,
+                    //   });
+                    // }
+                    alert("Required : " + JSON.stringify(selectedColumnData));
+                  }}
                 >
                   <option
                     className="text-center"
-                    value={obj2.required.toString()}
+                    value={selectedColumnData.required.toString()}
                   >
-                    {obj2.required.toString()}
+                    {selectedColumnData.required.toString()}
                   </option>
                   <option
                     className="text-center"
-                    value={(!obj2.required).toString()}
+                    value={(!selectedColumnData.required).toString()}
                   >
-                    {(!obj2.required).toString()}
+                    {(!selectedColumnData.required).toString()}
                   </option>
                 </Form.Select>
               </Col>
@@ -273,18 +325,21 @@ export default function GetTables() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   id="box"
+                  onChange={(e) => {
+                    alert("Partial Search onchange : " + e.target.value);
+                  }}
                 >
                   <option
                     className="text-center"
-                    value={obj2.partialSearch.toString()}
+                    value={selectedColumnData.partialSearch.toString()}
                   >
-                    {obj2.partialSearch.toString()}
+                    {selectedColumnData.partialSearch.toString()}
                   </option>
                   <option
                     className="text-center"
-                    value={(!obj2.partialSearch).toString()}
+                    value={(!selectedColumnData.partialSearch).toString()}
                   >
-                    {(!obj2.partialSearch).toString()}
+                    {(!selectedColumnData.partialSearch).toString()}
                   </option>
                 </Form.Select>
               </Col>
@@ -301,18 +356,21 @@ export default function GetTables() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   id="box"
+                  onChange={(e) => {
+                    alert("Filterable onchange : " + e.target.value);
+                  }}
                 >
                   <option
                     className="text-center"
-                    value={obj2.filterable.toString()}
+                    value={selectedColumnData.filterable.toString()}
                   >
-                    {obj2.filterable.toString()}
+                    {selectedColumnData.filterable.toString()}
                   </option>
                   <option
                     className="text-center"
-                    value={(!obj2.filterable).toString()}
+                    value={(!selectedColumnData.filterable).toString()}
                   >
-                    {(!obj2.filterable).toString()}
+                    {(!selectedColumnData.filterable).toString()}
                   </option>
                 </Form.Select>
               </Col>
@@ -328,18 +386,21 @@ export default function GetTables() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   id="box"
+                  onChange={(e) => {
+                    alert("Sortable onchange : " + e.target.value);
+                  }}
                 >
                   <option
                     className="text-center"
-                    value={obj2.sortable.toString()}
+                    value={selectedColumnData.sortable.toString()}
                   >
-                    {obj2.sortable.toString()}
+                    {selectedColumnData.sortable.toString()}
                   </option>
                   <option
                     className="text-center"
-                    value={(!obj2.sortable).toString()}
+                    value={(!selectedColumnData.sortable).toString()}
                   >
-                    {(!obj2.sortable).toString()}
+                    {(!selectedColumnData.sortable).toString()}
                   </option>
                 </Form.Select>
               </Col>
@@ -355,18 +416,21 @@ export default function GetTables() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   id="box"
+                  onChange={(e) => {
+                    alert("Multivalue onchange : " + e.target.value);
+                  }}
                 >
                   <option
                     className="text-center"
-                    value={obj2.multiValue.toString()}
+                    value={selectedColumnData.multiValue.toString()}
                   >
-                    {obj2.multiValue.toString()}
+                    {selectedColumnData.multiValue.toString()}
                   </option>
                   <option
                     className="text-center"
-                    value={(!obj2.multiValue).toString()}
+                    value={(!selectedColumnData.multiValue).toString()}
                   >
-                    {(!obj2.multiValue).toString()}
+                    {(!selectedColumnData.multiValue).toString()}
                   </option>
                 </Form.Select>
               </Col>
@@ -382,18 +446,21 @@ export default function GetTables() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   id="box"
+                  onChange={(e) => {
+                    alert("Storable onchange : " + e.target.value);
+                  }}
                 >
                   <option
                     className="text-center"
-                    value={obj2.storable.toString()}
+                    value={selectedColumnData.storable.toString()}
                   >
-                    {obj2.storable.toString()}
+                    {selectedColumnData.storable.toString()}
                   </option>
                   <option
                     className="text-center"
-                    value={(!obj2.storable).toString()}
+                    value={(!selectedColumnData.storable).toString()}
                   >
-                    {(!obj2.storable).toString()}
+                    {(!selectedColumnData.storable).toString()}
                   </option>
                 </Form.Select>
               </Col>
