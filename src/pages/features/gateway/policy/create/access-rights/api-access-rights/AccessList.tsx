@@ -38,6 +38,8 @@ export default function AccessList() {
             Versions: [],
             MasterVersions: listV,
             AuthType: selectedApi.payload.Data.AuthType,
+            isRateLimitDisabled: selectedApi.payload.Data.RateLimit.IsDisabled,
+            isQuotaDisbaled: selectedApi.payload.Data.IsQuotaDisabled,
             AllowedUrls: [],
             Limit: {
               rate: -1,

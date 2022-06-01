@@ -32,6 +32,10 @@ export default function OpenIdConnectAuthentication() {
     mainCall(1, 100);
   }, []);
 
+  const selectedPolicy = policyList.data?.Policies.filter((a) =>
+    a.Apis.includes(state.data.form.Name)
+  );
+
   const [addFormData, setAddFormData] = useState({
     issuer: "",
     client_ids: [],
@@ -136,7 +140,7 @@ export default function OpenIdConnectAuthentication() {
   };
 
   const handleClientAddClick = (issuerIndex: any, event: any) => {
-    // event.preventDefault();
+    event.preventDefault();
     if (
       state.data.form.OpenidOptions.Providers[issuerIndex].Client_ids.length > 0
     ) {
@@ -348,7 +352,7 @@ export default function OpenIdConnectAuthentication() {
                   <Form.Group className="mt-0">
                     <Form.Control
                       type="text"
-                      placeholder="Issuer"
+                      placeholder="https://issuer.com"
                       id="issuer"
                       name="issuer"
                       value={addFormData.issuer}
@@ -426,57 +430,42 @@ export default function OpenIdConnectAuthentication() {
                                                 />{" "}
                                               </td>
                                               <td>
-                                                <select
-                                                  className="p-2 rounded mb-0"
-                                                  name="policy"
-                                                  id="policy"
-                                                  placeholder="select policy"
-                                                  value={
-                                                    addClientFormData.policy
-                                                  }
-                                                  onChange={(evnt) =>
-                                                    handleClientInputChange(
-                                                      evnt,
-                                                      index
-                                                    )
-                                                  }
-                                                >
-                                                  <option></option>
-                                                  {/* {policyList.data?.Policies.map(
-                                                    (item: any) => {
-                                                      return (
-                                                        <option
-                                                          key={item.Id}
-                                                          value={item.Id}
-                                                          id={item.Name}
-                                                        >
-                                                          {item.Name}
-                                                        </option>
-                                                      );
+                                                {selectedPolicy?.length! > 0 ? (
+                                                  <select
+                                                    className="p-2 rounded mb-0"
+                                                    name="policy"
+                                                    id="policy"
+                                                    placeholder="select policy"
+                                                    value={
+                                                      addClientFormData.policy
                                                     }
-                                                  )} */}
-
-                                                  {policyList.data?.Policies.filter(
-                                                    (a) =>
-                                                      a.Apis.includes(
-                                                        state.data.form.Name
+                                                    onChange={(evnt) =>
+                                                      handleClientInputChange(
+                                                        evnt,
+                                                        index
                                                       )
-                                                  ).map((item: any) => {
-                                                    // console.log(
-                                                    //   "filtered policy :",
-                                                    //   item
-                                                    // );
-                                                    return (
-                                                      <option
-                                                        key={item.Id}
-                                                        value={item.Id}
-                                                        id={item.Name}
-                                                      >
-                                                        {item.Name}
-                                                      </option>
-                                                    );
-                                                  })}
-                                                </select>
+                                                    }
+                                                  >
+                                                    <option></option>
+                                                    {selectedPolicy?.map(
+                                                      (item: any) => {
+                                                        return (
+                                                          <option
+                                                            key={item.Id}
+                                                            value={item.Id}
+                                                            id={item.Name}
+                                                          >
+                                                            {item.Name}
+                                                          </option>
+                                                        );
+                                                      }
+                                                    )}
+                                                  </select>
+                                                ) : (
+                                                  <>
+                                                    <p>No policy available</p>
+                                                  </>
+                                                )}
                                               </td>
                                               <td>
                                                 <button
@@ -624,52 +613,40 @@ export default function OpenIdConnectAuthentication() {
                                         />{" "}
                                       </td>
                                       <td>
-                                        <select
-                                          className="p-2 rounded mb-0"
-                                          name="policy"
-                                          id="policy"
-                                          placeholder="select policy"
-                                          value={addClientFormData.policy}
-                                          onChange={(evnt) =>
-                                            handleClientInputChange(evnt, index)
-                                          }
-                                        >
-                                          <option></option>
-                                          {/* {policyList.data?.Policies.map(
-                                            (item: any) => {
-                                              return (
-                                                <option
-                                                  key={item.Id}
-                                                  value={item.Id}
-                                                  id={item.Name}
-                                                >
-                                                  {item.Name}
-                                                </option>
-                                              );
-                                            }
-                                          )} */}
-
-                                          {policyList.data?.Policies.filter(
-                                            (a) =>
-                                              a.Apis.includes(
-                                                state.data.form.Name
+                                        {selectedPolicy?.length! > 0 ? (
+                                          <select
+                                            className="p-2 rounded mb-0"
+                                            name="policy"
+                                            id="policy"
+                                            placeholder="select policy"
+                                            value={addClientFormData.policy}
+                                            onChange={(evnt) =>
+                                              handleClientInputChange(
+                                                evnt,
+                                                index
                                               )
-                                          ).map((item: any) => {
-                                            // console.log(
-                                            //   "filtered policy :",
-                                            //   item
-                                            // );
-                                            return (
-                                              <option
-                                                key={item.Id}
-                                                value={item.Id}
-                                                id={item.Name}
-                                              >
-                                                {item.Name}
-                                              </option>
-                                            );
-                                          })}
-                                        </select>
+                                            }
+                                          >
+                                            <option></option>
+                                            {selectedPolicy?.map(
+                                              (item: any) => {
+                                                return (
+                                                  <option
+                                                    key={item.Id}
+                                                    value={item.Id}
+                                                    id={item.Name}
+                                                  >
+                                                    {item.Name}
+                                                  </option>
+                                                );
+                                              }
+                                            )}
+                                          </select>
+                                        ) : (
+                                          <>
+                                            <p>No policy available</p>
+                                          </>
+                                        )}
                                       </td>
                                       <td>
                                         <button

@@ -21,7 +21,6 @@ export default function PolicyList() {
   const accessPolicyList: IPolicyListState = useAppSelector(
     (state) => state.policyListState
   );
-  console.log("outside", accessPolicyList);
   const StateKey = useAppSelector((RootState) => RootState.createKeyState);
   const dispatch = useAppDispatch();
   const [apis, setApis] = useState<policyObject[]>([]);
@@ -34,7 +33,6 @@ export default function PolicyList() {
     mainCall(1, 100_000);
   }, []);
   const handleAddClick = (Id: any) => {
-    console.log("policyList", StateKey.data?.form.Policies);
     const data = StateKey.data.form?.Policies?.includes(Id);
 
     if (!data) {
@@ -61,7 +59,6 @@ export default function PolicyList() {
   };
   function containsApis() {
     const policyId: IPolicyData[] = [];
-    console.log("containsApis-apis", apis);
     const listPolicies = accessPolicyList.data?.Policies!.filter(
       (a) =>
         a.AuthType !== "keyless" &&
@@ -81,11 +78,8 @@ export default function PolicyList() {
     }
     for (const item of listPolicies!) {
       policyId.push(item);
-      // console.log("listPolicies", listPolicies);
-      // console.log("listPolicies-policyId", policyId);
     }
 
-    console.log("This is the list am filtering,", policyId);
     return policyId;
   }
   function bindPolicyList() {
@@ -123,15 +117,12 @@ export default function PolicyList() {
   }
 
   useEffect(() => {
-    console.log("useEffect");
     if (
       StateKey.data.form.KeyId !== undefined &&
       apis.length === 0 &&
       StateKey.data.form.Policies.length > 0
     ) {
-      const newp = [...apis];
-      console.log("accessPolicyList", accessPolicyList.data?.Policies!);
-      console.log("StateKey..Policies", StateKey.data.form.Policies);
+      const policyApis = [...apis];
       const accessRightList =
         accessPolicyList !== undefined
           ? accessPolicyList.data?.Policies!.filter(
@@ -143,9 +134,8 @@ export default function PolicyList() {
 
       if (accessRightList !== undefined && accessRightList?.length! > 0) {
         for (const policyItem of accessRightList!) {
-          // console.log("newsssssss", newp);
-          newp.push({ name: policyItem.Apis!, policyId: policyItem.Id! });
-          setApis(newp);
+          policyApis.push({ name: policyItem.Apis!, policyId: policyItem.Id! });
+          setApis(policyApis);
           setSelectedApi(policyItem.Id!);
         }
       }
@@ -154,7 +144,6 @@ export default function PolicyList() {
       const filterPolicyList = apis.filter((i) =>
         StateKey.data.form.Policies.includes(i.policyId!)
       );
-      console.log("filterPolicyList", filterPolicyList);
       setApis(filterPolicyList);
       setSelectedApi(
         StateKey.data.form.Policies[StateKey.data.form.Policies.length - 1]!
@@ -169,22 +158,18 @@ export default function PolicyList() {
     bindPolicyList();
     if (apis.length > 0) {
       const selectedApisList = apis.map((a) => a.name);
-      console.log("filt", selectedApisList);
       setuniqueApis(selectedApisList.join(", "));
     } else {
       setuniqueApis("");
     }
   }, [apis]);
   useEffect(() => {
-    console.log("useEffect");
     if (
       StateKey.data.form.KeyId !== undefined &&
       apis.length === 0 &&
       StateKey.data.form.Policies.length > 0
     ) {
-      const newp = [...apis];
-      console.log("accessPolicyList", accessPolicyList.data?.Policies!);
-      console.log("StateKey..Policies", StateKey.data.form.Policies);
+      const policyApis = [...apis];
       const accessRightList =
         accessPolicyList !== undefined
           ? accessPolicyList.data?.Policies!.filter(
@@ -196,9 +181,8 @@ export default function PolicyList() {
 
       if (accessRightList !== undefined && accessRightList?.length! > 0) {
         for (const policyItem of accessRightList!) {
-          // console.log("newsssssss", newp);
-          newp.push({ name: policyItem.Apis!, policyId: policyItem.Id! });
-          setApis(newp);
+          policyApis.push({ name: policyItem.Apis!, policyId: policyItem.Id! });
+          setApis(policyApis);
           setSelectedApi(policyItem.Id!);
         }
       }
@@ -207,7 +191,6 @@ export default function PolicyList() {
       const filterPolicyList = apis.filter((i) =>
         StateKey.data.form.Policies.includes(i.policyId!)
       );
-      console.log("filterPolicyList", filterPolicyList);
       setApis(filterPolicyList);
       setSelectedApi(
         StateKey.data.form.Policies[StateKey.data.form.Policies.length - 1]!
@@ -220,48 +203,7 @@ export default function PolicyList() {
       ? StateKey?.data.form.Policies?.length && accessPolicyList
       : StateKey?.data.form.Policies?.length,
   ]);
-  // useEffect(() => {
-  //   console.log("useEffect");
-  //   if (
-  //     StateKey.data.form.KeyId !== undefined &&
-  //     apis.length === 0 &&
-  //     StateKey.data.form.Policies.length > 0
-  //   ) {
-  //     const newp = [...apis];
-  //     console.log("accessPolicyList", accessPolicyList.data?.Policies!);
-  //     console.log("StateKey..Policies", StateKey.data.form.Policies);
-  //     const accessRightList =
-  //       accessPolicyList !== undefined
-  //         ? accessPolicyList.data?.Policies!.filter(
-  //             (a) =>
-  //               a.AuthType !== "keyless" &&
-  //               StateKey.data.form.Policies.includes(a.Id!)
-  //           )
-  //         : undefined;
 
-  //     if (accessRightList !== undefined && accessRightList?.length! > 0) {
-  //       for (const policyItem of accessRightList!) {
-  //         // console.log("newsssssss", newp);
-  //         newp.push({ name: policyItem.Apis!, policyId: policyItem.Id! });
-  //         setApis(newp);
-  //         setSelectedApi(policyItem.Id!);
-  //       }
-  //     }
-  //   }
-  //   if (apis.length > 0 && apis.length !== StateKey.data.form.Policies.length) {
-  //     const filterPolicyList = apis.filter((i) =>
-  //       StateKey.data.form.Policies.includes(i.policyId!)
-  //     );
-  //     console.log("filterPolicyList", filterPolicyList);
-  //     setApis(filterPolicyList);
-  //     setSelectedApi(
-  //       StateKey.data.form.Policies[StateKey.data.form.Policies.length - 1]!
-  //     );
-  //   }
-
-  //   bindPolicyList();
-  // }, [StateKey?.data.form.Policies?.length && accessPolicyList]);
-  // console.log(StateKey.data.form);
   const gridTable = new Grid({
     columns: [
       {
@@ -275,8 +217,7 @@ export default function PolicyList() {
         formatter: (cell: string, row: any) => {
           const Id = row.cells[1].data;
           const Name = row.cells[2].data;
-          const accessRights = row.cells[4].data.split(", "); // .split(",");
-          // console.log("accessRights", accessRights);
+          const accessRights = row.cells[4].data.split(", ");
           const data = StateKey.data.form?.Policies?.includes(Id);
           return h("input", {
             name: "tag_" + Id,
@@ -287,10 +228,9 @@ export default function PolicyList() {
               if (event.target!.checked) {
                 handleAddClick(Id);
                 setSelectedApi(Id);
-                const newp = [...apis];
-                newp.push({ name: accessRights, policyId: Id });
-                setApis(newp);
-                console.log("newp", newp);
+                const policyApis = [...apis];
+                policyApis.push({ name: accessRights, policyId: Id });
+                setApis(policyApis);
                 ToastAlert(`${Name} selected`, "success");
               } else {
                 removeAccess(Id);
@@ -298,7 +238,6 @@ export default function PolicyList() {
                 const filterPolicyList = SelectedPolicyList.filter(
                   (item) => item.policyId !== Id
                 );
-                // console.log("arrrlis filterList", filterPolicyList);
                 setApis(filterPolicyList);
                 ToastAlert(`${Name} removed`, "warning");
               }

@@ -29,6 +29,8 @@ export interface IGetPolicyByIdData {
           Versions: string[];
           MasterVersions: string[];
           AuthType: string;
+          isRateLimitDisabled: boolean;
+          isQuotaDisbaled: boolean;
           AllowedUrls:
             | {
                 url: string;

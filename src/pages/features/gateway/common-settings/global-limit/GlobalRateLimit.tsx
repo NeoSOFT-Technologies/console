@@ -768,10 +768,10 @@ export default function GlobalRateLimit(props: IProps) {
                           name="quota_max"
                           value={
                             props.current === "policy"
-                              ? state.data.form.QuotaRate === -1
+                              ? state.data.form.MaxQuota === -1
                                 ? "Unlimited"
                                 : state.data.form.MaxQuota
-                              : states.data.form.QuotaRenewalRate === -1
+                              : states.data.form.Quota === -1
                               ? "Unlimited"
                               : states.data.form.Quota
                           }
@@ -808,7 +808,7 @@ export default function GlobalRateLimit(props: IProps) {
                           }
                           onChange={(e: any) => handlerateclick(e)}
                         >
-                          <option value={0}>never</option>
+                          <option value={-1}>never</option>
                           <option value={3600}>1 hour</option>
                           <option value={21_600}>6 hour</option>
                           <option value={43_200}>12 hour</option>

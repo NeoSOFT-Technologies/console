@@ -905,6 +905,106 @@ export default function GlobalLimitApi(props: IProps) {
               <Accordion.Body>
                 <Row>
                   <Row>
+                    <Col md="12">
+                      <Form.Group className="mt-6">
+                        <Form.Label>
+                          {id !== undefined || id === undefined ? (
+                            <i>
+                              {props.current === "key" ? (
+                                props.keystate?.data.form.AccessRights[
+                                  props.index!
+                                ].isRateLimitDisabled ||
+                                props.keystate?.data.form.AccessRights[
+                                  props.index!
+                                ].isQuotaDisbaled ? (
+                                  props.keystate?.data.form.AccessRights[
+                                    props.index!
+                                  ].isRateLimitDisabled &&
+                                  props.keystate?.data.form.AccessRights[
+                                    props.index!
+                                  ].isQuotaDisbaled ? (
+                                    <b className="pb-2">
+                                      <h6 className="text-danger">
+                                        Warning : RateLimit and Quota is
+                                        Disabled by Api.
+                                      </h6>{" "}
+                                      If you want to apply RateLimit and Quotas
+                                      than first you need to enabled it from
+                                      APIs settings. <br />
+                                    </b>
+                                  ) : props.keystate?.data.form.AccessRights[
+                                      props.index!
+                                    ].isRateLimitDisabled ? (
+                                    <b className="pb-2">
+                                      <h6 className="text-danger">
+                                        Warning : RateLimit is Disabled by Api.
+                                      </h6>{" "}
+                                      If you want to apply RateLimit than first
+                                      you need to enabled it from APIs settings.
+                                      <br />
+                                    </b>
+                                  ) : (
+                                    <b className="pb-2">
+                                      <h6 className="text-danger">
+                                        Warning : Quota is Disabled by Api.{" "}
+                                      </h6>{" "}
+                                      If you want to apply Quota than first you
+                                      need to enabled it from APIs settings.
+                                      <br />
+                                    </b>
+                                  )
+                                ) : (
+                                  ""
+                                )
+                              ) : props.state?.data.form.APIs[props.index!]
+                                  .isRateLimitDisabled ||
+                                props.state?.data.form.APIs[props.index!]
+                                  .isQuotaDisbaled ? (
+                                props.state?.data.form.APIs[props.index!]
+                                  .isRateLimitDisabled &&
+                                props.state?.data.form.APIs[props.index!]
+                                  .isQuotaDisbaled ? (
+                                  <b className="pb-2">
+                                    <h6 className="text-danger">
+                                      Warning : RateLimit and Quota is Disabled
+                                      by Api.
+                                    </h6>{" "}
+                                    If you want to apply RateLimit and Quotas
+                                    than first you need to enabled it from APIs
+                                    settings. <br />
+                                  </b>
+                                ) : props.state?.data.form.APIs[props.index!]
+                                    .isRateLimitDisabled ? (
+                                  <b className="pb-2">
+                                    <h6 className="text-danger">
+                                      Warning : RateLimit is Disabled by Api.
+                                    </h6>{" "}
+                                    If you want to apply RateLimit than first
+                                    you need to enabled it from APIs settings.
+                                    <br />
+                                  </b>
+                                ) : (
+                                  <b className="pb-2">
+                                    <h6 className="text-danger">
+                                      Warning : Quota is Disabled by Api.{" "}
+                                    </h6>{" "}
+                                    If you want to apply Quota than first you
+                                    need to enabled it from APIs settings.
+                                    <br />
+                                  </b>
+                                )
+                              ) : (
+                                ""
+                              )}
+                            </i>
+                          ) : (
+                            <></>
+                          )}
+                        </Form.Label>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
                     <Col md="4">
                       <Form.Group className="mb-3">
                         <Form.Label className="mt-2">
