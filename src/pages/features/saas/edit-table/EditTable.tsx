@@ -63,13 +63,13 @@ export default function GetTables() {
 
   const handleClose = () => {
     console.log("Obj2 = " + JSON.stringify(selectedColumnData));
-    let newColumnNames = tableData.data;
+    const newColumnNames = tableData.data;
     // alert("name : " + name);
     const objIndex: Number | any = newColumnNames?.findIndex(
       (item: ITableColumnData) => item.name === selectedColumnData.name
     );
     // alert("objIndex : " + objIndex);
-    let payload = { selectedColumnData, objIndex };
+    const payload = { selectedColumnData, objIndex };
     // newColumnNames = newColumnNames?.splice(objIndex, 1, obj2);
     // console.log("After Change : " + JSON.stringify(newColumnNames));
     dispatch(setTableColumns(payload));
