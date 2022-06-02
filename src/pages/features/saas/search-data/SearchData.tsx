@@ -30,6 +30,8 @@ export default function GetSearchData() {
   const tableData = useAppSelector((state) => state.getTableState);
   const tableColName = useAppSelector((state) => state.getTableSchemaState);
 
+  const [checkDisable, setCheckDisable] = useState(false);
+
   const [tenantId, setTenantId] = useState("");
   const [tableName, setTableName] = useState("");
   const [queryField, setQueryField] = useState("*");
@@ -65,7 +67,8 @@ export default function GetSearchData() {
   };
 
   const nextpage = () => {
-    const nextindex = Number.parseInt(startRecord) + Number.parseInt(pageSize);
+    const nextindex =
+      Number.parseInt(startRecord) + Number.parseInt(pageSize) - 1;
     setStartRecord(nextindex.toString());
 
     const initialState: ISearchDataWithQueryField = {
@@ -81,7 +84,9 @@ export default function GetSearchData() {
   };
 
   const prevpage = () => {
-    let nextindex = Number.parseInt(startRecord) - Number.parseInt(pageSize);
+    setCheckDisable(false);
+    let nextindex =
+      Number.parseInt(startRecord) - Number.parseInt(pageSize) + 1;
     if (nextindex < 0) {
       nextindex = 0;
     }
@@ -113,6 +118,9 @@ export default function GetSearchData() {
         ToastAlert("Data Fetched successfully ", "success");
         return [...keys];
       });
+      if (searchData.data.length !== Number.parseInt(pageSize)) {
+        setCheckDisable(true);
+      }
     }
 
     // if (tableHeader.length > 0) ToastAlert("Data Fetch sucessfuly ", "success");
@@ -156,7 +164,7 @@ export default function GetSearchData() {
       <div className="card">
         <div className="mb-4 mt-3">
           <br></br>
-          <h4 className="ml-4 mb-4">Search Data</h4>
+          <h4 className="text-center  mb-5">Search Data</h4>
 
           <Form onSubmit={getSearchData}>
             <Row className="ml-3 mr-3">
@@ -230,11 +238,11 @@ export default function GetSearchData() {
                     onChange={(e) => setPageSize(e.target.value)}
                   >
                     <option value=""> No Of Records</option>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
+                    <option value="6">5</option>
+                    <option value="11">10</option>
+                    <option value="26">25</option>
+                    <option value="51">50</option>
+                    <option value="101">100</option>
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -290,13 +298,13 @@ export default function GetSearchData() {
               {searchData.data !== undefined && searchData.data.length > 0 ? (
                 <>
                   <hr></hr>
-                  <h4 className="mt-5 mb-4">Table Details</h4>
+                  <h4 className=" text-center  mb-5 mt-5 ">Table Details:</h4>
                   <div className="form-outline mt-5 mb-4 pr-6">
                     <input
                       type="search"
                       id="form1"
                       className="form-control"
-                      placeholder="Type query"
+                      placeholder="Search "
                       aria-label="Search"
                       value={searchValue}
                       onChange={(e) => {
@@ -316,15 +324,36 @@ export default function GetSearchData() {
                     </thead>
                     <tbody>
                       {searchValue === "" &&
-                        searchData.data.map((val, index) => (
-                          <tr key={`row${index}`}>
-                            <td>{index + 1}</td>
-
-                            {tableHeader.map((h, i) => (
-                              <td key={i}>{val[h].toString()}</td>
-                            ))}
-                          </tr>
-                        ))}
+                        // eslint-disable-next-line array-callback-return
+                        searchData.data.map((val, index) => {
+                          if (
+                            searchData &&
+                            searchData.data &&
+                            searchData?.data?.length < Number.parseInt(pageSize)
+                          ) {
+                            return (
+                              <tr key={`row${index}`}>
+                                <td>{index + 1}</td>
+                                {tableHeader.map((h, i) => (
+                                  <td key={i}>{val[h].toString()}</td>
+                                ))}
+                              </tr>
+                            );
+                          } else if (
+                            searchData &&
+                            searchData.data &&
+                            index + 1 < searchData?.data?.length
+                          ) {
+                            return (
+                              <tr key={`row${index}`}>
+                                <td>{index + 1}</td>
+                                {tableHeader.map((h, i) => (
+                                  <td key={i}>{val[h].toString()}</td>
+                                ))}
+                              </tr>
+                            );
+                          }
+                        })}
                       {searchValue !== "" &&
                         filterdata &&
                         filterdata?.map((val, index) => (
@@ -345,14 +374,28 @@ export default function GetSearchData() {
                   >
                     <ul className="pagination ">
                       <li className="page-item">
-                        <a className="page-link" onClick={() => prevpage()}>
+                        <button
+                          className={
+                            Number.parseInt(startRecord) === 0
+                              ? "page-item disable"
+                              : "page-link  "
+                          }
+                          disabled={Number.parseInt(startRecord) === 0}
+                          onClick={() => prevpage()}
+                        >
                           Previous
-                        </a>
+                        </button>
                       </li>
                       <li className="page-item ">
-                        <a className="page-link " onClick={() => nextpage()}>
+                        <button
+                          className={
+                            checkDisable ? "page-item disable" : "page-link  "
+                          }
+                          disabled={checkDisable}
+                          onClick={() => nextpage()}
+                        >
                           Next
-                        </a>
+                        </button>
                       </li>
                     </ul>
                   </nav>
