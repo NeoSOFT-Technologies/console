@@ -73,7 +73,6 @@ export default function InputData() {
   };
   useEffect(() => {
     dispatch(getTenantDetails());
-    alert("Tenant Details : " + JSON.stringify(tenantDetails.data));
   }, []);
 
   useEffect(() => {
@@ -111,14 +110,22 @@ export default function InputData() {
                   <Col md={6} className="justify-content-center">
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                       <Form.Label>User :</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="user"
-                        value={tenantId}
-                        required
+                      <Form.Select
+                        aria-label="Default select example"
                         className="text-center"
+                        required
                         onChange={(e) => setTenantId(e.target.value)}
-                      />
+                      >
+                        <option value="">Select Tenant</option>
+                        {tenantDetails.data?.map((val, index) => (
+                          <option
+                            key={`option${index}`}
+                            value={val.id.toString()}
+                          >
+                            {val.tenantName}
+                          </option>
+                        ))}
+                      </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                       <Form.Label>Table Name :</Form.Label>
