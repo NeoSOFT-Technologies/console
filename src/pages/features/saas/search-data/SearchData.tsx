@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
 import {
   resetSearchDataWithQueryField,
   searchDataWithQueryField,
@@ -29,7 +30,7 @@ export default function GetSearchData() {
   );
   const tableData = useAppSelector((state) => state.getTableState);
   const tableColName = useAppSelector((state) => state.getTableSchemaState);
-
+  const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
   const [checkDisable, setCheckDisable] = useState(false);
 
   const [tenantId, setTenantId] = useState("");
@@ -69,12 +70,12 @@ export default function GetSearchData() {
   const nextpage = () => {
     const nextindex =
       Number.parseInt(startRecord) + Number.parseInt(pageSize) - 1;
-    setStartRecord(nextindex.toString());
+    setStartRecord(nextindex?.toString());
 
     const initialState: ISearchDataWithQueryField = {
       queryField,
       searchTerm,
-      startRecord: nextindex.toString(),
+      startRecord: nextindex?.toString(),
       pageSize,
       orderBy,
       order,
@@ -90,12 +91,12 @@ export default function GetSearchData() {
     if (nextindex < 0) {
       nextindex = 0;
     }
-    setStartRecord(nextindex.toString());
+    setStartRecord(nextindex?.toString());
 
     const initialState: ISearchDataWithQueryField = {
       queryField,
       searchTerm,
-      startRecord: nextindex.toString(),
+      startRecord: nextindex?.toString(),
       pageSize,
       orderBy,
       order,
@@ -131,7 +132,9 @@ export default function GetSearchData() {
     dispatch(setTableColNames(newTableColList));
     dispatch(getTables(tenantId));
   }, [tenantId]);
-
+  useEffect(() => {
+    dispatch(getTenantDetails());
+  }, []);
   useEffect(() => {
     console.log(tableColName);
     dispatch(getTableSchema({ tableName, tenantId }));
@@ -149,7 +152,7 @@ export default function GetSearchData() {
       check = 0;
       // eslint-disable-next-line array-callback-return
       tableHeader.map((xyz) => {
-        if (val[xyz].toString().includes(search)) {
+        if (val[xyz]?.toString().includes(search)) {
           check = 1;
         }
       });
@@ -171,14 +174,18 @@ export default function GetSearchData() {
               <Col lg="2">
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label>User :</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="User"
-                    value={tenantId}
-                    className="text-center"
+                  <Form.Select
+                    aria-label="Default select example"
                     required
                     onChange={(e) => setTenantId(e.target.value)}
-                  />
+                  >
+                    <option value="">Select Tenant</option>
+                    {tenantDetails.data?.map((val, index) => (
+                      <option key={`option${index}`} value={val.id?.toString()}>
+                        {val.tenantName}
+                      </option>
+                    ))}
+                  </Form.Select>
                 </Form.Group>
               </Col>
               <Col lg="2">
@@ -186,7 +193,6 @@ export default function GetSearchData() {
                   <Form.Label>Table Name :</Form.Label>
                   <Form.Select
                     aria-label="Default select example"
-                    className="text-center"
                     required
                     onChange={(e) => setTableName(e.target.value)}
                   >
@@ -204,7 +210,6 @@ export default function GetSearchData() {
                   <Form.Label>Query Field :</Form.Label>
                   <Form.Select
                     aria-label="Default select example"
-                    className="text-center"
                     required
                     onChange={(e) => setQueryField(e.target.value)}
                   >
@@ -224,7 +229,6 @@ export default function GetSearchData() {
                     type="text"
                     placeholder="Search Field Value"
                     value={searchTerm}
-                    className="text-center"
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </Form.Group>
@@ -234,7 +238,6 @@ export default function GetSearchData() {
                   <Form.Label>No Of Records :</Form.Label>
                   <Form.Select
                     aria-label="Default select example"
-                    className="text-center"
                     onChange={(e) => setPageSize(e.target.value)}
                   >
                     <option value=""> No Of Records</option>
@@ -251,7 +254,6 @@ export default function GetSearchData() {
                   <Form.Label>Order By :</Form.Label>
                   <Form.Select
                     aria-label="Default select example"
-                    className="text-center"
                     required
                     onChange={(e) => setOrderBy(e.target.value)}
                   >
@@ -269,7 +271,6 @@ export default function GetSearchData() {
                   <Form.Label>Order by :</Form.Label>
                   <Form.Select
                     aria-label="Default select example"
-                    className="text-center"
                     onChange={(e) => setOrder(e.target.value)}
                   >
                     <option value="asc">ASC</option>
@@ -298,7 +299,9 @@ export default function GetSearchData() {
               {searchData.data !== undefined && searchData.data.length > 0 ? (
                 <>
                   <hr></hr>
-                  <h4 className=" text-center  mb-5 mt-5 ">Table Details:</h4>
+                  <h4 className=" text-center  mb-5 mt-5 ">
+                    Table Details: {tableName}
+                  </h4>
                   <div className="form-outline mt-5 mb-4 pr-6">
                     <input
                       type="search"
@@ -335,7 +338,7 @@ export default function GetSearchData() {
                               <tr key={`row${index}`}>
                                 <td>{index + 1}</td>
                                 {tableHeader.map((h, i) => (
-                                  <td key={i}>{val[h].toString()}</td>
+                                  <td key={i}>{val[h]?.toString()}</td>
                                 ))}
                               </tr>
                             );
@@ -348,7 +351,7 @@ export default function GetSearchData() {
                               <tr key={`row${index}`}>
                                 <td>{index + 1}</td>
                                 {tableHeader.map((h, i) => (
-                                  <td key={i}>{val[h].toString()}</td>
+                                  <td key={i}>{val[h]?.toString()}</td>
                                 ))}
                               </tr>
                             );
@@ -361,7 +364,7 @@ export default function GetSearchData() {
                             <td>{index + 1}</td>
 
                             {tableHeader.map((h, i) => (
-                              <td key={i}>{val[h].toString()}</td>
+                              <td key={i}>{val[h]?.toString()}</td>
                             ))}
                           </tr>
                         ))}
