@@ -18,15 +18,16 @@ export const getTables = createAsyncThunk(
   "getTable/getTables",
   async (id: string) => {
     try {
-      const response = await getTablesService(id);
+      const response = await getTablesService("asc");
       console.log(
-        `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
+        `[createAsyncThunk][getTable-slice] Response Data : ` +
+          JSON.stringify(response.data)
       );
       return response.data.data;
     } catch (error_: any) {
-      // console.log(error_, "||", error(error_));
-      const errorMessage = error(error_);
-      console.log(`Error : ` + JSON.stringify(error_));
+      console.log(`error_.response.data : ` + JSON.stringify(error_.response));
+      const errorMessage = error(error_.response.data);
+      console.log(`errorMessage : ` + JSON.stringify(errorMessage));
       throw new Error(errorMessage);
     }
   }
@@ -48,11 +49,9 @@ const slice = createSlice({
     });
     builder.addCase(getTables.rejected, (state, action: any) => {
       state.loading = false;
-      const errorMessage = action.error.message.split(" ");
-      state.error = errorMessage[errorMessage.length - 1];
-      if (state.error === "403" || state.error === "401") {
-        alert("Invalid Token");
-      }
+      // const errorMessage = action.error.message.split(" ");
+      // state.error = errorMessage[errorMessage.length - 1];
+      state.error = action.error.message;
     });
   },
 });

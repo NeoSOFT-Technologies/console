@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, InputGroup, Modal, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { useLocation } from "react-router-dom";
+import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   getTableSchema,
+  setTableColNames,
   setTableColumns,
 } from "../../../../store/features/saas/manage-table/get-table-schema/slice";
 import { updateTableSchema } from "../../../../store/features/saas/manage-table/update-table-schema/slice";
@@ -25,7 +27,9 @@ export default function GetTables() {
     (state) => state.updateTableSchemaState
   );
   // console.log(tableData);
-
+  const [show, setShow] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  // const [selectedColumnName, setSelectedColumnName] = useState("");
   const tableSchemaObject: ITableSchema = {
     tenantId,
     tableName,
@@ -56,10 +60,15 @@ export default function GetTables() {
     }
   }, [updateTableSchemaState.loading]);
 
-  const [show, setShow] = useState(false);
-
   const handleClose = () => {
     setShow(false);
+  };
+  const deleteModalClose = () => {
+    setDeleteModal(false);
+  };
+  const deleteModalShow = (columData: ITableColumnData) => {
+    setSelectedColumnData(columData);
+    setDeleteModal(true);
   };
 
   const saveColumnData = () => {
@@ -79,7 +88,7 @@ export default function GetTables() {
     event: React.FormEvent
   ) => {
     event.preventDefault();
-    alert("inside button click");
+    // alert("inside button click");
     dispatch(
       updateTableSchema({
         requestParams: tableSchemaObject,
@@ -89,6 +98,16 @@ export default function GetTables() {
         },
       })
     );
+  };
+
+  const removeColumn = () => {
+    // const payload = { selectedColumnName};
+    const newColumnList = tableData.data?.filter((obj) => {
+      return obj.name !== selectedColumnData.name;
+    });
+    console.log("Columns After Delete = " + JSON.stringify(newColumnList));
+    dispatch(setTableColNames(newColumnList));
+    deleteModalClose();
   };
 
   return (
@@ -105,7 +124,7 @@ export default function GetTables() {
                 lg={3}
                 className="pl-5 text-center createbody"
               >
-                User
+                <b>User</b>
               </Form.Label>
 
               <Col sm lg="4">
@@ -125,7 +144,7 @@ export default function GetTables() {
                 lg={3}
                 className="pl-5 text-center createbody"
               >
-                Table Name
+                <b>Table Name</b>
               </Form.Label>
               <Col sm lg="4">
                 <InputGroup
@@ -139,17 +158,20 @@ export default function GetTables() {
             </Row>
             <br></br>
 
+            <Form.Label
+              column="lg"
+              lg={3}
+              className="pl-5 text-center createbody"
+            >
+              <b>Columns :</b>
+            </Form.Label>
             <Row>
-              <Form.Label
-                column="lg"
-                lg={3}
-                className="pl-5 text-center createbody"
-              >
-                columns :
-              </Form.Label>
-              <Col sm lg="8" className="ml-2 mt-5 pl-1 pr-0 table-responsive ">
+              <Col sm lg="8" className="ml-2 mt-3 pl-1 pr-0 ">
                 {tableData.data !== undefined && tableData.data.length > 0 ? (
-                  <Table bordered className="text-center pr-0">
+                  <Table
+                    bordered
+                    className="text-center pr-0 table-marginLeft table-responsive"
+                  >
                     <thead>
                       <tr id="test">
                         <th>Name</th>
@@ -161,6 +183,7 @@ export default function GetTables() {
                         <th>Multivalue</th>
                         <th>Storable</th>
                         <th>Edit</th>
+                        <th>Delete</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -174,12 +197,33 @@ export default function GetTables() {
                           <td>{val.sortable.toString()}</td>
                           <td>{val.multiValue.toString()}</td>
                           <td>{val.storable.toString()} </td>
-                          <td>
+                          {/* <td>
+                        <i
+                          className="bi bi-pencil-square "
+                          data-toggle="modal"
+                          data-target="#exampleModalCenter"
+                          onClick={() => handleShow(val)}
+                        ></i>
+                      </td> */}
+                          <td
+                            className="text-align-middle  text-primary"
+                            // onClick={() => handleShow(val)}
+                          >
                             <i
-                              className="bi bi-pencil-square "
+                              className="bi bi-pencil-square"
                               data-toggle="modal"
-                              data-target="#exampleModalCenter"
                               onClick={() => handleShow(val)}
+                            ></i>
+                          </td>
+                          <td
+                            className="text-danger"
+                            // onClick={() =>
+                            //   handleShow(val.tableName, val.tenantId)
+                            // }
+                          >
+                            <i
+                              className="bi bi-trash-fill"
+                              onClick={() => deleteModalShow(val)}
                             ></i>
                           </td>
                         </tr>
@@ -193,24 +237,26 @@ export default function GetTables() {
             </Row>
             <br />
           </Col>
-
           <br></br>
           <br></br>
           <br></br>
         </Row>
-
-        <Row className="mb-5">
-          <div className=" text-center ml-0 pl-0 col-md-12  text-right pr-5 mt-5">
-            <Button
-              variant="btn btn-success"
-              type="submit"
-              className="float-center pr-5 pl-5"
-              // onClick={updateTable}
-            >
-              Save
-            </Button>
-          </div>
-        </Row>
+        {updateTableSchemaState.loading ? (
+          <Spinner></Spinner>
+        ) : (
+          <Row className="mb-5">
+            <div className=" text-center ml-0 pl-0 col-md-12  text-right pr-5 mt-5">
+              <Button
+                variant="btn btn-success"
+                type="submit"
+                className="float-center pr-5 pl-5"
+                // onClick={updateTable}
+              >
+                Save
+              </Button>
+            </div>
+          </Row>
+        )}
       </Form>
       <Modal
         show={show}
@@ -219,7 +265,7 @@ export default function GetTables() {
         size="lg"
       >
         <Modal.Header>
-          <Modal.Title className="text-center">Add Column</Modal.Title>
+          <Modal.Title className="text-center">Edit Column</Modal.Title>
           <button
             type="button"
             className="close"
@@ -233,7 +279,9 @@ export default function GetTables() {
           <div className="modal-body">
             <Row>
               <Col sm lg="4">
-                <Form.Label className="ml-5 pt-2">Name</Form.Label>
+                <Form.Label className="ml-5 pt-2">
+                  <b>Name</b>
+                </Form.Label>
               </Col>
 
               <Col sm lg="7">
@@ -254,7 +302,9 @@ export default function GetTables() {
             <br></br>
             <Row>
               <Col sm lg="4">
-                <Form.Label className="ml-5 pt-2">Type</Form.Label>
+                <Form.Label className="ml-5 pt-2">
+                  <b>Type</b>
+                </Form.Label>
               </Col>
 
               <Col sm lg="7">
@@ -275,7 +325,9 @@ export default function GetTables() {
 
             <Row>
               <Col sm lg="4">
-                <Form.Label className="ml-5 pt-2">Required</Form.Label>
+                <Form.Label className="ml-5 pt-2">
+                  <b>Required</b>
+                </Form.Label>
               </Col>
               <Col sm lg="7">
                 <Form.Select
@@ -291,17 +343,27 @@ export default function GetTables() {
                     });
                   }}
                 >
-                  <option
+                  {/* <option
                     className="text-center"
                     value={selectedColumnData.required.toString()}
                   >
-                    {selectedColumnData.required.toString()}
+                    {selectedColumnData.required
+                      .toString()
+                      .charAt(0)
+                      .toUpperCase() +
+                      selectedColumnData.required.toString().slice(1)}
                   </option>
                   <option
                     className="text-center"
                     value={(!selectedColumnData.required).toString()}
                   >
                     {(!selectedColumnData.required).toString()}
+                  </option> */}
+                  <option className="text-center" value="true">
+                    True
+                  </option>
+                  <option className="text-center" value="false">
+                    False
                   </option>
                 </Form.Select>
               </Col>
@@ -310,7 +372,9 @@ export default function GetTables() {
 
             <Row>
               <Col sm lg="4">
-                <Form.Label className="ml-5 p-0">Partial Search</Form.Label>
+                <Form.Label className="ml-5 p-0">
+                  <b>Partial Search</b>
+                </Form.Label>
               </Col>
               <Col sm lg="7">
                 <Form.Select
@@ -326,17 +390,11 @@ export default function GetTables() {
                     });
                   }}
                 >
-                  <option
-                    className="text-center"
-                    value={selectedColumnData.partialSearch.toString()}
-                  >
-                    {selectedColumnData.partialSearch.toString()}
+                  <option className="text-center" value="true">
+                    True
                   </option>
-                  <option
-                    className="text-center"
-                    value={(!selectedColumnData.partialSearch).toString()}
-                  >
-                    {(!selectedColumnData.partialSearch).toString()}
+                  <option className="text-center" value="false">
+                    False
                   </option>
                 </Form.Select>
               </Col>
@@ -345,7 +403,9 @@ export default function GetTables() {
 
             <Row>
               <Col sm lg="4">
-                <Form.Label className="ml-5 pt-2">Filterable</Form.Label>
+                <Form.Label className="ml-5 pt-2">
+                  <b>Filterable</b>
+                </Form.Label>
               </Col>
               <Col sm lg="7">
                 <Form.Select
@@ -361,17 +421,11 @@ export default function GetTables() {
                     });
                   }}
                 >
-                  <option
-                    className="text-center"
-                    value={selectedColumnData.filterable.toString()}
-                  >
-                    {selectedColumnData.filterable.toString()}
+                  <option className="text-center" value="true">
+                    True
                   </option>
-                  <option
-                    className="text-center"
-                    value={(!selectedColumnData.filterable).toString()}
-                  >
-                    {(!selectedColumnData.filterable).toString()}
+                  <option className="text-center" value="false">
+                    False
                   </option>
                 </Form.Select>
               </Col>
@@ -380,7 +434,9 @@ export default function GetTables() {
 
             <Row>
               <Col sm lg="4">
-                <Form.Label className="ml-5 pt-2">Sortable</Form.Label>
+                <Form.Label className="ml-5 pt-2">
+                  <b>Sortable</b>
+                </Form.Label>
               </Col>
               <Col sm lg="7">
                 <Form.Select
@@ -395,17 +451,11 @@ export default function GetTables() {
                     });
                   }}
                 >
-                  <option
-                    className="text-center"
-                    value={selectedColumnData.sortable.toString()}
-                  >
-                    {selectedColumnData.sortable.toString()}
+                  <option className="text-center" value="true">
+                    True
                   </option>
-                  <option
-                    className="text-center"
-                    value={(!selectedColumnData.sortable).toString()}
-                  >
-                    {(!selectedColumnData.sortable).toString()}
+                  <option className="text-center" value="false">
+                    False
                   </option>
                 </Form.Select>
               </Col>
@@ -414,7 +464,9 @@ export default function GetTables() {
 
             <Row>
               <Col sm lg="4">
-                <Form.Label className="ml-5 pt-2">Multivalue</Form.Label>
+                <Form.Label className="ml-5 pt-2">
+                  <b>Multivalue</b>
+                </Form.Label>
               </Col>
               <Col sm lg="7">
                 <Form.Select
@@ -429,17 +481,11 @@ export default function GetTables() {
                     });
                   }}
                 >
-                  <option
-                    className="text-center"
-                    value={selectedColumnData.multiValue.toString()}
-                  >
-                    {selectedColumnData.multiValue.toString()}
+                  <option className="text-center" value="true">
+                    True
                   </option>
-                  <option
-                    className="text-center"
-                    value={(!selectedColumnData.multiValue).toString()}
-                  >
-                    {(!selectedColumnData.multiValue).toString()}
+                  <option className="text-center" value="false">
+                    False
                   </option>
                 </Form.Select>
               </Col>
@@ -448,7 +494,9 @@ export default function GetTables() {
 
             <Row>
               <Col sm lg="4">
-                <Form.Label className="ml-5 pt-2">Storable</Form.Label>
+                <Form.Label className="ml-5 pt-2">
+                  <b>Storable</b>
+                </Form.Label>
               </Col>
               <Col sm lg="7">
                 <Form.Select
@@ -463,26 +511,47 @@ export default function GetTables() {
                     });
                   }}
                 >
-                  <option
-                    className="text-center"
-                    value={selectedColumnData.storable.toString()}
-                  >
-                    {selectedColumnData.storable.toString()}
+                  <option className="text-center" value="true">
+                    True
                   </option>
-                  <option
-                    className="text-center"
-                    value={(!selectedColumnData.storable).toString()}
-                  >
-                    {(!selectedColumnData.storable).toString()}
+                  <option className="text-center" value="false">
+                    False
                   </option>
                 </Form.Select>
               </Col>
             </Row>
           </div>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="success" onClick={saveColumnData}>
+        <Modal.Footer className="save-column-changes-button">
+          <Button
+            className="text-center"
+            variant="success"
+            onClick={saveColumnData}
+          >
             Save changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={deleteModal}
+        data={selectedColumnData}
+        onHide={deleteModalClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete <b>{selectedColumnData.name}</b>{" "}
+          column?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={deleteModalClose}>
+            No, Cancel
+          </Button>
+          <Button variant="danger" onClick={() => removeColumn()}>
+            Yes, Delete
           </Button>
         </Modal.Footer>
       </Modal>
