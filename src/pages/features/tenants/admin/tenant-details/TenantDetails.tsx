@@ -86,11 +86,7 @@ export default function TenantDetails() {
   const deleteTenantFunction = async () => {
     const { tenantName } = params;
     if (tenantName) {
-      await dispatch(deleteTenant(tenantName));
-      if (tenantDeleted.isDeleted) {
-        ToastAlert("Tenant Removed", "success");
-        navigate("/tenant/admin/tenants");
-      }
+      dispatch(deleteTenant(tenantName));
     }
   };
 

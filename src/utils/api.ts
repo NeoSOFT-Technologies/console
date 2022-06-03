@@ -85,20 +85,16 @@ const apiFactory = (baseUrl: string = getDefaultPath(), header = {}) => {
       ) {
         originalConfig._retry = true;
 
-        try {
-          const rs = await service.post(
-            `${defaultHostUrl}api/refresh-access-token`,
-            {
-              refreshToken: tokenService.getLocalRefreshToken(),
-            }
-          );
-          const accessToken = rs.data.access_token;
-          tokenService.updateLocalAccessToken(accessToken);
+        const rs = await service.post(
+          `${defaultHostUrl}api/refresh-access-token`,
+          {
+            refreshToken: tokenService.getLocalRefreshToken(),
+          }
+        );
+        const accessToken = rs.data.access_token;
+        tokenService.updateLocalAccessToken(accessToken);
 
-          return service(originalConfig);
-        } catch (_error: any) {
-          throw new Error(JSON.stringify(_error.response));
-        }
+        return service(originalConfig);
       }
       throw err;
     }
