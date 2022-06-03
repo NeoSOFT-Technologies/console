@@ -22,6 +22,7 @@ import tenantDetailsReducer from "./features/tenant/tenant-details/slice";
 import updateTenantReducer from "./features/tenant/update-tenant/slice";
 import updateUserReducer from "./features/user/update-user/slice";
 import userDetailsReducer from "./features/user/user-details/slice";
+import forgotPasswordReducer from "./forgot-password/slice";
 import landingReducer from "./landing/slice";
 import loginTypeReducer from "./login-type/slice";
 import loginAccessTokenReducer from "./login/slice";
@@ -40,6 +41,7 @@ const store = configureStore({
     rolesList: rolesListReducer,
     loginType: loginTypeReducer,
     loginAccessToken: loginAccessTokenReducer,
+    forgotPasswordState: forgotPasswordReducer,
     userDetails: userDetailsReducer,
     tenantDetails: tenantDetailsReducer,
     logoutState: logoutReducer,
