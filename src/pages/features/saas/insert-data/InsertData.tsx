@@ -115,6 +115,7 @@ export default function InputData() {
                         className="text-center"
                         required
                         onChange={(e) => setTenantId(e.target.value)}
+                        data-testid="tenant-name-select"
                       >
                         <option value="">Select Tenant</option>
                         {tenantDetails.data?.map((val, index) => (
@@ -134,6 +135,7 @@ export default function InputData() {
                         className="text-center"
                         required
                         onChange={(e) => setTableName(e.target.value)}
+                        data-testid="table-name-select"
                       >
                         <option value=""> Select Table</option>
                         {tableData.data?.map((val, index) => (
