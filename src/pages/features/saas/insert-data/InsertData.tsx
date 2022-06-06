@@ -4,8 +4,14 @@ import Form from "react-bootstrap/Form";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
-import { inputTableDataWithNrt } from "../../../../store/features/saas/input-data/with-nrt/slice";
-import { inputTableDataWithoutNrt } from "../../../../store/features/saas/input-data/without-nrt/slice";
+import {
+  inputTableDataWithNrt,
+  resetInputDataWithNrtState,
+} from "../../../../store/features/saas/input-data/with-nrt/slice";
+import {
+  inputTableDataWithoutNrt,
+  resetInputDataWithoutNrtState,
+} from "../../../../store/features/saas/input-data/without-nrt/slice";
 import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IInputData, ITableSchema } from "../../../../types/saas";
@@ -76,9 +82,6 @@ export default function InputData() {
   }, []);
 
   useEffect(() => {
-    dispatch(getTables(tenantId));
-  }, [tenantId]);
-  useEffect(() => {
     if (
       (!inputDataWithNrt.loading &&
         !inputDataWithNrt.error &&
@@ -88,6 +91,8 @@ export default function InputData() {
         inputDataWithoutNrt?.data)
     ) {
       ToastAlert("Data Saved successfully", "success");
+      dispatch(resetInputDataWithNrtState());
+      dispatch(resetInputDataWithoutNrtState());
     }
   }, [inputDataWithNrt.loading, inputDataWithoutNrt.loading]);
   const handleOnChange = () => {
@@ -111,13 +116,15 @@ export default function InputData() {
                 <Row>
                   <Col md="6">
                     <Form.Group className="mb-3">
-                      <Form.Label>User :</Form.Label>
+                      <Form.Label>Tenant Name :</Form.Label>
                       <Form.Select
                         aria-label="Default select example"
                         className="text-center"
                         id="tenantName"
-                        value={tenantDetails.data?.map((val) => val.tenantName)}
-                        onChange={(e) => setTenantId(e.target.value)}
+                        onChange={(e) => {
+                          setTenantId(e.target.value);
+                          dispatch(getTables(e.target.value));
+                        }}
                         required
                       >
                         <option value="">Select Tenant</option>
