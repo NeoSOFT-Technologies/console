@@ -9,6 +9,7 @@ import { getTenantDetails } from "../../../../store/features/saas/input-data/sli
 import {
   resetSearchDataWithQueryField,
   searchDataWithQueryField,
+  resetSearchData,
 } from "../../../../store/features/saas/search-data/with-query-field/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
@@ -37,7 +38,7 @@ export default function GetSearchData() {
   const [tableName, setTableName] = useState("");
   const [queryField, setQueryField] = useState("*");
   const [searchTerm, setSearchTerm] = useState("*");
-  const [pageSize, setPageSize] = useState("5");
+  const [pageSize, setPageSize] = useState("");
   const [orderBy, setOrderBy] = useState("");
   const [order, setOrder] = useState("asc");
   const [startRecord, setStartRecord] = useState("0");
@@ -175,7 +176,13 @@ export default function GetSearchData() {
                   <Form.Select
                     aria-label="Default select example"
                     required
-                    onChange={(e) => setTenantId(e.target.value)}
+                    onChange={(e) => {
+                      setTenantId(e.target.value);
+                      const resetData: any[] = [];
+                      dispatch(resetSearchData(resetData));
+                      setPageSize("");
+                      setOrder("asc");
+                    }}
                   >
                     <option value="">Select Tenant</option>
                     {tenantDetails.data?.map((val, index) => (
@@ -235,6 +242,7 @@ export default function GetSearchData() {
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label>No Of Records :</Form.Label>
                   <Form.Select
+                    value={pageSize}
                     aria-label="Default select example"
                     onChange={(e) => setPageSize(e.target.value)}
                   >
@@ -268,6 +276,7 @@ export default function GetSearchData() {
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label>Order by :</Form.Label>
                   <Form.Select
+                    value={order}
                     aria-label="Default select example"
                     onChange={(e) => setOrder(e.target.value)}
                   >
@@ -401,7 +410,7 @@ export default function GetSearchData() {
                   </div>
                 </>
               ) : (
-                <h2> {msg && "No Data "}</h2>
+                <h2> {msg && ""}</h2>
               )}
             </div>
           </>
