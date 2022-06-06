@@ -178,6 +178,7 @@ export default function CreateTables() {
                     <Dropdown.Toggle
                       id="dropdown-basic"
                       className="w-100 text-dark bg-white"
+                      data-testid="select-capacity-btn"
                     >
                       {sku.toString()}
                     </Dropdown.Toggle>
@@ -730,7 +731,7 @@ export default function CreateTables() {
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="success" type="submit">
+            <Button variant="success" type="submit" data-testid="add-col-popup">
               Add Column
             </Button>
           </Modal.Footer>

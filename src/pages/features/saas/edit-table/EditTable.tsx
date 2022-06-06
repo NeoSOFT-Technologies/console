@@ -20,6 +20,8 @@ export default function GetTables() {
   const location = useLocation();
 
   const { tableName, tenantId } = location.state as LocationState;
+  // const tableName = "testTable";
+  // const tenantId = 1;
 
   const tableData = useAppSelector((state) => state.getTableSchemaState);
 
@@ -45,20 +47,6 @@ export default function GetTables() {
       multiValue: false,
       storable: false,
     });
-
-  useEffect(() => {
-    dispatch(getTableSchema(tableSchemaObject));
-  }, []);
-
-  useEffect(() => {
-    if (
-      !updateTableSchemaState.loading &&
-      !updateTableSchemaState.error &&
-      updateTableSchemaState?.data
-    ) {
-      ToastAlert("Table updated successfully", "success");
-    }
-  }, [updateTableSchemaState.loading]);
 
   const handleClose = () => {
     setShow(false);
@@ -109,6 +97,20 @@ export default function GetTables() {
     dispatch(setTableColNames(newColumnList));
     deleteModalClose();
   };
+
+  useEffect(() => {
+    dispatch(getTableSchema(tableSchemaObject));
+  }, []);
+
+  useEffect(() => {
+    if (
+      !updateTableSchemaState.loading &&
+      !updateTableSchemaState.error &&
+      updateTableSchemaState?.data
+    ) {
+      ToastAlert("Table updated successfully", "success");
+    }
+  }, [updateTableSchemaState.loading]);
 
   return (
     <div className="createbody">
