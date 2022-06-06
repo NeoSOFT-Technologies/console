@@ -214,6 +214,7 @@ export default function GetTables() {
                             <i
                               className="bi bi-pencil-square"
                               data-toggle="modal"
+                              data-testid="edit-col-btn"
                               onClick={() => handleShow(val)}
                             ></i>
                           </td>
