@@ -43,6 +43,19 @@ const slice = createSlice({
       state.loading = false;
       state.error = undefined;
     },
+    setTableColumns: (state, action) => {
+      state.data?.splice(
+        action.payload.objIndex,
+        1,
+        action.payload.selectedColumnData
+      );
+    },
+    setTableColAfterDel: (state, action) => {
+      console.log("action.payload = " + JSON.stringify(action.payload));
+      state.data = [...action.payload.newColumnList];
+      state.loading = false;
+      state.error = undefined;
+    },
   },
   extraReducers(builder): void {
     builder.addCase(getTableSchema.pending, (state) => {
@@ -64,5 +77,6 @@ const slice = createSlice({
     });
   },
 });
-export const { setTableColNames } = slice.actions;
+export const { setTableColNames, setTableColumns, setTableColAfterDel } =
+  slice.actions;
 export default slice.reducer;
