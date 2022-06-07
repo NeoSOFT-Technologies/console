@@ -40,7 +40,13 @@ export const inputTableDataWithNrt = createAsyncThunk(
 const slice = createSlice({
   name: "inputTableDataWithNrt",
   initialState,
-  reducers: {},
+  reducers: {
+    resetInputDataWithNrtState: (state) => {
+      state.data = undefined;
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(inputTableDataWithNrt.pending, (state) => {
       state.data = undefined;
@@ -61,5 +67,5 @@ const slice = createSlice({
     });
   },
 });
-
+export const { resetInputDataWithNrtState } = slice.actions;
 export default slice.reducer;
