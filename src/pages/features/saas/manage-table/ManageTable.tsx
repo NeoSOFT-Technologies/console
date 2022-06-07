@@ -48,7 +48,7 @@ export default function ManageTables() {
   useEffect(() => {
     const pageParameters: IPagination = {
       pageNumber: currentPage.toString(),
-      pageSize: "5",
+      pageSize: "6",
     };
     dispatch(getAllTables(pageParameters));
     return () => {
@@ -92,7 +92,7 @@ export default function ManageTables() {
 
     const pageParameters: IPagination = {
       pageNumber: (currentPage - 1).toString(),
-      pageSize: "5",
+      pageSize: "6",
     };
 
     dispatch(getAllTables(pageParameters));
@@ -109,7 +109,7 @@ export default function ManageTables() {
 
     const pageParameters: IPagination = {
       pageNumber: (currentPage + 1).toString(),
-      pageSize: "5",
+      pageSize: "6",
     };
 
     dispatch(getAllTables(pageParameters));
@@ -135,8 +135,12 @@ export default function ManageTables() {
                 </thead>
                 <tbody>
                   {allTableData.data?.map((val, index) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
+                    <tr key={index + currentPage * (currentPage + 1) + 1}>
+                      {currentPage !== 1 ? (
+                        <td>{index + currentPage * (currentPage + 1) + 1}</td>
+                      ) : (
+                        <td>{index + currentPage}</td>
+                      )}
                       <td>{val.tenantId}</td>
                       <td>{val.tableName}</td>
                       <td
@@ -176,17 +180,35 @@ export default function ManageTables() {
                       </a>
                     </li>
                   )}
-                  <li className="page-item active">
-                    <a className="page-link">{currentPage}</a>
-                  </li>
-                  <li className="page-item  ">
-                    <a
-                      className="page-link "
-                      onClick={() => nextpage(currentPage)}
-                    >
-                      Next
-                    </a>
-                  </li>
+                  {allTableData.data.length < 3 ? (
+                    <>
+                      <li className="page-item active">
+                        <a className="page-link">{currentPage}</a>
+                      </li>
+                      <li className="page-item  disabled">
+                        <a
+                          className="page-link"
+                          onClick={() => nextpage(currentPage)}
+                        >
+                          Next
+                        </a>
+                      </li>
+                    </>
+                  ) : (
+                    <>
+                      <li className="page-item active">
+                        <a className="page-link">{currentPage}</a>
+                      </li>
+                      <li className="page-item  ">
+                        <a
+                          className="page-link "
+                          onClick={() => nextpage(currentPage)}
+                        >
+                          Next
+                        </a>
+                      </li>
+                    </>
+                  )}
                 </ul>
               </nav>
             </>

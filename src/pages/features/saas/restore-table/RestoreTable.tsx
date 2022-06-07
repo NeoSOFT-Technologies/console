@@ -44,7 +44,7 @@ function RestoreTable() {
   useEffect(() => {
     const pageParameters: IPagination = {
       pageNumber: currentPage.toString(),
-      pageSize: "5",
+      pageSize: "6",
     };
     dispatch(getAllDeletedTables(pageParameters));
     return () => {
@@ -89,7 +89,7 @@ function RestoreTable() {
 
     const pageParameters: IPagination = {
       pageNumber: (currentPage - 1).toString(),
-      pageSize: "5",
+      pageSize: "6",
     };
 
     dispatch(getAllDeletedTables(pageParameters));
@@ -105,7 +105,7 @@ function RestoreTable() {
 
     const pageParameters: IPagination = {
       pageNumber: (currentPage + 1).toString(),
-      pageSize: "5",
+      pageSize: "6",
     };
 
     dispatch(getAllDeletedTables(pageParameters));
@@ -131,8 +131,12 @@ function RestoreTable() {
                 </thead>
                 <tbody>
                   {allDeleteTableData.data?.map((val, index) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
+                    <tr key={index + currentPage * (currentPage + 1) + 1}>
+                      {currentPage !== 1 ? (
+                        <td>{index + currentPage * (currentPage + 1) + 1}</td>
+                      ) : (
+                        <td>{index + currentPage}</td>
+                      )}
                       <td>{val.tenantId}</td>
                       <td>{val.tableName}</td>
                       <td
