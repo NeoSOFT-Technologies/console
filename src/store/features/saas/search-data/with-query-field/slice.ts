@@ -39,7 +39,7 @@ const slice = createSlice({
       state.error = undefined;
     },
     resetSearchData: (state, action) => {
-      state.data = [...action.payload];
+      state.data = action.payload;
       state.loading = false;
       state.error = undefined;
     },

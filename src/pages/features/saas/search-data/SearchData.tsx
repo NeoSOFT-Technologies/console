@@ -55,6 +55,8 @@ export default function GetSearchData() {
     event: React.FormEvent
   ) => {
     event.preventDefault();
+    setStartRecord("0");
+    setCheckDisable(false);
     setMsg(true);
     const initialState: ISearchDataWithQueryField = {
       queryField,
@@ -131,13 +133,17 @@ export default function GetSearchData() {
   useEffect(() => {
     const newTableColList: ITableColumnData[] = [];
     dispatch(setTableColNames(newTableColList));
+    if (!tenantId) {
+      dispatch(resetSearchDataWithQueryField());
+      dispatch(getTenantDetails());
+    }
     dispatch(getTables(tenantId));
   }, [tenantId]);
   useEffect(() => {
     dispatch(getTenantDetails());
   }, []);
   useEffect(() => {
-    console.log(tableColName);
+    console.log(tableColName, tableName, tenantId);
     dispatch(getTableSchema({ tableName, tenantId }));
   }, [tableName]);
   useEffect(() => {
@@ -177,9 +183,13 @@ export default function GetSearchData() {
                     aria-label="Default select example"
                     required
                     onChange={(e) => {
-                      setTenantId(e.target.value);
                       const resetData: any[] = [];
+                      console.log(e.target.value);
+                      // if (e.target.value !== "invalid") {
+                      setTenantId(e.target.value);
+                      // }
                       dispatch(resetSearchData(resetData));
+                      setTableName("");
                       setPageSize("");
                       setOrder("asc");
                     }}
@@ -199,7 +209,10 @@ export default function GetSearchData() {
                   <Form.Select
                     aria-label="Default select example"
                     required
-                    onChange={(e) => setTableName(e.target.value)}
+                    onChange={(e) => {
+                      console.log("Table Name Change", e.target.value);
+                      setTableName(e.target.value);
+                    }}
                   >
                     <option value="">Table Name</option>
                     {tableData.data?.map((val, index) => (
