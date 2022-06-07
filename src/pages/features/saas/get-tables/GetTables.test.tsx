@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -36,7 +37,7 @@ describe("SAAS - GET Tables Component", () => {
     mockApi.onGet("?tenantId=1").reply(200, {
       statusCode: 200,
       message: "Successfully retrieved all tables",
-      data: ["karthik"],
+      data: ["testTable"],
     });
 
     render(
@@ -54,17 +55,41 @@ describe("SAAS - GET Tables Component", () => {
     const getTablesBtn = screen.getByTestId("get-tables-btn");
     expect(getTablesBtn).toBeInTheDocument();
     fireEvent.click(getTablesBtn);
+  });
 
-    // const tableData = await screen.getByTestId("table-data");
-    // expect(tableData).toBeInTheDocument();
+  it("Check if component renders after getting data from API call", async () => {
+    mockApi
+      .onGet("http://localhost:8083/api/v1/manage/table/?tenantId=1")
+      .reply(200, {
+        statusCode: 200,
+        message: "Successfully retrieved all tables",
+        data: ["testTable"],
+      });
 
-    // const buttonElement=screen.getByRole('button', {
-    //   name: /Get Tables/i
-    // });
-    // userEvent.click(buttonElement);
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <GetTables />
+        </Provider>
+      </BrowserRouter>
+    );
 
-    // const getTablesBtnElement = await screen.getByText("Table Name", {
-    //   exact: false,
-    // });
+    const tenantIdField = await screen.getByPlaceholderText(/enter tenant id/i);
+    expect(tenantIdField).toBeInTheDocument();
+    fireEvent.change(tenantIdField, { target: { value: "1" } });
+
+    const getTablesBtn = screen.getByTestId("get-tables-btn");
+    expect(getTablesBtn).toBeInTheDocument();
+    // fireEvent.click(getTablesBtn);
+    userEvent.click(getTablesBtn);
+
+    // expect result
+    const data = await waitFor(
+      () => screen.getByText("testTable", { exact: false }),
+      {
+        timeout: 3000,
+      }
+    );
+    expect(data).toBeInTheDocument();
   });
 });

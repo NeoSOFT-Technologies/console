@@ -3,6 +3,7 @@ import { Button, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
 import { inputTableDataWithNrt } from "../../../../store/features/saas/input-data/with-nrt/slice";
 import { inputTableDataWithoutNrt } from "../../../../store/features/saas/input-data/without-nrt/slice";
 import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
@@ -17,7 +18,7 @@ export default function InputData() {
   const inputDataWithoutNrt = useAppSelector(
     (state) => state.inputDataWithOutNrtState
   );
-
+  const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
   const [tenantId, setTenantId] = useState("");
   const [tableName, setTableName] = useState("");
   const [inputData, setInputData] = useState("");
@@ -65,10 +66,15 @@ export default function InputData() {
       } else {
         dispatch(inputTableDataWithoutNrt(initialState));
       }
+      setInputData("");
     } else {
       ToastAlert("Invalid Data", "error");
     }
   };
+  useEffect(() => {
+    dispatch(getTenantDetails());
+  }, []);
+
   useEffect(() => {
     dispatch(getTables(tenantId));
   }, [tenantId]);
@@ -104,14 +110,23 @@ export default function InputData() {
                   <Col md={6} className="justify-content-center">
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                       <Form.Label>User :</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="user"
-                        value={tenantId}
-                        required
+                      <Form.Select
+                        aria-label="Default select example"
                         className="text-center"
+                        required
                         onChange={(e) => setTenantId(e.target.value)}
-                      />
+                        data-testid="tenant-name-select"
+                      >
+                        <option value="">Select Tenant</option>
+                        {tenantDetails.data?.map((val, index) => (
+                          <option
+                            key={`option${index}`}
+                            value={val.id.toString()}
+                          >
+                            {val.tenantName}
+                          </option>
+                        ))}
+                      </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                       <Form.Label>Table Name :</Form.Label>
@@ -120,6 +135,7 @@ export default function InputData() {
                         className="text-center"
                         required
                         onChange={(e) => setTableName(e.target.value)}
+                        data-testid="table-name-select"
                       >
                         <option value=""> Select Table</option>
                         {tableData.data?.map((val, index) => (

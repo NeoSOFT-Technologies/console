@@ -13,6 +13,8 @@ export default function GetTables() {
   const location = useLocation();
 
   const { tableName, tenantId } = location.state as LocationState;
+  // const tableName = "testTable";
+  // const tenantId = 1;
 
   const tableData = useAppSelector((state) => state.getTableSchemaState);
   console.log(tableData);
@@ -148,6 +150,7 @@ export default function GetTables() {
                                 className="bi bi-pencil-square "
                                 data-toggle="modal"
                                 data-target="#exampleModalCenter"
+                                data-testid="edit-col-btn"
                                 onClick={() => handleShow(val)}
                               ></i>
                             </td>

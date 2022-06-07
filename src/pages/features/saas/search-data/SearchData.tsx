@@ -160,6 +160,7 @@ export default function GetSearchData() {
                     className="text-center"
                     required
                     onChange={(e) => setTableName(e.target.value)}
+                    data-testid="table-name-select"
                   >
                     <option value="">Table Name</option>
                     {tableData.data?.map((val, index) => (

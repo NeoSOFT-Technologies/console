@@ -15,6 +15,7 @@ import keyListReducer from "./features/gateway/key/list/slice";
 import createPolicyReducer from "./features/gateway/policy/create/slice";
 import deletePolicyReducer from "./features/gateway/policy/delete/slice";
 import policyListReducer from "./features/gateway/policy/list/slice";
+import getTenantDetailReducer from "./features/saas/input-data/slice";
 import inputDataWithNrtReducer from "./features/saas/input-data/with-nrt/slice";
 import inputDataWithOutNrtReducer from "./features/saas/input-data/without-nrt/slice";
 import createTableReducer from "./features/saas/manage-table/create-table/slice";
@@ -82,6 +83,7 @@ const store = configureStore({
     inputDataWithOutNrtState: inputDataWithOutNrtReducer,
     getAllTableState: getAllTableReducer,
     getAllDeleteTableState: getAllDeletedTableReducer,
+    getTenantDetailState: getTenantDetailReducer,
   },
 });
 

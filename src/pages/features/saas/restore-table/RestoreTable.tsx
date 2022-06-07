@@ -142,6 +142,7 @@ function RestoreTable() {
                       <td
                         className="text-align-middle text-primary"
                         onClick={() => handleShow(val)}
+                        data-testid="restore-table-btn"
                       >
                         <i className="bi bi-bootstrap-reboot"></i>
                       </td>
