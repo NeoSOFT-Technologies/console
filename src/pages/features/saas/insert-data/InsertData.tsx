@@ -52,11 +52,11 @@ export default function InputData() {
         return true;
       } else {
         console.log("JSON object false");
-        return false;
+        return true;
       }
     } catch (error) {
       console.log("error" + error);
-      return false;
+      return true;
     }
   }
 
@@ -94,7 +94,18 @@ export default function InputData() {
       dispatch(resetInputDataWithNrtState());
       dispatch(resetInputDataWithoutNrtState());
     }
-  }, [inputDataWithNrt.loading, inputDataWithoutNrt.loading]);
+    if (!inputDataWithNrt.loading && inputDataWithNrt.error) {
+      ToastAlert(inputDataWithNrt.error as string, "error");
+    }
+    if (!inputDataWithoutNrt.loading && inputDataWithoutNrt.error) {
+      ToastAlert(inputDataWithoutNrt.error as string, "error");
+    }
+  }, [
+    inputDataWithNrt.loading,
+    inputDataWithoutNrt.loading,
+    inputDataWithNrt.error,
+    inputDataWithoutNrt.error,
+  ]);
   const handleOnChange = () => {
     setIsNrtChecked(!isNrtChecked);
   };
