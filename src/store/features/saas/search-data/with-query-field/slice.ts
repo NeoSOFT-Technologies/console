@@ -38,6 +38,11 @@ const slice = createSlice({
       state.loading = false;
       state.error = undefined;
     },
+    resetSearchData: (state, action) => {
+      state.data = action.payload;
+      state.loading = false;
+      state.error = undefined;
+    },
   },
   extraReducers(builder): void {
     builder.addCase(searchDataWithQueryField.pending, (state) => {
@@ -61,4 +66,4 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
-export const { resetSearchDataWithQueryField } = slice.actions;
+export const { resetSearchDataWithQueryField, resetSearchData } = slice.actions;
