@@ -36,12 +36,12 @@ export const createTable = createAsyncThunk(
       console.log(
         `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
       );
-      alert(JSON.stringify(response.data));
+      alert(JSON.stringify(response.data.message));
       return response.data;
     } catch (error_: any) {
       // console.log(error_, "||", error(error_));
+      alert(error_);
       const errorMessage = error(error_);
-      alert("something went to wrong");
       // console.log(`Error : ` + JSON.stringify(error_));
       throw new Error(errorMessage);
     }
