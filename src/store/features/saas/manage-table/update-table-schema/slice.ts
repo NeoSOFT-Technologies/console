@@ -16,16 +16,12 @@ const initialState: IUpdateTableSchemaState = {
 export const updateTableSchema = createAsyncThunk(
   "updateSchemaTable",
   async (data: IUpdateTable) => {
-    // async (data: ITableCreateData) => {
     try {
       const response = await updateTableSchemaService(
         data.requestParams.tableName,
         data.requestParams.tenantId,
         data.requestData
       );
-      // console.log(
-      //   `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
-      // );
       return response.data;
     } catch (error_: any) {
       let errorMsg = "Undefined Error";

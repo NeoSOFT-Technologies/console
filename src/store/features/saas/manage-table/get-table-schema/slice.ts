@@ -20,9 +20,6 @@ export const getTableSchema = createAsyncThunk(
         data.tableName,
         data.tenantId
       );
-      console.log(
-        `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
-      );
       return response.data.data.columns;
     } catch (error_: any) {
       let errorMsg = "Undefined Error";
