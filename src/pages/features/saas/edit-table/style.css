@@ -37,3 +37,9 @@ body .createbody {
 .bi:hover {
   margin-left: 7px;
 }
+.table-marginLeft {
+  margin-left: 26%;
+}
+.save-column-changes-button {
+  padding-right: 40%;
+}

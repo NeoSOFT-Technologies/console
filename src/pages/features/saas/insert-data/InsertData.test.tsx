@@ -70,7 +70,7 @@ describe("SAAS - INSERT DATA Component", () => {
     });
 
     mockApi
-      .onGet("manage/table/?tenantId=1") //("http://localhost:8083/api/v1/manage/table/?tenantId=1")
+      .onGet("manage/table/?tenantId=1") // ("http://localhost:8083/api/v1/manage/table/?tenantId=1")
       .reply(200, {
         statusCode: 200,
         message: "Successfully retrieved all tables",

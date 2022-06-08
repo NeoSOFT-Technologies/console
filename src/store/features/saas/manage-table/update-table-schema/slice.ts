@@ -24,9 +24,9 @@ export const updateTableSchema = createAsyncThunk(
         data.requestParams.tenantId,
         data.requestData
       );
-      console.log(
-        `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
-      );
+      // console.log(
+      //   `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
+      // );
       return response.data;
     } catch (error_: any) {
       // console.log(error_, "||", error(error_));

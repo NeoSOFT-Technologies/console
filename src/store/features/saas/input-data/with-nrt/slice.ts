@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { inputDataNrtService } from "../../../../../services/saas/api/api";
 import { IInputData } from "../../../../../types/saas";
-import error from "../../../../../utils/error";
 
 interface IInputDataNrtState {
   data?: string[];
@@ -29,10 +28,15 @@ export const inputTableDataWithNrt = createAsyncThunk(
       );
       return response.data;
     } catch (error_: any) {
+      let errorMsg = "Undefined Error";
+      errorMsg =
+        error_.response.data !== undefined
+          ? error_.response.data.message
+          : error_.message;
       // console.log(error_, "||", error(error_));
-      const errorMessage = error(error_);
+      // const errorMessage = error(error_);
       // console.log(`Error : ` + JSON.stringify(error_));
-      throw new Error(errorMessage);
+      throw new Error(errorMsg);
     }
   }
 );
@@ -40,7 +44,13 @@ export const inputTableDataWithNrt = createAsyncThunk(
 const slice = createSlice({
   name: "inputTableDataWithNrt",
   initialState,
-  reducers: {},
+  reducers: {
+    resetInputDataWithNrtState: (state) => {
+      state.data = undefined;
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(inputTableDataWithNrt.pending, (state) => {
       state.data = undefined;
@@ -53,13 +63,9 @@ const slice = createSlice({
     });
     builder.addCase(inputTableDataWithNrt.rejected, (state, action: any) => {
       state.loading = false;
-      const errorMessage = action.error.message.split(" ");
-      state.error = errorMessage[errorMessage.length - 1];
-      if (state.error === "403" || state.error === "401") {
-        alert("Invalid Token");
-      }
+      state.error = action.error.message;
     });
   },
 });
-
+export const { resetInputDataWithNrtState } = slice.actions;
 export default slice.reducer;
