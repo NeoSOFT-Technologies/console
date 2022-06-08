@@ -8,7 +8,7 @@ import { ITableColumnData, ITableSchema } from "../../../../types/saas";
 import "./style.css";
 
 type LocationState = { tableName: string; tenantId: string };
-export default function GetTables() {
+export default function EditTable() {
   const dispatch = useAppDispatch();
   const location = useLocation();
 
@@ -117,7 +117,7 @@ export default function GetTables() {
               >
                 columns :
               </Form.Label>
-              <Col sm lg="8" className="ml-2 mt-5 pl-1 pr-0 table-responsive ">
+              <Col sm lg="8" className="ml-2 pl-1 pr-0 table-responsive ">
                 {tableData.data !== undefined && tableData.data.length > 0 ? (
                   <Table bordered className="text-center pr-0">
                     <thead>

@@ -1,20 +1,5 @@
 const saasRoutes = [
   {
-    path: "/saas/getTables",
-    title: "Get Tables",
-    icon: "bi bi-list-ul",
-  },
-  {
-    path: "/saas/insertData",
-    title: "Insert Data",
-    icon: "bi bi-list-ul",
-  },
-  {
-    path: "/saas/searchData",
-    title: "Search Data",
-    icon: "bi bi-list-ul",
-  },
-  {
     path: "/saas/manageTable",
     title: "Manage Table",
     icon: "bi bi-list-ul",
@@ -25,8 +10,13 @@ const saasRoutes = [
     icon: "bi bi-list-ul",
   },
   {
-    path: "/saas/createTables",
-    title: "Create Table",
+    path: "/saas/insertData",
+    title: "Insert Data",
+    icon: "bi bi-list-ul",
+  },
+  {
+    path: "/saas/searchData",
+    title: "Search Data",
     icon: "bi bi-list-ul",
   },
   // {

@@ -95,13 +95,8 @@ function RestoreTable() {
     dispatch(getAllDeletedTables(pageParameters));
   };
   const nextpage = (currentPage1: number) => {
-    if (currentPage1 <= 10) {
-      ++currentPage1;
-
-      setCurrentPage(currentPage1);
-    } else {
-      setCurrentPage(currentPage1);
-    }
+    currentPage1++;
+    setCurrentPage(currentPage1);
 
     const pageParameters: IPagination = {
       pageNumber: (currentPage + 1).toString(),

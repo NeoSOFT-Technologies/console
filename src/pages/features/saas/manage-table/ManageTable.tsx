@@ -99,13 +99,9 @@ export default function ManageTables() {
   };
 
   const nextpage = (currentPage1: number) => {
-    if (currentPage1 <= 10) {
-      ++currentPage1;
+    currentPage1++;
 
-      setCurrentPage(currentPage1);
-    } else {
-      setCurrentPage(currentPage1);
-    }
+    setCurrentPage(currentPage1);
 
     const pageParameters: IPagination = {
       pageNumber: (currentPage + 1).toString(),
@@ -182,35 +178,18 @@ export default function ManageTables() {
                       </a>
                     </li>
                   )}
-                  {allTableData.data.length < 3 ? (
-                    <>
-                      <li className="page-item active">
-                        <a className="page-link">{currentPage}</a>
-                      </li>
-                      <li className="page-item  disabled">
-                        <a
-                          className="page-link"
-                          onClick={() => nextpage(currentPage)}
-                        >
-                          Next
-                        </a>
-                      </li>
-                    </>
-                  ) : (
-                    <>
-                      <li className="page-item active">
-                        <a className="page-link">{currentPage}</a>
-                      </li>
-                      <li className="page-item  ">
-                        <a
-                          className="page-link "
-                          onClick={() => nextpage(currentPage)}
-                        >
-                          Next
-                        </a>
-                      </li>
-                    </>
-                  )}
+
+                  <li className="page-item active">
+                    <a className="page-link">{currentPage}</a>
+                  </li>
+                  <li className="page-item  ">
+                    <a
+                      className="page-link "
+                      onClick={() => nextpage(currentPage)}
+                    >
+                      Next
+                    </a>
+                  </li>
                 </ul>
               </nav>
             </>
