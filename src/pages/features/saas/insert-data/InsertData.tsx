@@ -205,6 +205,7 @@ export default function InputData() {
                           inputDataWithNrt.loading ||
                           inputDataWithoutNrt.loading
                         }
+                        data-testid="save-btn"
                       >
                         Save
                       </Button>

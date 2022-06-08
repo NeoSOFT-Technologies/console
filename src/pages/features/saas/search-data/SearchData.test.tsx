@@ -156,7 +156,7 @@ describe("SAAS - SEARCH DATA Component", () => {
     );
     expect(tableDropdown).toBeInTheDocument();
 
-    // CHECK IF OPTION IN THE TABLE IS FETCHED AND VISIBLE
+    // CHECK IF OPTION IN THE DROPDOWN IS FETCHED AND VISIBLE
     const tableOption = await waitFor(
       () => screen.getByText("testTable", { exact: false }),
       {
@@ -170,7 +170,7 @@ describe("SAAS - SEARCH DATA Component", () => {
       "testTable",
     ]);
 
-    //= =======================
+    //========================
 
     const queryFieldDropdown = await waitFor(
       () => screen.getByTestId("query-field-select"),
