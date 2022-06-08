@@ -5,9 +5,9 @@ import { useLocation } from "react-router-dom";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
+  deleteColumn,
   getTableSchema,
-  setTableColNames,
-  setTableColumns,
+  addOrEditColumn,
 } from "../../../../store/features/saas/manage-table/get-table-schema/slice";
 import { updateTableSchema } from "../../../../store/features/saas/manage-table/update-table-schema/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
@@ -15,23 +15,20 @@ import { ITableColumnData, ITableSchema } from "../../../../types/saas";
 import "./style.css";
 
 type LocationState = { tableName: string; tenantId: string };
-export default function GetTables() {
+export default function EditTable() {
   const dispatch = useAppDispatch();
   const location = useLocation();
-
   const { tableName, tenantId } = location.state as LocationState;
-  // const tableName = "testTable";
-  // const tenantId = 1;
-
   const tableData = useAppSelector((state) => state.getTableSchemaState);
-
   const updateTableSchemaState = useAppSelector(
     (state) => state.updateTableSchemaState
   );
-  // console.log(tableData);
   const [show, setShow] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  // const [selectedColumnName, setSelectedColumnName] = useState("");
+  const [selectedColHeading, setselectedColHeading] = useState<string>("");
+  const [selectedColAction, setSelectedColAction] = useState<string>("");
+  const [readonlyState, setReadonlyState] = useState<boolean>(true);
+  const [showSuccessMsg, setShowSuccessMsg] = useState<boolean>(false);
   const tableSchemaObject: ITableSchema = {
     tenantId,
     tableName,
@@ -59,16 +56,42 @@ export default function GetTables() {
     setDeleteModal(true);
   };
 
-  const saveColumnData = () => {
+  const processColumn = () => {
     const objIndex: Number | any = tableData.data?.findIndex(
       (item: ITableColumnData) => item.name === selectedColumnData.name
     );
-    const payload = { selectedColumnData, objIndex };
-    dispatch(setTableColumns(payload));
-    setShow(false);
+    if (selectedColHeading === "Add Column" && objIndex > -1) {
+      ToastAlert("Column already exists", "error");
+    } else {
+      dispatch(
+        addOrEditColumn({ selectedColumnData, objIndex, selectedColHeading })
+      );
+      setShow(false);
+    }
   };
-  const handleShow = (columData: ITableColumnData) => {
-    setSelectedColumnData(columData);
+  const handleShow = (
+    columData: ITableColumnData,
+    selectedColumnHeading: string
+  ) => {
+    setselectedColHeading(selectedColumnHeading);
+    if (selectedColumnHeading === "Add Column") {
+      setSelectedColumnData({
+        name: "",
+        type: "",
+        required: false,
+        partialSearch: false,
+        filterable: false,
+        sortable: false,
+        multiValue: false,
+        storable: false,
+      });
+      setSelectedColAction("Add Column");
+      setReadonlyState(false);
+    } else {
+      setSelectedColumnData(columData);
+      setSelectedColAction("Save Changes");
+      setReadonlyState(true);
+    }
     setShow(true);
   };
 
@@ -76,7 +99,7 @@ export default function GetTables() {
     event: React.FormEvent
   ) => {
     event.preventDefault();
-    // alert("inside button click");
+    setShowSuccessMsg(true);
     dispatch(
       updateTableSchema({
         requestParams: tableSchemaObject,
@@ -89,12 +112,7 @@ export default function GetTables() {
   };
 
   const removeColumn = () => {
-    // const payload = { selectedColumnName};
-    const newColumnList = tableData.data?.filter((obj) => {
-      return obj.name !== selectedColumnData.name;
-    });
-    console.log("Columns After Delete = " + JSON.stringify(newColumnList));
-    dispatch(setTableColNames(newColumnList));
+    dispatch(deleteColumn({ selectedColumnData }));
     deleteModalClose();
   };
 
@@ -106,17 +124,20 @@ export default function GetTables() {
     if (
       !updateTableSchemaState.loading &&
       !updateTableSchemaState.error &&
-      updateTableSchemaState?.data
+      updateTableSchemaState?.data &&
+      showSuccessMsg
     ) {
       ToastAlert("Table updated successfully", "success");
     }
-  }, [updateTableSchemaState.loading]);
-
+    if (!updateTableSchemaState.loading && updateTableSchemaState.error) {
+      ToastAlert(updateTableSchemaState.error as string, "error");
+    }
+  }, [updateTableSchemaState.loading, updateTableSchemaState.error]);
   return (
     <div className="createbody">
       <h4 className="pl-5 pt-5">Edit Table</h4>
       <br></br>
-
+      {updateTableSchemaState.loading ? <Spinner></Spinner> : <div></div>}
       <Form onSubmit={updateTable} className="pl-5">
         <Row>
           <Col>
@@ -159,7 +180,29 @@ export default function GetTables() {
               </Col>
             </Row>
             <br></br>
-
+            {/* <Row>
+              <Form.Label
+                column="lg"
+                lg={3}
+                className="pl-5 text-center createbody"
+              >
+                <b>Capacity</b>
+              </Form.Label>
+              <Col sm lg="4">
+                <InputGroup
+                  aria-label="Default select example"
+                  className="w-100 pr-3 pt-1 pb-1 createbody"
+                  id="box"
+                >
+                  {"B"}
+                </InputGroup>
+              </Col>
+              <Form.Label column="lg" lg={2} className="p-1 m-0">
+                <div>
+                  <i className="bi bi-info-circle-fill"></i>
+                </div>
+              </Form.Label>
+            </Row> */}
             <Form.Label
               column="lg"
               lg={3}
@@ -167,12 +210,13 @@ export default function GetTables() {
             >
               <b>Columns :</b>
             </Form.Label>
+
             <Row>
-              <Col sm lg="8" className="ml-2 mt-3 pl-1 pr-0 ">
+              <Col sm lg="8" className="ml-0 mt-3 pl-1 pr-0 ">
                 {tableData.data !== undefined && tableData.data.length > 0 ? (
                   <Table
                     bordered
-                    className="text-center pr-0 table-marginLeft table-responsive"
+                    className="text-center pr-0 table-marginLeft "
                   >
                     <thead>
                       <tr id="test">
@@ -199,31 +243,15 @@ export default function GetTables() {
                           <td>{val.sortable.toString()}</td>
                           <td>{val.multiValue.toString()}</td>
                           <td>{val.storable.toString()} </td>
-                          {/* <td>
-                        <i
-                          className="bi bi-pencil-square "
-                          data-toggle="modal"
-                          data-target="#exampleModalCenter"
-                          onClick={() => handleShow(val)}
-                        ></i>
-                      </td> */}
-                          <td
-                            className="text-align-middle  text-primary"
-                            // onClick={() => handleShow(val)}
-                          >
+                          <td className="text-align-middle  text-primary">
                             <i
                               className="bi bi-pencil-square"
                               data-toggle="modal"
                               data-testid="edit-col-btn"
-                              onClick={() => handleShow(val)}
+                              onClick={() => handleShow(val, "Edit Column")}
                             ></i>
                           </td>
-                          <td
-                            className="text-danger"
-                            // onClick={() =>
-                            //   handleShow(val.tableName, val.tenantId)
-                            // }
-                          >
+                          <td className="text-danger">
                             <i
                               className="bi bi-trash-fill"
                               onClick={() => deleteModalShow(val)}
@@ -244,22 +272,32 @@ export default function GetTables() {
           <br></br>
           <br></br>
         </Row>
-        {updateTableSchemaState.loading ? (
-          <Spinner></Spinner>
-        ) : (
-          <Row className="mb-5">
-            <div className=" text-center ml-0 pl-0 col-md-12  text-right pr-5 mt-5">
-              <Button
-                variant="btn btn-success"
-                type="submit"
-                className="float-center pr-5 pl-5"
-                // onClick={updateTable}
-              >
-                Save
-              </Button>
-            </div>
-          </Row>
-        )}
+
+        <Row className="mb-5  mt-3">
+          <div className="col-md-3 text-center mr-5"></div>
+          <div className="col-md-2 text-center mr-0 pr-0 mb-4 ">
+            <Button
+              variant="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModalCenter"
+              disabled={updateTableSchemaState.loading}
+              onClick={() => handleShow(selectedColumnData, "Add Column")}
+            >
+              Add Column
+            </Button>
+          </div>
+          <br></br>
+          <div className="col-md-2 text-center ml-0 pl-0">
+            <Button
+              variant="btn  btn-success"
+              type="submit"
+              className=" pl-4 pr-4"
+              disabled={updateTableSchemaState.loading}
+            >
+              Save
+            </Button>
+          </div>
+        </Row>
       </Form>
       <Modal
         show={show}
@@ -268,7 +306,9 @@ export default function GetTables() {
         size="lg"
       >
         <Modal.Header>
-          <Modal.Title className="text-center">Edit Column</Modal.Title>
+          <Modal.Title className="text-center">
+            {selectedColHeading}
+          </Modal.Title>
           <button
             type="button"
             className="close"
@@ -296,7 +336,13 @@ export default function GetTables() {
                     value={selectedColumnData.name}
                     aria-label="Name"
                     aria-describedby="basic-addon"
-                    readOnly
+                    readOnly={readonlyState}
+                    onChange={(e) => {
+                      setSelectedColumnData({
+                        ...selectedColumnData,
+                        name: e.target.value,
+                      });
+                    }}
                   />
                 </div>
               </Col>
@@ -319,7 +365,13 @@ export default function GetTables() {
                     placeholder="Title"
                     aria-label="Title"
                     aria-describedby="basic-addon"
-                    readOnly
+                    readOnly={readonlyState}
+                    onChange={(e) => {
+                      setSelectedColumnData({
+                        ...selectedColumnData,
+                        type: e.target.value,
+                      });
+                    }}
                   />
                 </div>
               </Col>
@@ -529,9 +581,9 @@ export default function GetTables() {
           <Button
             className="text-center"
             variant="success"
-            onClick={saveColumnData}
+            onClick={processColumn}
           >
-            Save changes
+            {selectedColAction}
           </Button>
         </Modal.Footer>
       </Modal>

@@ -95,7 +95,7 @@ describe("SAAS - EDIT TABLE Component", () => {
     userEvent.click(editColBtn);
 
     const saveChangesBtn = await waitFor(
-      () => screen.getByText("Save changes"),
+      () => screen.getByText("Save Changes"),
       {
         timeout: 3000,
       }
