@@ -1,10 +1,4 @@
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  getAllByRole,
-} from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 import { Provider } from "react-redux";
@@ -126,7 +120,7 @@ describe("SAAS - INSERT DATA Component", () => {
       "testTable",
     ]);
 
-    const jsonInputField = await screen.getByPlaceholderText(/JSON input/i);
+    const jsonInputField = await screen.getByPlaceholderText(/json input/i);
     fireEvent.change(jsonInputField, {
       target: { value: '[{"id":1,"name":"karthik","username":"karthik"}]' },
     });

@@ -170,7 +170,7 @@ describe("SAAS - SEARCH DATA Component", () => {
       "testTable",
     ]);
 
-    //========================
+    //= =======================
 
     const queryFieldDropdown = await waitFor(
       () => screen.getByTestId("query-field-select"),
