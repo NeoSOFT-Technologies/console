@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getTenantListService } from "../../../../services/saas/api/api";
 import { ITenantDetails } from "../../../../types/saas";
-import error from "../../../../utils/error";
 
 interface ITenantDetailsState {
   data?: ITenantDetails[];
@@ -25,10 +24,15 @@ export const getTenantDetails = createAsyncThunk(
       //   );
       return response.data.data;
     } catch (error_: any) {
+      let errorMsg = "Undefined Error";
+      errorMsg =
+        error_.response.data !== undefined
+          ? error_.response.data.message
+          : error_.message;
       // console.log(error_, "||", error(error_));
-      const errorMessage = error(error_);
+      // const errorMessage = error(error_);
       // console.log(`Error : ` + JSON.stringify(error_));
-      throw new Error(errorMessage);
+      throw new Error(errorMsg);
     }
   }
 );
@@ -49,11 +53,7 @@ const slice = createSlice({
     });
     builder.addCase(getTenantDetails.rejected, (state, action: any) => {
       state.loading = false;
-      const errorMessage = action.error.message.split(" ");
-      state.error = errorMessage[errorMessage.length - 1];
-      if (state.error === "403" || state.error === "401") {
-        alert("Invalid Token");
-      }
+      state.error = action.error.message;
     });
   },
 });
