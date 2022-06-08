@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
-import { inputTableDataWithNrt } from "../../../../store/features/saas/input-data/with-nrt/slice";
-import { inputTableDataWithoutNrt } from "../../../../store/features/saas/input-data/without-nrt/slice";
+import {
+  inputTableDataWithNrt,
+  resetInputDataWithNrtState,
+} from "../../../../store/features/saas/input-data/with-nrt/slice";
+import {
+  inputTableDataWithoutNrt,
+  resetInputDataWithoutNrtState,
+} from "../../../../store/features/saas/input-data/without-nrt/slice";
 import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IInputData, ITableSchema } from "../../../../types/saas";
@@ -46,11 +52,11 @@ export default function InputData() {
         return true;
       } else {
         console.log("JSON object false");
-        return false;
+        return true;
       }
     } catch (error) {
       console.log("error" + error);
-      return false;
+      return true;
     }
   }
 
@@ -76,9 +82,6 @@ export default function InputData() {
   }, []);
 
   useEffect(() => {
-    dispatch(getTables(tenantId));
-  }, [tenantId]);
-  useEffect(() => {
     if (
       (!inputDataWithNrt.loading &&
         !inputDataWithNrt.error &&
@@ -88,8 +91,21 @@ export default function InputData() {
         inputDataWithoutNrt?.data)
     ) {
       ToastAlert("Data Saved successfully", "success");
+      dispatch(resetInputDataWithNrtState());
+      dispatch(resetInputDataWithoutNrtState());
     }
-  }, [inputDataWithNrt.loading, inputDataWithoutNrt.loading]);
+    if (!inputDataWithNrt.loading && inputDataWithNrt.error) {
+      ToastAlert(inputDataWithNrt.error as string, "error");
+    }
+    if (!inputDataWithoutNrt.loading && inputDataWithoutNrt.error) {
+      ToastAlert(inputDataWithoutNrt.error as string, "error");
+    }
+  }, [
+    inputDataWithNrt.loading,
+    inputDataWithoutNrt.loading,
+    inputDataWithNrt.error,
+    inputDataWithoutNrt.error,
+  ]);
   const handleOnChange = () => {
     setIsNrtChecked(!isNrtChecked);
   };
@@ -101,20 +117,27 @@ export default function InputData() {
       ) : (
         <div>
           <div className="bg-white">
-            <div className="mb-4 mt-3">
-              <h3 className="font-weight-normal text-justify text-center">
-                Insert Data
-              </h3>
-              <Form onSubmit={getInputData}>
-                <Row className="justify-content-center">
-                  <Col md={6} className="justify-content-center">
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                      <Form.Label>User :</Form.Label>
+            <Container className="m-1">
+              <h3 className="text-center text-dark pb-2 pt-3">Insert Data</h3>
+              <Form
+                onSubmit={getInputData}
+                data-testid="form-input"
+                className="p-4"
+              >
+                <Row>
+                  <Col md="6">
+                    <Form.Group className="mb-3">
+                      <Form.Label>Tenant Name :</Form.Label>
                       <Form.Select
                         aria-label="Default select example"
                         className="text-center"
+                        id="tenantName"
+                        data-testid="tenant-name-select"
+                        onChange={(e) => {
+                          setTenantId(e.target.value);
+                          dispatch(getTables(e.target.value));
+                        }}
                         required
-                        onChange={(e) => setTenantId(e.target.value)}
                       >
                         <option value="">Select Tenant</option>
                         {tenantDetails.data?.map((val, index) => (
@@ -127,13 +150,16 @@ export default function InputData() {
                         ))}
                       </Form.Select>
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                  </Col>
+                  <Col md="6">
+                    <Form.Group className="mb-3">
                       <Form.Label>Table Name :</Form.Label>
                       <Form.Select
                         aria-label="Default select example"
                         className="text-center"
                         required
                         onChange={(e) => setTableName(e.target.value)}
+                        data-testid="table-name-select"
                       >
                         <option value=""> Select Table</option>
                         {tableData.data?.map((val, index) => (
@@ -143,7 +169,9 @@ export default function InputData() {
                         ))}
                       </Form.Select>
                     </Form.Group>
-                    <Form.Group className="mb-1" controlId="formBasicEmail">
+                  </Col>
+                  <Col md="6">
+                    <Form.Group>
                       <div className="ml-4">
                         <Form.Check
                           value="NRT"
@@ -153,20 +181,22 @@ export default function InputData() {
                         <label className="pl-2">NRT</label>
                       </div>
                     </Form.Group>
-                    <Form.Group controlId="jsonInput">
-                      <Form.Label className="mb-2">Data</Form.Label>
+                  </Col>
+                  <Col md="12">
+                    <Form.Group className="mb-3" controlId="jsonInput">
+                      <Form.Label>Data :</Form.Label>
                       <Form.Control
                         as="textarea"
-                        className="h:100"
+                        type="textarea"
+                        rows={3}
                         value={inputData}
                         placeholder="JSON input"
                         onChange={(e) => setInputData(e.target.value)}
                       />
                     </Form.Group>
-                    <Form.Group
-                      className="mb-3 mt-3"
-                      controlId="formBasicEmail"
-                    >
+                  </Col>
+                  <Col>
+                    <Form.Group className="mb-3 mt-3">
                       <Button
                         className="btn btn-block btn-primary btn-md font-weight-medium auth-form-btn btn btn-primary"
                         type="submit"
@@ -182,7 +212,7 @@ export default function InputData() {
                   </Col>
                 </Row>
               </Form>
-            </div>
+            </Container>
           </div>
         </div>
       )}

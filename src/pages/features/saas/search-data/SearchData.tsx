@@ -213,6 +213,7 @@ export default function GetSearchData() {
                       console.log("Table Name Change", e.target.value);
                       setTableName(e.target.value);
                     }}
+                    data-testid="table-name-select"
                   >
                     <option value="">Table Name</option>
                     {tableData.data?.map((val, index) => (

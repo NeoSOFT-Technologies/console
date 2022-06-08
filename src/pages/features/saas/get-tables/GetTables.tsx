@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 
@@ -17,7 +18,11 @@ export default function GetTables() {
     dispatch(getTables(tenantId));
   };
   useEffect(() => {
-    // console.log(tableData);
+    console.log("tableData = " + JSON.stringify(tableData));
+    console.log("tableData.error = " + JSON.stringify(tableData.error));
+    if (!tableData.loading && tableData.error) {
+      ToastAlert(tableData.error as string, "error");
+    }
   }, [tableData.data, tableData.error]);
 
   return (

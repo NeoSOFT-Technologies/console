@@ -142,11 +142,13 @@ export default function ManageTables() {
                       <td
                         className="text-align-middle  text-primary"
                         onClick={() => handleEditShow(val)}
+                        data-testid="edit-table-btn"
                       >
                         <i className="bi bi-pencil-square"></i>
                       </td>
                       <td
                         className="text-danger"
+                        data-testid="delete-table-btn"
                         onClick={() => handleShow(val.tableName, val.tenantId)}
                       >
                         <i className="bi bi-trash-fill"></i>
@@ -289,7 +291,7 @@ export default function ManageTables() {
               })
             }
           >
-            Yes,Edit
+            Yes, Edit
           </Button>
         </Modal.Footer>
       </Modal>
