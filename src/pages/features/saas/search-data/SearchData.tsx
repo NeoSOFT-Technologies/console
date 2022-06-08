@@ -193,6 +193,7 @@ export default function GetSearchData() {
                       setPageSize("");
                       setOrder("asc");
                     }}
+                    data-testid="tenant-name-select"
                   >
                     <option value="">Select Tenant</option>
                     {tenantDetails.data?.map((val, index) => (
@@ -231,6 +232,7 @@ export default function GetSearchData() {
                     aria-label="Default select example"
                     required
                     onChange={(e) => setQueryField(e.target.value)}
+                    data-testid="query-field-select"
                   >
                     <option value="">SearchField</option>
                     {tableColName.data?.map((val, index) => (
@@ -259,6 +261,7 @@ export default function GetSearchData() {
                     value={pageSize}
                     aria-label="Default select example"
                     onChange={(e) => setPageSize(e.target.value)}
+                    data-testid="record-count-select"
                   >
                     <option value=""> No Of Records</option>
                     <option value="6">5</option>
@@ -276,6 +279,7 @@ export default function GetSearchData() {
                     aria-label="Default select example"
                     required
                     onChange={(e) => setOrderBy(e.target.value)}
+                    data-testid="order-by-select"
                   >
                     <option value="">Order By</option>
                     {tableColName.data?.map((val, index) => (
@@ -304,6 +308,7 @@ export default function GetSearchData() {
                   variant="btn btn-primary btn-lg pl-5 pr-5 "
                   type="submit"
                   disabled={searchData.loading}
+                  data-testid="search-btn"
                 >
                   Search
                 </Button>
