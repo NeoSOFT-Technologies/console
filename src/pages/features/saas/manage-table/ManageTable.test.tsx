@@ -7,7 +7,7 @@ import mockApi from "../../../../resources/tenant/testconfig";
 import store from "../../../../store/index";
 import ManageTable from "./ManageTable";
 
-describe("SAAS - SEARCH DATA Component", () => {
+describe("SAAS - MANAGE TABLE Component", () => {
   it("Check if H1 rendered", () => {
     render(
       <BrowserRouter>
@@ -40,7 +40,7 @@ describe("SAAS - SEARCH DATA Component", () => {
 
   it("Check if fields autofilled using API on component load", async () => {
     mockApi
-      .onGet("manage/table/all-tables?pageNumber=1&pageSize=5")
+      .onGet("manage/table/all-tables?pageNumber=1&pageSize=6")
       .reply(200, {
         statusCode: 200,
         message: "Successfully retrieved all Tables From The Server",
@@ -70,7 +70,7 @@ describe("SAAS - SEARCH DATA Component", () => {
 
   it("Check if delete button works", async () => {
     mockApi
-      .onGet("manage/table/all-tables?pageNumber=1&pageSize=5")
+      .onGet("manage/table/all-tables?pageNumber=1&pageSize=6")
       .reply(200, {
         statusCode: 200,
         message: "Successfully retrieved all Tables From The Server",
@@ -125,7 +125,7 @@ describe("SAAS - SEARCH DATA Component", () => {
 
   it("Check if edit button works", async () => {
     mockApi
-      .onGet("manage/table/all-tables?pageNumber=1&pageSize=5")
+      .onGet("manage/table/all-tables?pageNumber=1&pageSize=6")
       .reply(200, {
         statusCode: 200,
         message: "Successfully retrieved all Tables From The Server",
