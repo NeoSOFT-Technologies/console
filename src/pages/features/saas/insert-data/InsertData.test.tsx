@@ -1,10 +1,4 @@
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  getAllByRole,
-} from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 import { Provider } from "react-redux";
@@ -44,7 +38,7 @@ describe("SAAS - INSERT DATA Component", () => {
     expect(saveButtonElement).toBeInTheDocument();
   });
 
-  it("Check if table name populates on entering tenant id", async () => {
+  it("Check entire flow", async () => {
     mockApi.onGet("/api/tenants").reply(200, {
       data: [
         {
@@ -69,13 +63,18 @@ describe("SAAS - INSERT DATA Component", () => {
       count: 2,
     });
 
-    mockApi
-      .onGet("manage/table/?tenantId=1") // ("http://localhost:8083/api/v1/manage/table/?tenantId=1")
-      .reply(200, {
-        statusCode: 200,
-        message: "Successfully retrieved all tables",
-        data: ["testTable"],
-      });
+    mockApi.onGet("manage/table/?tenantId=1").reply(200, {
+      statusCode: 200,
+      message: "Successfully retrieved all tables",
+      data: ["testTable"],
+    });
+
+    mockApi.onPost("ingest/testTable?tenantId=1").reply(200, {
+      statusCode: 200,
+      message: "Successfully Added!",
+      maxAllowedRequestSize: "100000000kB",
+      incomingRequestSize: "0.136kB",
+    });
 
     render(
       <BrowserRouter>
@@ -92,18 +91,63 @@ describe("SAAS - INSERT DATA Component", () => {
       }
     );
     expect(tenantDropdown).toBeInTheDocument();
-    userEvent.click(tenantDropdown);
 
-    const dropdownOptions = getAllByRole(tenantDropdown, "option");
-    fireEvent.click(dropdownOptions[1]);
+    // SELECT ITEM FROM DROP DOWN
+    userEvent.selectOptions(screen.getByTestId("tenant-name-select"), [
+      "Tenant1",
+    ]);
 
-    const tenant1Dropdown = await waitFor(
-      () => screen.getByText("Tenant1", { exact: false }),
+    // CHECK IF TABLE SELECT DROPDOWN EXISTS
+    const tableDropdown = await waitFor(
+      () => screen.getByTestId("table-name-select"),
       {
         timeout: 3000,
       }
     );
-    expect(tenant1Dropdown).toBeInTheDocument();
+    expect(tableDropdown).toBeInTheDocument();
+
+    // CHECK IF OPTION IN THE DROPDOWN IS FETCHED AND VISIBLE
+    const tableOption = await waitFor(
+      () => screen.getByText("testTable", { exact: false }),
+      {
+        timeout: 3000,
+      }
+    );
+    expect(tableOption).toBeInTheDocument();
+
+    // SELECT ITEM FROM DROP DOWN
+    userEvent.selectOptions(screen.getByTestId("table-name-select"), [
+      "testTable",
+    ]);
+
+    const jsonInputField = await screen.getByPlaceholderText(/json input/i);
+    fireEvent.change(jsonInputField, {
+      target: { value: '[{"id":1,"name":"karthik","username":"karthik"}]' },
+    });
+
+    const saveBtn = screen.getByTestId("save-btn");
+    expect(saveBtn).toBeInTheDocument();
+    userEvent.click(saveBtn);
+
+    const successPopUpBottomRight = await waitFor(
+      () => screen.getByText("Data Saved successfully", { exact: false }),
+      {
+        timeout: 3000,
+      }
+    );
+    expect(successPopUpBottomRight).toBeInTheDocument();
+
+    // const dropdownOptions = getAllByRole(tenantDropdown, "option");
+    // fireEvent.click(dropdownOptions[1]);
+
+    // const tenant1Dropdown = await waitFor(
+    //   () => screen.getByText("Tenant1", { exact: false }),
+    //   {
+    //     timeout: 3000,
+    //   }
+    // );
+    // expect(tenant1Dropdown).toBeInTheDocument();
+
     // userEvent.click(tenant1Dropdown);
 
     // fireEvent.click(screen.getByText("Tenant1"));

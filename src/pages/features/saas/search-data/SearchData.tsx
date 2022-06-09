@@ -5,9 +5,11 @@ import Form from "react-bootstrap/Form";
 
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
 import {
   resetSearchDataWithQueryField,
   searchDataWithQueryField,
+  resetSearchData,
 } from "../../../../store/features/saas/search-data/with-query-field/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
@@ -29,17 +31,21 @@ export default function GetSearchData() {
   );
   const tableData = useAppSelector((state) => state.getTableState);
   const tableColName = useAppSelector((state) => state.getTableSchemaState);
+  const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
+  const [checkDisable, setCheckDisable] = useState(false);
 
   const [tenantId, setTenantId] = useState("");
   const [tableName, setTableName] = useState("");
   const [queryField, setQueryField] = useState("*");
   const [searchTerm, setSearchTerm] = useState("*");
-  const [pageSize, setPageSize] = useState("5");
+  const [pageSize, setPageSize] = useState("");
   const [orderBy, setOrderBy] = useState("");
   const [order, setOrder] = useState("asc");
   const [startRecord, setStartRecord] = useState("0");
   const [tableHeader, setTableHeader] = useState<string[]>([]);
   const [msg, setMsg] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [filterdata, setFilterData] = useState<any[]>();
   const params: ITableSchema = {
     tenantId,
     tableName,
@@ -49,6 +55,8 @@ export default function GetSearchData() {
     event: React.FormEvent
   ) => {
     event.preventDefault();
+    setStartRecord("0");
+    setCheckDisable(false);
     setMsg(true);
     const initialState: ISearchDataWithQueryField = {
       queryField,
@@ -63,13 +71,14 @@ export default function GetSearchData() {
   };
 
   const nextpage = () => {
-    const nextindex = Number.parseInt(startRecord) + Number.parseInt(pageSize);
-    setStartRecord(nextindex.toString());
+    const nextindex =
+      Number.parseInt(startRecord) + Number.parseInt(pageSize) - 1;
+    setStartRecord(nextindex?.toString());
 
     const initialState: ISearchDataWithQueryField = {
       queryField,
       searchTerm,
-      startRecord: nextindex.toString(),
+      startRecord: nextindex?.toString(),
       pageSize,
       orderBy,
       order,
@@ -79,16 +88,18 @@ export default function GetSearchData() {
   };
 
   const prevpage = () => {
-    let nextindex = Number.parseInt(startRecord) - Number.parseInt(pageSize);
+    setCheckDisable(false);
+    let nextindex =
+      Number.parseInt(startRecord) - Number.parseInt(pageSize) + 1;
     if (nextindex < 0) {
       nextindex = 0;
     }
-    setStartRecord(nextindex.toString());
+    setStartRecord(nextindex?.toString());
 
     const initialState: ISearchDataWithQueryField = {
       queryField,
       searchTerm,
-      startRecord: nextindex.toString(),
+      startRecord: nextindex?.toString(),
       pageSize,
       orderBy,
       order,
@@ -111,6 +122,9 @@ export default function GetSearchData() {
         ToastAlert("Data Fetched successfully ", "success");
         return [...keys];
       });
+      if (searchData.data.length !== Number.parseInt(pageSize)) {
+        setCheckDisable(true);
+      }
     }
 
     // if (tableHeader.length > 0) ToastAlert("Data Fetch sucessfuly ", "success");
@@ -119,11 +133,17 @@ export default function GetSearchData() {
   useEffect(() => {
     const newTableColList: ITableColumnData[] = [];
     dispatch(setTableColNames(newTableColList));
+    if (!tenantId) {
+      dispatch(resetSearchDataWithQueryField());
+      dispatch(getTenantDetails());
+    }
     dispatch(getTables(tenantId));
   }, [tenantId]);
-
   useEffect(() => {
-    console.log(tableColName);
+    dispatch(getTenantDetails());
+  }, []);
+  useEffect(() => {
+    console.log(tableColName, tableName, tenantId);
     dispatch(getTableSchema({ tableName, tenantId }));
   }, [tableName]);
   useEffect(() => {
@@ -131,35 +151,69 @@ export default function GetSearchData() {
       dispatch(resetSearchDataWithQueryField());
     };
   }, []);
-
+  const searchFilterValue = (search: string) => {
+    const results: any[] = [];
+    let check = 0;
+    // eslint-disable-next-line array-callback-return
+    searchData.data?.map((val) => {
+      check = 0;
+      // eslint-disable-next-line array-callback-return
+      tableHeader.map((xyz) => {
+        if (val[xyz]?.toString().includes(search)) {
+          check = 1;
+        }
+      });
+      if (check === 1) {
+        results.push(val);
+      }
+    });
+    setFilterData(results);
+  };
   return (
     <div>
       <div className="card">
-        <div className="mb-4 mt-3">
-          <br></br>
-          <h4 className="ml-4 mb-4">Search Data</h4>
-
+        <div>
+          <h4 className="text-center  pt-4">Search Data</h4>
           <Form onSubmit={getSearchData}>
             <Row className="ml-3 mr-3">
-              <Col lg="2">
+              <Col lg="6">
                 <Form.Group controlId="formBasicEmail">
-                  <Form.Control
-                    type="text"
-                    placeholder="User"
-                    value={tenantId}
-                    className="text-center"
-                    required
-                    onChange={(e) => setTenantId(e.target.value)}
-                  />
-                </Form.Group>
-              </Col>
-              <Col lg="2">
-                <Form.Group controlId="formBasicEmail">
+                  <Form.Label>User :</Form.Label>
                   <Form.Select
                     aria-label="Default select example"
-                    className="text-center"
                     required
-                    onChange={(e) => setTableName(e.target.value)}
+                    onChange={(e) => {
+                      const resetData: any[] = [];
+                      console.log(e.target.value);
+                      // if (e.target.value !== "invalid") {
+                      setTenantId(e.target.value);
+                      // }
+                      dispatch(resetSearchData(resetData));
+                      setTableName("");
+                      setPageSize("");
+                      setOrder("asc");
+                    }}
+                    data-testid="tenant-name-select"
+                  >
+                    <option value="">Select Tenant</option>
+                    {tenantDetails.data?.map((val, index) => (
+                      <option key={`option${index}`} value={val.id?.toString()}>
+                        {val.tenantName}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col lg="6">
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Table Name :</Form.Label>
+                  <Form.Select
+                    aria-label="Default select example"
+                    required
+                    onChange={(e) => {
+                      console.log("Table Name Change", e.target.value);
+                      setTableName(e.target.value);
+                    }}
                     data-testid="table-name-select"
                   >
                     <option value="">Table Name</option>
@@ -171,46 +225,61 @@ export default function GetSearchData() {
                   </Form.Select>
                 </Form.Group>
               </Col>
-              <Col>
+              <Col lg="6" className="mt-2">
                 <Form.Group controlId="formBasicEmail">
-                  <Form.Control
-                    type="text"
-                    placeholder="Search Field"
-                    value={queryField}
-                    className="text-center"
+                  <Form.Label>Query Field :</Form.Label>
+                  <Form.Select
+                    aria-label="Default select example"
+                    required
                     onChange={(e) => setQueryField(e.target.value)}
-                  />
+                    data-testid="query-field-select"
+                  >
+                    <option value="">SearchField</option>
+                    {tableColName.data?.map((val, index) => (
+                      <option key={`option${index}`} value={val.name}>
+                        {val.name}
+                      </option>
+                    ))}
+                  </Form.Select>
                 </Form.Group>
               </Col>
-              <Col>
+              <Col lg="6" className="mt-2">
                 <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Search Field :</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Search Field Value"
                     value={searchTerm}
-                    className="text-center"
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </Form.Group>
               </Col>
-              <Col>
+              <Col lg="6" className="mt-2">
                 <Form.Group controlId="formBasicEmail">
-                  <Form.Control
-                    type="text"
-                    placeholder="No Of Records"
+                  <Form.Label>No Of Records :</Form.Label>
+                  <Form.Select
                     value={pageSize}
-                    className="text-center"
+                    aria-label="Default select example"
                     onChange={(e) => setPageSize(e.target.value)}
-                  />
+                    data-testid="record-count-select"
+                  >
+                    <option value=""> No Of Records</option>
+                    <option value="6">5</option>
+                    <option value="11">10</option>
+                    <option value="26">25</option>
+                    <option value="51">50</option>
+                    <option value="101">100</option>
+                  </Form.Select>
                 </Form.Group>
               </Col>
-              <Col>
+              <Col lg="6" className="mt-2">
                 <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Order By :</Form.Label>
                   <Form.Select
                     aria-label="Default select example"
-                    className="text-center"
                     required
                     onChange={(e) => setOrderBy(e.target.value)}
+                    data-testid="order-by-select"
                   >
                     <option value="">Order By</option>
                     {tableColName.data?.map((val, index) => (
@@ -221,11 +290,12 @@ export default function GetSearchData() {
                   </Form.Select>
                 </Form.Group>
               </Col>
-              <Col lg="2">
+              <Col lg="6" className="mt-2">
                 <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Order by :</Form.Label>
                   <Form.Select
+                    value={order}
                     aria-label="Default select example"
-                    className="text-center"
                     onChange={(e) => setOrder(e.target.value)}
                   >
                     <option value="asc">ASC</option>
@@ -235,9 +305,10 @@ export default function GetSearchData() {
               </Col>
               <div className="col-md-12 mt-5 text-center table-responsive">
                 <Button
-                  variant="btn btn-dark btn-lg pl-5 pr-5 "
+                  variant="btn btn-primary btn-lg pl-5 pr-5 "
                   type="submit"
                   disabled={searchData.loading}
+                  data-testid="search-btn"
                 >
                   Search
                 </Button>
@@ -245,7 +316,6 @@ export default function GetSearchData() {
             </Row>
           </Form>
         </div>
-
         {searchData.loading ? (
           <Spinner></Spinner>
         ) : (
@@ -254,49 +324,112 @@ export default function GetSearchData() {
               {searchData.data !== undefined && searchData.data.length > 0 ? (
                 <>
                   <hr></hr>
-                  <h4 className="mt-5 mb-4">Table Details</h4>
-                  <Table bordered hover>
-                    <thead>
-                      <tr>
-                        <th>Sr.No</th>
-                        {tableHeader.map((val, index) => (
-                          <th key={index}>{val}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {searchData.data.map((val, index) => (
-                        <tr key={`row${index}`}>
-                          <td>{index + 1}</td>
-
-                          {tableHeader.map((h, i) => (
-                            <td key={i}>{val[h].toString()}</td>
+                  <h4 className=" text-center   mt-4 mb-3 ">
+                    Table Details: {tableName}
+                  </h4>
+                  <div className=" mb-3">
+                    <input
+                      type="search"
+                      className=" form-control col-3 "
+                      placeholder="search "
+                      value={searchValue}
+                      onChange={(e) => {
+                        setSearchValue(e.target.value);
+                        searchFilterValue(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <Table bordered hover>
+                      <thead>
+                        <tr>
+                          <th>Sr.No</th>
+                          {tableHeader.map((val, index) => (
+                            <th key={index}>{val}</th>
                           ))}
                         </tr>
-                      ))}
-                    </tbody>
-                  </Table>
+                      </thead>
+                      <tbody>
+                        {searchValue === "" &&
+                          // eslint-disable-next-line array-callback-return
+                          searchData.data.map((val, index) => {
+                            if (
+                              searchData &&
+                              searchData.data &&
+                              searchData?.data?.length <
+                                Number.parseInt(pageSize)
+                            ) {
+                              return (
+                                <tr key={`row${index}`}>
+                                  <td>{index + 1}</td>
+                                  {tableHeader.map((h, i) => (
+                                    <td key={i}>{val[h]?.toString()}</td>
+                                  ))}
+                                </tr>
+                              );
+                            } else if (
+                              searchData &&
+                              searchData.data &&
+                              index + 1 < searchData?.data?.length
+                            ) {
+                              return (
+                                <tr key={`row${index}`}>
+                                  <td>{index + 1}</td>
+                                  {tableHeader.map((h, i) => (
+                                    <td key={i}>{val[h]?.toString()}</td>
+                                  ))}
+                                </tr>
+                              );
+                            }
+                          })}
+                        {searchValue !== "" &&
+                          filterdata &&
+                          filterdata?.map((val, index) => (
+                            <tr key={`row${index}`}>
+                              <td>{index + 1}</td>
 
-                  <nav
-                    aria-label="Page navigation example "
-                    className="d-flex w-100 justify-content-center"
-                  >
-                    <ul className="pagination ">
-                      <li className="page-item">
-                        <a className="page-link" onClick={() => prevpage()}>
-                          Previous
-                        </a>
-                      </li>
-                      <li className="page-item ">
-                        <a className="page-link " onClick={() => nextpage()}>
-                          Next
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
+                              {tableHeader.map((h, i) => (
+                                <td key={i}>{val[h]?.toString()}</td>
+                              ))}
+                            </tr>
+                          ))}
+                      </tbody>
+                    </Table>
+                    <nav
+                      aria-label="Page navigation example "
+                      className="d-flex w-100 justify-content-center"
+                    >
+                      <ul className="pagination ">
+                        <li className="page-item">
+                          <button
+                            className={
+                              Number.parseInt(startRecord) === 0
+                                ? "page-item disable"
+                                : "page-link  "
+                            }
+                            disabled={Number.parseInt(startRecord) === 0}
+                            onClick={() => prevpage()}
+                          >
+                            Previous
+                          </button>
+                        </li>
+                        <li className="page-item ">
+                          <button
+                            className={
+                              checkDisable ? "page-item disable" : "page-link  "
+                            }
+                            disabled={checkDisable}
+                            onClick={() => nextpage()}
+                          >
+                            Next
+                          </button>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
                 </>
               ) : (
-                <h2> {msg && "No Data "}</h2>
+                <h2> {msg && ""}</h2>
               )}
             </div>
           </>

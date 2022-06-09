@@ -1,10 +1,5 @@
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  getAllByRole,
-} from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -43,13 +38,91 @@ describe("SAAS - SEARCH DATA Component", () => {
     expect(searchButtonElement).toBeInTheDocument();
   });
 
-  it("Check if table name populates on entering tenant id", async () => {
+  it("Check entire flow", async () => {
+    mockApi.onGet("/api/tenants").reply(200, {
+      data: [
+        {
+          id: 1,
+          tenantName: "Tenant1",
+          email: "tenant1@email.com",
+          description: "updated description",
+          databaseName: "tenant1-db",
+          databaseDescription: "tenant1 db",
+          createdDateTime: "2022/05/30 08:28:11",
+        },
+        {
+          id: 2,
+          tenantName: "Tenant2",
+          email: "tenant2@email.org",
+          description: "des",
+          databaseName: "tenant2-db",
+          databaseDescription: "des",
+          createdDateTime: "2022/06/02 10:56:19",
+        },
+      ],
+      count: 2,
+    });
+
     mockApi
       .onGet("http://localhost:8083/api/v1/manage/table/?tenantId=1")
       .reply(200, {
         statusCode: 200,
         message: "Successfully retrieved all tables",
         data: ["testTable"],
+      });
+
+    mockApi.onGet("manage/table/testTable?tenantId=1").reply(200, {
+      statusCode: 200,
+      message: "Table Information retrieved successfully",
+      data: {
+        tableName: "testTable",
+        columns: [
+          {
+            name: "id",
+            type: "string",
+            required: true,
+            partialSearch: false,
+            multiValue: false,
+            sortable: false,
+            filterable: true,
+            storable: true,
+          },
+          {
+            name: "name",
+            type: "string",
+            required: false,
+            partialSearch: false,
+            multiValue: false,
+            sortable: false,
+            filterable: false,
+            storable: false,
+          },
+          {
+            name: "username",
+            type: "strings",
+            required: true,
+            partialSearch: false,
+            multiValue: true,
+            sortable: true,
+            filterable: true,
+            storable: true,
+          },
+        ],
+      },
+    });
+
+    mockApi
+      .onGet(
+        "testTable?tenantId=1&queryField=id&searchTerm=*&startRecord=0&pageSize=6&orderBy=id&order=asc"
+      )
+      .reply(200, {
+        statusCode: 200,
+        message: "Records fetched successfully",
+        status: "OK",
+        results: {
+          numDocs: 1,
+          data: [{ name: ["karthik"], id: "1", username: ["karthik261099"] }],
+        },
       });
 
     render(
@@ -60,26 +133,81 @@ describe("SAAS - SEARCH DATA Component", () => {
       </BrowserRouter>
     );
 
-    const tenantIdField = await screen.getByPlaceholderText(/user/i);
-    expect(tenantIdField).toBeInTheDocument();
-    fireEvent.change(tenantIdField, { target: { value: "1" } });
+    // CHECK IF TENANT SELECT DROPDOWN EXISTS
+    const tenantDropdown = await waitFor(
+      () => screen.getByTestId("tenant-name-select"),
+      {
+        timeout: 3000,
+      }
+    );
+    expect(tenantDropdown).toBeInTheDocument();
 
-    // expect result
-    const data = await waitFor(
+    // SELECT ITEM FROM DROP DOWN
+    userEvent.selectOptions(screen.getByTestId("tenant-name-select"), [
+      "Tenant1",
+    ]);
+
+    // CHECK IF TABLE SELECT DROPDOWN EXISTS
+    const tableDropdown = await waitFor(
+      () => screen.getByTestId("table-name-select"),
+      {
+        timeout: 3000,
+      }
+    );
+    expect(tableDropdown).toBeInTheDocument();
+
+    // CHECK IF OPTION IN THE DROPDOWN IS FETCHED AND VISIBLE
+    const tableOption = await waitFor(
       () => screen.getByText("testTable", { exact: false }),
       {
         timeout: 3000,
       }
     );
-    expect(data).toBeInTheDocument();
+    expect(tableOption).toBeInTheDocument();
 
-    const getTablesSelectDropdown = screen.getByTestId("table-name-select");
+    // SELECT ITEM FROM DROP DOWN
+    userEvent.selectOptions(screen.getByTestId("table-name-select"), [
+      "testTable",
+    ]);
 
-    fireEvent.click(getTablesSelectDropdown);
-    const dropdownOptions = getAllByRole(getTablesSelectDropdown, "option");
-    fireEvent.click(dropdownOptions[1]);
+    //= =======================
 
-    const display = getTablesSelectDropdown.children[1];
-    expect(display).toHaveTextContent("testTable");
+    const queryFieldDropdown = await waitFor(
+      () => screen.getByTestId("query-field-select"),
+      {
+        timeout: 3000,
+      }
+    );
+    expect(queryFieldDropdown).toBeInTheDocument();
+
+    // CHECK IF OPTION IN THE TABLE IS FETCHED AND VISIBLE
+    const queryFieldOption = await waitFor(
+      () => screen.getAllByText("id", { exact: false })[0],
+      {
+        timeout: 3000,
+      }
+    );
+    expect(queryFieldOption).toBeInTheDocument();
+
+    userEvent.selectOptions(screen.getByTestId("query-field-select"), ["id"]);
+
+    userEvent.selectOptions(screen.getByTestId("record-count-select"), ["5"]);
+
+    userEvent.selectOptions(screen.getByTestId("order-by-select"), ["id"]);
+
+    const searchBtn = screen.getByTestId("search-btn");
+    expect(searchBtn).toBeInTheDocument();
+    userEvent.click(searchBtn);
+
+    // const usernameInTable = screen.getByText("karthik261099", {
+    //   exact: false,
+    // });
+    const usernameInTable = await waitFor(
+      () => screen.getByText("karthik261099", { exact: false }),
+      {
+        timeout: 3000,
+      }
+    );
+    expect(usernameInTable).toBeInTheDocument();
   });
 });
