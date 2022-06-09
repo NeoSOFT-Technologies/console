@@ -11,7 +11,7 @@ import Versions from "./versions/Versions";
 export default function Version() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  console.log("version", state.data.form);
+  // console.log("version", state.data.form);
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.checked === false) {
       const versionInfoList = {

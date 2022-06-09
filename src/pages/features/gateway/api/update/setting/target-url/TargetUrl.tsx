@@ -4,7 +4,7 @@ import { Accordion, Col, Form, Row } from "react-bootstrap";
 import {
   setFormData,
   setFormErrors,
-  regexForTagetUrl,
+  regexForTargetUrl,
 } from "../../../../../../../resources/gateway/api/api-constants";
 import { setForm } from "../../../../../../../store/features/gateway/api/update/slice";
 import {
@@ -23,7 +23,7 @@ export default function TargetUrl() {
         setFormErrors(
           {
             ...state.data.errors,
-            [name]: regexForTagetUrl.test(value)
+            [name]: regexForTargetUrl.test(value)
               ? ""
               : "Enter a Valid Target URL",
           },
