@@ -126,8 +126,6 @@ export default function GetSearchData() {
         setCheckDisable(true);
       }
     }
-
-    // if (tableHeader.length > 0) ToastAlert("Data Fetch sucessfuly ", "success");
   }, [searchData.data, searchData.error]);
 
   useEffect(() => {
@@ -143,7 +141,6 @@ export default function GetSearchData() {
     dispatch(getTenantDetails());
   }, []);
   useEffect(() => {
-    console.log(tableColName, tableName, tenantId);
     dispatch(getTableSchema({ tableName, tenantId }));
   }, [tableName]);
   useEffect(() => {
@@ -184,12 +181,10 @@ export default function GetSearchData() {
                     required
                     onChange={(e) => {
                       const resetData: any[] = [];
-                      console.log(e.target.value);
-                      // if (e.target.value !== "invalid") {
                       setTenantId(e.target.value);
-                      // }
                       dispatch(resetSearchData(resetData));
                       setTableName("");
+                      setSearchTerm("*");
                       setPageSize("");
                       setOrder("asc");
                     }}
@@ -211,7 +206,6 @@ export default function GetSearchData() {
                     aria-label="Default select example"
                     required
                     onChange={(e) => {
-                      console.log("Table Name Change", e.target.value);
                       setTableName(e.target.value);
                     }}
                     data-testid="table-name-select"
