@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getTableSchemaService } from "../../../../../services/saas/api/api";
 import { ITableColumnData, ITableSchema } from "../../../../../types/saas";
-import error from "../../../../../utils/error";
 interface IGetTableSchemaState {
   data?: ITableColumnData[];
   loading: boolean;
@@ -21,15 +20,14 @@ export const getTableSchema = createAsyncThunk(
         data.tableName,
         data.tenantId
       );
-      console.log(
-        `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
-      );
       return response.data.data.columns;
     } catch (error_: any) {
-      // console.log(error_, "||", error(error_));
-      const errorMessage = error(error_);
-      console.log(`Error : ` + JSON.stringify(error_));
-      throw new Error(errorMessage);
+      let errorMsg = "Undefined Error";
+      errorMsg =
+        error_.response.data !== undefined
+          ? error_.response.data.message
+          : error_.message;
+      throw new Error(errorMsg);
     }
   }
 );
@@ -43,18 +41,27 @@ const slice = createSlice({
       state.loading = false;
       state.error = undefined;
     },
-    setTableColumns: (state, action) => {
-      state.data?.splice(
-        action.payload.objIndex,
-        1,
-        action.payload.selectedColumnData
-      );
+    addOrEditColumn: (state, action) => {
+      if (
+        action.payload.selectedColHeading === "Add Column" &&
+        action.payload.objIndex < 0
+      ) {
+        state.data?.push(action.payload.selectedColumnData);
+      } else if (
+        action.payload.selectedColHeading === "Edit Column" &&
+        action.payload.objIndex > -1
+      ) {
+        state.data?.splice(
+          action.payload.objIndex,
+          1,
+          action.payload.selectedColumnData
+        );
+      }
     },
-    setTableColAfterDel: (state, action) => {
-      console.log("action.payload = " + JSON.stringify(action.payload));
-      state.data = [...action.payload.newColumnList];
-      state.loading = false;
-      state.error = undefined;
+    deleteColumn: (state, action) => {
+      state.data = state.data?.filter((obj) => {
+        return obj.name !== action.payload.selectedColumnData.name;
+      });
     },
   },
   extraReducers(builder): void {
@@ -69,14 +76,10 @@ const slice = createSlice({
     });
     builder.addCase(getTableSchema.rejected, (state, action: any) => {
       state.loading = false;
-      const errorMessage = action.error.message.split(" ");
-      state.error = errorMessage[errorMessage.length - 1];
-      if (state.error === "403" || state.error === "401") {
-        alert("Invalid Token");
-      }
+      state.error = action.error.message;
     });
   },
 });
-export const { setTableColNames, setTableColumns, setTableColAfterDel } =
+export const { setTableColNames, addOrEditColumn, deleteColumn } =
   slice.actions;
 export default slice.reducer;

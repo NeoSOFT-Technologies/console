@@ -19,9 +19,6 @@ export const getTenantDetails = createAsyncThunk(
     // async (data: ITableCreateData) => {
     try {
       const response = await getTenantListService();
-      //   console.log(
-      //     `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
-      //   );
       return response.data.data;
     } catch (error_: any) {
       let errorMsg = "Undefined Error";
@@ -29,9 +26,6 @@ export const getTenantDetails = createAsyncThunk(
         error_.response.data !== undefined
           ? error_.response.data.message
           : error_.message;
-      // console.log(error_, "||", error(error_));
-      // const errorMessage = error(error_);
-      // console.log(`Error : ` + JSON.stringify(error_));
       throw new Error(errorMsg);
     }
   }

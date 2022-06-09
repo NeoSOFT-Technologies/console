@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { searchDataWithQueryFieldService } from "../../../../../services/saas/api/api";
 import { ISearchDataWithQueryField } from "../../../../../types/saas";
-import error from "../../../../../utils/error";
 
 interface ISearchDataQueryFieldState {
   data?: any[];
@@ -19,12 +18,14 @@ export const searchDataWithQueryField = createAsyncThunk(
   async (data: ISearchDataWithQueryField) => {
     try {
       const response = await searchDataWithQueryFieldService(data);
-
       return response.data.results.data;
     } catch (error_: any) {
-      const errorMessage = error(error_);
-
-      throw new Error(errorMessage);
+      let errorMsg = "Undefined Error";
+      errorMsg =
+        error_.response.data !== undefined
+          ? error_.response.data.message
+          : error_.message;
+      throw new Error(errorMsg);
     }
   }
 );
@@ -56,14 +57,9 @@ const slice = createSlice({
     });
     builder.addCase(searchDataWithQueryField.rejected, (state, action: any) => {
       state.loading = false;
-      const errorMessage = action.error.message.split(" ");
-      state.error = errorMessage[errorMessage.length - 1];
-      if (state.error === "403" || state.error === "401") {
-        alert("Invalid Token");
-      }
+      state.error = action.error.message;
     });
   },
 });
-
 export default slice.reducer;
 export const { resetSearchDataWithQueryField, resetSearchData } = slice.actions;

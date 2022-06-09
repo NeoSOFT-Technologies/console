@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { updateTableSchemaService } from "../../../../../services/saas/api/api";
 import { IUpdateTable } from "../../../../../types/saas";
-import error from "../../../../../utils/error";
 
 interface IUpdateTableSchemaState {
   data?: string;
@@ -17,22 +16,20 @@ const initialState: IUpdateTableSchemaState = {
 export const updateTableSchema = createAsyncThunk(
   "updateSchemaTable",
   async (data: IUpdateTable) => {
-    // async (data: ITableCreateData) => {
     try {
       const response = await updateTableSchemaService(
         data.requestParams.tableName,
         data.requestParams.tenantId,
         data.requestData
       );
-      // console.log(
-      //   `[createAsyncThunk] Response Data : ` + JSON.stringify(response.data)
-      // );
       return response.data;
     } catch (error_: any) {
-      // console.log(error_, "||", error(error_));
-      const errorMessage = error(error_);
-      // console.log(`Error : ` + JSON.stringify(error_));
-      throw new Error(errorMessage);
+      let errorMsg = "Undefined Error";
+      errorMsg =
+        error_.response.data !== undefined
+          ? error_.response.data.message
+          : error_.message;
+      throw new Error(errorMsg);
     }
   }
 );
@@ -53,11 +50,7 @@ const slice = createSlice({
     });
     builder.addCase(updateTableSchema.rejected, (state, action: any) => {
       state.loading = false;
-      const errorMessage = action.error.message.split(" ");
-      state.error = errorMessage[errorMessage.length - 1];
-      if (state.error === "403" || state.error === "401") {
-        alert("Invalid Token");
-      }
+      state.error = action.error.message;
     });
   },
 });
