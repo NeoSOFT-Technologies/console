@@ -178,7 +178,7 @@ export default function GetSearchData() {
             <Row className="ml-3 mr-3">
               <Col lg="6">
                 <Form.Group controlId="formBasicEmail">
-                  <Form.Label>User :</Form.Label>
+                  <Form.Label>Tenant:</Form.Label>
                   <Form.Select
                     aria-label="Default select example"
                     required
@@ -235,6 +235,7 @@ export default function GetSearchData() {
                     data-testid="query-field-select"
                   >
                     <option value="">SearchField</option>
+
                     {tableColName.data?.map((val, index) => (
                       <option key={`option${index}`} value={val.name}>
                         {val.name}
@@ -429,7 +430,7 @@ export default function GetSearchData() {
                   </div>
                 </>
               ) : (
-                <h2> {msg && ""}</h2>
+                <h2> {msg && "No Data"}</h2>
               )}
             </div>
           </>
