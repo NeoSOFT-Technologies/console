@@ -35,7 +35,7 @@ describe("SAAS - RESTORE TABLE Component", () => {
 
   it("Check if fields autofilled using API on component load", async () => {
     mockApi
-      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=5")
+      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=6")
       .reply(200, {
         statusCode: 200,
         message: "Successfully Retrieved All Tables Under Deletion",
@@ -62,7 +62,7 @@ describe("SAAS - RESTORE TABLE Component", () => {
 
   it("Click Restore button", async () => {
     mockApi
-      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=5")
+      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=6")
       .reply(200, {
         statusCode: 200,
         message: "Successfully Retrieved All Tables Under Deletion",
@@ -103,7 +103,7 @@ describe("SAAS - RESTORE TABLE Component", () => {
 
   it("Click Cancel button", async () => {
     mockApi
-      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=5")
+      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=6")
       .reply(200, {
         statusCode: 200,
         message: "Successfully Retrieved All Tables Under Deletion",
