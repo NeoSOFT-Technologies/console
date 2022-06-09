@@ -64,6 +64,11 @@ export default function Version() {
 
   return (
     <div>
+      {state.data.form.EnableRoundRobin ? (
+        <h6>Note: Version doesn&apos;t works with Round-Robin LoadBalacing</h6>
+      ) : (
+        <></>
+      )}
       <Col md="12">
         <Form.Group className="ml-3 mb-3">
           <Form.Check
@@ -71,18 +76,12 @@ export default function Version() {
             id="IsVersioningDisabled"
             name="IsVersioningDisabled"
             label="Enable Versioning"
-            disabled={state.data.form.EnableRoundRobin}
+            // disabled={state.data.form.EnableRoundRobin}
             checked={!state.data.form?.IsVersioningDisabled}
             onChange={(e: any) => validateForm(e)}
           />
         </Form.Group>
       </Col>
-      {state.data.form.EnableRoundRobin &&
-      state.data.form?.IsVersioningDisabled ? (
-        <h6>Note: Version doesn&apos;t works with Round-Robin LoadBalacing</h6>
-      ) : (
-        <></>
-      )}
 
       {state.data.form?.IsVersioningDisabled ? (
         <></>
