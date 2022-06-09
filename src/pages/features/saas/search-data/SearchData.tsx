@@ -126,8 +126,6 @@ export default function GetSearchData() {
         setCheckDisable(true);
       }
     }
-
-    // if (tableHeader.length > 0) ToastAlert("Data Fetch sucessfuly ", "success");
   }, [searchData.data, searchData.error]);
 
   useEffect(() => {
@@ -143,7 +141,6 @@ export default function GetSearchData() {
     dispatch(getTenantDetails());
   }, []);
   useEffect(() => {
-    console.log(tableColName, tableName, tenantId);
     dispatch(getTableSchema({ tableName, tenantId }));
   }, [tableName]);
   useEffect(() => {
@@ -178,18 +175,16 @@ export default function GetSearchData() {
             <Row className="ml-3 mr-3">
               <Col lg="6">
                 <Form.Group controlId="formBasicEmail">
-                  <Form.Label>User :</Form.Label>
+                  <Form.Label>Tenant:</Form.Label>
                   <Form.Select
                     aria-label="Default select example"
                     required
                     onChange={(e) => {
                       const resetData: any[] = [];
-                      console.log(e.target.value);
-                      // if (e.target.value !== "invalid") {
                       setTenantId(e.target.value);
-                      // }
                       dispatch(resetSearchData(resetData));
                       setTableName("");
+                      setSearchTerm("*");
                       setPageSize("");
                       setOrder("asc");
                     }}
@@ -211,7 +206,6 @@ export default function GetSearchData() {
                     aria-label="Default select example"
                     required
                     onChange={(e) => {
-                      console.log("Table Name Change", e.target.value);
                       setTableName(e.target.value);
                     }}
                     data-testid="table-name-select"
@@ -235,6 +229,7 @@ export default function GetSearchData() {
                     data-testid="query-field-select"
                   >
                     <option value="">SearchField</option>
+
                     {tableColName.data?.map((val, index) => (
                       <option key={`option${index}`} value={val.name}>
                         {val.name}
@@ -429,7 +424,7 @@ export default function GetSearchData() {
                   </div>
                 </>
               ) : (
-                <h2> {msg && ""}</h2>
+                <h2> {msg && "No Data"}</h2>
               )}
             </div>
           </>
