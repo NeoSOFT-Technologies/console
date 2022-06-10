@@ -136,29 +136,5 @@ describe("SAAS - INSERT DATA Component", () => {
       }
     );
     expect(successPopUpBottomRight).toBeInTheDocument();
-
-    // const dropdownOptions = getAllByRole(tenantDropdown, "option");
-    // fireEvent.click(dropdownOptions[1]);
-
-    // const tenant1Dropdown = await waitFor(
-    //   () => screen.getByText("Tenant1", { exact: false }),
-    //   {
-    //     timeout: 3000,
-    //   }
-    // );
-    // expect(tenant1Dropdown).toBeInTheDocument();
-
-    // userEvent.click(tenant1Dropdown);
-
-    // fireEvent.click(screen.getByText("Tenant1"));
-
-    // const testTableDropdown = await waitFor(
-    //   () => screen.getByText("testTable", { exact: false }),
-    //   {
-    //     timeout: 3000,
-    //   }
-    // );
-    // expect(testTableDropdown).toBeInTheDocument();
-    // userEvent.click(testTableDropdown);
   });
 });
