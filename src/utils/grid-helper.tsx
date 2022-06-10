@@ -7,7 +7,6 @@ export function checkResponse(data: any) {
   } else if (checkData.Data.Keys) {
     return checkData.Data.Keys;
   } else if (checkData.Data.Policies) {
-    console.log(checkData.Data.Policies);
     return checkData.Data.Policies;
   } else {
     return checkData.data;
@@ -23,7 +22,6 @@ export function checkCount(data: any) {
   }
 }
 export const checkFormat = (headings: any, _data: any) => {
-  console.log(_data);
   let listData: any[] = [];
   for (const column of headings) {
     if (column.format) {
@@ -36,6 +34,23 @@ export const checkFormat = (headings: any, _data: any) => {
   }
   return _data;
 };
+
+export function checkPaginationUrl(prev: string, page: number, limit: number) {
+  let paginationURL = "";
+  const currentURL = window.location.pathname.split("/");
+  switch (currentURL[1]) {
+    case "tenant":
+      paginationURL = `${prev}page=${page + 1}`;
+      break;
+    case "gateway":
+      paginationURL = `${prev}pageNum=${page + 1}&pageSize=${limit}`;
+      break;
+    default:
+      break;
+  }
+  return paginationURL;
+}
+
 export const handleNavigation = (cell: any, row: any, heading: any) => {
   return h(
     "text",

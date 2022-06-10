@@ -5,7 +5,9 @@ import {
   AuthGuard,
   access,
 } from "../../../../../components/gateway/auth-guard";
-import GridRenderList from "../../../../../components/list/GridRenderList";
+import RenderList, {
+  refreshGrid,
+} from "../../../../../components/list/RenderList";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 
 import { emptyState } from "../../../../../store/features/gateway/policy/create/payload";
@@ -50,9 +52,12 @@ export default function PolicyList() {
     setShow(false);
     const result = await dispatch(deletePolicy(Id));
 
-    await (result.meta.requestStatus === "rejected"
-      ? ToastAlert(result.payload.message, "error")
-      : ToastAlert("Policy Deleted Successfully", "success"));
+    if (result.meta.requestStatus === "rejected") {
+      ToastAlert(result.payload.message, "error");
+    } else {
+      ToastAlert("Policy Deleted Successfully", "success");
+      refreshGrid();
+    }
   };
   const handleCancel = () => setShow(false);
 
@@ -153,8 +158,7 @@ export default function PolicyList() {
             </div>
           </div>
           <div className="card-body pt-4">
-            <GridRenderList
-              paginationUrl={true}
+            <RenderList
               headings={headings}
               url={`Policy?`}
               actionsList={actions}

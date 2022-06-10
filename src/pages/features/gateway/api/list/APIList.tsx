@@ -5,7 +5,9 @@ import {
   AuthGuard,
   access,
 } from "../../../../../components/gateway/auth-guard";
-import GridRenderList from "../../../../../components/list/GridRenderList";
+import RenderList, {
+  refreshGrid,
+} from "../../../../../components/list/RenderList";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { deleteApi } from "../../../../../store/features/gateway/api/delete/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
@@ -41,7 +43,8 @@ export default function APIList() {
     if (result.meta.requestStatus === "rejected") {
       ToastAlert(result.payload.message, "error");
     } else {
-      await ToastAlert("Api Deleted Successfully", "success");
+      ToastAlert("Api Deleted Successfully", "success");
+      refreshGrid();
     }
   };
   const handleCancel = () => setShow(false);
@@ -148,10 +151,8 @@ export default function APIList() {
           </div>
           <div className="card-body pt-4">
             <br />
-            <GridRenderList
-              paginationUrl={true}
+            <RenderList
               headings={headings}
-              currentPage="gateway"
               url={`ApplicationGateway?`}
               actionsList={actions}
               searchBy={"apiName"}

@@ -5,7 +5,9 @@ import {
   AuthGuard,
   access,
 } from "../../../../../components/gateway/auth-guard";
-import GridRenderList from "../../../../../components/list/GridRenderList";
+import RenderList, {
+  refreshGrid,
+} from "../../../../../components/list/RenderList";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { emptyState } from "../../../../../store/features/gateway/key/create/payload";
 import {
@@ -44,9 +46,12 @@ export default function KeyList() {
     setShow(false);
     const result = await dispatch(deleteKey(id));
 
-    await (result.meta.requestStatus === "rejected"
-      ? ToastAlert(result.payload.message, "error")
-      : ToastAlert("Key Deleted Successfully", "success"));
+    if (result.meta.requestStatus === "rejected") {
+      ToastAlert(result.payload.message, "error");
+    } else {
+      ToastAlert("Key Deleted Successfully", "success");
+      refreshGrid();
+    }
   };
   const handleCancel = () => setShow(false);
 
@@ -147,8 +152,7 @@ export default function KeyList() {
             </div>
           </div>
           <div className="card-body pt-4">
-            <GridRenderList
-              paginationUrl={true}
+            <RenderList
               headings={headings}
               url={`Key/GetAllKeys?`}
               actionsList={actions}
