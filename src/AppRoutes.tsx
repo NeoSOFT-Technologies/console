@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AdminGuard, TenantGuard, UserGuard } from "./components/auth-gaurd";
 import Spinner from "./components/loader/Loader";
+import GetTables from "./pages/features/saas/get-tables/GetTables";
 const RoleAndPermissions = lazy(
   () =>
     import(
@@ -221,7 +222,15 @@ function AppRoutes() {
         </Route>
         <Route path="/saas">
           <Route
-            path="insertData"
+            path="get-tables"
+            element={
+              <AdminGuard>
+                <GetTables />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="insert-data"
             element={
               <AdminGuard>
                 <InsertData />
@@ -230,7 +239,7 @@ function AppRoutes() {
           />
 
           <Route
-            path="searchData"
+            path="search-data"
             element={
               <AdminGuard>
                 <SearchData />
@@ -238,7 +247,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="manageTable"
+            path="manage-table"
             element={
               <AdminGuard>
                 <ManageTable />
@@ -247,7 +256,7 @@ function AppRoutes() {
           />
 
           <Route
-            path="addTable"
+            path="add-table"
             element={
               <AdminGuard>
                 <AddTable />
@@ -255,7 +264,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="restoreTable"
+            path="restore-table"
             element={
               <AdminGuard>
                 <RestoreTable />
@@ -263,7 +272,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="editTables"
+            path="edit-table"
             element={
               <AdminGuard>
                 <EditTables />

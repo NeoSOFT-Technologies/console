@@ -3,9 +3,9 @@ import userEvent from "@testing-library/user-event";
 import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import mockApi from "../../../../resources/tenant/testconfig";
 import store from "../../../../store/index";
 import GetTables from "./CreateTable";
-import mockApi from "../../../../resources/tenant/testconfig";
 
 describe("SAAS - ADD TABLE Component", () => {
   it("Check if components rendered", () => {
@@ -175,7 +175,7 @@ describe("SAAS - ADD TABLE Component", () => {
     expect(addColumnBtnInPopup).toBeInTheDocument();
     userEvent.click(addColumnBtnInPopup);
 
-    //================================================
+    //= ===============================================
     const capacityPlanInfoBtn = await waitFor(
       () => screen.getByTestId("capacity-plan-info-btn"),
       {
@@ -193,7 +193,7 @@ describe("SAAS - ADD TABLE Component", () => {
     );
     expect(capacityPlanInfoCloseBtn).toBeInTheDocument();
     userEvent.click(capacityPlanInfoCloseBtn);
-    //================================================
+    //= ===============================================
 
     const saveTableBtn = await waitFor(
       () => screen.getByTestId("save-table-button"),
