@@ -24,10 +24,5 @@ const saasRoutes = [
     title: "Restore Table",
     icon: "bi bi-list-ul",
   },
-  {
-    path: "/saas/create-table",
-    title: "Create Table",
-    icon: "bi bi-list-ul",
-  },
 ];
 export default saasRoutes;
