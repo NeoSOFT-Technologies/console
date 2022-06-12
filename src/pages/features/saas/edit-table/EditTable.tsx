@@ -254,6 +254,7 @@ export default function EditTable() {
                           <td className="text-danger">
                             <i
                               className="bi bi-trash-fill"
+                              data-testid="delete-col-btn"
                               onClick={() => deleteModalShow(val)}
                             ></i>
                           </td>
@@ -280,6 +281,7 @@ export default function EditTable() {
               variant="btn btn-primary"
               data-toggle="modal"
               data-target="#exampleModalCenter"
+              data-testid="add-col-btn"
               disabled={updateTableSchemaState.loading}
               onClick={() => handleShow(selectedColumnData, "Add Column")}
             >
@@ -293,6 +295,7 @@ export default function EditTable() {
               type="submit"
               className=" pl-4 pr-4"
               disabled={updateTableSchemaState.loading}
+              data-testid="send-update-request-btn"
             >
               Save
             </Button>
@@ -314,6 +317,7 @@ export default function EditTable() {
             className="close"
             onClick={handleClose}
             aria-label="Close"
+            data-testid="close-modal-btn"
           >
             <span aria-hidden="true">&times;</span>
           </button>
@@ -336,6 +340,7 @@ export default function EditTable() {
                     value={selectedColumnData.name}
                     aria-label="Name"
                     aria-describedby="basic-addon"
+                    data-testid="add-col-name-input"
                     readOnly={readonlyState}
                     onChange={(e) => {
                       setSelectedColumnData({
@@ -362,9 +367,10 @@ export default function EditTable() {
                     type="text"
                     className="form-control text-center read-only"
                     value={selectedColumnData.type}
-                    placeholder="Title"
+                    placeholder="Type"
                     aria-label="Title"
                     aria-describedby="basic-addon"
+                    data-testid="add-col-type-input"
                     readOnly={readonlyState}
                     onChange={(e) => {
                       setSelectedColumnData({
@@ -581,6 +587,7 @@ export default function EditTable() {
           <Button
             className="text-center"
             variant="success"
+            data-testid="save-col-change-btn"
             onClick={processColumn}
           >
             {selectedColAction}

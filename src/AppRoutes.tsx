@@ -62,9 +62,6 @@ const CreateKey = lazy(
 const CreatePolicy = lazy(
   () => import("./pages/features/gateway/policy/create/CreatePolicy")
 );
-const GetTables = lazy(
-  () => import("./pages/features/saas/get-tables/GetTables")
-);
 const KeyList = lazy(() => import("./pages/features/gateway/key/list/KeyList"));
 const Dashboard = lazy(() => import("./pages/features/gateway/Dashboard"));
 const UpdateApi = lazy(
@@ -89,9 +86,6 @@ const AddTable = lazy(
 
 const EditTables = lazy(
   () => import("./pages/features/saas/edit-table/EditTable")
-);
-const CreateTables = lazy(
-  () => import("./pages/features/saas/add-table/CreateTable")
 );
 
 function AppRoutes() {
@@ -281,14 +275,6 @@ function AppRoutes() {
             element={
               <AdminGuard>
                 <EditTables />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="create-table"
-            element={
-              <AdminGuard>
-                <CreateTables />
               </AdminGuard>
             }
           />

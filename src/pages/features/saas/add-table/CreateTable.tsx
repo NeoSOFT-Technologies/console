@@ -138,6 +138,7 @@ export default function CreateTables() {
                     className="text-center"
                     value={user}
                     onChange={(e) => setUser(e.target.value)}
+                    data-testid="tenant-id-input-box"
                   />
                 </Form.Group>
               </Col>
@@ -159,6 +160,7 @@ export default function CreateTables() {
                     className="text-center"
                     value={tableName}
                     onChange={(e) => setTableName(e.target.value)}
+                    data-testid="table-name-input-box"
                   />
                 </Form.Group>
               </Col>
@@ -178,6 +180,7 @@ export default function CreateTables() {
                     <Dropdown.Toggle
                       id="dropdown-basic"
                       className="w-100 text-dark bg-white"
+                      data-testid="capacity-plan-dropdown"
                     >
                       {sku.toString()}
                     </Dropdown.Toggle>
@@ -221,7 +224,7 @@ export default function CreateTables() {
                           setSku("p");
                         }}
                       >
-                        p
+                        P
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
@@ -231,6 +234,7 @@ export default function CreateTables() {
                 <Form onClick={getCapacityData}>
                   <i
                     className="bi bi-info-circle-fill"
+                    data-testid="capacity-plan-info-btn"
                     onClick={handleShowModalTwo}
                   ></i>
                   <Modal
@@ -354,6 +358,7 @@ export default function CreateTables() {
                       <Button
                         variant="danger"
                         onClick={handleShowModalTwoclose}
+                        data-testid="capacity-plan-info-close-btn"
                       >
                         Close
                       </Button>
@@ -439,6 +444,7 @@ export default function CreateTables() {
               data-toggle="modal"
               data-target="#exampleModalCenter"
               onClick={handleShow}
+              data-testid="add-column-button"
             >
               Add Column
             </Button>
@@ -449,6 +455,7 @@ export default function CreateTables() {
               variant="btn  btn-success"
               type="submit"
               className=" pl-4 pr-4"
+              data-testid="save-table-button"
             >
               Save
             </Button>
@@ -486,6 +493,7 @@ export default function CreateTables() {
                       aria-describedby="basic-addon"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
+                      data-testid="column-name-popup"
                     />
                   </div>
                 </Col>
@@ -507,6 +515,7 @@ export default function CreateTables() {
                       aria-describedby="basic-addon"
                       value={type}
                       onChange={(e) => setType(e.target.value)}
+                      data-testid="column-type-popup"
                     />
                   </div>
                 </Col>
@@ -730,7 +739,11 @@ export default function CreateTables() {
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="success" type="submit">
+            <Button
+              variant="success"
+              type="submit"
+              data-testid="add-column-btn-popup"
+            >
               Add Column
             </Button>
           </Modal.Footer>

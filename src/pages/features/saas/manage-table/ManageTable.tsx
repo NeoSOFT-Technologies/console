@@ -48,7 +48,7 @@ export default function ManageTables() {
   useEffect(() => {
     const pageParameters: IPagination = {
       pageNumber: currentPage.toString(),
-      pageSize: "5",
+      pageSize: "6",
     };
     dispatch(getAllTables(pageParameters));
     return () => {
@@ -92,24 +92,20 @@ export default function ManageTables() {
 
     const pageParameters: IPagination = {
       pageNumber: (currentPage - 1).toString(),
-      pageSize: "5",
+      pageSize: "6",
     };
 
     dispatch(getAllTables(pageParameters));
   };
 
   const nextpage = (currentPage1: number) => {
-    if (currentPage1 <= 10) {
-      ++currentPage1;
+    currentPage1++;
 
-      setCurrentPage(currentPage1);
-    } else {
-      setCurrentPage(currentPage1);
-    }
+    setCurrentPage(currentPage1);
 
     const pageParameters: IPagination = {
       pageNumber: (currentPage + 1).toString(),
-      pageSize: "5",
+      pageSize: "6",
     };
 
     dispatch(getAllTables(pageParameters));
@@ -135,8 +131,12 @@ export default function ManageTables() {
                 </thead>
                 <tbody>
                   {allTableData.data?.map((val, index) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
+                    <tr key={index + currentPage * (currentPage + 1) + 1}>
+                      {currentPage !== 1 ? (
+                        <td>{index + currentPage * (currentPage + 1) + 1}</td>
+                      ) : (
+                        <td>{index + currentPage}</td>
+                      )}
                       <td>{val.tenantId}</td>
                       <td>{val.tableName}</td>
                       <td
@@ -178,6 +178,7 @@ export default function ManageTables() {
                       </a>
                     </li>
                   )}
+
                   <li className="page-item active">
                     <a className="page-link">{currentPage}</a>
                   </li>

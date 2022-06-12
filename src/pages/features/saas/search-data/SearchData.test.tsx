@@ -38,7 +38,7 @@ describe("SAAS - SEARCH DATA Component", () => {
     expect(searchButtonElement).toBeInTheDocument();
   });
 
-  it("Check entire flow", async () => {
+  it("Check entire flow of Searching", async () => {
     mockApi.onGet("/api/tenants").reply(200, {
       data: [
         {
@@ -120,8 +120,35 @@ describe("SAAS - SEARCH DATA Component", () => {
         message: "Records fetched successfully",
         status: "OK",
         results: {
-          numDocs: 1,
-          data: [{ name: ["karthik"], id: "1", username: ["karthik261099"] }],
+          numDocs: 10,
+          data: [
+            { name: ["karthik"], id: "1", username: ["karthik261099"] },
+            { name: ["name"], id: "2", username: ["username_2"] },
+            { name: ["name"], id: "3", username: ["username_3"] },
+            { name: ["name"], id: "4", username: ["username_4"] },
+            { name: ["name"], id: "5", username: ["username_5"] },
+            { name: ["name"], id: "6", username: ["username_6"] },
+          ],
+        },
+      });
+
+    mockApi
+      .onGet(
+        "testTable?tenantId=1&queryField=id&searchTerm=*&startRecord=5&pageSize=6&orderBy=id&order=asc"
+      )
+      .reply(200, {
+        statusCode: 200,
+        message: "Records fetched successfully",
+        status: "OK",
+        results: {
+          numDocs: 10,
+          data: [
+            { name: ["karthik"], id: "6", username: ["karthik-pillai"] },
+            { name: ["fname"], id: "7", username: ["user-name-2"] },
+            { name: ["fname"], id: "8", username: ["user-name-3"] },
+            { name: ["fname"], id: "9", username: ["user-name-4"] },
+            { name: ["fname"], id: "10", username: ["user-name-5"] },
+          ],
         },
       });
 
@@ -137,7 +164,7 @@ describe("SAAS - SEARCH DATA Component", () => {
     const tenantDropdown = await waitFor(
       () => screen.getByTestId("tenant-name-select"),
       {
-        timeout: 3000,
+        timeout: 1000,
       }
     );
     expect(tenantDropdown).toBeInTheDocument();
@@ -151,7 +178,7 @@ describe("SAAS - SEARCH DATA Component", () => {
     const tableDropdown = await waitFor(
       () => screen.getByTestId("table-name-select"),
       {
-        timeout: 3000,
+        timeout: 1000,
       }
     );
     expect(tableDropdown).toBeInTheDocument();
@@ -175,7 +202,7 @@ describe("SAAS - SEARCH DATA Component", () => {
     const queryFieldDropdown = await waitFor(
       () => screen.getByTestId("query-field-select"),
       {
-        timeout: 3000,
+        timeout: 1000,
       }
     );
     expect(queryFieldDropdown).toBeInTheDocument();
@@ -199,9 +226,6 @@ describe("SAAS - SEARCH DATA Component", () => {
     expect(searchBtn).toBeInTheDocument();
     userEvent.click(searchBtn);
 
-    // const usernameInTable = screen.getByText("karthik261099", {
-    //   exact: false,
-    // });
     const usernameInTable = await waitFor(
       () => screen.getByText("karthik261099", { exact: false }),
       {
@@ -209,5 +233,38 @@ describe("SAAS - SEARCH DATA Component", () => {
       }
     );
     expect(usernameInTable).toBeInTheDocument();
+
+    const nextBtn = await waitFor(
+      () => screen.getByText("Next", { exact: false }),
+      {
+        timeout: 1000,
+      }
+    );
+    expect(nextBtn).toBeInTheDocument();
+    userEvent.click(nextBtn);
+
+    const usernameInTable2 = await waitFor(
+      () => screen.getByText("karthik-pillai", { exact: false }),
+      {
+        timeout: 3000,
+      }
+    );
+    expect(usernameInTable2).toBeInTheDocument();
+
+    const previousBtn = await waitFor(
+      () => screen.getByText("Previous", { exact: false }),
+      {
+        timeout: 1000,
+      }
+    );
+    userEvent.click(previousBtn);
+    expect(previousBtn).toBeInTheDocument();
+
+    // const usernameInTable =
+    expect(
+      await waitFor(() => screen.getByText("karthik261099", { exact: false }), {
+        timeout: 3000,
+      })
+    ).toBeInTheDocument();
   });
 });
