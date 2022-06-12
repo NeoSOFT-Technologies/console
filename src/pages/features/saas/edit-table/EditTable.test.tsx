@@ -93,7 +93,7 @@ describe("SAAS - EDIT TABLE Component", () => {
     });
     expect(testTableInputText).toBeInTheDocument();
 
-    //================================================================
+    //= ===============================================================
     const editColBtn = await waitFor(() => screen.getByTestId("edit-col-btn"), {
       timeout: 3000,
     });
@@ -132,9 +132,9 @@ describe("SAAS - EDIT TABLE Component", () => {
     );
     expect(closeModalBtn).toBeInTheDocument();
     userEvent.click(closeModalBtn);
-    //================================================================
+    //= ===============================================================
 
-    //================================================================
+    //= ===============================================================
     const deleteColBtn = await waitFor(
       () => screen.getByTestId("delete-col-btn"),
       {
@@ -163,7 +163,7 @@ describe("SAAS - EDIT TABLE Component", () => {
     );
     expect(popupYesDeleteForDelete).toBeInTheDocument();
     userEvent.click(popupYesDeleteForDelete);
-    //================================================================
+    //= ===============================================================
 
     const saveChangesBtn = await waitFor(
       () => screen.getByText("Save Changes"),
@@ -174,7 +174,7 @@ describe("SAAS - EDIT TABLE Component", () => {
     expect(saveChangesBtn).toBeInTheDocument();
     userEvent.click(saveChangesBtn);
 
-    //================================================================
+    //= ===============================================================
     const addColBtn = await waitFor(() => screen.getByTestId("add-col-btn"), {
       timeout: 100,
     });
@@ -216,7 +216,7 @@ describe("SAAS - EDIT TABLE Component", () => {
       target: { value: "string" },
     });
     userEvent.click(addColSubmitBtn);
-    //================================================================
+    //= ===============================================================
 
     const sendUpdateRequestBtn = await waitFor(
       () => screen.getByTestId("send-update-request-btn"),
