@@ -235,7 +235,7 @@ export default function ManageTables() {
       </div>
 
       <Button
-        onClick={() => navigate("/saas/addTable")}
+        onClick={() => navigate("/saas/add-table")}
         className="m-4 btn-success"
       >
         Add New
@@ -286,7 +286,7 @@ export default function ManageTables() {
           <Button
             variant="primary"
             onClick={() =>
-              navigate("/saas/editTables", {
+              navigate("/saas/edit-table", {
                 state: { tableName: table, tenantId },
               })
             }

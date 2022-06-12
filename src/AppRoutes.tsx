@@ -227,7 +227,7 @@ function AppRoutes() {
         </Route>
         <Route path="/saas">
           <Route
-            path="getTables"
+            path="get-tables"
             element={
               <AdminGuard>
                 <GetTables />
@@ -235,7 +235,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="insertData"
+            path="insert-data"
             element={
               <AdminGuard>
                 <InsertData />
@@ -244,7 +244,7 @@ function AppRoutes() {
           />
 
           <Route
-            path="searchData"
+            path="search-data"
             element={
               <AdminGuard>
                 <SearchData />
@@ -252,7 +252,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="manageTable"
+            path="manage-table"
             element={
               <AdminGuard>
                 <ManageTable />
@@ -261,7 +261,7 @@ function AppRoutes() {
           />
 
           <Route
-            path="addTable"
+            path="add-table"
             element={
               <AdminGuard>
                 <AddTable />
@@ -269,7 +269,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="restoreTable"
+            path="restore-table"
             element={
               <AdminGuard>
                 <RestoreTable />
@@ -277,7 +277,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="editTables"
+            path="edit-table"
             element={
               <AdminGuard>
                 <EditTables />
@@ -285,7 +285,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="createTables"
+            path="create-table"
             element={
               <AdminGuard>
                 <CreateTables />

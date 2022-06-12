@@ -1,31 +1,31 @@
 const saasRoutes = [
   // {
-  //   path: "/saas/getTables",
+  //   path: "/saas/get-tables",
   //   title: "Get Tables",
   //   icon: "bi bi-list-ul",
   // },
   {
-    path: "/saas/insertData",
+    path: "/saas/insert-data",
     title: "Insert Data",
     icon: "bi bi-list-ul",
   },
   {
-    path: "/saas/searchData",
+    path: "/saas/search-data",
     title: "Search Data",
     icon: "bi bi-list-ul",
   },
   {
-    path: "/saas/manageTable",
+    path: "/saas/manage-table",
     title: "Manage Table",
     icon: "bi bi-list-ul",
   },
   {
-    path: "/saas/restoreTable",
+    path: "/saas/restore-table",
     title: "Restore Table",
     icon: "bi bi-list-ul",
   },
   {
-    path: "/saas/createTables",
+    path: "/saas/create-table",
     title: "Create Table",
     icon: "bi bi-list-ul",
   },
