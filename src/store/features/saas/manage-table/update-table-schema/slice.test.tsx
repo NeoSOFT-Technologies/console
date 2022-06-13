@@ -27,7 +27,6 @@ describe("SAAS - UPDATE Table Slice", () => {
       })
     );
 
-    // console.log(result.type);
     expect(result.type).toBe("updateSchemaTable/fulfilled");
   });
 
@@ -55,7 +54,6 @@ describe("SAAS - UPDATE Table Slice", () => {
       })
     );
 
-    // console.log(result.type);
     expect(result.type).toBe("updateSchemaTable/rejected");
   });
 });

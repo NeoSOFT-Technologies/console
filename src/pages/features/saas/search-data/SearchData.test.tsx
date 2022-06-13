@@ -7,7 +7,7 @@ import mockApi from "../../../../resources/tenant/testconfig";
 import store from "../../../../store/index";
 import SearchData from "./SearchData";
 
-describe("SAAS - SEARCH DATA Component", () => {
+describe("SAAS - SEARCH DATA Component 1", () => {
   it("Check if H1 rendered", () => {
     render(
       <BrowserRouter>
@@ -37,7 +37,9 @@ describe("SAAS - SEARCH DATA Component", () => {
     });
     expect(searchButtonElement).toBeInTheDocument();
   });
+});
 
+describe("SAAS - SEARCH DATA Component 2", () => {
   it("Check entire flow of Searching", async () => {
     mockApi.onGet("/api/tenants").reply(200, {
       data: [

@@ -21,7 +21,6 @@ describe("SAAS - SEARCH Tables With Query Slice", () => {
       })
     );
 
-    // console.log(result.type);
     expect(result.type).toBe("searchDataWithQuery/fulfilled");
   });
 
@@ -42,7 +41,6 @@ describe("SAAS - SEARCH Tables With Query Slice", () => {
       })
     );
 
-    // console.log(result.type);
     expect(result.type).toBe("searchDataWithQuery/rejected");
   });
 });

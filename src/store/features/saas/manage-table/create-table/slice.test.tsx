@@ -28,7 +28,6 @@ describe("SAAS - CREATE Table Slice", () => {
       })
     );
 
-    // console.log(result.type);
     expect(result.type).toBe("createTable/fulfilled");
   });
 
@@ -57,7 +56,6 @@ describe("SAAS - CREATE Table Slice", () => {
       })
     );
 
-    // console.log(result.type);
     expect(result.type).toBe("createTable/rejected");
   });
 });

@@ -44,7 +44,6 @@ describe("SAAS - SEARCH Tables With Query Field Slice", () => {
       })
     );
 
-    // console.log(result.type);
     expect(result.type).toBe("searchDataWithQueryField/rejected");
   });
 });
