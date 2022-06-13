@@ -50,6 +50,7 @@ export default function KeyList() {
       ToastAlert(result.payload.message, "error");
     } else {
       ToastAlert("Key Deleted Successfully", "success");
+      // This will be used for reloading the Grid after delete operation
       refreshGrid();
     }
   };

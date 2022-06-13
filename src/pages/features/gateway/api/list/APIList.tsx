@@ -44,6 +44,7 @@ export default function APIList() {
       ToastAlert(result.payload.message, "error");
     } else {
       ToastAlert("Api Deleted Successfully", "success");
+      // This will be used for reloading the Grid after delete operation
       refreshGrid();
     }
   };

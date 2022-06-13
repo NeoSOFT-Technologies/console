@@ -56,6 +56,7 @@ export default function PolicyList() {
       ToastAlert(result.payload.message, "error");
     } else {
       ToastAlert("Policy Deleted Successfully", "success");
+      // This will be used for reloading the Grid after delete operation
       refreshGrid();
     }
   };

@@ -59,12 +59,13 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     };
   });
 
-  // This will be used by Grid for reloading the list
+  // This will be used by Grid for reloading the Grid list
   const _refreshGrid = () => {
     setGridReload(true);
   };
   refreshGrid = _refreshGrid;
 
+  // This will be used when you want to add single button in the list
   if (props.actions !== undefined) {
     id += 1;
     columns.push({
@@ -90,6 +91,8 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
       },
     });
   }
+
+  // This will be used when you want to add multiple action buttons in the list
   if (props.actionsList !== undefined && props.actionsList.length > 0) {
     columns.push({
       id,
@@ -124,14 +127,14 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
       setCount(totalCount);
       _data = checkFormat(headings, _data);
 
-      return { data: _data, total: totalCount }; // this total is requied fo pagination
+      return { data: _data, total: totalCount }; // this total is required for pagination
     },
   };
 
   const paginationConfigs = {
     enabled: true,
     limit: 2,
-    page: 0,
+    page: 0, // used to set default selected page
     server: {
       url: (prev: string, page: number) =>
         checkPaginationUrl(prev, page, paginationConfigs.limit),
@@ -161,13 +164,15 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
         className={classNames}
       />
     );
+    // this will be used to set state value as true for indicating our Grid is ready
     setGridReady(true);
   }, []);
 
+  // this will be used to call the reload when you request a Grid reload
   useEffect(() => {
     if (gridReload) {
-      const pageNum = setGridPage(paginationConfigs.limit, _count)!;
-      paginationConfigs.page = pageNum;
+      // this will be used for overwriting the pagination configuration settings
+      setGridPage(paginationConfigs, _count);
       grid = (
         <Grid
           columns={columns}

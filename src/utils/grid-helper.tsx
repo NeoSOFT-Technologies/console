@@ -1,45 +1,38 @@
 import { h } from "gridjs";
 
-export function setGridPage(pageLimit: number, _count: number) {
+// This will be used for overwriting pagination configuration for handling current selected page
+export function setGridPage(paginationConfigs: any, _totalCount: number) {
   const selectedPage = document.querySelector(".gridjs-currentPage")?.innerHTML;
 
-  const currentPage: number = +selectedPage!;
-  const limit = pageLimit;
-  const totalCount = _count;
+  let currentPage: number = +selectedPage!;
+  currentPage = currentPage - 1;
+  const limit = paginationConfigs.limit;
+  const totalCount = _totalCount;
   const totalPages = Math.ceil(totalCount / limit) - 1;
   const startPage = 0;
-  let pageNum = 0;
   const lastPage = totalPages;
   const oneRecord = totalCount % limit;
 
   if (totalCount > limit) {
-    // 4> 2
-    if (currentPage !== startPage && currentPage - 1 !== lastPage) {
-      //  if more then zero records  & not last page & not 1st page
-      pageNum = currentPage - 1;
-      return pageNum;
-    } else if (currentPage - 1 === lastPage && oneRecord === 1) {
-      // last page woking more than 1 record
-      pageNum = lastPage - 1;
-      return pageNum;
-    } else if (currentPage - 1 === lastPage) {
-      // 3 :3 last page woking more than 1 record
-      pageNum = lastPage;
-      return pageNum;
-    } else if (totalPages + 1 === currentPage) {
-      // page != 1 & having more then 1 record on same page
-      pageNum = totalPages;
-      return pageNum;
+    // when Count of data is greater then limit
+    if (currentPage !== startPage && currentPage !== lastPage) {
+      // This will be used when we perform delete operation from middle pages  i.e currentPage is not the last page & not the starting page
+      paginationConfigs.page = currentPage;
+    } else if (currentPage === lastPage && oneRecord === 1) {
+      // This will be used when lastPage has 1 record which is going to be deleted.
+      paginationConfigs.page = lastPage - 1;
+    } else if (currentPage === lastPage) {
+      // This will be used when lastPage have more than 1 record.
+      paginationConfigs.page = lastPage;
     }
   } else {
-    // working for page 1
-    // if : totalcount <= limit
-    if (currentPage - 1 === startPage) {
-      pageNum = startPage;
-      return pageNum;
+    // for page 1 - This will be used when totalCount <= limit
+    if (currentPage === startPage) {
+      paginationConfigs.page = startPage;
     }
   }
 }
+
 export function checkResponse(data: any) {
   const checkData = data;
   if (checkData.Data.Apis) {
@@ -52,6 +45,7 @@ export function checkResponse(data: any) {
     return checkData.data;
   }
 }
+// This will be used when return total count of available data
 export function checkCount(data: any) {
   if (data.count) {
     return data.count;
@@ -61,6 +55,7 @@ export function checkCount(data: any) {
     return 0;
   }
 }
+// This will be used when you request some formating on columns by using format function
 export const checkFormat = (headings: any, _data: any) => {
   let listData: any[] = [];
   for (const column of headings) {
@@ -75,6 +70,7 @@ export const checkFormat = (headings: any, _data: any) => {
   return _data;
 };
 
+// This will be used to set url with pagination to get server-side data
 export function checkPaginationUrl(prev: string, page: number, limit: number) {
   let paginationURL = "";
   const currentURL = window.location.pathname.split("/");
@@ -91,6 +87,7 @@ export function checkPaginationUrl(prev: string, page: number, limit: number) {
   return paginationURL;
 }
 
+// This will be used when you want to navigate from column data
 export const handleNavigation = (cell: any, row: any, heading: any) => {
   return h(
     "text",
