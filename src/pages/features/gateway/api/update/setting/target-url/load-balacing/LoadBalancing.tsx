@@ -3,7 +3,7 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 import {
   setFormErrors,
-  regexForTagetUrl,
+  regexForTargetUrl,
 } from "../../../../../../../../resources/gateway/api/api-constants";
 import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
 import {
@@ -82,7 +82,7 @@ export default function LoadBalancing() {
         setFormErrors(
           {
             ...state.data.errors,
-            [name]: regexForTagetUrl.test(value) ? "" : "Enter a valid Url ",
+            [name]: regexForTargetUrl.test(value) ? "" : "Enter a valid Url ",
           },
           dispatch
         );

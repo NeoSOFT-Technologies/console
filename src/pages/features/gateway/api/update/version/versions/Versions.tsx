@@ -22,7 +22,7 @@ export default function Versions() {
   const dispatch = useAppDispatch();
 
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  console.log("form data :", state.data.form);
+  // console.log("form data :", state.data.form);
   // const [startDate, setStartDate] = useState(new Date());
   // console.log("startDate:", startDate);
 
@@ -393,7 +393,7 @@ export default function Versions() {
                               const { Name, OverrideTarget, Expires } = data;
                               const beginDate =
                                 moment(Expires).format("YYYY-MM-DD");
-                              console.log(beginDate);
+                              // console.log(beginDate);
                               return (
                                 <tr key={index}>
                                   <td>
