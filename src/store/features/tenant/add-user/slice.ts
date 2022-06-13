@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createNewUserService } from "../../../../services/tenant";
 import { ICreateNewUser } from "../../../../types/index";
-import error from "../../../../utils/error";
+import errorHandler from "../../../../utils/error-handler";
 
 export interface IAddUserState {
   isAdded: boolean;
@@ -21,8 +21,8 @@ export const addNewUser = createAsyncThunk(
     try {
       const response = await createNewUserService(conditions);
       return response.data;
-    } catch (error_) {
-      const errorMessage = error(error_);
+    } catch (_error: any) {
+      const errorMessage = errorHandler(_error);
       throw new Error(errorMessage);
     }
   }
@@ -45,9 +45,8 @@ const slice = createSlice({
     builder.addCase(addNewUser.rejected, (state, action: any) => {
       state.loading = false;
       state.isAdded = false;
-
-      const errorMessage = action.error.message.split(" ");
-      state.error = errorMessage[errorMessage.length - 1];
+      const errorMessage = JSON.parse(action.error.message);
+      state.error = errorMessage;
     });
   },
 });

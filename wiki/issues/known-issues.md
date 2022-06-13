@@ -1,7 +1,7 @@
 ## ['React' was used before it was defined](https://stackoverflow.com/questions/63818415/react-was-used-before-it-was-defined)
 
-Bug occurs due to mismatch between @typescript-eslint versions in react-scripts, or else we have to override the rules
-
+Bug occurs due to mismatch between @typescript-eslint versions in react-scripts, or else we have to override the rules. <br>
+following lines of code inside .eslintrc.json or .eslintrc file helps with that
 ```
  {
             "files": ["**/*.ts", "**/*.tsx"],

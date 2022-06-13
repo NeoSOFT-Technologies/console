@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import {
+  AuthGuard,
+  access,
+} from "../../../../../components/gateway/auth-guard";
 import RenderList from "../../../../../components/gateway/list/RenderList";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { RootState } from "../../../../../store";
 import { emptyState } from "../../../../../store/features/gateway/key/create/payload";
-import { setForms } from "../../../../../store/features/gateway/key/create/slice";
+import {
+  setFormErrors,
+  setForms,
+} from "../../../../../store/features/gateway/key/create/slice";
 import { deleteKey } from "../../../../../store/features/gateway/key/delete/slice";
 import {
   IKeyData,
@@ -20,17 +28,13 @@ import statusAndDateHelper from "../../../../../utils/gateway/helper";
 export default function KeyList() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(1);
-  // const [search, setSearch] = useState(" ");
+  const [DeleteKeyId, SetDeleteKeyId] = useState<string>();
+  const [show, setShow] = useState(false);
   const dispatch = useAppDispatch();
   const keyList: IKeyListState = useAppSelector(
     (state: RootState) => state.keyListState
   );
   const failure: any = () => ToastAlert(keyList.error!, "error");
-  // const [checkactive, setCheckactive] = useState({
-  //   btn1: false,
-  //   btn2: false,
-  //   btn3: true,
-  // });
   const [datalist, setDataList] = useState<IKeyDataList>({
     list: [],
     fields: [],
@@ -67,24 +71,27 @@ export default function KeyList() {
     setSelected(1);
     mainCall(1, 4);
   };
-  const NavigateCreateKey = async (
+  const NavigateCreateKey = (
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
-    await dispatch(setForms(emptyState.data.form));
+    dispatch(setForms(emptyState.data.form));
+    dispatch(setFormErrors(emptyState.data.errors));
     navigate("/gateway/keys/create");
   };
-  // const NavigateUpdate = (val: IKeyData) => {
-  //   if (val.Id) {
-  //     navigate(`/gateway/keys/update/${val.Id}`);
-  //   }
-  // };
+
+  const NavigateUpdate = (val: IKeyData) => {
+    if (val.Id) {
+      dispatch(setForms(emptyState.data.form));
+      dispatch(setFormErrors(emptyState.data.errors));
+      navigate(`/gateway/keys/update/${val.Id}`);
+    }
+  };
   //   const handleUserDetails = (val: ITenantUserData) => {
   //     console.log(val);
   //     // navigate("/userdetails");
   //     navigate(`/userdetails/${val.id}`, { state: { ...val } });
   //   };
-
   function deleteKeyFromState(id: string) {
     const newState = datalist.list.filter((item) => item.Id !== id);
     // console.log(newState);
@@ -99,19 +106,26 @@ export default function KeyList() {
       fields: ["Id", "KeyName", "Status", "CreatedDateTxt"],
     });
   }
-  const deleteKeyFunction = async (val: IKeyData) => {
-    if (
-      val.Id &&
-      window.confirm("Are you sure you want to delete this Key ?")
-    ) {
-      const result = await dispatch(deleteKey(val.Id));
+  const handleDelete = async (id: string) => {
+    setShow(false);
+    console.log("delete clicked", id);
+    const result = await dispatch(deleteKey(id));
 
-      if (result.meta.requestStatus === "rejected") {
-        await ToastAlert(result.payload.message, "error");
-      } else {
-        deleteKeyFromState(val.Id);
-        await ToastAlert("Key Deleted Successfully", "success");
-      }
+    if (result.meta.requestStatus === "rejected") {
+      await ToastAlert(result.payload.message, "error");
+    } else {
+      deleteKeyFromState(id);
+      await ToastAlert("Key Deleted Successfully", "success");
+    }
+
+    //  if(ClickedTabIndex!==)
+  };
+  const handleCancel = () => setShow(false);
+
+  const deleteKeyFunction = (val: IKeyData) => {
+    if (val.Id) {
+      setShow(true);
+      SetDeleteKeyId(val.Id);
     }
   };
   const headings = [
@@ -119,21 +133,37 @@ export default function KeyList() {
     { title: "Key Name" },
     { title: "Status" },
     { title: "Created Date" },
-    { title: "Action", className: "text-center" },
   ];
-  const actions = [
-    {
-      className: "btn btn-sm btn-light",
-      iconClassName: "bi bi-pencil-square menu-icon",
-      // buttonFunction: NavigateUpdate,
-    },
-    {
-      className: "btn btn-sm btn-light",
-      iconClassName: "bi bi-trash-fill menu-icon",
-      // buttonFunction: () => setDeleteshow(true),
-      buttonFunction: deleteKeyFunction,
-    },
-  ];
+  const actions = [];
+  const editAction = {
+    className: "btn btn-sm btn-light",
+    iconClassName: "bi bi-pencil-square menu-icon",
+    buttonFunction: NavigateUpdate,
+  };
+  const delAction = {
+    className: "btn btn-sm btn-light",
+    iconClassName: "bi bi-trash-fill menu-icon",
+    // buttonFunction: () => setDeleteshow(true),
+    buttonFunction: deleteKeyFunction,
+  };
+  const isViewAuthorized = AuthGuard({
+    resource: access.resources.Key,
+    scope: access.scopes.view,
+  });
+  if (isViewAuthorized) {
+    actions.push(editAction);
+  }
+  const isDelAuthorized = AuthGuard({
+    resource: access.resources.Key,
+    scope: access.scopes.Delete,
+  });
+  if (isDelAuthorized) {
+    actions.push(delAction);
+  }
+
+  if (isViewAuthorized || isDelAuthorized) {
+    headings.push({ title: "Action" });
+  }
   return (
     <>
       <div className="col-lg-12 grid-margin stretch-card">
@@ -143,20 +173,45 @@ export default function KeyList() {
           <div>{failure()}</div>
         ) : (
           <div className="card">
+            <Modal show={show} onHide={handleCancel} centered>
+              <Modal.Header closeButton>
+                <Modal.Title>Delete Key</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                Are you sure you want to delete this Key ?
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCancel}>
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  className="btn-danger"
+                  onClick={() => handleDelete(DeleteKeyId!)}
+                >
+                  Delete
+                </Button>
+              </Modal.Footer>
+            </Modal>
             <div
               className="card-header mt-4 mb-3 bg-white"
               style={{ padding: "0.5rem 2.5rem" }}
             >
               <div className="align-items-center">
                 <div>
-                  <button
-                    className=" btn  btn-success btn-sm d-flex float-right mb-4"
-                    onClick={(e) => NavigateCreateKey(e)}
+                  <AuthGuard
+                    resource={access.resources.Key}
+                    scope={access.scopes.Create}
                   >
-                    {" "}
-                    Create Key &nbsp;
-                    <span className="bi bi-plus-lg"></span> &nbsp;
-                  </button>
+                    <button
+                      className=" btn  btn-success btn-sm d-flex float-right mb-4"
+                      onClick={(e) => NavigateCreateKey(e)}
+                    >
+                      {" "}
+                      Create Key &nbsp;
+                      <span className="bi bi-plus-lg"></span> &nbsp;
+                    </button>
+                  </AuthGuard>
                   <h5>
                     <b>KEY LIST</b>
                   </h5>

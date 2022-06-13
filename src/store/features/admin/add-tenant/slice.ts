@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { addTenantDataService } from "../../../../services/tenant";
 import { ITenantRegisterData } from "../../../../types/index";
-import error from "../../../../utils/error";
+import errorHandler from "../../../../utils/error-handler";
 
 interface IAddTenantState {
   tenantAdded?: boolean;
@@ -20,8 +20,8 @@ export const addNewTenant = createAsyncThunk(
     try {
       const response = await addTenantDataService(conditions);
       return response.data;
-    } catch (error_) {
-      const errorMessage = error(error_);
+    } catch (_error: any) {
+      const errorMessage = errorHandler(_error);
       throw new Error(errorMessage);
     }
   }
@@ -43,8 +43,8 @@ const slice = createSlice({
     });
     builder.addCase(addNewTenant.rejected, (state, action: any) => {
       state.loading = false;
-      const errorMessage = action.error.message.split(" ");
-      state.error = errorMessage[errorMessage.length - 1];
+      const errorMessage = JSON.parse(action.error.message);
+      state.error = errorMessage;
     });
   },
 });

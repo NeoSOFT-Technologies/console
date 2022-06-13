@@ -12,16 +12,20 @@ function Configurations() {
   const state = useAppSelector((RootState) => RootState.createKeyState);
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-
+    // useEffect(() => {
+    //   if (state.data.form.KeyName === "") {
+    //     setFormErrorkey(
+    //       { ...state.data.errors, KeyName: "name is required" },
+    //       dispatch
+    //     );
+    //   }
+    // }, []);
     switch (name) {
       case "KeyName":
         setFormErrorkey(
           {
             ...state.data.errors,
-            [name]:
-              regexForName.test(value) && value.length > 0
-                ? ""
-                : "Enter a Valid Name",
+            [name]: regexForName.test(value) ? "" : "Enter a Valid Name",
           },
           dispatch
         );
@@ -61,6 +65,7 @@ function Configurations() {
                     id="KeyName"
                     // data-testid="name-input"
                     value={state.data.form?.KeyName}
+                    onBlur={(e: any) => validateForm(e)}
                     isInvalid={!!state.data.errors?.KeyName}
                     isValid={!state.data.errors?.KeyName}
                     onChange={(e: any) => validateForm(e)}

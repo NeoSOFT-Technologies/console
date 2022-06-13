@@ -89,6 +89,7 @@ export default function ListenPath() {
                   </p>
                   <Form.Check
                     type="switch"
+                    className="ml-4"
                     id="stripListenPath"
                     name="StripListenPath"
                     label="Strip the Listen path"
@@ -110,6 +111,7 @@ export default function ListenPath() {
 
                   <Form.Check
                     type="switch"
+                    className="ml-4"
                     id="activated"
                     name="IsInternal"
                     label="Activated"

@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Button, Form, Row, Col, Accordion } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import {
+  AuthGuard,
+  access,
+} from "../../../../../components/gateway/auth-guard";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
@@ -114,13 +118,19 @@ function CreateApi() {
                 className="card-header bg-white mt-3 pt-1 pb-4"
                 style={{ padding: "0.5rem 1.5rem" }}
               >
-                <Button
-                  className="btn btn-sm btn-success btn-md d-flex float-right mb-3 mr-3"
-                  type="submit"
-                  data-testid="submit-input"
+                <AuthGuard
+                  resource={access.resources.Api}
+                  scope={access.scopes.Create}
                 >
-                  Save
-                </Button>
+                  <Button
+                    className="btn btn-sm btn-success btn-md d-flex float-right mb-3 mr-3"
+                    type="submit"
+                    data-testid="submit-input"
+                  >
+                    Save
+                  </Button>
+                </AuthGuard>
+
                 <Button
                   className="btn btn-sm btn-light btn-md d-flex float-right mb-3"
                   type="button"
@@ -151,7 +161,7 @@ function CreateApi() {
                               id="name"
                               placeholder="Enter API Name"
                               name="name"
-                              // data-testid="name-input"
+                              data-testid="name-input"
                               value={apisForm.name}
                               isInvalid={!!err.name}
                               isValid={!err.name && !!apisForm.name}
@@ -170,7 +180,7 @@ function CreateApi() {
                               type="text"
                               name="listenPath"
                               id="listenPath"
-                              // data-testid="listenPath-input"
+                              data-testid="listenPath-input"
                               placeholder="Enter Listen Path"
                               isValid={!err.listenPath && !!apisForm.listenPath}
                               value={apisForm.listenPath}
@@ -191,6 +201,7 @@ function CreateApi() {
                               placeholder="Enter Target Url"
                               name="targetUrl"
                               id="targetUrl"
+                              data-testid="targetUrl-input"
                               isValid={!err.targetUrl && !!apisForm.targetUrl}
                               value={apisForm.targetUrl}
                               isInvalid={!!err.targetUrl}
@@ -204,11 +215,12 @@ function CreateApi() {
                         </Col>
 
                         <Col md="12">
-                          <Form.Group className="mb-3 mt-3">
+                          <Form.Group className="mb-3 mt-3 ml-4">
                             <Form.Label>API Status :</Form.Label>
                             <Form.Check
                               type="switch"
                               onChange={validateForm}
+                              data-testid="isActive-input"
                               checked={apisForm.isActive}
                               name="isActive"
                               id="isActive"
