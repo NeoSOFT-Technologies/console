@@ -67,6 +67,7 @@ export default function GetSearchData() {
       order,
       requestParams: params,
     };
+
     dispatch(searchDataWithQueryField(initialState));
   };
 
