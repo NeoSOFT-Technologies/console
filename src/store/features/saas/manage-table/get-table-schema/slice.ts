@@ -51,11 +51,15 @@ const slice = createSlice({
         action.payload.selectedColHeading === "Edit Column" &&
         action.payload.objIndex > -1
       ) {
-        state.data?.splice(
-          action.payload.objIndex,
-          1,
-          action.payload.selectedColumnData
-        );
+        // state.data?.splice(
+        //   action.payload.objIndex,
+        //   1,
+        //   action.payload.selectedColumnData
+        // );
+        const newList: ITableColumnData[] = state.data as ITableColumnData[];
+        newList[action.payload.objIndex] = action.payload.selectedColumnData;
+        console.log("New List = " + JSON.stringify(newList));
+        state.data = newList;
       }
     },
     deleteColumn: (state, action) => {
