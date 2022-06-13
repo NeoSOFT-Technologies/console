@@ -154,6 +154,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     search: "search-field",
   };
 
+  // initial Grid render
   useEffect(() => {
     grid = (
       <Grid
@@ -168,10 +169,10 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     setGridReady(true);
   }, []);
 
-  // this will be used to call the reload when you request a Grid reload
+  //  Grid render on invoke of refreshGrid()
   useEffect(() => {
     if (gridReload) {
-      // this will be used for overwriting the pagination configuration settings
+      // This will be used for handling current selected page after we refresh grid
       setGridPage(paginationConfigs, _count);
       grid = (
         <Grid
@@ -182,7 +183,9 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
           className={classNames}
         />
       );
+      // this will be used to set state value as false for indicating our Grid is refreshed
       setGridReload(false);
+      // this will be used to set state value as true for indicating our Grid is ready
       setGridReady(true);
     }
   }, [gridReload]);

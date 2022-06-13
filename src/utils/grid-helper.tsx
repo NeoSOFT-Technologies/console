@@ -1,6 +1,6 @@
 import { h } from "gridjs";
 
-// This will be used for overwriting pagination configuration for handling current selected page
+// This will be used for handling current selected page after we refresh grid
 export function setGridPage(paginationConfigs: any, _totalCount: number) {
   const selectedPage = document.querySelector(".gridjs-currentPage")?.innerHTML;
 
@@ -13,20 +13,20 @@ export function setGridPage(paginationConfigs: any, _totalCount: number) {
   const lastPage = totalPages;
   const oneRecord = totalCount % limit;
 
+  // when Count of data is greater then limit
   if (totalCount > limit) {
-    // when Count of data is greater then limit
+    // This will be used when we perform delete operation from middle pages
+    // i.e currentPage is not the last page & not the starting page
     if (currentPage !== startPage && currentPage !== lastPage) {
-      // This will be used when we perform delete operation from middle pages  i.e currentPage is not the last page & not the starting page
       paginationConfigs.page = currentPage;
-    } else if (currentPage === lastPage && oneRecord === 1) {
-      // This will be used when lastPage has 1 record which is going to be deleted.
-      paginationConfigs.page = lastPage - 1;
-    } else if (currentPage === lastPage) {
-      // This will be used when lastPage have more than 1 record.
-      paginationConfigs.page = lastPage;
+    }
+    // when user is on the last page
+    else if (currentPage === lastPage) {
+      //  we are checking the last page has one record or more than one record
+      paginationConfigs.page = oneRecord === 1 ? lastPage - 1 : lastPage;
     }
   } else {
-    // for page 1 - This will be used when totalCount <= limit
+    // when user is on the first page
     if (currentPage === startPage) {
       paginationConfigs.page = startPage;
     }
