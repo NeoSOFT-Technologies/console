@@ -166,12 +166,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
 
   useEffect(() => {
     if (gridReload) {
-      const pageNum = setGridPage(
-        paginationConfigs.limit,
-        _count,
-        paginationConfigs.page
-      )!;
-      console.log(pageNum);
+      const pageNum = setGridPage(paginationConfigs.limit, _count)!;
       paginationConfigs.page = pageNum;
       grid = (
         <Grid

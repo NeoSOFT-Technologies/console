@@ -1,17 +1,14 @@
 import { h } from "gridjs";
 
-export function setGridPage(
-  pagelimit: number,
-  _count: number,
-  pageNum: number
-) {
+export function setGridPage(pageLimit: number, _count: number) {
   const selectedPage = document.querySelector(".gridjs-currentPage")?.innerHTML;
 
   const currentPage: number = +selectedPage!;
-  const limit = pagelimit; // gridConfig.pagination.limit;
+  const limit = pageLimit;
   const totalCount = _count;
   const totalPages = Math.ceil(totalCount / limit) - 1;
   const startPage = 0;
+  let pageNum = 0;
   const lastPage = totalPages;
   const oneRecord = totalCount % limit;
 
