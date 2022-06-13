@@ -13,7 +13,6 @@ describe("SAAS - INPUT DATA NRT Slice", () => {
       })
     );
 
-    // console.log(result.type);
     expect(result.type).toBe("inputDataWithNrt/fulfilled");
   });
 
@@ -27,7 +26,6 @@ describe("SAAS - INPUT DATA NRT Slice", () => {
       })
     );
 
-    // console.log(result.type);
     expect(result.type).toBe("inputDataWithNrt/rejected");
   });
 });

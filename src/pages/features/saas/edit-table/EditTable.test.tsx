@@ -111,19 +111,6 @@ describe("SAAS - EDIT TABLE Component", () => {
 
     userEvent.click(editColBtn);
 
-    // const trueValuesInDropdowns = await waitFor(
-    //   () => screen.getAllByText("True", { exact: false }),
-    //   {
-    //     timeout: 3000,
-    //   }
-    // );
-
-    // for (var i = 0; i < trueValuesInDropdowns.length; i++) {
-    //   var trueValueInDropdown = trueValuesInDropdowns[i];
-    //   expect(trueValueInDropdown).toBeInTheDocument();
-    //   userEvent.click(trueValueInDropdown);
-    // }
-
     const closeModalBtn = await waitFor(
       () => screen.getByTestId("close-modal-btn"),
       {
@@ -199,15 +186,6 @@ describe("SAAS - EDIT TABLE Component", () => {
     );
     expect(addColSubmitBtn).toBeInTheDocument();
     userEvent.click(addColSubmitBtn);
-
-    // expect(
-    //   await waitFor(
-    //     () => screen.getByText("Column already exists", { exact: false }),
-    //     {
-    //       timeout: 1000,
-    //     }
-    //   )
-    // ).toBeInTheDocument();
 
     fireEvent.change(addColTypeInput, {
       target: { value: "netColName" },

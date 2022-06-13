@@ -38,7 +38,6 @@ describe("SAAS - GET Table Schema Slice", () => {
       getTableSchema({ tenantId: "1", tableName: "testTable" })
     );
 
-    //  console.log(result.type);
     expect(result.type).toBe("getTableSchemaByTableName/fulfilled");
   });
 
@@ -48,7 +47,6 @@ describe("SAAS - GET Table Schema Slice", () => {
       getTableSchema({ tenantId: "1", tableName: "testTable" })
     );
 
-    // console.log(result.type)
     expect(result.type).toBe("getTableSchemaByTableName/rejected");
   });
 });

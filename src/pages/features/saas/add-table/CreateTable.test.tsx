@@ -101,22 +101,6 @@ describe("SAAS - ADD TABLE Component", () => {
       target: { value: "testTable" },
     });
 
-    // const listOfSKU = ["B", "S1", "S2", "S3", "P"];
-    // for (var i = 0; i < 5; i++) {
-    //   const capacityPlanDropdown = screen.getByTestId("capacity-plan-dropdown");
-    //   userEvent.click(capacityPlanDropdown);
-
-    //   var tempSKU = await waitFor(
-    //     () => screen.getByText(listOfSKU[i], { exact: true }),
-    //     {
-    //       timeout: 1000,
-    //     }
-    //   );
-
-    //   expect(tempSKU).toBeInTheDocument();
-    //   userEvent.click(tempSKU);
-    // }
-
     const capacityPlanDropdown = await waitFor(
       () => screen.getByTestId("capacity-plan-dropdown"),
       {

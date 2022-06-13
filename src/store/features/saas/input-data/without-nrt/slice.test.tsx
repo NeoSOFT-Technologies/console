@@ -13,7 +13,6 @@ describe("SAAS - INPUT DATA WITHOUT NRT Slice", () => {
       })
     );
 
-    // console.log(result.type);
     expect(result.type).toBe("inputDataWithoutNrt/fulfilled");
   });
 
@@ -26,8 +25,6 @@ describe("SAAS - INPUT DATA WITHOUT NRT Slice", () => {
         requestParams: { tenantId: "1", tableName: "testTable" },
       })
     );
-
-    // console.log(result.type);
     expect(result.type).toBe("inputDataWithoutNrt/rejected");
   });
 });

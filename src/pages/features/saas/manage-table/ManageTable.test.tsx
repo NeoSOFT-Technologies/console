@@ -7,7 +7,7 @@ import mockApi from "../../../../resources/tenant/testconfig";
 import store from "../../../../store/index";
 import ManageTable from "./ManageTable";
 
-describe("SAAS - MANAGE TABLE Component", () => {
+describe("SAAS - MANAGE TABLE Component 1", () => {
   it("Check if H1 rendered", () => {
     render(
       <BrowserRouter>
@@ -37,7 +37,9 @@ describe("SAAS - MANAGE TABLE Component", () => {
     });
     expect(addNewBtn).toBeInTheDocument();
   });
+});
 
+describe("SAAS - MANAGE TABLE Component 2", () => {
   it("Check if fields autofilled using API on component load", async () => {
     mockApi
       .onGet("manage/table/all-tables?pageNumber=1&pageSize=6")
@@ -58,7 +60,6 @@ describe("SAAS - MANAGE TABLE Component", () => {
       </BrowserRouter>
     );
 
-    // expect result
     const data = await waitFor(
       () => screen.getByText("testTable", { exact: false }),
       {
@@ -91,7 +92,6 @@ describe("SAAS - MANAGE TABLE Component", () => {
       </BrowserRouter>
     );
 
-    // expect result
     const data = await waitFor(
       () => screen.getByText("testTable", { exact: false }),
       {
@@ -112,8 +112,6 @@ describe("SAAS - MANAGE TABLE Component", () => {
     );
     expect(cancelBtn).toBeInTheDocument();
     userEvent.click(cancelBtn);
-
-    // ====================================================================
 
     expect(deleteTableBtn).toBeInTheDocument();
     userEvent.click(deleteTableBtn);
@@ -153,7 +151,6 @@ describe("SAAS - MANAGE TABLE Component", () => {
       </BrowserRouter>
     );
 
-    // expect result
     const data = await waitFor(
       () => screen.getByText("testTable", { exact: false }),
       {
@@ -164,7 +161,6 @@ describe("SAAS - MANAGE TABLE Component", () => {
 
     const editTableBtn = screen.getByTestId("edit-table-btn");
     expect(editTableBtn).toBeInTheDocument();
-    // fireEvent.click(getTablesBtn);
     userEvent.click(editTableBtn);
     const cancelBtn = await waitFor(
       () => screen.getByText("No, Cancel", { exact: false }),
@@ -175,10 +171,7 @@ describe("SAAS - MANAGE TABLE Component", () => {
     expect(cancelBtn).toBeInTheDocument();
     userEvent.click(cancelBtn);
 
-    // ====================================================================
-
     expect(editTableBtn).toBeInTheDocument();
-    // fireEvent.click(getTablesBtn);
     userEvent.click(editTableBtn);
 
     const confirmBtn = await waitFor(
@@ -216,9 +209,6 @@ describe("SAAS - MANAGE TABLE Component", () => {
           { tenantId: 1, tableName: "testTable7" },
           { tenantId: 1, tableName: "testTable8" },
           { tenantId: 1, tableName: "testTable9" },
-          { tenantId: 1, tableName: "testTable_10" },
-          { tenantId: 1, tableName: "testTable_11" },
-          { tenantId: 1, tableName: "testTable_12" },
         ],
       });
 

@@ -12,7 +12,6 @@ describe("SAAS - GET All Tables Slice", () => {
       getAllTables({ pageNumber: "1", pageSize: "testTable" })
     );
 
-    //   console.log(result.type);
     expect(result.type).toBe("getAllTable/fulfilled");
   });
 
@@ -24,7 +23,6 @@ describe("SAAS - GET All Tables Slice", () => {
       getAllTables({ pageNumber: "1", pageSize: "testTable" })
     );
 
-    //   console.log(result.type)
     expect(result.type).toBe("getAllTable/rejected");
   });
 });
