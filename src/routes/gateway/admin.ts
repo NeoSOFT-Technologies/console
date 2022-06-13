@@ -1,4 +1,5 @@
-import { AuthGuard, access } from "../../components/gateway/auth-guard";
+import { access, AuthGuard } from "../../components/auth-gaurd";
+
 const adminGatewayRoutes = [
   {
     id: "dashboard",
