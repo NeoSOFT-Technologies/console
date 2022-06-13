@@ -9,14 +9,13 @@ import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
   regexForListenPath,
-  regexForTagetUrl,
+  regexForTargetUrl,
 } from "../../../../../resources/gateway/api/api-constants";
 import {
   IErrorApiInput,
   IApiFormData,
 } from "../../../../../store/features/gateway/api/create/index";
 import { addNewApi } from "../../../../../store/features/gateway/api/create/slice";
-import { getApiById } from "../../../../../store/features/gateway/api/update/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
 function CreateApi() {
   const dispatch = useAppDispatch();
@@ -35,6 +34,7 @@ function CreateApi() {
     listenPath: "",
     // status: true,
   });
+
   const validateForm = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
@@ -58,7 +58,7 @@ function CreateApi() {
       case "targetUrl":
         setFormErrors({
           ...err,
-          [name]: regexForTagetUrl.test(value) ? "" : "Enter a Valid url",
+          [name]: regexForTargetUrl.test(value) ? "" : "Enter a Valid url",
         });
         break;
 
@@ -93,7 +93,6 @@ function CreateApi() {
         ToastAlert("Api created successfully", "success");
         if (valId) {
           await new Promise((resolve) => setTimeout(resolve, 1000));
-          await dispatch(getApiById(valId));
           navigate(`/gateway/apis/update/${valId}`);
         }
       }

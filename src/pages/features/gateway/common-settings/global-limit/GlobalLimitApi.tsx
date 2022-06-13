@@ -39,10 +39,7 @@ export default function GlobalLimitApi(props: IProps) {
       ? [...props.state?.data.errors?.PerApiLimit!]
       : [...props.keystate?.data.errors?.PerApiLimit!];
 
-  function validateForm(
-    event: React.ChangeEvent<HTMLInputElement>,
-    ApiId: any
-  ) {
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     switch (name) {
       case "rate":
@@ -842,9 +839,9 @@ export default function GlobalLimitApi(props: IProps) {
     EffectSetRateError();
   }, []);
 
-  const handlerateclick = (event: any, ApiId: any) => {
+  const handlerateclick = (event: any) => {
     event.preventDefault();
-    validateForm(event, ApiId);
+    validateForm(event);
     const value = props.index!;
     const apisList =
       props.current === "policy"
@@ -1051,12 +1048,7 @@ export default function GlobalLimitApi(props: IProps) {
                           }
                           placeholder="Enter Request per period"
                           // onChange={(e: any) => validateForm(e)}
-                          onChange={(e: any) =>
-                            handlerateclick(
-                              e,
-                              props.state?.data.form.APIs[props.index!].Id
-                            )
-                          }
+                          onChange={(e: any) => handlerateclick(e)}
                           name="rate"
                           isInvalid={
                             props.current === "policy"
@@ -1100,12 +1092,7 @@ export default function GlobalLimitApi(props: IProps) {
                           type="text"
                           id="per"
                           placeholder="Enter time"
-                          onChange={(e: any) =>
-                            handlerateclick(
-                              e,
-                              props.state?.data.form.APIs[props.index!].Id
-                            )
-                          }
+                          onChange={(e: any) => handlerateclick(e)}
                           name="per"
                           value={
                             props.current === "policy"
@@ -1198,12 +1185,7 @@ export default function GlobalLimitApi(props: IProps) {
                           }
                           placeholder="Enter per request"
                           name="throttle_retry_limit"
-                          onChange={(e: any) =>
-                            handlerateclick(
-                              e,
-                              props.state?.data.form.APIs[props.index!].Id
-                            )
-                          }
+                          onChange={(e: any) => handlerateclick(e)}
                           // value={throttleDefault}
                           isInvalid={
                             props.current === "policy"
@@ -1260,12 +1242,7 @@ export default function GlobalLimitApi(props: IProps) {
                                 ]?.Limit?.Throttle_interval
                           }
                           placeholder="Enter per request"
-                          onChange={(e: any) =>
-                            handlerateclick(
-                              e,
-                              props.state?.data.form.APIs[props.index!].Id
-                            )
-                          }
+                          onChange={(e: any) => handlerateclick(e)}
                           isInvalid={
                             props.current === "policy"
                               ? !!state.data.errors?.PerApiLimit[props.index!]
@@ -1328,12 +1305,7 @@ export default function GlobalLimitApi(props: IProps) {
                           type="text"
                           id="quotaPer"
                           placeholder="Enter per period request"
-                          onChange={(e: any) =>
-                            handlerateclick(
-                              e,
-                              props.state?.data.form.APIs[props.index!].Id
-                            )
-                          }
+                          onChange={(e: any) => handlerateclick(e)}
                           name="quota_max"
                           value={
                             props.current === "policy"
@@ -1403,12 +1375,7 @@ export default function GlobalLimitApi(props: IProps) {
                                   props.index!
                                 ]?.Limit?.Quota_renewal_rate
                           }
-                          onChange={(e: any) =>
-                            handlerateclick(
-                              e,
-                              props.state?.data.form.APIs[props.index!].Id
-                            )
-                          }
+                          onChange={(e: any) => handlerateclick(e)}
                         >
                           <option value={0}>never</option>
                           <option value={3600}>1 hour</option>
