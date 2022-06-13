@@ -58,14 +58,18 @@ const slice = createSlice({
         // );
         const newList: ITableColumnData[] = state.data as ITableColumnData[];
         newList[action.payload.objIndex] = action.payload.selectedColumnData;
-        console.log("New List = " + JSON.stringify(newList));
+        // console.log("New List = " + JSON.stringify(newList));
         state.data = newList;
       }
     },
     deleteColumn: (state, action) => {
       state.data = state.data?.filter((obj) => {
-        return obj.name !== action.payload.selectedColumnData.name;
+        return (
+          obj.name.toLowerCase() !==
+          action.payload.selectedColumnData.name.toLowerCase()
+        );
       });
+      // console.log("After Delete = " + JSON.stringify(state.data));
     },
   },
   extraReducers(builder): void {

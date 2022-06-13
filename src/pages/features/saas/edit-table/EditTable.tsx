@@ -37,6 +37,18 @@ export default function EditTable() {
   const [selectedColAction, setSelectedColAction] = useState<string>("");
   const [readonlyState, setReadonlyState] = useState<boolean>(true);
   const [showSuccessMsg, setShowSuccessMsg] = useState<boolean>(false);
+  const tableHeadings: string[] = [
+    "Name",
+    "Type",
+    "Required",
+    "Partial Search",
+    "Filterable",
+    "Sortable",
+    "Multivalue",
+    "Storable",
+    "Edit",
+    "Delete",
+  ];
   const tableSchemaObject: ITableSchema = {
     tenantId,
     tableName,
@@ -93,7 +105,7 @@ export default function EditTable() {
       if (selectedColumnData.name !== "" && selectedColumnData.type !== "") {
         const objIndex: Number | any = tableData.data?.findIndex(
           (item: ITableColumnData) =>
-            item.name.toLowerCase === selectedColumnData.name.toLowerCase
+            item.name.toLowerCase() === selectedColumnData.name.toLowerCase()
         );
 
         if (selectedColHeading === "Add Column" && objIndex > -1) {
@@ -264,36 +276,11 @@ export default function EditTable() {
                   >
                     <thead>
                       <tr id="test">
-                        <th>
-                          <b>Name</b>
-                        </th>
-                        <th>
-                          <b>Type</b>
-                        </th>
-                        <th>
-                          <b>Required</b>
-                        </th>
-                        <th>
-                          <b>Partial Search</b>
-                        </th>
-                        <th>
-                          <b>Filterable</b>
-                        </th>
-                        <th>
-                          <b>Sortable</b>
-                        </th>
-                        <th>
-                          <b>Multivalue</b>
-                        </th>
-                        <th>
-                          <b>Storable</b>
-                        </th>
-                        <th>
-                          <b>Edit</b>
-                        </th>
-                        <th>
-                          <b>Delete</b>
-                        </th>
+                        {tableHeadings.map((val, index) => (
+                          <th key={`row${index}`}>
+                            <b>{val}</b>
+                          </th>
+                        ))}
                       </tr>
                     </thead>
                     <tbody>
@@ -476,22 +463,6 @@ export default function EditTable() {
                     });
                   }}
                 >
-                  {/* <option
-                    className="text-center"
-                    value={selectedColumnData.required.toString()}
-                  >
-                    {selectedColumnData.required
-                      .toString()
-                      .charAt(0)
-                      .toUpperCase() +
-                      selectedColumnData.required.toString().slice(1)}
-                  </option>
-                  <option
-                    className="text-center"
-                    value={(!selectedColumnData.required).toString()}
-                  >
-                    {(!selectedColumnData.required).toString()}
-                  </option> */}
                   <option className="text-center" value="true">
                     True
                   </option>
