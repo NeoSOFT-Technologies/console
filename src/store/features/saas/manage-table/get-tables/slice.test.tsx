@@ -8,7 +8,6 @@ describe("SAAS - GET Tables Slice", () => {
 
     const result = await store.dispatch(getTables("1"));
 
-    // console.log(result.type);
     expect(result.type).toBe("getTable/getTables/fulfilled");
   });
 
@@ -16,7 +15,6 @@ describe("SAAS - GET Tables Slice", () => {
     mockApi.onGet("manage/table/?tenantId=1").reply(400, {});
     const result = await store.dispatch(getTables("1"));
 
-    // console.log(result.type);
     expect(result.type).toBe("getTable/getTables/rejected");
   });
 });

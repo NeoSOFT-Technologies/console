@@ -93,7 +93,6 @@ export default function UserDetails() {
     tenantName: "",
   });
   const [editUser, setEditUser] = useState(false);
-
   useEffect(() => {
     if (params.userName && user.data?.tenantName) {
       dispatch(
@@ -110,9 +109,15 @@ export default function UserDetails() {
       dispatch(resetUpdateUserState());
     };
   }, []);
+
   useEffect(() => {
     if (!deleteUserState.loading && deleteUserState.error) {
-      navigate("/error", { state: deleteUserState.error });
+      navigate("/error", {
+        state: {
+          statusCode: deleteUserState.error.statusCode,
+          message: deleteUserState.error.message,
+        },
+      });
     }
     if (
       !deleteUserState.loading &&
@@ -126,7 +131,12 @@ export default function UserDetails() {
 
   useEffect(() => {
     if (!updateUserDataState.loading && updateUserDataState.error) {
-      navigate("/error", { state: updateUserDataState.error });
+      navigate("/error", {
+        state: {
+          statusCode: updateUserDataState.error.statusCode,
+          message: updateUserDataState.error.message,
+        },
+      });
     }
     if (
       !updateUserDataState.loading &&
@@ -139,23 +149,35 @@ export default function UserDetails() {
 
   useEffect(() => {
     if (user.error) {
-      navigate("/error", { state: user.error });
+      navigate("/error", {
+        state: {
+          statusCode: user.error.statusCode,
+          message: user.error.message,
+        },
+      });
     }
     if (userDetails.data) {
       setUserdata({ ...userDetails.data });
     } else if (userDetails.error) {
-      navigate("/error", { state: userDetails.error });
+      navigate("/error", {
+        state: {
+          statusCode: userDetails.error.statusCode,
+          message: userDetails.error.message,
+        },
+      });
     }
     if (rolesList.error) {
-      navigate("/error", { state: rolesList.error });
+      navigate("/error", {
+        state: {
+          statusCode: rolesList.error.statusCode,
+          message: rolesList.error.message,
+        },
+      });
     }
   }, [userDetails.loading, rolesList.loading, user.loading]);
 
-  const removeRole = (role: string) => {
-    const temp = userdata.roles.filter(function (value: string) {
-      return value !== role;
-    });
-    setUserdata({ ...userdata, roles: [...temp] });
+  const removeRole = () => {
+    setUserdata({ ...userdata, roles: [] });
   };
 
   const handleRemove = async () => {
@@ -189,21 +211,21 @@ export default function UserDetails() {
     setUserdata({ ...userdata, [name]: value });
   };
   const handleValidate = (errors: Ierror) => {
-    const validate = !!(errors.username === "" && errors.email === "");
+    const validate = !!(
+      errors.username === "" &&
+      errors.email === "" &&
+      userdata.roles.length > 0
+    );
     return validate;
   };
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, checked } = event.target;
-    if (checked) {
-      setUserdata({
-        ...userdata,
-        roles: [...userdata.roles, value],
-      });
-    } else {
-      userdata.roles.splice(userdata.roles.indexOf(value), 1);
-      setUserdata({ ...userdata, roles: [...userdata.roles] });
-    }
+    const { value } = event.target;
+    setUserdata({
+      ...userdata,
+      roles: [value],
+    });
   };
+
   const handleEditSave = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (handleValidate(errordata)) {
@@ -339,7 +361,7 @@ export default function UserDetails() {
                                           checked={userdata.roles.includes(
                                             role
                                           )}
-                                          type="checkbox"
+                                          type="radio"
                                           onChange={handleCheck}
                                           inline
                                         />
@@ -355,7 +377,7 @@ export default function UserDetails() {
                                       {val}{" "}
                                       <i
                                         className="bi bi-x-circle"
-                                        onClick={() => removeRole(val)}
+                                        onClick={() => removeRole()}
                                         data-testid="remove-role-btn"
                                       ></i>
                                     </span>

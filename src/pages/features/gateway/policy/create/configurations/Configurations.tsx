@@ -23,6 +23,15 @@ export default function Configurations() {
           dispatch
         );
         break;
+      case "Expires":
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: value !== "-1" ? "" : "Enter a Valid Input",
+          },
+          dispatch
+        );
+        break;
       default:
         break;
     }
@@ -48,10 +57,10 @@ export default function Configurations() {
                     id="Name"
                     data-testid="name-input"
                     value={state.data.form?.Name}
+                    onBlur={(e: any) => validateForm(e)}
                     isInvalid={!!state.data.errors?.Name}
                     isValid={!state.data.errors?.Name}
                     onChange={(e: any) => validateForm(e)}
-                    required
                   />
                   <Form.Control.Feedback type="invalid">
                     {state.data.errors?.Name}
@@ -79,7 +88,7 @@ export default function Configurations() {
                     value={state.data.form?.State}
                     onChange={(e: any) => validateForm(e)}
                   >
-                    <option>Select an option</option>
+                    <option disabled>Select an option</option>
                     <option value="active">Active</option>
                     <option value="draft">Draft</option>
                     <option value="deny">Access Denied</option>

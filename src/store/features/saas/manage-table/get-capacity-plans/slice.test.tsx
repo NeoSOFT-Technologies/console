@@ -8,7 +8,6 @@ describe("SAAS - GET Capacity Plans Slice", () => {
 
     const result = await store.dispatch(capacityPlans());
 
-    //   console.log(result.type);
     expect(result.type).toBe("getCapacityPlans/fulfilled");
   });
 
@@ -16,7 +15,6 @@ describe("SAAS - GET Capacity Plans Slice", () => {
     mockApi.onGet("manage/table/capacity-plans").reply(400, {});
     const result = await store.dispatch(capacityPlans());
 
-    //   console.log(result.type)
     expect(result.type).toBe("getCapacityPlans/rejected");
   });
 });

@@ -12,6 +12,31 @@ const storeStates = {
     data: { username: "", createdTimestamp: "", count: 1, roles: [""] },
   },
 };
+
+const localStorageMock = (() => {
+  let store: any = {
+    user_info: `{"id":"8d2e314a-b512-489f-baca-55a029c92462","createdTimestamp":"2022/05/26 05:02:14","username":"user2","enabled":true,"emailVerified":false,"email":"user2@gmail.com","access":{"manageGroupMembership":true,"view":true,"mapRoles":true,"impersonate":true,"manage":true},"tenantName":"Tenant2","roles":["tenantadmin","default-roles-tenant2"],"permissions":["view"]}`,
+    "tenant-info": `{"id":30,"tenantId":55,"tenantName":"Tenant2","description":"Teanant2 ","createdDateTime":"2022/05/24 12:43:59","databaseName":"db-Tenant","host":"103.224.242.138","port":3306,"policy":"{ max_size: 30 }"}`,
+  };
+  return {
+    getItem(key: string) {
+      return store[key];
+    },
+    setItem(key: string, value: any) {
+      store[key] = value.toString();
+    },
+    clear() {
+      store = {};
+    },
+    removeItem(key: string) {
+      delete store[key];
+    },
+  };
+})();
+Object.defineProperty(window, "localStorage", {
+  value: localStorageMock,
+});
+
 it("render without crashing Sidebar", () => {
   const store = mockStore({
     ...storeStates,

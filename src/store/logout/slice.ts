@@ -36,6 +36,7 @@ const slice = createSlice({
     builder.addCase(commonLogout.fulfilled, (state, action) => {
       state.loading = false;
       state.data = action.payload;
+      localStorage.clear();
     });
     builder.addCase(commonLogout.rejected, (state, action: any) => {
       state.loading = false;

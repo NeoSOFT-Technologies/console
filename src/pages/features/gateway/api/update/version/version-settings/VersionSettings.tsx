@@ -10,6 +10,7 @@ export default function VersionSettings() {
   const dispatch = useAppDispatch();
 
   const state = useAppSelector((RootState) => RootState.updateApiState);
+  // const [location, setLocation] = useState("1");
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     // const { name, value } = event.target;
@@ -40,7 +41,9 @@ export default function VersionSettings() {
                             value={state.data.form?.VersioningInfo?.Location}
                             onChange={(e: any) => validateForm(e)}
                           >
-                            <option value="0">Choose a location</option>
+                            <option value="0" disabled>
+                              Choose a location
+                            </option>
                             <option id="Header" value="1">
                               Header
                             </option>

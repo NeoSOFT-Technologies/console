@@ -1,66 +1,117 @@
 import React, { FormEvent, useEffect } from "react";
 import { Form, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  AuthGuard,
+  access,
+} from "../../../../../components/gateway/auth-guard";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
 import {
   createPolicy,
   getPolicybyId,
+  setFormError,
   updatePolicy,
+  policystate,
 } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import AccessRights from "./access-rights/AccessRights";
 import Configurations from "./configurations/Configurations";
 export default function CreatePolicy() {
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
   const state: IPolicyCreateState = useAppSelector(
     (RootState) => RootState.createPolicyState
   );
 
   const { id } = useParams();
-  console.log("checkid", id);
-  useEffect(() => {
+  const mainCall = async () => {
     if (id !== undefined) {
-      dispatch(getPolicybyId(id));
+      const error = [];
+      const policybyid = await dispatch(getPolicybyId(id));
+      for (let i = 0; i < policybyid.payload.Data.APIs.length; i++) {
+        const perapierror = {
+          ApiId: policybyid.payload.Data.APIs[i].Id,
+          Per: "",
+          Rate: "",
+          Quota: "",
+          Expires: "",
+          QuotaRenewalRate: "",
+          ThrottleInterval: "",
+          ThrottleRetries: "",
+        };
+        error.push(perapierror);
+      }
+      dispatch(
+        setFormError({
+          ...state.data.errors,
+          PerApiLimit: error,
+        })
+      );
     }
+  };
+  useEffect(() => {
+    mainCall();
   }, []);
 
   async function handleSubmitPolicy(event: FormEvent) {
     event.preventDefault();
-    let validate: any;
-    if (state.data.errors !== undefined) {
-      validate = Object.values(state.data.errors).every(
-        (x) => x === null || x === ""
+    const validateFieldValue = state.data.form.Name.length > 0;
+    if (!validateFieldValue) {
+      dispatch(
+        setFormError({ ...state.data.errors, Name: "Name is required" })
       );
-      // console.log("error", state.data);
     }
-    if (validate) {
-      const result =
-        id === undefined
-          ? await dispatch(createPolicy(state.data.form))
-          : await dispatch(updatePolicy(state.data.form));
-      if (result.meta.requestStatus === "rejected") {
-        ToastAlert(result.payload.message, "error");
-      } else if (result.meta.requestStatus === "fulfilled") {
-        if (id === undefined) {
-          const valId: string = result.payload.Data.PolicyId;
-          ToastAlert("Policy Created Successfully!!", "success");
-          // navigate("/gateway/policies")
-          if (valId) {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            await dispatch(getPolicybyId(valId));
-            navigate(`/gateway/policies/update/${valId}`);
+
+    let validate: boolean;
+    validate = false;
+    validate = !!(
+      state.data.errors?.Name === "" &&
+      validateFieldValue === true &&
+      state.data.errors?.GlobalLimit.Rate === "" &&
+      state.data.errors?.GlobalLimit.Per === "" &&
+      state.data.errors?.GlobalLimit.ThrottleInterval === "" &&
+      state.data.errors?.GlobalLimit.ThrottleRetries === "" &&
+      state.data.errors?.GlobalLimit.Quota === ""
+    );
+
+    if (state.data.form.APIs.length > 0) {
+      if (validate) {
+        if (id !== undefined) {
+          console.log("update policy checking", policystate);
+        }
+        const result =
+          id === undefined
+            ? await dispatch(createPolicy(state.data.form))
+            : await dispatch(updatePolicy(state.data.form));
+        if (result.meta.requestStatus === "rejected") {
+          ToastAlert(result.payload.message, "error");
+        } else if (result.meta.requestStatus === "fulfilled") {
+          if (state.data.form.APIs.length > 0) {
+            if (id === undefined) {
+              const valId: string = result.payload.Data.PolicyId;
+              ToastAlert("Policy Created Successfully!!", "success");
+              // navigate("/gateway/policies")
+              if (valId) {
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+                await dispatch(getPolicybyId(valId));
+                navigate(`/gateway/policies/update/${valId}`);
+              }
+            } else {
+              ToastAlert("Policy Updated Successfully!!", "success");
+              await dispatch(getPolicybyId(id));
+            }
+          } else {
+            ToastAlert("Please select atleast one Api!", "error");
           }
         } else {
-          ToastAlert("Policy Updated Successfully!!", "success");
+          ToastAlert("policy Created request is not fulfilled!!", "error");
         }
       } else {
-        ToastAlert("policy Created request is not fulfilled!!", "error");
+        ToastAlert("Please fill all the fields correctly! ", "error");
       }
     } else {
-      ToastAlert("Please fill all the fields correctly! ", "error");
+      ToastAlert("Please select atleast one Api ", "error");
     }
   }
   const NavigateToPolicyList = (
@@ -84,10 +135,15 @@ export default function CreatePolicy() {
                   className="card-header bg-white mt-3 pt-1 pb-4"
                   style={{ padding: "0.5rem 1.5rem" }}
                 >
-                  <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
-                    {" "}
-                    {id === undefined ? "CREATE" : "UPDATE"}
-                  </button>
+                  <AuthGuard
+                    resource={access.resources.Policy}
+                    scope={id ? access.scopes.Edit : access.scopes.Create}
+                  >
+                    <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
+                      {" "}
+                      {id === undefined ? "Create" : "Update"}
+                    </button>
+                  </AuthGuard>
                   <button
                     className=" btn btn-sm btn-light btn-md d-flex float-right mb-3"
                     onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
@@ -99,7 +155,7 @@ export default function CreatePolicy() {
                   </button>
                   <span>
                     <b>
-                      {id === undefined ? "CREATE POLICY" : "UPDTAE POLICY"}
+                      {id === undefined ? "CREATE POLICY" : "UPDATE POLICY"}
                     </b>
                   </span>
                 </div>
@@ -113,7 +169,19 @@ export default function CreatePolicy() {
                     <Tab eventKey="accessRights" title="Access Rights">
                       <AccessRights />
                     </Tab>
-                    <Tab eventKey="configurations" title="Configurations">
+                    <Tab
+                      eventKey="configurations"
+                      title={
+                        <span>
+                          {state.data.errors?.Name ? (
+                            <i className="bi bi-info-circle-fill text-danger"></i>
+                          ) : (
+                            ""
+                          )}
+                          &nbsp; Configurations
+                        </span>
+                      }
+                    >
                       <Configurations />
                     </Tab>
                   </Tabs>

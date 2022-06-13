@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { Button, Modal } from "react-bootstrap";
 import { useErrorHandler } from "react-error-boundary";
 import { useNavigate } from "react-router-dom";
+import {
+  AuthGuard,
+  access,
+} from "../../../../../components/gateway/auth-guard";
 import RenderList from "../../../../../components/gateway/list/RenderList";
 
 import Spinner from "../../../../../components/loader/Loader";
@@ -32,6 +37,8 @@ export default function APIList() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(1);
   const [search, setSearch] = useState(" ");
+  const [DeleteApiId, SetDeleteApiId] = useState<string>();
+  const [show, setShow] = useState(false);
   const dispatch = useAppDispatch();
   const apiList: IApiListState = useAppSelector(
     (state: RootState) => state.apiListState
@@ -108,19 +115,23 @@ export default function APIList() {
       fields: ["Name", "TargetUrl", "Status", "CreatedDateTxt"],
     });
   }
-  const deleteApiFunction = async (val: IApiData) => {
-    if (
-      val.Id &&
-      window.confirm("Are you sure you want to delete this Api ?")
-    ) {
-      const result = await dispatch(deleteApi(val.Id));
+  const handleDelete = async (Id: string) => {
+    setShow(false);
+    // console.log("delete clicked", Id);
+    const result = await dispatch(deleteApi(Id));
 
-      if (result.meta.requestStatus === "rejected") {
-        await ToastAlert(result.payload.message, "error");
-      } else {
-        deleteApiFromState(val.Id);
-        await ToastAlert("Api Deleted Successfully", "success");
-      }
+    if (result.meta.requestStatus === "rejected") {
+      await ToastAlert(result.payload.message, "error");
+    } else {
+      deleteApiFromState(Id);
+      await ToastAlert("Api Deleted Successfully", "success");
+    }
+  };
+  const handleCancel = () => setShow(false);
+  const deleteApiFunction = async (val: IApiData) => {
+    if (val.Id && val.Id) {
+      setShow(true);
+      SetDeleteApiId(val.Id);
     }
   };
   const headings = [
@@ -128,27 +139,61 @@ export default function APIList() {
     { title: "Target Url" },
     { title: "Status" },
     { title: "Created Date" },
-    { title: "Action" },
   ];
-  const actions = [
-    {
-      className: "btn btn-sm btn-light",
-      iconClassName: "bi bi-pencil-square menu-icon",
-      buttonFunction: NavigateUpdate,
-    },
-    {
-      className: "btn btn-sm btn-light",
-      iconClassName: "bi bi-trash-fill menu-icon",
-      // buttonFunction: () => setDeleteshow(true),
-      buttonFunction: deleteApiFunction,
-    },
-  ];
+  const actions = [];
+  const delAction = {
+    className: "btn btn-sm btn-light",
+    iconClassName: "bi bi-trash-fill menu-icon",
+    buttonFunction: deleteApiFunction,
+  };
+  const editAction = {
+    className: "btn btn-sm btn-light",
+    iconClassName: "bi bi-pencil-square menu-icon",
+    buttonFunction: NavigateUpdate,
+  };
+
+  const isViewAuthorized = AuthGuard({
+    resource: access.resources.Api,
+    scope: access.scopes.View,
+  });
+  if (isViewAuthorized) {
+    actions.push(editAction);
+  }
+  const isDelAuthorized = AuthGuard({
+    resource: access.resources.Api,
+    scope: access.scopes.Delete,
+  });
+  if (isDelAuthorized) {
+    actions.push(delAction);
+  }
+
+  if (isViewAuthorized || isDelAuthorized) {
+    headings.push({ title: "Action" });
+  }
 
   useEffect(() => {
-    console.log(apiList);
+    // console.log(apiList);
   }, [apiList.data, apiList.error]);
   return (
     <>
+      <Modal show={show} onHide={handleCancel} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Api</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this Api ?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCancel}>
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            className="btn-danger"
+            onClick={() => handleDelete(DeleteApiId!)}
+          >
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <div className="col-lg-12 grid-margin stretch-card">
         {apiList.loading ? (
           <Spinner />
@@ -161,14 +206,20 @@ export default function APIList() {
               style={{ padding: "0.5rem 1.5rem" }}
             >
               <div className="align-items-center">
-                <button
-                  className=" btn btn-sm btn-success btn-sm d-flex float-right mb-2"
-                  onClick={(e) => NavigateCreateApi(e)}
+                <AuthGuard
+                  resource={access.resources.Api}
+                  scope={access.scopes.Create}
                 >
-                  {" "}
-                  Create API &nbsp;
-                  <span className="bi bi-plus-lg"></span> &nbsp;
-                </button>
+                  <button
+                    className=" btn btn-sm btn-success btn-sm d-flex float-right mb-2"
+                    onClick={(e) => NavigateCreateApi(e)}
+                  >
+                    {" "}
+                    Create API &nbsp;
+                    <span className="bi bi-plus-lg"></span> &nbsp;
+                  </button>
+                </AuthGuard>
+
                 <span>
                   <b>API LIST</b>
                 </span>

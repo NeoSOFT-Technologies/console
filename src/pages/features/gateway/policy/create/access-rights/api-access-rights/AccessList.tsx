@@ -2,7 +2,10 @@ import React from "react";
 import { Accordion, AccordionButton } from "react-bootstrap";
 import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import { getApiById } from "../../../../../../../store/features/gateway/api/update/slice";
-import { setForm } from "../../../../../../../store/features/gateway/policy/create/slice";
+import {
+  setForm,
+  setFormError,
+} from "../../../../../../../store/features/gateway/policy/create/slice";
 import {
   useAppSelector,
   useAppDispatch,
@@ -34,22 +37,48 @@ export default function AccessList() {
             Name: selectedApi.payload.Data.Name,
             Versions: [],
             MasterVersions: listV,
+            AuthType: selectedApi.payload.Data.AuthType,
+            isRateLimitDisabled: selectedApi.payload.Data.RateLimit.IsDisabled,
+            isQuotaDisbaled: selectedApi.payload.Data.IsQuotaDisabled,
             AllowedUrls: [],
             Limit: {
-              rate: 0,
-              per: 0,
-              throttle_interval: 0,
-              throttle_retry_limit: 0,
-              max_query_depth: 0,
-              quota_max: 0,
-              quota_renews: 0,
-              quota_remaining: 0,
-              quota_renewal_rate: 0,
+              rate: -1,
+              per: -1,
+              throttle_interval: -1,
+              throttle_retry_limit: -1,
+              max_query_depth: -1,
+              quota_max: -1,
+              quota_renews: -1,
+              quota_remaining: -1,
+              quota_renewal_rate: -1,
               set_by_policy: false,
             },
           },
         ];
-        dispatch(setForm({ ...state.data.form, APIs: list }));
+        const error = [...state.data.errors?.PerApiLimit!];
+        const perapierror = {
+          ApiId: selectedApi.payload.Data.ApiId,
+          Per: "",
+          Rate: "",
+          Quota: "",
+          Expires: "",
+          QuotaRenewalRate: "",
+          ThrottleInterval: "",
+          ThrottleRetries: "",
+        };
+        error.push(perapierror);
+        dispatch(
+          setFormError({
+            ...state.data.errors,
+            PerApiLimit: error,
+          })
+        );
+        dispatch(
+          setForm({
+            ...state.data.form,
+            APIs: list,
+          })
+        );
       } else {
         window.alert(
           "Rate limits, throttling, quota settings and path-based permissions have no effect on Open (Keyless) API ...."
@@ -59,6 +88,7 @@ export default function AccessList() {
       ToastAlert("Already select...", "error");
     }
   };
+
   return (
     <>
       <div>

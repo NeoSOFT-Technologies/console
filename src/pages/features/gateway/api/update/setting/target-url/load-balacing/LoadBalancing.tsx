@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 import {
   setFormErrors,
   regexForTagetUrl,
@@ -9,26 +10,24 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../../../../../store/hooks";
-// import { IApiGetByIdState } from "../../../../../../../store/features/api/update";
-interface IWeight {
-  weighting: number;
-  traffic: number;
-}
 export default function LoadBalancing() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  const [weight, setWeight] = useState<IWeight[]>([]);
+  console.log("state", state);
+  const [addUrl, setaddUrl] = useState<any>([]);
+  console.log("addurl", addUrl);
+  const [arrUrl, setArrUrl] = useState<any>([]);
   const [addFormData, setAddFormData] = useState<any>({
     LoadBalancingTargets: "",
   });
   const [loading, setLoading] = useState(true);
   const trafficCalculation = (index: number) => {
     let weightSum = 0;
-    for (const element of weight) {
-      weightSum += element.weighting;
+    for (const element of addUrl) {
+      weightSum += Number(element.weighting);
     }
     const traffic: number = 100 / weightSum;
-    const percentage: number = traffic * weight[index].weighting;
+    const percentage: number = traffic * addUrl[index].weighting;
     const trafficPercentage =
       Math.round((percentage + Number.EPSILON) * 100) / 100;
     return trafficPercentage;
@@ -36,16 +35,28 @@ export default function LoadBalancing() {
   const setArrayLength = () => {
     if (state.data.form.LoadBalancingTargets.length > 0) {
       for (let i = 0; i < state.data.form.LoadBalancingTargets.length; i++) {
-        const weightObj: any = {
-          weighting: 1,
-          traffic: 0,
-        };
-        weight.push(weightObj);
-        setWeight(weight);
+        const urlExistLocalState = addUrl!.some(
+          (x: any) =>
+            x?.loadBalancing === state.data.form.LoadBalancingTargets[i]
+        );
+        console.log("as", urlExistLocalState);
+        arrUrl.push(state.data.form.LoadBalancingTargets[i]);
+        if (!urlExistLocalState) {
+          const sameUrlArray = state.data.form.LoadBalancingTargets.filter(
+            (item) => item === state.data.form.LoadBalancingTargets[i]
+          );
+          const urlWeightCount = sameUrlArray.length;
+          console.log("movies", sameUrlArray);
+          console.log("count", urlWeightCount);
+          const weightObj: any = {
+            loadBalancing: state.data.form.LoadBalancingTargets[i],
+            weighting: urlWeightCount,
+            traffic: 0,
+          };
+          addUrl.push(weightObj);
+        }
       }
       setLoading(false);
-      // console.log("setarray weight", weight);
-      // return weight;
     }
   };
 
@@ -54,10 +65,12 @@ export default function LoadBalancing() {
     setArrayLength();
   }, []);
   const handleTrafficElement = (index: number) => {
-    const weightObj = [...weight];
+    const weightObj = [...addUrl];
+    console.log("traffic", weightObj);
+    const tra = trafficCalculation(index);
     weightObj[index] = {
       ...weightObj[index],
-      traffic: trafficCalculation(index),
+      traffic: tra,
     };
     return weightObj[index].traffic;
   };
@@ -82,18 +95,30 @@ export default function LoadBalancing() {
     setAddFormData(formobj);
   };
   const handleAddClick = () => {
-    const weightObj: IWeight = {
-      weighting: 1,
-      traffic: 0,
-    };
-    setWeight([...weight, weightObj]);
-    const rowObj: any = [
-      ...state.data.form.LoadBalancingTargets,
-      addFormData.LoadBalancingTargets,
-    ];
-    // console.log("newObj", rowObj);
-    dispatch(setForm({ ...state.data.form, LoadBalancingTargets: rowObj }));
-    setLoading(false);
+    const urlAlreadyExist = addUrl.some(
+      (x: any) => x?.loadBalancing === addFormData.LoadBalancingTargets
+    );
+    console.log("123", urlAlreadyExist);
+    if (!urlAlreadyExist) {
+      const loadObj = {
+        loadBalancing: addFormData.LoadBalancingTargets,
+        weighting: 1,
+        traffic: 0,
+      };
+      setaddUrl([...addUrl, loadObj]);
+      setArrUrl([...arrUrl, addFormData.LoadBalancingTargets]);
+
+      const rowObj: any = [
+        ...state.data.form.LoadBalancingTargets,
+        addFormData.LoadBalancingTargets,
+      ];
+
+      console.log("add", rowObj);
+      dispatch(setForm({ ...state.data.form, LoadBalancingTargets: rowObj }));
+      setLoading(false);
+    } else {
+      ToastAlert("Url Already Added ", "error");
+    }
     setAddFormData({ ...addFormData, LoadBalancingTargets: "" });
   };
   const deleteTableRows = (
@@ -101,20 +126,55 @@ export default function LoadBalancing() {
     index: number
   ) => {
     e.preventDefault();
-    const weightObj = [...weight];
-    weightObj.splice(index, 1);
-    setWeight(weightObj);
-    const row = [...state.data.form.LoadBalancingTargets];
-    row.splice(index, 1);
+    const row: any = [...arrUrl];
+    for (let i = 0; i < addUrl[index].weighting; i++) {
+      console.log("we", addUrl[index].weighting);
+
+      const url: string = addUrl[index].loadBalancing;
+      const indexLocalState = row.indexOf(url);
+      row.splice(indexLocalState, 1);
+      setArrUrl(row);
+    }
     dispatch(setForm({ ...state.data.form, LoadBalancingTargets: row }));
+    console.log("st1", state.data.form);
+    const weightObj = [...addUrl];
+    weightObj.splice(index, 1);
+    setaddUrl(weightObj);
+  };
+  const handleWeighting = (e: any, index: number) => {
+    const { name, value } = e.target;
+    const number = addUrl[index].weighting;
+    const formobj = [...addUrl];
+    formobj[index] = { ...formobj[index], [name]: value };
+    setaddUrl(formobj);
+    if (number < formobj[index].weighting) {
+      setArrUrl([...arrUrl, addUrl[index].loadBalancing]);
+      const rowObj: any = [
+        ...state.data.form.LoadBalancingTargets,
+        addUrl[index].loadBalancing,
+      ];
+      console.log("add", rowObj);
+      dispatch(setForm({ ...state.data.form, LoadBalancingTargets: rowObj }));
+    }
+    if (number > formobj[index].weighting) {
+      const url: string = addUrl[index].loadBalancing;
+      const objLocalState = [...arrUrl];
+      const indexLocalState = objLocalState.indexOf(url);
+      objLocalState.splice(indexLocalState, 1);
+      setArrUrl(objLocalState);
+      const objState: any = [...state.data.form.LoadBalancingTargets];
+      const indexState = objState.indexOf(url);
+      objState.splice(indexState, 1);
+      dispatch(setForm({ ...state.data.form, LoadBalancingTargets: objState }));
+    }
   };
   return (
     <div>
       <Row>
         <i className="mb-3">
-          Tyk can perform round-robin load balancing on a series of upstream
-          targets, you will need to add all of the targets using the fields
-          below.
+          Application Gateway can perform round-robin load balancing on a series
+          of upstream targets, you will need to add all of the targets using the
+          fields below.
         </i>
         <br />
         <br />
@@ -125,7 +185,7 @@ export default function LoadBalancing() {
               className="mt-2"
               type="text"
               id="LoadBalancingTargets"
-              value={addFormData.LoadBalancingTargets}
+              value={addFormData.LoadBalancingTargets || ""}
               placeholder="Please enter target(s) and hit enter key"
               name="LoadBalancingTargets"
               isInvalid={!!state.data.errors?.LoadBalancingTargets}
@@ -165,34 +225,43 @@ export default function LoadBalancing() {
                   <th>Upstream Target</th>
                   <th>Weighting</th>
                   <th>Traffic</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               {loading === false ? (
                 <tbody>
-                  {state.data.form.LoadBalancingTargets.map(
-                    (data: any, index: any) => {
-                      return (
-                        <tr key={index}>
-                          <td>
-                            <label>{data}</label>
-                          </td>
-                          <td>
-                            <label>{weight[index].weighting}</label>
-                          </td>
+                  {/* {state.data.form.LoadBalancingTargets.map( */}
+                  {addUrl.map((data: any, index: any) => {
+                    return (
+                      <tr key={index}>
+                        <td>
+                          <label>{data.loadBalancing}</label>
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            name="weighting"
+                            min="1"
+                            // value={weight[index].weighting}
+                            // value={addUrl[index].weighting}
+                            value={data.weighting}
+                            className="form-control"
+                            onChange={(evnt) => handleWeighting(evnt, index)}
+                          />
+                        </td>
 
-                          <td>
-                            <label>{handleTrafficElement(index)} % </label>
-                          </td>
-                          <td>
-                            <button
-                              className="btn btn-default bi bi-trash-fill"
-                              onClick={(e) => deleteTableRows(e, index)}
-                            ></button>
-                          </td>
-                        </tr>
-                      );
-                    }
-                  )}
+                        <td>
+                          <label>{handleTrafficElement(index)} % </label>
+                        </td>
+                        <td>
+                          <button
+                            className="btn btn-default bi bi-trash-fill"
+                            onClick={(e) => deleteTableRows(e, index)}
+                          ></button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               ) : (
                 <></>

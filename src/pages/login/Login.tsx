@@ -6,6 +6,10 @@ import PasswordButtons from "../../components/password-field/Password";
 import { ToastAlert } from "../../components/toast-alert/toast-alert";
 import { logo } from "../../resources/tenant/images";
 import { RootState } from "../../store";
+import {
+  forgotPassword,
+  IForgetPasswordState,
+} from "../../store/forgot-password/slice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { checkLoginType, ILoginTypeState } from "../../store/login-type/slice";
 import { commonLogin, ITokenState } from "../../store/login/slice";
@@ -16,6 +20,9 @@ export default function Login() {
   const location = useLocation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const forgotPasswordState: IForgetPasswordState = useAppSelector(
+    (state) => state.forgotPasswordState
+  );
   const loginType: ILoginTypeState = useAppSelector(
     (state: RootState) => state.loginType
   );
@@ -30,7 +37,6 @@ export default function Login() {
     password: "",
     tenantName: "",
   });
-
   const [error, setError] = useState<ILogin>({
     userName: "",
     password: "",
@@ -60,6 +66,10 @@ export default function Login() {
         break;
     }
   };
+
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
 
   useEffect(() => {
     const useQuery = () => new URLSearchParams(location.search);
@@ -122,7 +132,7 @@ export default function Login() {
       navigate("/tenant");
     }
     if (!user.loading && user.error && loginType.data) {
-      ToastAlert(`Could not login , error ${user.error}`, "warning");
+      ToastAlert(`Could not login , error ${user.error.message}`, "warning");
     }
   }, [user.data, user.error]);
 
@@ -132,6 +142,29 @@ export default function Login() {
     } else {
       ToastAlert("Please fill all the fields", "error");
     }
+  };
+
+  useEffect(() => {
+    if (!forgotPasswordState.loading && forgotPasswordState.error) {
+      ToastAlert(
+        `${forgotPasswordState.error.statusCode}  ${forgotPasswordState.error.message}`,
+        "warning"
+      );
+    } else if (
+      !forgotPasswordState.loading &&
+      !forgotPasswordState.error &&
+      forgotPasswordState.data
+    ) {
+      window.open(
+        forgotPasswordState.data?.redirectUrl,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    }
+  }, [forgotPasswordState]);
+
+  const handleForgotPassword = () => {
+    dispatch(forgotPassword(formdata.tenantName));
   };
 
   return user.loading ? (
@@ -198,6 +231,13 @@ export default function Login() {
                 >
                   SIGN IN
                 </Button>
+                {formdata.tenantName !== "" && (
+                  <p className=" mt-2 text-end cursor-pointer">
+                    <span onClick={handleForgotPassword}>
+                      Forgot Password ?
+                    </span>
+                  </p>
+                )}
               </div>
             </Form>
           </div>
