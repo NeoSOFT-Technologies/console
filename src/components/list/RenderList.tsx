@@ -9,6 +9,7 @@ import {
   checkPaginationUrl,
   checkResponse,
   handleNavigation,
+  setGridPage,
 } from "../../utils/grid-helper";
 
 interface IActionsRenderList {
@@ -29,7 +30,6 @@ interface IProps {
   actions?: IActionsRenderList;
   actionsList?: IActionsRenderList[];
 }
-
 interface IColumns {
   id?: number;
   name: string;
@@ -59,6 +59,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     };
   });
 
+  // This will be used by Grid for reloading the list
   const _refreshGrid = () => {
     setGridReload(true);
   };
@@ -150,42 +151,6 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     search: "search-field",
   };
 
-  function setGridPage() {
-    const selectedPage = document.querySelector(
-      ".gridjs-currentPage"
-    )?.innerHTML;
-
-    const currentPage: number = +selectedPage!;
-    const limit = paginationConfigs.limit;
-    const totalCount = _count;
-    const totalPages = Math.ceil(totalCount / limit) - 1;
-    const startPage = 0;
-    const lastPage = totalPages;
-    const oneRecord = totalCount % limit;
-    if (totalCount > limit) {
-      // 4> 2
-      if (currentPage !== startPage && currentPage - 1 !== lastPage) {
-        //  if more then zero records  & not last page & not 1st page
-        paginationConfigs.page = currentPage - 1;
-      } else if (currentPage - 1 === lastPage && oneRecord) {
-        // last page woking more than 1 record
-        paginationConfigs.page = lastPage - 1;
-      } else if (currentPage - 1 === lastPage) {
-        // 3 :3 last page woking more than 1 record
-        paginationConfigs.page = lastPage;
-      } else if (totalPages + 1 === currentPage) {
-        // page != 1 & having more then 1 record on same page
-        paginationConfigs.page = totalPages;
-      }
-    } else {
-      // working for page 1
-      // if : totalcount <= limit
-      if (currentPage - 1 === startPage) {
-        paginationConfigs.page = startPage;
-      }
-    }
-  }
-
   useEffect(() => {
     grid = (
       <Grid
@@ -201,7 +166,13 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
 
   useEffect(() => {
     if (gridReload) {
-      setGridPage();
+      const pageNum = setGridPage(
+        paginationConfigs.limit,
+        _count,
+        paginationConfigs.page
+      )!;
+      console.log(pageNum);
+      paginationConfigs.page = pageNum;
       grid = (
         <Grid
           columns={columns}

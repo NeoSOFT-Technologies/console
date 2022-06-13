@@ -1,5 +1,48 @@
 import { h } from "gridjs";
 
+export function setGridPage(
+  pagelimit: number,
+  _count: number,
+  pageNum: number
+) {
+  const selectedPage = document.querySelector(".gridjs-currentPage")?.innerHTML;
+
+  const currentPage: number = +selectedPage!;
+  const limit = pagelimit; // gridConfig.pagination.limit;
+  const totalCount = _count;
+  const totalPages = Math.ceil(totalCount / limit) - 1;
+  const startPage = 0;
+  const lastPage = totalPages;
+  const oneRecord = totalCount % limit;
+
+  if (totalCount > limit) {
+    // 4> 2
+    if (currentPage !== startPage && currentPage - 1 !== lastPage) {
+      //  if more then zero records  & not last page & not 1st page
+      pageNum = currentPage - 1;
+      return pageNum;
+    } else if (currentPage - 1 === lastPage && oneRecord === 1) {
+      // last page woking more than 1 record
+      pageNum = lastPage - 1;
+      return pageNum;
+    } else if (currentPage - 1 === lastPage) {
+      // 3 :3 last page woking more than 1 record
+      pageNum = lastPage;
+      return pageNum;
+    } else if (totalPages + 1 === currentPage) {
+      // page != 1 & having more then 1 record on same page
+      pageNum = totalPages;
+      return pageNum;
+    }
+  } else {
+    // working for page 1
+    // if : totalcount <= limit
+    if (currentPage - 1 === startPage) {
+      pageNum = startPage;
+      return pageNum;
+    }
+  }
+}
 export function checkResponse(data: any) {
   const checkData = data;
   if (checkData.Data.Apis) {
