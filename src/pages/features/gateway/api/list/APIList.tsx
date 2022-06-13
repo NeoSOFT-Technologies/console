@@ -113,6 +113,7 @@ export default function APIList() {
             Cancel
           </Button>
           <Button
+            data-testid="deleteBtn"
             variant="primary"
             className="btn-danger"
             onClick={() => handleDelete(DeleteApiId!)}
