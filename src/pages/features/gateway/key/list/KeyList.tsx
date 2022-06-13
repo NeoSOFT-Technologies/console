@@ -206,6 +206,7 @@ export default function KeyList() {
                     <button
                       className=" btn  btn-success btn-sm d-flex float-right mb-4"
                       onClick={(e) => NavigateCreateKey(e)}
+                      data-testid="createBtn"
                     >
                       {" "}
                       Create Key &nbsp;
@@ -232,6 +233,7 @@ export default function KeyList() {
                       <button
                         className=" btn  btn-success btn-sm"
                         onClick={(e) => searchFilter(e)}
+                        data-testid="searchBtn"
                       >
                         <i className=" bi bi-search"></i>
                       </button>
@@ -241,7 +243,7 @@ export default function KeyList() {
               </div>
               <br />
               {keyList.loading && <Spinner />}
-              <div className="table-responsive">
+              <div className="table-responsive" data-testid="row">
                 {!keyList.loading && keyList.data && (
                   <RenderList
                     headings={headings}

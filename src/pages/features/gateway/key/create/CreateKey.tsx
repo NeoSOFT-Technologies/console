@@ -253,6 +253,7 @@ export default function CreateKey() {
                         </button>
                       </AuthGuard>
                       <button
+                        data-testid="cancel-input"
                         className=" btn btn-sm btn-light btn-md d-flex float-right mb-3"
                         onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
                           NavigateToKeyList(event)
@@ -269,8 +270,10 @@ export default function CreateKey() {
                           <>
                             <b>KEY ID:</b> {id}{" "}
                             <i
+                              data-testid="copy-input"
                               className="btn btn-sm bi bi-clipboard"
                               // onClick={copyToClipBoard(state.data.form.ApiId)}
+
                               onClick={copyToClipBoard}
                             ></i>
                             {visible ? "Copied!" : ""}

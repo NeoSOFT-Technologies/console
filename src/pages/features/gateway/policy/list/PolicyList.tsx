@@ -204,6 +204,7 @@ export default function PolicyList() {
                   <button
                     className=" btn  btn-success btn-sm d-flex float-right mb-4"
                     onClick={(e) => NavigateCreatePolicy(e)}
+                    data-testid="createBtn"
                   >
                     {" "}
                     Create Policy &nbsp;
@@ -229,6 +230,7 @@ export default function PolicyList() {
                       <button
                         className=" btn  btn-success btn-sm"
                         onClick={(e) => searchFilter(e)}
+                        data-testid="searchBtn"
                       >
                         <i className=" bi bi-search"></i>
                       </button>
@@ -238,7 +240,7 @@ export default function PolicyList() {
               </div>
               <br />
               {policyList.loading && <Spinner />}
-              <div className="table-responsive">
+              <div className="table-responsive" data-testid="row">
                 {!policyList.loading && policyList.data && (
                   <RenderList
                     headings={headings}

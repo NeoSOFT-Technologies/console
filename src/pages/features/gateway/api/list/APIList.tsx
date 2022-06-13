@@ -186,6 +186,7 @@ export default function APIList() {
             Cancel
           </Button>
           <Button
+            data-testid="deleteBtn"
             variant="primary"
             className="btn-danger"
             onClick={() => handleDelete(DeleteApiId!)}
@@ -213,6 +214,7 @@ export default function APIList() {
                   <button
                     className=" btn btn-sm btn-success btn-sm d-flex float-right mb-2"
                     onClick={(e) => NavigateCreateApi(e)}
+                    data-testid="createBtn"
                   >
                     {" "}
                     Create API &nbsp;
@@ -239,6 +241,7 @@ export default function APIList() {
                       <button
                         className=" btn  btn-success btn-sm"
                         onClick={(e) => searchFilter(e)}
+                        data-testid="searchBtn"
                       >
                         <i className=" bi bi-search"></i>
                       </button>
@@ -248,7 +251,7 @@ export default function APIList() {
               </div>
               <br />
               {apiList.loading && <Spinner />}
-              <div className="table-responsive">
+              <div className="table-responsive" data-testid="row">
                 {!apiList.loading && !apiList.error && apiList.data && (
                   <RenderList
                     headings={headings}

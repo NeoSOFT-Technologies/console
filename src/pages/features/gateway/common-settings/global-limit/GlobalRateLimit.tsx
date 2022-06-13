@@ -536,6 +536,7 @@ export default function GlobalRateLimit(props: IProps) {
                         </Form.Label>
                         <Form.Check
                           type="switch"
+                          data-testid="rate-switch"
                           id="disableGlobalRate"
                           name="GlobalLimit.IsDisabled"
                           label="Disable rate limiting"
@@ -549,6 +550,7 @@ export default function GlobalRateLimit(props: IProps) {
                         <Form.Control
                           className="mt-2"
                           type="text"
+                          data-testid="rate-input"
                           id="rate"
                           placeholder="Enter Request per period"
                           // onChange={(e: any) => validateForm(e)}
@@ -586,6 +588,7 @@ export default function GlobalRateLimit(props: IProps) {
                         <Form.Control
                           className="mt-2"
                           type="text"
+                          data-testid="per-input"
                           id="per"
                           placeholder="Enter time"
                           onChange={(e: any) => handlerateclick(e)}
@@ -639,6 +642,7 @@ export default function GlobalRateLimit(props: IProps) {
                         </Form.Label>
                         <Form.Check
                           type="switch"
+                          data-testid="throttle-switch"
                           id="disableThrottling"
                           name="Throttling.IsDisabled"
                           label="Disable Throttling"
@@ -653,6 +657,7 @@ export default function GlobalRateLimit(props: IProps) {
                         <Form.Control
                           className="mt-2"
                           type="text"
+                          data-testid="retry-input"
                           id="retry"
                           // placeholder={throttleRetry}
                           name="throttle_retry_limit"
@@ -692,6 +697,7 @@ export default function GlobalRateLimit(props: IProps) {
                         <Form.Control
                           className="mt-2"
                           type="text"
+                          data-testid="interval-input"
                           id="interval"
                           name="throttle_interval"
                           value={
@@ -748,6 +754,7 @@ export default function GlobalRateLimit(props: IProps) {
                         </Form.Label>
                         <Form.Check
                           type="switch"
+                          data-testid="quota-switch"
                           id="unlimitedRequests"
                           name="unlimitedRequests.IsDisabled"
                           label="Unlimited requests"
@@ -762,6 +769,7 @@ export default function GlobalRateLimit(props: IProps) {
                         <Form.Control
                           className="mt-2"
                           type="text"
+                          data-testid="quotaPer-input"
                           id="quotaPer"
                           // placeholder={quotaPerPeriod}
                           onChange={(e: any) => handlerateclick(e)}
@@ -801,6 +809,7 @@ export default function GlobalRateLimit(props: IProps) {
                           style={{ height: 46 }}
                           disabled={quota}
                           name="quota_renews"
+                          data-testid="quotaRenews-input"
                           value={
                             props.current === "policy"
                               ? state.data.form.QuotaRate
