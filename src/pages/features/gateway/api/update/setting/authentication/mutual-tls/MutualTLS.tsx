@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Row, Form, Col, Modal } from "react-bootstrap";
 import {
-  AuthGuard,
   access,
-} from "../../../../../../../../components/gateway/auth-guard";
+  AuthGuard,
+} from "../../../../../../../../components/auth-gaurd";
 import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 // import Spinner from "../../../../../../../../components/loader/Loader";
 import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
