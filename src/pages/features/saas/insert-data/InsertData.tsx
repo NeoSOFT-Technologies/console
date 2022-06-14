@@ -12,11 +12,13 @@ import {
   inputTableDataWithoutNrt,
   resetInputDataWithoutNrtState,
 } from "../../../../store/features/saas/input-data/without-nrt/slice";
+import { getTableSchema } from "../../../../store/features/saas/manage-table/get-table-schema/slice";
 import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IInputData, ITableSchema } from "../../../../types/saas";
+import styles from "./InsertData.module.css";
 
-export default function InputData() {
+export default function InputData(this: any) {
   const dispatch = useAppDispatch();
   const inputDataWithNrt = useAppSelector(
     (state) => state.inputDataWithNrtState
@@ -24,13 +26,16 @@ export default function InputData() {
   const inputDataWithoutNrt = useAppSelector(
     (state) => state.inputDataWithOutNrtState
   );
+  const [showMsg, setShowMsg] = useState(false);
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
   const [tenantId, setTenantId] = useState("");
   const [tableName, setTableName] = useState("");
   const [inputData, setInputData] = useState("");
   const [isNrtChecked, setIsNrtChecked] = useState(false);
   const tableData = useAppSelector((state) => state.getTableState);
+  const tableSchema = useAppSelector((state) => state.getTableSchemaState);
   console.log({ tenantId, tableName, isNrtChecked, inputData });
+  console.log(tableSchema);
   const params: ITableSchema = {
     tenantId,
     tableName,
@@ -60,10 +65,16 @@ export default function InputData() {
     }
   }
 
+  const tableNameOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setTableName(event.target.value);
+    // alert(JSON.stringify(tableSchema.data));
+  };
+
   const getInputData: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
   ) => {
     event.preventDefault();
+    setShowMsg(true);
     if (inputData.toString() === "") {
       ToastAlert("Please Enter atleast one data", "error");
     } else if (isValidJSONObject()) {
@@ -72,7 +83,6 @@ export default function InputData() {
       } else {
         dispatch(inputTableDataWithoutNrt(initialState));
       }
-      setInputData("");
     } else {
       ToastAlert("Invalid Data", "error");
     }
@@ -80,6 +90,12 @@ export default function InputData() {
   useEffect(() => {
     dispatch(getTenantDetails());
   }, []);
+
+  useEffect(() => {
+    if (tableName !== "") {
+      dispatch(getTableSchema(params));
+    }
+  }, [tableName]);
 
   useEffect(() => {
     if (
@@ -93,11 +109,20 @@ export default function InputData() {
       ToastAlert("Data Saved successfully", "success");
       dispatch(resetInputDataWithNrtState());
       dispatch(resetInputDataWithoutNrtState());
-    }
-    if (!inputDataWithNrt.loading && inputDataWithNrt.error) {
+      setInputData("");
+    } else if (
+      !inputDataWithNrt.loading &&
+      inputDataWithNrt.error &&
+      isNrtChecked &&
+      showMsg
+    ) {
       ToastAlert(inputDataWithNrt.error as string, "error");
-    }
-    if (!inputDataWithoutNrt.loading && inputDataWithoutNrt.error) {
+    } else if (
+      !inputDataWithoutNrt.loading &&
+      inputDataWithoutNrt.error &&
+      !isNrtChecked &&
+      showMsg
+    ) {
       ToastAlert(inputDataWithoutNrt.error as string, "error");
     }
   }, [
@@ -138,6 +163,7 @@ export default function InputData() {
                           dispatch(getTables(e.target.value));
                         }}
                         required
+                        value={tenantId}
                       >
                         <option value="">Select Tenant</option>
                         {tenantDetails.data?.map((val, index) => (
@@ -158,8 +184,9 @@ export default function InputData() {
                         aria-label="Default select example"
                         className="text-center"
                         required
-                        onChange={(e) => setTableName(e.target.value)}
+                        onChange={tableNameOnChange}
                         data-testid="table-name-select"
+                        value={tableName}
                       >
                         <option value=""> Select Table</option>
                         {tableData.data?.map((val, index) => (
@@ -170,31 +197,51 @@ export default function InputData() {
                       </Form.Select>
                     </Form.Group>
                   </Col>
+                </Row>
+                <Col md="6">
+                  <Form.Group>
+                    <div className="ml-4">
+                      <Form.Check
+                        value="NRT"
+                        checked={isNrtChecked}
+                        onChange={handleOnChange}
+                      />
+                      <label className="pl-2">NRT</label>
+                    </div>
+                  </Form.Group>
+                </Col>
+                <Row>
                   <Col md="6">
-                    <Form.Group>
-                      <div className="ml-4">
-                        <Form.Check
-                          value="NRT"
-                          checked={isNrtChecked}
-                          onChange={handleOnChange}
-                        />
-                        <label className="pl-2">NRT</label>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                  <Col md="12">
                     <Form.Group className="mb-3" controlId="jsonInput">
                       <Form.Label>Data :</Form.Label>
                       <Form.Control
                         as="textarea"
                         type="textarea"
-                        rows={3}
+                        rows={4}
                         value={inputData}
                         placeholder="JSON input"
                         onChange={(e) => setInputData(e.target.value)}
                       />
                     </Form.Group>
                   </Col>
+                  <Col md="6">
+                    <Form.Group className="mb-3">
+                      <Form.Label>InputData Schema :</Form.Label>
+                      <div className={styles.div}>
+                        {"[{"}
+                        {tableSchema.data?.map(
+                          (val) =>
+                            JSON.stringify(val.name).toString() +
+                            " : " +
+                            val.type +
+                            ", "
+                        )}
+                        {"}]"}
+                      </div>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
                   <Col>
                     <Form.Group className="mb-3 mt-3">
                       <Button
