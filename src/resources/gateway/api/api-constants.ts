@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/better-regex */
 import {
   setFormError,
   setForm,
@@ -6,22 +7,22 @@ import { setNestedState } from "../common";
 
 export const regexForName = /^[ A-Za-z][\d A-Za-z]{3,29}$/;
 export const regexForListenPath = /^\/[A-Za-z]+[\dA-Za-z-][\dA-Za-z]*\/$/;
-export const regexForTagetUrl =
-  /^(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*(?:\([\d!#$%&+,./:=?@A-Z\\_|-]*\)|[\d#$%&+/=@A-Z\\_|])*/;
+// export const regexForTagetUrl =
+//   /^(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*(?:\([\d!#$%&+,./:=?@A-Z\\_|-]*\)|[\d#$%&+/=@A-Z\\_|])*/;
+
+export const regexForTargetUrl =
+  /^((https?|ftp|file):\/\/|www\.|ftp\.)(\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*((\.[a-z0-9]{1,6}|:[a-z0-9]{1,6}))/i;
 
 export const regexForNumber = /^-?\d+$/;
 
 export const regexForOverrideTarget =
-  /^(?:https?|ftp|file):\/\/(?:\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*(?:\([\d!#$%&+,./:=?@A-Z\\_|-]*\)|[\d#$%&+/=@A-Z\\_|])*/;
+  /^((https?|ftp|file):\/\/|www\.|ftp\.)(\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*((\.[a-z0-9]{1,6}|:[a-z0-9]{1,6}))/i;
 
 export const regexForIssuer =
-  /^(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*(?:\([\d!#$%&+,./:=?@A-Z\\_|-]*\)|[\d#$%&+/=@A-Z\\_|])*/;
+  /^((https?|ftp|file):\/\/|www\.|ftp\.)(\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*((\.[a-z0-9]{1,6}|:[a-z0-9]{1,6}))/i;
 
 export const regexForAllowedOrigins =
-  /^(?:https?|ftp|file):\/\/|\*(?:\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*(?:\([\d!#$%&+,./:=?@A-Z\\_|-]*\)|[\d#$%&+/=@A-Z\\_|])*/;
-
-// export const regexForIP_Address =
-//   /^(?:(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})\\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})*/;
+  /^((https?|ftp|file):\/\/|www\.|ftp\.)(\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*((\.[a-z0-9]{1,6}|:[a-z0-9]{1,6}))|(\*)/i;
 
 export const regexForIP_Address =
   /^(?:\b25[0-5]|\b2[0-4]\d|\b[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3}$/;

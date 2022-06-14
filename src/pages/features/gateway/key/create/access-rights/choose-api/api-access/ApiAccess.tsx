@@ -1,4 +1,8 @@
 import React from "react";
+import {
+  setForms,
+  setFormErrors,
+} from "../../../../../../../../store/features/gateway/key/create/slice";
 import { useAppSelector } from "../../../../../../../../store/hooks";
 import PathBased from "../../../../../common-settings/path-based-permission/PathBased";
 
@@ -24,6 +28,8 @@ export default function ApiAccess() {
                     apidata={data[index]}
                     indexdata={index}
                     current="key"
+                    setForm={setForms}
+                    setFormError={setFormErrors}
                   />
                 </div>
               );

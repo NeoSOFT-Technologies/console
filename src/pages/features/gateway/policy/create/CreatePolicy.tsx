@@ -1,10 +1,7 @@
 import React, { FormEvent, useEffect } from "react";
 import { Form, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  AuthGuard,
-  access,
-} from "../../../../../components/gateway/auth-guard";
+import { access, AuthGuard } from "../../../../../components/auth-gaurd";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
 import {
@@ -139,13 +136,17 @@ export default function CreatePolicy() {
                     resource={access.resources.Policy}
                     scope={id ? access.scopes.Edit : access.scopes.Create}
                   >
-                    <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
+                    <button
+                      className=" btn btn-sm btn-success btn-md d-flex float-right mb-3"
+                      data-testid="create-input"
+                    >
                       {" "}
                       {id === undefined ? "Create" : "Update"}
                     </button>
                   </AuthGuard>
                   <button
                     className=" btn btn-sm btn-light btn-md d-flex float-right mb-3"
+                    data-testid="cancel-input"
                     onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
                       NavigateToPolicyList(event)
                     }
