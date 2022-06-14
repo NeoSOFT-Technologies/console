@@ -35,25 +35,43 @@ export function setGridPage(paginationConfigs: any, _totalCount: number) {
 
 export function checkResponse(data: any) {
   const checkData = data;
-  if (checkData.Data.Apis) {
-    return checkData.Data.Apis;
-  } else if (checkData.Data.Keys) {
-    return checkData.Data.Keys;
-  } else if (checkData.Data.Policies) {
-    return checkData.Data.Policies;
-  } else {
-    return checkData.data;
+  const currentURL = window.location.pathname.split("/");
+  switch (currentURL[1]) {
+    case "tenant":
+      if (checkData.data) {
+        return checkData.data;
+      }
+      break;
+    case "gateway":
+      if (checkData.Data.Apis) {
+        return checkData.Data.Apis;
+      } else if (checkData.Data.Keys) {
+        return checkData.Data.Keys;
+      } else if (checkData.Data.Policies) {
+        return checkData.Data.Policies;
+      }
+      break;
+    default:
+      break;
   }
 }
 // This will be used when return total count of available data
 export function checkCount(data: any) {
-  if (data.count) {
-    return data.count;
-  } else if (data.TotalCount) {
-    return data.TotalCount;
-  } else {
-    return 0;
+  let totalCount = 0;
+  const currentURL = window.location.pathname.split("/");
+  switch (currentURL[1]) {
+    case "tenant":
+      totalCount = data.count;
+      break;
+
+    case "gateway":
+      totalCount = data.TotalCount;
+      break;
+
+    default:
+      break;
   }
+  return totalCount;
 }
 // This will be used when you request some formating on columns by using format function
 export const checkFormat = (headings: any, _data: any) => {
@@ -84,6 +102,7 @@ export function checkPaginationUrl(prev: string, page: number, limit: number) {
     default:
       break;
   }
+
   return paginationURL;
 }
 
