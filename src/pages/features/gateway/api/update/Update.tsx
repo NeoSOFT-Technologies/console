@@ -1,10 +1,7 @@
 import React, { FormEvent, useEffect } from "react";
 import { Tab, Tabs, Form } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  AuthGuard,
-  access,
-} from "../../../../../components/gateway/auth-guard";
+import { access, AuthGuard } from "../../../../../components/auth-gaurd";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";

@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form, Row, Col, Accordion } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import {
-  AuthGuard,
-  access,
-} from "../../../../../components/gateway/auth-guard";
+import { access, AuthGuard } from "../../../../../components/auth-gaurd";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
   regexForName,

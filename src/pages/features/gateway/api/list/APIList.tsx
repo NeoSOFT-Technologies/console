@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import {
-  AuthGuard,
-  access,
-} from "../../../../../components/gateway/auth-guard";
+import { access, AuthGuard } from "../../../../../components/auth-gaurd";
 import RenderList, {
   refreshGrid,
 } from "../../../../../components/list/RenderList";
@@ -116,6 +113,7 @@ export default function APIList() {
             Cancel
           </Button>
           <Button
+            data-testid="deleteBtn"
             variant="primary"
             className="btn-danger"
             onClick={() => handleDelete(DeleteApiId!)}
