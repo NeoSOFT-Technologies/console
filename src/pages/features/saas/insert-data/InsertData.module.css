@@ -1,12 +1,12 @@
-.div{
+.div {
   height: 107px;
   width: 100%;
   overflow-y: scroll;
-  border-style:solid;
+  border-style: solid;
   background-color: #edf3f5;
-  text-align:justify;
+  text-align: justify;
 }
-.txtarea{
+.txtarea {
   margin-bottom: 3;
   height: 222px;
 }
