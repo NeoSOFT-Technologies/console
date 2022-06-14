@@ -6,6 +6,7 @@ import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
 import {
   inputTableDataWithNrt,
+  resetInputDataWithNrt,
   resetInputDataWithNrtState,
 } from "../../../../store/features/saas/input-data/with-nrt/slice";
 import {
@@ -26,32 +27,68 @@ export default function InputData(this: any) {
   const inputDataWithoutNrt = useAppSelector(
     (state) => state.inputDataWithOutNrtState
   );
+  const [insertTenant, setInsertTenant] = useState({
+    tenantId: "",
+    tableName: "",
+    inputData: "",
+    // isNrtChecked: false,
+  });
   const [showMsg, setShowMsg] = useState(false);
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
-  const [tenantId, setTenantId] = useState("");
-  const [tableName, setTableName] = useState("");
-  const [inputData, setInputData] = useState("");
+  // const [tenantId, setTenantId] = useState("");
+  // const [tableName, setTableName] = useState("");
+  // const [inputData, setInputData] = useState("");
   const [isNrtChecked, setIsNrtChecked] = useState(false);
   const tableData = useAppSelector((state) => state.getTableState);
   const tableSchema = useAppSelector((state) => state.getTableSchemaState);
-  console.log({ tenantId, tableName, isNrtChecked, inputData });
-  console.log(tableSchema);
+  console.log({
+    tenantId: insertTenant.tenantId,
+    tableName: insertTenant.tableName,
+    isNrtChecked,
+    inputData: insertTenant.inputData,
+  });
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLSelectElement> | any
+  ) => {
+    const { name, value } = event.target;
+    if (name === "tenantId") {
+      setInsertTenant({
+        ...insertTenant,
+        [name]: value,
+        tableName: "",
+        inputData: "",
+        // isNrtChecked: false,
+      });
+    } else if (name === "tableName") {
+      setInsertTenant({
+        ...insertTenant,
+        [name]: value,
+        inputData: "",
+        // isNrtChecked: false,
+      });
+    } else {
+      setInsertTenant({ ...insertTenant, [name]: value });
+    }
+    dispatch(resetInputDataWithNrt);
+  };
+
   const params: ITableSchema = {
-    tenantId,
-    tableName,
+    tenantId: insertTenant.tenantId,
+    tableName: insertTenant.tableName,
   };
   const initialState: IInputData = {
-    inputData,
+    inputData: insertTenant.inputData,
     requestParams: params,
   };
 
   function isValidJSONObject() {
     try {
       if (
-        inputData !== null &&
-        inputData.trim().startsWith("[{") &&
-        JSON.parse(inputData) &&
-        inputData.trim().endsWith("}]")
+        insertTenant.inputData !== null &&
+        insertTenant.inputData.trim().startsWith("[{") &&
+        JSON.parse(insertTenant.inputData) &&
+        insertTenant.inputData.trim().endsWith("}]")
       ) {
         console.log("JSON object true");
         return true;
@@ -65,17 +102,20 @@ export default function InputData(this: any) {
     }
   }
 
-  const tableNameOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTableName(event.target.value);
-    // alert(JSON.stringify(tableSchema.data));
+  const handleOnChange = () => {
+    setIsNrtChecked(!isNrtChecked);
   };
+  // const tableNameOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setTableName(event.target.value);
+  //   // alert(JSON.stringify(tableSchema.data));
+  // };
 
   const getInputData: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
   ) => {
     event.preventDefault();
     setShowMsg(true);
-    if (inputData.toString() === "") {
+    if (insertTenant.inputData.toString() === "") {
       ToastAlert("Please Enter atleast one data", "error");
     } else if (isValidJSONObject()) {
       if (isNrtChecked) {
@@ -92,10 +132,10 @@ export default function InputData(this: any) {
   }, []);
 
   useEffect(() => {
-    if (tableName !== "") {
+    if (insertTenant.tableName !== "") {
       dispatch(getTableSchema(params));
     }
-  }, [tableName]);
+  }, [insertTenant.tableName]);
 
   useEffect(() => {
     if (
@@ -109,7 +149,7 @@ export default function InputData(this: any) {
       ToastAlert("Data Saved successfully", "success");
       dispatch(resetInputDataWithNrtState());
       dispatch(resetInputDataWithoutNrtState());
-      setInputData("");
+      // setInputData("");
     } else if (
       !inputDataWithNrt.loading &&
       inputDataWithNrt.error &&
@@ -131,9 +171,9 @@ export default function InputData(this: any) {
     inputDataWithNrt.error,
     inputDataWithoutNrt.error,
   ]);
-  const handleOnChange = () => {
-    setIsNrtChecked(!isNrtChecked);
-  };
+  // const handleOnChange = () => {
+  //   setIsNrtChecked(!insertTenant.isNrtChecked);
+  // };
 
   return (
     <div>
@@ -156,14 +196,15 @@ export default function InputData(this: any) {
                       <Form.Select
                         aria-label="Default select example"
                         className="text-center"
+                        name="tenantId"
                         id="tenantName"
                         data-testid="tenant-name-select"
+                        value={insertTenant.tenantId}
                         onChange={(e) => {
-                          setTenantId(e.target.value);
+                          handleInputChange(e);
                           dispatch(getTables(e.target.value));
                         }}
                         required
-                        value={tenantId}
                       >
                         <option value="">Select Tenant</option>
                         {tenantDetails.data?.map((val, index) => (
@@ -183,10 +224,11 @@ export default function InputData(this: any) {
                       <Form.Select
                         aria-label="Default select example"
                         className="text-center"
+                        name="tableName"
                         required
-                        onChange={tableNameOnChange}
+                        onChange={(e) => handleInputChange(e)}
                         data-testid="table-name-select"
-                        value={tableName}
+                        value={insertTenant.tableName}
                       >
                         <option value=""> Select Table</option>
                         {tableData.data?.map((val, index) => (
@@ -202,7 +244,7 @@ export default function InputData(this: any) {
                   <Form.Group>
                     <div className="ml-4">
                       <Form.Check
-                        value="NRT"
+                        name="isNrtChecked"
                         checked={isNrtChecked}
                         onChange={handleOnChange}
                       />
@@ -218,9 +260,10 @@ export default function InputData(this: any) {
                         as="textarea"
                         type="textarea"
                         rows={4}
-                        value={inputData}
+                        name="inputData"
+                        value={insertTenant.inputData}
                         placeholder="JSON input"
-                        onChange={(e) => setInputData(e.target.value)}
+                        onChange={(e) => handleInputChange(e)}
                       />
                     </Form.Group>
                   </Col>

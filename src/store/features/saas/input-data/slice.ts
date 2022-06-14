@@ -17,6 +17,7 @@ export const getTenantDetails = createAsyncThunk(
   "getTenantDetails",
   async () => {
     // async (data: ITableCreateData) => {
+
     try {
       const response = await getTenantListService();
       return response.data.data;

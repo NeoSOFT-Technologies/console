@@ -43,6 +43,11 @@ const slice = createSlice({
       state.loading = false;
       state.error = undefined;
     },
+    resetInputDataWithNrt: (state, action) => {
+      state.data = action.payload;
+      state.loading = false;
+      state.error = undefined;
+    },
   },
   extraReducers(builder): void {
     builder.addCase(inputTableDataWithNrt.pending, (state) => {
@@ -60,5 +65,6 @@ const slice = createSlice({
     });
   },
 });
-export const { resetInputDataWithNrtState } = slice.actions;
+export const { resetInputDataWithNrtState, resetInputDataWithNrt } =
+  slice.actions;
 export default slice.reducer;
