@@ -35,14 +35,24 @@ export function setGridPage(paginationConfigs: any, _totalCount: number) {
 
 export function checkResponse(data: any) {
   const checkData = data;
-  if (checkData.Data.Apis) {
-    return checkData.Data.Apis;
-  } else if (checkData.Data.Keys) {
-    return checkData.Data.Keys;
-  } else if (checkData.Data.Policies) {
-    return checkData.Data.Policies;
-  } else {
-    return checkData.data;
+  const currentURL = window.location.pathname.split("/");
+  switch (currentURL[1]) {
+    case "tenant":
+      if (checkData.data) {
+        return checkData.data;
+      }
+      break;
+    case "gateway":
+      if (checkData.Data.Apis) {
+        return checkData.Data.Apis;
+      } else if (checkData.Data.Keys) {
+        return checkData.Data.Keys;
+      } else if (checkData.Data.Policies) {
+        return checkData.Data.Policies;
+      }
+      break;
+    default:
+      break;
   }
 }
 // This will be used when return total count of available data
