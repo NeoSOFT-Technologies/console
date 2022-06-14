@@ -66,7 +66,6 @@ export default function GetSearchData() {
         order: "asc",
       });
     } else if (name === "tableName") {
-      setMsg(false);
       setSearchTenant({
         ...searchTenant,
         [name]: value,
@@ -79,6 +78,7 @@ export default function GetSearchData() {
     } else {
       setSearchTenant({ ...searchTenant, [name]: value });
     }
+    setMsg(false);
     dispatch(resetSearchData(resetData));
   };
 
@@ -197,8 +197,8 @@ export default function GetSearchData() {
     searchData.data?.map((val) => {
       check = 0;
       // eslint-disable-next-line array-callback-return
-      tableHeader.map((xyz) => {
-        if (val[xyz]?.toString().includes(search)) {
+      tableHeader.map((evals) => {
+        if (val[evals]?.toString().includes(search)) {
           check = 1;
         }
       });
