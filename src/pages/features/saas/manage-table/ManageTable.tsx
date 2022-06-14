@@ -37,6 +37,7 @@ export default function ManageTables() {
     setTenantId(tenantID);
     setShow(true);
   };
+  const datalength = allTableData.data?.dataSize;
   const [showEdit, setShowEdit] = useState(false);
   const handleEditClose = () => setShowEdit(false);
   const handleEditShow = (obj: ITableSchema) => {
@@ -65,13 +66,15 @@ export default function ManageTables() {
       !deleteTableData.error &&
       deleteTableData?.data
     ) {
-      const newTableList = allTableData.data?.filter((obj) => {
+      const newTableList = allTableData.data?.tableList.filter((obj) => {
         return (
           obj.tenantId !== deletedTableRecord.tenantId ||
           obj.tableName !== deletedTableRecord.tableName
         );
       });
-      dispatch(setTableData(newTableList));
+
+      console.log(newTableList);
+      dispatch(setTableData({ dataSize: datalength, tableList: newTableList }));
       ToastAlert("Table Deleted successfully ", "success");
     }
   }, [deleteTableData.loading]);
@@ -110,14 +113,16 @@ export default function ManageTables() {
 
     dispatch(getAllTables(pageParameters));
   };
+
   return (
     <div className="createbody">
-      <div className="text-nowrap bd-highlight m-4">
-        <h5>Table Details</h5>
+      <div className="text-nowrap bd-highlight ">
+        <h5 className=" text-center mb-3 ">Table Details</h5>
       </div>
       <div className="card m-4">
         <div className="card-body table-responsive">
-          {allTableData.data !== undefined && allTableData.data.length > 0 ? (
+          {allTableData.data?.tableList !== undefined &&
+          allTableData.data.tableList.length > 0 ? (
             <>
               <Table bordered className="text-center">
                 <thead>
@@ -130,7 +135,7 @@ export default function ManageTables() {
                   </tr>
                 </thead>
                 <tbody>
-                  {allTableData.data?.map((val, index) => (
+                  {allTableData.data.tableList.map((val, index) => (
                     <tr key={index + currentPage * (currentPage + 1) + 1}>
                       {currentPage !== 1 ? (
                         <td>{index + currentPage * (currentPage + 1) + 1}</td>
@@ -159,30 +164,30 @@ export default function ManageTables() {
               </Table>
               <nav aria-label="Page navigation example">
                 <ul className="pagination ">
-                  {currentPage !== 1 ? (
-                    <li className="page-item">
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-                  ) : (
-                    <li className="page-item disabled">
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-                  )}
+                  <li
+                    className={
+                      currentPage !== 1 ? "page-item" : "page-item disabled"
+                    }
+                  >
+                    <a
+                      className="page-link "
+                      onClick={() => prevpage(currentPage)}
+                    >
+                      Previous
+                    </a>
+                  </li>
 
                   <li className="page-item active">
                     <a className="page-link">{currentPage}</a>
                   </li>
-                  <li className="page-item  ">
+                  <li
+                    className={
+                      allTableData.data !== undefined &&
+                      allTableData.data.dataSize - currentPage * 6 <= 0
+                        ? "page-item disabled"
+                        : "page-item  "
+                    }
+                  >
                     <a
                       className="page-link "
                       onClick={() => nextpage(currentPage)}
@@ -196,40 +201,6 @@ export default function ManageTables() {
           ) : (
             <>
               <h2>No Data</h2>
-              <nav aria-label="Page navigation example">
-                <ul className="pagination ">
-                  {currentPage !== 1 ? (
-                    <li className="page-item">
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-                  ) : (
-                    <li className="page-item disabled">
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-                  )}
-                  <li className="page-item active">
-                    <a className="page-link">{currentPage}</a>
-                  </li>
-                  <li className="page-item  disabled">
-                    <a
-                      className="page-link "
-                      onClick={() => nextpage(currentPage)}
-                    >
-                      Next
-                    </a>
-                  </li>
-                </ul>
-              </nav>
             </>
           )}
         </div>

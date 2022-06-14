@@ -40,7 +40,7 @@ function RestoreTable() {
     setTenantId(obj.tenantId);
     setShow(true);
   };
-
+  const dataLength = allDeleteTableData.data?.dataSize;
   useEffect(() => {
     const pageParameters: IPagination = {
       pageNumber: currentPage.toString(),
@@ -61,13 +61,15 @@ function RestoreTable() {
       !restoredTableData.error &&
       restoredTableData?.data
     ) {
-      const newTableList = allDeleteTableData.data?.filter((obj) => {
+      const newTableList = allDeleteTableData.data?.tableList.filter((obj) => {
         return (
           obj.tenantId !== restoredTableRecord.tenantId ||
           obj.tableName !== restoredTableRecord.tableName
         );
       });
-      dispatch(setDeletedTableData(newTableList));
+      dispatch(
+        setDeletedTableData({ dataSize: dataLength, tableList: newTableList })
+      );
       ToastAlert("Table restored successfully ", "success");
     }
   }, [restoredTableData.loading]);
@@ -76,7 +78,6 @@ function RestoreTable() {
     dispatch(restoreTable(obj));
     setRestoredTableRecord({ ...obj });
     handleClose();
-    // ToastAlert("Table Restored successfully ", "success");
   };
 
   const prevpage = (currentPage1: number) => {
@@ -107,13 +108,13 @@ function RestoreTable() {
   };
   return (
     <div className="createbody">
-      <div className="text-nowrap bd-highlight m-4">
-        <h5>Table Details</h5>
+      <div className="text-nowrap bd-highlight">
+        <h5 className=" text-center pt-3 ">Table Details</h5>
       </div>
       <div className="card m-4">
         <div className="card-body table-responsive">
-          {allDeleteTableData.data !== undefined &&
-          allDeleteTableData.data.length > 0 ? (
+          {allDeleteTableData.data?.tableList !== undefined &&
+          allDeleteTableData.data.tableList.length > 0 ? (
             <>
               <Table bordered className="text-center">
                 <thead>
@@ -125,7 +126,7 @@ function RestoreTable() {
                   </tr>
                 </thead>
                 <tbody>
-                  {allDeleteTableData.data?.map((val, index) => (
+                  {allDeleteTableData.data.tableList.map((val, index) => (
                     <tr key={index + currentPage * (currentPage + 1) + 1}>
                       {currentPage !== 1 ? (
                         <td>{index + currentPage * (currentPage + 1) + 1}</td>
@@ -148,29 +149,30 @@ function RestoreTable() {
 
               <nav aria-label="Page navigation example">
                 <ul className="pagination ">
-                  {currentPage !== 1 ? (
-                    <li className="page-item">
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-                  ) : (
-                    <li className="page-item disabled">
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-                  )}
+                  <li
+                    className={
+                      currentPage !== 1 ? "page-item" : "page-item disabled"
+                    }
+                  >
+                    <a
+                      className="page-link "
+                      onClick={() => prevpage(currentPage)}
+                    >
+                      Previous
+                    </a>
+                  </li>
+
                   <li className="page-item active">
                     <a className="page-link">{currentPage}</a>
                   </li>
-                  <li className="page-item  ">
+                  <li
+                    className={
+                      allDeleteTableData.data.tableList !== undefined &&
+                      allDeleteTableData.data.dataSize - currentPage * 6 <= 0
+                        ? "page-item disabled"
+                        : "page-item  "
+                    }
+                  >
                     <a
                       className="page-link "
                       onClick={() => nextpage(currentPage)}
@@ -184,40 +186,6 @@ function RestoreTable() {
           ) : (
             <>
               <h2>No Data</h2>
-              <nav aria-label="Page navigation example">
-                <ul className="pagination ">
-                  {currentPage !== 1 ? (
-                    <li className="page-item">
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-                  ) : (
-                    <li className="page-item disabled">
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-                  )}
-                  <li className="page-item active">
-                    <a className="page-link">{currentPage}</a>
-                  </li>
-                  <li className="page-item  disabled">
-                    <a
-                      className="page-link "
-                      onClick={() => nextpage(currentPage)}
-                    >
-                      Next
-                    </a>
-                  </li>
-                </ul>
-              </nav>
             </>
           )}
         </div>

@@ -18,6 +18,11 @@ export interface ICreateTable {
   tenantId: string;
   requestData: ITableCreateData;
 }
+
+export interface IAllTableList {
+  dataSize: number;
+  tableList: ITableSchema[];
+}
 export interface ITableSchema {
   tenantId: string;
   tableName: string;
