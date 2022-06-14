@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Dropdown, Modal, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Spinner from "../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
 import { createTable } from "../../../../store/features/saas/manage-table/create-table/slice";
 import { capacityPlans } from "../../../../store/features/saas/manage-table/get-capacity-plans/slice";
 import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { ICreateTable, ITableCreateData } from "../../../../types/saas";
+import {
+  ICreateTable,
+  ITableCreateData,
+  ITableColumnData,
+} from "../../../../types/saas";
 import "./style.css";
 
 export default function CreateTables() {
@@ -59,7 +64,7 @@ export default function CreateTables() {
   const handleAddColumnSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    const columnData = {
+    const columnData: ITableColumnData = {
       name: columnName,
       type,
       required,
@@ -183,10 +188,9 @@ export default function CreateTables() {
   }, [columnsDataArray]);
 
   useEffect(() => {
-    console.log("msg", params);
     dispatch(capacityPlans());
     dispatch(getTenantDetails());
-  }, []);
+  }, [createtablestate]);
 
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
@@ -214,8 +218,6 @@ export default function CreateTables() {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
     const inputValue = event.target.value;
-    console.log("msg", params);
-
     const startRegex = /^[\dA-Za-z]*$/g;
     const whiteRegex = /^((?!\s).)*$/gm;
     if (name === "tableName") {
@@ -290,20 +292,30 @@ export default function CreateTables() {
     setStorable(getEditObj.storable);
     setIsEditColumn(false);
   };
-  const getCapacityData: React.FormEventHandler<HTMLFormElement> = (
-    event: React.FormEvent
-  ) => {
-    event.preventDefault();
 
-    dispatch(capacityPlans());
-  };
+  useEffect(() => {
+    if (
+      !createtablestate.loading &&
+      !createtablestate.error &&
+      createtablestate?.data
+    ) {
+      ToastAlert("Table created successfully", "success");
+    }
+    if (
+      !createtablestate.loading &&
+      createtablestate.error &&
+      !createtablestate?.data
+    ) {
+      ToastAlert(createtablestate.error as string, "error");
+    }
+  }, [createtablestate.loading, createtablestate.error]);
 
   return (
     <div>
       {createtablestate.loading ? (
         <Spinner />
       ) : (
-        <div className="createbody ">
+        <div className="createbody pb-5 ">
           <h3 className="pl-5 pt-5 text-center">Add Table</h3>
           <br></br>
 
@@ -382,8 +394,8 @@ export default function CreateTables() {
                       )}
                     </Form.Select>
                   </Col>
-                  <Form.Label column="lg" lg={2} className="p-1 mt-3">
-                    <Form onClick={getCapacityData}>
+                  <Form.Label column="lg" lg={2} className="p-1 pt-3 mt-3">
+                    <Form>
                       <i
                         className="bi bi-info-circle-fill"
                         onClick={handleShowModalTwo}
