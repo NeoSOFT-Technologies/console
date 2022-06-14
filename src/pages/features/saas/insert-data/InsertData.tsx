@@ -12,6 +12,7 @@ import {
 import {
   inputTableDataWithoutNrt,
   resetInputDataWithoutNrtState,
+  resetinputvalue,
 } from "../../../../store/features/saas/input-data/without-nrt/slice";
 import { getTableSchema } from "../../../../store/features/saas/manage-table/get-table-schema/slice";
 import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
@@ -31,20 +32,20 @@ export default function InputData(this: any) {
     tenantId: "",
     tableName: "",
     inputData: "",
-    // isNrtChecked: false,
+    isNrtChecked: false,
   });
   const [showMsg, setShowMsg] = useState(false);
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
   // const [tenantId, setTenantId] = useState("");
   // const [tableName, setTableName] = useState("");
   // const [inputData, setInputData] = useState("");
-  const [isNrtChecked, setIsNrtChecked] = useState(false);
+  // const [isNrtChecked, setIsNrtChecked] = useState(false);
   const tableData = useAppSelector((state) => state.getTableState);
   const tableSchema = useAppSelector((state) => state.getTableSchemaState);
   console.log({
     tenantId: insertTenant.tenantId,
     tableName: insertTenant.tableName,
-    isNrtChecked,
+    isNrtChecked: insertTenant.isNrtChecked,
     inputData: insertTenant.inputData,
   });
 
@@ -52,25 +53,41 @@ export default function InputData(this: any) {
     event: React.ChangeEvent<HTMLSelectElement> | any
   ) => {
     const { name, value } = event.target;
-    if (name === "tenantId") {
-      setInsertTenant({
-        ...insertTenant,
-        [name]: value,
-        tableName: "",
-        inputData: "",
-        // isNrtChecked: false,
-      });
-    } else if (name === "tableName") {
-      setInsertTenant({
-        ...insertTenant,
-        [name]: value,
-        inputData: "",
-        // isNrtChecked: false,
-      });
-    } else {
-      setInsertTenant({ ...insertTenant, [name]: value });
+    switch (name) {
+      case "tenantId": {
+        setInsertTenant({
+          ...insertTenant,
+          [name]: value,
+          tableName: "",
+          inputData: "",
+        });
+
+        break;
+      }
+      case "!isNrtChecked": {
+        setInsertTenant({
+          ...insertTenant,
+          [name]: value,
+          isNrtChecked: !insertTenant.isNrtChecked,
+        });
+
+        break;
+      }
+      case "tableName": {
+        setInsertTenant({
+          ...insertTenant,
+          [name]: value,
+          inputData: "",
+        });
+
+        break;
+      }
+      default: {
+        setInsertTenant({ ...insertTenant, [name]: value });
+      }
     }
     dispatch(resetInputDataWithNrt);
+    dispatch(resetinputvalue);
   };
 
   const params: ITableSchema = {
@@ -102,9 +119,9 @@ export default function InputData(this: any) {
     }
   }
 
-  const handleOnChange = () => {
-    setIsNrtChecked(!isNrtChecked);
-  };
+  // const handleOnChange = () => {
+  //   setIsNrtChecked(!insertTenant.isNrtChecked);
+  // };
   // const tableNameOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
   //   setTableName(event.target.value);
   //   // alert(JSON.stringify(tableSchema.data));
@@ -118,7 +135,7 @@ export default function InputData(this: any) {
     if (insertTenant.inputData.toString() === "") {
       ToastAlert("Please Enter atleast one data", "error");
     } else if (isValidJSONObject()) {
-      if (isNrtChecked) {
+      if (insertTenant.isNrtChecked) {
         dispatch(inputTableDataWithNrt(initialState));
       } else {
         dispatch(inputTableDataWithoutNrt(initialState));
@@ -153,14 +170,14 @@ export default function InputData(this: any) {
     } else if (
       !inputDataWithNrt.loading &&
       inputDataWithNrt.error &&
-      isNrtChecked &&
+      insertTenant.isNrtChecked &&
       showMsg
     ) {
       ToastAlert(inputDataWithNrt.error as string, "error");
     } else if (
       !inputDataWithoutNrt.loading &&
       inputDataWithoutNrt.error &&
-      !isNrtChecked &&
+      !insertTenant.isNrtChecked &&
       showMsg
     ) {
       ToastAlert(inputDataWithoutNrt.error as string, "error");
@@ -245,8 +262,9 @@ export default function InputData(this: any) {
                     <div className="ml-4">
                       <Form.Check
                         name="isNrtChecked"
-                        checked={isNrtChecked}
-                        onChange={handleOnChange}
+                        //  checked={insertTenant.isNrtChecked}
+                        // value={insertTenant.isNrtChecked.toString()}
+                        onChange={(e) => handleInputChange(e)}
                       />
                       <label className="pl-2">NRT</label>
                     </div>

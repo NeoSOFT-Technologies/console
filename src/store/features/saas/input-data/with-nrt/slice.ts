@@ -65,6 +65,7 @@ const slice = createSlice({
     });
   },
 });
+
+export default slice.reducer;
 export const { resetInputDataWithNrtState, resetInputDataWithNrt } =
   slice.actions;
-export default slice.reducer;
