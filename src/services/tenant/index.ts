@@ -14,4 +14,8 @@ export {
 
 export { updateUserDataService, getUserDetailsService } from "./users";
 
-export { commonLoginService, commonLogoutService } from "./common";
+export {
+  commonLoginService,
+  commonLogoutService,
+  forgotPasswordService,
+} from "./common";

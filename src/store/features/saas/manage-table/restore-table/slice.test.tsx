@@ -10,7 +10,6 @@ describe("SAAS - RESTORE Table Slice", () => {
       restoreTable({ tenantId: "1", tableName: "testTable" })
     );
 
-    // console.log(result.type);
     expect(result.type).toBe("restoreTableByTableName/fulfilled");
   });
 
@@ -20,7 +19,6 @@ describe("SAAS - RESTORE Table Slice", () => {
       restoreTable({ tenantId: "1", tableName: "testTable" })
     );
 
-    // console.log(result.type);
     expect(result.type).toBe("restoreTableByTableName/rejected");
   });
 });

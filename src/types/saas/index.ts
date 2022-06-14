@@ -66,7 +66,6 @@ export interface ICapacityPlans {
   replicas: string;
   shards: string;
 }
-
 export interface ITenantDetails {
   id: Number;
   tenantName: string;
@@ -75,4 +74,7 @@ export interface ITenantDetails {
   databaseName: string;
   databaseDescription: string;
   createdDateTime: string;
+}
+export interface IErrorColumnInput {
+  name: string;
 }

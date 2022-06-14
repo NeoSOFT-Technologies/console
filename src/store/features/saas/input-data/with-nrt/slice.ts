@@ -16,7 +16,6 @@ const initialState: IInputDataNrtState = {
 export const inputTableDataWithNrt = createAsyncThunk(
   "inputDataWithNrt",
   async (data: IInputData) => {
-    // async (data: ITableCreateData) => {
     try {
       const response = await inputDataNrtService(
         data.requestParams.tableName,

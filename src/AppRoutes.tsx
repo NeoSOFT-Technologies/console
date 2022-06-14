@@ -1,7 +1,9 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AdminGuard, TenantGuard, UserGuard } from "./components/auth-gaurd";
+import { AuthGuard, access } from "./components/gateway/auth-guard";
 import Spinner from "./components/loader/Loader";
+import GetTables from "./pages/features/saas/get-tables/GetTables";
 const RoleAndPermissions = lazy(
   () =>
     import(
@@ -62,9 +64,6 @@ const CreateKey = lazy(
 const CreatePolicy = lazy(
   () => import("./pages/features/gateway/policy/create/CreatePolicy")
 );
-const GetTables = lazy(
-  () => import("./pages/features/saas/get-tables/GetTables")
-);
 const KeyList = lazy(() => import("./pages/features/gateway/key/list/KeyList"));
 const Dashboard = lazy(() => import("./pages/features/gateway/Dashboard"));
 const UpdateApi = lazy(
@@ -89,9 +88,6 @@ const AddTable = lazy(
 
 const EditTables = lazy(
   () => import("./pages/features/saas/edit-table/EditTable")
-);
-const CreateTables = lazy(
-  () => import("./pages/features/saas/add-table/CreateTable")
 );
 
 function AppRoutes() {
@@ -215,19 +211,119 @@ function AppRoutes() {
         </Route>
         <Route path="/gateway">
           <Route path="" element={<StatisticsDashboard />} />
-          <Route path="apis" element={<APIList />} />
-          <Route path="policies" element={<PolicyList />} />
-          <Route path="keys" element={<KeyList />} />
+          <Route
+            path="apis"
+            element={
+              <AuthGuard
+                resource={access.resources.Api}
+                scope={access.scopes.View}
+                protect={access.protect}
+              >
+                <APIList />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="policies"
+            element={
+              <AuthGuard
+                resource={access.resources.Policy}
+                scope={access.scopes.View}
+                protect={access.protect}
+              >
+                <PolicyList />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="keys"
+            element={
+              <AuthGuard
+                resource={access.resources.Key}
+                scope={access.scopes.View}
+                protect={access.protect}
+              >
+                <KeyList />
+              </AuthGuard>
+            }
+          />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="apis/create" element={<CreateApi />} />
-          <Route path="keys/create" element={<CreateKey />} />
-          <Route path="policies/create" element={<CreatePolicy />} />
-          <Route path="apis/update/:id" element={<UpdateApi />} />
-          <Route path="policies/update/:id" element={<CreatePolicy />} />
+          <Route
+            path="apis/create"
+            element={
+              <AuthGuard
+                resource={access.resources.Api}
+                scope={access.scopes.Create}
+                protect={access.protect}
+              >
+                <CreateApi />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="keys/create"
+            element={
+              <AuthGuard
+                resource={access.resources.Key}
+                scope={access.scopes.Create}
+                protect={access.protect}
+              >
+                <CreateKey />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="policies/create"
+            element={
+              <AuthGuard
+                resource={access.resources.Policy}
+                scope={access.scopes.Create}
+                protect={access.protect}
+              >
+                <CreatePolicy />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="apis/update/:id"
+            element={
+              <AuthGuard
+                resource={access.resources.Api}
+                scope={access.scopes.View}
+                protect={access.protect}
+              >
+                <UpdateApi />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="keys/update/:id"
+            element={
+              <AuthGuard
+                resource={access.resources.Key}
+                scope={access.scopes.View}
+                protect={access.protect}
+              >
+                <CreateKey />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="policies/update/:id"
+            element={
+              <AuthGuard
+                resource={access.resources.Policy}
+                scope={access.scopes.View}
+                protect={access.protect}
+              >
+                <CreatePolicy />
+              </AuthGuard>
+            }
+          />
         </Route>
         <Route path="/saas">
           <Route
-            path="getTables"
+            path="get-tables"
             element={
               <AdminGuard>
                 <GetTables />
@@ -235,7 +331,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="insertData"
+            path="insert-data"
             element={
               <AdminGuard>
                 <InsertData />
@@ -244,7 +340,7 @@ function AppRoutes() {
           />
 
           <Route
-            path="searchData"
+            path="search-data"
             element={
               <AdminGuard>
                 <SearchData />
@@ -252,7 +348,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="manageTable"
+            path="manage-table"
             element={
               <AdminGuard>
                 <ManageTable />
@@ -261,7 +357,7 @@ function AppRoutes() {
           />
 
           <Route
-            path="addTable"
+            path="add-table"
             element={
               <AdminGuard>
                 <AddTable />
@@ -269,7 +365,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="restoreTable"
+            path="restore-table"
             element={
               <AdminGuard>
                 <RestoreTable />
@@ -277,23 +373,16 @@ function AppRoutes() {
             }
           />
           <Route
-            path="editTables"
+            path="edit-table"
             element={
               <AdminGuard>
                 <EditTables />
               </AdminGuard>
             }
           />
-          <Route
-            path="createTables"
-            element={
-              <AdminGuard>
-                <CreateTables />
-              </AdminGuard>
-            }
-          />
         </Route>
         <Route path="*" element={<Navigate to="/login-page" />} />{" "}
+        <Route path="*" element={<Navigate to="/error-pages/error-404" />} />{" "}
       </Routes>
     </Suspense>
   );

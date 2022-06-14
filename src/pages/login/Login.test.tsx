@@ -15,6 +15,13 @@ const storeStates = {
     data: { name: "rohit" },
   },
   loginAccessToken: { loading: false, loginVerified: true },
+  forgotPasswordState: {
+    loading: false,
+    data: {
+      redirectUrl:
+        "http://localhost:8080/auth/realms/Tenant1/login-actions/reset-credentials?client_id=security-admin-console",
+    },
+  },
 };
 
 it("render without crashing Login", () => {

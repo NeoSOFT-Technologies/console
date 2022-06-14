@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { deleteTenantDataService } from "../../../../services/tenant";
-import error from "../../../../utils/error";
+import errorHandler from "../../../../utils/error-handler";
 
 interface IDeleteTenantState {
   isDeleted?: boolean;
   loading: boolean;
-  error?: string | null;
+  error?: any;
 }
 
 const initialState: IDeleteTenantState = {
@@ -20,8 +20,8 @@ export const deleteTenant = createAsyncThunk(
     try {
       const response = await deleteTenantDataService(tenantName);
       return response.data;
-    } catch (error_) {
-      const errorMessage = error(error_);
+    } catch (_error: any) {
+      const errorMessage = errorHandler(_error);
       throw new Error(errorMessage);
     }
   }
@@ -49,8 +49,8 @@ const slice = createSlice({
     builder.addCase(deleteTenant.rejected, (state, action: any) => {
       state.loading = false;
       state.isDeleted = false;
-      const errorMessage = action.error.message.split(" ");
-      state.error = errorMessage[errorMessage.length - 1];
+      const errorMessage = JSON.parse(action.error.message);
+      state.error = errorMessage;
     });
   },
 });

@@ -65,7 +65,12 @@ export default function TenantDetails() {
     const { tenantName } = params;
     if (tenantName) dispatch(tenantDetails(tenantName));
     else {
-      navigate("/error", { state: "404" });
+      navigate("/error", {
+        state: {
+          statusCode: "404",
+          message: "Tenant not found",
+        },
+      });
     }
     return () => {
       dispatch(resetTenantDetails());
@@ -81,11 +86,7 @@ export default function TenantDetails() {
   const deleteTenantFunction = async () => {
     const { tenantName } = params;
     if (tenantName) {
-      await dispatch(deleteTenant(tenantName));
-      if (tenantDeleted.isDeleted) {
-        ToastAlert("Tenant Removed", "success");
-        navigate("/tenant/admin/tenants");
-      }
+      dispatch(deleteTenant(tenantName));
     }
   };
 
@@ -150,13 +151,28 @@ export default function TenantDetails() {
 
   useEffect(() => {
     if (!tenantDeleted.loading && tenantDeleted.error) {
-      navigate("/error", { state: tenantDeleted.error });
+      navigate("/error", {
+        state: {
+          statusCode: tenantDeleted.error.statusCode,
+          message: tenantDeleted.error.message,
+        },
+      });
     }
     if (!tenantDetailsState.loading && tenantDetailsState.error) {
-      navigate("/error", { state: tenantDetailsState.error });
+      navigate("/error", {
+        state: {
+          statusCode: tenantDetailsState.error.statusCode,
+          message: tenantDetailsState.error.message,
+        },
+      });
     }
     if (!updateTenantState.loading && updateTenantState.error) {
-      navigate("/error", { state: updateTenantState.error });
+      navigate("/error", {
+        state: {
+          statusCode: updateTenantState.error.statusCode,
+          message: updateTenantState.error.message,
+        },
+      });
     }
     if (
       !tenantDeleted.loading &&
@@ -197,7 +213,7 @@ export default function TenantDetails() {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            <Dropdown className="d-inline-block">
+            {/* <Dropdown className="d-inline-block">
               <Dropdown.Toggle className=" btn-danger " id="dropdown-basic">
                 Utilis
               </Dropdown.Toggle>
@@ -207,7 +223,7 @@ export default function TenantDetails() {
                 <Dropdown.Item>Upload</Dropdown.Item>
                 <Dropdown.Item>Create tenant tables & data</Dropdown.Item>
               </Dropdown.Menu>
-            </Dropdown>
+            </Dropdown> */}
             <Modal
               show={deleteshow}
               onHide={() => setDeleteshow(false)}
@@ -250,8 +266,7 @@ export default function TenantDetails() {
                         {tenant.tenantName &&
                           !regexForName.test(tenant.tenantName) && (
                             <span className="text-danger">
-                              Name Should Not Contain Any Special Character or
-                              Number
+                              Name should only consist AlphaNumeric characters
                             </span>
                           )}
                       </Form.Group>
@@ -271,7 +286,7 @@ export default function TenantDetails() {
                         {tenant.databaseName &&
                           !regexForDatabaseName.test(tenant.databaseName) && (
                             <span className="text-danger">
-                              databaseName Should Not Cantain Any Special
+                              databaseName Should Not Contain Any Special
                               Character or Number
                             </span>
                           )}

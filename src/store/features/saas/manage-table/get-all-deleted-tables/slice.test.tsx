@@ -12,7 +12,6 @@ describe("SAAS - GET All Deleted Tables Slice", () => {
       getAllDeletedTables({ pageNumber: "1", pageSize: "testTable" })
     );
 
-    //   console.log(result.type);
     expect(result.type).toBe("getAllDeleteTable/fulfilled");
   });
 
@@ -24,7 +23,6 @@ describe("SAAS - GET All Deleted Tables Slice", () => {
       getAllDeletedTables({ pageNumber: "1", pageSize: "testTable" })
     );
 
-    //   console.log(result.type)
     expect(result.type).toBe("getAllDeleteTable/rejected");
   });
 });

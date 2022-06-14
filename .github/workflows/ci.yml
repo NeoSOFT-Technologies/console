@@ -40,9 +40,15 @@ jobs:
               run: npm run lint
 
             - name: Run tests
-              run: npm run test
+              run: npm run test:coverage
 
             - name: Run Build
               run: npm run build:prod
               env:
                   CI: false
+
+            # - name: SonarCloud Scan
+            #   uses: SonarSource/sonarcloud-github-action@master
+            #   env:
+            #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+            #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

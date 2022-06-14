@@ -35,7 +35,7 @@ describe("SAAS - RESTORE TABLE Component", () => {
 
   it("Check if fields autofilled using API on component load", async () => {
     mockApi
-      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=5")
+      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=6")
       .reply(200, {
         statusCode: 200,
         message: "Successfully Retrieved All Tables Under Deletion",
@@ -62,12 +62,17 @@ describe("SAAS - RESTORE TABLE Component", () => {
 
   it("Click Restore button", async () => {
     mockApi
-      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=5")
+      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=6")
       .reply(200, {
         statusCode: 200,
         message: "Successfully Retrieved All Tables Under Deletion",
         tableList: [{ tenantId: 1, tableName: "testTable" }],
       });
+
+    mockApi.onPut("manage/table/restore/testTable?tenantId=1").reply(200, {
+      statusCode: 200,
+      message: "Restore Deletion of Table omkar Performed Successfully",
+    });
 
     render(
       <BrowserRouter>
@@ -97,13 +102,20 @@ describe("SAAS - RESTORE TABLE Component", () => {
       }
     );
     expect(restoreBtn).toBeInTheDocument();
-
     userEvent.click(restoreBtn);
+
+    const successMessage = await waitFor(
+      () => screen.getByText("Table restored successfully", { exact: false }),
+      {
+        timeout: 3000,
+      }
+    );
+    expect(successMessage).toBeInTheDocument();
   });
 
   it("Click Cancel button", async () => {
     mockApi
-      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=5")
+      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=6")
       .reply(200, {
         statusCode: 200,
         message: "Successfully Retrieved All Tables Under Deletion",
@@ -140,5 +152,81 @@ describe("SAAS - RESTORE TABLE Component", () => {
     expect(cancelBtn).toBeInTheDocument();
 
     userEvent.click(cancelBtn);
+  });
+
+  it("Check if next and prev btns working", async () => {
+    mockApi
+      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=6")
+      .reply(200, {
+        statusCode: 200,
+        message: "Successfully Retrieved All Tables Under Deletion",
+        tableList: [
+          { tenantId: 1, tableName: "testTable1" },
+          { tenantId: 1, tableName: "testTable2" },
+          { tenantId: 1, tableName: "testTable3" },
+          { tenantId: 1, tableName: "testTable4" },
+          { tenantId: 1, tableName: "testTable5" },
+          { tenantId: 1, tableName: "testTable6" },
+        ],
+      });
+
+    mockApi
+      .onGet("manage/table/deletion/all-tables?pageNumber=2&pageSize=6")
+      .reply(200, {
+        statusCode: 200,
+        message: "Successfully Retrieved All Tables Under Deletion",
+        tableList: [
+          { tenantId: 1, tableName: "testTable7" },
+          { tenantId: 1, tableName: "testTable8" },
+          { tenantId: 1, tableName: "testTable9" },
+          { tenantId: 1, tableName: "testTable_10" },
+          { tenantId: 1, tableName: "testTable_11" },
+          { tenantId: 1, tableName: "testTable_12" },
+        ],
+      });
+
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <GetTables />
+        </Provider>
+      </BrowserRouter>
+    );
+
+    expect(
+      await waitFor(() => screen.getByText("testTable1", { exact: false }), {
+        timeout: 3000,
+      })
+    ).toBeInTheDocument();
+
+    const nextBtn = await waitFor(
+      () => screen.getByText("Next", { exact: false }),
+      {
+        timeout: 3000,
+      }
+    );
+    expect(nextBtn).toBeInTheDocument();
+    userEvent.click(nextBtn);
+
+    expect(
+      await waitFor(() => screen.getByText("testTable8", { exact: false }), {
+        timeout: 3000,
+      })
+    ).toBeInTheDocument();
+
+    const previousBtn = await waitFor(
+      () => screen.getByText("Previous", { exact: false }),
+      {
+        timeout: 3000,
+      }
+    );
+    userEvent.click(previousBtn);
+    expect(previousBtn).toBeInTheDocument();
+
+    expect(
+      await waitFor(() => screen.getByText("testTable1", { exact: false }), {
+        timeout: 3000,
+      })
+    ).toBeInTheDocument();
   });
 });

@@ -56,7 +56,7 @@ const RenderList: React.FC<IProps> = (props) => {
                     // @ts-ignore
                     <td key={`list${index1}${index2}`}>{val[field]}</td>
                   ))}
-                  {props.actions && (
+                  {props.actions && props.actions.length > 0 && (
                     <td>
                       <div className="btn-group" role="group">
                         {props.actions.map((button, index) => (

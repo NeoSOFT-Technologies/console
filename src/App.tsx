@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 import "./App.scss";
 import AppRoutes from "./AppRoutes";
 import withRouter from "./WithRouter";
-import CustomBreadcrumbs from "./components/breadcrumbs/CustomBreadcrumbs";
+import Breadcrumbs from "./components/breadcrumbs/Breadcrumbs";
 import Footer from "./components/footer/Footer";
 import Navbar from "./components/navbar/Navbar";
 import Sidebar from "./components/sidebar/Sidebar";
@@ -62,7 +62,7 @@ class App extends Component<IProperty, IState> {
             <div className="content-wrapper">
               {!this.state.fullPageLayoutRoutes.includes(
                 this.props.router.location.pathname
-              ) && <CustomBreadcrumbs />}
+              ) && <Breadcrumbs />}
               <AppRoutes />
             </div>
             {footerComponent}

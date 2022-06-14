@@ -5,7 +5,6 @@ import Spinner from "../../../../../components/loader/Loader";
 import { RootState } from "../../../../../store";
 import { useAppSelector } from "../../../../../store/hooks";
 import { IUserDataState } from "../../../../../types";
-// import Error500 from "../../../error-pages/Error500";
 import "./userDashboard.scss";
 
 export default function UserDashboard() {
@@ -17,7 +16,12 @@ export default function UserDashboard() {
 
   useEffect(() => {
     if (!user.loading && user.error) {
-      navigate("/error", { state: user.error });
+      navigate("/error", {
+        state: {
+          statusCode: user.error.statusCode,
+          message: user.error.message,
+        },
+      });
     }
   }, [user.loading]);
 

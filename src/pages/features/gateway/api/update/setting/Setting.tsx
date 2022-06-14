@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
 import {
   regexForName,
@@ -15,7 +15,12 @@ import TargetUrl from "./target-url/TargetUrl";
 export default function Setting() {
   const state = useAppSelector((RootState) => RootState.updateApiState);
   const dispatch = useAppDispatch();
-  // console.log("setting", state);
+
+  const [clipboardApiId, setClipboardApiId] = useState(false);
+  const [clipboardApiUrl, setClipboardApiUrl] = useState(false);
+
+  const hostUrl = process.env.REACT_APP_GATEWAY_HOST || "http://localhost:8080";
+
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
@@ -35,11 +40,78 @@ export default function Setting() {
     setFormData(event, dispatch, state);
   }
 
+  const copyToClipBoard = async (copyText: any) => {
+    try {
+      await navigator.clipboard.writeText(copyText);
+      if (copyText === state.data.form.ApiId) {
+        setClipboardApiId(true);
+
+        setTimeout(() => {
+          setClipboardApiId(false);
+        }, 5000);
+      } else if (copyText === hostUrl + state.data.form.ListenPath) {
+        setClipboardApiUrl(true);
+
+        setTimeout(() => {
+          setClipboardApiUrl(false);
+        }, 5000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="card">
         <div>
           <div className="align-items-center justify-content-around">
+            <Row>
+              <Col md={10}>
+                <div className="mb-3 mt-2 ml-4">
+                  <div>
+                    <b>API ID:</b> {state.data.form.ApiId}
+                    <i
+                      className="btn btn-sm bi bi-clipboard"
+                      onClick={() => copyToClipBoard(state.data.form.ApiId)}
+                    ></i>
+                    {clipboardApiId ? "Copied!" : ""}
+                  </div>
+                  <br />
+                  <div>
+                    <b>API URL: </b>
+                    <a
+                      href={hostUrl + state.data.form.ListenPath}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {hostUrl + state.data.form.ListenPath}
+                    </a>
+                    <i
+                      className="btn btn-sm bi bi-clipboard"
+                      onClick={() =>
+                        copyToClipBoard(hostUrl + state.data.form.ListenPath)
+                      }
+                    ></i>
+                    {clipboardApiUrl ? "Copied!" : ""}
+                  </div>
+                </div>
+              </Col>
+              <Col md={2}>
+                <Form.Group className="mb-3 mt-2 ">
+                  <Form.Check
+                    className="ml-3"
+                    type="switch"
+                    onChange={validateForm}
+                    checked={state.data.form.IsActive}
+                    name="IsActive"
+                    id="IsActive"
+                    label={state.data.form.IsActive ? "  Active" : "  InActive"}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
             <Accordion defaultActiveKey="0">
               <Accordion.Item eventKey="0">
                 <Accordion.Header>

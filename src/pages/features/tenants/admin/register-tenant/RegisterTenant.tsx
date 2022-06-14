@@ -31,6 +31,7 @@ export default function RegisterTenant() {
     password: "",
     databaseName: "",
     databaseDescription: "",
+    userName: "",
   });
   const [error, setError] = useState<IErrorTenantInput>({
     tenantName: "",
@@ -39,11 +40,13 @@ export default function RegisterTenant() {
     description: "",
     databaseName: "",
     databaseDescription: "",
+    userName: "",
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
+      case "description":
       case "databaseDescription":
         setError({
           ...error,
@@ -52,12 +55,12 @@ export default function RegisterTenant() {
             : "description should only consist Alphabets and numbers .",
         });
         break;
-      case "description":
+      case "userName":
         setError({
           ...error,
-          [name]: regexForDescription.test(value)
+          [name]: regexForName.test(value)
             ? ""
-            : "description should only consist Alphabets and numbers .",
+            : "Name should only consist AlphaNumeric characters.",
         });
         break;
 
@@ -100,15 +103,15 @@ export default function RegisterTenant() {
   };
 
   const handleValidate = () => {
-    const validate = !!(
+    return !!(
       error.tenantName === "" &&
       error.email === "" &&
       error.description === "" &&
       error.password === "" &&
       error.databaseName === "" &&
-      error.databaseDescription === ""
+      error.databaseDescription === "" &&
+      error.userName === ""
     );
-    return validate;
   };
 
   const handleSubmitTenant = async (event: React.FormEvent) => {
@@ -130,14 +133,7 @@ export default function RegisterTenant() {
         ToastAlert("Please Fill All Fields", "warning");
       }
     } else {
-      setError({
-        tenantName: "",
-        email: "",
-        password: "",
-        description: "",
-        databaseName: "",
-        databaseDescription: "",
-      });
+      ToastAlert("Some fields are incorrect", "warning");
     }
   };
 
@@ -149,6 +145,7 @@ export default function RegisterTenant() {
       password: "",
       databaseName: "",
       databaseDescription: "",
+      userName: "",
     });
     setError({
       tenantName: "",
@@ -157,6 +154,7 @@ export default function RegisterTenant() {
       description: "",
       databaseName: "",
       databaseDescription: "",
+      userName: "",
     });
   };
 
@@ -167,7 +165,8 @@ export default function RegisterTenant() {
       tenant.email !== "" &&
       tenant.description !== "" &&
       tenant.password !== "" &&
-      tenant.databaseName !== ""
+      tenant.databaseName !== "" &&
+      tenant.userName !== ""
     ) {
       if (tenantAdded.tenantAdded) {
         ToastAlert("Tenant Registered", "success");
@@ -230,6 +229,25 @@ export default function RegisterTenant() {
                     />
                     <Form.Control.Feedback type="invalid">
                       {error.email}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col md="6">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Username :</Form.Label>
+                    <Form.Control
+                      data-testid="userName-input"
+                      type="text"
+                      placeholder="Enter Username"
+                      name="userName"
+                      value={tenant.userName}
+                      isValid={!error.userName && !!tenant.userName}
+                      isInvalid={!!error.userName}
+                      onChange={handleInputChange}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {error.userName}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>

@@ -8,6 +8,7 @@ export interface ISetPolicyList {
   TotalCount: number;
 }
 export interface IPolicyData {
+  Action?: string;
   Id?: string;
   Name: string;
   State: string;

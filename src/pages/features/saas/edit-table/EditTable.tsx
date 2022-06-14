@@ -5,13 +5,21 @@ import { useLocation } from "react-router-dom";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
+  ColNameErrMsg,
+  regexForColName,
+} from "../../../../resources/saas/constant";
+import {
   deleteColumn,
   getTableSchema,
   addOrEditColumn,
 } from "../../../../store/features/saas/manage-table/get-table-schema/slice";
 import { updateTableSchema } from "../../../../store/features/saas/manage-table/update-table-schema/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { ITableColumnData, ITableSchema } from "../../../../types/saas";
+import {
+  IErrorColumnInput,
+  ITableColumnData,
+  ITableSchema,
+} from "../../../../types/saas";
 import "./style.css";
 
 type LocationState = { tableName: string; tenantId: string };
@@ -33,6 +41,9 @@ export default function EditTable() {
     tenantId,
     tableName,
   };
+  const [error, setError] = useState<IErrorColumnInput>({
+    name: "",
+  });
   const [selectedColumnData, setSelectedColumnData] =
     useState<ITableColumnData>({
       name: "",
@@ -45,7 +56,25 @@ export default function EditTable() {
       storable: false,
     });
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case "name":
+        setError({
+          ...error,
+          [name]: regexForColName.test(value) ? "" : ColNameErrMsg,
+        });
+        break;
+      default:
+        break;
+    }
+    setSelectedColumnData({ ...selectedColumnData, [name]: value });
+  };
+
   const handleClose = () => {
+    setError({
+      name: "",
+    });
     setShow(false);
   };
   const deleteModalClose = () => {
@@ -55,18 +84,33 @@ export default function EditTable() {
     setSelectedColumnData(columData);
     setDeleteModal(true);
   };
-
+  const handleValidate = () => {
+    const validate = !!(error.name === "");
+    return validate;
+  };
   const processColumn = () => {
-    const objIndex: Number | any = tableData.data?.findIndex(
-      (item: ITableColumnData) => item.name === selectedColumnData.name
-    );
-    if (selectedColHeading === "Add Column" && objIndex > -1) {
-      ToastAlert("Column already exists", "error");
-    } else {
-      dispatch(
-        addOrEditColumn({ selectedColumnData, objIndex, selectedColHeading })
-      );
-      setShow(false);
+    if (handleValidate()) {
+      if (selectedColumnData.name !== "" && selectedColumnData.type !== "") {
+        const objIndex: Number | any = tableData.data?.findIndex(
+          (item: ITableColumnData) =>
+            item.name.toLowerCase === selectedColumnData.name.toLowerCase
+        );
+
+        if (selectedColHeading === "Add Column" && objIndex > -1) {
+          ToastAlert("Column already exists", "warning");
+        } else {
+          dispatch(
+            addOrEditColumn({
+              selectedColumnData,
+              objIndex,
+              selectedColHeading,
+            })
+          );
+          setShow(false);
+        }
+      } else {
+        ToastAlert("Please Fill All Fields", "warning");
+      }
     }
   };
   const handleShow = (
@@ -220,16 +264,36 @@ export default function EditTable() {
                   >
                     <thead>
                       <tr id="test">
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Required</th>
-                        <th>Partial Search</th>
-                        <th>Filterable</th>
-                        <th>Sortable</th>
-                        <th>Multivalue</th>
-                        <th>Storable</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>
+                          <b>Name</b>
+                        </th>
+                        <th>
+                          <b>Type</b>
+                        </th>
+                        <th>
+                          <b>Required</b>
+                        </th>
+                        <th>
+                          <b>Partial Search</b>
+                        </th>
+                        <th>
+                          <b>Filterable</b>
+                        </th>
+                        <th>
+                          <b>Sortable</b>
+                        </th>
+                        <th>
+                          <b>Multivalue</b>
+                        </th>
+                        <th>
+                          <b>Storable</b>
+                        </th>
+                        <th>
+                          <b>Edit</b>
+                        </th>
+                        <th>
+                          <b>Delete</b>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -254,6 +318,7 @@ export default function EditTable() {
                           <td className="text-danger">
                             <i
                               className="bi bi-trash-fill"
+                              data-testid="delete-col-btn"
                               onClick={() => deleteModalShow(val)}
                             ></i>
                           </td>
@@ -280,6 +345,7 @@ export default function EditTable() {
               variant="btn btn-primary"
               data-toggle="modal"
               data-target="#exampleModalCenter"
+              data-testid="add-col-btn"
               disabled={updateTableSchemaState.loading}
               onClick={() => handleShow(selectedColumnData, "Add Column")}
             >
@@ -293,6 +359,7 @@ export default function EditTable() {
               type="submit"
               className=" pl-4 pr-4"
               disabled={updateTableSchemaState.loading}
+              data-testid="send-update-request-btn"
             >
               Save
             </Button>
@@ -314,6 +381,7 @@ export default function EditTable() {
             className="close"
             onClick={handleClose}
             aria-label="Close"
+            data-testid="close-modal-btn"
           >
             <span aria-hidden="true">&times;</span>
           </button>
@@ -329,21 +397,29 @@ export default function EditTable() {
 
               <Col sm lg="7">
                 <div className="input-group ">
-                  <input
+                  <Form.Control
                     type="text"
                     className="form-control text-center read-only"
                     placeholder="Name"
+                    name="name"
                     value={selectedColumnData.name}
                     aria-label="Name"
                     aria-describedby="basic-addon"
+                    data-testid="add-col-name-input"
                     readOnly={readonlyState}
-                    onChange={(e) => {
-                      setSelectedColumnData({
-                        ...selectedColumnData,
-                        name: e.target.value,
-                      });
-                    }}
+                    isInvalid={!!error.name}
+                    isValid={!error.name && !!selectedColumnData.name}
+                    // onChange={(e) => {
+                    //   setSelectedColumnData({
+                    //     ...selectedColumnData,
+                    //     name: e.target.value,
+                    //   });
+                    // }}
+                    onChange={handleInputChange}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {error.name}
+                  </Form.Control.Feedback>
                 </div>
               </Col>
             </Row>
@@ -358,13 +434,15 @@ export default function EditTable() {
 
               <Col sm lg="7">
                 <div className="input-group ">
-                  <input
+                  <Form.Control
                     type="text"
                     className="form-control text-center read-only"
                     value={selectedColumnData.type}
-                    placeholder="Title"
+                    placeholder="Type"
+                    name="type"
                     aria-label="Title"
                     aria-describedby="basic-addon"
+                    data-testid="add-col-type-input"
                     readOnly={readonlyState}
                     onChange={(e) => {
                       setSelectedColumnData({
@@ -581,6 +659,7 @@ export default function EditTable() {
           <Button
             className="text-center"
             variant="success"
+            data-testid="save-col-change-btn"
             onClick={processColumn}
           >
             {selectedColAction}
