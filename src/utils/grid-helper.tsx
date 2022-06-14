@@ -57,13 +57,21 @@ export function checkResponse(data: any) {
 }
 // This will be used when return total count of available data
 export function checkCount(data: any) {
-  if (data.count) {
-    return data.count;
-  } else if (data.TotalCount) {
-    return data.TotalCount;
-  } else {
-    return 0;
+  let totalCount = 0;
+  const currentURL = window.location.pathname.split("/");
+  switch (currentURL[1]) {
+    case "tenant":
+      totalCount = data.count;
+      break;
+
+    case "gateway":
+      totalCount = data.TotalCount;
+      break;
+
+    default:
+      break;
   }
+  return totalCount;
 }
 // This will be used when you request some formating on columns by using format function
 export const checkFormat = (headings: any, _data: any) => {
@@ -94,6 +102,7 @@ export function checkPaginationUrl(prev: string, page: number, limit: number) {
     default:
       break;
   }
+
   return paginationURL;
 }
 

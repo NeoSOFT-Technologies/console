@@ -169,6 +169,11 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     setGridReady(true);
   }, []);
 
+  // refreshGrid() call on Url changes
+  useEffect(() => {
+    refreshGrid();
+  }, [url]);
+
   //  Grid render on invoke of refreshGrid()
   useEffect(() => {
     if (gridReload) {
@@ -189,6 +194,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
       setGridReady(true);
     }
   }, [gridReload]);
+
   return isGridReady ? <div>{grid}</div> : <></>;
 };
 export default RenderList1;
