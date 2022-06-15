@@ -71,7 +71,7 @@ export default function InputData(this: any) {
         setInsertTenant({
           ...insertTenant,
           [name]: value,
-          inputData: "",
+          inputData: value,
         });
 
         break;
@@ -282,6 +282,7 @@ export default function InputData(this: any) {
                         rows={4}
                         name="inputData"
                         value={insertTenant.inputData}
+                        data-testid="json-input-box"
                         placeholder="JSON input"
                         onChange={(e) => handleInputChange(e)}
                       />
