@@ -58,17 +58,21 @@ describe("SAAS - ADD TABLE Component", () => {
       count: 2,
     });
 
-    mockApi.onGet("manage/table/?tenantId=1").reply(200, {
+    mockApi.onGet("manage/table/capacity-plans").reply(200, {
       statusCode: 200,
-      message: "Successfully retrieved all tables",
-      data: ["testTable"],
+      message: "Successfully retrieved all Capacity Plans",
+      plans: [
+        { sku: "B", name: "Basic", replicas: 1, shards: 1 },
+        { sku: "S1", name: "Standard", replicas: 2, shards: 2 },
+        { sku: "S2", name: "Standard", replicas: 2, shards: 3 },
+        { sku: "S3", name: "Standard", replicas: 3, shards: 7 },
+        { sku: "P", name: "Premium", replicas: 3, shards: 5 },
+      ],
     });
 
-    mockApi.onPost("ingest/testTable?tenantId=1").reply(200, {
+    mockApi.onPost("manage/table/?tenantId=1").reply(200, {
       statusCode: 200,
-      message: "Successfully Added!",
-      maxAllowedRequestSize: "100000000kB",
-      incomingRequestSize: "0.136kB",
+      message: "Table-testTable, is created successfully",
     });
 
     render(
@@ -79,16 +83,29 @@ describe("SAAS - ADD TABLE Component", () => {
       </BrowserRouter>
     );
 
-    const tenantIDInput = await waitFor(
-      () => screen.getByTestId("tenant-id-input-box"),
+    // const tenantIDInput = await waitFor(
+    //   () => screen.getByTestId("tenant-id-input-box"),
+    //   {
+    //     timeout: 500,
+    //   }
+    // );
+    // expect(tenantIDInput).toBeInTheDocument();
+    // fireEvent.change(tenantIDInput, {
+    //   target: { value: "1" },
+    // });
+
+    const tenantDropdown = await waitFor(
+      () => screen.getByTestId("tenant-name-select"),
       {
-        timeout: 500,
+        timeout: 3000,
       }
     );
-    expect(tenantIDInput).toBeInTheDocument();
-    fireEvent.change(tenantIDInput, {
-      target: { value: "1" },
-    });
+    expect(tenantDropdown).toBeInTheDocument();
+
+    // SELECT ITEM FROM DROP DOWN
+    userEvent.selectOptions(screen.getByTestId("tenant-name-select"), [
+      "Tenant1",
+    ]);
 
     const tableNameInput = await waitFor(
       () => screen.getByTestId("table-name-input-box"),
@@ -108,16 +125,18 @@ describe("SAAS - ADD TABLE Component", () => {
       }
     );
     expect(capacityPlanDropdown).toBeInTheDocument();
-    userEvent.click(capacityPlanDropdown);
+    // userEvent.click(capacityPlanDropdown);
 
-    const capacityPlanB = await waitFor(
-      () => screen.getByText("B", { exact: true }),
-      {
-        timeout: 500,
-      }
-    );
-    expect(capacityPlanB).toBeInTheDocument();
-    userEvent.click(capacityPlanB);
+    // const capacityPlanB = await waitFor(
+    //   () => screen.getByText("B", { exact: true }),
+    //   {
+    //     timeout: 500,
+    //   }
+    // );
+    // expect(capacityPlanB).toBeInTheDocument();
+    // userEvent.click(capacityPlanB);
+
+    userEvent.selectOptions(capacityPlanDropdown, ["B"]);
 
     const addColumnBtn = await waitFor(
       () => screen.getByTestId("add-column-button"),
@@ -139,16 +158,16 @@ describe("SAAS - ADD TABLE Component", () => {
       target: { value: "testColumn" },
     });
 
-    const colTypeInPopup = await waitFor(
-      () => screen.getByTestId("column-type-popup"),
-      {
-        timeout: 500,
-      }
-    );
-    expect(colTypeInPopup).toBeInTheDocument();
-    fireEvent.change(colTypeInPopup, {
-      target: { value: "string" },
-    });
+    // const colTypeInPopup = await waitFor(
+    //   () => screen.getByTestId("column-type-popup"),
+    //   {
+    //     timeout: 500,
+    //   }
+    // );
+    // expect(colTypeInPopup).toBeInTheDocument();
+    // fireEvent.change(colTypeInPopup, {
+    //   target: { value: "string" },
+    // });
 
     const addColumnBtnInPopup = await waitFor(
       () => screen.getByTestId("add-column-btn-popup"),

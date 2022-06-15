@@ -365,6 +365,7 @@ export default function CreateTables() {
                         value={tableName}
                         name="tableName"
                         onChange={handleInputChange}
+                        data-testid="table-name-input-box"
                       />
                     </Form.Group>
                     <p>{formErrors.message}</p>
@@ -379,6 +380,7 @@ export default function CreateTables() {
                       aria-label="Default select example"
                       className="text-center"
                       onChange={(e) => setSku(e.target.value)}
+                      data-testid="capacity-plan-dropdown"
                     >
                       {capacityData.data?.map(
                         (
@@ -399,6 +401,7 @@ export default function CreateTables() {
                       <i
                         className="bi bi-info-circle-fill"
                         onClick={handleShowModalTwo}
+                        data-testid="capacity-plan-info-btn"
                       ></i>
                       <Modal
                         show={modalState === "modal-two"}
@@ -416,6 +419,7 @@ export default function CreateTables() {
                             className="close"
                             onClick={handleShowModalTwoclose}
                             aria-label="Close"
+                            data-testid="capacity-plan-info-close-btn"
                           >
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -615,6 +619,7 @@ export default function CreateTables() {
                 <Button
                   variant="btn btn-primary"
                   data-toggle="modal"
+                  data-testid="add-column-button"
                   data-target="#exampleModalCenter"
                   onClick={addColumnHandleShow}
                 >
@@ -628,6 +633,7 @@ export default function CreateTables() {
                   type="submit"
                   className=" pl-4 pr-4"
                   disabled={isSubmit}
+                  data-testid="save-table-button"
                 >
                   Save
                 </Button>
@@ -666,6 +672,7 @@ export default function CreateTables() {
                           name="columnName"
                           value={columnName}
                           onChange={handleInputChange}
+                          data-testid="column-name-popup"
                         />
                       </div>
                       <p>{columnformErrors.name}</p>
@@ -947,7 +954,12 @@ export default function CreateTables() {
                 </div>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="success" type="submit" disabled={isColumnAdd}>
+                <Button
+                  variant="success"
+                  type="submit"
+                  disabled={isColumnAdd}
+                  data-testid="add-column-btn-popup"
+                >
                   Add Column
                 </Button>
               </Modal.Footer>

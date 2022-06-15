@@ -24,11 +24,15 @@ interface IProps {
   keystate?: IKeyCreateState;
   index?: number;
   current: string;
+  setForm: (state: any, action: any) => void;
+  setFormError: (state: any, action: any) => void;
 }
 
 export default function GlobalLimitApi(props: IProps) {
   const dispatch = useAppDispatch();
-  const states = useAppSelector((RootState) => RootState.createKeyState);
+  const states: IKeyCreateState = useAppSelector(
+    (RootState) => RootState.createKeyState
+  );
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
   );
@@ -39,115 +43,25 @@ export default function GlobalLimitApi(props: IProps) {
       ? [...props.state?.data.errors?.PerApiLimit!]
       : [...props.keystate?.data.errors?.PerApiLimit!];
 
-  function validateForm(
-    event: React.ChangeEvent<HTMLInputElement>,
-    ApiId: any
-  ) {
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    switch (name) {
-      case "rate":
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          Rate: regexForNumber.test(value) ? "" : "Enter only Numbers",
-        };
-        props.current === "policy"
-          ? dispatch(
-              setFormError({
-                ...state.data.errors,
-                PerApiLimit: perapi,
-              })
-            )
-          : dispatch(
-              setFormErrors({
-                ...states.data.errors,
-                PerApiLimit: perapi,
-              })
-            );
-
-        break;
-      case "per":
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          Per: regexForNumber.test(value) ? "" : "Enter only Numbers",
-        };
-        props.current === "policy"
-          ? dispatch(
-              setFormError({
-                ...state.data.errors,
-                PerApiLimit: perapi,
-              })
-            )
-          : dispatch(
-              setFormErrors({
-                ...states.data.errors,
-                PerApiLimit: perapi,
-              })
-            );
-        break;
-      case "throttle_retry_limit":
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          ThrottleRetries: regexForNumber.test(value)
-            ? ""
-            : "Enter only Numbers",
-        };
-        props.current === "policy"
-          ? dispatch(
-              setFormError({
-                ...state.data.errors,
-                PerApiLimit: perapi,
-              })
-            )
-          : dispatch(
-              setFormErrors({
-                ...states.data.errors,
-                PerApiLimit: perapi,
-              })
-            );
-        break;
-      case "throttle_interval":
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          ThrottleInterval: regexForNumber.test(value)
-            ? ""
-            : "Enter only Numbers",
-        };
-        props.current === "policy"
-          ? dispatch(
-              setFormError({
-                ...state.data.errors,
-                PerApiLimit: perapi,
-              })
-            )
-          : dispatch(
-              setFormErrors({
-                ...states.data.errors,
-                PerApiLimit: perapi,
-              })
-            );
-        break;
-      case "quota_max":
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          Quota: regexForNumber.test(value) ? "" : "Enter only Numbers",
-        };
-        props.current === "policy"
-          ? dispatch(
-              setFormError({
-                ...state.data.errors,
-                PerApiLimit: perapi,
-              })
-            )
-          : dispatch(
-              setFormErrors({
-                ...states.data.errors,
-                PerApiLimit: perapi,
-              })
-            );
-        break;
-      default:
-        break;
-    }
+    perapi[props.index!] = {
+      ...perapi[props.index!],
+      [name]: regexForNumber.test(value) ? "" : "Enter only Numbers",
+    };
+    props.current === "policy"
+      ? dispatch(
+          setFormError({
+            ...state.data.errors,
+            PerApiLimit: perapi,
+          })
+        )
+      : dispatch(
+          setFormErrors({
+            ...states.data.errors,
+            PerApiLimit: perapi,
+          })
+        );
   }
 
   const [rateError, setRateError] = useState<boolean[]>([]);
@@ -172,679 +86,191 @@ export default function GlobalLimitApi(props: IProps) {
     }
   }
 
-  function setRateValue() {
-    if (
-      props.current === "policy"
-        ? props.state?.data.form.APIs[props.index!].Limit?.rate! === -1
-        : props.keystate?.data.form.AccessRights[props.index!].Limit?.Rate! ===
-          -1
-    ) {
-      if (props.current === "policy") {
-        const apisList = [...props.state?.data.form.APIs!];
-        apisList[props.index!] = {
-          ...apisList[props.index!],
-          Limit: {
-            rate:
-              id === undefined
-                ? 0
-                : policystate === undefined
-                ? 0
-                : props.state?.data.form.APIs[props.index!].Limit?.rate === -1
-                ? 0
-                : props.state?.data.form.APIs[props.index!].Limit?.rate,
-            per:
-              id === undefined
-                ? 0
-                : policystate === undefined
-                ? 0
-                : props.state?.data.form.APIs[props.index!].Limit?.per! === -1
-                ? 0
-                : props.state?.data.form.APIs[props.index!].Limit?.per!,
-            throttle_interval:
-              props.state?.data.form.APIs[props.index!].Limit
-                ?.throttle_interval,
-            throttle_retry_limit:
-              props.state?.data.form.APIs[props.index!].Limit
-                ?.throttle_retry_limit,
-            max_query_depth:
-              props.state?.data.form.APIs[props.index!].Limit?.max_query_depth,
-            quota_max:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_max,
-            quota_renews:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_renews,
-            quota_remaining:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_remaining,
-            quota_renewal_rate:
-              props.state?.data.form.APIs[props.index!].Limit
-                ?.quota_renewal_rate,
-            set_by_policy:
-              props.state?.data.form.APIs[props.index!].Limit?.set_by_policy!,
-          },
-        };
-        dispatch(
-          setForm({
-            ...state.data.form,
-            APIs: apisList,
-          })
-        );
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          Rate: "",
-          Per: "",
-        };
-        dispatch(
-          setFormError({
-            ...state.data.errors,
-            PerApiLimit: perapi,
-          })
-        );
-      } else {
-        const apisList = [...props.keystate?.data.form.AccessRights!];
-        apisList[props.index!] = {
-          ...apisList[props.index!],
-          Limit: {
-            Rate:
-              id === undefined
-                ? 0
-                : keystate === undefined
-                ? 0
-                : props.keystate?.data.form.AccessRights[props.index!].Limit
-                    ?.Rate === -1
-                ? 0
-                : props.keystate?.data.form.AccessRights[props.index!].Limit
-                    ?.Rate,
-            Per:
-              id === undefined
-                ? 0
-                : keystate === undefined
-                ? 0
-                : props.keystate?.data.form.AccessRights[props.index!].Limit
-                    ?.Per === -1
-                ? 0
-                : props.keystate?.data.form.AccessRights[props.index!].Limit
-                    ?.Per,
-            Throttle_interval:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Throttle_interval,
-            Throttle_retry_limit:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Throttle_retry_limit,
-            Max_query_depth:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Max_query_depth,
-            Quota_max:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_max,
-            Quota_renews:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_renews,
-            Quota_remaining:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_remaining,
-            Quota_renewal_rate:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_renewal_rate,
-          },
-        };
-        dispatch(
-          setForms({
-            ...states.data.form,
-            AccessRights: apisList,
-          })
-        );
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          Rate: "",
-          Per: "",
-        };
-        dispatch(
-          setFormErrors({
-            ...states.data.errors,
-            PerApiLimit: perapi,
-          })
-        );
-      }
+  function updateValidationInput(attributeName: any) {
+    perapi[props.index!] = {
+      ...perapi[props.index!],
+      Rate:
+        attributeName !== "GlobalLimit.IsDisabled"
+          ? perapi[props.index!].Rate
+          : "",
+      Per:
+        attributeName !== "GlobalLimit.IsDisabled"
+          ? perapi[props.index!].Per
+          : "",
+      ThrottleInterval:
+        attributeName !== "Throttling.IsDisabled"
+          ? perapi[props.index!].ThrottleInterval
+          : "",
+      ThrottleRetries:
+        attributeName !== "Throttling.IsDisabled"
+          ? perapi[props.index!].ThrottleRetries
+          : "",
+      Quota:
+        attributeName !== "unlimitedRequests.IsDisabled"
+          ? perapi[props.index!].Quota
+          : "",
+      QuotaRenewalRate:
+        attributeName !== "unlimitedRequests.IsDisabled"
+          ? perapi[props.index!].QuotaRenewalRate
+          : "",
+    };
+  }
+  function setRateValue(
+    FormValue: any, // props  state
+    FormData: any, // return state.data
+    currentState: any, // data save previous previousstate
+    statevalue: string, // return string APIs or AccessRight
+    setFormRate: any,
+    setFormErrorRate: any,
+    event: React.ChangeEvent<HTMLInputElement>, // to get current toggle name
+    togglecheck: any // to check toggtle is on or off
+    // propertytype
+  ) {
+    const attributeName: string = event.target.getAttribute("name")!;
+    if (togglecheck === -1) {
+      console.log("check name", event.target.getAttribute("name"));
+      const apisList = [...FormValue!];
+      apisList[props.index!] = {
+        ...apisList[props.index!],
+        Limit: {
+          Rate:
+            attributeName !== "GlobalLimit.IsDisabled"
+              ? FormValue[props.index!].Limit?.Rate
+              : id === undefined
+              ? 0
+              : currentState === undefined
+              ? 0
+              : FormValue[props.index!].Limit?.Rate === -1
+              ? 0
+              : FormValue[props.index!].Limit?.Rate,
+          Per:
+            attributeName !== "GlobalLimit.IsDisabled"
+              ? FormValue[props.index!].Limit?.Per
+              : id === undefined
+              ? 0
+              : currentState === undefined
+              ? 0
+              : FormValue[props.index!].Limit?.Per! === -1
+              ? 0
+              : FormValue[props.index!].Limit?.Per!,
+          Throttle_interval:
+            attributeName !== "Throttling.IsDisabled"
+              ? FormValue[props.index!].Limit?.Throttle_interval
+              : id === undefined
+              ? 0
+              : currentState === undefined
+              ? 0
+              : FormValue[props.index!].Limit?.Throttle_interval === -1
+              ? 0
+              : FormValue[props.index!].Limit?.Throttle_interval,
+          Throttle_retry_limit:
+            attributeName !== "Throttling.IsDisabled"
+              ? FormValue[props.index!].Limit?.Throttle_retry_limit
+              : id === undefined
+              ? 0
+              : currentState === undefined
+              ? 0
+              : FormValue[props.index!].Limit?.Throttle_retry_limit === -1
+              ? 0
+              : FormValue[props.index!].Limit?.Throttle_retry_limit,
+          Max_query_depth: FormValue[props.index!].Limit?.Max_query_depth,
+          Quota_max:
+            attributeName !== "unlimitedRequests.IsDisabled"
+              ? FormValue[props.index!].Limit?.Quota_max
+              : id === undefined
+              ? 0
+              : currentState === undefined
+              ? 0
+              : FormValue[props.index!].Limit?.Quota_max === -1
+              ? 0
+              : FormValue[props.index!].Limit?.Quota_max,
+          Quota_renews: FormValue[props.index!].Limit?.Quota_renews,
+          Quota_remaining: FormValue[props.index!].Limit?.Quota_remaining,
+          Quota_renewal_rate:
+            attributeName !== "unlimitedRequests.IsDisabled"
+              ? FormValue[props.index!].Limit?.Quota_renewal_rate
+              : id === undefined
+              ? 0
+              : currentState === undefined
+              ? 0
+              : FormValue[props.index!].Limit?.Quota_renewal_rate === -1
+              ? 0
+              : FormValue[props.index!].Limit?.Quota_renewal_rate,
+          Set_by_policy: FormValue[props.index!].Limit?.Set_by_policy!,
+        },
+      };
+      dispatch(
+        setFormRate({
+          ...FormData.form,
+          [statevalue]: apisList,
+        })
+      );
+      updateValidationInput(attributeName);
+      dispatch(
+        setFormErrorRate({
+          ...FormData.errors,
+          PerApiLimit: perapi,
+        })
+      );
     } else {
-      if (props.current === "policy") {
-        const apisList = [...props.state?.data.form.APIs!];
-        apisList[props.index!] = {
-          ...apisList[props.index!],
-          Limit: {
-            rate: -1,
-            per: -1,
-            throttle_interval:
-              props.state?.data.form.APIs[props.index!].Limit
-                ?.throttle_interval,
-            throttle_retry_limit:
-              props.state?.data.form.APIs[props.index!].Limit
-                ?.throttle_retry_limit,
-            max_query_depth:
-              props.state?.data.form.APIs[props.index!].Limit?.max_query_depth,
-            quota_max:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_max,
-            quota_renews:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_renews,
-            quota_remaining:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_remaining,
-            quota_renewal_rate:
-              props.state?.data.form.APIs[props.index!].Limit
-                ?.quota_renewal_rate,
-            set_by_policy:
-              props.state?.data.form.APIs[props.index!].Limit?.set_by_policy!,
-          },
-        };
+      const apisList = [...FormValue!];
+      apisList[props.index!] = {
+        ...apisList[props.index!],
+        Limit: {
+          Rate:
+            attributeName !== "GlobalLimit.IsDisabled"
+              ? FormValue[props.index!].Limit?.Rate
+              : -1,
+          Per:
+            attributeName !== "GlobalLimit.IsDisabled"
+              ? FormValue[props.index!].Limit?.Per
+              : -1,
+          Throttle_interval:
+            attributeName !== "Throttling.IsDisabled"
+              ? FormValue[props.index!].Limit?.Throttle_interval
+              : -1,
+          Throttle_retry_limit:
+            attributeName !== "Throttling.IsDisabled"
+              ? FormValue[props.index!].Limit?.Throttle_retry_limit
+              : -1,
+          Max_query_depth: FormValue[props.index!].Limit?.Max_query_depth,
+          Quota_max:
+            attributeName !== "unlimitedRequests.IsDisabled"
+              ? FormValue[props.index!].Limit?.Quota_max
+              : -1,
+          Quota_renews: FormValue[props.index!].Limit?.Quota_renews,
+          Quota_remaining: FormValue[props.index!].Limit?.Quota_remaining,
+          Quota_renewal_rate:
+            attributeName !== "unlimitedRequests.IsDisabled"
+              ? FormValue[props.index!].Limit?.Quota_renewal_rate
+              : -1,
+          Set_by_policy: FormValue[props.index!].Limit?.Set_by_policy!,
+        },
+      };
 
-        dispatch(
-          setForm({
-            ...state.data.form,
-            APIs: apisList,
-          })
-        );
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          Rate: "",
-          Per: "",
-        };
-        dispatch(
-          setFormError({
-            ...state.data.errors,
-            PerApiLimit: perapi,
-          })
-        );
-      } else {
-        const apisList = [...props.keystate?.data.form.AccessRights!];
-        apisList[props.index!] = {
-          ...apisList[props.index!],
-          Limit: {
-            Rate: -1,
-            Per: -1,
-            Throttle_interval:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Throttle_interval,
-            Throttle_retry_limit:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Throttle_retry_limit,
-            Max_query_depth:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Max_query_depth,
-            Quota_max:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_max,
-            Quota_renews:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_renews,
-            Quota_remaining:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_remaining,
-            Quota_renewal_rate:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_renewal_rate,
-          },
-        };
-        dispatch(
-          setForms({
-            ...states.data.form,
-            AccessRights: apisList,
-          })
-        );
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          Rate: "",
-          Per: "",
-        };
-        dispatch(
-          setFormErrors({
-            ...states.data.errors,
-            PerApiLimit: perapi,
-          })
-        );
-      }
+      dispatch(
+        setFormRate({
+          ...FormData.form,
+          [statevalue]: apisList,
+        })
+      );
+      updateValidationInput(attributeName);
+      dispatch(
+        setFormErrorRate({
+          ...FormData.errors,
+          PerApiLimit: perapi,
+        })
+      );
     }
   }
-  function setThrottleValue() {
-    if (
-      props.current === "policy"
-        ? props.state?.data.form.APIs[props.index!].Limit
-            ?.throttle_retry_limit! === -1
-        : props.keystate?.data.form.AccessRights[props.index!].Limit
-            ?.Throttle_retry_limit! === -1
-    ) {
-      if (props.current === "policy") {
-        const apisList = [...props.state?.data.form.APIs!];
-        apisList[props.index!] = {
-          ...apisList[props.index!],
-          Limit: {
-            rate: props.state?.data.form.APIs[props.index!].Limit?.rate,
-            per: props.state?.data.form.APIs[props.index!].Limit?.per!,
-            throttle_interval:
-              id === undefined
-                ? 0
-                : policystate === undefined
-                ? 0
-                : props.state?.data.form.APIs[props.index!].Limit
-                    ?.throttle_interval === -1
-                ? 0
-                : props.state?.data.form.APIs[props.index!].Limit
-                    ?.throttle_interval,
-            throttle_retry_limit:
-              id === undefined
-                ? 0
-                : policystate === undefined
-                ? 0
-                : props.state?.data.form.APIs[props.index!].Limit
-                    ?.throttle_retry_limit === -1
-                ? 0
-                : props.state?.data.form.APIs[props.index!].Limit
-                    ?.throttle_retry_limit,
-            max_query_depth:
-              props.state?.data.form.APIs[props.index!].Limit?.max_query_depth,
-            quota_max:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_max,
-            quota_renews:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_renews,
-            quota_remaining:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_remaining,
-            quota_renewal_rate:
-              props.state?.data.form.APIs[props.index!].Limit
-                ?.quota_renewal_rate,
-            set_by_policy:
-              props.state?.data.form.APIs[props.index!].Limit?.set_by_policy!,
-          },
-        };
-        dispatch(
-          setForm({
-            ...state.data.form,
-            APIs: apisList,
-          })
-        );
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          ThrottleRetries: "",
-          ThrottleInterval: "",
-        };
-        dispatch(
-          setFormError({
-            ...state.data.errors,
-            PerApiLimit: perapi,
-          })
-        );
-      } else {
-        const apisList = [...props.keystate?.data.form.AccessRights!];
-        apisList[props.index!] = {
-          ...apisList[props.index!],
-          Limit: {
-            Rate: props.keystate?.data.form.AccessRights[props.index!].Limit
-              ?.Rate,
-            Per: props.keystate?.data.form.AccessRights[props.index!].Limit
-              ?.Per,
-            Throttle_interval:
-              id === undefined
-                ? 0
-                : keystate === undefined
-                ? 0
-                : props.keystate?.data.form.AccessRights[props.index!].Limit
-                    ?.Throttle_interval === -1
-                ? 0
-                : props.keystate?.data.form.AccessRights[props.index!].Limit
-                    ?.Throttle_interval,
-            Throttle_retry_limit:
-              id === undefined
-                ? 0
-                : keystate === undefined
-                ? 0
-                : props.keystate?.data.form.AccessRights[props.index!].Limit
-                    ?.Throttle_retry_limit === -1
-                ? 0
-                : props.keystate?.data.form.AccessRights[props.index!].Limit
-                    ?.Throttle_retry_limit,
-            Max_query_depth:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Max_query_depth,
-            Quota_max:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_max,
-            Quota_renews:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_renews,
-            Quota_remaining:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_remaining,
-            Quota_renewal_rate:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_renewal_rate,
-          },
-        };
-        dispatch(
-          setForms({
-            ...states.data.form,
-            AccessRights: apisList,
-          })
-        );
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          ThrottleRetries: "",
-          ThrottleInterval: "",
-        };
-        dispatch(
-          setFormErrors({
-            ...states.data.errors,
-            PerApiLimit: perapi,
-          })
-        );
-      }
-    } else {
-      if (props.current === "policy") {
-        const apisList = [...props.state?.data.form.APIs!];
-        apisList[props.index!] = {
-          ...apisList[props.index!],
-          Limit: {
-            rate: props.state?.data.form.APIs[props.index!].Limit?.rate,
-            per: props.state?.data.form.APIs[props.index!].Limit?.per!,
-            throttle_interval: -1,
-            throttle_retry_limit: -1,
-            max_query_depth:
-              props.state?.data.form.APIs[props.index!].Limit?.max_query_depth,
-            quota_max:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_max,
-            quota_renews:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_renews,
-            quota_remaining:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_remaining,
-            quota_renewal_rate:
-              props.state?.data.form.APIs[props.index!].Limit
-                ?.quota_renewal_rate,
-            set_by_policy:
-              props.state?.data.form.APIs[props.index!].Limit?.set_by_policy!,
-          },
-        };
-        dispatch(
-          setForm({
-            ...state.data.form,
-            APIs: apisList,
-          })
-        );
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          ThrottleRetries: "",
-          ThrottleInterval: "",
-        };
-        dispatch(
-          setFormError({
-            ...state.data.errors,
-            PerApiLimit: perapi,
-          })
-        );
-      } else {
-        const apisList = [...props.keystate?.data.form.AccessRights!];
-        apisList[props.index!] = {
-          ...apisList[props.index!],
-          Limit: {
-            Rate: props.keystate?.data.form.AccessRights[props.index!].Limit
-              ?.Rate,
-            Per: props.keystate?.data.form.AccessRights[props.index!].Limit
-              ?.Per,
-            Throttle_interval: -1,
-            Throttle_retry_limit: -1,
-            Max_query_depth:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Max_query_depth,
-            Quota_max:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_max,
-            Quota_renews:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_renews,
-            Quota_remaining:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_remaining,
-            Quota_renewal_rate:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_renewal_rate,
-          },
-        };
-        dispatch(
-          setForms({
-            ...states.data.form,
-            AccessRights: apisList,
-          })
-        );
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          ThrottleRetries: "",
-          ThrottleInterval: "",
-        };
-        dispatch(
-          setFormErrors({
-            ...states.data.errors,
-            PerApiLimit: perapi,
-          })
-        );
-      }
-    }
-  }
-  function setQuotaValue() {
-    if (
-      props.current === "policy"
-        ? props.state?.data.form.APIs[props.index!].Limit?.quota_max! === -1
-        : props.keystate?.data.form.AccessRights[props.index!].Limit
-            ?.Quota_max! === -1
-    ) {
-      if (props.current === "policy") {
-        const apisList = [...props.state?.data.form.APIs!];
-        apisList[props.index!] = {
-          ...apisList[props.index!],
-          Limit: {
-            rate: props.state?.data.form.APIs[props.index!].Limit?.rate,
-            per: props.state?.data.form.APIs[props.index!].Limit?.per!,
-            throttle_interval:
-              props.state?.data.form.APIs[props.index!].Limit
-                ?.throttle_interval,
-            throttle_retry_limit:
-              props.state?.data.form.APIs[props.index!].Limit
-                ?.throttle_retry_limit,
-            max_query_depth:
-              props.state?.data.form.APIs[props.index!].Limit?.max_query_depth,
-            quota_max:
-              id === undefined
-                ? 0
-                : policystate === undefined
-                ? 0
-                : props.state?.data.form.APIs[props.index!].Limit?.quota_max ===
-                  -1
-                ? 0
-                : props.state?.data.form.APIs[props.index!].Limit?.quota_max,
-            quota_renews:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_renews,
-            quota_remaining:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_remaining,
-            quota_renewal_rate:
-              id === undefined
-                ? 0
-                : policystate === undefined
-                ? 0
-                : props.state?.data.form.APIs[props.index!].Limit
-                    ?.quota_renewal_rate === -1
-                ? 0
-                : props.state?.data.form.APIs[props.index!].Limit
-                    ?.quota_renewal_rate,
-            set_by_policy:
-              props.state?.data.form.APIs[props.index!].Limit?.set_by_policy!,
-          },
-        };
-        dispatch(
-          setForm({
-            ...state.data.form,
-            APIs: apisList,
-          })
-        );
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          Quota: "",
-        };
 
-        dispatch(
-          setFormError({
-            ...state.data.errors,
-            PerApiLimit: perapi,
-          })
-        );
-      } else {
-        const apisList = [...props.keystate?.data.form.AccessRights!];
-        apisList[props.index!] = {
-          ...apisList[props.index!],
-          Limit: {
-            Rate: props.keystate?.data.form.AccessRights[props.index!].Limit
-              ?.Rate,
-            Per: props.keystate?.data.form.AccessRights[props.index!].Limit
-              ?.Per,
-            Throttle_interval:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Throttle_interval,
-            Throttle_retry_limit:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Throttle_retry_limit,
-            Max_query_depth:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Max_query_depth,
-            Quota_max:
-              id === undefined
-                ? 0
-                : keystate === undefined
-                ? 0
-                : props.keystate?.data.form.AccessRights[props.index!].Limit
-                    ?.Quota_max === -1
-                ? 0
-                : props.keystate?.data.form.AccessRights[props.index!].Limit
-                    ?.Quota_max,
-            Quota_renews:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_renews,
-            Quota_remaining:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_remaining,
-            Quota_renewal_rate:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_renewal_rate,
-          },
-        };
-        dispatch(
-          setForms({
-            ...states.data.form,
-            AccessRights: apisList,
-          })
-        );
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          Quota: "",
-        };
-
-        dispatch(
-          setFormErrors({
-            ...state.data.errors,
-            PerApiLimit: perapi,
-          })
-        );
-      }
-    } else {
-      if (props.current === "policy") {
-        const apisList = [...props.state?.data.form.APIs!];
-        apisList[props.index!] = {
-          ...apisList[props.index!],
-          Limit: {
-            rate: props.state?.data.form.APIs[props.index!].Limit?.rate,
-            per: props.state?.data.form.APIs[props.index!].Limit?.per!,
-            throttle_interval:
-              props.state?.data.form.APIs[props.index!].Limit
-                ?.throttle_interval,
-            throttle_retry_limit:
-              props.state?.data.form.APIs[props.index!].Limit
-                ?.throttle_retry_limit,
-            max_query_depth:
-              props.state?.data.form.APIs[props.index!].Limit?.max_query_depth,
-            quota_max: -1,
-            quota_renews:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_renews,
-            quota_remaining:
-              props.state?.data.form.APIs[props.index!].Limit?.quota_remaining,
-            quota_renewal_rate: -1,
-            set_by_policy:
-              props.state?.data.form.APIs[props.index!].Limit?.set_by_policy!,
-          },
-        };
-        dispatch(
-          setForm({
-            ...state.data.form,
-            APIs: apisList,
-          })
-        );
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          Quota: "",
-        };
-
-        dispatch(
-          setFormError({
-            ...state.data.errors,
-            PerApiLimit: perapi,
-          })
-        );
-      } else {
-        const apisList = [...props.keystate?.data.form.AccessRights!];
-        apisList[props.index!] = {
-          ...apisList[props.index!],
-          Limit: {
-            Rate: props.keystate?.data.form.AccessRights[props.index!].Limit
-              ?.Rate,
-            Per: props.keystate?.data.form.AccessRights[props.index!].Limit
-              ?.Per,
-            Throttle_interval:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Throttle_interval,
-            Throttle_retry_limit:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Throttle_retry_limit,
-            Max_query_depth:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Max_query_depth,
-            Quota_max: -1,
-            Quota_renews:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_renews,
-            Quota_remaining:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_remaining,
-            Quota_renewal_rate:
-              props.keystate?.data.form.AccessRights[props.index!].Limit
-                ?.Quota_renewal_rate,
-          },
-        };
-        dispatch(
-          setForms({
-            ...states.data.form,
-            AccessRights: apisList,
-          })
-        );
-        perapi[props.index!] = {
-          ...perapi[props.index!],
-          Quota: "",
-        };
-
-        dispatch(
-          setFormErrors({
-            ...state.data.errors,
-            PerApiLimit: perapi,
-          })
-        );
-      }
-    }
-  }
   useEffect(() => {
     EffectSetRateError();
   }, []);
 
-  const handlerateclick = (event: any, ApiId: any) => {
+  const handlerateclick = (event: any) => {
     event.preventDefault();
-    validateForm(event, ApiId);
+    validateForm(event);
     const value = props.index!;
     const apisList =
       props.current === "policy"
@@ -858,31 +284,27 @@ export default function GlobalLimitApi(props: IProps) {
             ...props.state?.data.form.APIs[props.index!].Limit!,
           }
         : { ...props.keystate?.data.form.AccessRights[props.index!].Limit! };
-    if (props.current !== "policy") {
-      switch (fieldName) {
-        case "rate":
-          newFormData.Rate = fieldValue;
-          break;
-        case "per":
-          newFormData.Per = fieldValue;
-          break;
-        case "throttle_retry_limit":
-          newFormData.Throttle_retry_limit = fieldValue;
-          break;
-        case "throttle_interval":
-          newFormData.Throttle_interval = fieldValue;
-          break;
-        case "quota_max":
-          newFormData.Quota_max = fieldValue;
-          break;
-        case "quota_renewal_rate":
-          newFormData.Quota_renewal_rate = fieldValue;
-          break;
-      }
-    } else {
-      console.log("fieldname", fieldName);
-      newFormData[fieldName] = fieldValue;
+    switch (fieldName) {
+      case "Rate":
+        newFormData.Rate = fieldValue;
+        break;
+      case "Per":
+        newFormData.Per = fieldValue;
+        break;
+      case "ThrottleRetries":
+        newFormData.Throttle_retry_limit = fieldValue;
+        break;
+      case "ThrottleInterval":
+        newFormData.Throttle_interval = fieldValue;
+        break;
+      case "Quota":
+        newFormData.Quota_max = fieldValue;
+        break;
+      case "Quota_renewal_rate":
+        newFormData.Quota_renewal_rate = fieldValue;
+        break;
     }
+
     // setLimits(newFormData);
     apisList[value] = {
       ...apisList[value],
@@ -1019,12 +441,37 @@ export default function GlobalLimitApi(props: IProps) {
                           checked={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!].Limit
-                                  ?.rate! === -1
+                                  ?.Rate! === -1
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ].Limit?.Rate! === -1
                           }
-                          onChange={() => setRateValue()}
+                          onChange={(e: any) =>
+                            props.current === "policy"
+                              ? setRateValue(
+                                  props.state?.data.form.APIs,
+                                  props.state?.data,
+                                  policystate,
+                                  "APIs",
+                                  props.setForm,
+                                  props.setFormError,
+                                  e,
+                                  props.state?.data.form.APIs[props.index!]
+                                    .Limit?.Rate!
+                                )
+                              : setRateValue(
+                                  props.keystate?.data.form.AccessRights,
+                                  props.keystate?.data,
+                                  keystate,
+                                  "AccessRights",
+                                  props.setForm,
+                                  props.setFormError,
+                                  e,
+                                  props.keystate?.data.form.AccessRights[
+                                    props.index!
+                                  ].Limit?.Rate!
+                                )
+                          }
                         />
                         <Form.Label className="mt-3">Rate</Form.Label>
                         <br />
@@ -1032,15 +479,15 @@ export default function GlobalLimitApi(props: IProps) {
                         <Form.Control
                           className="mt-2"
                           type="text"
-                          id="rate"
+                          id="Rate"
                           required
                           value={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!]?.Limit
-                                  ?.rate === -1
+                                  ?.Rate === -1
                                 ? "Disabled Rate"
                                 : props.state?.data.form.APIs[props.index!]
-                                    ?.Limit?.rate
+                                    ?.Limit?.Rate
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ]?.Limit?.Rate === -1
@@ -1051,13 +498,8 @@ export default function GlobalLimitApi(props: IProps) {
                           }
                           placeholder="Enter Request per period"
                           // onChange={(e: any) => validateForm(e)}
-                          onChange={(e: any) =>
-                            handlerateclick(
-                              e,
-                              props.state?.data.form.APIs[props.index!].Id
-                            )
-                          }
-                          name="rate"
+                          onChange={(e: any) => handlerateclick(e)}
+                          name="Rate"
                           isInvalid={
                             props.current === "policy"
                               ? !!props.state?.data.errors?.PerApiLimit[
@@ -1077,7 +519,7 @@ export default function GlobalLimitApi(props: IProps) {
                           disabled={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!].Limit
-                                  ?.rate! === -1
+                                  ?.Rate! === -1
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ].Limit?.Rate! === -1
@@ -1098,22 +540,17 @@ export default function GlobalLimitApi(props: IProps) {
                         <Form.Control
                           className="mt-2"
                           type="text"
-                          id="per"
+                          id="Per"
                           placeholder="Enter time"
-                          onChange={(e: any) =>
-                            handlerateclick(
-                              e,
-                              props.state?.data.form.APIs[props.index!].Id
-                            )
-                          }
-                          name="per"
+                          onChange={(e: any) => handlerateclick(e)}
+                          name="Per"
                           value={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!]?.Limit
-                                  ?.per === -1
+                                  ?.Per === -1
                                 ? "Disabled Per"
                                 : props.state?.data.form.APIs[props.index!]
-                                    ?.Limit?.per!
+                                    ?.Limit?.Per!
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ]?.Limit?.Per === -1
@@ -1139,7 +576,7 @@ export default function GlobalLimitApi(props: IProps) {
                           disabled={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!].Limit
-                                  ?.rate! === -1
+                                  ?.Rate! === -1
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ].Limit?.Rate! === -1
@@ -1165,13 +602,38 @@ export default function GlobalLimitApi(props: IProps) {
                           checked={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!].Limit
-                                  ?.throttle_retry_limit! === -1
+                                  ?.Throttle_retry_limit! === -1
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ].Limit?.Throttle_retry_limit! === -1
                           }
                           className="ml-4"
-                          onChange={() => setThrottleValue()}
+                          onChange={(e: any) =>
+                            props.current === "policy"
+                              ? setRateValue(
+                                  props.state?.data.form.APIs,
+                                  props.state?.data,
+                                  policystate,
+                                  "APIs",
+                                  props.setForm,
+                                  props.setFormError,
+                                  e,
+                                  props.state?.data.form.APIs[props.index!]
+                                    .Limit?.Throttle_interval
+                                )
+                              : setRateValue(
+                                  props.keystate?.data.form.AccessRights,
+                                  props.keystate?.data,
+                                  keystate,
+                                  "AccessRights",
+                                  props.setForm,
+                                  props.setFormError,
+                                  e,
+                                  props.keystate?.data.form.AccessRights[
+                                    props.index!
+                                  ].Limit?.Throttle_interval
+                                )
+                          }
                         />
                         <Form.Label className="mt-3">
                           Throttle retry limit
@@ -1184,10 +646,10 @@ export default function GlobalLimitApi(props: IProps) {
                           value={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!]?.Limit
-                                  ?.throttle_retry_limit === -1
+                                  ?.Throttle_retry_limit === -1
                                 ? "Disabled Throttling"
                                 : props.state?.data.form.APIs[props.index!]
-                                    ?.Limit?.throttle_retry_limit
+                                    ?.Limit?.Throttle_retry_limit
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ]?.Limit?.Throttle_retry_limit === -1
@@ -1197,13 +659,8 @@ export default function GlobalLimitApi(props: IProps) {
                                 ]?.Limit?.Throttle_retry_limit
                           }
                           placeholder="Enter per request"
-                          name="throttle_retry_limit"
-                          onChange={(e: any) =>
-                            handlerateclick(
-                              e,
-                              props.state?.data.form.APIs[props.index!].Id
-                            )
-                          }
+                          name="ThrottleRetries"
+                          onChange={(e: any) => handlerateclick(e)}
                           // value={throttleDefault}
                           isInvalid={
                             props.current === "policy"
@@ -1222,7 +679,7 @@ export default function GlobalLimitApi(props: IProps) {
                           disabled={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!].Limit
-                                  ?.throttle_retry_limit! === -1
+                                  ?.Throttle_retry_limit! === -1
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ].Limit?.Throttle_retry_limit! === -1
@@ -1243,14 +700,14 @@ export default function GlobalLimitApi(props: IProps) {
                           className="mt-2"
                           type="text"
                           id="interval"
-                          name="throttle_interval"
+                          name="ThrottleInterval"
                           value={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!]?.Limit
-                                  ?.throttle_interval === -1
+                                  ?.Throttle_interval === -1
                                 ? "Disabled Throttling"
                                 : props.state?.data.form.APIs[props.index!]
-                                    ?.Limit?.throttle_interval
+                                    ?.Limit?.Throttle_interval
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ]?.Limit?.Throttle_interval === -1
@@ -1260,12 +717,7 @@ export default function GlobalLimitApi(props: IProps) {
                                 ]?.Limit?.Throttle_interval
                           }
                           placeholder="Enter per request"
-                          onChange={(e: any) =>
-                            handlerateclick(
-                              e,
-                              props.state?.data.form.APIs[props.index!].Id
-                            )
-                          }
+                          onChange={(e: any) => handlerateclick(e)}
                           isInvalid={
                             props.current === "policy"
                               ? !!state.data.errors?.PerApiLimit[props.index!]
@@ -1283,7 +735,7 @@ export default function GlobalLimitApi(props: IProps) {
                           disabled={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!].Limit
-                                  ?.throttle_retry_limit! === -1
+                                  ?.Throttle_retry_limit! === -1
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ].Limit?.Throttle_retry_limit! === -1
@@ -1311,13 +763,38 @@ export default function GlobalLimitApi(props: IProps) {
                           checked={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!].Limit
-                                  ?.quota_max! === -1
+                                  ?.Quota_max! === -1
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ].Limit?.Quota_max! === -1
                           }
                           className="ml-4"
-                          onChange={() => setQuotaValue()}
+                          onChange={(e: any) =>
+                            props.current === "policy"
+                              ? setRateValue(
+                                  props.state?.data.form.APIs,
+                                  props.state?.data,
+                                  policystate,
+                                  "APIs",
+                                  props.setForm,
+                                  props.setFormError,
+                                  e,
+                                  props.state?.data.form.APIs[props.index!]
+                                    .Limit?.Quota_max
+                                )
+                              : setRateValue(
+                                  props.keystate?.data.form.AccessRights,
+                                  props.keystate?.data,
+                                  keystate,
+                                  "AccessRights",
+                                  props.setForm,
+                                  props.setFormError,
+                                  e,
+                                  props.keystate?.data.form.AccessRights[
+                                    props.index!
+                                  ].Limit?.Quota_max
+                                )
+                          }
                         />
                         <Form.Label className="mt-3">
                           Max requests per period
@@ -1328,20 +805,15 @@ export default function GlobalLimitApi(props: IProps) {
                           type="text"
                           id="quotaPer"
                           placeholder="Enter per period request"
-                          onChange={(e: any) =>
-                            handlerateclick(
-                              e,
-                              props.state?.data.form.APIs[props.index!].Id
-                            )
-                          }
-                          name="quota_max"
+                          onChange={(e: any) => handlerateclick(e)}
+                          name="Quota"
                           value={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!]?.Limit
-                                  ?.quota_max === -1
+                                  ?.Quota_max === -1
                                 ? "Disabled Quota"
                                 : props.state?.data.form.APIs[props.index!]
-                                    ?.Limit?.quota_max
+                                    ?.Limit?.Quota_max
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ]?.Limit?.Quota_max === -1
@@ -1367,7 +839,7 @@ export default function GlobalLimitApi(props: IProps) {
                           disabled={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!].Limit
-                                  ?.quota_max! === -1
+                                  ?.Quota_max! === -1
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ].Limit?.Quota_max! === -1
@@ -1389,26 +861,21 @@ export default function GlobalLimitApi(props: IProps) {
                           disabled={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!].Limit
-                                  ?.quota_max! === -1
+                                  ?.Quota_max! === -1
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ].Limit?.Quota_max! === -1
                           }
-                          name="quota_renewal_rate"
+                          name="Quota_renewal_rate"
                           value={
                             props.current === "policy"
                               ? props.state?.data.form.APIs[props.index!]?.Limit
-                                  ?.quota_renewal_rate
+                                  ?.Quota_renewal_rate
                               : props.keystate?.data.form.AccessRights[
                                   props.index!
                                 ]?.Limit?.Quota_renewal_rate
                           }
-                          onChange={(e: any) =>
-                            handlerateclick(
-                              e,
-                              props.state?.data.form.APIs[props.index!].Id
-                            )
-                          }
+                          onChange={(e: any) => handlerateclick(e)}
                         >
                           <option value={0}>never</option>
                           <option value={3600}>1 hour</option>

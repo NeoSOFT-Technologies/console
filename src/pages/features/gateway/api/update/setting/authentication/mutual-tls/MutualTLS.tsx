@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Row, Form, Col, Modal } from "react-bootstrap";
 import {
-  AuthGuard,
   access,
-} from "../../../../../../../../components/gateway/auth-guard";
+  AuthGuard,
+} from "../../../../../../../../components/auth-gaurd";
 import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 // import Spinner from "../../../../../../../../components/loader/Loader";
 import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
@@ -30,14 +30,14 @@ export default function MutualTLS() {
   // const [divShow, setDivShow] = useState<any>(false);
   const [certId, setCertId] = useState<any>([]);
   const [certId1, setCertId1] = useState<any>("");
-  const [file, setFile] = useState<any>([]);
+  const [file, setFile] = useState<any>("");
   const [radio, setRadio] = useState("uploadCert");
   const [fileName, setFileName] = useState<any>("");
   const [show, setShow] = useState(false);
   const [loader, setLoader] = useState(true);
   // const [loader1, setLoader1] = useState(true);
   const handleClose = () => {
-    setFile([]);
+    setFile("");
     setCertId1("");
     setShow(false);
   };
@@ -78,18 +78,30 @@ export default function MutualTLS() {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
+    let result: any;
     if (radio === "uploadCert") {
-      const data = new FormData();
-      data.append("file", fileName);
-      const result = await dispatch(addCertificate(data));
-      mainCall();
-      setFile([]);
-      console.log("satteadd", addCertificateState);
-      if (result.meta.requestStatus === "rejected") {
-        ToastAlert(result.payload.message, "error");
-      } else if (result.meta.requestStatus === "fulfilled") {
-        ToastAlert("Certificate Added Successfully!!", "success");
-        handleClose();
+      if (fileName.name.includes(".pem")) {
+        console.log("f", file);
+        const data = new FormData();
+        data.append("file", fileName);
+        result = await dispatch(addCertificate(data));
+
+        mainCall();
+        setFile("");
+        setFileName("");
+
+        console.log("satteadd", addCertificateState);
+        if (result.meta.requestStatus === "rejected") {
+          ToastAlert(result.payload.message, "error");
+          console.log(result.payload.message);
+        } else if (result.meta.requestStatus === "fulfilled") {
+          ToastAlert("Certificate Added Successfully!!", "success");
+          handleClose();
+        }
+      } else {
+        ToastAlert("Please select the .pem file type", "error");
+        setFile("");
+        setFileName("");
       }
     } else {
       const certobjId = certificateState.data?.CertificateCollection;
@@ -129,7 +141,11 @@ export default function MutualTLS() {
           setCertId([...certId, list]);
         }
       } else {
-        ToastAlert("Please upload Certificate ", "error");
+        // ToastAlert("Please upload Certificate", "error");
+        ToastAlert(
+          "Certificate of Id " + certId1 + " is not available",
+          "error"
+        );
       }
 
       setCertId1("");
@@ -145,7 +161,7 @@ export default function MutualTLS() {
   };
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setFile([]);
+    setFile("");
     setCertId1("");
     setRadio(value);
   };
@@ -161,7 +177,8 @@ export default function MutualTLS() {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    setFile([""]);
+    setFile("");
+    setFileName("");
   };
   const handlePlusButton = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -240,6 +257,9 @@ export default function MutualTLS() {
     };
     setCertId(data);
   };
+  console.log("file", file);
+  console.log("file1", fileName);
+
   return (
     <div>
       <>
@@ -360,8 +380,8 @@ export default function MutualTLS() {
             <button
               type="button"
               className="btn-success rounded float-end"
-              onClick={handleAddNewCertificate}
               disabled={file.length === 0 && certId1 === ""}
+              onClick={handleAddNewCertificate}
             >
               Add
             </button>
