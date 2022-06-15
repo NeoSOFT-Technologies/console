@@ -100,15 +100,6 @@ describe("SAAS - EDIT TABLE Component", () => {
     expect(editColBtn).toBeInTheDocument();
     userEvent.click(editColBtn);
 
-    // const saveColChangeBtn = await waitFor(
-    //   () => screen.getByTestId("save-col-change-btn"),
-    //   {
-    //     timeout: 3000,
-    //   }
-    // );
-    // expect(saveColChangeBtn).toBeInTheDocument();
-    // userEvent.click(saveColChangeBtn);
-
     userEvent.click(editColBtn);
 
     const closeModalBtn = await waitFor(
@@ -170,11 +161,6 @@ describe("SAAS - EDIT TABLE Component", () => {
       target: { value: "id" },
     });
 
-    // const addColTypeInput = screen.getByTestId("add-col-type-input");
-    // fireEvent.change(addColTypeInput, {
-    //   target: { value: "string" },
-    // });
-
     const addColSubmitBtn = await waitFor(
       () => screen.getByTestId("save-col-change-btn"),
       {
@@ -184,12 +170,6 @@ describe("SAAS - EDIT TABLE Component", () => {
     expect(addColSubmitBtn).toBeInTheDocument();
     userEvent.click(addColSubmitBtn);
 
-    // fireEvent.change(addColTypeInput, {
-    //   target: { value: "netColName" },
-    // });
-    // fireEvent.change(addColTypeInput, {
-    //   target: { value: "string" },
-    // });
     userEvent.click(addColSubmitBtn);
     //= ===============================================================
 
