@@ -5,20 +5,21 @@ const saasRoutes = [
   //   icon: "bi bi-list-ul",
   // },
   {
+    path: "/saas/manage-table",
+    title: "Manage Table",
+    icon: "bi bi-table",
+  },
+  {
     path: "/saas/insert-data",
     title: "Insert Data",
     icon: "bi bi-clipboard-plus",
   },
   {
     path: "/saas/search-data",
-    title: "Search Data",
+    title: "Search ",
     icon: "bi bi-search",
   },
-  {
-    path: "/saas/manage-table",
-    title: "Manage Table",
-    icon: "bi bi-table",
-  },
+
   {
     path: "/saas/restore-table",
     title: "Restore Table",
