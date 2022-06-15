@@ -7,6 +7,10 @@ import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
 import {
   ColNameErrMsg,
   regexForColName,
+  multivaledDataTypes,
+  singleValedDataTypes,
+  tableHeadings,
+  dataTypelist,
 } from "../../../../resources/saas/constant";
 import {
   deleteColumn,
@@ -31,24 +35,17 @@ export default function EditTable() {
   const updateTableSchemaState = useAppSelector(
     (state) => state.updateTableSchemaState
   );
+  const addColumn = "Add Column";
   const [show, setShow] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  const [selectedColHeading, setselectedColHeading] = useState<string>("");
+  const [selectedColHeading, setSelectedColHeading] = useState<string>("");
   const [selectedColAction, setSelectedColAction] = useState<string>("");
   const [readonlyState, setReadonlyState] = useState<boolean>(true);
   const [showSuccessMsg, setShowSuccessMsg] = useState<boolean>(false);
-  const tableHeadings: string[] = [
-    "Name",
-    "Type",
-    "Required",
-    "Partial Search",
-    "Filterable",
-    "Sortable",
-    "Multivalue",
-    "Storable",
-    "Edit",
-    "Delete",
-  ];
+  const [showModalButton, setShowModalButton] = useState<boolean>(false);
+  const [isSortableDisable, setIsSortableDisable] = useState<boolean>(true);
+  const [isTypeDisable, setIsTypeDisable] = useState<boolean>(true);
+  const [showDataTypes, setShowDataTypes] = useState<string[]>([]);
   const tableSchemaObject: ITableSchema = {
     tenantId,
     tableName,
@@ -67,22 +64,6 @@ export default function EditTable() {
       multiValue: false,
       storable: false,
     });
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    switch (name) {
-      case "name":
-        setError({
-          ...error,
-          [name]: regexForColName.test(value) ? "" : ColNameErrMsg,
-        });
-        break;
-      default:
-        break;
-    }
-    setSelectedColumnData({ ...selectedColumnData, [name]: value });
-  };
-
   const handleClose = () => {
     setError({
       name: "",
@@ -96,19 +77,84 @@ export default function EditTable() {
     setSelectedColumnData(columData);
     setDeleteModal(true);
   };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setError({
+      ...error,
+      name: regexForColName.test(event.target.value) ? "" : ColNameErrMsg,
+    });
+    setSelectedColumnData({ ...selectedColumnData, name: event.target.value });
+  };
+
+  const multivalueOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedColumnData((previous) => {
+      return { ...previous, multiValue: JSON.parse(event.target.value) };
+    });
+    setSelectedColumnData((previous) => {
+      return { ...previous, type: "" };
+    });
+
+    if (JSON.parse(event.target.value)) {
+      setSelectedColumnData((previous) => {
+        return { ...previous, sortable: false };
+      });
+      setIsSortableDisable(true);
+      setShowDataTypes(multivaledDataTypes);
+      setSelectedColumnData((previous) => {
+        return { ...previous, type: "strings" };
+      });
+      // Partial search
+      if (selectedColumnData.partialSearch) {
+        setSelectedColumnData((previous) => {
+          return { ...previous, type: "strings" };
+        });
+        setIsTypeDisable(true);
+      } else {
+        setIsTypeDisable(false);
+      }
+    } else {
+      setIsSortableDisable(false);
+      setShowDataTypes(singleValedDataTypes);
+      setSelectedColumnData((previous) => {
+        return { ...previous, type: "string" };
+      });
+    }
+  };
+
+  const partialSearchOnChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedColumnData((previous) => {
+      return { ...previous, partialSearch: JSON.parse(event.target.value) };
+    });
+    if (JSON.parse(event.target.value)) {
+      setIsTypeDisable(true);
+      if (selectedColumnData.multiValue) {
+        setSelectedColumnData((previous) => {
+          return { ...previous, type: "strings" };
+        });
+      } else {
+        setSelectedColumnData((previous) => {
+          return { ...previous, type: "string" };
+        });
+      }
+    } else {
+      setIsTypeDisable(false);
+    }
+  };
   const handleValidate = () => {
-    const validate = !!(error.name === "");
-    return validate;
+    // const validate = !!(error.name === "");
+    return error.name === "";
   };
   const processColumn = () => {
     if (handleValidate()) {
       if (selectedColumnData.name !== "" && selectedColumnData.type !== "") {
-        const objIndex: Number | any = tableData.data?.findIndex(
+        const objIndex: number | any = tableData.data?.findIndex(
           (item: ITableColumnData) =>
             item.name.toLowerCase() === selectedColumnData.name.toLowerCase()
         );
 
-        if (selectedColHeading === "Add Column" && objIndex > -1) {
+        if (selectedColHeading === addColumn && objIndex > -1) {
           ToastAlert("Column already exists", "warning");
         } else {
           dispatch(
@@ -129,11 +175,15 @@ export default function EditTable() {
     columData: ITableColumnData,
     selectedColumnHeading: string
   ) => {
-    setselectedColHeading(selectedColumnHeading);
-    if (selectedColumnHeading === "Add Column") {
+    setSelectedColHeading(selectedColumnHeading);
+    if (selectedColumnHeading === addColumn) {
+      setShowModalButton(true);
+      setIsSortableDisable(false);
+      setIsTypeDisable(false);
+      setShowDataTypes(singleValedDataTypes);
       setSelectedColumnData({
         name: "",
-        type: "",
+        type: "string",
         required: false,
         partialSearch: false,
         filterable: false,
@@ -141,9 +191,12 @@ export default function EditTable() {
         multiValue: false,
         storable: false,
       });
-      setSelectedColAction("Add Column");
+      setSelectedColAction(addColumn);
       setReadonlyState(false);
     } else {
+      setShowModalButton(false);
+      setIsSortableDisable(true);
+      setIsTypeDisable(true);
       setSelectedColumnData(columData);
       setSelectedColAction("Save Changes");
       setReadonlyState(true);
@@ -236,29 +289,6 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            {/* <Row>
-              <Form.Label
-                column="lg"
-                lg={3}
-                className="pl-5 text-center createbody"
-              >
-                <b>Capacity</b>
-              </Form.Label>
-              <Col sm lg="4">
-                <InputGroup
-                  aria-label="Default select example"
-                  className="w-100 pr-3 pt-1 pb-1 createbody"
-                  id="box"
-                >
-                  {"B"}
-                </InputGroup>
-              </Col>
-              <Form.Label column="lg" lg={2} className="p-1 m-0">
-                <div>
-                  <i className="bi bi-info-circle-fill"></i>
-                </div>
-              </Form.Label>
-            </Row> */}
             <Form.Label
               column="lg"
               lg={3}
@@ -287,19 +317,19 @@ export default function EditTable() {
                       {tableData.data.map((val, index) => (
                         <tr key={`row${index}`}>
                           <td>{val.name}</td>
-                          <td>{val.type}</td>
-                          <td>{val.required.toString()}</td>
-                          <td>{val.partialSearch.toString()}</td>
-                          <td>{val.filterable.toString()}</td>
-                          <td>{val.sortable.toString()}</td>
                           <td>{val.multiValue.toString()}</td>
+                          <td>{val.partialSearch.toString()}</td>
+                          <td>{val.type}</td>
+                          <td>{val.sortable.toString()}</td>
+                          <td>{val.required.toString()}</td>
+                          <td>{val.filterable.toString()}</td>
                           <td>{val.storable.toString()} </td>
                           <td className="text-align-middle  text-primary">
                             <i
                               className="bi bi-pencil-square"
                               data-toggle="modal"
                               data-testid="edit-col-btn"
-                              onClick={() => handleShow(val, "Edit Column")}
+                              onClick={() => handleShow(val, "View Column")}
                             ></i>
                           </td>
                           <td className="text-danger">
@@ -334,7 +364,7 @@ export default function EditTable() {
               data-target="#exampleModalCenter"
               data-testid="add-col-btn"
               disabled={updateTableSchemaState.loading}
-              onClick={() => handleShow(selectedColumnData, "Add Column")}
+              onClick={() => handleShow(selectedColumnData, addColumn)}
             >
               Add Column
             </Button>
@@ -396,12 +426,6 @@ export default function EditTable() {
                     readOnly={readonlyState}
                     isInvalid={!!error.name}
                     isValid={!error.name && !!selectedColumnData.name}
-                    // onChange={(e) => {
-                    //   setSelectedColumnData({
-                    //     ...selectedColumnData,
-                    //     name: e.target.value,
-                    //   });
-                    // }}
                     onChange={handleInputChange}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -410,58 +434,21 @@ export default function EditTable() {
                 </div>
               </Col>
             </Row>
-
             <br></br>
             <Row>
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
-                  <b>Type</b>
-                </Form.Label>
-              </Col>
-
-              <Col sm lg="7">
-                <div className="input-group ">
-                  <Form.Control
-                    type="text"
-                    className="form-control text-center read-only"
-                    value={selectedColumnData.type}
-                    placeholder="Type"
-                    name="type"
-                    aria-label="Title"
-                    aria-describedby="basic-addon"
-                    data-testid="add-col-type-input"
-                    readOnly={readonlyState}
-                    onChange={(e) => {
-                      setSelectedColumnData({
-                        ...selectedColumnData,
-                        type: e.target.value,
-                      });
-                    }}
-                  />
-                </div>
-              </Col>
-            </Row>
-            <br></br>
-
-            <Row>
-              <Col sm lg="4">
-                <Form.Label className="ml-5 pt-2">
-                  <b>Required</b>
+                  <b>Multivalue</b>
                 </Form.Label>
               </Col>
               <Col sm lg="7">
                 <Form.Select
-                  required
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
-                  id="box"
-                  value={selectedColumnData.required.toString()}
-                  onChange={(e) => {
-                    setSelectedColumnData({
-                      ...selectedColumnData,
-                      required: JSON.parse(e.target.value),
-                    });
-                  }}
+                  // id="box"
+                  value={JSON.stringify(selectedColumnData.multiValue)}
+                  disabled={readonlyState}
+                  onChange={(e) => multivalueOnChange(e)}
                 >
                   <option className="text-center" value="true">
                     True
@@ -473,7 +460,6 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-
             <Row>
               <Col sm lg="4">
                 <Form.Label className="ml-5 p-0">
@@ -485,14 +471,10 @@ export default function EditTable() {
                   required
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
-                  id="box"
+                  // id="box"
                   value={selectedColumnData.partialSearch.toString()}
-                  onChange={(e) => {
-                    setSelectedColumnData({
-                      ...selectedColumnData,
-                      partialSearch: JSON.parse(e.target.value),
-                    });
-                  }}
+                  disabled={readonlyState}
+                  onChange={partialSearchOnChange}
                 >
                   <option className="text-center" value="true">
                     True
@@ -504,11 +486,10 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-
             <Row>
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
-                  <b>Filterable</b>
+                  <b>Type</b>
                 </Form.Label>
               </Col>
               <Col sm lg="7">
@@ -516,26 +497,32 @@ export default function EditTable() {
                   required
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
-                  id="box"
-                  value={selectedColumnData.filterable.toString()}
+                  value={selectedColumnData.type.toString()}
+                  disabled={isTypeDisable}
                   onChange={(e) => {
                     setSelectedColumnData({
                       ...selectedColumnData,
-                      filterable: JSON.parse(e.target.value),
+                      type: e.target.value,
                     });
                   }}
                 >
-                  <option className="text-center" value="true">
-                    True
-                  </option>
-                  <option className="text-center" value="false">
-                    False
-                  </option>
+                  {selectedColHeading === addColumn
+                    ? showDataTypes.map((val, index) => (
+                        <option className="text-center" key={index} value={val}>
+                          {val.toString().charAt(0).toUpperCase() +
+                            val.toString().slice(1)}
+                        </option>
+                      ))
+                    : dataTypelist.map((val, index) => (
+                        <option className="text-center" key={index} value={val}>
+                          {val.toString().charAt(0).toUpperCase() +
+                            val.toString().slice(1)}
+                        </option>
+                      ))}
                 </Form.Select>
               </Col>
             </Row>
             <br></br>
-
             <Row>
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
@@ -546,8 +533,9 @@ export default function EditTable() {
                 <Form.Select
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
-                  id="box"
+                  // id="box"
                   value={selectedColumnData.sortable.toString()}
+                  disabled={isSortableDisable}
                   onChange={(e) => {
                     setSelectedColumnData({
                       ...selectedColumnData,
@@ -565,23 +553,24 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-
             <Row>
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
-                  <b>Multivalue</b>
+                  <b>Required</b>
                 </Form.Label>
               </Col>
               <Col sm lg="7">
                 <Form.Select
+                  required
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
-                  id="box"
-                  value={selectedColumnData.multiValue.toString()}
+                  // id="box"
+                  value={selectedColumnData.required.toString()}
+                  disabled={readonlyState}
                   onChange={(e) => {
                     setSelectedColumnData({
                       ...selectedColumnData,
-                      multiValue: JSON.parse(e.target.value),
+                      required: JSON.parse(e.target.value),
                     });
                   }}
                 >
@@ -595,7 +584,37 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-
+            <Row>
+              <Col sm lg="4">
+                <Form.Label className="ml-5 pt-2">
+                  <b>Filterable</b>
+                </Form.Label>
+              </Col>
+              <Col sm lg="7">
+                <Form.Select
+                  required
+                  aria-label="Default select example"
+                  className="w-100 pr-3 pt-1 pb-1"
+                  // id="box"
+                  value={selectedColumnData.filterable.toString()}
+                  disabled={readonlyState}
+                  onChange={(e) => {
+                    setSelectedColumnData({
+                      ...selectedColumnData,
+                      filterable: JSON.parse(e.target.value),
+                    });
+                  }}
+                >
+                  <option className="text-center" value="true">
+                    True
+                  </option>
+                  <option className="text-center" value="false">
+                    False
+                  </option>
+                </Form.Select>
+              </Col>
+            </Row>
+            <br></br>
             <Row>
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
@@ -606,8 +625,9 @@ export default function EditTable() {
                 <Form.Select
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
-                  id="box"
+                  // id="box"
                   value={selectedColumnData.storable.toString()}
+                  disabled={readonlyState}
                   onChange={(e) => {
                     setSelectedColumnData({
                       ...selectedColumnData,
@@ -627,14 +647,18 @@ export default function EditTable() {
           </div>
         </Modal.Body>
         <Modal.Footer className="save-column-changes-button">
-          <Button
-            className="text-center"
-            variant="success"
-            data-testid="save-col-change-btn"
-            onClick={processColumn}
-          >
-            {selectedColAction}
-          </Button>
+          {showModalButton ? (
+            <Button
+              className="text-center"
+              variant="success"
+              data-testid="save-col-change-btn"
+              onClick={processColumn}
+            >
+              {selectedColAction}
+            </Button>
+          ) : (
+            ""
+          )}
         </Modal.Footer>
       </Modal>
       <Modal

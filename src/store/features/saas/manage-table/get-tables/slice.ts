@@ -20,20 +20,12 @@ export const getTables = createAsyncThunk(
     try {
       const response = await getTablesService(id);
       return response.data.data;
-    } catch (error_: any) {
-      // console.log(`error_ : ` + JSON.stringify(error_));
+    } catch (_error: any) {
       let errorMsg = "Undefined Error";
       errorMsg =
-        error_.response.data !== undefined
-          ? error_.response.data.message
-          : error_.message;
-      // console.log(
-      //   `error_.response.data : ` + JSON.stringify(error_.response.data)
-      // );
-      // errorMsg = error_.response.data.message;
-      // } else {
-      //   errorMsg = error_.message;
-      // }
+        _error.response.data !== undefined
+          ? _error.response.data.message
+          : _error.message;
       throw new Error(errorMsg);
     }
   }
