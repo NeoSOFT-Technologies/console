@@ -106,15 +106,8 @@ export default function InputData(this: any) {
   }
 
   const schemaData = tableSchema.data?.map(
-    (val) => '"' + val.name + '":"' + val.type + '"'
+    (val) => '"' + val.name + '" : "' + val.type + '"'
   );
-
-  // if (schemaData !== undefined) {
-  //   const schemaData1 = JSON.stringify(schemaData);
-
-  //   schemaData1.toString().replaceAll("\\", "");
-  //   console.log("Schema :", schemaData1);
-  // }
 
   const getInputData: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
