@@ -65,6 +65,15 @@ export default function InputData(this: any) {
         setInsertTenant({
           ...insertTenant,
           [name]: value,
+          inputData: "",
+        });
+
+        break;
+      }
+      case "inputData": {
+        setInsertTenant({
+          ...insertTenant,
+          [name]: value,
           inputData: value,
         });
 

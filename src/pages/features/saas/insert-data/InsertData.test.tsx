@@ -164,7 +164,7 @@ describe("SAAS - INSERT DATA Component", () => {
     const jsonInputField = await screen.getByTestId("json-input-box");
     fireEvent.change(jsonInputField, {
       target: {
-        name: "tableName",
+        name: "inputData",
         value: '[{"id":"1","name":"karthik","username":"karthik"}]',
       },
     });
