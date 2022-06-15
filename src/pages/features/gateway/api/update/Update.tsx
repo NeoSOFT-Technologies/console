@@ -1,10 +1,7 @@
 import React, { FormEvent, useEffect } from "react";
 import { Tab, Tabs, Form } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  AuthGuard,
-  access,
-} from "../../../../../components/gateway/auth-guard";
+import { access, AuthGuard } from "../../../../../components/auth-gaurd";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
@@ -22,6 +19,8 @@ export default function Update() {
   const state: IApiGetByIdState = useAppSelector(
     (RootState) => RootState.updateApiState
   );
+
+  console.log("form error :", state.data.errors);
   const dispatch = useAppDispatch();
   const { id } = useParams();
 
@@ -128,6 +127,32 @@ export default function Update() {
     val.preventDefault();
     navigate("/gateway/apis");
   };
+
+  let validateVersions: any;
+  let validateKeyLocation = false;
+
+  if (state.data.errors !== undefined) {
+    const obj = state.data.errors;
+    const { Versions } = obj;
+
+    for (const Version_ of Versions) {
+      if (Version_.OverrideTarget === "") {
+        validateVersions = false;
+      } else {
+        validateVersions = true;
+        break;
+      }
+    }
+  }
+
+  if (
+    state.data.form.IsVersioningDisabled === false &&
+    (state.data.form.VersioningInfo.Location === 0 ||
+      state.data.form.VersioningInfo.Key === "")
+  ) {
+    validateKeyLocation = true;
+  }
+
   return (
     <div>
       {state.loading ? (
@@ -173,13 +198,58 @@ export default function Update() {
                       className="mb-2 small"
                       onSelect={(k) => setKey(k)}
                     >
-                      <Tab eventKey="setting" title="Setting">
+                      <Tab
+                        eventKey="setting"
+                        title={
+                          <span>
+                            {state.data.errors?.Name ||
+                            state.data.errors?.ListenPath ||
+                            state.data.errors?.TargetUrl ||
+                            state.data.errors?.Rate ||
+                            state.data.errors?.Per ||
+                            state.data.errors?.issuer ? (
+                              <i className="bi bi-info-circle-fill text-danger"></i>
+                            ) : (
+                              ""
+                            )}
+                            &nbsp; Setting
+                          </span>
+                        }
+                      >
                         <Setting />
                       </Tab>
-                      <Tab eventKey="version" title="Version">
+                      <Tab
+                        eventKey="version"
+                        title={
+                          <span>
+                            {state.data.errors?.OverrideTarget ||
+                            validateVersions ||
+                            validateKeyLocation ? (
+                              <i className="bi bi-info-circle-fill text-danger"></i>
+                            ) : (
+                              ""
+                            )}
+                            &nbsp; Version
+                          </span>
+                        }
+                      >
                         <Version />
                       </Tab>
-                      <Tab eventKey="advanced-options" title="Advanced Options">
+                      <Tab
+                        eventKey="advanced-options"
+                        title={
+                          <span>
+                            {state.data.errors?.AllowedOrigins ||
+                            state.data.errors?.Whitelist ||
+                            state.data.errors?.Blacklist ? (
+                              <i className="bi bi-info-circle-fill text-danger"></i>
+                            ) : (
+                              ""
+                            )}
+                            &nbsp; AdvancedOptions
+                          </span>
+                        }
+                      >
                         <AdvancedOptions />
                       </Tab>
                     </Tabs>

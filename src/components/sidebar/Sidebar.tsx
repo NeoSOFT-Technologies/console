@@ -236,7 +236,7 @@ export const Sidebar = () => {
                       }
                     >
                       <Link className="nav-link pt-0" to={route.path}>
-                        <div className="d-flex justify-content-between w-100 ">
+                        <div className="d-flex justify-content-between w-100  ">
                           <span className="menu-title lh-2">
                             <>{route.title}</>
                           </span>

@@ -192,6 +192,7 @@ export default function GlobalLimit(props: IProps) {
                                     </Form.Label>
                                     <Form.Check
                                       type="switch"
+                                      data-testid="rate-switch"
                                       id="disableGlobalRate"
                                       name="GlobalLimit.IsDisabled"
                                       label="Disable rate limiting"
@@ -263,6 +264,7 @@ export default function GlobalLimit(props: IProps) {
                                     </Form.Label>
                                     <Form.Check
                                       type="switch"
+                                      data-testid="throttle-switch"
                                       id="disableThrottling"
                                       name="Throttling.IsDisabled"
                                       label="Disable Throttling"

@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getAllTablesService } from "../../../../../services/saas/api/api";
-import { IPagination, ITableSchema } from "../../../../../types/saas";
+import { IAllTableList, IPagination } from "../../../../../types/saas";
 
 interface IGetAllTableState {
-  data?: ITableSchema[];
+  data?: IAllTableList;
   loading: boolean;
   error?: string | null;
 }
@@ -18,7 +18,7 @@ export const getAllTables = createAsyncThunk(
   async (data: IPagination) => {
     try {
       const response = await getAllTablesService(data);
-      return response.data.tableList;
+      return response.data;
     } catch (_error: any) {
       let errorMsg = "Undefined Error";
       errorMsg =
@@ -35,7 +35,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     setTableData: (state, action) => {
-      state.data = [...action.payload];
+      state.data = { ...action.payload };
       state.loading = false;
       state.error = undefined;
     },

@@ -34,21 +34,57 @@ export default function GetSearchData() {
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
   const [checkDisable, setCheckDisable] = useState(false);
 
-  const [tenantId, setTenantId] = useState("");
-  const [tableName, setTableName] = useState("");
-  const [queryField, setQueryField] = useState("*");
-  const [searchTerm, setSearchTerm] = useState("*");
-  const [pageSize, setPageSize] = useState("");
-  const [orderBy, setOrderBy] = useState("");
-  const [order, setOrder] = useState("asc");
+  const [searchTenant, setSearchTenant] = useState({
+    tenantId: "",
+    tableName: "",
+    queryField: "*",
+    searchTerm: "*",
+    pageSize: "5",
+    orderBy: "",
+    order: "asc",
+  });
   const [startRecord, setStartRecord] = useState("0");
   const [tableHeader, setTableHeader] = useState<string[]>([]);
   const [msg, setMsg] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [filterdata, setFilterData] = useState<any[]>();
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLSelectElement> | any
+  ) => {
+    const { name, value } = event.target;
+    const resetData: any[] = [];
+    if (name === "tenantId") {
+      setMsg(false);
+      setSearchTenant({
+        ...searchTenant,
+        [name]: value,
+        tableName: "",
+        searchTerm: "*",
+        queryField: "",
+        pageSize: "5",
+        orderBy: "",
+        order: "asc",
+      });
+    } else if (name === "tableName") {
+      setSearchTenant({
+        ...searchTenant,
+        [name]: value,
+        searchTerm: "*",
+        queryField: "",
+        pageSize: "5",
+        orderBy: "",
+        order: "asc",
+      });
+    } else {
+      setSearchTenant({ ...searchTenant, [name]: value });
+    }
+    setMsg(false);
+    dispatch(resetSearchData(resetData));
+  };
+
   const params: ITableSchema = {
-    tenantId,
-    tableName,
+    tenantId: searchTenant.tenantId,
+    tableName: searchTenant.tableName,
   };
 
   const getSearchData: React.FormEventHandler<HTMLFormElement> = (
@@ -59,12 +95,12 @@ export default function GetSearchData() {
     setCheckDisable(false);
     setMsg(true);
     const initialState: ISearchDataWithQueryField = {
-      queryField,
-      searchTerm,
+      queryField: searchTenant.queryField,
+      searchTerm: searchTenant.searchTerm,
       startRecord: "0",
-      pageSize,
-      orderBy,
-      order,
+      pageSize: searchTenant.pageSize,
+      orderBy: searchTenant.orderBy,
+      order: searchTenant.order,
       requestParams: params,
     };
 
@@ -73,16 +109,16 @@ export default function GetSearchData() {
 
   const nextpage = () => {
     const nextindex =
-      Number.parseInt(startRecord) + Number.parseInt(pageSize) - 1;
+      Number.parseInt(startRecord) + Number.parseInt(searchTenant.pageSize) - 1;
     setStartRecord(nextindex?.toString());
 
     const initialState: ISearchDataWithQueryField = {
-      queryField,
-      searchTerm,
+      queryField: searchTenant.queryField,
+      searchTerm: searchTenant.searchTerm,
       startRecord: nextindex?.toString(),
-      pageSize,
-      orderBy,
-      order,
+      pageSize: searchTenant.pageSize,
+      orderBy: searchTenant.orderBy,
+      order: searchTenant.order,
       requestParams: params,
     };
     dispatch(searchDataWithQueryField(initialState));
@@ -91,19 +127,19 @@ export default function GetSearchData() {
   const prevpage = () => {
     setCheckDisable(false);
     let nextindex =
-      Number.parseInt(startRecord) - Number.parseInt(pageSize) + 1;
+      Number.parseInt(startRecord) - Number.parseInt(searchTenant.pageSize) + 1;
     if (nextindex < 0) {
       nextindex = 0;
     }
     setStartRecord(nextindex?.toString());
 
     const initialState: ISearchDataWithQueryField = {
-      queryField,
-      searchTerm,
+      queryField: searchTenant.queryField,
+      searchTerm: searchTenant.searchTerm,
       startRecord: nextindex?.toString(),
-      pageSize,
-      orderBy,
-      order,
+      pageSize: searchTenant.pageSize,
+      orderBy: searchTenant.orderBy,
+      order: searchTenant.order,
       requestParams: params,
     };
     dispatch(searchDataWithQueryField(initialState));
@@ -123,7 +159,7 @@ export default function GetSearchData() {
         ToastAlert("Data Fetched successfully ", "success");
         return [...keys];
       });
-      if (searchData.data.length !== Number.parseInt(pageSize)) {
+      if (searchData.data.length !== Number.parseInt(searchTenant.pageSize)) {
         setCheckDisable(true);
       }
     }
@@ -132,18 +168,23 @@ export default function GetSearchData() {
   useEffect(() => {
     const newTableColList: ITableColumnData[] = [];
     dispatch(setTableColNames(newTableColList));
-    if (!tenantId) {
+    if (!searchTenant.tenantId) {
       dispatch(resetSearchDataWithQueryField());
       dispatch(getTenantDetails());
     }
-    dispatch(getTables(tenantId));
-  }, [tenantId]);
+    dispatch(getTables(searchTenant.tenantId));
+  }, [searchTenant.tenantId]);
   useEffect(() => {
     dispatch(getTenantDetails());
   }, []);
   useEffect(() => {
-    dispatch(getTableSchema({ tableName, tenantId }));
-  }, [tableName]);
+    dispatch(
+      getTableSchema({
+        tableName: searchTenant.tableName,
+        tenantId: searchTenant.tenantId,
+      })
+    );
+  }, [searchTenant.tableName]);
   useEffect(() => {
     return () => {
       dispatch(resetSearchDataWithQueryField());
@@ -156,8 +197,8 @@ export default function GetSearchData() {
     searchData.data?.map((val) => {
       check = 0;
       // eslint-disable-next-line array-callback-return
-      tableHeader.map((xyz) => {
-        if (val[xyz]?.toString().includes(search)) {
+      tableHeader.map((evals) => {
+        if (val[evals]?.toString().includes(search)) {
           check = 1;
         }
       });
@@ -180,15 +221,9 @@ export default function GetSearchData() {
                   <Form.Select
                     aria-label="Default select example"
                     required
-                    onChange={(e) => {
-                      const resetData: any[] = [];
-                      setTenantId(e.target.value);
-                      dispatch(resetSearchData(resetData));
-                      setTableName("");
-                      setSearchTerm("*");
-                      setPageSize("");
-                      setOrder("asc");
-                    }}
+                    name="tenantId"
+                    value={searchTenant.tenantId}
+                    onChange={(e) => handleInputChange(e)}
                     data-testid="tenant-name-select"
                   >
                     <option value="">Select Tenant</option>
@@ -206,9 +241,9 @@ export default function GetSearchData() {
                   <Form.Select
                     aria-label="Default select example"
                     required
-                    onChange={(e) => {
-                      setTableName(e.target.value);
-                    }}
+                    name="tableName"
+                    onChange={(e) => handleInputChange(e)}
+                    value={searchTenant.tableName}
                     data-testid="table-name-select"
                   >
                     <option value="">Table Name</option>
@@ -226,7 +261,9 @@ export default function GetSearchData() {
                   <Form.Select
                     aria-label="Default select example"
                     required
-                    onChange={(e) => setQueryField(e.target.value)}
+                    name="queryField"
+                    value={searchTenant.queryField}
+                    onChange={(e) => handleInputChange(e)}
                     data-testid="query-field-select"
                   >
                     <option value="">SearchField</option>
@@ -245,8 +282,9 @@ export default function GetSearchData() {
                   <Form.Control
                     type="text"
                     placeholder="Search Field Value"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    name="searchTerm"
+                    value={searchTenant.searchTerm}
+                    onChange={(e) => handleInputChange(e)}
                   />
                 </Form.Group>
               </Col>
@@ -254,9 +292,10 @@ export default function GetSearchData() {
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label>No Of Records :</Form.Label>
                   <Form.Select
-                    value={pageSize}
+                    name="pageSize"
+                    value={searchTenant.pageSize}
                     aria-label="Default select example"
-                    onChange={(e) => setPageSize(e.target.value)}
+                    onChange={(e) => handleInputChange(e)}
                     data-testid="record-count-select"
                   >
                     <option value=""> No Of Records</option>
@@ -274,7 +313,9 @@ export default function GetSearchData() {
                   <Form.Select
                     aria-label="Default select example"
                     required
-                    onChange={(e) => setOrderBy(e.target.value)}
+                    name="orderBy"
+                    value={searchTenant.orderBy}
+                    onChange={(e) => handleInputChange(e)}
                     data-testid="order-by-select"
                   >
                     <option value="">Order By</option>
@@ -290,9 +331,10 @@ export default function GetSearchData() {
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label>Order by :</Form.Label>
                   <Form.Select
-                    value={order}
+                    value={searchTenant.order}
+                    name="order"
                     aria-label="Default select example"
-                    onChange={(e) => setOrder(e.target.value)}
+                    onChange={(e) => handleInputChange(e)}
                   >
                     <option value="asc">ASC</option>
                     <option value="desc">DESC</option>
@@ -321,7 +363,7 @@ export default function GetSearchData() {
                 <>
                   <hr></hr>
                   <h4 className=" text-center   mt-4 mb-3 ">
-                    Table Details: {tableName}
+                    Table Details: {searchTenant.tableName}
                   </h4>
                   <div className=" mb-3">
                     <input
@@ -353,7 +395,7 @@ export default function GetSearchData() {
                               searchData &&
                               searchData.data &&
                               searchData?.data?.length <
-                                Number.parseInt(pageSize)
+                                Number.parseInt(searchTenant.pageSize)
                             ) {
                               return (
                                 <tr key={`row${index}`}>

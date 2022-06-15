@@ -26,6 +26,8 @@ interface IProps {
   apistate?: any;
   indexdata?: number;
   current: string;
+  setForm: (state: any, action: any) => void;
+  setFormError: (state: any, action: any) => void;
 }
 export default function PathBased(props: IProps) {
   const [isActive, setisActive] = useState<boolean>(false);
@@ -34,16 +36,16 @@ export default function PathBased(props: IProps) {
 
   const dispatch = useAppDispatch();
   const [Limits, setLimits] = useState<any>({
-    rate: -1,
-    per: -1,
-    throttle_interval: -1,
-    throttle_retry_limit: -1,
-    max_query_depth: -1,
-    quota_max: -1,
-    quota_renews: -1,
-    quota_remaining: -1,
-    quota_renewal_rate: 0,
-    set_by_policy: false,
+    Rate: -1,
+    Per: -1,
+    Throttle_interval: -1,
+    Throttle_retry_limit: -1,
+    Max_query_depth: -1,
+    Quota_max: -1,
+    Quota_renews: -1,
+    Quota_remaining: -1,
+    Quota_renewal_rate: 0,
+    Set_by_policy: false,
   });
   const [LimitsKey, setLimitsKey] = useState<any>({
     Rate: -1,
@@ -242,13 +244,13 @@ export default function PathBased(props: IProps) {
           ) {
             if (
               props.policystate?.data.form.APIs[props.indexdata!].Limit
-                ?.rate === -1 &&
-              props.policystate?.data.form.APIs[props.indexdata!].Limit?.per ===
+                ?.Rate === -1 &&
+              props.policystate?.data.form.APIs[props.indexdata!].Limit?.Per ===
                 -1 &&
               props.policystate?.data.form.APIs[props.indexdata!].Limit
-                ?.throttle_retry_limit === -1 &&
+                ?.Throttle_retry_limit === -1 &&
               props.policystate?.data.form.APIs[props.indexdata!].Limit
-                ?.quota_max === -1
+                ?.Quota_max === -1
             ) {
               setNull();
               setisActiveApi(false);
@@ -586,6 +588,8 @@ export default function PathBased(props: IProps) {
                             keystate={props.state}
                             index={props.indexdata}
                             current={props.current}
+                            setForm={props.setForm}
+                            setFormError={props.setFormError}
                           />
                         ) : (
                           " "
