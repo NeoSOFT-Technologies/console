@@ -116,10 +116,10 @@ export default function ManageTables() {
 
   return (
     <div className="createbody">
-      <div className="text-nowrap bd-highlight ">
-        <h5 className=" text-center mb-3 ">Table Details</h5>
-      </div>
-      <div className="card m-4">
+      <div className="card">
+        <div className="text-nowrap bd-highlight ">
+          <h4 className=" text-center pt-3 mt-3 ">Table Details</h4>
+        </div>
         <div className="card-body table-responsive">
           {allTableData.data?.tableList !== undefined &&
           allTableData.data.tableList.length > 0 ? (
@@ -162,8 +162,8 @@ export default function ManageTables() {
                   ))}
                 </tbody>
               </Table>
-              <nav aria-label="Page navigation example">
-                <ul className="pagination ">
+              <div className="d-flex justify-content-center">
+                <ul className="pagination">
                   <li
                     className={
                       currentPage !== 1 ? "page-item" : "page-item disabled"
@@ -196,7 +196,7 @@ export default function ManageTables() {
                     </a>
                   </li>
                 </ul>
-              </nav>
+              </div>
             </>
           ) : (
             <>
@@ -204,14 +204,16 @@ export default function ManageTables() {
             </>
           )}
         </div>
+        <div className="text-center">
+          <Button
+            onClick={() => navigate("/saas/add-table")}
+            className="align-item-center btn-success ml-5 mb-4 w-75"
+          >
+            Add New
+          </Button>
+        </div>
       </div>
 
-      <Button
-        onClick={() => navigate("/saas/add-table")}
-        className="m-4 btn-success"
-      >
-        Add New
-      </Button>
       <Modal
         show={show}
         data={table}
