@@ -48,11 +48,11 @@ export const Sidebar = () => {
     } else if (user.data && loginType.data === "tenant") {
       setRoutes(tenantRoutes);
       setGatewayRoutes(adminGatewayRoutes);
-      setSaasRoutes(tenantRoutes);
+      setSaasRoutes(saasRoutes);
     } else if (user.data && loginType.data === "user") {
       setRoutes(userRoutes);
       setGatewayRoutes(adminGatewayRoutes);
-      setSaasRoutes(userRoutes);
+      // setSaasRoutes(userRoutes);
     }
   }, [user.data]);
 

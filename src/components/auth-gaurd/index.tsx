@@ -57,7 +57,7 @@ export const TenantGuard = ({ children }: component) => {
   useEffect(() => {
     if (userData.data?.tenantName) {
       const currentURL = window.location.pathname.split("/");
-      if (currentURL[1] === "tenant") {
+      if (currentURL[1] === "tenant" || currentURL[1] === "saas") {
         setSearchParamsTenant({ tenant: userData.data.tenantName });
       }
     }
@@ -92,6 +92,18 @@ export const UserGuard = ({ children }: component) => {
   );
 };
 
+export const SaasGuard = ({ children }: component) => {
+  const authenticationState = useAppSelector(
+    (state: RootState) => state.loginType
+  );
+
+  if (authenticationState.data === "admin") {
+    return children;
+  } else if (authenticationState.data === "tenant") {
+    return <TenantGuard>{children}</TenantGuard>;
+  }
+  return <Navigate to="/error-pages/error-401" />;
+};
 export function AuthGuard({ children, resource, scope, protect }: component) {
   let authorized = true;
   let permissions: any;

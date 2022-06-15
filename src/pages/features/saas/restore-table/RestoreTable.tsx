@@ -108,10 +108,10 @@ function RestoreTable() {
   };
   return (
     <div className="createbody">
-      <div className="text-nowrap bd-highlight">
-        <h5 className=" text-center pt-3 ">Table Details</h5>
-      </div>
-      <div className="card m-4">
+      <div className="card">
+        <div className="text-nowrap bd-highlight">
+          <h4 className=" text-center pt-3 mt-3 ">Restore Table Details</h4>
+        </div>
         <div className="card-body table-responsive">
           {allDeleteTableData.data?.tableList !== undefined &&
           allDeleteTableData.data.tableList.length > 0 ? (
@@ -147,7 +147,10 @@ function RestoreTable() {
                 </tbody>
               </Table>
 
-              <nav aria-label="Page navigation example">
+              <nav
+                aria-label="Page navigation example "
+                className="d-flex justify-content-center"
+              >
                 <ul className="pagination ">
                   <li
                     className={
