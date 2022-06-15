@@ -34,10 +34,6 @@ export default function InputData(this: any) {
   });
   const [showMsg, setShowMsg] = useState(false);
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
-  // const [tenantId, setTenantId] = useState("");
-  // const [tableName, setTableName] = useState("");
-  // const [inputData, setInputData] = useState("");
-  // const [isNrtChecked, setIsNrtChecked] = useState(false);
   const tableData = useAppSelector((state) => state.getTableState);
   const tableSchema = useAppSelector((state) => state.getTableSchemaState);
   console.log({
@@ -115,14 +111,6 @@ export default function InputData(this: any) {
     }
   }
 
-  // const handleOnChange = () => {
-  //   setIsNrtChecked(!insertTenant.isNrtChecked);
-  // };
-  // const tableNameOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setTableName(event.target.value);
-  //   // alert(JSON.stringify(tableSchema.data));
-  // };
-
   const getInputData: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
   ) => {
@@ -165,7 +153,6 @@ export default function InputData(this: any) {
       setInsertTenant({
         ...insertTenant,
         inputData: "",
-        isNrtChecked: false,
       });
     } else if (
       !inputDataWithNrt.loading &&
