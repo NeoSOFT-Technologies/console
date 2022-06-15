@@ -36,12 +36,6 @@ export default function InputData(this: any) {
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
   const tableData = useAppSelector((state) => state.getTableState);
   const tableSchema = useAppSelector((state) => state.getTableSchemaState);
-  console.log({
-    tenantId: insertTenant.tenantId,
-    tableName: insertTenant.tableName,
-    isNrtChecked: insertTenant.isNrtChecked,
-    inputData: insertTenant.inputData,
-  });
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLSelectElement> | any
@@ -110,6 +104,17 @@ export default function InputData(this: any) {
       return true;
     }
   }
+
+  const schemaData = tableSchema.data?.map(
+    (val) => '"' + val.name + '":"' + val.type + '"'
+  );
+
+  // if (schemaData !== undefined) {
+  //   const schemaData1 = JSON.stringify(schemaData);
+
+  //   schemaData1.toString().replaceAll("\\", "");
+  //   console.log("Schema :", schemaData1);
+  // }
 
   const getInputData: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
@@ -247,8 +252,6 @@ export default function InputData(this: any) {
                       <div className="ml-3 p-1">
                         <Form.Check
                           name="isNrtChecked"
-                          //  checked={insertTenant.isNrtChecked}
-                          // value={insertTenant.isNrtChecked.toString()}
                           onChange={(e) => handleInputChange(e)}
                         />
                         <label className="pl-2">NRT</label>
@@ -262,13 +265,7 @@ export default function InputData(this: any) {
                       <label>InputData Schema :</label>
                       <div className={`${styles.div} bg-dark text-white p-3`}>
                         {"[{"}
-                        {tableSchema.data?.map(
-                          (val) =>
-                            JSON.stringify(val.name).toString() +
-                            " : " +
-                            val.type +
-                            ", "
-                        )}
+                        {schemaData?.toString()}
                         {"}]"}
                       </div>
                     </div>
