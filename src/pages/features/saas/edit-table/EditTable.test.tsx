@@ -100,14 +100,14 @@ describe("SAAS - EDIT TABLE Component", () => {
     expect(editColBtn).toBeInTheDocument();
     userEvent.click(editColBtn);
 
-    const saveColChangeBtn = await waitFor(
-      () => screen.getByTestId("save-col-change-btn"),
-      {
-        timeout: 3000,
-      }
-    );
-    expect(saveColChangeBtn).toBeInTheDocument();
-    userEvent.click(saveColChangeBtn);
+    // const saveColChangeBtn = await waitFor(
+    //   () => screen.getByTestId("save-col-change-btn"),
+    //   {
+    //     timeout: 3000,
+    //   }
+    // );
+    // expect(saveColChangeBtn).toBeInTheDocument();
+    // userEvent.click(saveColChangeBtn);
 
     userEvent.click(editColBtn);
 
@@ -152,12 +152,9 @@ describe("SAAS - EDIT TABLE Component", () => {
     userEvent.click(popupYesDeleteForDelete);
     //= ===============================================================
 
-    const saveChangesBtn = await waitFor(
-      () => screen.getByText("Save Changes"),
-      {
-        timeout: 1000,
-      }
-    );
+    const saveChangesBtn = await waitFor(() => screen.getByText("Save"), {
+      timeout: 1000,
+    });
     expect(saveChangesBtn).toBeInTheDocument();
     userEvent.click(saveChangesBtn);
 
@@ -173,10 +170,10 @@ describe("SAAS - EDIT TABLE Component", () => {
       target: { value: "id" },
     });
 
-    const addColTypeInput = screen.getByTestId("add-col-type-input");
-    fireEvent.change(addColTypeInput, {
-      target: { value: "string" },
-    });
+    // const addColTypeInput = screen.getByTestId("add-col-type-input");
+    // fireEvent.change(addColTypeInput, {
+    //   target: { value: "string" },
+    // });
 
     const addColSubmitBtn = await waitFor(
       () => screen.getByTestId("save-col-change-btn"),
@@ -187,12 +184,12 @@ describe("SAAS - EDIT TABLE Component", () => {
     expect(addColSubmitBtn).toBeInTheDocument();
     userEvent.click(addColSubmitBtn);
 
-    fireEvent.change(addColTypeInput, {
-      target: { value: "netColName" },
-    });
-    fireEvent.change(addColTypeInput, {
-      target: { value: "string" },
-    });
+    // fireEvent.change(addColTypeInput, {
+    //   target: { value: "netColName" },
+    // });
+    // fireEvent.change(addColTypeInput, {
+    //   target: { value: "string" },
+    // });
     userEvent.click(addColSubmitBtn);
     //= ===============================================================
 
