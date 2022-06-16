@@ -62,10 +62,10 @@ export default function InputData(this: any) {
         break;
       }
       case "tableName": {
+        console.log("tableName CALLEDDD!!");
         setInsertTenant({
           ...insertTenant,
           [name]: value,
-          inputData: "",
         });
 
         break;
@@ -74,7 +74,6 @@ export default function InputData(this: any) {
         setInsertTenant({
           ...insertTenant,
           [name]: value,
-          inputData: value,
         });
 
         break;

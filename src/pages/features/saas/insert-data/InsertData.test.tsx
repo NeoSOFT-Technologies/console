@@ -176,7 +176,7 @@ describe("SAAS - INSERT DATA Component", () => {
     const successPopUpBottomRight = await waitFor(
       () => screen.getByText("Data Saved successfully", { exact: false }),
       {
-        timeout: 3000,
+        timeout: 5000,
       }
     );
     expect(successPopUpBottomRight).toBeInTheDocument();
