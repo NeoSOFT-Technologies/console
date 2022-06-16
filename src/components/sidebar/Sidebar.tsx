@@ -212,7 +212,7 @@ export const Sidebar = () => {
                       setSubMenu({ ...subMenu, saas: !subMenu.saas })
                     }
                   >
-                    Saas
+                    Search as a Service
                   </span>
                   <i
                     className={` ${
