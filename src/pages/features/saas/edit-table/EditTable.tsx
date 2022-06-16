@@ -103,7 +103,6 @@ export default function EditTable() {
       setSelectedColumnData((previous) => {
         return { ...previous, type: "strings" };
       });
-      // Partial search
       if (selectedColumnData.partialSearch) {
         setSelectedColumnData((previous) => {
           return { ...previous, type: "strings" };
@@ -143,7 +142,6 @@ export default function EditTable() {
     }
   };
   const handleValidate = () => {
-    // const validate = !!(error.name === "");
     return error.name === "";
   };
   const processColumn = () => {
@@ -203,7 +201,13 @@ export default function EditTable() {
     }
     setShow(true);
   };
-
+  const getDataTypeOptions = (val: string, index: number) => {
+    return (
+      <option className="text-center" key={index} value={val}>
+        {val.toString().charAt(0).toUpperCase() + val.toString().slice(1)}
+      </option>
+    );
+  };
   const updateTable: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
   ) => {
@@ -258,7 +262,6 @@ export default function EditTable() {
               >
                 <b>User</b>
               </Form.Label>
-
               <Col sm lg="4">
                 <InputGroup
                   aria-label="Default select example"
@@ -296,7 +299,6 @@ export default function EditTable() {
             >
               <b>Columns :</b>
             </Form.Label>
-
             <Row>
               <Col sm lg="8" className="ml-0 mt-3 pl-1 pr-0 ">
                 {tableData.data !== undefined && tableData.data.length > 0 ? (
@@ -326,7 +328,8 @@ export default function EditTable() {
                           <td>{val.storable.toString()} </td>
                           <td className="text-align-middle  text-primary">
                             <i
-                              className="bi bi-pencil-square"
+                              // className="bi bi-pencil-square"
+                              className="bi bi-eye-fill"
                               data-toggle="modal"
                               data-testid="edit-col-btn"
                               onClick={() => handleShow(val, "View Column")}
@@ -354,7 +357,6 @@ export default function EditTable() {
           <br></br>
           <br></br>
         </Row>
-
         <Row className="mb-5  mt-3">
           <div className="col-md-3 text-center mr-5"></div>
           <div className="col-md-2 text-center mr-0 pr-0 mb-4 ">
@@ -507,18 +509,12 @@ export default function EditTable() {
                   }}
                 >
                   {selectedColHeading === addColumn
-                    ? showDataTypes.map((val, index) => (
-                        <option className="text-center" key={index} value={val}>
-                          {val.toString().charAt(0).toUpperCase() +
-                            val.toString().slice(1)}
-                        </option>
-                      ))
-                    : dataTypelist.map((val, index) => (
-                        <option className="text-center" key={index} value={val}>
-                          {val.toString().charAt(0).toUpperCase() +
-                            val.toString().slice(1)}
-                        </option>
-                      ))}
+                    ? showDataTypes.map((val, index) =>
+                        getDataTypeOptions(val, index)
+                      )
+                    : dataTypelist.map((val, index) =>
+                        getDataTypeOptions(val, index)
+                      )}
                 </Form.Select>
               </Col>
             </Row>

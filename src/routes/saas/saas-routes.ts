@@ -1,9 +1,4 @@
 const saasRoutes = [
-  // {
-  //   path: "/saas/get-tables",
-  //   title: "Get Tables",
-  //   icon: "bi bi-list-ul",
-  // },
   {
     path: "/saas/manage-table",
     title: "Manage Table",
