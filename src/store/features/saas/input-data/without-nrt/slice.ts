@@ -24,12 +24,12 @@ export const inputTableDataWithoutNrt = createAsyncThunk(
         data.inputData
       );
       return response.data;
-    } catch (error_: any) {
+    } catch (_error: any) {
       let errorMsg = "Undefined Error";
       errorMsg =
-        error_.response.data !== undefined
-          ? error_.response.data.message
-          : error_.message;
+        _error.response.data !== undefined
+          ? _error.response.data.message
+          : _error.message;
       throw new Error(errorMsg);
     }
   }

@@ -69,6 +69,46 @@ describe("SAAS - INSERT DATA Component", () => {
       data: ["testTable"],
     });
 
+    mockApi.onGet("manage/table/testTable?tenantId=1").reply(200, {
+      statusCode: 200,
+      message: "Table Information retrieved successfully",
+      data: {
+        tableName: "testTable",
+        columns: [
+          {
+            name: "id",
+            type: "string",
+            required: true,
+            partialSearch: false,
+            multiValue: false,
+            sortable: false,
+            filterable: true,
+            storable: true,
+          },
+          {
+            name: "name",
+            type: "strings",
+            required: true,
+            partialSearch: false,
+            multiValue: true,
+            sortable: false,
+            filterable: true,
+            storable: true,
+          },
+          {
+            name: "username",
+            type: "strings",
+            required: true,
+            partialSearch: false,
+            multiValue: true,
+            sortable: false,
+            filterable: true,
+            storable: true,
+          },
+        ],
+      },
+    });
+
     mockApi.onPost("ingest/testTable?tenantId=1").reply(200, {
       statusCode: 200,
       message: "Successfully Added!",
@@ -120,9 +160,12 @@ describe("SAAS - INSERT DATA Component", () => {
       "testTable",
     ]);
 
-    const jsonInputField = await screen.getByPlaceholderText(/json input/i);
+    const jsonInputField = await screen.getByTestId("json-input-box");
     fireEvent.change(jsonInputField, {
-      target: { value: '[{"id":1,"name":"karthik","username":"karthik"}]' },
+      target: {
+        name: "inputData",
+        value: '[{"id":"1","name":"karthik","username":"karthik"}]',
+      },
     });
 
     const saveBtn = screen.getByTestId("save-btn");
@@ -132,7 +175,7 @@ describe("SAAS - INSERT DATA Component", () => {
     const successPopUpBottomRight = await waitFor(
       () => screen.getByText("Data Saved successfully", { exact: false }),
       {
-        timeout: 3000,
+        timeout: 5000,
       }
     );
     expect(successPopUpBottomRight).toBeInTheDocument();

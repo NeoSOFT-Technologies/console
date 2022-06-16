@@ -72,7 +72,7 @@ export interface ICapacityPlans {
   shards: string;
 }
 export interface ITenantDetails {
-  id: Number;
+  id: number;
   tenantName: string;
   email: string;
   description: string;
