@@ -371,7 +371,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="edit-table"
+            path="manage-table/edit-table"
             element={
               <SaasGuard>
                 <EditTables />
