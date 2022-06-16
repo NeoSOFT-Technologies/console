@@ -12,11 +12,13 @@ import {
   inputTableDataWithoutNrt,
   resetInputDataWithoutNrtState,
 } from "../../../../store/features/saas/input-data/without-nrt/slice";
+import { getTableSchema } from "../../../../store/features/saas/manage-table/get-table-schema/slice";
 import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IInputData, ITableSchema } from "../../../../types/saas";
+import styles from "./InsertData.module.css";
 
-export default function InputData() {
+export default function InputData(this: any) {
   const dispatch = useAppDispatch();
   const inputDataWithNrt = useAppSelector(
     (state) => state.inputDataWithNrtState
@@ -24,29 +26,79 @@ export default function InputData() {
   const inputDataWithoutNrt = useAppSelector(
     (state) => state.inputDataWithOutNrtState
   );
+  const [insertTenant, setInsertTenant] = useState({
+    tenantId: "",
+    tableName: "",
+    inputData: "",
+    isNrtChecked: false,
+  });
+  const [showMsg, setShowMsg] = useState(false);
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
-  const [tenantId, setTenantId] = useState("");
-  const [tableName, setTableName] = useState("");
-  const [inputData, setInputData] = useState("");
-  const [isNrtChecked, setIsNrtChecked] = useState(false);
   const tableData = useAppSelector((state) => state.getTableState);
-  console.log({ tenantId, tableName, isNrtChecked, inputData });
+  const tableSchema = useAppSelector((state) => state.getTableSchemaState);
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLSelectElement> | any
+  ) => {
+    const { name, value } = event.target;
+    console.log(name, value);
+    switch (name) {
+      case "tenantId": {
+        setInsertTenant({
+          ...insertTenant,
+          [name]: value,
+          tableName: "",
+          inputData: "",
+        });
+
+        break;
+      }
+      case "isNrtChecked": {
+        setInsertTenant({
+          ...insertTenant,
+          isNrtChecked: !insertTenant.isNrtChecked,
+        });
+
+        break;
+      }
+      case "tableName": {
+        console.log("tableName CALLEDDD!!");
+        setInsertTenant({
+          ...insertTenant,
+          [name]: value,
+        });
+        break;
+      }
+      case "inputData": {
+        setInsertTenant({
+          ...insertTenant,
+          [name]: value,
+        });
+
+        break;
+      }
+      default: {
+        setInsertTenant({ ...insertTenant, [name]: value });
+      }
+    }
+  };
+
   const params: ITableSchema = {
-    tenantId,
-    tableName,
+    tenantId: insertTenant.tenantId,
+    tableName: insertTenant.tableName,
   };
   const initialState: IInputData = {
-    inputData,
+    inputData: insertTenant.inputData,
     requestParams: params,
   };
 
   function isValidJSONObject() {
     try {
       if (
-        inputData !== null &&
-        inputData.trim().startsWith("[{") &&
-        JSON.parse(inputData) &&
-        inputData.trim().endsWith("}]")
+        insertTenant.inputData !== null &&
+        insertTenant.inputData.trim().startsWith("[{") &&
+        JSON.parse(insertTenant.inputData) &&
+        insertTenant.inputData.trim().endsWith("}]")
       ) {
         console.log("JSON object true");
         return true;
@@ -60,19 +112,23 @@ export default function InputData() {
     }
   }
 
+  const schemaData = tableSchema.data?.map(
+    (val) => '"' + val.name + '" : "' + val.type + '"'
+  );
+
   const getInputData: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
   ) => {
     event.preventDefault();
-    if (inputData.toString() === "") {
+    setShowMsg(true);
+    if (insertTenant.inputData.toString() === "") {
       ToastAlert("Please Enter atleast one data", "error");
     } else if (isValidJSONObject()) {
-      if (isNrtChecked) {
+      if (insertTenant.isNrtChecked) {
         dispatch(inputTableDataWithNrt(initialState));
       } else {
         dispatch(inputTableDataWithoutNrt(initialState));
       }
-      setInputData("");
     } else {
       ToastAlert("Invalid Data", "error");
     }
@@ -80,6 +136,12 @@ export default function InputData() {
   useEffect(() => {
     dispatch(getTenantDetails());
   }, []);
+
+  useEffect(() => {
+    if (insertTenant.tableName !== "") {
+      dispatch(getTableSchema(params));
+    }
+  }, [insertTenant.tableName]);
 
   useEffect(() => {
     if (
@@ -93,11 +155,23 @@ export default function InputData() {
       ToastAlert("Data Saved successfully", "success");
       dispatch(resetInputDataWithNrtState());
       dispatch(resetInputDataWithoutNrtState());
-    }
-    if (!inputDataWithNrt.loading && inputDataWithNrt.error) {
+      setInsertTenant({
+        ...insertTenant,
+        inputData: "",
+      });
+    } else if (
+      !inputDataWithNrt.loading &&
+      inputDataWithNrt.error &&
+      insertTenant.isNrtChecked &&
+      showMsg
+    ) {
       ToastAlert(inputDataWithNrt.error as string, "error");
-    }
-    if (!inputDataWithoutNrt.loading && inputDataWithoutNrt.error) {
+    } else if (
+      !inputDataWithoutNrt.loading &&
+      inputDataWithoutNrt.error &&
+      !insertTenant.isNrtChecked &&
+      showMsg
+    ) {
       ToastAlert(inputDataWithoutNrt.error as string, "error");
     }
   }, [
@@ -106,9 +180,6 @@ export default function InputData() {
     inputDataWithNrt.error,
     inputDataWithoutNrt.error,
   ]);
-  const handleOnChange = () => {
-    setIsNrtChecked(!isNrtChecked);
-  };
 
   return (
     <div>
@@ -116,9 +187,9 @@ export default function InputData() {
         <Spinner />
       ) : (
         <div>
-          <div className="bg-white">
+          <div className={styles.card}>
             <Container className="m-1">
-              <h3 className="text-center text-dark pb-2 pt-3">Insert Data</h3>
+              <h4 className="text-center text-dark pb-2 pt-3">Insert Data</h4>
               <Form
                 onSubmit={getInputData}
                 data-testid="form-input"
@@ -131,10 +202,12 @@ export default function InputData() {
                       <Form.Select
                         aria-label="Default select example"
                         className="text-center"
+                        name="tenantId"
                         id="tenantName"
                         data-testid="tenant-name-select"
+                        value={insertTenant.tenantId}
                         onChange={(e) => {
-                          setTenantId(e.target.value);
+                          handleInputChange(e);
                           dispatch(getTables(e.target.value));
                         }}
                         required
@@ -157,9 +230,11 @@ export default function InputData() {
                       <Form.Select
                         aria-label="Default select example"
                         className="text-center"
+                        name="tableName"
                         required
-                        onChange={(e) => setTableName(e.target.value)}
+                        onChange={(e) => handleInputChange(e)}
                         data-testid="table-name-select"
+                        value={insertTenant.tableName}
                       >
                         <option value=""> Select Table</option>
                         {tableData.data?.map((val, index) => (
@@ -170,17 +245,30 @@ export default function InputData() {
                       </Form.Select>
                     </Form.Group>
                   </Col>
+                </Row>
+                <Row>
                   <Col md="6">
                     <Form.Group>
-                      <div className="ml-4">
+                      <div className="ml-3 p-1">
                         <Form.Check
-                          value="NRT"
-                          checked={isNrtChecked}
-                          onChange={handleOnChange}
+                          name="isNrtChecked"
+                          onChange={(e) => handleInputChange(e)}
                         />
                         <label className="pl-2">NRT</label>
                       </div>
                     </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md="12">
+                    <div className="mb-3">
+                      <label>InputData Schema :</label>
+                      <div className={`${styles.div} bg-dark text-white p-3`}>
+                        {"[{"}
+                        {schemaData?.toString()}
+                        {"}]"}
+                      </div>
+                    </div>
                   </Col>
                   <Col md="12">
                     <Form.Group className="mb-3" controlId="jsonInput">
@@ -188,13 +276,17 @@ export default function InputData() {
                       <Form.Control
                         as="textarea"
                         type="textarea"
-                        rows={3}
-                        value={inputData}
+                        rows={4}
+                        name="inputData"
+                        value={insertTenant.inputData}
+                        data-testid="json-input-box"
                         placeholder="JSON input"
-                        onChange={(e) => setInputData(e.target.value)}
+                        onChange={(e) => handleInputChange(e)}
                       />
                     </Form.Group>
                   </Col>
+                </Row>
+                <Row>
                   <Col>
                     <Form.Group className="mb-3 mt-3">
                       <Button
