@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getTablesService } from "../../../../../services/saas/api/api";
-// import error from "../../../../../utils/error";
 
 interface IGetTableState {
   [x: string]: any;
@@ -47,8 +46,6 @@ const slice = createSlice({
     });
     builder.addCase(getTables.rejected, (state, action: any) => {
       state.loading = false;
-      // const errorMessage = action.error.message.split(" ");
-      // state.error = errorMessage[errorMessage.length - 1];
       state.error = action.error.message;
     });
   },
