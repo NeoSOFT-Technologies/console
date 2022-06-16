@@ -278,6 +278,7 @@ export default function EditTable() {
                   <Form.Control
                     type="text"
                     className="text-center"
+                    data-testid="table-name-input"
                     value={tableName}
                     name="tableName"
                     disabled

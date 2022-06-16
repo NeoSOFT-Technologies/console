@@ -88,7 +88,7 @@ describe("SAAS - EDIT TABLE Component", () => {
       </MemoryRouter>
     );
 
-    const testTableInputText = screen.getByText("testTable", {
+    const testTableInputText = screen.getByTestId("table-name-input", {
       exact: false,
     });
     expect(testTableInputText).toBeInTheDocument();
