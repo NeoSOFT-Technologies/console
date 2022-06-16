@@ -257,7 +257,7 @@ export default function ManageTables() {
           <Button
             variant="primary"
             onClick={() =>
-              navigate("/saas/edit-table", {
+              navigate("/saas/manage-table/edit-table", {
                 state: { tableName: table, tenantId },
               })
             }
