@@ -105,45 +105,7 @@ export default function CreateTables() {
       errors.name = "";
       setColumnFormErrors(errors);
       setShow(false);
-    } else if (!itemExists(columnData.name) && isEditColumn) {
-      setColumnsDataArray([...columnsDataArray, columnData]);
-      setColumnName("");
-      setType("string");
-      setRequireds(false);
-      setFilterable(false);
-      setMultiValue(false);
-      setPartialSearch(false);
-      setStorable(false);
-      setSortable(false);
-      errors.name = "";
-      setColumnFormErrors(errors);
-      setShow(false);
     } else if (!itemExists(columnData.name) && !isEditColumn) {
-      setColumnsDataArray(
-        columnsDataArray.map((val: any) => {
-          if (val.name === editColumnId) {
-            return {
-              ...val,
-              ...columnData,
-            };
-          }
-          return val;
-        })
-      );
-
-      setColumnName("");
-      setType("string");
-      setRequireds(false);
-      setFilterable(false);
-      setMultiValue(false);
-      setPartialSearch(false);
-      setStorable(false);
-      setSortable(false);
-      errors.name = "";
-      setColumnFormErrors(errors);
-      setShow(false);
-      setIsEditColumn(true);
-    } else if (itemExists(columnData.name) && !isEditColumn) {
       setColumnsDataArray(
         columnsDataArray.map((val: any) => {
           if (val.name === editColumnId) {
