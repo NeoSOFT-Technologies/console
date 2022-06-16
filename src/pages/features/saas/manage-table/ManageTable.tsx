@@ -115,103 +115,99 @@ export default function ManageTables() {
   };
 
   return (
-    <div className="createbody">
-      <div className="card">
-        <div className="text-nowrap bd-highlight ">
-          <h4 className=" text-center pt-3 mt-3 ">Table Details</h4>
-        </div>
-        <div className="card-body table-responsive">
-          {allTableData.data?.tableList !== undefined &&
+    <div className="createbody card">
+      <div className="card-body table-responsive">
+        <h4 className=" text-center mb-4">Table Details</h4>
+        {allTableData.data?.tableList !== undefined &&
           allTableData.data.tableList.length > 0 ? (
-            <>
-              <Table bordered className="text-center">
-                <thead>
-                  <tr id="test">
-                    <th>SR.NO.</th>
-                    <th>User</th>
-                    <th>Table Name</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+          <>
+            <Table bordered className="text-center">
+              <thead>
+                <tr id="test">
+                  <th>SR.NO.</th>
+                  <th>User</th>
+                  <th>Table Name</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allTableData.data.tableList.map((val, index) => (
+                  <tr key={index + currentPage * (currentPage + 1) + 1}>
+                    {currentPage !== 1 ? (
+                      <td>{index + currentPage * (currentPage + 1) + 1}</td>
+                    ) : (
+                      <td>{index + currentPage}</td>
+                    )}
+                    <td>{val.tenantId}</td>
+                    <td>{val.tableName}</td>
+                    <td
+                      className="text-align-middle  text-primary"
+                      onClick={() => handleEditShow(val)}
+                      data-testid="edit-table-btn"
+                    >
+                      <i className="bi bi-pencil-square"></i>
+                    </td>
+                    <td
+                      className="text-danger"
+                      data-testid="delete-table-btn"
+                      onClick={() => handleShow(val.tableName, val.tenantId)}
+                    >
+                      <i className="bi bi-trash-fill"></i>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {allTableData.data.tableList.map((val, index) => (
-                    <tr key={index + currentPage * (currentPage + 1) + 1}>
-                      {currentPage !== 1 ? (
-                        <td>{index + currentPage * (currentPage + 1) + 1}</td>
-                      ) : (
-                        <td>{index + currentPage}</td>
-                      )}
-                      <td>{val.tenantId}</td>
-                      <td>{val.tableName}</td>
-                      <td
-                        className="text-align-middle  text-primary"
-                        onClick={() => handleEditShow(val)}
-                        data-testid="edit-table-btn"
-                      >
-                        <i className="bi bi-pencil-square"></i>
-                      </td>
-                      <td
-                        className="text-danger"
-                        data-testid="delete-table-btn"
-                        onClick={() => handleShow(val.tableName, val.tenantId)}
-                      >
-                        <i className="bi bi-trash-fill"></i>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-              <div className="d-flex justify-content-center">
-                <ul className="pagination">
-                  <li
-                    className={
-                      currentPage !== 1 ? "page-item" : "page-item disabled"
-                    }
+                ))}
+              </tbody>
+            </Table>
+            <div className="d-flex justify-content-center pt-2">
+              <ul className="pagination">
+                <li
+                  className={
+                    currentPage !== 1 ? "page-item" : "page-item disabled"
+                  }
+                >
+                  <a
+                    className="page-link "
+                    onClick={() => prevpage(currentPage)}
                   >
-                    <a
-                      className="page-link "
-                      onClick={() => prevpage(currentPage)}
-                    >
-                      Previous
-                    </a>
-                  </li>
+                    Previous
+                  </a>
+                </li>
 
-                  <li className="page-item active">
-                    <a className="page-link">{currentPage}</a>
-                  </li>
-                  <li
-                    className={
-                      allTableData.data !== undefined &&
+                <li className="page-item active">
+                  <a className="page-link">{currentPage}</a>
+                </li>
+                <li
+                  className={
+                    allTableData.data !== undefined &&
                       allTableData.data.dataSize - currentPage * 6 <= 0
-                        ? "page-item disabled"
-                        : "page-item  "
-                    }
+                      ? "page-item disabled"
+                      : "page-item  "
+                  }
+                >
+                  <a
+                    className="page-link "
+                    onClick={() => nextpage(currentPage)}
                   >
-                    <a
-                      className="page-link "
-                      onClick={() => nextpage(currentPage)}
-                    >
-                      Next
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </>
-          ) : (
-            <>
-              <h2>No Data</h2>
-            </>
-          )}
-        </div>
-        <div className="text-center">
-          <Button
-            onClick={() => navigate("/saas/add-table")}
-            className="align-item-center btn-success ml-5 mb-4 w-75"
-          >
-            Add New
-          </Button>
-        </div>
+                    Next
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </>
+        ) : (
+          <>
+            <h2>No Data</h2>
+          </>
+        )}
+      </div>
+      <div className="text-right">
+        <Button
+          onClick={() => navigate("/saas/add-table")}
+          className=" btn-success ml-5 mb-4 mr-4"
+        >
+          Add New
+        </Button>
       </div>
 
       <Modal
