@@ -21,12 +21,12 @@ export const getTableSchema = createAsyncThunk(
         data.tenantId
       );
       return response.data.data.columns;
-    } catch (error_: any) {
+    } catch (_error: any) {
       let errorMsg = "Undefined Error";
       errorMsg =
-        error_.response.data !== undefined
-          ? error_.response.data.message
-          : error_.message;
+        _error.response.data !== undefined
+          ? _error.response.data.message
+          : _error.message;
       throw new Error(errorMsg);
     }
   }
@@ -48,19 +48,20 @@ const slice = createSlice({
       ) {
         state.data?.push(action.payload.selectedColumnData);
       } else if (
-        action.payload.selectedColHeading === "Edit Column" &&
+        action.payload.selectedColHeading === "View Column" &&
         action.payload.objIndex > -1
       ) {
-        state.data?.splice(
-          action.payload.objIndex,
-          1,
-          action.payload.selectedColumnData
-        );
+        const newList: ITableColumnData[] = state.data as ITableColumnData[];
+        newList[action.payload.objIndex] = action.payload.selectedColumnData;
+        state.data = newList;
       }
     },
     deleteColumn: (state, action) => {
       state.data = state.data?.filter((obj) => {
-        return obj.name !== action.payload.selectedColumnData.name;
+        return (
+          obj.name.toLowerCase() !==
+          action.payload.selectedColumnData.name.toLowerCase()
+        );
       });
     },
   },

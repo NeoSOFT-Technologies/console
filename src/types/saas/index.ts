@@ -18,6 +18,11 @@ export interface ICreateTable {
   tenantId: string;
   requestData: ITableCreateData;
 }
+
+export interface IAllTableList {
+  dataSize: number;
+  tableList: ITableSchema[];
+}
 export interface ITableSchema {
   tenantId: string;
   tableName: string;
@@ -67,7 +72,7 @@ export interface ICapacityPlans {
   shards: string;
 }
 export interface ITenantDetails {
-  id: Number;
+  id: number;
   tenantName: string;
   email: string;
   description: string;

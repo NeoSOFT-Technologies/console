@@ -4,7 +4,7 @@ import { Accordion, Col, Form, Row } from "react-bootstrap";
 import {
   setFormData,
   setFormErrors,
-  regexForTagetUrl,
+  regexForTargetUrl,
 } from "../../../../../../../resources/gateway/api/api-constants";
 import { setForm } from "../../../../../../../store/features/gateway/api/update/slice";
 import {
@@ -23,7 +23,7 @@ export default function TargetUrl() {
         setFormErrors(
           {
             ...state.data.errors,
-            [name]: regexForTagetUrl.test(value)
+            [name]: regexForTargetUrl.test(value)
               ? ""
               : "Enter a Valid Target URL",
           },
@@ -109,7 +109,7 @@ export default function TargetUrl() {
                       id="EnableRoundRobin"
                       name="EnableRoundRobin"
                       label="Enable round-robin load balancing"
-                      disabled={!state.data.form.IsVersioningDisabled}
+                      // disabled={!state.data.form.IsVersioningDisabled}
                       checked={
                         state.data.form.EnableRoundRobin === undefined
                           ? false
@@ -119,17 +119,16 @@ export default function TargetUrl() {
                     />
                   </Form.Group>
                 </Col>
-                {!state.data.form.IsVersioningDisabled ? (
+                {/* {!state.data.form.IsVersioningDisabled ? (
                   <h6>
                     Note: Version is enable so you can&apos;t apply Round-Robin
                     LoadBalacing{" "}
                   </h6>
                 ) : (
                   <></>
-                )}
+                )} */}
                 <Col>
-                  {state.data.form.EnableRoundRobin === true &&
-                  state.data.form.IsVersioningDisabled ? (
+                  {state.data.form.EnableRoundRobin === true ? (
                     <LoadBalancing />
                   ) : (
                     <span></span>

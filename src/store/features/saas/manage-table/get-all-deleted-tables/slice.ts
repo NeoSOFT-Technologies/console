@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getAllDeletedTableService } from "../../../../../services/saas/api/api";
-import { IPagination, ITableSchema } from "../../../../../types/saas";
+import { IAllTableList, IPagination } from "../../../../../types/saas";
 
 interface IGetAllDeletedTableState {
-  data?: ITableSchema[];
+  data?: IAllTableList;
   loading: boolean;
   error?: string | null;
 }
@@ -18,13 +18,13 @@ export const getAllDeletedTables = createAsyncThunk(
   async (data: IPagination) => {
     try {
       const response = await getAllDeletedTableService(data);
-      return response.data.tableList;
-    } catch (error_: any) {
+      return response.data;
+    } catch (_error: any) {
       let errorMsg = "Undefined Error";
       errorMsg =
-        error_.response.data !== undefined
-          ? error_.response.data.message
-          : error_.message;
+        _error.response.data !== undefined
+          ? _error.response.data.message
+          : _error.message;
       throw new Error(errorMsg);
     }
   }
@@ -35,7 +35,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     setDeletedTableData: (state, action) => {
-      state.data = [...action.payload];
+      state.data = { ...action.payload };
       state.loading = false;
       state.error = undefined;
     },

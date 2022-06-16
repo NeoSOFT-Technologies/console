@@ -37,6 +37,7 @@ export default function ManageTables() {
     setTenantId(tenantID);
     setShow(true);
   };
+  const datalength = allTableData.data?.dataSize;
   const [showEdit, setShowEdit] = useState(false);
   const handleEditClose = () => setShowEdit(false);
   const handleEditShow = (obj: ITableSchema) => {
@@ -65,13 +66,15 @@ export default function ManageTables() {
       !deleteTableData.error &&
       deleteTableData?.data
     ) {
-      const newTableList = allTableData.data?.filter((obj) => {
+      const newTableList = allTableData.data?.tableList.filter((obj) => {
         return (
           obj.tenantId !== deletedTableRecord.tenantId ||
           obj.tableName !== deletedTableRecord.tableName
         );
       });
-      dispatch(setTableData(newTableList));
+
+      console.log(newTableList);
+      dispatch(setTableData({ dataSize: datalength, tableList: newTableList }));
       ToastAlert("Table Deleted successfully ", "success");
     }
   }, [deleteTableData.loading]);
@@ -110,14 +113,16 @@ export default function ManageTables() {
 
     dispatch(getAllTables(pageParameters));
   };
+
   return (
     <div className="createbody">
-      <div className="text-nowrap bd-highlight m-4">
-        <h5>Table Details</h5>
-      </div>
-      <div className="card m-4">
+      <div className="card">
+        <div className="text-nowrap bd-highlight ">
+          <h4 className=" text-center pt-3 mt-3 ">Table Details</h4>
+        </div>
         <div className="card-body table-responsive">
-          {allTableData.data !== undefined && allTableData.data.length > 0 ? (
+          {allTableData.data?.tableList !== undefined &&
+          allTableData.data.tableList.length > 0 ? (
             <>
               <Table bordered className="text-center">
                 <thead>
@@ -130,7 +135,7 @@ export default function ManageTables() {
                   </tr>
                 </thead>
                 <tbody>
-                  {allTableData.data?.map((val, index) => (
+                  {allTableData.data.tableList.map((val, index) => (
                     <tr key={index + currentPage * (currentPage + 1) + 1}>
                       {currentPage !== 1 ? (
                         <td>{index + currentPage * (currentPage + 1) + 1}</td>
@@ -157,32 +162,32 @@ export default function ManageTables() {
                   ))}
                 </tbody>
               </Table>
-              <nav aria-label="Page navigation example">
-                <ul className="pagination ">
-                  {currentPage !== 1 ? (
-                    <li className="page-item">
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-                  ) : (
-                    <li className="page-item disabled">
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-                  )}
+              <div className="d-flex justify-content-center">
+                <ul className="pagination">
+                  <li
+                    className={
+                      currentPage !== 1 ? "page-item" : "page-item disabled"
+                    }
+                  >
+                    <a
+                      className="page-link "
+                      onClick={() => prevpage(currentPage)}
+                    >
+                      Previous
+                    </a>
+                  </li>
 
                   <li className="page-item active">
                     <a className="page-link">{currentPage}</a>
                   </li>
-                  <li className="page-item  ">
+                  <li
+                    className={
+                      allTableData.data !== undefined &&
+                      allTableData.data.dataSize - currentPage * 6 <= 0
+                        ? "page-item disabled"
+                        : "page-item  "
+                    }
+                  >
                     <a
                       className="page-link "
                       onClick={() => nextpage(currentPage)}
@@ -191,56 +196,24 @@ export default function ManageTables() {
                     </a>
                   </li>
                 </ul>
-              </nav>
+              </div>
             </>
           ) : (
             <>
               <h2>No Data</h2>
-              <nav aria-label="Page navigation example">
-                <ul className="pagination ">
-                  {currentPage !== 1 ? (
-                    <li className="page-item">
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-                  ) : (
-                    <li className="page-item disabled">
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-                  )}
-                  <li className="page-item active">
-                    <a className="page-link">{currentPage}</a>
-                  </li>
-                  <li className="page-item  disabled">
-                    <a
-                      className="page-link "
-                      onClick={() => nextpage(currentPage)}
-                    >
-                      Next
-                    </a>
-                  </li>
-                </ul>
-              </nav>
             </>
           )}
         </div>
+        <div className="text-center">
+          <Button
+            onClick={() => navigate("/saas/add-table")}
+            className="align-item-center btn-success ml-5 mb-4 w-75"
+          >
+            Add New
+          </Button>
+        </div>
       </div>
 
-      <Button
-        onClick={() => navigate("/saas/add-table")}
-        className="m-4 btn-success"
-      >
-        Add New
-      </Button>
       <Modal
         show={show}
         data={table}
