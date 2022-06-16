@@ -127,9 +127,9 @@ function RestoreTable() {
                 </thead>
                 <tbody>
                   {allDeleteTableData.data.tableList.map((val, index) => (
-                    <tr key={index + currentPage * (currentPage + 1) + 1}>
+                    <tr key={index + 6 * (currentPage - 1) + 1}>
                       {currentPage !== 1 ? (
-                        <td>{index + currentPage * (currentPage + 1) + 1}</td>
+                        <td>{index + 6 * (currentPage - 1) + 1}</td>
                       ) : (
                         <td>{index + currentPage}</td>
                       )}
