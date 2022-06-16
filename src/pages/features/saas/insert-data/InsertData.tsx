@@ -67,7 +67,6 @@ export default function InputData(this: any) {
           ...insertTenant,
           [name]: value,
         });
-
         break;
       }
       case "inputData": {

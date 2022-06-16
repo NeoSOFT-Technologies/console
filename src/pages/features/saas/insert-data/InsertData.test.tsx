@@ -160,11 +160,9 @@ describe("SAAS - INSERT DATA Component", () => {
       "testTable",
     ]);
 
-    // const jsonInputField = await screen.getByPlaceholderText(/JSON input/i);
     const jsonInputField = await screen.getByTestId("json-input-box");
     fireEvent.change(jsonInputField, {
       target: {
-        name: "inputData",
         value: '[{"id":"1","name":"karthik","username":"karthik"}]',
       },
     });
