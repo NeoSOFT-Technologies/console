@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, InputGroup, Modal, Row, Table } from "react-bootstrap";
+import { Button, Col, Modal, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { useLocation } from "react-router-dom";
 import Spinner from "../../../../components/loader/Loader";
@@ -247,65 +247,50 @@ export default function EditTable() {
     }
   }, [updateTableSchemaState.loading, updateTableSchemaState.error]);
   return (
-    <div className="createbody">
-      <h4 className="pl-5 pt-5">Edit Table</h4>
+    <div className="createbody pb-5">
+      <h3 className="pl-5 pt-5 text-center">Edit Table</h3>
       <br></br>
       {updateTableSchemaState.loading ? <Spinner></Spinner> : <div></div>}
       <Form onSubmit={updateTable} className="pl-5">
-        <Row>
+        <Row className="pr-5">
           <Col>
             <Row>
-              <Form.Label
-                column="lg"
-                lg={3}
-                className="pl-5 text-center createbody"
-              >
-                <b>User</b>
-              </Form.Label>
-              <Col sm lg="4">
-                <InputGroup
-                  aria-label="Default select example"
-                  className="w-100 pr-3 pt-1 pb-1 createbody"
-                  id="box"
-                >
-                  {tenantId}
-                </InputGroup>
+              <Col sm lg="6">
+                <Form.Group className="mb-3">
+                  <Form.Label className="text-left createbody mb-2">
+                    User
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    className="text-center"
+                    value={tenantId}
+                    name="tenantName"
+                    disabled
+                  />
+                </Form.Group>
+              </Col>
+
+              <Col sm lg="6">
+                <Form.Group>
+                  <Form.Label className=" createbody mb-2">
+                    Table Name
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    className="text-center"
+                    value={tableName}
+                    name="tableName"
+                    disabled
+                  />
+                </Form.Group>
               </Col>
             </Row>
             <br></br>
             <Row>
-              <Form.Label
-                column="lg"
-                lg={3}
-                className="pl-5 text-center createbody"
-              >
-                <b>Table Name</b>
-              </Form.Label>
-              <Col sm lg="4">
-                <InputGroup
-                  aria-label="Default select example"
-                  className="w-100 pr-3 pt-1 pb-1 createbody"
-                  id="box"
-                >
-                  {tableName}
-                </InputGroup>
-              </Col>
-            </Row>
-            <br></br>
-            <Form.Label
-              column="lg"
-              lg={3}
-              className="pl-5 text-center createbody"
-            >
-              <b>Columns :</b>
-            </Form.Label>
-            <Row>
-              <Col sm lg="8" className="ml-0 mt-3 pl-1 pr-0 ">
+              <Col sm lg="12" className="  table-responsive ">
+                <Form.Label className=" createbody mb-2">Columns :</Form.Label>
                 {tableData.data !== undefined && tableData.data.length > 0 ? (
-                  <Table
-                    bordered
-                    className="text-center pr-0 table-marginLeft "
-                  >
+                  <Table bordered className="text-center">
                     <thead>
                       <tr id="test">
                         {tableHeadings.map((val, index) => (
@@ -316,7 +301,7 @@ export default function EditTable() {
                       </tr>
                     </thead>
                     <tbody>
-                      {tableData.data.map((val, index) => (
+                      {tableData.data?.map((val, index) => (
                         <tr key={`row${index}`}>
                           <td>{val.name}</td>
                           <td>{val.multiValue.toString()}</td>
@@ -328,7 +313,6 @@ export default function EditTable() {
                           <td>{val.storable.toString()} </td>
                           <td className="text-align-middle  text-primary">
                             <i
-                              // className="bi bi-pencil-square"
                               className="bi bi-eye-fill"
                               data-toggle="modal"
                               data-testid="edit-col-btn"
@@ -347,14 +331,11 @@ export default function EditTable() {
                     </tbody>
                   </Table>
                 ) : (
-                  <h2>No Data</h2>
+                  <h2 text-center>No Data</h2>
                 )}
               </Col>
             </Row>
-            <br />
           </Col>
-          <br></br>
-          <br></br>
           <br></br>
         </Row>
         <Row className="mb-5  mt-3">
@@ -621,7 +602,6 @@ export default function EditTable() {
                 <Form.Select
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
-                  // id="box"
                   value={selectedColumnData.storable.toString()}
                   disabled={readonlyState}
                   onChange={(e) => {
