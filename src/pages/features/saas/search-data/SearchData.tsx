@@ -395,7 +395,7 @@ export default function GetSearchData() {
                               searchData &&
                               searchData.data &&
                               searchData?.data?.length <
-                              Number.parseInt(searchTenant.pageSize)
+                                Number.parseInt(searchTenant.pageSize)
                             ) {
                               return (
                                 <tr key={`row${index}`}>
