@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getTablesService } from "../../../../../services/saas/api/api";
-// import error from "../../../../../utils/error";
 
 interface IGetTableState {
   [x: string]: any;
@@ -20,20 +19,12 @@ export const getTables = createAsyncThunk(
     try {
       const response = await getTablesService(id);
       return response.data.data;
-    } catch (error_: any) {
-      // console.log(`error_ : ` + JSON.stringify(error_));
+    } catch (_error: any) {
       let errorMsg = "Undefined Error";
       errorMsg =
-        error_.response.data !== undefined
-          ? error_.response.data.message
-          : error_.message;
-      // console.log(
-      //   `error_.response.data : ` + JSON.stringify(error_.response.data)
-      // );
-      // errorMsg = error_.response.data.message;
-      // } else {
-      //   errorMsg = error_.message;
-      // }
+        _error.response.data !== undefined
+          ? _error.response.data.message
+          : _error.message;
       throw new Error(errorMsg);
     }
   }
@@ -55,8 +46,6 @@ const slice = createSlice({
     });
     builder.addCase(getTables.rejected, (state, action: any) => {
       state.loading = false;
-      // const errorMessage = action.error.message.split(" ");
-      // state.error = errorMessage[errorMessage.length - 1];
       state.error = action.error.message;
     });
   },

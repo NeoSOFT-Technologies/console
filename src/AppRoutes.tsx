@@ -4,12 +4,12 @@ import {
   access,
   AdminGuard,
   AuthGuard,
+  SaasGuard,
   TenantGuard,
   UserGuard,
 } from "./components/auth-gaurd";
 
 import Spinner from "./components/loader/Loader";
-import GetTables from "./pages/features/saas/get-tables/GetTables";
 const RoleAndPermissions = lazy(
   () =>
     import(
@@ -329,61 +329,53 @@ function AppRoutes() {
         </Route>
         <Route path="/saas">
           <Route
-            path="get-tables"
-            element={
-              <AdminGuard>
-                <GetTables />
-              </AdminGuard>
-            }
-          />
-          <Route
             path="insert-data"
             element={
-              <AdminGuard>
+              <SaasGuard>
                 <InsertData />
-              </AdminGuard>
+              </SaasGuard>
             }
           />
 
           <Route
             path="search-data"
             element={
-              <AdminGuard>
+              <SaasGuard>
                 <SearchData />
-              </AdminGuard>
+              </SaasGuard>
             }
           />
           <Route
             path="manage-table"
             element={
-              <AdminGuard>
+              <SaasGuard>
                 <ManageTable />
-              </AdminGuard>
+              </SaasGuard>
             }
           />
 
           <Route
             path="add-table"
             element={
-              <AdminGuard>
+              <SaasGuard>
                 <AddTable />
-              </AdminGuard>
+              </SaasGuard>
             }
           />
           <Route
             path="restore-table"
             element={
-              <AdminGuard>
+              <SaasGuard>
                 <RestoreTable />
-              </AdminGuard>
+              </SaasGuard>
             }
           />
           <Route
             path="edit-table"
             element={
-              <AdminGuard>
+              <SaasGuard>
                 <EditTables />
-              </AdminGuard>
+              </SaasGuard>
             }
           />
         </Route>
