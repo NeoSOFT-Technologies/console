@@ -119,7 +119,7 @@ export default function ManageTables() {
       <div className="card-body table-responsive">
         <h4 className=" text-center mb-4">Table Details</h4>
         {allTableData.data?.tableList !== undefined &&
-          allTableData.data.tableList.length > 0 ? (
+        allTableData.data.tableList.length > 0 ? (
           <>
             <Table bordered className="text-center">
               <thead>
@@ -180,7 +180,7 @@ export default function ManageTables() {
                 <li
                   className={
                     allTableData.data !== undefined &&
-                      allTableData.data.dataSize - currentPage * 6 <= 0
+                    allTableData.data.dataSize - currentPage * 6 <= 0
                       ? "page-item disabled"
                       : "page-item  "
                   }
