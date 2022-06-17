@@ -419,6 +419,7 @@ export default function CorsOptions() {
                         <Form.Group className="mb-3 ml-4">
                           <Form.Check
                             type="switch"
+                            data-testid="enableCors-switch"
                             label="Enable CORS"
                             name="IsEnabled"
                             checked={state.data.form.CORS.IsEnabled}
@@ -430,6 +431,7 @@ export default function CorsOptions() {
                         <Form.Group className="mb-3 ml-4">
                           <Form.Check
                             type="switch"
+                            data-testid="allowCred-switch"
                             label="Allow credentials"
                             name="AllowCredentials"
                             checked={state.data.form.CORS.AllowCredentials}
@@ -441,6 +443,7 @@ export default function CorsOptions() {
                         <Form.Group className="mb-3 ml-4">
                           <Form.Check
                             type="switch"
+                            data-testid="optionPass-switch"
                             label="Options pass through"
                             name="OptionsPassthrough"
                             checked={state.data.form.CORS.OptionsPassthrough}
@@ -455,6 +458,7 @@ export default function CorsOptions() {
                         <Form.Group className="mb-3">
                           <Form.Control
                             type="number"
+                            data-testid="maxAge-input"
                             placeholder="1"
                             id="MaxCredentialsAge"
                             name="MaxAge"
@@ -473,6 +477,7 @@ export default function CorsOptions() {
                           <Form.Group className="mt-0">
                             <Form.Control
                               type="text"
+                              data-testid="allowedOrigin-input"
                               placeholder="http://localhost"
                               id="AllowedOrigins"
                               name="AllowedOrigins"
@@ -493,6 +498,7 @@ export default function CorsOptions() {
                             <Form.Label></Form.Label>
                             <Button
                               variant="dark"
+                              data-testid="add-allowedOrigin"
                               disabled={!addAllowedOrigins.AllowedOrigins}
                               onClick={() => handleAllowedOriginsAddClick()}
                             >
@@ -527,6 +533,7 @@ export default function CorsOptions() {
                                         <td>{data}</td>
                                         <td style={{ textAlign: "center" }}>
                                           <i
+                                            data-testid="delete-allowedOrigin"
                                             className="btn btn-sm bi bi-trash-fill"
                                             onClick={(event) =>
                                               handleAllowedOriginsDeleteRow(
@@ -553,6 +560,7 @@ export default function CorsOptions() {
                           <Form.Group className="mt-0">
                             <Form.Select
                               name="AllowedMethods"
+                              data-testid="allowedMethods-dropdown"
                               id="AllowedMethods"
                               onClick={(e: any) =>
                                 handleAllowedMethodsChange(e)
@@ -573,6 +581,7 @@ export default function CorsOptions() {
                             <Form.Label></Form.Label>
                             <Button
                               variant="dark"
+                              data-testid="allowedMethods-add"
                               onClick={() => handleAllowedMethodsAddClick()}
                             >
                               Add
@@ -606,6 +615,7 @@ export default function CorsOptions() {
                                         <td>{data}</td>
                                         <td style={{ textAlign: "center" }}>
                                           <i
+                                            data-testid="delete-allowedMethods"
                                             className="btn btn-sm bi bi-trash-fill"
                                             onClick={(event) =>
                                               handleAllowedMethodsDeleteRow(
@@ -632,6 +642,7 @@ export default function CorsOptions() {
                           <Form.Group className="mt-0">
                             <Form.Control
                               type="text"
+                              data-testid="allowedHeaders-input"
                               placeholder="x-gateway-id"
                               id="AllowedHeaders"
                               name="AllowedHeaders"
@@ -647,6 +658,7 @@ export default function CorsOptions() {
                             <Form.Label></Form.Label>
                             <Button
                               variant="dark"
+                              data-testid="allowedHeaders-add"
                               disabled={!addAllowedHeaders.AllowedHeaders}
                               onClick={() => handleAllowedHeadersAddClick()}
                             >
@@ -681,6 +693,7 @@ export default function CorsOptions() {
                                         <td>{data}</td>
                                         <td style={{ textAlign: "center" }}>
                                           <i
+                                            data-testid="allowedHeaders-delete"
                                             className="btn btn-sm bi bi-trash-fill"
                                             onClick={(event) =>
                                               handleAllowedHeadersDeleteRow(
@@ -707,6 +720,7 @@ export default function CorsOptions() {
                           <Form.Group className="mt-0">
                             <Form.Control
                               type="text"
+                              data-testid="exposeHeaders-input"
                               placeholder="x-gateway-id"
                               id="ExposedHeaders"
                               name="ExposedHeaders"
@@ -722,6 +736,7 @@ export default function CorsOptions() {
                             <Form.Label></Form.Label>
                             <Button
                               variant="dark"
+                              data-testid="exposeHeaders-add"
                               disabled={!addExposedHeaders.ExposedHeaders}
                               onClick={() => handleExposedHeadersAddClick()}
                             >
@@ -756,6 +771,7 @@ export default function CorsOptions() {
                                         <td>{data}</td>
                                         <td style={{ textAlign: "center" }}>
                                           <i
+                                            data-testid="exposeHeaders-delete"
                                             className="btn btn-sm bi bi-trash-fill"
                                             onClick={(event) =>
                                               handleExposedHeadersDeleteRow(

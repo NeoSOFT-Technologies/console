@@ -36,6 +36,7 @@ export default function VersionSettings() {
                           <Form.Label> Version Data Location</Form.Label>
                           <br />
                           <Form.Select
+                            data-testid="versionLocation-select"
                             aria-label="Default select example"
                             name="VersioningInfo.Location"
                             value={state.data.form?.VersioningInfo?.Location}
@@ -63,6 +64,7 @@ export default function VersionSettings() {
 
                           <Form.Control
                             className="mt-2"
+                            data-testid="versionKeyName-input"
                             type="text"
                             id="versionIdentifier"
                             placeholder="Enter Version key Name"

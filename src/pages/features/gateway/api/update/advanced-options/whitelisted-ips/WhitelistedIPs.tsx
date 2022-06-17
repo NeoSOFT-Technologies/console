@@ -138,6 +138,7 @@ export default function WhitelistedIPs() {
                         <Form.Group className="mb-3 ml-4">
                           <Form.Check
                             type="switch"
+                            data-testid="whitelist-switch"
                             label="Enable Whitelisted IPs"
                             name="whitelisted"
                             checked={enableWhitelist}
@@ -163,6 +164,7 @@ export default function WhitelistedIPs() {
                               <Form.Group className="mt-0">
                                 <Form.Control
                                   type="text"
+                                  data-testid="whitelist-input"
                                   placeholder="127.0.0.1"
                                   id="whitelist"
                                   name="Whitelist"
@@ -183,6 +185,7 @@ export default function WhitelistedIPs() {
                                 <Form.Label></Form.Label>
                                 <Button
                                   variant="dark"
+                                  data-testid="add-ips"
                                   disabled={!addFormData.Whitelist}
                                   onClick={() => handleAddClick()}
                                 >
@@ -218,6 +221,7 @@ export default function WhitelistedIPs() {
                                           <td style={{ textAlign: "center" }}>
                                             <i
                                               className="btn btn-sm bi bi-trash-fill"
+                                              data-testid="delete-rows"
                                               onClick={(event) =>
                                                 deleteTableRows(index, event)
                                               }

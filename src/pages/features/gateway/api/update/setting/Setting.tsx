@@ -72,6 +72,7 @@ export default function Setting() {
                   <div>
                     <b>API ID:</b> {state.data.form.ApiId}
                     <i
+                      data-testid="apiIdCopy-button"
                       className="btn btn-sm bi bi-clipboard"
                       onClick={() => copyToClipBoard(state.data.form.ApiId)}
                     ></i>
@@ -88,6 +89,7 @@ export default function Setting() {
                       {hostUrl + state.data.form.ListenPath}
                     </a>
                     <i
+                      data-testid="apiUrlCopy-button"
                       className="btn btn-sm bi bi-clipboard"
                       onClick={() =>
                         copyToClipBoard(hostUrl + state.data.form.ListenPath)
@@ -101,6 +103,7 @@ export default function Setting() {
                 <Form.Group className="mb-3 mt-2 ">
                   <Form.Check
                     className="ml-3"
+                    data-testid="isActive-switch"
                     type="switch"
                     onChange={validateForm}
                     checked={state.data.form.IsActive}
@@ -127,6 +130,7 @@ export default function Setting() {
 
                           <Form.Control
                             className="mt-2"
+                            data-testid="apiName-input"
                             type="text"
                             id="apiName"
                             placeholder="Enter API Name"

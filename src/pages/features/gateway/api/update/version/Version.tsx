@@ -73,6 +73,7 @@ export default function Version() {
         <Form.Group className="ml-3 mb-3">
           <Form.Check
             type="switch"
+            data-testid="enableVersion-switch"
             id="IsVersioningDisabled"
             name="IsVersioningDisabled"
             label="Enable Versioning"

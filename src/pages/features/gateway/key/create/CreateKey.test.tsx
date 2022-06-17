@@ -3,13 +3,11 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-// import configureStore from "redux-mock-store";
-// import thunk from "redux-thunk";
 import store from "../../../../../store";
 import CreateKey from "./CreateKey";
 
-it("render without crashing CreateKey", async () => {
-  await render(
+it("render without crashing CreateKey", () => {
+  render(
     <BrowserRouter>
       <Provider store={store}>
         <CreateKey />
@@ -18,8 +16,8 @@ it("render without crashing CreateKey", async () => {
   );
 });
 
-it("render buttons", async () => {
-  await render(
+it("render buttons", () => {
+  render(
     <BrowserRouter>
       <Provider store={store}>
         <CreateKey />
@@ -36,7 +34,7 @@ it("render buttons", async () => {
   expect(cancelBtn).toBeInTheDocument();
   fireEvent.click(cancelBtn);
 
-  // const copyBtn = screen.getByTestId("copy-input");
-  // expect(copyBtn).toBeInTheDocument();
-  // fireEvent.click(copyBtn);
+  const copyBtn = screen.getByTestId("copy-input");
+  expect(copyBtn).toBeInTheDocument();
+  fireEvent.click(copyBtn);
 });

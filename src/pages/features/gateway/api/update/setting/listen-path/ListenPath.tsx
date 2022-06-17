@@ -60,7 +60,7 @@ export default function ListenPath() {
                     placeholder="Enter listen path"
                     id="listenPath"
                     name="ListenPath"
-                    data-testid="name-input"
+                    data-testid="listenPath-input"
                     disabled={state.data.form?.IsInternal}
                     value={state.data.form?.ListenPath}
                     isInvalid={!!state.data.errors?.ListenPath}
@@ -90,6 +90,7 @@ export default function ListenPath() {
                   <Form.Check
                     type="switch"
                     className="ml-4"
+                    data-testid="stripListenPath-switch"
                     id="stripListenPath"
                     name="StripListenPath"
                     label="Strip the Listen path"
@@ -112,6 +113,7 @@ export default function ListenPath() {
                   <Form.Check
                     type="switch"
                     className="ml-4"
+                    data-testid="activated-switch"
                     id="activated"
                     name="IsInternal"
                     label="Activated"

@@ -56,6 +56,7 @@ export default function RateLimit() {
                         <Form.Group className="ml-4 mb-3">
                           <Form.Check
                             type="switch"
+                            data-testid="disableRate-switch"
                             id="disableRate"
                             name="RateLimit.IsDisabled"
                             label="Disable rate limiting"
@@ -79,6 +80,7 @@ export default function RateLimit() {
                           <Form.Control
                             className="mt-2"
                             type="text"
+                            data-testid="rate-input"
                             id="rate"
                             placeholder="Enter Rate"
                             name="RateLimit.Rate"
@@ -112,6 +114,7 @@ export default function RateLimit() {
                           <Form.Control
                             className="mt-2"
                             type="text"
+                            data-testid="per-input"
                             id="perSecond"
                             placeholder="Enter time"
                             name="RateLimit.Per"
@@ -137,6 +140,7 @@ export default function RateLimit() {
                         <Form.Group className="ml-4 mb-3">
                           <Form.Check
                             type="switch"
+                            data-testid="disableQuota-switch"
                             id="disableQuotas"
                             name="IsQuotaDisabled"
                             label="Disable quotas"
