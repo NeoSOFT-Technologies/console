@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Spinner from "../../../../../components/loader/Loader";
 import { regexForNumber } from "../../../../../resources/gateway/api/api-constants";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
 
 import {
-  // keystate,
+  keystate,
   setFormErrors,
   setForms,
 } from "../../../../../store/features/gateway/key/create/slice";
@@ -18,7 +18,6 @@ import {
   setFormError,
 } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
-import { setLabel, setFormValue } from "./rate-limit-helper";
 
 interface IProps {
   state?: IPolicyCreateState;
@@ -38,33 +37,11 @@ export default function GlobalLimitApi(props: IProps) {
     (RootStates) => RootStates.createPolicyState
   );
 
-  // const { id } = useParams();
+  const { id } = useParams();
   const perapi =
     props.current === "policy"
       ? [...props.state?.data.errors?.PerApiLimit!]
       : [...props.keystate?.data.errors?.PerApiLimit!];
-
-  const formProp =
-    props.current === "policy"
-      ? props.state?.data.form.APIs
-      : props.keystate?.data.form.AccessRights;
-
-  const form =
-    props.current === "policy"
-      ? props.state?.data.form
-      : props.keystate?.data.form;
-
-  const errorProp =
-    props.current === "policy"
-      ? [...props.state?.data.errors?.PerApiLimit!]
-      : [...props.keystate?.data.errors?.PerApiLimit!];
-
-  const errors =
-    props.current === "policy"
-      ? props.state?.data.errors!
-      : props.keystate?.data.errors!;
-
-  const propName = props.current === "policy" ? "APIs" : "AccessRights";
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -106,6 +83,184 @@ export default function GlobalLimitApi(props: IProps) {
       setThrottleError(throttles);
       setQuotaError(quotas);
       setRateError(rates);
+    }
+  }
+
+  function updateValidationInput(attributeName: any) {
+    perapi[props.index!] = {
+      ...perapi[props.index!],
+      Rate:
+        attributeName !== "GlobalLimit.IsDisabled"
+          ? perapi[props.index!].Rate
+          : "",
+      Per:
+        attributeName !== "GlobalLimit.IsDisabled"
+          ? perapi[props.index!].Per
+          : "",
+      ThrottleInterval:
+        attributeName !== "Throttling.IsDisabled"
+          ? perapi[props.index!].ThrottleInterval
+          : "",
+      ThrottleRetries:
+        attributeName !== "Throttling.IsDisabled"
+          ? perapi[props.index!].ThrottleRetries
+          : "",
+      Quota:
+        attributeName !== "unlimitedRequests.IsDisabled"
+          ? perapi[props.index!].Quota
+          : "",
+      QuotaRenewalRate:
+        attributeName !== "unlimitedRequests.IsDisabled"
+          ? perapi[props.index!].QuotaRenewalRate
+          : "",
+    };
+  }
+  function setRateValue(
+    FormValue: any, // props  state
+    FormData: any, // return state.data
+    currentState: any, // data save previous previousstate
+    statevalue: string, // return string APIs or AccessRight
+    setFormRate: any,
+    setFormErrorRate: any,
+    event: React.ChangeEvent<HTMLInputElement>, // to get current toggle name
+    togglecheck: any // to check toggtle is on or off
+    // propertytype
+  ) {
+    const attributeName: string = event.target.getAttribute("name")!;
+    if (togglecheck === -1) {
+      console.log("check name", event.target.getAttribute("name"));
+      const apisList = [...FormValue!];
+      apisList[props.index!] = {
+        ...apisList[props.index!],
+        Limit: {
+          Rate:
+            attributeName !== "GlobalLimit.IsDisabled"
+              ? FormValue[props.index!].Limit?.Rate
+              : id === undefined
+              ? 0
+              : currentState === undefined
+              ? 0
+              : FormValue[props.index!].Limit?.Rate === -1
+              ? 0
+              : FormValue[props.index!].Limit?.Rate,
+          Per:
+            attributeName !== "GlobalLimit.IsDisabled"
+              ? FormValue[props.index!].Limit?.Per
+              : id === undefined
+              ? 0
+              : currentState === undefined
+              ? 0
+              : FormValue[props.index!].Limit?.Per! === -1
+              ? 0
+              : FormValue[props.index!].Limit?.Per!,
+          Throttle_interval:
+            attributeName !== "Throttling.IsDisabled"
+              ? FormValue[props.index!].Limit?.Throttle_interval
+              : id === undefined
+              ? 0
+              : currentState === undefined
+              ? 0
+              : FormValue[props.index!].Limit?.Throttle_interval === -1
+              ? 0
+              : FormValue[props.index!].Limit?.Throttle_interval,
+          Throttle_retry_limit:
+            attributeName !== "Throttling.IsDisabled"
+              ? FormValue[props.index!].Limit?.Throttle_retry_limit
+              : id === undefined
+              ? 0
+              : currentState === undefined
+              ? 0
+              : FormValue[props.index!].Limit?.Throttle_retry_limit === -1
+              ? 0
+              : FormValue[props.index!].Limit?.Throttle_retry_limit,
+          Max_query_depth: FormValue[props.index!].Limit?.Max_query_depth,
+          Quota_max:
+            attributeName !== "unlimitedRequests.IsDisabled"
+              ? FormValue[props.index!].Limit?.Quota_max
+              : id === undefined
+              ? 0
+              : currentState === undefined
+              ? 0
+              : FormValue[props.index!].Limit?.Quota_max === -1
+              ? 0
+              : FormValue[props.index!].Limit?.Quota_max,
+          Quota_renews: FormValue[props.index!].Limit?.Quota_renews,
+          Quota_remaining: FormValue[props.index!].Limit?.Quota_remaining,
+          Quota_renewal_rate:
+            attributeName !== "unlimitedRequests.IsDisabled"
+              ? FormValue[props.index!].Limit?.Quota_renewal_rate
+              : id === undefined
+              ? 0
+              : currentState === undefined
+              ? 0
+              : FormValue[props.index!].Limit?.Quota_renewal_rate === -1
+              ? 0
+              : FormValue[props.index!].Limit?.Quota_renewal_rate,
+          Set_by_policy: FormValue[props.index!].Limit?.Set_by_policy!,
+        },
+      };
+      dispatch(
+        setFormRate({
+          ...FormData.form,
+          [statevalue]: apisList,
+        })
+      );
+      updateValidationInput(attributeName);
+      dispatch(
+        setFormErrorRate({
+          ...FormData.errors,
+          PerApiLimit: perapi,
+        })
+      );
+    } else {
+      const apisList = [...FormValue!];
+      apisList[props.index!] = {
+        ...apisList[props.index!],
+        Limit: {
+          Rate:
+            attributeName !== "GlobalLimit.IsDisabled"
+              ? FormValue[props.index!].Limit?.Rate
+              : -1,
+          Per:
+            attributeName !== "GlobalLimit.IsDisabled"
+              ? FormValue[props.index!].Limit?.Per
+              : -1,
+          Throttle_interval:
+            attributeName !== "Throttling.IsDisabled"
+              ? FormValue[props.index!].Limit?.Throttle_interval
+              : -1,
+          Throttle_retry_limit:
+            attributeName !== "Throttling.IsDisabled"
+              ? FormValue[props.index!].Limit?.Throttle_retry_limit
+              : -1,
+          Max_query_depth: FormValue[props.index!].Limit?.Max_query_depth,
+          Quota_max:
+            attributeName !== "unlimitedRequests.IsDisabled"
+              ? FormValue[props.index!].Limit?.Quota_max
+              : -1,
+          Quota_renews: FormValue[props.index!].Limit?.Quota_renews,
+          Quota_remaining: FormValue[props.index!].Limit?.Quota_remaining,
+          Quota_renewal_rate:
+            attributeName !== "unlimitedRequests.IsDisabled"
+              ? FormValue[props.index!].Limit?.Quota_renewal_rate
+              : -1,
+          Set_by_policy: FormValue[props.index!].Limit?.Set_by_policy!,
+        },
+      };
+
+      dispatch(
+        setFormRate({
+          ...FormData.form,
+          [statevalue]: apisList,
+        })
+      );
+      updateValidationInput(attributeName);
+      dispatch(
+        setFormErrorRate({
+          ...FormData.errors,
+          PerApiLimit: perapi,
+        })
+      );
     }
   }
 
@@ -175,10 +330,98 @@ export default function GlobalLimitApi(props: IProps) {
                     <Col md="12">
                       <Form.Group className="mt-6">
                         <Form.Label>
-                          {setLabel({
-                            index: props.index!,
-                            formProp: props.state?.data.form.APIs,
-                          })}
+                          {id !== undefined || id === undefined ? (
+                            <i>
+                              {props.current === "key" ? (
+                                props.keystate?.data.form.AccessRights[
+                                  props.index!
+                                ].isRateLimitDisabled ||
+                                props.keystate?.data.form.AccessRights[
+                                  props.index!
+                                ].isQuotaDisbaled ? (
+                                  props.keystate?.data.form.AccessRights[
+                                    props.index!
+                                  ].isRateLimitDisabled &&
+                                  props.keystate?.data.form.AccessRights[
+                                    props.index!
+                                  ].isQuotaDisbaled ? (
+                                    <b className="pb-2">
+                                      <h6 className="text-danger">
+                                        Warning : RateLimit and Quota is
+                                        Disabled by Api.
+                                      </h6>{" "}
+                                      If you want to apply RateLimit and Quotas
+                                      than first you need to enabled it from
+                                      APIs settings. <br />
+                                    </b>
+                                  ) : props.keystate?.data.form.AccessRights[
+                                      props.index!
+                                    ].isRateLimitDisabled ? (
+                                    <b className="pb-2">
+                                      <h6 className="text-danger">
+                                        Warning : RateLimit is Disabled by Api.
+                                      </h6>{" "}
+                                      If you want to apply RateLimit than first
+                                      you need to enabled it from APIs settings.
+                                      <br />
+                                    </b>
+                                  ) : (
+                                    <b className="pb-2">
+                                      <h6 className="text-danger">
+                                        Warning : Quota is Disabled by Api.{" "}
+                                      </h6>{" "}
+                                      If you want to apply Quota than first you
+                                      need to enabled it from APIs settings.
+                                      <br />
+                                    </b>
+                                  )
+                                ) : (
+                                  ""
+                                )
+                              ) : props.state?.data.form.APIs[props.index!]
+                                  .isRateLimitDisabled ||
+                                props.state?.data.form.APIs[props.index!]
+                                  .isQuotaDisbaled ? (
+                                props.state?.data.form.APIs[props.index!]
+                                  .isRateLimitDisabled &&
+                                props.state?.data.form.APIs[props.index!]
+                                  .isQuotaDisbaled ? (
+                                  <b className="pb-2">
+                                    <h6 className="text-danger">
+                                      Warning : RateLimit and Quota is Disabled
+                                      by Api.
+                                    </h6>{" "}
+                                    If you want to apply RateLimit and Quotas
+                                    than first you need to enabled it from APIs
+                                    settings. <br />
+                                  </b>
+                                ) : props.state?.data.form.APIs[props.index!]
+                                    .isRateLimitDisabled ? (
+                                  <b className="pb-2">
+                                    <h6 className="text-danger">
+                                      Warning : RateLimit is Disabled by Api.
+                                    </h6>{" "}
+                                    If you want to apply RateLimit than first
+                                    you need to enabled it from APIs settings.
+                                    <br />
+                                  </b>
+                                ) : (
+                                  <b className="pb-2">
+                                    <h6 className="text-danger">
+                                      Warning : Quota is Disabled by Api.{" "}
+                                    </h6>{" "}
+                                    If you want to apply Quota than first you
+                                    need to enabled it from APIs settings.
+                                    <br />
+                                  </b>
+                                )
+                              ) : (
+                                ""
+                              )}
+                            </i>
+                          ) : (
+                            <></>
+                          )}
                         </Form.Label>
                       </Form.Group>
                     </Col>
@@ -204,18 +447,30 @@ export default function GlobalLimitApi(props: IProps) {
                                 ].Limit?.Rate! === -1
                           }
                           onChange={(e: any) =>
-                            setFormValue({
-                              formProp,
-                              form,
-                              errorProp,
-                              prevState: policystate,
-                              propName,
-                              errors,
-                              event: e,
-                              index: props.index,
-                              setForm,
-                              setFormError,
-                            })
+                            props.current === "policy"
+                              ? setRateValue(
+                                  props.state?.data.form.APIs,
+                                  props.state?.data,
+                                  policystate,
+                                  "APIs",
+                                  props.setForm,
+                                  props.setFormError,
+                                  e,
+                                  props.state?.data.form.APIs[props.index!]
+                                    .Limit?.Rate!
+                                )
+                              : setRateValue(
+                                  props.keystate?.data.form.AccessRights,
+                                  props.keystate?.data,
+                                  keystate,
+                                  "AccessRights",
+                                  props.setForm,
+                                  props.setFormError,
+                                  e,
+                                  props.keystate?.data.form.AccessRights[
+                                    props.index!
+                                  ].Limit?.Rate!
+                                )
                           }
                         />
                         <Form.Label className="mt-3">Rate</Form.Label>
@@ -354,18 +609,30 @@ export default function GlobalLimitApi(props: IProps) {
                           }
                           className="ml-4"
                           onChange={(e: any) =>
-                            setFormValue({
-                              formProp,
-                              form,
-                              errorProp,
-                              prevState: policystate,
-                              propName,
-                              errors,
-                              event: e,
-                              index: props.index,
-                              setForm,
-                              setFormError,
-                            })
+                            props.current === "policy"
+                              ? setRateValue(
+                                  props.state?.data.form.APIs,
+                                  props.state?.data,
+                                  policystate,
+                                  "APIs",
+                                  props.setForm,
+                                  props.setFormError,
+                                  e,
+                                  props.state?.data.form.APIs[props.index!]
+                                    .Limit?.Throttle_interval
+                                )
+                              : setRateValue(
+                                  props.keystate?.data.form.AccessRights,
+                                  props.keystate?.data,
+                                  keystate,
+                                  "AccessRights",
+                                  props.setForm,
+                                  props.setFormError,
+                                  e,
+                                  props.keystate?.data.form.AccessRights[
+                                    props.index!
+                                  ].Limit?.Throttle_interval
+                                )
                           }
                         />
                         <Form.Label className="mt-3">
@@ -503,18 +770,30 @@ export default function GlobalLimitApi(props: IProps) {
                           }
                           className="ml-4"
                           onChange={(e: any) =>
-                            setFormValue({
-                              formProp,
-                              form,
-                              errorProp,
-                              prevState: policystate,
-                              propName,
-                              errors,
-                              event: e,
-                              index: props.index,
-                              setForm,
-                              setFormError,
-                            })
+                            props.current === "policy"
+                              ? setRateValue(
+                                  props.state?.data.form.APIs,
+                                  props.state?.data,
+                                  policystate,
+                                  "APIs",
+                                  props.setForm,
+                                  props.setFormError,
+                                  e,
+                                  props.state?.data.form.APIs[props.index!]
+                                    .Limit?.Quota_max
+                                )
+                              : setRateValue(
+                                  props.keystate?.data.form.AccessRights,
+                                  props.keystate?.data,
+                                  keystate,
+                                  "AccessRights",
+                                  props.setForm,
+                                  props.setFormError,
+                                  e,
+                                  props.keystate?.data.form.AccessRights[
+                                    props.index!
+                                  ].Limit?.Quota_max
+                                )
                           }
                         />
                         <Form.Label className="mt-3">
