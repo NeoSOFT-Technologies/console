@@ -88,7 +88,7 @@ export default function Version() {
           <></>
         ) : (
           <Col md={3}>
-            <ExpandCollapse containerId="settingcollapse" />
+            <ExpandCollapse containerId="versioncollapse" />
           </Col>
         )}
       </Row>
