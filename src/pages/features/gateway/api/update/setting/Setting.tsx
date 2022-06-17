@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
 import ExpandCollapse from "../../../../../../components/expand-collapse/ExpandCollapse";
 import {
+  generateBreadcrumbs,
+  // generateRefs,
+} from "../../../../../../components/scroll-to/ScrollTo";
+// import { Link } from "react-scroll";
+import {
   regexForName,
   setFormData,
   setFormErrors,
@@ -20,7 +25,6 @@ export default function Setting() {
   const [clipboardApiUrl, setClipboardApiUrl] = useState(false);
 
   const hostUrl = process.env.REACT_APP_GATEWAY_HOST || "http://localhost:8080";
-
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
@@ -60,9 +64,16 @@ export default function Setting() {
       console.log(error);
     }
   };
+  // const myRef = useRef<Element>();
 
   return (
-    <div>
+    <>
+      {generateBreadcrumbs([
+        "ListenPath",
+        "TargetUrl",
+        "RateLimit",
+        "Authentication",
+      ])}
       <div className="card">
         <div>
           <div className="align-items-center justify-content-around">
@@ -147,16 +158,16 @@ export default function Setting() {
                   </Row>
                   <br />
                   <div id="settingcollapse">
-                    <div>
+                    <div id="ListenPath">
                       <ListenPath />
                     </div>
-                    <div>
+                    <div id="TargetUrl">
                       <TargetUrl />
                     </div>
-                    <div>
+                    <div id="RateLimit">
                       <RateLimit />
                     </div>
-                    <div>
+                    <div id="Authentication">
                       <Authentication />
                     </div>
                   </div>
@@ -166,6 +177,6 @@ export default function Setting() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

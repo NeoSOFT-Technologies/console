@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import ExpandCollapse from "../../../../../../components/expand-collapse/ExpandCollapse";
+import { generateBreadcrumbs } from "../../../../../../components/scroll-to/ScrollTo";
 import {
   setForm,
   setFormError,
@@ -65,6 +66,12 @@ export default function Version() {
 
   return (
     <div>
+      {/* {generateBreadcrumbs(["VersionSettings", "Versions"])} */}
+      {state.data.form?.IsVersioningDisabled ? (
+        <></>
+      ) : (
+        <div>{generateBreadcrumbs(["VersionSettings", "Versions"])}</div>
+      )}
       {state.data.form.EnableRoundRobin ? (
         <h6>Note: Version doesn&apos;t works with Round-Robin LoadBalacing</h6>
       ) : (
@@ -97,8 +104,12 @@ export default function Version() {
         <></>
       ) : (
         <div id="versioncollapse">
-          <VersionSettings />
-          <Versions />
+          <div id="VersionSettings">
+            <VersionSettings />
+          </div>
+          <div id="Versions">
+            <Versions />
+          </div>
         </div>
       )}
     </div>

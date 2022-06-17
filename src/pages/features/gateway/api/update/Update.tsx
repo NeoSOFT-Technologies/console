@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import AdvancedOptions from "./advanced-options/AdvancedOptions";
 import Setting from "./setting/Setting";
 import Version from "./version/Version";
+import "./update.css";
 
 export default function Update() {
   const state: IApiGetByIdState = useAppSelector(
@@ -199,6 +200,7 @@ export default function Update() {
                       onSelect={(k) => setKey(k)}
                     >
                       <Tab
+                        className="mt-0"
                         eventKey="setting"
                         title={
                           <span>
