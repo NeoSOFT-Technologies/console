@@ -3,7 +3,7 @@ import React, { useState } from "react";
 export default function ExpandCollapse({ containerId }: any) {
   const [buttonText, setbuttonText] = useState("Collapse All");
 
-  function showAllAccordionTabs(event: any) {
+  function expandCollapseAccordions(event: any) {
     event.preventDefault();
 
     const myElement: any = document.querySelector(`#${containerId}`);
@@ -40,7 +40,7 @@ export default function ExpandCollapse({ containerId }: any) {
       <div>
         <button
           className=" btn btn-sm btn-info float-right mt-2 mb-2 mr-3"
-          onClick={(event) => showAllAccordionTabs(event)}
+          onClick={(event) => expandCollapseAccordions(event)}
         >
           {buttonText}
         </button>

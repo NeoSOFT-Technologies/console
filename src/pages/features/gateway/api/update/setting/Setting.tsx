@@ -61,15 +61,6 @@ export default function Setting() {
     }
   };
 
-  // async function handleExpandAll(event: any) {
-  //   // event.preventDefault();
-  //   console.log("event :", event.target);
-  //   // window.scrollTo({
-  //   //   top: 0,
-  //   //   behavior: "smooth",
-  //   // });
-  // }
-
   return (
     <div>
       <div className="card">
@@ -118,16 +109,6 @@ export default function Setting() {
                     label={state.data.form.IsActive ? "  Active" : "  InActive"}
                   />
                 </Form.Group>
-
-                {/* <div>
-                  <button
-                    className=" btn btn-sm btn-info float-right mt-2 mb-2 mr-3"
-                    onClick={(event) => handleExpandAll(event)}
-                  >
-                    {" "}
-                    Expand/collapse all
-                  </button>
-                </div> */}
 
                 <ExpandCollapse containerId="settingcollapse" />
               </Col>
