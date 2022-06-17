@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
+import ExpandCollapse from "../../../../../../components/expand-collapse/ExpandCollapse";
 import {
   regexForName,
   setFormData,
@@ -8,7 +9,6 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import Authentication from "./authentication/Authentication";
 import ListenPath from "./listen-path/ListenPath";
-// import { Accordion } from "react-bootstrap";
 import RateLimit from "./rate-limit/RateLimit";
 import TargetUrl from "./target-url/TargetUrl";
 
@@ -61,6 +61,15 @@ export default function Setting() {
     }
   };
 
+  // async function handleExpandAll(event: any) {
+  //   // event.preventDefault();
+  //   console.log("event :", event.target);
+  //   // window.scrollTo({
+  //   //   top: 0,
+  //   //   behavior: "smooth",
+  //   // });
+  // }
+
   return (
     <div>
       <div className="card">
@@ -109,6 +118,18 @@ export default function Setting() {
                     label={state.data.form.IsActive ? "  Active" : "  InActive"}
                   />
                 </Form.Group>
+
+                {/* <div>
+                  <button
+                    className=" btn btn-sm btn-info float-right mt-2 mb-2 mr-3"
+                    onClick={(event) => handleExpandAll(event)}
+                  >
+                    {" "}
+                    Expand/collapse all
+                  </button>
+                </div> */}
+
+                <ExpandCollapse containerId="settingcollapse" />
               </Col>
             </Row>
 
@@ -144,17 +165,19 @@ export default function Setting() {
                     </Col>
                   </Row>
                   <br />
-                  <div>
-                    <ListenPath />
-                  </div>
-                  <div>
-                    <TargetUrl />
-                  </div>
-                  <div>
-                    <RateLimit />
-                  </div>
-                  <div>
-                    <Authentication />
+                  <div id="settingcollapse">
+                    <div>
+                      <ListenPath />
+                    </div>
+                    <div>
+                      <TargetUrl />
+                    </div>
+                    <div>
+                      <RateLimit />
+                    </div>
+                    <div>
+                      <Authentication />
+                    </div>
                   </div>
                 </Accordion.Body>
               </Accordion.Item>
