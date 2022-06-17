@@ -45,7 +45,7 @@ it("test buttons and inputs present", async () => {
   expect(cancelBtn).toBeInTheDocument();
   fireEvent.click(cancelBtn);
 
-  const submitBtn = screen.getByTestId("submit-input");
+  const submitBtn = screen.getByTestId("form-input");
   expect(submitBtn).toBeInTheDocument();
   fireEvent.submit(submitBtn);
 
