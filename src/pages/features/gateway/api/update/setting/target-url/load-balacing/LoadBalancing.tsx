@@ -116,10 +116,10 @@ export default function LoadBalancing() {
       console.log("add", rowObj);
       dispatch(setForm({ ...state.data.form, LoadBalancingTargets: rowObj }));
       setLoading(false);
+      setAddFormData({ ...addFormData, LoadBalancingTargets: "" });
     } else {
       ToastAlert("Url Already Added ", "error");
     }
-    setAddFormData({ ...addFormData, LoadBalancingTargets: "" });
   };
   const deleteTableRows = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,

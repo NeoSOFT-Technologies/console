@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
+import ExpandCollapse from "../../../../../../components/expand-collapse/ExpandCollapse";
+import {
+  generateBreadcrumbs,
+  // generateRefs,
+} from "../../../../../../components/scroll-to/ScrollTo";
+// import { Link } from "react-scroll";
 import {
   regexForName,
   setFormData,
@@ -8,7 +14,6 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import Authentication from "./authentication/Authentication";
 import ListenPath from "./listen-path/ListenPath";
-// import { Accordion } from "react-bootstrap";
 import RateLimit from "./rate-limit/RateLimit";
 import TargetUrl from "./target-url/TargetUrl";
 
@@ -20,7 +25,6 @@ export default function Setting() {
   const [clipboardApiUrl, setClipboardApiUrl] = useState(false);
 
   const hostUrl = process.env.REACT_APP_GATEWAY_HOST || "http://localhost:8080";
-
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
@@ -60,9 +64,16 @@ export default function Setting() {
       console.log(error);
     }
   };
+  // const myRef = useRef<Element>();
 
   return (
-    <div>
+    <>
+      {generateBreadcrumbs([
+        "ListenPath",
+        "TargetUrl",
+        "RateLimit",
+        "Authentication",
+      ])}
       <div className="card">
         <div>
           <div className="align-items-center justify-content-around">
@@ -112,6 +123,8 @@ export default function Setting() {
                     label={state.data.form.IsActive ? "  Active" : "  InActive"}
                   />
                 </Form.Group>
+
+                <ExpandCollapse containerId="settingcollapse" />
               </Col>
             </Row>
 
@@ -148,17 +161,19 @@ export default function Setting() {
                     </Col>
                   </Row>
                   <br />
-                  <div>
-                    <ListenPath />
-                  </div>
-                  <div>
-                    <TargetUrl />
-                  </div>
-                  <div>
-                    <RateLimit />
-                  </div>
-                  <div>
-                    <Authentication />
+                  <div id="settingcollapse">
+                    <div id="ListenPath">
+                      <ListenPath />
+                    </div>
+                    <div id="TargetUrl">
+                      <TargetUrl />
+                    </div>
+                    <div id="RateLimit">
+                      <RateLimit />
+                    </div>
+                    <div id="Authentication">
+                      <Authentication />
+                    </div>
                   </div>
                 </Accordion.Body>
               </Accordion.Item>
@@ -166,6 +181,6 @@ export default function Setting() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

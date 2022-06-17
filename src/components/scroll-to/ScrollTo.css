@@ -1,0 +1,3 @@
+.breadseparator .breadcrumb-item + .breadcrumb-item::before {
+  content: "|" !important;
+}
