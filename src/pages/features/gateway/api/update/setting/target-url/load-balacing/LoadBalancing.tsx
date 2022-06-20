@@ -116,10 +116,10 @@ export default function LoadBalancing() {
       console.log("add", rowObj);
       dispatch(setForm({ ...state.data.form, LoadBalancingTargets: rowObj }));
       setLoading(false);
+      setAddFormData({ ...addFormData, LoadBalancingTargets: "" });
     } else {
       ToastAlert("Url Already Added ", "error");
     }
-    setAddFormData({ ...addFormData, LoadBalancingTargets: "" });
   };
   const deleteTableRows = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -184,6 +184,7 @@ export default function LoadBalancing() {
             <Form.Control
               className="mt-2"
               type="text"
+              data-testid="loadTargets-input"
               id="LoadBalancingTargets"
               value={addFormData.LoadBalancingTargets || ""}
               placeholder="Please enter target(s) and hit enter key"
@@ -201,6 +202,7 @@ export default function LoadBalancing() {
           <Form.Group className="mt-2 mb-3">
             <Button
               onClick={handleAddClick}
+              data-testid="add-button"
               variant="dark"
               disabled={
                 !addFormData.LoadBalancingTargets ||
@@ -255,6 +257,7 @@ export default function LoadBalancing() {
                         </td>
                         <td>
                           <button
+                            data-testid="deleteRow-button"
                             className="btn btn-default bi bi-trash-fill"
                             onClick={(e) => deleteTableRows(e, index)}
                           ></button>

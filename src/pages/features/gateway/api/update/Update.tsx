@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import AdvancedOptions from "./advanced-options/AdvancedOptions";
 import Setting from "./setting/Setting";
 import Version from "./version/Version";
+import "./update.css";
 
 export default function Update() {
   const state: IApiGetByIdState = useAppSelector(
@@ -181,6 +182,7 @@ export default function Update() {
                     </AuthGuard>
                     <button
                       className=" btn  btn-sm btn-light btn-md d-flex float-right mb-3"
+                      data-testid="cancel-button"
                       onClick={(e) => NavigateToApisList(e)}
                     >
                       {" "}
@@ -194,11 +196,13 @@ export default function Update() {
                     <Tabs
                       defaultActiveKey={state.data.form?.SelectedTabIndex}
                       id="uncontrolled-tab"
+                      data-testid="tabs"
                       // transition={false}
                       className="mb-2 small"
                       onSelect={(k) => setKey(k)}
                     >
                       <Tab
+                        className="mt-0"
                         eventKey="setting"
                         title={
                           <span>
