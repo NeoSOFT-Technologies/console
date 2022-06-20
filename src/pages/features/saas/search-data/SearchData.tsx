@@ -171,19 +171,23 @@ export default function GetSearchData() {
     if (!searchTenant.tenantId) {
       dispatch(resetSearchDataWithQueryField());
       dispatch(getTenantDetails());
+    } else {
+      dispatch(getTables(searchTenant.tenantId));
+      console.log("Hello");
     }
-    dispatch(getTables(searchTenant.tenantId));
   }, [searchTenant.tenantId]);
   useEffect(() => {
     dispatch(getTenantDetails());
   }, []);
   useEffect(() => {
-    dispatch(
-      getTableSchema({
-        tableName: searchTenant.tableName,
-        tenantId: searchTenant.tenantId,
-      })
-    );
+    if (searchTenant.tableName) {
+      dispatch(
+        getTableSchema({
+          tableName: searchTenant.tableName,
+          tenantId: searchTenant.tenantId,
+        })
+      );
+    }
   }, [searchTenant.tableName]);
   useEffect(() => {
     return () => {
@@ -395,7 +399,7 @@ export default function GetSearchData() {
                               searchData &&
                               searchData.data &&
                               searchData?.data?.length <
-                                Number.parseInt(searchTenant.pageSize)
+                              Number.parseInt(searchTenant.pageSize)
                             ) {
                               return (
                                 <tr key={`row${index}`}>
