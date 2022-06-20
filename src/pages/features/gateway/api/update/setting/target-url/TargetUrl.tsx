@@ -34,16 +34,8 @@ export default function TargetUrl() {
         break;
     }
     setFormData(event, dispatch, state);
-    // console.log("load1", state.data.form.EnableRoundRobin);
   }
 
-  // const [check, setCheck] = useState(false);
-
-  // const enableLoadBalancing = () => {
-  //   if (state.data.form.LoadBalancingTargets.length > 0) {
-  //     setCheck(true);
-  //   } else setCheck(false);
-  // };
   const enableLoadBalancing = () => {
     if (state.data.form.LoadBalancingTargets.length > 0) {
       dispatch(setForm({ ...state.data.form, EnableRoundRobin: true }));

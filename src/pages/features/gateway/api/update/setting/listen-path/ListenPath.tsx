@@ -33,7 +33,6 @@ export default function ListenPath() {
     }
 
     setFormData(event, dispatch, state);
-    // console.log("listenpath", name, value);
   }
   return (
     <>

@@ -50,7 +50,6 @@ export const ScrollToTop = () => {
 };
 
 export const scrollToSection = (elementName: any) => {
-  console.log(window.pageYOffset);
   const yOffset = -70;
   const el = document.querySelector(`#${elementName}`);
   const y = el!.getBoundingClientRect().top + window.pageYOffset + yOffset;
@@ -61,7 +60,6 @@ export const scrollToSection = (elementName: any) => {
 };
 
 export const generateBreadcrumbs = (items: string[]) => {
-  // const bread = useRef<Element>();
   return (
     <Breadcrumb className="breadseparator breadcrumb-item">
       {items.map((crumbs, index) => (

@@ -13,9 +13,7 @@ import {
 export default function LoadBalancing() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  console.log("state", state);
   const [addUrl, setaddUrl] = useState<any>([]);
-  console.log("addurl", addUrl);
   const [arrUrl, setArrUrl] = useState<any>([]);
   const [addFormData, setAddFormData] = useState<any>({
     LoadBalancingTargets: "",
@@ -39,15 +37,12 @@ export default function LoadBalancing() {
           (x: any) =>
             x?.loadBalancing === state.data.form.LoadBalancingTargets[i]
         );
-        console.log("as", urlExistLocalState);
         arrUrl.push(state.data.form.LoadBalancingTargets[i]);
         if (!urlExistLocalState) {
           const sameUrlArray = state.data.form.LoadBalancingTargets.filter(
             (item) => item === state.data.form.LoadBalancingTargets[i]
           );
           const urlWeightCount = sameUrlArray.length;
-          console.log("movies", sameUrlArray);
-          console.log("count", urlWeightCount);
           const weightObj: any = {
             loadBalancing: state.data.form.LoadBalancingTargets[i],
             weighting: urlWeightCount,
@@ -61,12 +56,10 @@ export default function LoadBalancing() {
   };
 
   useEffect(() => {
-    // console.log("useeffect");
     setArrayLength();
   }, []);
   const handleTrafficElement = (index: number) => {
     const weightObj = [...addUrl];
-    console.log("traffic", weightObj);
     const tra = trafficCalculation(index);
     weightObj[index] = {
       ...weightObj[index],
@@ -98,7 +91,6 @@ export default function LoadBalancing() {
     const urlAlreadyExist = addUrl.some(
       (x: any) => x?.loadBalancing === addFormData.LoadBalancingTargets
     );
-    console.log("123", urlAlreadyExist);
     if (!urlAlreadyExist) {
       const loadObj = {
         loadBalancing: addFormData.LoadBalancingTargets,
@@ -113,7 +105,6 @@ export default function LoadBalancing() {
         addFormData.LoadBalancingTargets,
       ];
 
-      console.log("add", rowObj);
       dispatch(setForm({ ...state.data.form, LoadBalancingTargets: rowObj }));
       setLoading(false);
       setAddFormData({ ...addFormData, LoadBalancingTargets: "" });
@@ -128,15 +119,12 @@ export default function LoadBalancing() {
     e.preventDefault();
     const row: any = [...arrUrl];
     for (let i = 0; i < addUrl[index].weighting; i++) {
-      console.log("we", addUrl[index].weighting);
-
       const url: string = addUrl[index].loadBalancing;
       const indexLocalState = row.indexOf(url);
       row.splice(indexLocalState, 1);
       setArrUrl(row);
     }
     dispatch(setForm({ ...state.data.form, LoadBalancingTargets: row }));
-    console.log("st1", state.data.form);
     const weightObj = [...addUrl];
     weightObj.splice(index, 1);
     setaddUrl(weightObj);
@@ -153,7 +141,6 @@ export default function LoadBalancing() {
         ...state.data.form.LoadBalancingTargets,
         addUrl[index].loadBalancing,
       ];
-      console.log("add", rowObj);
       dispatch(setForm({ ...state.data.form, LoadBalancingTargets: rowObj }));
     }
     if (number > formobj[index].weighting) {
