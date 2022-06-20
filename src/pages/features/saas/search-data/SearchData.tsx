@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import { RootState } from "../../../../store";
 import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
 import {
   resetSearchDataWithQueryField,
@@ -32,8 +33,11 @@ export default function GetSearchData() {
   const tableData = useAppSelector((state) => state.getTableState);
   const tableColName = useAppSelector((state) => state.getTableSchemaState);
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
+  const tenantDetail = useAppSelector((state) => state.userData);
   const [checkDisable, setCheckDisable] = useState(false);
-
+  const authenticationState = useAppSelector(
+    (state: RootState) => state.loginType
+  );
   const [searchTenant, setSearchTenant] = useState({
     tenantId: "",
     tableName: "",
@@ -168,16 +172,23 @@ export default function GetSearchData() {
   useEffect(() => {
     const newTableColList: ITableColumnData[] = [];
     dispatch(setTableColNames(newTableColList));
+
     if (!searchTenant.tenantId) {
       dispatch(resetSearchDataWithQueryField());
-      dispatch(getTenantDetails());
+
+      if (authenticationState.data === "admin") dispatch(getTenantDetails());
     } else {
       dispatch(getTables(searchTenant.tenantId));
-      console.log("Hello");
     }
   }, [searchTenant.tenantId]);
   useEffect(() => {
-    dispatch(getTenantDetails());
+    if (authenticationState.data === "admin") dispatch(getTenantDetails());
+    else if (tenantDetail.data?.tenantId) {
+      setSearchTenant({
+        ...searchTenant,
+        tenantId: tenantDetail.data?.tenantId.toString(),
+      });
+    }
   }, []);
   useEffect(() => {
     if (searchTenant.tableName) {
@@ -230,12 +241,21 @@ export default function GetSearchData() {
                     onChange={(e) => handleInputChange(e)}
                     data-testid="tenant-name-select"
                   >
-                    <option value="">Select Tenant</option>
-                    {tenantDetails.data?.map((val, index) => (
-                      <option key={`option${index}`} value={val.id?.toString()}>
-                        {val.tenantName}
-                      </option>
-                    ))}
+                    {authenticationState.data === "tenant" ? (
+                      <option>{tenantDetail.data?.tenantId}</option>
+                    ) : (
+                      <>
+                        <option value="">Select Tenant</option>
+                        {tenantDetails.data?.map((val, index) => (
+                          <option
+                            key={`option${index}`}
+                            value={val.id?.toString()}
+                          >
+                            {val.tenantName}
+                          </option>
+                        ))}
+                      </>
+                    )}
                   </Form.Select>
                 </Form.Group>
               </Col>
