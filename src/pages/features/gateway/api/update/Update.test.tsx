@@ -75,10 +75,6 @@ it("render buttons and inputs", () => {
   );
   expect(screen).toBeDefined();
 
-  const updatebtn = screen.getByText(/update/i);
-  expect(updatebtn).toBeInTheDocument();
-  fireEvent.submit(updatebtn);
-
   const cancelBtn = screen.getByTestId("cancel-button");
   expect(cancelBtn).toBeInTheDocument();
   fireEvent.submit(cancelBtn);
