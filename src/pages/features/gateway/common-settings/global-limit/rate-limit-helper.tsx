@@ -1,10 +1,11 @@
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import React from "react";
-import { useParams } from "react-router-dom";
-import { useAppDispatch } from "../../../../../store/hooks";
-const dispatch = useAppDispatch();
-const { id } = useParams();
-interface IProps {
+// import { setForms } from "../../../../../store/features/gateway/key/create/slice";
+// import { useParams } from "react-router-dom";
+// import { useAppDispatch } from "../../../../../store/hooks";
+// const dispatch = useAppDispatch();
+// const { id } = useParams();
+export interface IPropsHelper {
   form?: any; // props.state?.data,
   formProp?: any; // props.state?.data.form.APIs
   errors?: any;
@@ -16,50 +17,76 @@ interface IProps {
   event?: React.ChangeEvent<HTMLInputElement>;
   togglecheck?: any;
   index?: number;
+  dispatch?: any;
+  id?: any;
+  current?: any;
 }
 function setValue(
   attribute: string,
   attributeName: string,
   prevState: any,
   prop: any,
-  togglecheck: any
+  togglecheck: any,
+  id: any
 ) {
-  prop = togglecheck === -1 ? prop : "-1";
-  return attribute !== attributeName
+  // const propv = togglecheck === -1 ? prop : -1;
+  console.log("togglecheck", togglecheck);
+  return togglecheck === -1
+    ? attribute !== attributeName
+      ? prop
+      : id === undefined
+      ? 0
+      : prevState === undefined
+      ? 0
+      : prop === -1
+      ? 0
+      : prop
+    : attribute !== attributeName
     ? prop
-    : id === undefined
-    ? 0
-    : prevState === undefined
-    ? 0
-    : prop === -1
-    ? 0
-    : prop;
+    : -1;
 }
-function updateValidationInput(attributeName: any, perapi: any, index: number) {
-  perapi[index!] = {
-    ...perapi[index!],
-    Rate: attributeName !== "GlobalLimit.IsDisabled" ? perapi[index!].Rate : "",
-    Per: attributeName !== "GlobalLimit.IsDisabled" ? perapi[index!].Per : "",
+function updateValidationInput(
+  attributeName: any,
+  perapi: any,
+  index: number,
+  dispatch: any,
+  setFormError: any,
+  error: any
+) {
+  const perapi1 = [...perapi];
+  console.log("perapi1", perapi1);
+  perapi1[index!] = {
+    ...perapi1[index!],
+    Rate:
+      attributeName !== "GlobalLimit.IsDisabled" ? perapi1[index!].Rate : "",
+    Per: attributeName !== "GlobalLimit.IsDisabled" ? perapi1[index!].Per : "",
     ThrottleInterval:
       attributeName !== "Throttling.IsDisabled"
-        ? perapi[index!].ThrottleInterval
+        ? perapi1[index!].ThrottleInterval
         : "",
     ThrottleRetries:
       attributeName !== "Throttling.IsDisabled"
-        ? perapi[index!].ThrottleRetries
+        ? perapi1[index!].ThrottleRetries
         : "",
     Quota:
       attributeName !== "unlimitedRequests.IsDisabled"
-        ? perapi[index!].Quota
+        ? perapi1[index!].Quota
         : "",
     QuotaRenewalRate:
       attributeName !== "unlimitedRequests.IsDisabled"
-        ? perapi[index!].QuotaRenewalRate
+        ? perapi1[index!].QuotaRenewalRate
         : "",
   };
+  dispatch(
+    setFormError!({
+      ...error,
+      PerApiLimit: perapi1,
+    })
+  );
 }
-export function setFormValue(props: IProps) {
-  const attributeName: string = props.event?.target.getAttribute("name")!;
+export function setFormValue(props: IPropsHelper, event: any) {
+  // const attributeName: string = props.event?.target.getAttribute("name")!;
+  const attributeName: string = event?.target.getAttribute("name")!;
   const apisList = [...props.formProp!];
   apisList[props.index!] = {
     ...apisList[props.index!],
@@ -69,28 +96,32 @@ export function setFormValue(props: IProps) {
         "GlobalLimit.IsDisabled",
         props.prevState,
         props.formProp[props.index!].Limit?.Rate,
-        props.togglecheck
+        props.formProp[props.index!].Limit?.Rate,
+        props.id
       ),
       Per: setValue(
         attributeName,
         "GlobalLimit.IsDisabled",
         props.prevState,
         props.formProp[props.index!].Limit?.Per,
-        props.togglecheck
+        props.formProp[props.index!].Limit?.Per,
+        props.id
       ),
       Throttle_interval: setValue(
         attributeName,
         "Throttling.IsDisabled",
         props.prevState,
         props.formProp[props.index!].Limit?.Throttle_interval,
-        props.togglecheck
+        props.formProp[props.index!].Limit?.Throttle_interval,
+        props.id
       ),
       Throttle_retry_limit: setValue(
         attributeName,
         "Throttling.IsDisabled",
         props.prevState,
         props.formProp[props.index!].Limit?.Throttle_retry_limit,
-        props.togglecheck
+        props.formProp[props.index!].Limit?.Throttle_retry_limit,
+        props.id
       ),
       Max_query_depth: props.formProp[props.index!].Limit?.Max_query_depth,
       Quota_max: setValue(
@@ -98,7 +129,8 @@ export function setFormValue(props: IProps) {
         "unlimitedRequests.IsDisabled",
         props.prevState,
         props.formProp[props.index!].Limit?.Quota_max,
-        props.togglecheck
+        props.formProp[props.index!].Limit?.Quota_max,
+        props.id
       ),
       Quota_renews: props.formProp[props.index!].Limit?.Quota_renews,
       Quota_remaining: props.formProp[props.index!].Limit?.Quota_remaining,
@@ -107,27 +139,30 @@ export function setFormValue(props: IProps) {
         "unlimitedRequests.IsDisabled",
         props.prevState,
         props.formProp[props.index!].Limit?.Quota_renewal_rate,
-        props.togglecheck
+        props.formProp[props.index!].Limit?.Quota_renewal_rate,
+        props.id
       ),
       Set_by_policy: props.formProp[props.index!].Limit?.Set_by_policy!,
     },
   };
-  dispatch(
+
+  props.dispatch(
     props.setForm!({
       ...props.form,
       [props.propName!]: apisList,
     })
   );
-  updateValidationInput(attributeName, props.errorProp, props.index!);
-  dispatch(
-    props.setFormError!({
-      ...props.errors,
-      PerApiLimit: props.errorProp,
-    })
+  updateValidationInput(
+    attributeName,
+    props.errorProp,
+    props.index!,
+    props.dispatch,
+    props.setFormError,
+    props.errors
   );
 }
 
-export function setLabel(props: IProps) {
+export function setLabel(props: IPropsHelper) {
   let _label = "";
   if (
     props.formProp![props.index!].isRateLimitDisabled &&
@@ -140,7 +175,7 @@ export function setLabel(props: IProps) {
     _label = "Quota";
   }
 
-  return id !== undefined || id === undefined ? (
+  return props.id !== undefined || props.id === undefined ? (
     <b className="pb-2">
       <h6 className="text-danger">Warning : {_label} is Disabled by Api.</h6> If
       you want to apply
