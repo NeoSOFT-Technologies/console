@@ -46,7 +46,6 @@ export default function InputData(this: any) {
     event: React.ChangeEvent<HTMLSelectElement> | any
   ) => {
     const { name, value } = event.target;
-    console.log(name, value);
     switch (name) {
       case "tenantId": {
         setInsertTenant({
@@ -112,7 +111,7 @@ export default function InputData(this: any) {
         return true;
       }
     } catch (error) {
-      console.log("error" + error);
+      alert(error);
       return true;
     }
   }
