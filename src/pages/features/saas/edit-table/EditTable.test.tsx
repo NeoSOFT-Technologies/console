@@ -56,7 +56,7 @@ describe("SAAS - EDIT TABLE Component", () => {
           tableName: "testTable",
           columns: [
             {
-              name: "id",
+              name: "name",
               type: "string",
               required: true,
               partialSearch: false,
