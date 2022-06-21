@@ -93,7 +93,7 @@ export default function AccessList() {
           <Accordion defaultActiveKey="0">
             <Accordion.Item eventKey="0">
               <Accordion.Header>Add API Access Rights</Accordion.Header>
-              <Accordion.Body>
+              <Accordion.Body data-testid="accesslist">
                 <ApiAccessList
                   state={state}
                   handleAddClick={handleAddClick}
