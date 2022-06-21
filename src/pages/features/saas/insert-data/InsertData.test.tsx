@@ -134,7 +134,7 @@ describe("SAAS - INSERT DATA Component", () => {
 
     // SELECT ITEM FROM DROP DOWN
     userEvent.selectOptions(screen.getByTestId("tenant-name-select"), [
-      "Tenant2",
+      "Tenant1",
     ]);
 
     // CHECK IF TABLE SELECT DROPDOWN EXISTS
