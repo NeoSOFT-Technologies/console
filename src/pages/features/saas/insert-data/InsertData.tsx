@@ -3,6 +3,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import { RootState } from "../../../../store";
 import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
 import {
   inputTableDataWithNrt,
@@ -36,6 +37,10 @@ export default function InputData(this: any) {
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
   const tableData = useAppSelector((state) => state.getTableState);
   const tableSchema = useAppSelector((state) => state.getTableSchemaState);
+  const tenantDetail = useAppSelector((state) => state.userData);
+  const authenticationState = useAppSelector(
+    (state: RootState) => state.loginType
+  );
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLSelectElement> | any
@@ -133,9 +138,33 @@ export default function InputData(this: any) {
       ToastAlert("Invalid Data", "error");
     }
   };
+
   useEffect(() => {
-    dispatch(getTenantDetails());
+    if (!insertTenant.tenantId) {
+      if (authenticationState.data === "admin") dispatch(getTenantDetails());
+    } else {
+      dispatch(getTables(insertTenant.tenantId));
+    }
+  }, [insertTenant.tenantId]);
+  useEffect(() => {
+    if (authenticationState.data === "admin") dispatch(getTenantDetails());
+    else if (tenantDetail.data?.tenantId) {
+      setInsertTenant({
+        ...insertTenant,
+        tenantId: tenantDetail.data?.tenantId.toString(),
+      });
+    }
   }, []);
+  // useEffect(() => {
+  //   if (insertTenant.tableName) {
+  //     dispatch(
+  //       getTableSchema({
+  //         tableName: insertTenant.tableName,
+  //         tenantId: insertTenant.tenantId,
+  //       })
+  //     );
+  //   }
+  // }, [insertTenant.tableName]);
 
   useEffect(() => {
     if (insertTenant.tableName !== "") {
@@ -198,7 +227,7 @@ export default function InputData(this: any) {
                 <Row>
                   <Col md="6">
                     <Form.Group className="mb-3">
-                      <Form.Label>Tenant Name :</Form.Label>
+                      <Form.Label>Tenant :</Form.Label>
                       <Form.Select
                         aria-label="Default select example"
                         className="text-center"
@@ -212,15 +241,21 @@ export default function InputData(this: any) {
                         }}
                         required
                       >
-                        <option value="">Select Tenant</option>
-                        {tenantDetails.data?.map((val, index) => (
-                          <option
-                            key={`option${index}`}
-                            value={val.id.toString()}
-                          >
-                            {val.tenantName}
-                          </option>
-                        ))}
+                        {authenticationState.data === "tenant" ? (
+                          <option>{tenantDetail.data?.tenantId}</option>
+                        ) : (
+                          <>
+                            <option value="">Select Tenant</option>
+                            {tenantDetails.data?.map((val, index) => (
+                              <option
+                                key={`option${index}`}
+                                value={val.id?.toString()}
+                              >
+                                {val.tenantName}
+                              </option>
+                            ))}
+                          </>
+                        )}
                       </Form.Select>
                     </Form.Group>
                   </Col>
