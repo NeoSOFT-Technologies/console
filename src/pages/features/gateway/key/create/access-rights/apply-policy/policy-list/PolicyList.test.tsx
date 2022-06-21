@@ -27,6 +27,6 @@ it("render buttons and inputs", async () => {
   );
   expect(screen).toBeDefined();
 
-  const submitBtn = screen.getByText(/apply policy/i);
-  expect(submitBtn).toBeVisible();
+  const applyPolicyHeading = screen.getByText(/apply policy/i);
+  expect(applyPolicyHeading).toBeVisible();
 });
