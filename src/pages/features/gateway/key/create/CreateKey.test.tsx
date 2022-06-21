@@ -16,6 +16,7 @@ it("render without crashing CreateKey", async () => {
       </Provider>
     </BrowserRouter>
   );
+  expect(screen).toBeDefined();
 });
 
 it("render buttons", async () => {
