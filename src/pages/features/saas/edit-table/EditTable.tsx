@@ -74,8 +74,12 @@ export default function EditTable() {
     setDeleteModal(false);
   };
   const deleteModalShow = (columData: ITableColumnData) => {
-    setSelectedColumnData(columData);
-    setDeleteModal(true);
+    if (columData.name.toLowerCase() === "id") {
+      ToastAlert("Column not allowed to delete", "warning");
+    } else {
+      setSelectedColumnData(columData);
+      setDeleteModal(true);
+    }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
