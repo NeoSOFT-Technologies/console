@@ -82,4 +82,5 @@ export interface ITenantDetails {
 }
 export interface IErrorColumnInput {
   name: string;
+  tableName?: string;
 }
