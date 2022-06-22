@@ -5,6 +5,7 @@ import {
   AuthGuard,
 } from "../../../../../../../../components/auth-gaurd";
 import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
+import Tooltips from "../../../../../../../../components/tooltips/Tooltips";
 // import Spinner from "../../../../../../../../components/loader/Loader";
 import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
 import { addCertificate } from "../../../../../../../../store/features/gateway/certificate/create/slice";
@@ -263,11 +264,22 @@ export default function MutualTLS() {
   return (
     <div>
       <>
-        <div className="border rounded p-2">
+        <Col md={12}>
+          <div className="float-left mt-2">
+            <b>Mutual TLS</b>
+          </div>
+          <Tooltips
+            content="Changing the Authentication mode on an active API can have severe
+            consequences for your users. Please be aware that this will stop the
+            current keys working for this API."
+          />
+        </Col>
+        {/* <div className="border rounded p-2">
           Changing the Authentication mode on an active API can have severe
           consequences for your users. Please be aware that this will stop the
           current keys working for this API.
-        </div>
+        </div> */}
+        <br />
         <br />
         <p>
           Only clients with whitelisted SSL certificates will be allowed to
