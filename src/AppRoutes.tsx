@@ -355,7 +355,7 @@ function AppRoutes() {
           />
 
           <Route
-            path="add-table"
+            path="manage-table/add-table"
             element={
               <SaasGuard>
                 <AddTable />
