@@ -3,25 +3,11 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-// import configureStore from "redux-mock-store";
-// import thunk from "redux-thunk";
 import store from "../../../../../store";
 import CreateApi from "./CreateApi";
 
-// const mockStore = configureStore([thunk]);
-// const store = mockStore({
-//   loading: false,
-//   apiAdded: true,
-//   data: {
-//     Name: "api1",
-//     listenPath: "/api1/",
-//     TargetUrl: "http://httpbin.org",
-//     IsActive: true,
-//   },
-// });
-
-it("render without crashing CreateApi", async () => {
-  await render(
+it("render without crashing CreateApi", () => {
+  render(
     <BrowserRouter>
       <Provider store={store}>
         <CreateApi />
@@ -58,8 +44,10 @@ it("test buttons and inputs present", async () => {
   expect(screen.getByTestId("listenPath-input")).toHaveValue("/api1/");
 
   const targetUrlInput = screen.getByTestId("targetUrl-input");
-  fireEvent.change(targetUrlInput, { target: { value: "http://httpbin.org" } });
+  fireEvent.change(targetUrlInput, {
+    target: { value: "https://httpbin.org" },
+  });
   expect(screen.getByTestId("targetUrl-input")).toHaveValue(
-    "http://httpbin.org"
+    "https://httpbin.org"
   );
 });

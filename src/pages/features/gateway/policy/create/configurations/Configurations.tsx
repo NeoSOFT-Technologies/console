@@ -91,6 +91,7 @@ export default function Configurations() {
                     <Form.Label>Policy status : </Form.Label>
                     <Form.Select
                       aria-label="Default select example"
+                      data-testid="state"
                       name="State"
                       value={state.data.form?.State}
                       onChange={(e: any) => validateForm(e)}
@@ -108,6 +109,7 @@ export default function Configurations() {
                     <Form.Label> Key expires after :</Form.Label>
                     <Form.Select
                       aria-label="Default select example"
+                      data-testid="keyExpire"
                       name="KeyExpiresIn"
                       value={state.data.form?.KeyExpiresIn}
                       onChange={(e: any) => validateForm(e)}

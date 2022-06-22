@@ -8,6 +8,7 @@ import withRouter from "./WithRouter";
 import Breadcrumbs from "./components/breadcrumbs/Breadcrumbs";
 import Footer from "./components/footer/Footer";
 import Navbar from "./components/navbar/Navbar";
+import { ScrollToTop } from "./components/scroll-to/ScrollTo";
 import Sidebar from "./components/sidebar/Sidebar";
 import { RootState } from "./store";
 import { IUserDataState } from "./types/index";
@@ -64,6 +65,7 @@ class App extends Component<IProperty, IState> {
                 this.props.router.location.pathname
               ) && <Breadcrumbs />}
               <AppRoutes />
+              <ScrollToTop />
             </div>
             {footerComponent}
           </div>

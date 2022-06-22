@@ -25,9 +25,6 @@ export default function MutualTLS() {
   const certificateState = useAppSelector(
     (RootState) => RootState.getAllCertificateState
   );
-  const addCertificateState = useAppSelector(
-    (RootState) => RootState.addCertificateState
-  );
   // const [divShow, setDivShow] = useState<any>(false);
   const [certId, setCertId] = useState<any>([]);
   const [certId1, setCertId1] = useState<any>("");
@@ -47,11 +44,9 @@ export default function MutualTLS() {
     if (updateState.data.form.CertIds.length > 0) {
       for (let i = 0; i < updateState.data.form.CertIds.length; i++) {
         const arr2 = updateState.data.form.CertIds[i];
-        console.log("arr", arr2);
         const objCertState = result1.payload.CertificateCollection.find(
           (obj1: IGetAllCertificateData) => obj1.CertId === arr2
         );
-        console.log(objCertState);
         const list = {
           CertId: objCertState?.CertId,
           Issuer: objCertState?.Issuer,
@@ -64,13 +59,11 @@ export default function MutualTLS() {
         };
         // setCertId([...certId, list]);
         const idAlreadyExist = certId.some((x: any) => x?.CertId === arr2);
-        console.log("idAlreadyExist", idAlreadyExist);
         if (!idAlreadyExist) {
           certId.push(list);
         }
       }
       setLoader(false);
-      console.log("result", certId);
     } else {
       setLoader(false);
     }
@@ -82,7 +75,6 @@ export default function MutualTLS() {
     let result: any;
     if (radio === "uploadCert") {
       if (fileName.name.includes(".pem")) {
-        console.log("f", file);
         const data = new FormData();
         data.append("file", fileName);
         result = await dispatch(addCertificate(data));
@@ -91,10 +83,8 @@ export default function MutualTLS() {
         setFile("");
         setFileName("");
 
-        console.log("satteadd", addCertificateState);
         if (result.meta.requestStatus === "rejected") {
           ToastAlert(result.payload.message, "error");
-          console.log(result.payload.message);
         } else if (result.meta.requestStatus === "fulfilled") {
           ToastAlert("Certificate Added Successfully!!", "success");
           handleClose();
@@ -109,11 +99,9 @@ export default function MutualTLS() {
       const certIdExistCertState = certobjId!.some(
         (x: any) => x?.CertId === certId1
       );
-      console.log("certIdExistCertState", certIdExistCertState);
       if (certIdExistCertState) {
         const certIdExistUpdateState =
           updateState.data.form?.CertIds?.includes(certId1);
-        console.log("certIdExistUpdateState", certIdExistUpdateState);
         if (!certIdExistUpdateState) {
           const arrUpdateState = [...updateState.data.form.CertIds, certId1];
           dispatch(
@@ -137,7 +125,6 @@ export default function MutualTLS() {
           showDetails: false,
         };
         const idAlreadyExist = certId.some((x: any) => x?.CertId === certId1);
-        console.log("idAlreadyExist", idAlreadyExist);
         if (!idAlreadyExist) {
           setCertId([...certId, list]);
         }
@@ -221,7 +208,6 @@ export default function MutualTLS() {
       ToastAlert("Already selected", "error");
     }
   };
-  console.log("update", updateState.data.form);
   const handleMinusButton = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     index: number
@@ -258,8 +244,6 @@ export default function MutualTLS() {
     };
     setCertId(data);
   };
-  console.log("file", file);
-  console.log("file1", fileName);
 
   return (
     <div>

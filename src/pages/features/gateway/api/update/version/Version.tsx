@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import ExpandCollapse from "../../../../../../components/expand-collapse/ExpandCollapse";
+import { generateBreadcrumbs } from "../../../../../../components/scroll-to/ScrollTo";
 import {
   setForm,
   setFormError,
@@ -12,7 +13,6 @@ import Versions from "./versions/Versions";
 export default function Version() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  // console.log("version", state.data.form);
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.checked === false) {
       const versionInfoList = {
@@ -65,6 +65,11 @@ export default function Version() {
 
   return (
     <div>
+      {state.data.form?.IsVersioningDisabled ? (
+        <></>
+      ) : (
+        <div>{generateBreadcrumbs(["VersionSettings", "Versions"])}</div>
+      )}
       {state.data.form.EnableRoundRobin ? (
         <h6>Note: Version doesn&apos;t works with Round-Robin LoadBalacing</h6>
       ) : (
@@ -75,6 +80,7 @@ export default function Version() {
           <Form.Group className="ml-4 mb-3">
             <Form.Check
               type="switch"
+              data-testid="enableVersion-switch"
               id="IsVersioningDisabled"
               name="IsVersioningDisabled"
               label="Enable Versioning"
@@ -97,8 +103,12 @@ export default function Version() {
         <></>
       ) : (
         <div id="versioncollapse">
-          <VersionSettings />
-          <Versions />
+          <div id="VersionSettings">
+            <VersionSettings />
+          </div>
+          <div id="Versions">
+            <Versions />
+          </div>
         </div>
       )}
     </div>
