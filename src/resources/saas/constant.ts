@@ -1,5 +1,8 @@
 export const regexForColName = /^[A-Za-z][\dA-Za-z]{1,29}$/;
-export const ColNameErrMsg = "column name should only consist Alphabets (2-30)";
+export const ColNameErrMsg =
+  "column name should only consist Alphanumeric values (2-30)";
+export const TableNameErrMsg =
+  "Table name should only consist Alphanumeric values (2-30)";
 export const multivaledDataTypes: string[] = [
   "strings",
   "ints",
