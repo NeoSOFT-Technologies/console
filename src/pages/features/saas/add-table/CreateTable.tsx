@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Dropdown, Modal, Row, Table } from "react-bootstrap";
+import { Button, Col, Modal, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import {
+  ColNameErrMsg,
+  regexForColName,
+} from "../../../../resources/saas/constant";
 import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
 import { createTable } from "../../../../store/features/saas/manage-table/create-table/slice";
 import { capacityPlans } from "../../../../store/features/saas/manage-table/get-capacity-plans/slice";
 import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
+
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
   ICreateTable,
   ITableCreateData,
   ITableColumnData,
+  IErrorColumnInput,
 } from "../../../../types/saas";
 import "./style.css";
 
@@ -25,27 +31,15 @@ export default function CreateTables() {
     "modal-one" | "modal-two" | "close"
   >("close");
 
-  const [user, setUser] = useState("");
-  const [columnName, setColumnName] = useState("");
-  const [type, setType] = useState("string");
-  const [required, setRequireds] = useState(false);
-  const [sortable, setSortable] = useState(false);
-  const [filterable, setFilterable] = useState(false);
-  const [multiValue, setMultiValue] = useState(false);
-  const [storable, setStorable] = useState(false);
-  const [partialSearch, setPartialSearch] = useState(false);
-  const [tableName, setTableName] = useState("");
-  const [sku, setSku] = useState("B");
   const [isSubmit, setIsSubmit] = useState(true);
   const [isColumnAdd, setIsColumnAdd] = useState(true);
   const [isEditColumn, setIsEditColumn] = useState(true);
   const [editColumnId, setEditColumnId] = useState("");
   const [columnsDataArray, setColumnsDataArray]: any = useState([]);
-
   const [columnformErrors, setColumnFormErrors] = useState({
     name: "",
   });
-  const [formErrors, setFormErrors] = useState({ message: "" });
+
   const handleShowModalTwo = () => {
     setModalState("modal-two");
   };
@@ -56,52 +50,73 @@ export default function CreateTables() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const toUppercase = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  };
+  const [columnData, setColumnData] = useState<ITableColumnData>({
+    name: "",
+    type: "string",
+    required: false,
+    partialSearch: false,
+    filterable: false,
+    sortable: false,
+    multiValue: false,
+    storable: false,
+  });
+
+  function objCount(itemName: any) {
+    const countfiltered = columnsDataArray.filter(function (element: {
+      name: any;
+    }) {
+      return element.name === itemName;
+    }).length;
+    console.log("objcount", countfiltered);
+    return countfiltered;
+  }
+
+  // column already Exist checking;
+
+  function itemExists(itemName: any) {
+    objCount(itemName);
+    return columnsDataArray.some(function (el: { name: any }) {
+      return el.name === itemName;
+    });
+  }
 
   // form submit event
   const handleAddColumnSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    const columnData: ITableColumnData = {
-      name: columnName,
-      type,
-      required,
-      partialSearch,
-      filterable,
-      sortable,
-      multiValue,
-      storable,
-    };
-
     let errors = { name: "" };
 
-    // column already Exist checking;
-    function itemExists(itemName: any) {
-      return columnsDataArray.some(function (el: { name: any }) {
-        return el.name === itemName;
-      });
-    }
-
     // input checking either num or alphabet
-
     if (itemExists(columnData.name) && isEditColumn) {
-      errors = { name: "Column Name Already Exist" };
-      setColumnFormErrors(errors);
-    } else if (itemExists(columnData.name) && !isEditColumn) {
       errors = { name: "Column Name Already Exist" };
       setColumnFormErrors(errors);
     } else if (!itemExists(columnData.name) && isEditColumn) {
       setColumnsDataArray([...columnsDataArray, columnData]);
-      setColumnName("");
-      setType("string");
-      setRequireds(false);
-      setFilterable(false);
-      setMultiValue(false);
-      setPartialSearch(false);
-      setStorable(false);
-      setSortable(false);
+      setColumnData({
+        name: "",
+        type: "string",
+        required: false,
+        partialSearch: false,
+        filterable: false,
+        sortable: false,
+        multiValue: false,
+        storable: false,
+      });
+      errors.name = "";
+      setColumnFormErrors(errors);
+      setShow(false);
+    } else if (!itemExists(columnData.name) && isEditColumn) {
+      setColumnsDataArray([...columnsDataArray, columnData]);
+      setColumnData({
+        name: "",
+        type: "string",
+        required: false,
+        partialSearch: false,
+        filterable: false,
+        sortable: false,
+        multiValue: false,
+        storable: false,
+      });
       errors.name = "";
       setColumnFormErrors(errors);
       setShow(false);
@@ -117,15 +132,42 @@ export default function CreateTables() {
           return val;
         })
       );
-
-      setColumnName("");
-      setType("string");
-      setRequireds(false);
-      setFilterable(false);
-      setMultiValue(false);
-      setPartialSearch(false);
-      setStorable(false);
-      setSortable(false);
+      setColumnData({
+        name: "",
+        type: "string",
+        required: false,
+        partialSearch: false,
+        filterable: false,
+        sortable: false,
+        multiValue: false,
+        storable: false,
+      });
+      errors.name = "";
+      setColumnFormErrors(errors);
+      setShow(false);
+      setIsEditColumn(true);
+    } else if (itemExists(columnData.name) && !isEditColumn) {
+      setColumnsDataArray(
+        columnsDataArray.map((val: any) => {
+          if (val.name === editColumnId) {
+            return {
+              ...val,
+              ...columnData,
+            };
+          }
+          return val;
+        })
+      );
+      setColumnData({
+        name: "",
+        type: "string",
+        required: false,
+        partialSearch: false,
+        filterable: false,
+        sortable: false,
+        multiValue: false,
+        storable: false,
+      });
       errors.name = "";
       setColumnFormErrors(errors);
       setShow(false);
@@ -133,19 +175,20 @@ export default function CreateTables() {
     }
   };
 
-  const params1: ITableCreateData = {
-    tableName,
-    sku,
+  const [tableObj, setTableObj] = useState<ITableCreateData>({
+    tableName: "",
+    sku: "B",
     columns: columnsDataArray,
-  };
+  });
 
-  const params: ICreateTable = {
-    tenantId: user,
-    requestData: params1,
-  };
+  const [tableInIt, setTatbleInIt] = useState<ICreateTable>({
+    tenantId: "",
+    requestData: tableObj,
+  });
 
   // saving data to local storage
   useEffect(() => {
+    console.log("obj of array useeffect", tableInIt);
     localStorage.setItem("columnsDataArray", JSON.stringify(columnsDataArray));
   }, [columnsDataArray]);
 
@@ -154,27 +197,30 @@ export default function CreateTables() {
     dispatch(getTenantDetails());
   }, [createtablestate]);
 
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      // console.log(formValues);
-    }
-  }, [formErrors]);
-
   const createTableData: React.FormEventHandler<HTMLFormElement> = async (
     event: React.FormEvent
   ) => {
     event.preventDefault();
-    setFormErrors({ message: "" });
+    console.log("obj of array useeffect", tableInIt);
 
     if (isSubmit === false) {
-      setUser("");
-      setTableName("");
-      setSku("B");
-      setColumnsDataArray([]);
-      setIsSubmit(true);
-      setFormErrors({ message: "" });
-      dispatch(createTable(params));
+      dispatch(createTable(tableInIt));
     }
+  };
+  const [error, setError] = useState<IErrorColumnInput>({
+    name: "",
+  });
+
+  const handleInputChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setError({
+      ...error,
+      name: regexForColName.test(event.target.value) ? "" : ColNameErrMsg,
+    });
+    if (error.name === "") {
+      setIsSubmit(false);
+      setTableObj({ ...tableObj, tableName: event.target.value });
+    }
+    console.log("target tableobj", tableObj);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -182,26 +228,9 @@ export default function CreateTables() {
     const inputValue = event.target.value;
     const startRegex = /^[\dA-Za-z]*$/g;
     const whiteRegex = /^((?!\s).)*$/gm;
-    if (name === "tableName") {
-      setTableName(inputValue);
 
-      if (inputValue === "") {
-        setFormErrors({ message: "Please fill Out this field" });
-      } else if (!whiteRegex.test(inputValue)) {
-        setIsSubmit(true);
-        setFormErrors({
-          message: "white Space And Special symbol Not Allowed",
-        });
-      } else if (!startRegex.test(inputValue)) {
-        setIsSubmit(true);
-        setFormErrors({ message: "Table name must be aphabet or number" });
-      } else {
-        setFormErrors({ message: "" });
-        setIsSubmit(false);
-      }
-    }
     if (name === "columnName") {
-      setColumnName(inputValue);
+      setColumnData({ ...columnData, name: inputValue });
       if (inputValue === "") {
         setIsColumnAdd(true);
         setColumnFormErrors({ name: "Please Enter Column Name" });
@@ -214,6 +243,11 @@ export default function CreateTables() {
         setIsColumnAdd(true);
         setColumnFormErrors({
           name: "Column name must be aphabet or number",
+        });
+      } else if (objCount(inputValue) > 1) {
+        setIsColumnAdd(true);
+        setColumnFormErrors({
+          name: "Column Already Exist",
         });
       } else {
         setColumnFormErrors({
@@ -231,7 +265,7 @@ export default function CreateTables() {
     setColumnsDataArray(updateColumn);
   };
   const addColumnHandleShow = () => {
-    setColumnName("");
+    setColumnData({ ...columnData, name: "" });
     setColumnFormErrors({ name: "" });
     handleShow();
   };
@@ -243,15 +277,16 @@ export default function CreateTables() {
     });
     console.log("getEditObj", getEditObj);
     setEditColumnId(getEditObj.name);
-
-    setColumnName(getEditObj.name);
-    setType(getEditObj.type);
-    setRequireds(getEditObj.required);
-    setPartialSearch(getEditObj.partialSearch);
-    setFilterable(getEditObj.filterable);
-    setSortable(getEditObj.sortable);
-    setMultiValue(getEditObj.multiValue);
-    setStorable(getEditObj.storable);
+    setColumnData({
+      name: getEditObj.name,
+      type: getEditObj.type,
+      required: getEditObj.required,
+      partialSearch: getEditObj.partialSearch,
+      filterable: getEditObj.filterable,
+      sortable: getEditObj.sortable,
+      multiValue: getEditObj.multiValue,
+      storable: getEditObj.storable,
+    });
     setIsEditColumn(false);
   };
 
@@ -295,12 +330,15 @@ export default function CreateTables() {
                         className="text-center"
                         id="tenantName"
                         data-testid="tenant-name-select"
+                        value={tableInIt.tenantId.toString()}
                         onChange={(e) => {
-                          setUser(e.target.value);
+                          setTatbleInIt({
+                            ...tableInIt,
+                            tenantId: e.target.value,
+                          });
                           dispatch(getTables(e.target.value));
                         }}
                         required
-                        value={user}
                       >
                         <option value="">Select Tenant</option>
                         {tenantDetails.data?.map((val, index) => (
@@ -324,13 +362,20 @@ export default function CreateTables() {
                         type="text"
                         placeholder="Table Name"
                         className="text-center"
-                        value={tableName}
+                        value={tableObj.tableName}
                         name="tableName"
-                        onChange={handleInputChange}
+                        isValid={!error.name && !!columnData.name}
+                        onChange={handleInputChange1}
                         data-testid="table-name-input-box"
                       />
                     </Form.Group>
-                    <p>{formErrors.message}</p>
+                    <Form.Control.Feedback
+                      type="invalid"
+                      className="text-danger"
+                    >
+                      gfdg
+                    </Form.Control.Feedback>
+                    <p> {error.name}</p>
                   </Col>
                 </Row>
                 <Row>
@@ -341,7 +386,9 @@ export default function CreateTables() {
                     <Form.Select
                       aria-label="Default select example"
                       className="text-center"
-                      onChange={(e) => setSku(e.target.value)}
+                      onChange={(e) =>
+                        setTableObj({ ...tableObj, sku: e.target.value })
+                      }
                       data-testid="capacity-plan-dropdown"
                     >
                       {capacityData.data?.map(
@@ -632,7 +679,7 @@ export default function CreateTables() {
                           aria-label="Name"
                           aria-describedby="basic-addon"
                           name="columnName"
-                          value={columnName}
+                          value={columnData.name}
                           onChange={handleInputChange}
                           data-testid="column-name-popup"
                         />
@@ -640,83 +687,30 @@ export default function CreateTables() {
                       <p>{columnformErrors.name}</p>
                     </Col>
                   </Row>
-
                   <Row>
                     <Col sm lg="4">
-                      <Form.Label className="ml-5 pt-2 ">Type</Form.Label>
+                      <Form.Label className="ml-5 pt-2">Multivalue</Form.Label>
                     </Col>
-
                     <Col sm lg="7">
                       <Form.Select
                         aria-label="Default select example"
-                        className="text-center pl-4"
-                        id="dropdown-basic"
-                        onChange={(e) => setType(e.target.value)}
+                        className="w-100 pr-3 pt-1 pb-1"
+                        // id="box"
+                        value={columnData.multiValue.toString()}
+                        onChange={(e) => {
+                          setColumnData({
+                            ...columnData,
+                            multiValue: JSON.parse(e.target.value),
+                          });
+                        }}
                       >
-                        <option value="string">string</option>
-                        <option value="boolean">boolean</option>
-                        <option value="long">long</option>
-                        <option value="date">date</option>
-                        <option value="int">int</option>
-                        <option value="double">double</option>
-                        <option value="text">text</option>
-                        <option value="float">float</option>
+                        <option className="text-center" value="true">
+                          True
+                        </option>
+                        <option className="text-center" value="false">
+                          False
+                        </option>
                       </Form.Select>
-
-                      {/* <select
-                    name="languages"
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
-                  >
-                    <option value="string">string</option>
-                    <option value="boolean">boolean</option>
-                    <option value="long" selected>
-                      long
-                    </option>
-                    <option value="date">date</option>
-                    <option value="int">int</option>
-                    <option value="double">double</option>
-                    <option value="text">text</option>
-                    <option value="float">float</option>
-                  </select> */}
-                    </Col>
-                  </Row>
-                  <br></br>
-
-                  <Row>
-                    <Col sm lg="4">
-                      <Form.Label className="ml-5 pt-2">Required</Form.Label>
-                    </Col>
-                    <Col sm lg="7">
-                      <Dropdown>
-                        <Dropdown.Toggle
-                          id="dropdown-basic"
-                          className="w-100 text-dark bg-white"
-                        >
-                          {toUppercase(required.toString())}
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu className="w-100 mt-0 pt-0">
-                          <Dropdown.Item
-                            className="w-100 text-center"
-                            value={required}
-                            onClick={() => {
-                              setRequireds(true);
-                            }}
-                          >
-                            True
-                          </Dropdown.Item>
-                          <Dropdown.Item
-                            className="w-100 text-center"
-                            value={required}
-                            onClick={() => {
-                              setRequireds(false);
-                            }}
-                          >
-                            False
-                          </Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
                     </Col>
                   </Row>
                   <br></br>
@@ -728,73 +722,54 @@ export default function CreateTables() {
                       </Form.Label>
                     </Col>
                     <Col sm lg="7">
-                      <Dropdown>
-                        <Dropdown.Toggle
-                          id="dropdown-basic"
-                          className="w-100 text-dark bg-white"
-                        >
-                          {toUppercase(partialSearch.toString())}
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu className="w-100 mt-0 pt-0 text-center">
-                          <Dropdown.Item
-                            className="w-100"
-                            value={partialSearch}
-                            onClick={() => {
-                              setPartialSearch(true);
-                            }}
-                          >
-                            True
-                          </Dropdown.Item>
-                          <Dropdown.Item
-                            className="w-100"
-                            value={partialSearch}
-                            onClick={() => {
-                              setPartialSearch(false);
-                            }}
-                          >
-                            False
-                          </Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
+                      <Form.Select
+                        aria-label="Default select example"
+                        className="w-100 pr-3 pt-1 pb-1"
+                        // id="box"
+                        value={columnData.partialSearch.toString()}
+                        onChange={(e) => {
+                          setColumnData({
+                            ...columnData,
+                            partialSearch: JSON.parse(e.target.value),
+                          });
+                        }}
+                      >
+                        <option className="text-center" value="true">
+                          True
+                        </option>
+                        <option className="text-center" value="false">
+                          False
+                        </option>
+                      </Form.Select>
                     </Col>
                   </Row>
                   <br></br>
-
                   <Row>
                     <Col sm lg="4">
-                      <Form.Label className="ml-5 pt-2">Filterable</Form.Label>
+                      <Form.Label className="ml-5 pt-2 ">Type</Form.Label>
                     </Col>
-                    <Col sm lg="7">
-                      <Dropdown>
-                        <Dropdown.Toggle
-                          id="dropdown-basic"
-                          className="w-100 text-dark bg-white"
-                        >
-                          {toUppercase(filterable.toString())}
-                        </Dropdown.Toggle>
 
-                        <Dropdown.Menu className="w-100 mt-0 pt-0 text-center">
-                          <Dropdown.Item
-                            className="w-100 text-center"
-                            value={filterable}
-                            onClick={() => {
-                              setFilterable(true);
-                            }}
-                          >
-                            True
-                          </Dropdown.Item>
-                          <Dropdown.Item
-                            className="w-100 text-center"
-                            value={filterable}
-                            onClick={() => {
-                              setFilterable(false);
-                            }}
-                          >
-                            False
-                          </Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
+                    <Col sm lg="7">
+                      <Form.Select
+                        aria-label="Default select example"
+                        className="text-center pl-4"
+                        id="dropdown-basic"
+                        onChange={(e) => {
+                          setColumnData({
+                            ...columnData,
+                            type: e.target.value,
+                          });
+                        }}
+                      >
+                        <option value="string">string</option>
+                        <option value="boolean">boolean</option>
+                        <option value="long">long</option>
+                        <option value="date">date</option>
+                        <option value="int">int</option>
+                        <option value="double">double</option>
+                        <option value="text">text</option>
+                        <option value="float">float</option>
+                      </Form.Select>
                     </Col>
                   </Row>
                   <br></br>
@@ -804,73 +779,81 @@ export default function CreateTables() {
                       <Form.Label className="ml-5 pt-2">Sortable</Form.Label>
                     </Col>
                     <Col sm lg="7">
-                      <Dropdown>
-                        <Dropdown.Toggle
-                          id="dropdown-basic"
-                          className="w-100 text-dark bg-white"
-                        >
-                          {toUppercase(sortable.toString())}
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu className="w-100 mt-0 pt-0 text-center">
-                          <Dropdown.Item
-                            className="w-100 text-center"
-                            value={sortable}
-                            onClick={() => {
-                              setSortable(true);
-                            }}
-                          >
-                            True
-                          </Dropdown.Item>
-                          <Dropdown.Item
-                            className="w-100 text-center"
-                            value={sortable}
-                            onClick={() => {
-                              setSortable(false);
-                            }}
-                          >
-                            False
-                          </Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
+                      <Form.Select
+                        aria-label="Default select example"
+                        className="w-100 pr-3 pt-1 pb-1"
+                        // id="box"
+                        value={columnData.sortable.toString()}
+                        onChange={(e) => {
+                          setColumnData({
+                            ...columnData,
+                            sortable: JSON.parse(e.target.value),
+                          });
+                        }}
+                      >
+                        <option className="text-center" value="true">
+                          True
+                        </option>
+                        <option className="text-center" value="false">
+                          False
+                        </option>
+                      </Form.Select>
                     </Col>
                   </Row>
                   <br></br>
 
                   <Row>
                     <Col sm lg="4">
-                      <Form.Label className="ml-5 pt-2">Multivalue</Form.Label>
+                      <Form.Label className="ml-5 pt-2">Required</Form.Label>
                     </Col>
                     <Col sm lg="7">
-                      <Dropdown>
-                        <Dropdown.Toggle
-                          id="dropdown-basic"
-                          className="w-100 text-dark bg-white"
-                        >
-                          {toUppercase(multiValue.toString())}
-                        </Dropdown.Toggle>
+                      <Form.Select
+                        aria-label="Default select example"
+                        className="w-100 pr-3 pt-1 pb-1"
+                        // id="box"
+                        value={columnData.required.toString()}
+                        onChange={(e) => {
+                          setColumnData({
+                            ...columnData,
+                            required: JSON.parse(e.target.value),
+                          });
+                        }}
+                      >
+                        <option className="text-center" value="true">
+                          True
+                        </option>
+                        <option className="text-center" value="false">
+                          False
+                        </option>
+                      </Form.Select>
+                    </Col>
+                  </Row>
+                  <br></br>
 
-                        <Dropdown.Menu className="w-100 mt-0 pt-0 text-center">
-                          <Dropdown.Item
-                            value={multiValue}
-                            className="w-100 text-center"
-                            onClick={() => {
-                              setMultiValue(true);
-                            }}
-                          >
-                            True
-                          </Dropdown.Item>
-                          <Dropdown.Item
-                            className="w-100 text-center"
-                            value={multiValue}
-                            onClick={() => {
-                              setMultiValue(false);
-                            }}
-                          >
-                            False
-                          </Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
+                  <Row>
+                    <Col sm lg="4">
+                      <Form.Label className="ml-5 pt-2">Filterable</Form.Label>
+                    </Col>
+                    <Col sm lg="7">
+                      <Form.Select
+                        aria-label="Default select example"
+                        className="w-100 pr-3 pt-1 pb-1"
+                        // id="box"
+                        value={columnData.filterable.toString()}
+                        onChange={(e) => {
+                          setColumnData({
+                            ...columnData,
+                            filterable: JSON.parse(e.target.value),
+                          });
+                        }}
+                      >
+                        <option className="text-center" value="true">
+                          True
+                        </option>
+                        <option className="text-center" value="false">
+                          False
+                        </option>
+                      </Form.Select>
                     </Col>
                   </Row>
                   <br></br>
@@ -880,37 +863,25 @@ export default function CreateTables() {
                       <Form.Label className="ml-5 pt-2">Storable</Form.Label>
                     </Col>
                     <Col sm lg="7">
-                      <Dropdown>
-                        <Dropdown.Toggle
-                          // id="dropdown-basic"
-                          aria-label="Default select example"
-                          className="w-100 text-dark bg-white"
-                        >
-                          {toUppercase(storable.toString())}
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu className="w-100 mt-0 pt-0 text-center dropdwn">
-                          <Dropdown.Item
-                            className="w-100  text-center"
-                            value={storable}
-                            onClick={() => {
-                              setStorable(true);
-                            }}
-                          >
-                            True
-                          </Dropdown.Item>
-                          <Dropdown.Item
-                            aria-label="Default select example"
-                            className="w-100  text-center"
-                            value={storable}
-                            onClick={() => {
-                              setStorable(false);
-                            }}
-                          >
-                            False
-                          </Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
+                      <Form.Select
+                        aria-label="Default select example"
+                        className="w-100 pr-3 pt-1 pb-1"
+                        // id="box"
+                        value={columnData.storable.toString()}
+                        onChange={(e) => {
+                          setColumnData({
+                            ...columnData,
+                            storable: JSON.parse(e.target.value),
+                          });
+                        }}
+                      >
+                        <option className="text-center" value="true">
+                          True
+                        </option>
+                        <option className="text-center" value="false">
+                          False
+                        </option>
+                      </Form.Select>
                     </Col>
                   </Row>
                 </div>
