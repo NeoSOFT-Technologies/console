@@ -35,8 +35,8 @@ const store = mockStore({
             OverrideTarget: "https://httpbin.org2",
           },
         ],
-        Blacklist: ["192.168.0.0"],
-        Whitelist: ["192.168.0.1"],
+        Blacklist: [process.env.IP_ADDRESS],
+        Whitelist: [process.env.IP_ADDRESS],
         CORS: {
           IsEnabled: false,
           AllowedOrigins: ["https://google.co.in"],
