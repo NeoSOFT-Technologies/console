@@ -9,6 +9,27 @@ import error from "../../../../../utils/error";
 import { initialState } from "./payload";
 import { IGetPolicyByIdData, IPolicyCreateState } from ".";
 // export const emptyState: IPolicyCreateState = { ...initialState };
+function bindPolicyData(state: any, action: any) {
+  for (let i = 0; i < action.payload.Data.APIs.length; i++) {
+    if (action.payload.Data.APIs[i].Limit !== null) {
+      const limits = {
+        Max_query_depth: action.payload.Data.APIs[i].Limit.max_query_depth,
+        Per: action.payload.Data.APIs[i].Limit.per,
+        Quota_max: action.payload.Data.APIs[i].Limit.quota_max,
+        Quota_remaining: action.payload.Data.APIs[i].Limit.quota_remaining,
+        Quota_renewal_rate:
+          action.payload.Data.APIs[i].Limit.quota_renewal_rate,
+        Quota_renews: action.payload.Data.APIs[i].Limit.quota_renews,
+        Rate: action.payload.Data.APIs[i].Limit.rate,
+        Set_by_policy: action.payload.Data.APIs[i].Limit.set_by_policy,
+        Throttle_interval: action.payload.Data.APIs[i].Limit.throttle_interval,
+        Throttle_retry_limit:
+          action.payload.Data.APIs[i].Limit.throttle_retry_limit,
+      };
+      state.data.form.APIs[i].Limit = limits;
+    }
+  }
+}
 export let policystate: IPolicyCreateState;
 export const createPolicy = createAsyncThunk(
   "policy",
@@ -97,6 +118,7 @@ const slice = createSlice({
     builder.addCase(getPolicybyId.fulfilled, (state, action) => {
       state.loading = false;
       state.data.form = action.payload.Data;
+      bindPolicyData(state, action);
     });
     builder.addCase(getPolicybyId.rejected, (state, action) => {
       state.loading = false;

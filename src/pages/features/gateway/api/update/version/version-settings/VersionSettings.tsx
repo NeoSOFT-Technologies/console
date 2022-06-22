@@ -10,11 +10,8 @@ export default function VersionSettings() {
   const dispatch = useAppDispatch();
 
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  // const [location, setLocation] = useState("1");
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
-    // const { name, value } = event.target;
-    // console.log(name, value);
     setFormData(event, dispatch, state);
   }
 
@@ -36,6 +33,7 @@ export default function VersionSettings() {
                           <Form.Label> Version Data Location</Form.Label>
                           <br />
                           <Form.Select
+                            data-testid="versionLocation-select"
                             aria-label="Default select example"
                             name="VersioningInfo.Location"
                             value={state.data.form?.VersioningInfo?.Location}
@@ -63,6 +61,7 @@ export default function VersionSettings() {
 
                           <Form.Control
                             className="mt-2"
+                            data-testid="versionKeyName-input"
                             type="text"
                             id="versionIdentifier"
                             placeholder="Enter Version key Name"

@@ -16,17 +16,3 @@ it("render without crashing GlobalRateLimit", () => {
   );
   expect(screen).toBeDefined();
 });
-
-it("render switches buttons and inputs", () => {
-  render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <GlobalLimit isDisabled={true} msg={""} />
-      </Provider>
-    </BrowserRouter>
-  );
-  expect(screen).toBeDefined();
-
-  const rateSwitch = screen.queryByRole("rate-switch");
-  expect(rateSwitch).not.toBeInTheDocument();
-});

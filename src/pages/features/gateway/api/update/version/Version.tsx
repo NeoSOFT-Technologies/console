@@ -1,5 +1,7 @@
 import React from "react";
-import { Col, Form } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
+import ExpandCollapse from "../../../../../../components/expand-collapse/ExpandCollapse";
+import { generateBreadcrumbs } from "../../../../../../components/scroll-to/ScrollTo";
 import {
   setForm,
   setFormError,
@@ -11,7 +13,6 @@ import Versions from "./versions/Versions";
 export default function Version() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  // console.log("version", state.data.form);
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.checked === false) {
       const versionInfoList = {
@@ -64,31 +65,50 @@ export default function Version() {
 
   return (
     <div>
+      {state.data.form?.IsVersioningDisabled ? (
+        <></>
+      ) : (
+        <div>{generateBreadcrumbs(["VersionSettings", "Versions"])}</div>
+      )}
       {state.data.form.EnableRoundRobin ? (
         <h6>Note: Version doesn&apos;t works with Round-Robin LoadBalacing</h6>
       ) : (
         <></>
       )}
-      <Col md="12">
-        <Form.Group className="ml-3 mb-3">
-          <Form.Check
-            type="switch"
-            id="IsVersioningDisabled"
-            name="IsVersioningDisabled"
-            label="Enable Versioning"
-            // disabled={state.data.form.EnableRoundRobin}
-            checked={!state.data.form?.IsVersioningDisabled}
-            onChange={(e: any) => validateForm(e)}
-          />
-        </Form.Group>
-      </Col>
+      <Row>
+        <Col md={9}>
+          <Form.Group className="ml-4 mb-3">
+            <Form.Check
+              type="switch"
+              data-testid="enableVersion-switch"
+              id="IsVersioningDisabled"
+              name="IsVersioningDisabled"
+              label="Enable Versioning"
+              // disabled={state.data.form.EnableRoundRobin}
+              checked={!state.data.form?.IsVersioningDisabled}
+              onChange={(e: any) => validateForm(e)}
+            />
+          </Form.Group>
+        </Col>
+        {state.data.form?.IsVersioningDisabled ? (
+          <></>
+        ) : (
+          <Col md={3}>
+            <ExpandCollapse containerId="versioncollapse" />
+          </Col>
+        )}
+      </Row>
 
       {state.data.form?.IsVersioningDisabled ? (
         <></>
       ) : (
-        <div>
-          <VersionSettings />
-          <Versions />
+        <div id="versioncollapse">
+          <div id="VersionSettings">
+            <VersionSettings />
+          </div>
+          <div id="Versions">
+            <Versions />
+          </div>
         </div>
       )}
     </div>
