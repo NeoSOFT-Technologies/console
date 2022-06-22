@@ -791,7 +791,7 @@ export default function CreateTables() {
         <Modal.Body>
           <Table bordered className="pt-2 createbody text-center">
             <thead>
-              <tr id="test">
+              <tr>
                 <th>Sku</th>
                 <th>Name</th>
                 <th>Replicas</th>
@@ -799,79 +799,14 @@ export default function CreateTables() {
               </tr>
             </thead>
             <tbody>
-              {capacityData.data !== undefined && (
-                <>
-                  {capacityData.data.map(
-                    (
-                      val:
-                        | {
-                            sku:
-                              | string
-                              | number
-                              | boolean
-                              | React.ReactElement<
-                                  any,
-                                  string | React.JSXElementConstructor<any>
-                                >
-                              | React.ReactFragment
-                              | React.ReactPortal
-                              | null
-                              | undefined;
-                            name:
-                              | string
-                              | number
-                              | boolean
-                              | React.ReactElement<
-                                  any,
-                                  string | React.JSXElementConstructor<any>
-                                >
-                              | React.ReactFragment
-                              | React.ReactPortal
-                              | null
-                              | undefined;
-                            replicas:
-                              | string
-                              | number
-                              | boolean
-                              | React.ReactElement<
-                                  any,
-                                  string | React.JSXElementConstructor<any>
-                                >
-                              | React.ReactFragment
-                              | React.ReactPortal
-                              | null
-                              | undefined;
-                            shards:
-                              | string
-                              | number
-                              | boolean
-                              | React.ReactElement<
-                                  any,
-                                  string | React.JSXElementConstructor<any>
-                                >
-                              | React.ReactFragment
-                              | React.ReactPortal
-                              | null
-                              | undefined;
-                          }
-                        | null
-                        | undefined,
-                      index: React.Key | null | undefined
-                    ) => (
-                      <tr key={`row${index}`}>
-                        {val !== null && val !== undefined && (
-                          <>
-                            <td key={index}>{val.sku}</td>
-                            <td key={index}>{val.name}</td>
-                            <td key={index}>{val.replicas}</td>
-                            <td key={index}>{val.shards}</td>
-                          </>
-                        )}
-                      </tr>
-                    )
-                  )}
-                </>
-              )}
+              {capacityData.data?.map((val, index) => (
+                <tr key={`row${index}`}>
+                  <td key={index}>{val.sku}</td>
+                  <td key={index}>{val.name}</td>
+                  <td key={index}>{val.replicas}</td>
+                  <td key={index}>{val.shards}</td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         </Modal.Body>
