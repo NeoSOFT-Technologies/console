@@ -286,7 +286,7 @@ export default function CreateTables() {
     event: React.FormEvent
   ) => {
     event.preventDefault();
-    if (error.tableName === "") {
+    if (error.tableName === "" && finalTableObj.requestData.tableName !== "") {
       if (finalTableObj.requestData.columns.length === 0) {
         ToastAlert("Provide atleast one column", "warning");
       } else {
