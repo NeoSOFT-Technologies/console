@@ -6,6 +6,7 @@ import RenderList, {
   refreshGrid,
 } from "../../../../../components/list/RenderList";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
+import { gridPageSize } from "../../../../../resources/gateway/common";
 
 import { emptyState } from "../../../../../store/features/gateway/policy/create/payload";
 import {
@@ -161,6 +162,7 @@ export default function PolicyList() {
               url={`Policy?`}
               actionsList={actions}
               searchBy={"apiName"}
+              pageSizeList={gridPageSize}
             />
           </div>
         </div>

@@ -6,6 +6,7 @@ import RenderList, {
   refreshGrid,
 } from "../../../../../components/list/RenderList";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
+import { gridPageSize } from "../../../../../resources/gateway/common";
 import { deleteApi } from "../../../../../store/features/gateway/api/delete/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
 import {
@@ -160,6 +161,7 @@ export default function APIList() {
               url={`ApplicationGateway?`}
               actionsList={actions}
               searchBy={"apiName"}
+              pageSizeList={gridPageSize}
             />
           </div>
         </div>
