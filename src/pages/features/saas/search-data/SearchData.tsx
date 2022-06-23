@@ -242,7 +242,7 @@ export default function GetSearchData() {
                     data-testid="tenant-name-select"
                   >
                     {authenticationState.data === "tenant" ? (
-                      <option>{tenantDetail.data?.tenantId}</option>
+                      <option>{tenantDetail.data?.tenantName}</option>
                     ) : (
                       <>
                         <option value="">Select Tenant</option>
@@ -419,7 +419,7 @@ export default function GetSearchData() {
                               searchData &&
                               searchData.data &&
                               searchData?.data?.length <
-                                Number.parseInt(searchTenant.pageSize)
+                              Number.parseInt(searchTenant.pageSize)
                             ) {
                               return (
                                 <tr key={`row${index}`}>
