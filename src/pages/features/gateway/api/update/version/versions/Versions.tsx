@@ -333,7 +333,10 @@ export default function Versions() {
                       isValid={!state.data.errors?.OverrideTarget}
                       onChange={handleInputChange}
                     />
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Control.Feedback
+                      type="invalid"
+                      data-testid="overrideTargetErr"
+                    >
                       {state.data.errors?.OverrideTarget}
                     </Form.Control.Feedback>
                   </Form.Group>
@@ -433,7 +436,10 @@ export default function Versions() {
                                         handleTableRowsInputChange(index, evnt)
                                       }
                                     />
-                                    <Form.Control.Feedback type="invalid">
+                                    <Form.Control.Feedback
+                                      type="invalid"
+                                      data-testid="overRideTargetErr"
+                                    >
                                       {
                                         state.data.errors?.Versions[index!]
                                           ?.OverrideTarget

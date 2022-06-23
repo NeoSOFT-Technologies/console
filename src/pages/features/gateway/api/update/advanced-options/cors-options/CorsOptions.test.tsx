@@ -31,19 +31,19 @@ it("render inputs, buttons and switch", () => {
   expect(enableCorsSwitch).toBeInTheDocument();
   fireEvent.change(enableCorsSwitch, { target: { checked: true } });
   expect(enableCorsSwitch).toBeChecked();
-  fireEvent.change(enableCorsSwitch);
+  fireEvent.click(enableCorsSwitch);
 
   const allowCredSwitch = screen.getByTestId("allowCred-switch");
   expect(allowCredSwitch).toBeInTheDocument();
   fireEvent.change(allowCredSwitch, { target: { checked: true } });
   expect(allowCredSwitch).toBeChecked();
-  fireEvent.change(allowCredSwitch);
+  fireEvent.click(allowCredSwitch);
 
   const optionPassSwitch = screen.getByTestId("optionPass-switch");
   expect(optionPassSwitch).toBeInTheDocument();
   fireEvent.change(optionPassSwitch, { target: { checked: true } });
   expect(optionPassSwitch).toBeChecked();
-  fireEvent.change(optionPassSwitch);
+  fireEvent.click(optionPassSwitch);
 
   const maxAgeInput = screen.getByTestId("maxAge-input");
   expect(maxAgeInput).toBeInTheDocument();
@@ -110,4 +110,29 @@ it("render inputs, buttons and switch", () => {
   const exposeHeadersdeleteBtn = screen.getByTestId("exposeHeaders-delete");
   expect(exposeHeadersdeleteBtn).toBeInTheDocument();
   fireEvent.click(exposeHeadersdeleteBtn);
+});
+
+it("check validations", () => {
+  render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <CorsOptions />
+      </Provider>
+    </BrowserRouter>
+  );
+  const allowedOriginInput = screen.getByTestId("allowedOrigin-input");
+  fireEvent.change(allowedOriginInput, {
+    target: { value: "https://httpbin.org" },
+  });
+  const allowedOriginErr = screen.getByTestId("allowedOriginErr");
+  expect(allowedOriginErr).toHaveTextContent("");
+
+  const allowedoriginInput = screen.getByTestId("allowedOrigin-input");
+  fireEvent.change(allowedoriginInput, {
+    target: { value: "wrongUrl" },
+  });
+  const allowedoriginErr = screen.getByTestId("allowedOriginErr");
+  expect(allowedoriginErr).toHaveTextContent(
+    "Please enter a Valid URL value(i.e. http://)"
+  );
 });

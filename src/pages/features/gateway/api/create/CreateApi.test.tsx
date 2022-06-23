@@ -50,4 +50,36 @@ it("test buttons and inputs present", async () => {
   expect(screen.getByTestId("targetUrl-input")).toHaveValue(
     "https://httpbin.org"
   );
+
+  const activeBtn = screen.getByTestId("isActive-input");
+  expect(activeBtn).toBeInTheDocument();
+  fireEvent.change(listenPathInput, { target: { checked: true } });
+  const Active = screen.getByText("Active");
+  expect(Active).toBeVisible();
+});
+
+it("check validations", async () => {
+  render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <CreateApi />
+      </Provider>
+    </BrowserRouter>
+  );
+  const nameInput = await screen.getByTestId("name-input");
+  fireEvent.change(nameInput, { target: { value: "123" } });
+  const nameErr = screen.getByTestId("nameErr");
+  expect(nameErr).toHaveTextContent("Enter valid Api Name eg: abcd or Abcd1");
+
+  const listenPathInput = await screen.getByTestId("listenPath-input");
+  fireEvent.change(listenPathInput, { target: { value: "test" } });
+  const listenPathErr = screen.getByTestId("listenPathErr");
+  expect(listenPathErr).toHaveTextContent(
+    "Enter a Valid Listen Path eg: /abc/"
+  );
+
+  const targetUrlInput = await screen.getByTestId("targetUrl-input");
+  fireEvent.change(targetUrlInput, { target: { value: "https:wrongUrl" } });
+  const targetUrlErr = screen.getByTestId("targetUrlErr");
+  expect(targetUrlErr).toHaveTextContent("Enter a Valid url");
 });

@@ -43,3 +43,19 @@ it("render buttons and inputs", () => {
   expect(deleteBtn).toBeInTheDocument();
   fireEvent.click(deleteBtn);
 });
+
+it("check validations", () => {
+  render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <LoadBalancing />
+      </Provider>
+    </BrowserRouter>
+  );
+  const targeturlInput = screen.getByTestId("loadTargets-input");
+  fireEvent.change(targeturlInput, {
+    target: { value: "wrongurl" },
+  });
+  const targeturl = screen.getByTestId("loadTargetErr");
+  expect(targeturl).toHaveTextContent("Enter a valid Url");
+});
