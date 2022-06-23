@@ -91,22 +91,27 @@ export default function ApiAccessList(props: IProps) {
   const removeAccess = (Id: string) => {
     if (props.stateForm) {
       const removeApi = [...props.stateForm];
-      const index = removeApi.findIndex((a) => a.Id === Id);
-      removeApi.splice(index, 1);
 
-      (props.state as IPolicyCreateState).data.form.APIs
-        ? dispatch(
-            setForm({
-              ...(props.state as IPolicyCreateState).data.form,
-              APIs: removeApi,
-            })
-          )
-        : dispatch(
-            setForms({
-              ...(props.state as IKeyCreateState).data.form,
-              AccessRights: removeApi,
-            })
-          );
+      if ((props.state as IPolicyCreateState).data.form.APIs) {
+        const index = removeApi.findIndex((a) => a.Id === Id);
+        removeApi.splice(index, 1);
+        dispatch(
+          setForm({
+            ...(props.state as IPolicyCreateState).data.form,
+            APIs: removeApi,
+          })
+        );
+      }
+      if ((props.state as IKeyCreateState).data.form.AccessRights) {
+        const index = removeApi.findIndex((a) => a.ApiId === Id);
+        removeApi.splice(index, 1);
+        dispatch(
+          setForms({
+            ...(props.state as IKeyCreateState).data.form,
+            AccessRights: removeApi,
+          })
+        );
+      }
     }
   };
   useEffect(() => {
