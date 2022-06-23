@@ -1,13 +1,37 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import ExpandCollapse from "../../../../../../components/expand-collapse/ExpandCollapse";
-import { useAppSelector } from "../../../../../../store/hooks";
+import {
+  policystate,
+  setForm,
+  setFormError,
+} from "../../../../../../store/features/gateway/policy/create/slice";
+import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import GlobalRateLimit from "../../../common-settings/global-limit/GlobalRateLimit";
+import { IPropsHelper } from "../../../common-settings/global-limit/rate-limit-helper";
 import AccessList from "./api-access-rights/AccessList";
 import ApiAccess from "./api-access/ApiAccess";
 import Partitions from "./partitions/Partitions";
 export default function AccessRights() {
   const state = useAppSelector((RootState) => RootState.createPolicyState);
+  const dispatch = useAppDispatch();
+  const { id } = useParams();
+  const requiredParameters: IPropsHelper = {
+    state,
+    form: state.data.form!,
+    formProp: state.data.form.APIs!,
+    errors: state.data.errors!,
+    errorProp: state.data.errors?.PerApiLimit!,
+    prevState: policystate,
+    propName: "APIs",
+    setForm,
+    setFormError,
+    index: 0,
+    dispatch,
+    id,
+    current: "policy",
+  };
   return (
     <div>
       <div>
@@ -20,7 +44,11 @@ export default function AccessRights() {
             </Row>
             <div className="pt-2" id="accessrightscollapse">
               <AccessList />
-              <GlobalRateLimit state={state} current="policy" />
+              <GlobalRateLimit
+                state={state}
+                current="policy"
+                helper={requiredParameters}
+              />
               <Partitions />
 
               {state.data.form.APIs?.length > 0 ? <ApiAccess /> : <></>}

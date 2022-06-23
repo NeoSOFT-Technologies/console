@@ -93,6 +93,8 @@ export default function CreateKey() {
         state.data.errors?.PerApiLimit.length > 0 &&
         state.data.form.SelectedTabIndex === "chooseApi"
       ) {
+        console.log("errorfirst", validateFieldValue);
+        console.log("erros", state.data.errors);
         for (let i = 0; i < state.data.errors?.PerApiLimit.length; i++) {
           validate = !!(
             validateFieldValue === true &&
@@ -109,6 +111,7 @@ export default function CreateKey() {
             state.data.errors?.PerApiLimit[i].ThrottleInterval === "" &&
             state.data.errors?.PerApiLimit[i].ThrottleRetries === ""
           );
+          console.log("error validate", validate);
         }
       } else {
         validate = !!(validateFieldValue === true);

@@ -6,10 +6,16 @@ import {
   updatePolicyService,
 } from "../../../../../services/gateway/policy/policy";
 import error from "../../../../../utils/error";
+// import { IDGetPolicyByIdData } from "./duplicate-index";
+import { IDGetPolicyByIdData } from "./duplicate-index";
 import { initialState } from "./payload";
 import { IGetPolicyByIdData, IPolicyCreateState } from ".";
 // export const emptyState: IPolicyCreateState = { ...initialState };
+let dataduplicate: IDGetPolicyByIdData;
 function bindPolicyData(state: any, action: any) {
+  console.log("action result", action);
+  state.data.form.Quota = action.payload.Data.MaxQuota;
+  state.data.form.QuotaRenewalRate = action.payload.Data.QuotaRate;
   for (let i = 0; i < action.payload.Data.APIs.length; i++) {
     if (action.payload.Data.APIs[i].Limit !== null) {
       const limits = {
@@ -30,12 +36,32 @@ function bindPolicyData(state: any, action: any) {
     }
   }
 }
+function Insertdata(data: any) {
+  dataduplicate = {
+    APIs: data.APIs,
+    Partitions: data.Partitions,
+    Tags: data.Tags,
+    Active: data.Active,
+    KeyExpiresIn: data.KeyExpiresIn,
+    KeysInactive: data.KeysInactive,
+    MaxQuota: data.Quota,
+    QuotaRate: data.QuotaRenewalRate,
+    Name: data.Name,
+    Per: data.Per,
+    PolicyId: data.PolicyId,
+    Rate: data.Rate,
+    ThrottleInterval: data.ThrottleInterval,
+    ThrottleRetries: data.ThrottleRetries,
+    State: data.State,
+  };
+}
 export let policystate: IPolicyCreateState;
 export const createPolicy = createAsyncThunk(
   "policy",
   async (data: IGetPolicyByIdData) => {
     try {
-      const response = await addPolicyService(data);
+      Insertdata(data);
+      const response = await addPolicyService(dataduplicate);
       // console.log(response);
       return response.data;
     } catch (error_) {
@@ -72,9 +98,8 @@ export const updatePolicy = createAsyncThunk(
   "Policy/Update",
   async (data: IGetPolicyByIdData) => {
     try {
-      const response = await updatePolicyService(data);
-
-      // console.log(response);
+      Insertdata(data);
+      const response = await updatePolicyService(dataduplicate);
       return response.data;
     } catch (error__) {
       const myError = error__ as Error | AxiosError;
@@ -104,11 +129,9 @@ const slice = createSlice({
     });
     builder.addCase(createPolicy.fulfilled, (state) => {
       state.loading = false;
-      // state.data = action.payload;
     });
     builder.addCase(createPolicy.rejected, (state, action) => {
       state.loading = false;
-      // action.payload contains error information
       action.payload = action.error;
       state.error = error(action.payload);
     });
@@ -132,11 +155,9 @@ const slice = createSlice({
     });
     builder.addCase(updatePolicy.fulfilled, (state) => {
       state.loading = false;
-      // state.data = action.payload;
     });
     builder.addCase(updatePolicy.rejected, (state, action) => {
       state.loading = false;
-      // action.payload contains error information
       action.payload = action.error;
       state.error = error(action.payload);
     });

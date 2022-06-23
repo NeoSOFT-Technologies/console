@@ -18,7 +18,6 @@ export default function IpathpermissionKey(props: IProps) {
     (RootState) => RootState.createKeyState
   );
 
-  // const [rowsData, setRowsData] = useState<any>();
   const [inputData, setInputData] = useState<any>({
     path: "",
     method: ["GET"],

@@ -75,7 +75,7 @@ export default function CreatePolicy() {
     if (state.data.form.APIs.length > 0) {
       if (validate) {
         if (id !== undefined) {
-          console.log("update policy checking", policystate);
+          console.log("update policy checking", policystate, state.data.form);
         }
         const result =
           id === undefined
