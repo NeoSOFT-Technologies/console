@@ -43,7 +43,7 @@ interface IColumns {
 
 let id = 0;
 let grid: any;
-
+const defaultPageSize = 10;
 export let refreshGrid: () => void;
 export let setPageLimit: (size: number) => void;
 
@@ -51,7 +51,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
   const _pageSize =
     props.pageSizeList !== undefined && props.pageSizeList.length > 0
       ? props.pageSizeList[0]
-      : 10;
+      : defaultPageSize;
   const [isGridReady, setGridReady] = useState(false);
   const [gridReload, setGridReload] = useState(false);
   const [_count, setCount] = useState(0);
