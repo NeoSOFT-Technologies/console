@@ -11,7 +11,10 @@ import {
   getAllTables,
   setTableData,
 } from "../../../../store/features/saas/manage-table/get-all-tables/slice";
-import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
+import {
+  getTables,
+  setTableList,
+} from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IPagination, ITableSchema } from "../../../../types/saas";
 // import "./style.css";
@@ -54,7 +57,7 @@ export default function ManageTables() {
     setTenantId(tenantID);
     setShowEdit(true);
   };
-  const datalength = allTableData.data?.dataSize;
+  // const datalength = allTableData.data?.dataSize;
 
   console.log(tenantDetaile.data?.tenantId);
 
@@ -96,16 +99,17 @@ export default function ManageTables() {
         );
 
         console.log(newTableList);
-        dispatch(
-          setTableData({ dataSize: datalength, tableList: newTableList })
-        );
+        dispatch(setTableData({ tableList: newTableList }));
         ToastAlert("Table Deleted successfully ", "success");
       } else {
-        const newTableList = TableData.data;
+        const newTableList = TableData.data?.filter((obj) => {
+          return (
+            obj !== deletedTableRecord.tableName ||
+            id !== deletedTableRecord.tenantId
+          );
+        });
         console.log(newTableList);
-        dispatch(
-          setTableData({ dataSize: datalength, tableList: newTableList })
-        );
+        dispatch(setTableList(newTableList));
         ToastAlert("Table Deleted successfully ", "success");
       }
     }
@@ -144,7 +148,7 @@ export default function ManageTables() {
     setDeletedTableRecord({ ...obj });
     handleClose();
   };
-  console.log(TableData);
+  console.log(TableData.data);
   return (
     <div className="createbody card">
       <div className="card-body table-responsive">
