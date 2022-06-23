@@ -3,6 +3,7 @@ import { Button, Col, Dropdown, Modal, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import { RootState } from "../../../../store";
 import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
 import { createTable } from "../../../../store/features/saas/manage-table/create-table/slice";
 import { capacityPlans } from "../../../../store/features/saas/manage-table/get-capacity-plans/slice";
@@ -16,7 +17,11 @@ import {
 import "./style.css";
 
 export default function CreateTables() {
+  const authenticationState = useAppSelector(
+    (state: RootState) => state.loginType
+  );
   const dispatch = useAppDispatch();
+  const tenantDetaile = useAppSelector((state) => state.userData);
   const createtablestate = useAppSelector((state) => state.createTableState);
   const capacityData = useAppSelector((state) => state.capacityPlansState);
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
@@ -340,15 +345,27 @@ export default function CreateTables() {
                         required
                         value={user}
                       >
-                        <option value="">Select Tenant</option>
-                        {tenantDetails.data?.map((val, index) => (
-                          <option
-                            key={`option${index}`}
-                            value={val.id.toString()}
-                          >
-                            {val.tenantName}
-                          </option>
-                        ))}
+                        {authenticationState.data === "tenant" ? (
+                          <>
+                            <option
+                              value={tenantDetaile.data?.tenantId.valueOf()}
+                            >
+                              {tenantDetaile.data?.tenantName}
+                            </option>
+                          </>
+                        ) : (
+                          <>
+                            <option value="">Select Tenant</option>
+                            {tenantDetails.data?.map((val, index) => (
+                              <option
+                                key={`option${index}`}
+                                value={val.id.toString()}
+                              >
+                                {val.tenantName}
+                              </option>
+                            ))}
+                          </>
+                        )}
                       </Form.Select>
                     </Form.Group>
                   </Col>
