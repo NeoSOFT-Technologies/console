@@ -241,7 +241,7 @@ export default function InputData(this: any) {
                         required
                       >
                         {authenticationState.data === "tenant" ? (
-                          <option>{tenantDetail.data?.tenantId}</option>
+                          <option>{tenantDetail.data?.tenantName}</option>
                         ) : (
                           <>
                             <option value="">Select Tenant</option>
