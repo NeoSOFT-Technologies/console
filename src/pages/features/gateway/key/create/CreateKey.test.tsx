@@ -16,6 +16,7 @@ it("render without crashing CreateKey", async () => {
       </Provider>
     </BrowserRouter>
   );
+  expect(screen).toBeDefined();
 });
 
 it("render buttons", async () => {
@@ -35,8 +36,4 @@ it("render buttons", async () => {
   const cancelBtn = screen.getByTestId("cancel-input");
   expect(cancelBtn).toBeInTheDocument();
   fireEvent.click(cancelBtn);
-
-  // const copyBtn = screen.getByTestId("copy-input");
-  // expect(copyBtn).toBeInTheDocument();
-  // fireEvent.click(copyBtn);
 });

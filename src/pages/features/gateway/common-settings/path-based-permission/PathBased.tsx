@@ -1,3 +1,4 @@
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Accordion, AccordionButton } from "react-bootstrap";
 import { useParams } from "react-router-dom";
@@ -11,23 +12,25 @@ import {
 } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
 import {
-  policystate,
+  // policystate,
   setForm,
   setFormError,
 } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
+import { IPropsHelper } from "../global-limit/rate-limit-helper";
 import Ipathpermission from "./path-file";
 import IpathpermissionKey from "./path-file-Key";
 interface IProps {
+  requiredInterface: IPropsHelper;
   state?: IKeyCreateState;
   policystate?: IPolicyCreateState;
   apidata?: any;
   apistate?: any;
   indexdata?: number;
   current: string;
-  setForm: (state: any, action: any) => void;
-  setFormError: (state: any, action: any) => void;
+  setForm: ActionCreatorWithPayload<any, string>;
+  setFormError: ActionCreatorWithPayload<any, string>;
 }
 export default function PathBased(props: IProps) {
   const [isActive, setisActive] = useState<boolean>(false);
@@ -136,10 +139,6 @@ export default function PathBased(props: IProps) {
           props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
         ) {
           setNull();
-          console.log(
-            "hey",
-            props.policystate?.data.form.APIs[props.indexdata!].Limit
-          );
         } else if (
           isActiveApis === true &&
           (props.policystate?.data.form.APIs[props.indexdata!].Limit !== null ||
@@ -235,10 +234,6 @@ export default function PathBased(props: IProps) {
           props.policystate?.data.form.APIs[props.indexdata!].Limit !==
           undefined
         ) {
-          console.log(
-            "hey",
-            props.policystate?.data.form.APIs[props.indexdata!].Limit
-          );
           if (
             props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
           ) {
@@ -265,12 +260,6 @@ export default function PathBased(props: IProps) {
           setisActiveApi(false);
         }
       } else {
-        console.log(
-          "empty data set",
-          props.state?.data.form.AccessRights[props.indexdata!].Limit !==
-            undefined
-        );
-        console.log("empty data set", policystate);
         if (
           props.state?.data.form.AccessRights[props.indexdata!].Limit !==
             null &&
@@ -582,18 +571,9 @@ export default function PathBased(props: IProps) {
                             above unless per Api limits and quotas are set here.
                           </Form.Label>
                         </Form.Group>
-                        {isActiveApi ? (
-                          <GlobalLimitApi
-                            state={props.policystate}
-                            keystate={props.state}
-                            index={props.indexdata}
-                            current={props.current}
-                            setForm={props.setForm}
-                            setFormError={props.setFormError}
-                          />
-                        ) : (
-                          " "
-                        )}
+                        {isActiveApi
+                          ? GlobalLimitApi(props.requiredInterface)
+                          : " "}
                       </Col>
                     </Row>
                   </div>

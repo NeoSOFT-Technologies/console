@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 // import { Button } from "react-bootstrap";
 import { Collapse } from "react-bootstrap";
 import { Link, useNavigate, useLocation, Navigate } from "react-router-dom";
@@ -20,8 +20,10 @@ interface IConditions {
 }
 
 export const Sidebar = () => {
+  const elsa_host = process.env.REACT_APP_ELSA_HOST;
   const location = useLocation();
   const navigate = useNavigate();
+  const myContainer = useRef(document.createElement("iframe"));
   const isPathActive = (path: string) => {
     return location.pathname.startsWith(path);
   };
@@ -60,7 +62,12 @@ export const Sidebar = () => {
     gateway: false,
     saas: false,
   });
-
+  function postCrossDomainMessage(msg: any) {
+    const win = myContainer.current.contentWindow;
+    win!.postMessage(msg, `${elsa_host}`);
+  }
+  const AccessToken: any = JSON.parse(localStorage.getItem("user")!);
+  const postMsg = { login: AccessToken.accessToken }; // this is just example
   return (
     <>
       {" "}
@@ -246,6 +253,30 @@ export const Sidebar = () => {
                   ))}
                 </ul>
               </Collapse>
+            </li>
+            <li className="nav-item">
+              <div className="nav-link">
+                <div className="d-flex justify-content-between w-100 ">
+                  <span className="menu-title lh-2">
+                    <a
+                      href={elsa_host}
+                      target="_blank"
+                      className="text-dark text-decoration-none"
+                      onClick={() => postCrossDomainMessage(postMsg)}
+                      rel="noreferrer"
+                    >
+                      Elsa Workflow
+                      <iframe
+                        style={{ display: "none" }}
+                        src={`${elsa_host}/html/getlocalstorage.html`}
+                        id="ifr"
+                        ref={myContainer}
+                      ></iframe>
+                    </a>
+                  </span>
+                  <i className="bi bi-house-door-fill "></i>
+                </div>
+              </div>
             </li>
           </ul>
         </nav>

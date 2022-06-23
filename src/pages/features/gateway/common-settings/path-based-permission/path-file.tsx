@@ -127,6 +127,7 @@ export default function Ipathpermission(props: IProps) {
             <Form.Control
               type="text"
               id="path"
+              data-testid="path-input"
               placeholder="Enter custom regex"
               name="path"
               onChange={handleAddFormChange}
@@ -149,6 +150,7 @@ export default function Ipathpermission(props: IProps) {
             <Form.Select
               style={{ height: 45 }}
               name="method"
+              data-testid="method-input"
               onChange={handleAddFormChange}
               value={inputData.method[0]}
             >
