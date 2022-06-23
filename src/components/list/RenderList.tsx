@@ -10,6 +10,8 @@ import {
   checkResponse,
   handleNavigation,
   setGridPage,
+  renderPageSizeDropdown,
+  checkGridRendered,
 } from "../../utils/grid-helper";
 
 interface IActionsRenderList {
@@ -29,6 +31,7 @@ interface IProps {
   url: string;
   actions?: IActionsRenderList;
   actionsList?: IActionsRenderList[];
+  pageSizeList?: number[];
 }
 interface IColumns {
   id?: number;
@@ -42,11 +45,18 @@ let id = 0;
 let grid: any;
 
 export let refreshGrid: () => void;
+export let setPageLimit: (size: number) => void;
 
 const RenderList1: React.FC<IProps> = (props: IProps) => {
+  const _pageSize =
+    props.pageSizeList !== undefined && props.pageSizeList.length > 0
+      ? props.pageSizeList[0]
+      : 10;
   const [isGridReady, setGridReady] = useState(false);
   const [gridReload, setGridReload] = useState(false);
   const [_count, setCount] = useState(0);
+  const [isGridRendered, setGridRendered] = useState(false);
+  const [pageSize, setPageSize] = useState(_pageSize);
   const { headings, url, searchBy } = props;
   const columns: IColumns[] = headings.map((heading) => {
     id += 1;
@@ -64,6 +74,13 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     setGridReload(true);
   };
   refreshGrid = _refreshGrid;
+
+  // This will set Grid Page Size based on size selected in dropdown
+  const _setPageLimit = (size: number) => {
+    setPageSize(size);
+    _refreshGrid();
+  };
+  setPageLimit = _setPageLimit;
 
   // This will be used when you want to add single button in the list
   if (props.actions !== undefined) {
@@ -133,7 +150,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
 
   const paginationConfigs = {
     enabled: true,
-    limit: 2,
+    limit: pageSize,
     page: 0, // used to set default selected page
     server: {
       url: (prev: string, page: number) =>
@@ -150,7 +167,6 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
 
   const classNames = {
     table: "table",
-    pagination: "d-flex justify-content-around",
     search: "search-field",
   };
 
@@ -188,12 +204,27 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
           className={classNames}
         />
       );
+      // this will indicate if grid is rendered
+      setGridRendered(checkGridRendered());
       // this will be used to set state value as false for indicating our Grid is refreshed
       setGridReload(false);
       // this will be used to set state value as true for indicating our Grid is ready
       setGridReady(true);
     }
   }, [gridReload]);
+
+  // this will render page size dropdown in grid
+  useEffect(() => {
+    if (
+      isGridRendered &&
+      props.pageSizeList !== undefined &&
+      props.pageSizeList.length > 0
+    ) {
+      renderPageSizeDropdown(props.pageSizeList, _setPageLimit, pageSize);
+      // Reset state once operation completed
+      setGridRendered(false);
+    }
+  }, [isGridRendered]);
 
   return isGridReady ? <div>{grid}</div> : <></>;
 };
