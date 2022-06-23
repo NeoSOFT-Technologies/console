@@ -385,8 +385,18 @@ export default function PathBased(props: IProps) {
       props.policystate?.data.form.APIs!.length > 0
     ) {
       const removeApi = [...props.policystate?.data.form.APIs!];
+      const rowId =
+        props.policystate?.data.form.APIs[index]?.Id +
+        "," +
+        props.policystate?.data.form.APIs[index]?.Name +
+        "," +
+        props.policystate?.data.form.APIs[index]?.AuthType;
+      refreshGrid(rowId);
+      const ApiName = props.policystate?.data.form.APIs[index]?.Name;
 
       removeApi.splice(index, 1);
+
+      ToastAlert(`${ApiName} removed`, "warning");
       dispatch(setForm({ ...props.policystate?.data.form, APIs: removeApi }));
       const error = [...props.policystate?.data.errors?.PerApiLimit!];
       error.splice(index, 1);

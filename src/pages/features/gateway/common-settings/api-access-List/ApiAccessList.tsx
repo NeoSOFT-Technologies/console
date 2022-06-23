@@ -8,7 +8,9 @@ import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IApiListState } from "../../../../../store/features/gateway/api/list";
 import { getApiList } from "../../../../../store/features/gateway/api/list/slice";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create/index";
+import { setForms } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
+import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppSelector, useAppDispatch } from "../../../../../store/hooks";
 
 interface IProps {
@@ -82,7 +84,27 @@ export default function ApiAccessList(props: IProps) {
       }
     }
   }, [props.stateForm.length]);
+  const removeAccess = (Id: string) => {
+    if (props.stateForm) {
+      const removeApi = [...props.stateForm];
+      const index = removeApi.findIndex((a) => a.Id === Id);
+      removeApi.splice(index, 1);
 
+      (props.state as IPolicyCreateState).data.form.APIs
+        ? dispatch(
+            setForm({
+              ...(props.state as IPolicyCreateState).data.form,
+              APIs: removeApi,
+            })
+          )
+        : dispatch(
+            setForms({
+              ...(props.state as IKeyCreateState).data.form,
+              AccessRights: removeApi,
+            })
+          );
+    }
+  };
   useEffect(() => {
     if (
       selectedRows.state.length > 0 &&
@@ -94,6 +116,18 @@ export default function ApiAccessList(props: IProps) {
       handleAddClick(ApiId);
       setApiAuth(auth);
       ToastAlert(`${ApiName} selected`, "success");
+    } else {
+      if (
+        selectedRows.prevState.length > 0 &&
+        selectedRows.state.length < selectedRows.prevState.length &&
+        props.stateForm.length > selectedRows.state.length
+      ) {
+        const filterApiList = selectedRows.prevState.find(
+          (i: any) => !selectedRows!.state.includes(i)
+        );
+        removeAccess(filterApiList.split(",")[0]);
+        ToastAlert(`${filterApiList.split(",")[1]} removed`, "warning");
+      }
     }
   }, [
     id
