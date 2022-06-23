@@ -3,6 +3,7 @@ import { Button, Col, Modal, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+
 import {
   ColNameErrMsg,
   multivaledDataTypes,
@@ -24,6 +25,7 @@ import "./style.css";
 
 export default function CreateTables() {
   const dispatch = useAppDispatch();
+
   const createtablestate = useAppSelector((state) => state.createTableState);
   const capacityData = useAppSelector((state) => state.capacityPlansState);
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
