@@ -15,19 +15,16 @@ import ApiAccessList from "../../../../../common-settings/api-access-List/ApiAcc
 export default function AccessList() {
   const state = useAppSelector((RootState) => RootState.createKeyState);
   const dispatch = useAppDispatch();
-  // let selectedAuthType = "";
   const handleAddClick = async (Id: string) => {
     const data = state.data.form.AccessRights?.some(
       (x: any) => x?.ApiId === Id
     );
     if (!data) {
       const selectedApi = await dispatch(getApiById(Id));
-      // console.log(selectedApi.payload);
       if (
         selectedApi.payload.Data.ApiId === Id &&
         selectedApi.payload.Data.AuthType !== "keyless"
       ) {
-        // selectedAuthType = selectedApi.payload.Data.AuthType;
         const listV: string[] = [];
         for (const element of selectedApi.payload.Data.Versions) {
           listV.push(element.Name);
@@ -56,7 +53,6 @@ export default function AccessList() {
             },
           },
         ];
-        console.log("list access", list);
         dispatch(setForms({ ...state.data.form, AccessRights: list }));
         const error = [...state.data.errors?.PerApiLimit!];
         const perapierror = {
@@ -93,11 +89,11 @@ export default function AccessList() {
           <Accordion defaultActiveKey="0">
             <Accordion.Item eventKey="0">
               <Accordion.Header>Add API Access Rights</Accordion.Header>
-              <Accordion.Body>
+              <Accordion.Body data-testid="accesslist">
                 <ApiAccessList
-                  state={state}
+                  stateForm={state.data.form.AccessRights}
                   handleAddClick={handleAddClick}
-                  // selectedAuthType={selectedAuthType}
+                  state={state}
                 />
               </Accordion.Body>
             </Accordion.Item>

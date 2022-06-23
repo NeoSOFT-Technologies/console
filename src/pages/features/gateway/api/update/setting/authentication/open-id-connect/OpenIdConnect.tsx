@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Form, Col, Row, Button, Table } from "react-bootstrap";
 import Spinner from "../../../../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
+import Tooltips from "../../../../../../../../components/tooltips/Tooltips";
 import {
   setFormErrors,
   regexForIssuer,
@@ -313,15 +314,6 @@ export default function OpenIdConnectAuthentication() {
           <Row>
             <Col
               md={12}
-              className="border bg-warning bg-opacity-10 rounded mb-3  p-2"
-            >
-              Changing the Authentication mode on an Active API can have severe
-              consequences for your users. Please be aware that this will stop
-              the current keys working for this API.
-            </Col>
-
-            <Col
-              md={12}
               className="border bg-info bg-opacity-10 rounded mb-3  p-2"
             >
               API Gateway can transparently handle OpenID connect JWT ID Token,
@@ -334,14 +326,22 @@ export default function OpenIdConnectAuthentication() {
               <div>
                 <h5 className="mt-2">OpenID Connect</h5>
               </div>
-              <br />
-              <b>Add Issuers, clients and policies</b>
-              <br />
               <div>
-                OpenID connect only allows valid issuers and registered client
-                IDs to be validated. Add your issuer below, and for each Client
+                <div className="float-left mt-2">
+                  <b>Add Issuers, clients and policies</b>
+                </div>
+
+                <Tooltips
+                  content="Add your issuer below, and for each Client
                 that is managed by an issuer, add a matching policy that will be
-                applied to tokens registered to that client.
+                applied to tokens registered to that client."
+                />
+                <br />
+                <br />
+                <div>
+                  OpenID connect only allows valid issuers and registered client
+                  IDs to be validated.
+                </div>
               </div>
               <br />
               <Row>

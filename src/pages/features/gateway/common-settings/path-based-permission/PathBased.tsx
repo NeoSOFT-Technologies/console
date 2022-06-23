@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Accordion, AccordionButton } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Spinner from "../../../../../components/loader/Loader";
+import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
+import { refreshGrid } from "../api-access-List/ApiAccessList";
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
 import { IPropsHelper } from "../global-limit/rate-limit-helper";
 import Ipathpermission from "./path-file";
@@ -69,19 +71,6 @@ export default function PathBased(props: IProps) {
         [props.requiredInterface.propName!]: apisList,
       })
     );
-    // props.current === "policy"
-    //   ? dispatch(
-    //       setForm({
-    //         ...props.policystate?.data.form,
-    //         APIs: apisList,
-    //       })
-    //     )
-    //   : dispatch(
-    //       setForms({
-    //         ...props.state?.data.form,
-    //         AccessRights: apisList,
-    //       })
-    //     );
   };
 
   function setfieldsvalues(isActiveApis: any) {
@@ -263,9 +252,39 @@ export default function PathBased(props: IProps) {
   const removeAccess = (event: any, index: any) => {
     event.preventDefault();
     if (props.requiredInterface.formProp!.length > 0) {
+      // const removeApi = [...props.requiredInterface.formProp!];
+      // removeApi.splice(index, 1);
+      // props.requiredInterface.dispatch(
+      //   props.requiredInterface.setForm!({
+      //     ...props.requiredInterface.form,
+      //     [props.requiredInterface.propName!]: removeApi,
+      //   })
+      // );
+      // const error = [...props.requiredInterface.errorProp!];
+      // error.splice(index, 1);
+      // props.requiredInterface.dispatch(
+      //   props.requiredInterface.setFormError!({
+      //     ...props.requiredInterface.errors,
+      //     [props.requiredInterface.errorProp]: error,
+      //   })
+      // );
+    }
+    if (
+      props.requiredInterface.form !== undefined &&
+      props.requiredInterface.formProp!.length > 0
+    ) {
       const removeApi = [...props.requiredInterface.formProp!];
-      removeApi.splice(index, 1);
+      const rowId =
+        props.requiredInterface.formProp[index]?.Id +
+        "," +
+        props.requiredInterface.formProp[index]?.Name +
+        "," +
+        props.requiredInterface.formProp[index]?.AuthType;
+      refreshGrid(rowId);
+      const ApiName = props.requiredInterface.formProp[index]?.Name;
 
+      removeApi.splice(index, 1);
+      ToastAlert(`${ApiName} removed`, "warning");
       props.requiredInterface.dispatch(
         props.requiredInterface.setForm!({
           ...props.requiredInterface.form,
@@ -277,7 +296,7 @@ export default function PathBased(props: IProps) {
       props.requiredInterface.dispatch(
         props.requiredInterface.setFormError!({
           ...props.requiredInterface.errors,
-          [props.requiredInterface.errorProp]: error,
+          PerApiLimit: error,
         })
       );
     }

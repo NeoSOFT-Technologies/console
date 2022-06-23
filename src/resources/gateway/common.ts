@@ -19,3 +19,4 @@ export function setNestedState(e: any, state: any) {
   }
   return newstate;
 }
+export const gridPageSize: number[] = [10, 20, 30, 40, 50];

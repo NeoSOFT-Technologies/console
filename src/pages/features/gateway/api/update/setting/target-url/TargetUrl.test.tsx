@@ -40,11 +40,32 @@ it("render buttons and inputs", () => {
   expect(roudRobinSwitch).toBeInTheDocument();
   fireEvent.change(roudRobinSwitch, { target: { checked: true } });
   expect(roudRobinSwitch).toBeChecked();
-  fireEvent.change(roudRobinSwitch);
+  fireEvent.click(roudRobinSwitch);
 
   const isServiceSwitch = screen.getByTestId("isService-switch");
   expect(isServiceSwitch).toBeInTheDocument();
   fireEvent.change(isServiceSwitch, { target: { checked: true } });
   expect(isServiceSwitch).toBeChecked();
-  fireEvent.change(isServiceSwitch);
+  fireEvent.click(isServiceSwitch);
+});
+
+it("check validations", () => {
+  render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <TargetUrl />
+      </Provider>
+    </BrowserRouter>
+  );
+  const targeturlInput = screen.getByTestId("targetUrl-input");
+  fireEvent.change(targeturlInput, {
+    target: { value: "https://rightUrl.com" },
+  });
+  const targeturl = screen.getByTestId("targetUrlErr");
+  expect(targeturl).toHaveTextContent("");
+
+  const targetUrlInput = screen.getByTestId("targetUrl-input");
+  fireEvent.change(targetUrlInput, { target: { value: "https:wrongUrl" } });
+  const targetUrl = screen.getByTestId("targetUrlErr");
+  expect(targetUrl).toHaveTextContent("Enter a Valid Target URL");
 });

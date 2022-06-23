@@ -14,7 +14,6 @@ export default function Ipathpermission(props: IProps) {
     path: "",
     method: ["GET"],
   });
-  console.log("hey msiter i am here2");
   const [spanError, setspanError] = useState("");
 
   const length = props.r.formProp.length;
@@ -123,6 +122,7 @@ export default function Ipathpermission(props: IProps) {
             <Form.Control
               type="text"
               id="path"
+              data-testid="path-input"
               placeholder="Enter custom regex"
               name="path"
               onChange={HandleAddFormChange}
@@ -145,6 +145,7 @@ export default function Ipathpermission(props: IProps) {
             <Form.Select
               style={{ height: 45 }}
               name="method"
+              data-testid="method-input"
               onChange={HandleAddFormChange}
               value={InputData.method[0]}
             >

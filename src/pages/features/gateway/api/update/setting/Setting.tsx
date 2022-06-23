@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
 import ExpandCollapse from "../../../../../../components/expand-collapse/ExpandCollapse";
-import {
-  generateBreadcrumbs,
-  // generateRefs,
-} from "../../../../../../components/scroll-to/ScrollTo";
-// import { Link } from "react-scroll";
+import { generateBreadcrumbs } from "../../../../../../components/scroll-to/ScrollTo";
 import {
   regexForName,
   setFormData,
@@ -153,7 +149,10 @@ export default function Setting() {
                             isValid={!state.data.errors?.Name}
                             onChange={(e: any) => validateForm(e)}
                           />
-                          <Form.Control.Feedback type="invalid">
+                          <Form.Control.Feedback
+                            type="invalid"
+                            data-testid="nameErr"
+                          >
                             {state.data.errors?.Name}
                           </Form.Control.Feedback>
                         </Form.Group>

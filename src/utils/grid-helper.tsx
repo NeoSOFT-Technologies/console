@@ -1,5 +1,43 @@
 import { h } from "gridjs";
 
+// This will check if grid rendered
+export function checkGridRendered() {
+  let flag = false;
+  const grid = document.querySelector(".gridjs")!;
+  if (grid) {
+    flag = true;
+  }
+  return flag;
+}
+
+// This will add page size dropdown in grid
+export function renderPageSizeDropdown(
+  list: number[],
+  setPageLimit: (size: number) => void,
+  size: number
+) {
+  const paginationFooter = document.querySelector(".gridjs-pages")!;
+  // Create Dropdown
+  const dropdown = document.createElement("select");
+  for (const index in list) {
+    const opt = document.createElement("option");
+    opt.value = list[index].toString();
+    opt.innerHTML = list[index].toString();
+    opt.selected = size === list[index];
+    dropdown.append(opt);
+  }
+  dropdown.className = "gridjs-pagesize";
+  // Bind Event Handler
+  dropdown.addEventListener("change", function () {
+    const value = this.value;
+    setPageLimit(Number.parseInt(value));
+  });
+  const button = document.createElement("button");
+  button.append(dropdown);
+  // Add Dropdown in Grid Pagination Footer
+  paginationFooter.append(button);
+}
+
 // This will be used for handling current selected page after we refresh grid
 export function setGridPage(paginationConfigs: any, _totalCount: number) {
   const selectedPage = document.querySelector(".gridjs-currentPage")?.innerHTML;

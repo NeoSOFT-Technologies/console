@@ -35,8 +35,8 @@ const store = mockStore({
             OverrideTarget: "https://httpbin.org2",
           },
         ],
-        Blacklist: ["192.168.0.0"],
-        Whitelist: ["192.168.0.1"],
+        Blacklist: [process.env.IP_ADDRESS],
+        Whitelist: [process.env.IP_ADDRESS],
         CORS: {
           IsEnabled: false,
           AllowedOrigins: ["https://google.co.in"],
@@ -54,6 +54,7 @@ const store = mockStore({
     },
   },
 });
+store.dispatch = jest.fn();
 it("render without crashing BlackListIPs", () => {
   render(
     <BrowserRouter>
@@ -86,4 +87,6 @@ it("render switch and inputs", () => {
   fireEvent.change(blackListInput, { target: { value: "192.168.0.0" } });
   expect(blackListInput).toHaveValue("192.168.0.0");
   fireEvent.change(blackListInput);
+
+  expect(store.dispatch).toHaveBeenCalledTimes(1);
 });

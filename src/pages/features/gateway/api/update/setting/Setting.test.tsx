@@ -39,7 +39,8 @@ it("render buttons and inputs", () => {
   expect(isActiveSwitch).toBeInTheDocument();
   fireEvent.change(isActiveSwitch, { target: { checked: true } });
   expect(isActiveSwitch).toBeChecked();
-  fireEvent.change(isActiveSwitch);
+  const Active = screen.getByText("Active");
+  expect(Active).toBeVisible();
 
   const apiNameInput = screen.getByTestId("apiName-input");
   expect(apiNameInput).toBeInTheDocument();
@@ -49,4 +50,18 @@ it("render buttons and inputs", () => {
   expect(apiNameInput).toHaveValue("api1");
   fireEvent.change(apiNameInput);
   expect(apiNameInput).toBeEnabled();
+});
+
+it("check validations", () => {
+  render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <Setting />
+      </Provider>
+    </BrowserRouter>
+  );
+  const nameInput = screen.getByTestId("apiName-input");
+  fireEvent.change(nameInput, { target: { value: "123" } });
+  const nameErr = screen.getByTestId("nameErr");
+  expect(nameErr).toHaveTextContent("Enter a valid Api Name");
 });

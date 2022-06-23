@@ -21,7 +21,6 @@ export default function Update() {
     (RootState) => RootState.updateApiState
   );
 
-  console.log("form error :", state.data.errors);
   const dispatch = useAppDispatch();
   const { id } = useParams();
 
@@ -67,7 +66,6 @@ export default function Update() {
     const validateLoad =
       state.data.form.EnableRoundRobin === true &&
       state.data.form.LoadBalancingTargets.length === 0;
-    console.log("val", validateLoad);
 
     if (
       state.data.form.IsVersioningDisabled === false &&

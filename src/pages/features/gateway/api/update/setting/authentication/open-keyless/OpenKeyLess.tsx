@@ -6,14 +6,6 @@ export default function OpenKeyless() {
     <div>
       {
         <>
-          <Col className="border bg-warning bg-opacity-10 rounded mx-2 pb-3 h-60 d-inline-block">
-            <Form.Group className="mt-3  ">
-              Changing the authentication mode on an active API can have severe
-              severe consequences for your users. Please be aware that will stop
-              the current keys working for this API.
-            </Form.Group>
-          </Col>
-          <br />
           <Col className="border bg-info bg-opacity-10 rounded mx-2 pb-3 h-60 d-inline-block">
             <Form.Group className="mt-3  ">
               Keyless access will disable all rating limiting, security checks

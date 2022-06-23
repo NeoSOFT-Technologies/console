@@ -488,7 +488,10 @@ export default function CorsOptions() {
                                 handleAllowedOriginsChange(e)
                               }
                             />
-                            <Form.Control.Feedback type="invalid">
+                            <Form.Control.Feedback
+                              type="invalid"
+                              data-testid="allowedOriginErr"
+                            >
                               {state.data.errors?.AllowedOrigins}
                             </Form.Control.Feedback>
                           </Form.Group>

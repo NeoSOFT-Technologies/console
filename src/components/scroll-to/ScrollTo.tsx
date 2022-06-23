@@ -21,28 +21,32 @@ export const ScrollToTop = () => {
       }
     });
   }, []);
-  const goToTop = () => {
+  const goToTop = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   };
+
   return (
     <div className="top-to-btm">
       {" "}
       {showTopBtn ? (
-        // <button className="btn btn-light float-center" onClick={goToTop}>
         <>
-          <h4
+          <button
+            className="btn btn-md float-end btn-info"
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
-            className="bi bi-arrow-up-square cursor-pointer float-end"
-            onClick={goToTop}
-          ></h4>
-          <div className="float-end">{isHovering && <h5>Go to Top</h5>}</div>
+            onClick={(e) => goToTop(e)}
+          >
+            <i className="bi bi-chevron-up"></i>
+          </button>
+          <div className="float-end mr-1">
+            {isHovering && <span>Go to Top</span>}
+          </div>
         </>
       ) : (
-        // </button>
         <></>
       )}{" "}
     </div>
@@ -50,7 +54,6 @@ export const ScrollToTop = () => {
 };
 
 export const scrollToSection = (elementName: any) => {
-  console.log(window.pageYOffset);
   const yOffset = -70;
   const el = document.querySelector(`#${elementName}`);
   const y = el!.getBoundingClientRect().top + window.pageYOffset + yOffset;
@@ -61,7 +64,6 @@ export const scrollToSection = (elementName: any) => {
 };
 
 export const generateBreadcrumbs = (items: string[]) => {
-  // const bread = useRef<Element>();
   return (
     <Breadcrumb className="breadseparator breadcrumb-item">
       {items.map((crumbs, index) => (
