@@ -84,3 +84,8 @@ export interface IErrorColumnInput {
   name: string;
   tableName?: string;
 }
+export interface IGetDeleteTableByTenant {
+  tenantId: string;
+  pageNumber: string;
+  pageSize: string;
+}
