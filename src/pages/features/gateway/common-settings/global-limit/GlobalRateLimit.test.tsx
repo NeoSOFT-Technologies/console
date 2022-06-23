@@ -71,13 +71,19 @@ it("render buttons", () => {
 
   const rateSwitch = screen.getByTestId("rate-switch");
   expect(rateSwitch).toBeInTheDocument();
+  fireEvent.change(rateSwitch, { target: { checked: true } });
+  expect(rateSwitch).toBeChecked();
   fireEvent.change(rateSwitch);
 
   const throttleSwitch = screen.getByTestId("throttle-switch");
   expect(throttleSwitch).toBeInTheDocument();
+  fireEvent.change(throttleSwitch, { target: { checked: true } });
+  expect(throttleSwitch).toBeChecked();
   fireEvent.change(throttleSwitch);
 
   const quotaSwitch = screen.getByTestId("quota-switch");
   expect(quotaSwitch).toBeInTheDocument();
+  fireEvent.change(quotaSwitch, { target: { checked: true } });
+  expect(quotaSwitch).toBeChecked();
   fireEvent.change(quotaSwitch);
 });

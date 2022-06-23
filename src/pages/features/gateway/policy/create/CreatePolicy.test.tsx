@@ -29,11 +29,11 @@ it("check buttons and input fields", async () => {
   );
   expect(screen).toBeDefined();
 
-  const createBtn = screen.getByTestId("create-input");
+  const createBtn = screen.getByTestId("form-input");
   expect(createBtn).toBeInTheDocument();
   fireEvent.submit(createBtn);
 
   const cancelBtn = screen.getByTestId("cancel-input");
   expect(cancelBtn).toBeInTheDocument();
-  fireEvent.submit(cancelBtn);
+  fireEvent.click(cancelBtn);
 });

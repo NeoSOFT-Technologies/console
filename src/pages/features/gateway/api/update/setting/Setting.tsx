@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
+import ExpandCollapse from "../../../../../../components/expand-collapse/ExpandCollapse";
+import { generateBreadcrumbs } from "../../../../../../components/scroll-to/ScrollTo";
 import {
   regexForName,
   setFormData,
@@ -8,7 +10,6 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import Authentication from "./authentication/Authentication";
 import ListenPath from "./listen-path/ListenPath";
-// import { Accordion } from "react-bootstrap";
 import RateLimit from "./rate-limit/RateLimit";
 import TargetUrl from "./target-url/TargetUrl";
 
@@ -20,7 +21,6 @@ export default function Setting() {
   const [clipboardApiUrl, setClipboardApiUrl] = useState(false);
 
   const hostUrl = process.env.REACT_APP_GATEWAY_HOST || "http://localhost:8080";
-
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
@@ -60,9 +60,16 @@ export default function Setting() {
       console.log(error);
     }
   };
+  // const myRef = useRef<Element>();
 
   return (
-    <div>
+    <>
+      {generateBreadcrumbs([
+        "ListenPath",
+        "TargetUrl",
+        "RateLimit",
+        "Authentication",
+      ])}
       <div className="card">
         <div>
           <div className="align-items-center justify-content-around">
@@ -72,6 +79,7 @@ export default function Setting() {
                   <div>
                     <b>API ID:</b> {state.data.form.ApiId}
                     <i
+                      data-testid="apiIdCopy-button"
                       className="btn btn-sm bi bi-clipboard"
                       onClick={() => copyToClipBoard(state.data.form.ApiId)}
                     ></i>
@@ -88,6 +96,7 @@ export default function Setting() {
                       {hostUrl + state.data.form.ListenPath}
                     </a>
                     <i
+                      data-testid="apiUrlCopy-button"
                       className="btn btn-sm bi bi-clipboard"
                       onClick={() =>
                         copyToClipBoard(hostUrl + state.data.form.ListenPath)
@@ -101,6 +110,7 @@ export default function Setting() {
                 <Form.Group className="mb-3 mt-2 ">
                   <Form.Check
                     className="ml-3"
+                    data-testid="isActive-switch"
                     type="switch"
                     onChange={validateForm}
                     checked={state.data.form.IsActive}
@@ -109,6 +119,8 @@ export default function Setting() {
                     label={state.data.form.IsActive ? "  Active" : "  InActive"}
                   />
                 </Form.Group>
+
+                <ExpandCollapse containerId="settingcollapse" />
               </Col>
             </Row>
 
@@ -127,6 +139,7 @@ export default function Setting() {
 
                           <Form.Control
                             className="mt-2"
+                            data-testid="apiName-input"
                             type="text"
                             id="apiName"
                             placeholder="Enter API Name"
@@ -144,17 +157,19 @@ export default function Setting() {
                     </Col>
                   </Row>
                   <br />
-                  <div>
-                    <ListenPath />
-                  </div>
-                  <div>
-                    <TargetUrl />
-                  </div>
-                  <div>
-                    <RateLimit />
-                  </div>
-                  <div>
-                    <Authentication />
+                  <div id="settingcollapse">
+                    <div id="ListenPath">
+                      <ListenPath />
+                    </div>
+                    <div id="TargetUrl">
+                      <TargetUrl />
+                    </div>
+                    <div id="RateLimit">
+                      <RateLimit />
+                    </div>
+                    <div id="Authentication">
+                      <Authentication />
+                    </div>
                   </div>
                 </Accordion.Body>
               </Accordion.Item>
@@ -162,6 +177,6 @@ export default function Setting() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

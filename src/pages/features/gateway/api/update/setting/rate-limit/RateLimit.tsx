@@ -1,5 +1,6 @@
 import React from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
+import Tooltips from "../../../../../../../components/tooltips/Tooltips";
 import {
   setFormErrors,
   setFormData,
@@ -56,6 +57,7 @@ export default function RateLimit() {
                         <Form.Group className="ml-4 mb-3">
                           <Form.Check
                             type="switch"
+                            data-testid="disableRate-switch"
                             id="disableRate"
                             name="RateLimit.IsDisabled"
                             label="Disable rate limiting"
@@ -65,13 +67,20 @@ export default function RateLimit() {
                         </Form.Group>
                       </Col>
                       <Col md="12">
-                        <i> Global Rate Limiting</i>
-                        <i className="mb-3">
-                          Turn on global rate limit for the whole Api.Key
-                          specific rate limit will still work, but separate Api
-                          global rate limiter will have higher priority and will
-                          be aggregated across all keys.
-                        </i>
+                        <Col md={12}>
+                          <div className="float-left mt-2">
+                            <b>Global Rate Limiting</b>
+                          </div>
+                          <Tooltips
+                            content=" Turn on global rate limit for the whole Api.Key
+                            specific rate limit will still work, but separate Api
+                            global rate limiter will have higher priority and will
+                            be aggregated across all keys."
+                          />
+                        </Col>
+
+                        <br />
+                        <br />
                         <Form.Group className="mb-3">
                           <Form.Label> Rate</Form.Label>
                           <br />
@@ -79,6 +88,7 @@ export default function RateLimit() {
                           <Form.Control
                             className="mt-2"
                             type="text"
+                            data-testid="rate-input"
                             id="rate"
                             placeholder="Enter Rate"
                             name="RateLimit.Rate"
@@ -112,6 +122,7 @@ export default function RateLimit() {
                           <Form.Control
                             className="mt-2"
                             type="text"
+                            data-testid="per-input"
                             id="perSecond"
                             placeholder="Enter time"
                             name="RateLimit.Per"
@@ -137,6 +148,7 @@ export default function RateLimit() {
                         <Form.Group className="ml-4 mb-3">
                           <Form.Check
                             type="switch"
+                            data-testid="disableQuota-switch"
                             id="disableQuotas"
                             name="IsQuotaDisabled"
                             label="Disable quotas"
