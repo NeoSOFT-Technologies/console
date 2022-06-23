@@ -295,7 +295,7 @@ export default function ManageTables() {
       </div>
       <div className="text-right">
         <Button
-          onClick={() => navigate("/saas/add-table")}
+          onClick={() => navigate("/saas/manage-table/add-table")}
           className=" btn-success ml-5 mb-4 mr-4"
         >
           Add New
