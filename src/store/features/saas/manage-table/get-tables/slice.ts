@@ -34,7 +34,13 @@ export const getTables = createAsyncThunk(
 const slice = createSlice({
   name: "getTableSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    setTableList: (state, action) => {
+      state.data = [...action.payload];
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(getTables.pending, (state) => {
       state.data = undefined;
@@ -51,5 +57,6 @@ const slice = createSlice({
     });
   },
 });
+export const { setTableList } = slice.actions;
 
 export default slice.reducer;
