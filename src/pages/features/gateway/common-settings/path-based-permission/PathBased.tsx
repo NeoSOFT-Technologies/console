@@ -17,6 +17,7 @@ import {
   setFormError,
 } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
+import { refreshGrid } from "../api-access-List/ApiAccessList";
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
 import { IPropsHelper } from "../global-limit/rate-limit-helper";
 import Ipathpermission from "./path-file";
@@ -402,7 +403,17 @@ export default function PathBased(props: IProps) {
     ) {
       const removeApi = [...props.state?.data.form.AccessRights!];
 
+      // This will handle grid refresh after delete api
+      const rowId =
+        props.state?.data.form.AccessRights[index]?.ApiId +
+        "," +
+        props.state?.data.form.AccessRights[index]?.ApiName +
+        "," +
+        props.state?.data.form.AccessRights[index]?.AuthType;
+      refreshGrid(rowId);
+
       const ApiName = props.state?.data.form.AccessRights[index]?.ApiName;
+
       removeApi.splice(index, 1);
 
       ToastAlert(`${ApiName} removed`, "warning");
