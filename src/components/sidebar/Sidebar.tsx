@@ -268,7 +268,7 @@ export const Sidebar = () => {
                       Elsa Workflow
                       <iframe
                         style={{ display: "none" }}
-                        src={`${elsa_host}/html/getlocalstorage.html`}
+                        src={`${elsa_host}/getlocalstorage`}
                         id="ifr"
                         ref={myContainer}
                       ></iframe>
