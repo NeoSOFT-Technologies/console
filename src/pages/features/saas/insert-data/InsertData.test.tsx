@@ -3,12 +3,9 @@ import userEvent from "@testing-library/user-event";
 import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-import thunk from "redux-thunk";
 import mockApi from "../../../../resources/tenant/testconfig";
 import store from "../../../../store/index";
 import InsertData from "./InsertData";
-const mockStore = configureStore([thunk]);
 
 describe("SAAS - INSERT DATA Component", () => {
   it("Check if H1 rendered", () => {
@@ -42,34 +39,27 @@ describe("SAAS - INSERT DATA Component", () => {
   });
 
   it("Check entire flow", async () => {
-    const mockStoreStates = {
-      ...store.getState(),
-      loginType: { loading: false, data: "admin" },
-    };
-    const store1 = mockStore(mockStoreStates);
     mockApi.onGet(`/api/tenants`).reply(200, {
-      data: {
-        data: [
-          {
-            id: 1,
-            tenantName: "Tenant1",
-            email: "tenant1@email.com",
-            description: "updated description",
-            databaseName: "tenant1-db",
-            databaseDescription: "tenant1 db",
-            createdDateTime: "2022/05/30 08:28:11",
-          },
-          {
-            id: 2,
-            tenantName: "Tenant2",
-            email: "tenant2@email.org",
-            description: "des",
-            databaseName: "tenant2-db",
-            databaseDescription: "des",
-            createdDateTime: "2022/06/02 10:56:19",
-          },
-        ],
-      },
+      data: [
+        {
+          id: 1,
+          tenantName: "Tenant1",
+          email: "tenant1@email.com",
+          description: "updated description",
+          databaseName: "tenant1-db",
+          databaseDescription: "tenant1 db",
+          createdDateTime: "2022/05/30 08:28:11",
+        },
+        {
+          id: 2,
+          tenantName: "Tenant2",
+          email: "tenant2@email.org",
+          description: "des",
+          databaseName: "tenant2-db",
+          databaseDescription: "des",
+          createdDateTime: "2022/06/02 10:56:19",
+        },
+      ],
       count: 2,
     });
 
@@ -128,7 +118,7 @@ describe("SAAS - INSERT DATA Component", () => {
 
     render(
       <BrowserRouter>
-        <Provider store={store1}>
+        <Provider store={store}>
           <InsertData />
         </Provider>
       </BrowserRouter>

@@ -139,21 +139,27 @@ export default function InputData(this: any) {
   };
 
   useEffect(() => {
+    // THIS IS TRIGGERED WHEN TENANT IS SELECTED FROM THE DROPDOWN
     if (!insertTenant.tenantId) {
       if (authenticationState.data === "admin") dispatch(getTenantDetails());
     } else {
       dispatch(getTables(insertTenant.tenantId));
     }
   }, [insertTenant.tenantId]);
+
   useEffect(() => {
-    if (authenticationState.data === "admin") dispatch(getTenantDetails());
-    else if (tenantDetail.data?.tenantId) {
+    if (tenantDetail.data?.tenantId) {
+      // TENANT
       setInsertTenant({
         ...insertTenant,
         tenantId: tenantDetail.data?.tenantId.toString(),
       });
+    } else {
+      // ADMIN
+      dispatch(getTenantDetails());
     }
   }, []);
+
   // useEffect(() => {
   //   if (insertTenant.tableName) {
   //     dispatch(
