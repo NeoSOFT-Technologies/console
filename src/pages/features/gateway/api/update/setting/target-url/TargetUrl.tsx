@@ -80,7 +80,10 @@ export default function TargetUrl() {
                           onChange={(e: any) => validateForm(e)}
                           required
                         />
-                        <Form.Control.Feedback type="invalid">
+                        <Form.Control.Feedback
+                          type="invalid"
+                          data-testid="targetUrlErr"
+                        >
                           {state.data.errors?.TargetUrl}
                         </Form.Control.Feedback>
                         <i>

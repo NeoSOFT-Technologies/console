@@ -175,7 +175,10 @@ function CreateApi() {
                               onChange={validateForm}
                               required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            <Form.Control.Feedback
+                              type="invalid"
+                              data-testid="nameErr"
+                            >
                               {err.name}
                             </Form.Control.Feedback>
                           </Form.Group>
@@ -195,7 +198,10 @@ function CreateApi() {
                               onChange={validateForm}
                               required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            <Form.Control.Feedback
+                              type="invalid"
+                              data-testid="listenPathErr"
+                            >
                               {err.listenPath}
                             </Form.Control.Feedback>
                           </Form.Group>
@@ -215,7 +221,10 @@ function CreateApi() {
                               onChange={validateForm}
                               required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            <Form.Control.Feedback
+                              type="invalid"
+                              data-testid="targetUrlErr"
+                            >
                               {err.targetUrl}
                             </Form.Control.Feedback>
                           </Form.Group>

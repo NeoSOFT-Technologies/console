@@ -3,30 +3,30 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import store from "../../../../../../../store";
-import AccessList from "./AccessList";
+import store from "../../../../../../../../store";
+import Policies from "./Policies";
 
-it("render without crashing AccessList", () => {
-  render(
+it("render without crashing Policies", async () => {
+  await render(
     <BrowserRouter>
       <Provider store={store}>
-        <AccessList />
+        <Policies />
       </Provider>
     </BrowserRouter>
   );
   expect(screen).toBeDefined();
 });
 
-it("render buttons inputs headers", () => {
-  render(
+it("render buttons and inputs", async () => {
+  await render(
     <BrowserRouter>
       <Provider store={store}>
-        <AccessList />
+        <Policies />
       </Provider>
     </BrowserRouter>
   );
   expect(screen).toBeDefined();
 
-  const rateInput = screen.getByText(/add api access rights/i);
-  expect(rateInput).toBeVisible();
+  const policiesHeading = screen.getByText(/policies/i);
+  expect(policiesHeading).toBeVisible();
 });

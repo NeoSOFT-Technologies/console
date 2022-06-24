@@ -1,13 +1,12 @@
-import { IPolicyCreateState } from "./index";
-
-export const initialState: IPolicyCreateState = {
+import { IDPolicyCreateState } from "./duplicate-index";
+export const initialState: IDPolicyCreateState = {
   data: {
     form: {
       Name: "",
       Active: true,
       KeysInactive: true,
-      Quota: -1,
-      QuotaRenewalRate: -1,
+      MaxQuota: -1,
+      QuotaRate: -1,
       Rate: 0,
       Per: 0,
       ThrottleInterval: -1,
@@ -29,7 +28,6 @@ export const initialState: IPolicyCreateState = {
       Policies: "",
       GlobalLimit: {
         ApiId: "",
-        ApiName: "",
         Per: "",
         Rate: "",
         Quota: "",
@@ -45,4 +43,4 @@ export const initialState: IPolicyCreateState = {
   error: undefined,
 };
 
-export const emptyState: IPolicyCreateState = { ...initialState };
+export const emptyState: IDPolicyCreateState = { ...initialState };

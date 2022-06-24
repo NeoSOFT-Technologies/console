@@ -1,19 +1,19 @@
-export interface IPolicyCreateState {
-  data: ICreateState;
+export interface IDPolicyCreateState {
+  data: IDCreateState;
   loading: boolean;
   error?: string | null;
 }
-export interface ICreateState {
-  form: IGetPolicyByIdData;
-  errors?: IError;
+export interface IDCreateState {
+  form: IDGetPolicyByIdData;
+  errors?: IDError;
 }
-export interface IGetPolicyByIdData {
+export interface IDGetPolicyByIdData {
   PolicyId?: string;
   Name: string;
   Active: boolean;
   KeysInactive: boolean;
-  Quota: number;
-  QuotaRenewalRate: number;
+  MaxQuota: number;
+  QuotaRate: number;
   Rate: number;
   Per: number;
   ThrottleInterval: number;
@@ -61,9 +61,8 @@ export interface IGetPolicyByIdData {
     per_api: boolean;
   };
 }
-export interface Limiting {
+export interface DLimiting {
   ApiId: string;
-  ApiName: string;
   Per: string;
   Rate: string;
   Quota: string;
@@ -73,9 +72,9 @@ export interface Limiting {
   ThrottleRetries: string;
 }
 
-export interface IError {
+export interface IDError {
   Name: "";
   Policies: "";
-  GlobalLimit: Limiting;
-  PerApiLimit: Limiting[];
+  GlobalLimit: DLimiting;
+  PerApiLimit: DLimiting[];
 }
