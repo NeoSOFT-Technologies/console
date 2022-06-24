@@ -96,6 +96,7 @@ export default function InputData(this: any) {
     requestParams: params,
   };
 
+  // JSON DATA VALIADTION FUNCTION
   function isValidJSONObject() {
     try {
       if (
@@ -108,14 +109,15 @@ export default function InputData(this: any) {
         return true;
       } else {
         console.log("JSON object false");
-        return true;
+        return false;
       }
     } catch (error) {
-      alert(error);
-      return true;
+      console.log(error);
+      return false;
     }
   }
 
+  // GET TABLE SCHEMA
   const schemaData = tableSchema.data?.map(
     (val) => '"' + val.name + '" : "' + val.type + '"'
   );
@@ -160,23 +162,13 @@ export default function InputData(this: any) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (insertTenant.tableName) {
-  //     dispatch(
-  //       getTableSchema({
-  //         tableName: insertTenant.tableName,
-  //         tenantId: insertTenant.tenantId,
-  //       })
-  //     );
-  //   }
-  // }, [insertTenant.tableName]);
-
   useEffect(() => {
     if (insertTenant.tableName !== "") {
       dispatch(getTableSchema(params));
     }
   }, [insertTenant.tableName]);
 
+  // DATA INSERT SUCCESFULLY OR NOT
   useEffect(() => {
     if (
       (!inputDataWithNrt.loading &&
