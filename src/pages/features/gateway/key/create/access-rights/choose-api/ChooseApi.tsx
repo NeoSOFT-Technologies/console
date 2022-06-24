@@ -2,6 +2,7 @@ import React from "react";
 import { Row, Col } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import ExpandCollapse from "../../../../../../../components/expand-collapse/ExpandCollapse";
+import { generateBreadcrumbs } from "../../../../../../../components/scroll-to/ScrollTo";
 import {
   keystate,
   setForms,
@@ -40,6 +41,7 @@ export default function ChooseApi() {
   return (
     <div>
       <Row>
+        <Col>{generateBreadcrumbs(["GlobalRateLimit"])}</Col>
         <Col className=".text-left">
           <ExpandCollapse containerId="chooseapicollapse" />
         </Col>

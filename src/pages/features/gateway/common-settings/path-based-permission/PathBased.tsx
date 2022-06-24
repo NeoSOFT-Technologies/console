@@ -307,7 +307,13 @@ export default function PathBased(props: IProps) {
         <Spinner />
       ) : (
         <div className="card mt-4">
-          <Accordion defaultActiveKey="0">
+          <Accordion
+            defaultActiveKey="0"
+            id={
+              props.requiredInterface.formProp[props.requiredInterface.index!]
+                .Name
+            }
+          >
             <Accordion.Item eventKey="0">
               <div style={{ display: "inline-flex", width: "100%" }}>
                 <AccordionButton>
