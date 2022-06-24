@@ -106,6 +106,7 @@ export default function Versions() {
         const errlist = [
           ...state.data.errors?.Versions!,
           {
+            Version: addFormData.Name,
             OverrideTarget: "",
           },
         ];
@@ -143,6 +144,7 @@ export default function Versions() {
       const errlist = [
         ...state.data.errors?.Versions!,
         {
+          Version: addFormData.Name,
           OverrideTarget: "",
         },
       ];
@@ -185,6 +187,7 @@ export default function Versions() {
   const handleTableRowsInputChange = (index: number, event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
+    console.log("name and value:", name, value);
     const errorState = [...state.data.errors?.Versions!];
 
     switch (name) {

@@ -29,6 +29,7 @@ export const initialState: IPolicyCreateState = {
       Policies: "",
       GlobalLimit: {
         ApiId: "",
+        ApiName: "",
         Per: "",
         Rate: "",
         Quota: "",

@@ -21,6 +21,7 @@ export default function AccessList() {
 
     if (!data) {
       const selectedApi = await dispatch(getApiById(Id));
+      console.log("selectedApi", selectedApi);
       if (
         selectedApi.payload.Data.ApiId === Id &&
         selectedApi.payload.Data.AuthType !== "keyless"
@@ -58,6 +59,7 @@ export default function AccessList() {
         const error = [...state.data.errors?.PerApiLimit!];
         const perapierror = {
           ApiId: selectedApi.payload.Data.ApiId,
+          ApiName: selectedApi.payload.Data.Name,
           Per: "",
           Rate: "",
           Quota: "",

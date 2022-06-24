@@ -63,6 +63,7 @@ export const initialState: IKeyCreateState = {
       AccessRights: "",
       GlobalLimit: {
         ApiId: "",
+        ApiName: "",
         Per: "",
         Rate: "",
         Quota: "",

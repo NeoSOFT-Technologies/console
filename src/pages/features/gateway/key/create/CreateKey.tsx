@@ -2,6 +2,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { Button, Form, Modal, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { access, AuthGuard } from "../../../../../components/auth-gaurd";
+import { errorSummary } from "../../../../../components/error-summary/ErrorSummary";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 // import { setFormErrorkey } from "../../../../../resources/gateway/key/key-constants";
@@ -281,6 +282,8 @@ export default function CreateKey() {
                       </div>
                     </div>
                     <div className="card-body pt-2">
+                      <div>{errorSummary(state.data.errors)}</div>
+                      <br />
                       <Tabs
                         // tab-content
                         defaultActiveKey="accessRights"

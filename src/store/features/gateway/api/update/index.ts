@@ -89,6 +89,7 @@ export interface IError {
   OverrideTarget: string;
   Versions: [
     {
+      Version: string;
       OverrideTarget: string;
     }
   ];

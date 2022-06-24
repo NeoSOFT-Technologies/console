@@ -75,6 +75,7 @@ export interface IGetKeyByIdData {
 
 export interface Limiting {
   ApiId: string;
+  ApiName: string;
   Per: string;
   Rate: string;
   Quota: string;

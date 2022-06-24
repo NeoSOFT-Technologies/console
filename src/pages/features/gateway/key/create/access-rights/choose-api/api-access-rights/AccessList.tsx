@@ -61,6 +61,7 @@ export default function AccessList() {
         const error = [...state.data.errors?.PerApiLimit!];
         const perapierror = {
           ApiId: selectedApi.payload.Data.ApiId,
+          ApiName: selectedApi.payload.Data.Name,
           Per: "",
           Rate: "",
           Quota: "",

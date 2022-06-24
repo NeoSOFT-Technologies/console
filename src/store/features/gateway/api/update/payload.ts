@@ -75,6 +75,8 @@ export const initialState: IApiGetByIdState = {
       OverrideTarget: "",
       Versions: [
         {
+          // Version: "Default",
+          Version: "",
           OverrideTarget: "",
         },
       ],
