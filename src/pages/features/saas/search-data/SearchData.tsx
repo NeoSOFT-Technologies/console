@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import { RootState } from "../../../../store";
 import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
 import {
   resetSearchDataWithQueryField,
@@ -32,8 +33,11 @@ export default function GetSearchData() {
   const tableData = useAppSelector((state) => state.getTableState);
   const tableColName = useAppSelector((state) => state.getTableSchemaState);
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
+  const tenantDetail = useAppSelector((state) => state.userData);
   const [checkDisable, setCheckDisable] = useState(false);
-
+  const authenticationState = useAppSelector(
+    (state: RootState) => state.loginType
+  );
   const [searchTenant, setSearchTenant] = useState({
     tenantId: "",
     tableName: "",
@@ -166,24 +170,43 @@ export default function GetSearchData() {
   }, [searchData.data, searchData.error]);
 
   useEffect(() => {
+    //  TENANT IS SELECTED FROM THE DROPDOWN
     const newTableColList: ITableColumnData[] = [];
     dispatch(setTableColNames(newTableColList));
     if (!searchTenant.tenantId) {
       dispatch(resetSearchDataWithQueryField());
-      dispatch(getTenantDetails());
+      if (authenticationState.data === "admin") {
+        dispatch(getTenantDetails());
+      }
+    } else {
+      dispatch(getTables(searchTenant.tenantId));
     }
-    dispatch(getTables(searchTenant.tenantId));
   }, [searchTenant.tenantId]);
   useEffect(() => {
-    dispatch(getTenantDetails());
+    if (authenticationState.data === "admin") {
+      dispatch(getTenantDetails());
+    }
+    // FOR TENANT
+    else if (tenantDetail.data?.tenantId) {
+      setSearchTenant({
+        ...searchTenant,
+        tenantId: tenantDetail.data?.tenantId.toString(),
+      });
+      // FOR ADMIN
+    } else {
+      dispatch(getTenantDetails());
+    }
   }, []);
   useEffect(() => {
-    dispatch(
-      getTableSchema({
-        tableName: searchTenant.tableName,
-        tenantId: searchTenant.tenantId,
-      })
-    );
+    // GET TABLE SCHEMA
+    if (searchTenant.tableName) {
+      dispatch(
+        getTableSchema({
+          tableName: searchTenant.tableName,
+          tenantId: searchTenant.tenantId,
+        })
+      );
+    }
   }, [searchTenant.tableName]);
   useEffect(() => {
     return () => {
@@ -226,12 +249,21 @@ export default function GetSearchData() {
                     onChange={(e) => handleInputChange(e)}
                     data-testid="tenant-name-select"
                   >
-                    <option value="">Select Tenant</option>
-                    {tenantDetails.data?.map((val, index) => (
-                      <option key={`option${index}`} value={val.id?.toString()}>
-                        {val.tenantName}
-                      </option>
-                    ))}
+                    {authenticationState.data === "tenant" ? (
+                      <option>{tenantDetail.data?.tenantName}</option>
+                    ) : (
+                      <>
+                        <option value="">Select Tenant</option>
+                        {tenantDetails.data?.map((val, index) => (
+                          <option
+                            key={`option${index}`}
+                            value={val.id?.toString()}
+                          >
+                            {val.tenantName}
+                          </option>
+                        ))}
+                      </>
+                    )}
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -395,7 +427,7 @@ export default function GetSearchData() {
                               searchData &&
                               searchData.data &&
                               searchData?.data?.length <
-                                Number.parseInt(searchTenant.pageSize)
+                              Number.parseInt(searchTenant.pageSize)
                             ) {
                               return (
                                 <tr key={`row${index}`}>
