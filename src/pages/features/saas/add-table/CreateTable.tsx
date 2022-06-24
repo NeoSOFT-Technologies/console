@@ -330,20 +330,19 @@ export default function CreateTables() {
   useEffect(() => {
     if (!finalTableObj.tenantId) {
       if (authenticationState.data === "admin") dispatch(getTenantDetails());
-      else if (authenticationState.data === "admin")
-        dispatch(getTenantDetails());
-      else if (tenantDetail.data?.tenantId) {
-        setFinalTableObj({
-          ...finalTableObj,
-          tenantId: tenantDetail.data?.tenantId.toString(),
-        });
-      }
     } else {
       dispatch(getTables(finalTableObj.tenantId));
     }
   }, [finalTableObj.tenantId]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (tenantDetail.data?.tenantId) {
+      setFinalTableObj({
+        ...finalTableObj,
+        tenantId: tenantDetail.data?.tenantId.toString(),
+      });
+    } else dispatch(getTenantDetails());
+  }, []);
 
   useEffect(() => {
     dispatch(capacityPlans());
@@ -390,7 +389,9 @@ export default function CreateTables() {
                     value={finalTableObj.tenantId}
                   >
                     {authenticationState.data === "tenant" ? (
-                      <option>{tenantDetail.data?.tenantId}</option>
+                      <option value={tenantDetail.data?.tenantId}>
+                        {tenantDetail.data?.tenantName}
+                      </option>
                     ) : (
                       <>
                         <option value="">Select Tenant</option>

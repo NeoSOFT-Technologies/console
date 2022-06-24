@@ -103,7 +103,9 @@ describe("SAAS - ADD TABLE Component", () => {
     expect(tenantDropdown).toBeInTheDocument();
 
     // SELECT ITEM FROM DROP DOWN
-    userEvent.selectOptions(screen.getByTestId("tenant-name-select"), [""]);
+    userEvent.selectOptions(screen.getByTestId("tenant-name-select"), [
+      "Tenant1",
+    ]);
 
     const tableNameInput = await waitFor(
       () => screen.getByTestId("table-name-input-box"),
