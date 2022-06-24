@@ -39,7 +39,7 @@ describe("SAAS - INSERT DATA Component", () => {
   });
 
   it("Check entire flow", async () => {
-    mockApi.onGet("/api/tenants").reply(200, {
+    mockApi.onGet(`/api/tenants`).reply(200, {
       data: [
         {
           id: 1,

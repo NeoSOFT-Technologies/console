@@ -3,6 +3,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+import { RootState } from "../../../../store";
 import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
 import {
   inputTableDataWithNrt,
@@ -36,12 +37,15 @@ export default function InputData(this: any) {
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
   const tableData = useAppSelector((state) => state.getTableState);
   const tableSchema = useAppSelector((state) => state.getTableSchemaState);
+  const tenantDetail = useAppSelector((state) => state.userData);
+  const authenticationState = useAppSelector(
+    (state: RootState) => state.loginType
+  );
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLSelectElement> | any
   ) => {
     const { name, value } = event.target;
-    console.log(name, value);
     switch (name) {
       case "tenantId": {
         setInsertTenant({
@@ -92,6 +96,7 @@ export default function InputData(this: any) {
     requestParams: params,
   };
 
+  // JSON DATA VALIADTION FUNCTION
   function isValidJSONObject() {
     try {
       if (
@@ -104,14 +109,15 @@ export default function InputData(this: any) {
         return true;
       } else {
         console.log("JSON object false");
-        return true;
+        return false;
       }
     } catch (error) {
-      console.log("error" + error);
-      return true;
+      console.log(error);
+      return false;
     }
   }
 
+  // GET TABLE SCHEMA
   const schemaData = tableSchema.data?.map(
     (val) => '"' + val.name + '" : "' + val.type + '"'
   );
@@ -133,8 +139,27 @@ export default function InputData(this: any) {
       ToastAlert("Invalid Data", "error");
     }
   };
+
   useEffect(() => {
-    dispatch(getTenantDetails());
+    // THIS IS TRIGGERED WHEN TENANT IS SELECTED FROM THE DROPDOWN
+    if (!insertTenant.tenantId) {
+      if (authenticationState.data === "admin") dispatch(getTenantDetails());
+    } else {
+      dispatch(getTables(insertTenant.tenantId));
+    }
+  }, [insertTenant.tenantId]);
+
+  useEffect(() => {
+    if (tenantDetail.data?.tenantId) {
+      // TENANT
+      setInsertTenant({
+        ...insertTenant,
+        tenantId: tenantDetail.data?.tenantId.toString(),
+      });
+    } else {
+      // ADMIN
+      dispatch(getTenantDetails());
+    }
   }, []);
 
   useEffect(() => {
@@ -143,6 +168,7 @@ export default function InputData(this: any) {
     }
   }, [insertTenant.tableName]);
 
+  // DATA INSERT SUCCESFULLY OR NOT
   useEffect(() => {
     if (
       (!inputDataWithNrt.loading &&
@@ -198,7 +224,7 @@ export default function InputData(this: any) {
                 <Row>
                   <Col md="6">
                     <Form.Group className="mb-3">
-                      <Form.Label>Tenant Name :</Form.Label>
+                      <Form.Label>Tenant :</Form.Label>
                       <Form.Select
                         aria-label="Default select example"
                         className="text-center"
@@ -212,15 +238,21 @@ export default function InputData(this: any) {
                         }}
                         required
                       >
-                        <option value="">Select Tenant</option>
-                        {tenantDetails.data?.map((val, index) => (
-                          <option
-                            key={`option${index}`}
-                            value={val.id.toString()}
-                          >
-                            {val.tenantName}
-                          </option>
-                        ))}
+                        {authenticationState.data === "tenant" ? (
+                          <option>{tenantDetail.data?.tenantName}</option>
+                        ) : (
+                          <>
+                            <option value="">Select Tenant</option>
+                            {tenantDetails.data?.map((val, index) => (
+                              <option
+                                key={`option${index}`}
+                                value={val.id?.toString()}
+                              >
+                                {val.tenantName}
+                              </option>
+                            ))}
+                          </>
+                        )}
                       </Form.Select>
                     </Form.Group>
                   </Col>
