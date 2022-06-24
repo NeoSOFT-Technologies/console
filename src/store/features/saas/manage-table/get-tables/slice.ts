@@ -18,7 +18,6 @@ export const getTables = createAsyncThunk(
   async (id: string) => {
     try {
       const response = await getTablesService(id);
-      console.log(response.data);
       return response.data.data;
     } catch (_error: any) {
       let errorMsg = "Undefined Error";
