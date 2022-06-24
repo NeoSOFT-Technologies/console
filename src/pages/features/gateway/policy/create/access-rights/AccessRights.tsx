@@ -2,6 +2,7 @@ import React from "react";
 import { Row, Col } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import ExpandCollapse from "../../../../../../components/expand-collapse/ExpandCollapse";
+import { generateBreadcrumbs } from "../../../../../../components/scroll-to/ScrollTo";
 import {
   policystate,
   setForm,
@@ -38,6 +39,7 @@ export default function AccessRights() {
         <div>
           <div className="align-items-center">
             <Row>
+              <Col>{generateBreadcrumbs(["GlobalRateLimit"])}</Col>
               <Col className=".text-left">
                 <ExpandCollapse containerId="accessrightscollapse" />
               </Col>

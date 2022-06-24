@@ -4,6 +4,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from "../../../../../components/loader/Loader";
+import { scrollToSection } from "../../../../../components/scroll-to/ScrollTo";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IApiListState } from "../../../../../store/features/gateway/api/list";
 import { getApiList } from "../../../../../store/features/gateway/api/list/slice";
@@ -18,6 +19,7 @@ interface IProps {
   stateForm?: any; // any[]
   handleAddClick: (val: any) => void;
 }
+// export let reloadGrid: (Id: string) => void;
 export let refreshGrid: (ApiId: string) => void;
 export default function ApiAccessList(props: IProps) {
   const { handleAddClick } = props;
@@ -27,6 +29,7 @@ export default function ApiAccessList(props: IProps) {
   );
   const [apiAuth, setApiAuth] = useState<string>();
   const [gridReady, setGridReady] = useState(false);
+  // const [gridReload, setGridReload] = useState(false);
   const [_deletedRow, setdeletedRow] = useState<any>([]);
   const [_pluginState, setpluginState] = useState<any>();
   const [selectedRows, setselectedRows] = useState<any>({
@@ -35,21 +38,23 @@ export default function ApiAccessList(props: IProps) {
   });
   let checkboxPlugin: any;
   let prp: any;
-
+  // console.log(gridReload);
   const _refreshGrid = (ApiId: string) => {
     setdeletedRow(ApiId);
   };
   refreshGrid = _refreshGrid;
+  // const _reloadGrid = (Id: string) => {
+  //   if (Id !== undefined) {
+  //     setGridReload(true);
+  //   }
+  // };
+  // reloadGrid = _reloadGrid;
   const dispatch = useAppDispatch();
   const mainCall = async (currentPage: number, pageSize: number) => {
     await dispatch(getApiList({ currentPage, pageSize }));
     setGridReady(true);
   };
-
-  useEffect(() => {
-    // method to get grid list
-    mainCall(1, 100_000);
-
+  const getDataONUpdate = () => {
     // to get selected data on update screen
     if (id && id !== undefined && props.stateForm.length > 0) {
       const arr = [];
@@ -69,40 +74,48 @@ export default function ApiAccessList(props: IProps) {
       }
       setselectedRows({ state: arr, prevState: arr });
     }
+  };
+
+  useEffect(() => {
+    // method to get grid list
+    mainCall(1, 100_000);
+
+    getDataONUpdate();
+    // console.log("apiacess_blank", id, selectedRows);
   }, []);
 
   useEffect(() => {
-    // set auth type fo fiter records
+    // set auth type to fiter records
     props.stateForm.length > 0
       ? setApiAuth(props.stateForm[0].AuthType!)
       : setApiAuth("");
-    if (props.stateForm.length < selectedRows.state.length) {
-      const ar1: string[] = [];
-      for (const iterator of props.stateForm!) {
-        const x = iterator.Id + "," + iterator.Name + "," + iterator.AuthType;
-        ar1.push(x);
-      }
-    }
+    console.log("apiacess_prop", id);
   }, [props.stateForm.length]);
+
   const removeAccess = (Id: string) => {
     if (props.stateForm) {
       const removeApi = [...props.stateForm];
-      const index = removeApi.findIndex((a) => a.Id === Id);
-      removeApi.splice(index, 1);
 
-      (props.state as IPolicyCreateState).data.form.APIs
-        ? dispatch(
-            setForm({
-              ...(props.state as IPolicyCreateState).data.form,
-              APIs: removeApi,
-            })
-          )
-        : dispatch(
-            setForms({
-              ...(props.state as IKeyCreateState).data.form,
-              AccessRights: removeApi,
-            })
-          );
+      if ((props.state as IPolicyCreateState).data.form.APIs) {
+        const index = removeApi.findIndex((a) => a.Id === Id);
+        removeApi.splice(index, 1);
+        dispatch(
+          setForm({
+            ...(props.state as IPolicyCreateState).data.form,
+            APIs: removeApi,
+          })
+        );
+      }
+      if ((props.state as IKeyCreateState).data.form.AccessRights) {
+        const index = removeApi.findIndex((a) => a.ApiId === Id);
+        removeApi.splice(index, 1);
+        dispatch(
+          setForms({
+            ...(props.state as IKeyCreateState).data.form,
+            AccessRights: removeApi,
+          })
+        );
+      }
     }
   };
   useEffect(() => {
@@ -129,13 +142,17 @@ export default function ApiAccessList(props: IProps) {
         ToastAlert(`${filterApiList.split(",")[1]} removed`, "warning");
       }
     }
+    if (id !== undefined) {
+      getDataONUpdate();
+    }
+    console.log("apiacess_inrow", id, selectedRows);
   }, [
     id
       ? selectedRows.state.length === selectedRows.prevState.length ||
         selectedRows
       : selectedRows,
   ]);
-
+  console.log("apiacess", selectedRows);
   const grid = new Grid({
     columns: [
       {
@@ -225,13 +242,24 @@ export default function ApiAccessList(props: IProps) {
       setdeletedRow([]);
     }
   }, [_deletedRow]);
-
+  // useEffect(() => {
+  //   _reloadGrid(id!);
+  //   console.log("reloadGrid", gridReload);
+  // }, [id && id !== undefined && props.stateForm.length > 0]);
   useEffect(() => {
     if (gridReady) {
       mygrid.render(document.querySelector("#gridRender")!);
     }
+    console.log("grideday", id, selectedRows);
   }, [gridReady]);
-
+  // useEffect(() => {
+  //   console.log("useeffect_apiacess", id);
+  //   if (gridReload) {
+  //     mygrid.render(document.querySelector("#gridRender")!);
+  //   }
+  //   setGridReload(false);
+  // }, [id && id !== undefined && props.stateForm.length > 0]);
+  // console.log("apiacess_id", id);
   return (
     <div>
       {gridReady ? <div id="gridRender"></div> : <></>}
@@ -255,7 +283,7 @@ export default function ApiAccessList(props: IProps) {
                     <li
                       key={idx}
                       style={{ cursor: "pointer", color: "blue" }}
-                      onClick={() => console.log(rowId)}
+                      onClick={() => scrollToSection(rowId.split(",")[1])}
                     >
                       {rowId.split(",")[1]}
                     </li>

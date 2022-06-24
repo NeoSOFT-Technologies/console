@@ -48,7 +48,7 @@ export default function GlobalRateLimit(props: IProps) {
     <>
       {props.helper!.state!.loading === false ? (
         <div className="card">
-          <Accordion defaultActiveKey="0">
+          <Accordion defaultActiveKey="0" id="GlobalRateLimit">
             <Accordion.Item eventKey="0">
               <Accordion.Header>Global Limits and Quota</Accordion.Header>
               <Accordion.Body>
