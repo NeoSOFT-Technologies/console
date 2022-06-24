@@ -186,13 +186,13 @@ export default function GetSearchData() {
     if (authenticationState.data === "admin") {
       dispatch(getTenantDetails());
     }
-    // TENANT
+    // FOR TENANT
     else if (tenantDetail.data?.tenantId) {
       setSearchTenant({
         ...searchTenant,
         tenantId: tenantDetail.data?.tenantId.toString(),
       });
-      // ADMIN
+      // FOR ADMIN
     } else {
       dispatch(getTenantDetails());
     }
