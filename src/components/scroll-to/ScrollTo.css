@@ -1,3 +1,10 @@
 .breadseparator .breadcrumb-item + .breadcrumb-item::before {
   content: "|" !important;
 }
+
+.icon-position {
+  position: fixed;
+  bottom: 40px;
+  right: 25px;
+  z-index: 20;
+}

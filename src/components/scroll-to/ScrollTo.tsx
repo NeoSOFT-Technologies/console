@@ -7,6 +7,7 @@ export const ScrollToTop = () => {
 
   const handleMouseOver = () => {
     setIsHovering(true);
+    console.log(isHovering);
   };
 
   const handleMouseOut = () => {
@@ -35,16 +36,16 @@ export const ScrollToTop = () => {
       {showTopBtn ? (
         <>
           <button
-            className="btn btn-md float-end btn-info"
+            className="btn btn-md float-end btn-info icon-position"
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
             onClick={(e) => goToTop(e)}
           >
             <i className="bi bi-chevron-up"></i>
           </button>
-          <div className="float-end mr-1">
+          {/* <div className="float-end mr-1">
             {isHovering && <span>Go to Top</span>}
-          </div>
+          </div> */}
         </>
       ) : (
         <></>
