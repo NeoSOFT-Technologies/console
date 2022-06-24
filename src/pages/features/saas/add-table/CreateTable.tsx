@@ -12,9 +12,11 @@ import {
   tableHeadings,
   TableNameErrMsg,
 } from "../../../../resources/saas/constant";
+import { RootState } from "../../../../store";
 import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
 import { createTable } from "../../../../store/features/saas/manage-table/create-table/slice";
 import { capacityPlans } from "../../../../store/features/saas/manage-table/get-capacity-plans/slice";
+import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
   ICreateTable,
@@ -40,6 +42,10 @@ export default function CreateTables() {
   const [isSortableDisable, setIsSortableDisable] = useState<boolean>(true);
   const [isTypeDisable, setIsTypeDisable] = useState<boolean>(true);
   const [showDataTypes, setShowDataTypes] = useState<string[]>([]);
+  const authenticationState = useAppSelector(
+    (state: RootState) => state.loginType
+  );
+  const tenantDetail = useAppSelector((state) => state.userData);
   const [finalTableObj, setFinalTableObj] = useState<ICreateTable>({
     tenantId: "",
     requestData: {
@@ -322,8 +328,25 @@ export default function CreateTables() {
   };
 
   useEffect(() => {
+    if (!finalTableObj.tenantId) {
+      if (authenticationState.data === "admin") dispatch(getTenantDetails());
+      else if (authenticationState.data === "admin")
+        dispatch(getTenantDetails());
+      else if (tenantDetail.data?.tenantId) {
+        setFinalTableObj({
+          ...finalTableObj,
+          tenantId: tenantDetail.data?.tenantId.toString(),
+        });
+      }
+    } else {
+      dispatch(getTables(finalTableObj.tenantId));
+    }
+  }, [finalTableObj.tenantId]);
+
+  useEffect(() => {}, []);
+
+  useEffect(() => {
     dispatch(capacityPlans());
-    dispatch(getTenantDetails());
   }, []);
 
   useEffect(() => {
@@ -334,6 +357,10 @@ export default function CreateTables() {
       showSuccessMsg
     ) {
       ToastAlert("Table created successfully", "success");
+      setFinalTableObj({
+        tenantId: "",
+        requestData: { tableName: "", sku: "B", columns: [] },
+      });
     }
     if (!createtablestate.loading && createtablestate.error) {
       ToastAlert(createtablestate.error as string, "error");
@@ -362,12 +389,21 @@ export default function CreateTables() {
                     required
                     value={finalTableObj.tenantId}
                   >
-                    <option value="">Select Tenant</option>
-                    {tenantDetails.data?.map((val, index) => (
-                      <option key={`option${index}`} value={val.id.toString()}>
-                        {val.tenantName}
-                      </option>
-                    ))}
+                    {authenticationState.data === "tenant" ? (
+                      <option>{tenantDetail.data?.tenantId}</option>
+                    ) : (
+                      <>
+                        <option value="">Select Tenant</option>
+                        {tenantDetails.data?.map((val, index) => (
+                          <option
+                            key={`option${index}`}
+                            value={val.id?.toString()}
+                          >
+                            {val.tenantName}
+                          </option>
+                        ))}
+                      </>
+                    )}
                   </Form.Select>
                 </Form.Group>
               </Col>
