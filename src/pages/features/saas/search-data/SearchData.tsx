@@ -170,9 +170,9 @@ export default function GetSearchData() {
   }, [searchData.data, searchData.error]);
 
   useEffect(() => {
+    //  TENANT IS SELECTED FROM THE DROPDOWN
     const newTableColList: ITableColumnData[] = [];
     dispatch(setTableColNames(newTableColList));
-
     if (!searchTenant.tenantId) {
       dispatch(resetSearchDataWithQueryField());
 
@@ -183,14 +183,19 @@ export default function GetSearchData() {
   }, [searchTenant.tenantId]);
   useEffect(() => {
     if (authenticationState.data === "admin") dispatch(getTenantDetails());
+    // TENANT
     else if (tenantDetail.data?.tenantId) {
       setSearchTenant({
         ...searchTenant,
         tenantId: tenantDetail.data?.tenantId.toString(),
       });
+      // ADMIN
+    } else {
+      dispatch(getTenantDetails());
     }
   }, []);
   useEffect(() => {
+    // GET TABLE SCHEMA
     if (searchTenant.tableName) {
       dispatch(
         getTableSchema({
