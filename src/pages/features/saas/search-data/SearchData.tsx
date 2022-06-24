@@ -175,14 +175,17 @@ export default function GetSearchData() {
     dispatch(setTableColNames(newTableColList));
     if (!searchTenant.tenantId) {
       dispatch(resetSearchDataWithQueryField());
-
-      if (authenticationState.data === "admin") dispatch(getTenantDetails());
+      if (authenticationState.data === "admin") {
+        dispatch(getTenantDetails());
+      }
     } else {
       dispatch(getTables(searchTenant.tenantId));
     }
   }, [searchTenant.tenantId]);
   useEffect(() => {
-    if (authenticationState.data === "admin") dispatch(getTenantDetails());
+    if (authenticationState.data === "admin") {
+      dispatch(getTenantDetails());
+    }
     // TENANT
     else if (tenantDetail.data?.tenantId) {
       setSearchTenant({
