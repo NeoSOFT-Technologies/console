@@ -1,4 +1,5 @@
 import {
+  IGetDeleteTableByTenant,
   IPagination,
   ISearchDataWithQuery,
   ISearchDataWithQueryField,
@@ -84,6 +85,11 @@ export function getAllDeletedTableService(data: IPagination) {
   );
 }
 
+export function getDeleteTableByTenantService(data: IGetDeleteTableByTenant) {
+  return apiFactory().get(
+    `manage/table/deletion?tenantId=${data.tenantId}&pageNumber=${data.pageNumber}&pageSize=${data.pageSize}`
+  );
+}
 export function getTenantListService() {
   return apiFactory(process.env.REACT_APP_API_BASEURL).get(`/api/tenants`);
 }
