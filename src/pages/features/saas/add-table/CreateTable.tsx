@@ -3,6 +3,7 @@ import { Button, Col, Modal, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
+
 import {
   ColNameErrMsg,
   multivaledDataTypes,
@@ -11,9 +12,11 @@ import {
   tableHeadings,
   TableNameErrMsg,
 } from "../../../../resources/saas/constant";
+import { RootState } from "../../../../store";
 import { getTenantDetails } from "../../../../store/features/saas/input-data/slice";
 import { createTable } from "../../../../store/features/saas/manage-table/create-table/slice";
 import { capacityPlans } from "../../../../store/features/saas/manage-table/get-capacity-plans/slice";
+import { getTables } from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
   ICreateTable,
@@ -24,10 +27,12 @@ import "./style.css";
 
 export default function CreateTables() {
   const dispatch = useAppDispatch();
+
   const createtablestate = useAppSelector((state) => state.createTableState);
   const capacityData = useAppSelector((state) => state.capacityPlansState);
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
   const addColumn = "Add Column";
+  const [selectedColName, setSelectedColName] = useState<string>("");
   const [show, setShow] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [capacityModal, setCapacityModal] = useState(false);
@@ -37,6 +42,10 @@ export default function CreateTables() {
   const [isSortableDisable, setIsSortableDisable] = useState<boolean>(true);
   const [isTypeDisable, setIsTypeDisable] = useState<boolean>(true);
   const [showDataTypes, setShowDataTypes] = useState<string[]>([]);
+  const authenticationState = useAppSelector(
+    (state: RootState) => state.loginType
+  );
+  const tenantDetail = useAppSelector((state) => state.userData);
   const [finalTableObj, setFinalTableObj] = useState<ICreateTable>({
     tenantId: "",
     requestData: {
@@ -62,6 +71,7 @@ export default function CreateTables() {
     });
   const handleClose = () => {
     setError({
+      ...error,
       name: "",
     });
     setShow(false);
@@ -190,7 +200,10 @@ export default function CreateTables() {
         const objIndex: number | any =
           finalTableObj.requestData.columns.findIndex(
             (item: ITableColumnData) =>
-              item.name.toLowerCase() === selectedColumnData.name.toLowerCase()
+              item.name.toLowerCase() ===
+              (selectedColHeading === addColumn
+                ? selectedColumnData.name.toLowerCase()
+                : selectedColName.toLowerCase())
           );
 
         if (selectedColHeading === addColumn) {
@@ -210,9 +223,16 @@ export default function CreateTables() {
             setShow(false);
           }
         } else {
-          if (objIndex > -1) {
+          if (
+            objIndex > -1 &&
+            !finalTableObj.requestData.columns.some(
+              (col) =>
+                col.name.toLowerCase() === selectedColumnData.name.toLowerCase()
+            )
+          ) {
             const newColList: ITableColumnData[] =
               finalTableObj.requestData.columns;
+            setSelectedColName("");
             newColList[objIndex] = selectedColumnData;
             setFinalTableObj({
               ...finalTableObj,
@@ -258,6 +278,7 @@ export default function CreateTables() {
       } else {
         setSelectedColumnData(columData);
         setSelectedColAction("Save Changes");
+        setSelectedColName(columData.name);
         if (columData.multiValue) {
           setShowDataTypes(multivaledDataTypes);
           setIsSortableDisable(true);
@@ -307,8 +328,24 @@ export default function CreateTables() {
   };
 
   useEffect(() => {
+    if (!finalTableObj.tenantId) {
+      if (authenticationState.data === "admin") dispatch(getTenantDetails());
+    } else {
+      dispatch(getTables(finalTableObj.tenantId));
+    }
+  }, [finalTableObj.tenantId]);
+
+  useEffect(() => {
+    if (tenantDetail.data?.tenantId) {
+      setFinalTableObj({
+        ...finalTableObj,
+        tenantId: tenantDetail.data?.tenantId.toString(),
+      });
+    } else dispatch(getTenantDetails());
+  }, []);
+
+  useEffect(() => {
     dispatch(capacityPlans());
-    dispatch(getTenantDetails());
   }, []);
 
   useEffect(() => {
@@ -319,6 +356,10 @@ export default function CreateTables() {
       showSuccessMsg
     ) {
       ToastAlert("Table created successfully", "success");
+      setFinalTableObj({
+        tenantId: "",
+        requestData: { tableName: "", sku: "B", columns: [] },
+      });
     }
     if (!createtablestate.loading && createtablestate.error) {
       ToastAlert(createtablestate.error as string, "error");
@@ -347,12 +388,23 @@ export default function CreateTables() {
                     required
                     value={finalTableObj.tenantId}
                   >
-                    <option value="">Select Tenant</option>
-                    {tenantDetails.data?.map((val, index) => (
-                      <option key={`option${index}`} value={val.id.toString()}>
-                        {val.tenantName}
+                    {authenticationState.data === "tenant" ? (
+                      <option value={tenantDetail.data?.tenantId}>
+                        {tenantDetail.data?.tenantName}
                       </option>
-                    ))}
+                    ) : (
+                      <>
+                        <option value="">Select Tenant</option>
+                        {tenantDetails.data?.map((val, index) => (
+                          <option
+                            key={`option${index}`}
+                            value={val.id?.toString()}
+                          >
+                            {val.tenantName}
+                          </option>
+                        ))}
+                      </>
+                    )}
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -369,6 +421,7 @@ export default function CreateTables() {
                     value={finalTableObj.requestData.tableName}
                     name="tableName"
                     onChange={handleInputChange}
+                    required
                     data-testid="table-name-input-box"
                     isInvalid={!!error.tableName}
                     isValid={
@@ -395,6 +448,7 @@ export default function CreateTables() {
                     data-testid="capacity-plan-dropdown"
                     name="capacityPlan"
                     value={finalTableObj.requestData.sku}
+                    required
                   >
                     {capacityData.data?.map((val: { sku: any }, index: any) => (
                       <option key={`option${index}`} value={val.sku}>
