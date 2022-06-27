@@ -17,7 +17,6 @@ import {
 } from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IPagination, ITableSchema } from "../../../../types/saas";
-// import "./style.css";
 
 export default function ManageTables() {
   const authenticationState = useAppSelector(
@@ -54,10 +53,11 @@ export default function ManageTables() {
   const handleEditClose = () => setShowEdit(false);
   const handleEditShow = (tableName: string, tenantID: string) => {
     settable(tableName);
+    console.log(tableName);
     setTenantId(tenantID);
+    console.log(tenantID);
     setShowEdit(true);
   };
-  // const datalength = allTableData.data?.dataSize;
 
   console.log(tenantDetaile.data?.tenantId);
 
@@ -71,8 +71,6 @@ export default function ManageTables() {
       console.log(allTableData);
     } else {
       dispatch(getTables(id!));
-      console.log(id);
-      console.log(TableData);
     }
 
     return () => {
@@ -287,7 +285,7 @@ export default function ManageTables() {
               </>
             ) : (
               <>
-                <h2>No Data Tenant</h2>
+                <h2>No Data</h2>
               </>
             )}
           </>
@@ -327,7 +325,6 @@ export default function ManageTables() {
           </Button>
         </Modal.Footer>
       </Modal>
-
       <Modal
         show={showEdit}
         data={{ table, tenantId }}
@@ -347,11 +344,12 @@ export default function ManageTables() {
           </Button>
           <Button
             variant="primary"
-            onClick={() =>
+            onClick={() => {
+              console.log(table, tenantId);
               navigate("/saas/manage-table/edit-table", {
                 state: { tableName: table, tenantId },
-              })
-            }
+              });
+            }}
           >
             Yes, Edit
           </Button>
