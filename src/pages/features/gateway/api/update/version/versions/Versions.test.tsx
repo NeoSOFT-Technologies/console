@@ -59,9 +59,13 @@ it("render inputs", () => {
   expect(expiresInput).toBeInTheDocument();
   fireEvent.change(expiresInput);
 
-  const dateInput = screen.getByTestId("name-input");
-  expect(dateInput).toBeInTheDocument();
-  fireEvent.change(dateInput);
+  const nameInput = screen.getByTestId("name-input");
+  expect(nameInput).toBeInTheDocument();
+  fireEvent.change(nameInput, {
+    target: { value: "name" },
+  });
+  expect(nameInput).toHaveValue("name");
+  fireEvent.change(nameInput);
 
   const ExpiresInput = screen.getByTestId("Expires-input");
   expect(ExpiresInput).toBeInTheDocument();
@@ -80,9 +84,25 @@ it("render buttons", () => {
 
   const deleteBtn = screen.getByTestId("delete-button");
   expect(deleteBtn).toBeInTheDocument();
-  fireEvent.change(deleteBtn);
+  fireEvent.click(deleteBtn);
 
   const addBtn = screen.getByTestId("add-button");
   expect(addBtn).toBeInTheDocument();
   fireEvent.change(addBtn);
+});
+
+it("check validations", () => {
+  render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <Versions />
+      </Provider>
+    </BrowserRouter>
+  );
+  const overrideTargetInput = screen.getByTestId("overrideTarget-input");
+  fireEvent.change(overrideTargetInput, { target: { value: "test" } });
+  const overrideTargetErr = screen.getByTestId("overrideTargetErr");
+  expect(overrideTargetErr).toHaveTextContent(
+    "Enter a valid Override Target Host"
+  );
 });

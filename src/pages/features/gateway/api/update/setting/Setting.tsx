@@ -149,7 +149,10 @@ export default function Setting() {
                             isValid={!state.data.errors?.Name}
                             onChange={(e: any) => validateForm(e)}
                           />
-                          <Form.Control.Feedback type="invalid">
+                          <Form.Control.Feedback
+                            type="invalid"
+                            data-testid="nameErr"
+                          >
                             {state.data.errors?.Name}
                           </Form.Control.Feedback>
                         </Form.Group>

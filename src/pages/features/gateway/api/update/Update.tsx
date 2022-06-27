@@ -2,6 +2,7 @@ import React, { FormEvent, useEffect } from "react";
 import { Tab, Tabs, Form } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { access, AuthGuard } from "../../../../../components/auth-gaurd";
+import { errorSummary } from "../../../../../components/error-summary/ErrorSummary";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
@@ -20,6 +21,8 @@ export default function Update() {
   const state: IApiGetByIdState = useAppSelector(
     (RootState) => RootState.updateApiState
   );
+  // console.log("state data:", state.data.form);
+  console.log("state error:", state.data.errors);
 
   const dispatch = useAppDispatch();
   const { id } = useParams();
@@ -191,6 +194,8 @@ export default function Update() {
                     </span>
                   </div>
                   <div className="card-body pt-2">
+                    <div>{errorSummary(state.data.errors)}</div>
+                    <br />
                     <Tabs
                       defaultActiveKey={state.data.form?.SelectedTabIndex}
                       id="uncontrolled-tab"

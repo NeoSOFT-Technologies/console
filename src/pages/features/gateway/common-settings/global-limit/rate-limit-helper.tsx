@@ -6,6 +6,7 @@ import React from "react";
 // const dispatch = useAppDispatch();
 // const { id } = useParams();
 export interface IPropsHelper {
+  state?: any;
   form?: any; // props.state?.data,
   formProp?: any; // props.state?.data.form.APIs
   errors?: any;
@@ -161,7 +162,103 @@ export function setFormValue(props: IPropsHelper, event: any) {
     props.errors
   );
 }
-
+function GlobalupdateValidationInput(
+  attributeName: any,
+  perapi: any,
+  index: number,
+  dispatch: any,
+  setFormError: any,
+  error: any
+) {
+  let perapi1 = { ...perapi };
+  console.log("perapi1", perapi1);
+  perapi1 = {
+    ...perapi1,
+    Rate: attributeName !== "GlobalLimit.IsDisabled" ? perapi1.Rate : "",
+    Per: attributeName !== "GlobalLimit.IsDisabled" ? perapi1.Per : "",
+    ThrottleInterval:
+      attributeName !== "Throttling.IsDisabled" ? perapi1.ThrottleInterval : "",
+    ThrottleRetries:
+      attributeName !== "Throttling.IsDisabled" ? perapi1.ThrottleRetries : "",
+    Quota:
+      attributeName !== "unlimitedRequests.IsDisabled" ? perapi1.Quota : "",
+    QuotaRenewalRate:
+      attributeName !== "unlimitedRequests.IsDisabled"
+        ? perapi1.QuotaRenewalRate
+        : "",
+  };
+  dispatch(
+    setFormError!({
+      ...error,
+      GlobalLimit: perapi1,
+    })
+  );
+}
+export function GlobalsetFormValue(props: IPropsHelper, event: any) {
+  // const attributeName: string = props.event?.target.getAttribute("name")!;
+  const attributeName: string = event?.target.getAttribute("name")!;
+  props.dispatch(
+    props.setForm!({
+      ...props.form,
+      Rate: setValue(
+        attributeName,
+        "GlobalLimit.IsDisabled",
+        props.prevState,
+        props.form.Rate!,
+        props.form.Rate!,
+        props.id
+      ),
+      ThrottleInterval: setValue(
+        attributeName,
+        "Throttling.IsDisabled",
+        props.prevState,
+        props.form.ThrottleInterval!,
+        props.form.ThrottleInterval!,
+        props.id
+      ),
+      ThrottleRetries: setValue(
+        attributeName,
+        "Throttling.IsDisabled",
+        props.prevState,
+        props.form.ThrottleRetries!,
+        props.form.ThrottleRetries!,
+        props.id
+      ),
+      Per: setValue(
+        attributeName,
+        "GlobalLimit.IsDisabled",
+        props.prevState,
+        props.form.Per!,
+        props.form.Per!,
+        props.id
+      ),
+      Quota: setValue(
+        attributeName,
+        "unlimitedRequests.IsDisabled",
+        props.prevState,
+        props.form.Quota!,
+        props.form.Quota!,
+        props.id
+      ),
+      QuotaRenewalRate: setValue(
+        attributeName,
+        "unlimitedRequests.IsDisabled",
+        props.prevState,
+        props.form.QuotaRenewalRate!,
+        props.form.QuotaRenewalRate!,
+        props.id
+      ),
+    })
+  );
+  GlobalupdateValidationInput(
+    attributeName,
+    props.errors.GlobalLimit,
+    props.index!,
+    props.dispatch,
+    props.setFormError,
+    props.errors
+  );
+}
 export function setLabel(props: IPropsHelper) {
   let _label = "";
   if (

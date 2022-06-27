@@ -6,6 +6,7 @@ import RenderList, {
   refreshGrid,
 } from "../../../../../components/list/RenderList";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
+import { gridPageSize } from "../../../../../resources/gateway/common";
 import { emptyState } from "../../../../../store/features/gateway/key/create/payload";
 import {
   setFormErrors,
@@ -155,6 +156,7 @@ export default function KeyList() {
               url={`Key/GetAllKeys?`}
               actionsList={actions}
               searchBy={"Name"}
+              pageSizeList={gridPageSize}
             />
           </div>
         </div>

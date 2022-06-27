@@ -67,7 +67,10 @@ export default function ListenPath() {
                     isValid={!state.data.errors?.ListenPath}
                     onChange={(e: any) => validateForm(e)}
                   />
-                  <Form.Control.Feedback type="invalid">
+                  <Form.Control.Feedback
+                    type="invalid"
+                    data-testid="listenPathErr"
+                  >
                     {state.data.errors?.ListenPath}
                   </Form.Control.Feedback>
                 </Form.Group>

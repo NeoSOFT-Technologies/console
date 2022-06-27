@@ -180,7 +180,7 @@ export default function LoadBalancing() {
               isValid={!state.data.errors?.LoadBalancingTargets}
               onChange={handleFormInputChange}
             />
-            <Form.Control.Feedback type="invalid">
+            <Form.Control.Feedback type="invalid" data-testid="loadTargetErr">
               {state.data.errors?.LoadBalancingTargets}
             </Form.Control.Feedback>
           </Form.Group>

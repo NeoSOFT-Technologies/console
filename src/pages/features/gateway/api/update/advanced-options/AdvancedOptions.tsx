@@ -9,8 +9,15 @@ import WhitelistedIPs from "./whitelisted-ips/WhitelistedIPs";
 export default function AdvancedOptions() {
   return (
     <div>
-      {generateBreadcrumbs(["CorsOptions", "WhitelistedIPs", "BlacklistedIPs"])}
       <Row>
+        <Col className=".text-right">
+          {generateBreadcrumbs([
+            "CorsOptions",
+            "WhitelistedIPs",
+            "BlacklistedIPs",
+          ])}
+        </Col>
+
         <Col className=".text-left">
           <ExpandCollapse containerId="advanceoptionscollapse" />
         </Col>

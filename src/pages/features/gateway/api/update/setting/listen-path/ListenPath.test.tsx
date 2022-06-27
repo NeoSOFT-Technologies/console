@@ -50,11 +50,34 @@ it("render buttons", () => {
   expect(stripListenPathSwitch).toBeInTheDocument();
   fireEvent.change(stripListenPathSwitch, { target: { checked: true } });
   expect(stripListenPathSwitch).toBeChecked();
-  fireEvent.change(stripListenPathSwitch);
+  fireEvent.click(stripListenPathSwitch);
 
   const activatedSwitch = screen.getByTestId("activated-switch");
   expect(activatedSwitch).toBeInTheDocument();
   fireEvent.change(activatedSwitch, { target: { checked: true } });
   expect(activatedSwitch).toBeChecked();
-  fireEvent.change(activatedSwitch);
+  fireEvent.click(activatedSwitch);
+});
+
+it("check validations", () => {
+  render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <ListenPath />
+      </Provider>
+    </BrowserRouter>
+  );
+  const listenPathlInput = screen.getByTestId("listenPath-input");
+  fireEvent.change(listenPathlInput, {
+    target: { value: "/test/" },
+  });
+  const listenPath = screen.getByTestId("listenPathErr");
+  expect(listenPath).toHaveTextContent("");
+
+  const listenpathlInput = screen.getByTestId("listenPath-input");
+  fireEvent.change(listenpathlInput, {
+    target: { value: "test" },
+  });
+  const listenpath = screen.getByTestId("listenPathErr");
+  expect(listenpath).toHaveTextContent("Enter a Valid Listen Path");
 });

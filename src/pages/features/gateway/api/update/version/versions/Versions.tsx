@@ -106,6 +106,7 @@ export default function Versions() {
         const errlist = [
           ...state.data.errors?.Versions!,
           {
+            Version: addFormData.Name,
             OverrideTarget: "",
           },
         ];
@@ -143,6 +144,7 @@ export default function Versions() {
       const errlist = [
         ...state.data.errors?.Versions!,
         {
+          Version: addFormData.Name,
           OverrideTarget: "",
         },
       ];
@@ -185,6 +187,7 @@ export default function Versions() {
   const handleTableRowsInputChange = (index: number, event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
+    console.log("name and value:", name, value);
     const errorState = [...state.data.errors?.Versions!];
 
     switch (name) {
@@ -333,7 +336,10 @@ export default function Versions() {
                       isValid={!state.data.errors?.OverrideTarget}
                       onChange={handleInputChange}
                     />
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Control.Feedback
+                      type="invalid"
+                      data-testid="overrideTargetErr"
+                    >
                       {state.data.errors?.OverrideTarget}
                     </Form.Control.Feedback>
                   </Form.Group>
@@ -433,7 +439,10 @@ export default function Versions() {
                                         handleTableRowsInputChange(index, evnt)
                                       }
                                     />
-                                    <Form.Control.Feedback type="invalid">
+                                    <Form.Control.Feedback
+                                      type="invalid"
+                                      data-testid="overRideTargetErr"
+                                    >
                                       {
                                         state.data.errors?.Versions[index!]
                                           ?.OverrideTarget

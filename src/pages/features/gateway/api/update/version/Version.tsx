@@ -68,7 +68,18 @@ export default function Version() {
       {state.data.form?.IsVersioningDisabled ? (
         <></>
       ) : (
-        <div>{generateBreadcrumbs(["VersionSettings", "Versions"])}</div>
+        // <div>{generateBreadcrumbs(["VersionSettings", "Versions"])}</div>
+        <div>
+          <Row>
+            <Col className=".text-right">
+              <div>{generateBreadcrumbs(["VersionSettings", "Versions"])}</div>
+            </Col>
+
+            <Col className=".text-left">
+              <ExpandCollapse containerId="versioncollapse" />
+            </Col>
+          </Row>
+        </div>
       )}
       {state.data.form.EnableRoundRobin ? (
         <h6>Note: Version doesn&apos;t works with Round-Robin LoadBalacing</h6>
@@ -90,13 +101,14 @@ export default function Version() {
             />
           </Form.Group>
         </Col>
-        {state.data.form?.IsVersioningDisabled ? (
+
+        {/* {state.data.form?.IsVersioningDisabled ? (
           <></>
         ) : (
           <Col md={3}>
             <ExpandCollapse containerId="versioncollapse" />
           </Col>
-        )}
+        )} */}
       </Row>
 
       {state.data.form?.IsVersioningDisabled ? (
