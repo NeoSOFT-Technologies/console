@@ -143,7 +143,9 @@ export default function InputData(this: any) {
   useEffect(() => {
     // THIS IS TRIGGERED WHEN TENANT IS SELECTED FROM THE DROPDOWN
     if (!insertTenant.tenantId) {
-      if (authenticationState.data === "admin") dispatch(getTenantDetails());
+      if (authenticationState.data === "admin") {
+        dispatch(getTenantDetails());
+      }
     } else {
       dispatch(getTables(insertTenant.tenantId));
     }
