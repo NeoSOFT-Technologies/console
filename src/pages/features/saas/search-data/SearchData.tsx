@@ -458,6 +458,8 @@ export default function GetSearchData() {
                                   ))}
                                 </tr>
                               );
+                            } else {
+                              return <></>;
                             }
                           })}
                         {searchValue !== "" &&
