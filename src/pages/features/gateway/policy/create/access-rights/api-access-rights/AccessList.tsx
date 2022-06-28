@@ -1,5 +1,6 @@
 import React from "react";
 import { Accordion, AccordionButton } from "react-bootstrap";
+import Spinner from "../../../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import { getApiById } from "../../../../../../../store/features/gateway/api/update/slice";
 import {
@@ -15,12 +16,12 @@ import ApiAccessList from "../../../../common-settings/api-access-List/ApiAccess
 export default function AccessList() {
   const state = useAppSelector((RootState) => RootState.createPolicyState);
   const dispatch = useAppDispatch();
-
   const handleAddClick = async (Id: string) => {
-    const data = state.data.form.APIs?.some((x) => x?.Id === Id);
+    const data = state.data.form.APIs?.some((x: any) => x?.Id === Id);
 
     if (!data) {
       const selectedApi = await dispatch(getApiById(Id));
+      console.log("selectedApi", selectedApi);
       if (
         selectedApi.payload.Data.ApiId === Id &&
         selectedApi.payload.Data.AuthType !== "keyless"
@@ -58,6 +59,7 @@ export default function AccessList() {
         const error = [...state.data.errors?.PerApiLimit!];
         const perapierror = {
           ApiId: selectedApi.payload.Data.ApiId,
+          ApiName: selectedApi.payload.Data.Name,
           Per: "",
           Rate: "",
           Quota: "",
@@ -88,20 +90,27 @@ export default function AccessList() {
       ToastAlert("Already select...", "error");
     }
   };
-
   return (
     <>
-      <div>
-        <Accordion defaultActiveKey="0">
-          <Accordion.Item eventKey="0">
-            <AccordionButton>Add API Access Rights</AccordionButton>
+      {state.loading ? (
+        <Spinner />
+      ) : (
+        <div>
+          <Accordion defaultActiveKey="0">
+            <Accordion.Item eventKey="0">
+              <AccordionButton>Add API Access Rights</AccordionButton>
 
-            <Accordion.Body>
-              <ApiAccessList state={state} handleAddClick={handleAddClick} />
-            </Accordion.Body>
-          </Accordion.Item>
-        </Accordion>
-      </div>
+              <Accordion.Body>
+                <ApiAccessList
+                  stateForm={state.data.form.APIs}
+                  handleAddClick={handleAddClick}
+                  state={state}
+                />
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+        </div>
+      )}
     </>
   );
 }

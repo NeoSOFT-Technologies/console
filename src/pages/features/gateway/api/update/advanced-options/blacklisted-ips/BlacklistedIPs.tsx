@@ -137,6 +137,7 @@ export default function BlacklistedIPs() {
                         <Form.Group className="mb-3 ml-4">
                           <Form.Check
                             type="switch"
+                            data-testid="blacklist-switch"
                             label="Enable Blacklisted IPs"
                             name="blacklisted"
                             checked={enableBlacklist}
@@ -162,6 +163,7 @@ export default function BlacklistedIPs() {
                               <Form.Group className="mt-0">
                                 <Form.Control
                                   type="text"
+                                  data-testid="blacklist-input"
                                   placeholder="127.0.0.1"
                                   id="blacklist"
                                   name="Blacklist"
@@ -182,6 +184,7 @@ export default function BlacklistedIPs() {
                                 <Form.Label></Form.Label>
                                 <Button
                                   variant="dark"
+                                  data-testid="add-ips"
                                   disabled={!addFormData.Blacklist}
                                   onClick={() => handleAddClick()}
                                 >

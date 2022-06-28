@@ -6,6 +6,7 @@ import RenderList, {
   refreshGrid,
 } from "../../../../../components/list/RenderList";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
+import { gridPageSize } from "../../../../../resources/gateway/common";
 import { deleteApi } from "../../../../../store/features/gateway/api/delete/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
 import {
@@ -109,11 +110,15 @@ export default function APIList() {
         </Modal.Header>
         <Modal.Body>Are you sure you want to delete this Api ?</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCancel}>
+          <Button
+            data-testid="delete-input"
+            variant="secondary"
+            onClick={handleCancel}
+          >
             Cancel
           </Button>
           <Button
-            data-testid="deleteBtn"
+            data-testid="delete-input"
             variant="primary"
             className="btn-danger"
             onClick={() => handleDelete(DeleteApiId!)}
@@ -135,6 +140,7 @@ export default function APIList() {
               >
                 <button
                   type="button"
+                  data-testid="create-input"
                   className=" btn btn-sm btn-success btn-sm d-flex float-right mb-2"
                   onClick={() => NavigateCreateApi()}
                 >
@@ -148,13 +154,14 @@ export default function APIList() {
               </span>
             </div>
           </div>
-          <div className="card-body pt-4">
+          <div className="card-body pt-4" data-testid="row">
             <br />
             <RenderList
               headings={headings}
               url={`ApplicationGateway?`}
               actionsList={actions}
               searchBy={"apiName"}
+              pageSizeList={gridPageSize}
             />
           </div>
         </div>
