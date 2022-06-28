@@ -30,7 +30,9 @@ type LocationState = { tableName: string; tenantId: string };
 export default function EditTable() {
   const dispatch = useAppDispatch();
   const location = useLocation();
+  console.log(location);
   const { tableName, tenantId } = location.state as LocationState;
+
   const tableData = useAppSelector((state) => state.getTableSchemaState);
   const updateTableSchemaState = useAppSelector(
     (state) => state.updateTableSchemaState
@@ -336,7 +338,7 @@ export default function EditTable() {
                     </tbody>
                   </Table>
                 ) : (
-                  <h2 text-center>No Data</h2>
+                  <h2 className="text-center">No Data</h2>
                 )}
               </Col>
             </Row>

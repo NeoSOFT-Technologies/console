@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getDeleteTableByTenantService } from "../../../../../services/saas/api/api";
 import {
+  IAllTableList,
   IGetDeleteTableByTenant,
-  ITableSchema,
 } from "../../../../../types/saas";
 
 interface IGetDeletedTableState {
-  data?: ITableSchema[];
+  data?: IAllTableList;
   loading: boolean;
   error?: string | null;
 }
@@ -21,7 +21,7 @@ export const getDeletedTableByTenant = createAsyncThunk(
   async (data: IGetDeleteTableByTenant) => {
     try {
       const response = await getDeleteTableByTenantService(data);
-      return response.data.tableList;
+      return response.data;
     } catch (_error: any) {
       let errorMsg = "Undefined Error";
       errorMsg =
@@ -36,7 +36,13 @@ export const getDeletedTableByTenant = createAsyncThunk(
 const slice = createSlice({
   name: "getDeleteTableByTenantSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    setDeletedTableList: (state, action) => {
+      state.data = { ...action.payload };
+      state.loading = false;
+      state.error = undefined;
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(getDeletedTableByTenant.pending, (state) => {
       state.data = undefined;
@@ -53,4 +59,5 @@ const slice = createSlice({
     });
   },
 });
+export const { setDeletedTableList } = slice.actions;
 export default slice.reducer;

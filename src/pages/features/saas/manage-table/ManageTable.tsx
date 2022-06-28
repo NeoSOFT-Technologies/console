@@ -17,7 +17,6 @@ import {
 } from "../../../../store/features/saas/manage-table/get-tables/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IPagination, ITableSchema } from "../../../../types/saas";
-// import "./style.css";
 
 export default function ManageTables() {
   const authenticationState = useAppSelector(
@@ -54,25 +53,23 @@ export default function ManageTables() {
   const handleEditClose = () => setShowEdit(false);
   const handleEditShow = (tableName: string, tenantID: string) => {
     settable(tableName);
+
     setTenantId(tenantID);
+
     setShowEdit(true);
   };
-  // const datalength = allTableData.data?.dataSize;
 
   console.log(tenantDetaile.data?.tenantId);
 
   useEffect(() => {
-    if (authenticationState.data !== "tenant") {
+    if (authenticationState.data === "admin") {
       const pageParameters: IPagination = {
         pageNumber: currentPage.toString(),
         pageSize: "6",
       };
       dispatch(getAllTables(pageParameters));
-      console.log(allTableData);
-    } else {
+    } else if (authenticationState.data === "tenant") {
       dispatch(getTables(id!));
-      console.log(id);
-      console.log(TableData);
     }
 
     return () => {
@@ -88,7 +85,7 @@ export default function ManageTables() {
       !deleteTableData.error &&
       deleteTableData?.data
     ) {
-      if (authenticationState.data !== "tenant") {
+      if (authenticationState.data === "admin") {
         const newTableList = allTableData.data?.tableList.filter(
           (obj: { tenantId: string; tableName: string }) => {
             return (
@@ -98,17 +95,16 @@ export default function ManageTables() {
           }
         );
 
-        console.log(newTableList);
         dispatch(setTableData({ tableList: newTableList }));
         ToastAlert("Table Deleted successfully ", "success");
-      } else {
+      } else if (authenticationState.data === "tenant") {
         const newTableList = TableData.data?.filter((obj) => {
           return (
             obj !== deletedTableRecord.tableName ||
             id !== deletedTableRecord.tenantId
           );
         });
-        console.log(newTableList);
+
         dispatch(setTableList(newTableList));
         ToastAlert("Table Deleted successfully ", "success");
       }
@@ -152,7 +148,7 @@ export default function ManageTables() {
   return (
     <div className="createbody card">
       <div className="card-body table-responsive">
-        {authenticationState.data !== "tenant" ? (
+        {authenticationState.data === "admin" ? (
           <>
             <h4 className=" text-center mb-4">Table Details</h4>
 
@@ -287,7 +283,7 @@ export default function ManageTables() {
               </>
             ) : (
               <>
-                <h2>No Data Tenant</h2>
+                <h2>No Data</h2>
               </>
             )}
           </>
@@ -327,7 +323,6 @@ export default function ManageTables() {
           </Button>
         </Modal.Footer>
       </Modal>
-
       <Modal
         show={showEdit}
         data={{ table, tenantId }}
@@ -347,11 +342,11 @@ export default function ManageTables() {
           </Button>
           <Button
             variant="primary"
-            onClick={() =>
+            onClick={() => {
               navigate("/saas/manage-table/edit-table", {
                 state: { tableName: table, tenantId },
-              })
-            }
+              });
+            }}
           >
             Yes, Edit
           </Button>
