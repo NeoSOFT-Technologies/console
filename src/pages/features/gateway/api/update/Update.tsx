@@ -2,6 +2,7 @@ import React, { FormEvent, useEffect } from "react";
 import { Tab, Tabs, Form } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { access, AuthGuard } from "../../../../../components/auth-gaurd";
+import { errorSummary } from "../../../../../components/error-summary/ErrorSummary";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
@@ -14,13 +15,15 @@ import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import AdvancedOptions from "./advanced-options/AdvancedOptions";
 import Setting from "./setting/Setting";
 import Version from "./version/Version";
+import "./update.css";
 
 export default function Update() {
   const state: IApiGetByIdState = useAppSelector(
     (RootState) => RootState.updateApiState
   );
+  // console.log("state data:", state.data.form);
+  console.log("state error:", state.data.errors);
 
-  console.log("form error :", state.data.errors);
   const dispatch = useAppDispatch();
   const { id } = useParams();
 
@@ -66,7 +69,6 @@ export default function Update() {
     const validateLoad =
       state.data.form.EnableRoundRobin === true &&
       state.data.form.LoadBalancingTargets.length === 0;
-    console.log("val", validateLoad);
 
     if (
       state.data.form.IsVersioningDisabled === false &&
@@ -181,6 +183,7 @@ export default function Update() {
                     </AuthGuard>
                     <button
                       className=" btn  btn-sm btn-light btn-md d-flex float-right mb-3"
+                      data-testid="cancel-button"
                       onClick={(e) => NavigateToApisList(e)}
                     >
                       {" "}
@@ -191,14 +194,18 @@ export default function Update() {
                     </span>
                   </div>
                   <div className="card-body pt-2">
+                    <div>{errorSummary(state.data.errors)}</div>
+                    <br />
                     <Tabs
                       defaultActiveKey={state.data.form?.SelectedTabIndex}
                       id="uncontrolled-tab"
+                      data-testid="tabs"
                       // transition={false}
                       className="mb-2 small"
                       onSelect={(k) => setKey(k)}
                     >
                       <Tab
+                        className="mt-0"
                         eventKey="setting"
                         title={
                           <span>

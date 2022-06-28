@@ -6,8 +6,8 @@ export const initialState: IPolicyCreateState = {
       Name: "",
       Active: true,
       KeysInactive: true,
-      MaxQuota: -1,
-      QuotaRate: -1,
+      Quota: -1,
+      QuotaRenewalRate: -1,
       Rate: 0,
       Per: 0,
       ThrottleInterval: -1,
@@ -29,6 +29,7 @@ export const initialState: IPolicyCreateState = {
       Policies: "",
       GlobalLimit: {
         ApiId: "",
+        ApiName: "",
         Per: "",
         Rate: "",
         Quota: "",

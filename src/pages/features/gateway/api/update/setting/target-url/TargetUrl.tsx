@@ -34,16 +34,8 @@ export default function TargetUrl() {
         break;
     }
     setFormData(event, dispatch, state);
-    // console.log("load1", state.data.form.EnableRoundRobin);
   }
 
-  // const [check, setCheck] = useState(false);
-
-  // const enableLoadBalancing = () => {
-  //   if (state.data.form.LoadBalancingTargets.length > 0) {
-  //     setCheck(true);
-  //   } else setCheck(false);
-  // };
   const enableLoadBalancing = () => {
     if (state.data.form.LoadBalancingTargets.length > 0) {
       dispatch(setForm({ ...state.data.form, EnableRoundRobin: true }));
@@ -78,6 +70,7 @@ export default function TargetUrl() {
                         <Form.Control
                           className="mt-2"
                           type="text"
+                          data-testid="targetUrl-input"
                           id="targetUrl"
                           placeholder="Enter Target Url"
                           name="TargetUrl"
@@ -87,7 +80,10 @@ export default function TargetUrl() {
                           onChange={(e: any) => validateForm(e)}
                           required
                         />
-                        <Form.Control.Feedback type="invalid">
+                        <Form.Control.Feedback
+                          type="invalid"
+                          data-testid="targetUrlErr"
+                        >
                           {state.data.errors?.TargetUrl}
                         </Form.Control.Feedback>
                         <i>
@@ -106,6 +102,7 @@ export default function TargetUrl() {
                   <Form.Group className="ml-4 mb-3">
                     <Form.Check
                       type="switch"
+                      data-testid="roundRobin-switch"
                       id="EnableRoundRobin"
                       name="EnableRoundRobin"
                       label="Enable round-robin load balancing"
@@ -141,6 +138,7 @@ export default function TargetUrl() {
                       hidden
                       className="visually-hidden"
                       type="switch"
+                      data-testid="isService-switch"
                       id="IsService"
                       name="IsService"
                       label="Enable service discovery"

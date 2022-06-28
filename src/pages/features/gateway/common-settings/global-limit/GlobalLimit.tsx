@@ -57,6 +57,7 @@ export default function GlobalLimit(props: IProps) {
           QuotaRate: 0,
           Rate: 0,
           Per: 0,
+          QuotaRenewalRate: 0,
           ThrottleInterval: 0,
           ThrottleRetries: 0,
         };
@@ -69,8 +70,8 @@ export default function GlobalLimit(props: IProps) {
           AuthType = a.AuthType!;
           if (a.Limit === null) {
             globalItem.Name = globalItem.Name.concat(a.Name, ",");
-            globalItem.MaxQuota = state.data.form.MaxQuota;
-            globalItem.QuotaRate = state.data.form.QuotaRate;
+            globalItem.MaxQuota = state.data.form.Quota;
+            globalItem.QuotaRate = state.data.form.QuotaRenewalRate;
             globalItem.Rate = state.data.form.Rate;
             globalItem.Per = state.data.form.Per;
             globalItem.ThrottleInterval = state.data.form.ThrottleInterval;
@@ -174,10 +175,6 @@ export default function GlobalLimit(props: IProps) {
                       <Accordion defaultActiveKey="0">
                         <Accordion.Item eventKey="0">
                           <Accordion.Header>
-                            {/* {data === null
-                                ? states.data.form.PolicyByIds![props.index!]
-                                    .global!.Name + "Global Limits and Quota"
-                                : data.Name + " Per Api Limits and Quota"} */}
                             {data.Name}
                             {" |"} <b> &nbsp;Per Api Limits and Quota</b>
                           </Accordion.Header>
@@ -683,7 +680,7 @@ export default function GlobalLimit(props: IProps) {
                                         value={
                                           states.data.form.PolicyByIds![
                                             props.index!
-                                          ].Global!.QuotaRate
+                                          ].Global!.QuotaRenewalRate
                                         }
                                         disabled={true}
                                       >

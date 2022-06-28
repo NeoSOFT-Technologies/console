@@ -1,5 +1,6 @@
 import React from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
+import Tooltips from "../../../../../../../components/tooltips/Tooltips";
 import { setFormData } from "../../../../../../../resources/gateway/api/api-constants";
 import { setForm } from "../../../../../../../store/features/gateway/api/update/slice";
 import {
@@ -48,7 +49,16 @@ export default function Authentication() {
                     <Row>
                       <Col md="12">
                         <Form.Group className="mb-3">
-                          <Form.Label> Authentication mode:</Form.Label>
+                          <Form.Label className="float-left mt-2">
+                            {" "}
+                            Authentication mode:
+                          </Form.Label>
+                          <Tooltips
+                            content="Changing the Authentication mode on an Active API can have severe
+                            consequences for your users. Please be aware that this will stop
+                            the current keys working for this API."
+                          />
+                          <br />
                           <br />
                           <Form.Select
                             aria-label="Default select example"

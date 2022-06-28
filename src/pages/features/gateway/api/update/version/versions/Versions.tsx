@@ -106,6 +106,7 @@ export default function Versions() {
         const errlist = [
           ...state.data.errors?.Versions!,
           {
+            Version: addFormData.Name,
             OverrideTarget: "",
           },
         ];
@@ -143,6 +144,7 @@ export default function Versions() {
       const errlist = [
         ...state.data.errors?.Versions!,
         {
+          Version: addFormData.Name,
           OverrideTarget: "",
         },
       ];
@@ -185,6 +187,7 @@ export default function Versions() {
   const handleTableRowsInputChange = (index: number, event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
+    console.log("name and value:", name, value);
     const errorState = [...state.data.errors?.Versions!];
 
     switch (name) {
@@ -274,6 +277,7 @@ export default function Versions() {
                   <br></br>
                   <Form.Select
                     name="DefaultVersion"
+                    data-testid="version-select"
                     id="defaultVersion"
                     value={state.data.form?.DefaultVersion}
                     onChange={handleFormSelectChange}
@@ -307,6 +311,7 @@ export default function Versions() {
                     </Form.Label>
                     <Form.Control
                       type="text"
+                      data-testid="versionName-input"
                       placeholder="Version name(key value)"
                       id="versionName"
                       name="Name"
@@ -322,6 +327,7 @@ export default function Versions() {
                     </Form.Label>
                     <Form.Control
                       type="text"
+                      data-testid="overrideTarget-input"
                       placeholder="http://override-target.com"
                       id="overrideTarget"
                       name="OverrideTarget"
@@ -330,7 +336,10 @@ export default function Versions() {
                       isValid={!state.data.errors?.OverrideTarget}
                       onChange={handleInputChange}
                     />
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Control.Feedback
+                      type="invalid"
+                      data-testid="overrideTargetErr"
+                    >
                       {state.data.errors?.OverrideTarget}
                     </Form.Control.Feedback>
                   </Form.Group>
@@ -342,6 +351,7 @@ export default function Versions() {
                     </Form.Label>
                     <Form.Control
                       type="date"
+                      data-testid="expires-input"
                       name="Expires"
                       placeholder="Expiring date"
                       value={addFormData.Expires}
@@ -363,6 +373,7 @@ export default function Versions() {
                   <Form.Group className="mb-3">
                     <Button
                       variant="dark"
+                      data-testid="add-button"
                       disabled={!addFormData.Name}
                       onClick={handleAddClick}
                     >
@@ -399,6 +410,7 @@ export default function Versions() {
                                   <td>
                                     <input
                                       type="text"
+                                      data-testid="name-input"
                                       value={Name}
                                       onChange={(evnt) =>
                                         handleTableRowsInputChange(index, evnt)
@@ -410,6 +422,7 @@ export default function Versions() {
                                   <td>
                                     <Form.Control
                                       type="text"
+                                      data-testid="overRideTarget-input"
                                       placeholder="http://override-target.com"
                                       id="overrideTarget"
                                       name="OverrideTarget"
@@ -426,7 +439,10 @@ export default function Versions() {
                                         handleTableRowsInputChange(index, evnt)
                                       }
                                     />
-                                    <Form.Control.Feedback type="invalid">
+                                    <Form.Control.Feedback
+                                      type="invalid"
+                                      data-testid="overRideTargetErr"
+                                    >
                                       {
                                         state.data.errors?.Versions[index!]
                                           ?.OverrideTarget
@@ -436,6 +452,7 @@ export default function Versions() {
                                   <td>
                                     <input
                                       type="date"
+                                      data-testid="Expires-input"
                                       value={beginDate}
                                       onChange={(evnt) =>
                                         handleTableRowsInputChange(index, evnt)
@@ -446,6 +463,7 @@ export default function Versions() {
                                   </td>
                                   <td>
                                     <button
+                                      data-testid="delete-button"
                                       className="btn bi bi-trash-fill"
                                       onClick={(e) => deleteTableRows(e, index)}
                                     ></button>
