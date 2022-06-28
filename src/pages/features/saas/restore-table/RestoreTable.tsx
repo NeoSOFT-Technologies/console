@@ -61,9 +61,9 @@ function RestoreTable() {
       pageNumber: currentPage.toString(),
       pageSize: "6",
     };
-    if (authenticationState.data !== "tenant") {
+    if (authenticationState.data === "admin") {
       dispatch(getAllDeletedTables(pageParameters));
-    } else {
+    } else if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
         tenantId: id!,
         pageNumber: pageParameters.pageNumber,
@@ -85,7 +85,7 @@ function RestoreTable() {
       !restoredTableData.error &&
       restoredTableData?.data
     ) {
-      if (authenticationState.data !== "tenant") {
+      if (authenticationState.data === "admin") {
         const newTableList = allDeleteTableData.data?.tableList.filter(
           (obj) => {
             return (
@@ -98,7 +98,7 @@ function RestoreTable() {
           setDeletedTableData({ dataSize: dataLength, tableList: newTableList })
         );
         ToastAlert("Table restored successfully ", "success");
-      } else {
+      } else if (authenticationState.data === "tenant") {
         const newTableList = TableData.data?.tableList.filter((obj) => {
           return (
             obj.tableName !== restoredTableRecord.tableName ||
@@ -107,7 +107,7 @@ function RestoreTable() {
         });
         console.log(newTableList);
         dispatch(setDeletedTableList({ dataSize, tableList: newTableList }));
-        console.log(dataSize);
+
         ToastAlert("Table Deleted successfully ", "success");
       }
     }
@@ -131,9 +131,9 @@ function RestoreTable() {
       pageNumber: (currentPage - 1).toString(),
       pageSize: "6",
     };
-    if (authenticationState.data !== "tenant") {
+    if (authenticationState.data === "admin") {
       dispatch(getAllDeletedTables(pageParameters));
-    } else {
+    } else if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
         tenantId: id!,
         pageNumber: pageParameters.pageNumber,
@@ -151,9 +151,9 @@ function RestoreTable() {
       pageSize: "6",
     };
 
-    if (authenticationState.data !== "tenant") {
+    if (authenticationState.data === "admin") {
       dispatch(getAllDeletedTables(pageParameters));
-    } else {
+    } else if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
         tenantId: id!,
         pageNumber: pageParameters.pageNumber,
@@ -166,7 +166,7 @@ function RestoreTable() {
   return (
     <div className="createbody card">
       <div className="card-body table-responsive">
-        {authenticationState.data !== "tenant" ? (
+        {authenticationState.data === "admin" ? (
           <>
             <h4 className=" text-center pt-3 mt-3 ">Restore Table Details</h4>
 

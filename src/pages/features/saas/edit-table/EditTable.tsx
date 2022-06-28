@@ -338,7 +338,7 @@ export default function EditTable() {
                     </tbody>
                   </Table>
                 ) : (
-                  <h2 text-center>No Data</h2>
+                  <h2 className="text-center">No Data</h2>
                 )}
               </Col>
             </Row>

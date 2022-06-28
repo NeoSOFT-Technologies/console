@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Navigate, useSearchParams } from "react-router-dom";
+import { Navigate, useLocation, useSearchParams } from "react-router-dom";
 import Error401 from "../../pages/error-pages/Error401";
 import { RootState } from "../../store";
 import { useAppSelector } from "../../store/hooks";
@@ -49,6 +49,7 @@ export const AdminGuard = ({ children }: component) => {
 export const TenantGuard = ({ children }: component) => {
   const [searchParamsTenant, setSearchParamsTenant] = useSearchParams();
   console.log(searchParamsTenant);
+  const location = useLocation();
   const authenticationState = useAppSelector(
     (state: RootState) => state.loginType
   );
@@ -58,7 +59,10 @@ export const TenantGuard = ({ children }: component) => {
     if (userData.data?.tenantName) {
       const currentURL = window.location.pathname.split("/");
       if (currentURL[1] === "tenant" || currentURL[1] === "saas") {
-        setSearchParamsTenant({ tenant: userData.data.tenantName });
+        setSearchParamsTenant(
+          { tenant: userData.data.tenantName },
+          { state: location.state }
+        );
       }
     }
   }, [location.pathname, userData]);
@@ -72,6 +76,7 @@ export const TenantGuard = ({ children }: component) => {
 export const UserGuard = ({ children }: component) => {
   const [searchParamsUser, setSearchParamsUser] = useSearchParams();
   console.log(searchParamsUser);
+  const location = useLocation();
   const authenticationState = useAppSelector(
     (state: RootState) => state.loginType
   );
@@ -81,7 +86,10 @@ export const UserGuard = ({ children }: component) => {
     if (userData.data?.tenantName) {
       const currentURL = window.location.pathname.split("/");
       if (currentURL[1] === "tenant") {
-        setSearchParamsUser({ tenant: userData.data.tenantName });
+        setSearchParamsUser(
+          { tenant: userData.data.tenantName },
+          { state: location.state }
+        );
       }
     }
   }, [location.pathname, userData]);

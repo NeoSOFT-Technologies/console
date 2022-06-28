@@ -53,23 +53,22 @@ export default function ManageTables() {
   const handleEditClose = () => setShowEdit(false);
   const handleEditShow = (tableName: string, tenantID: string) => {
     settable(tableName);
-    console.log(tableName);
+
     setTenantId(tenantID);
-    console.log(tenantID);
+
     setShowEdit(true);
   };
 
   console.log(tenantDetaile.data?.tenantId);
 
   useEffect(() => {
-    if (authenticationState.data !== "tenant") {
+    if (authenticationState.data === "admin") {
       const pageParameters: IPagination = {
         pageNumber: currentPage.toString(),
         pageSize: "6",
       };
       dispatch(getAllTables(pageParameters));
-      console.log(allTableData);
-    } else {
+    } else if (authenticationState.data === "tenant") {
       dispatch(getTables(id!));
     }
 
@@ -86,7 +85,7 @@ export default function ManageTables() {
       !deleteTableData.error &&
       deleteTableData?.data
     ) {
-      if (authenticationState.data !== "tenant") {
+      if (authenticationState.data === "admin") {
         const newTableList = allTableData.data?.tableList.filter(
           (obj: { tenantId: string; tableName: string }) => {
             return (
@@ -96,17 +95,16 @@ export default function ManageTables() {
           }
         );
 
-        console.log(newTableList);
         dispatch(setTableData({ tableList: newTableList }));
         ToastAlert("Table Deleted successfully ", "success");
-      } else {
+      } else if (authenticationState.data === "tenant") {
         const newTableList = TableData.data?.filter((obj) => {
           return (
             obj !== deletedTableRecord.tableName ||
             id !== deletedTableRecord.tenantId
           );
         });
-        console.log(newTableList);
+
         dispatch(setTableList(newTableList));
         ToastAlert("Table Deleted successfully ", "success");
       }
@@ -150,7 +148,7 @@ export default function ManageTables() {
   return (
     <div className="createbody card">
       <div className="card-body table-responsive">
-        {authenticationState.data !== "tenant" ? (
+        {authenticationState.data === "admin" ? (
           <>
             <h4 className=" text-center mb-4">Table Details</h4>
 
@@ -345,7 +343,6 @@ export default function ManageTables() {
           <Button
             variant="primary"
             onClick={() => {
-              console.log(table, tenantId);
               navigate("/saas/manage-table/edit-table", {
                 state: { tableName: table, tenantId },
               });
