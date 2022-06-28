@@ -48,7 +48,9 @@ describe("SAAS - EDIT TABLE Component", () => {
 
   it("Check if fields autofilled using API on component load & entire editing flow", async () => {
     mockApi
-      .onGet("http://localhost:8083/api/v1/manage/table/testTable?tenantId=1")
+      .onGet(
+        "https://iam-dev-saas.neosofttech.com/api/v1/manage/table/testTable?tenantId=1"
+      )
       .reply(200, {
         statusCode: 200,
         message: "Table Information retrieved successfully",
@@ -69,10 +71,14 @@ describe("SAAS - EDIT TABLE Component", () => {
         },
       });
 
-    mockApi.onPut("manage/table/testTable?tenantId=1").reply(200, {
-      statusCode: 200,
-      message: "Table is updated successfully",
-    });
+    mockApi
+      .onPut(
+        "https://iam-dev-saas.neosofttech.com/api/v1/manage/table/testTable?tenantId=1"
+      )
+      .reply(200, {
+        statusCode: 200,
+        message: "Table is updated successfully",
+      });
 
     render(
       <MemoryRouter
