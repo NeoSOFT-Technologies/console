@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createTableService } from "../../../../../services/saas/api/api";
 import { ICreateTable } from "../../../../../types/saas";
+import errorHandler from "../../../../../utils/error-handler";
 
 interface ICreateTableState {
   data?: ICustomeMessage;
   loading: boolean;
-  error?: string | null | ICustomeError;
+  error?: ICustomeError;
 }
 const initialState: ICreateTableState = {
   data: undefined,
@@ -33,11 +34,12 @@ export const createTable = createAsyncThunk(
       );
       return response.data;
     } catch (_error: any) {
-      let errorMsg = "Undefined Error";
-      errorMsg =
-        _error.response.data !== undefined
-          ? _error.response.data.message
-          : _error.message;
+      let errorMsg = errorHandler(_error);
+      // errorMsg =
+      //   _error.response.data !== undefined
+      //     ? _error.response.data.message
+      //     : _error.message;
+
       throw new Error(errorMsg);
     }
   }
@@ -59,7 +61,9 @@ const slice = createSlice({
     });
     builder.addCase(createTable.rejected, (state, action: any) => {
       state.loading = false;
-      state.error = action.error.message;
+      // state.error = action.error.message;
+      const errorMessage = JSON.parse(action.error.message);
+      state.error = errorMessage;
     });
   },
 });

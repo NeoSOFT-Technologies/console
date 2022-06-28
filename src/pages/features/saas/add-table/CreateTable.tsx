@@ -80,7 +80,7 @@ export default function CreateTables() {
     setDeleteModal(false);
   };
   const deleteModalShow = (columData: ITableColumnData) => {
-    if (columData.name.toLowerCase() === "id") {
+    if (columData.name?.toLowerCase() === "id") {
       ToastAlert("Column not allowed to delete", "warning");
     } else {
       setSelectedColumnData(columData);
@@ -362,7 +362,7 @@ export default function CreateTables() {
       });
     }
     if (!createtablestate.loading && createtablestate.error) {
-      ToastAlert(createtablestate.error as string, "error");
+      ToastAlert(createtablestate.error.message, "error");
     }
   }, [createtablestate.loading, createtablestate.error]);
   return (
