@@ -35,11 +35,6 @@ export const createTable = createAsyncThunk(
       return response.data;
     } catch (_error: any) {
       const errorMsg = errorHandler(_error);
-      // errorMsg =
-      //   _error.response.data !== undefined
-      //     ? _error.response.data.message
-      //     : _error.message;
-
       throw new Error(errorMsg);
     }
   }
