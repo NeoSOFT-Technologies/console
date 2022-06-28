@@ -213,6 +213,22 @@ export default function GetSearchData() {
       dispatch(resetSearchDataWithQueryField());
     };
   }, []);
+
+  function getReadableStatus(condition: boolean): string {
+    if (condition) {
+      return "page-item disable";
+    }
+    return "page-link";
+  }
+
+  function getEntriesBy() {
+    return tableColName.data?.map((val, index) => (
+      <option key={`option${index}`} value={val.name}>
+        {val.name}
+      </option>
+    ));
+  }
+
   const searchFilterValue = (search: string) => {
     const results: any[] = [];
     let check = 0;
@@ -300,11 +316,7 @@ export default function GetSearchData() {
                   >
                     <option value="">SearchField</option>
 
-                    {tableColName.data?.map((val, index) => (
-                      <option key={`option${index}`} value={val.name}>
-                        {val.name}
-                      </option>
-                    ))}
+                    {getEntriesBy()}
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -351,11 +363,7 @@ export default function GetSearchData() {
                     data-testid="order-by-select"
                   >
                     <option value="">Order By</option>
-                    {tableColName.data?.map((val, index) => (
-                      <option key={`option${index}`} value={val.name}>
-                        {val.name}
-                      </option>
-                    ))}
+                    {getEntriesBy()}
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -427,7 +435,7 @@ export default function GetSearchData() {
                               searchData &&
                               searchData.data &&
                               searchData?.data?.length <
-                                Number.parseInt(searchTenant.pageSize)
+                              Number.parseInt(searchTenant.pageSize)
                             ) {
                               return (
                                 <tr key={`row${index}`}>
@@ -472,11 +480,10 @@ export default function GetSearchData() {
                       <ul className="pagination ">
                         <li className="page-item">
                           <button
-                            className={
-                              Number.parseInt(startRecord) === 0 || searchValue
-                                ? "page-item disable"
-                                : "page-link  "
-                            }
+                            className={getReadableStatus(
+                              Number.parseInt(startRecord) === 0 ||
+                              !!searchValue
+                            )}
                             disabled={
                               Number.parseInt(startRecord) === 0 ||
                               !!searchValue
@@ -488,11 +495,9 @@ export default function GetSearchData() {
                         </li>
                         <li className="page-item ">
                           <button
-                            className={
-                              checkDisable || searchValue
-                                ? "page-item disable"
-                                : "page-link  "
-                            }
+                            className={getReadableStatus(
+                              checkDisable || !!searchValue
+                            )}
                             disabled={checkDisable || !!searchValue}
                             onClick={() => nextpage()}
                           >
