@@ -435,7 +435,7 @@ export default function GetSearchData() {
                               searchData &&
                               searchData.data &&
                               searchData?.data?.length <
-                              Number.parseInt(searchTenant.pageSize)
+                                Number.parseInt(searchTenant.pageSize)
                             ) {
                               return (
                                 <tr key={`row${index}`}>
@@ -484,7 +484,7 @@ export default function GetSearchData() {
                           <button
                             className={getReadableStatus(
                               Number.parseInt(startRecord) === 0 ||
-                              !!searchValue
+                                !!searchValue
                             )}
                             disabled={
                               Number.parseInt(startRecord) === 0 ||
