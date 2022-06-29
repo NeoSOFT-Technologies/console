@@ -25,7 +25,7 @@ import {
 } from "./../../../../store/features/saas/manage-table/get-table-schema/slice";
 import { getTables } from "./../../../../store/features/saas/manage-table/get-tables/slice";
 
-export default function GetSearchData() {
+export default function SearchData() {
   const dispatch = useAppDispatch();
   const searchData = useAppSelector(
     (state) => state.searchDataWithQueryFieldState
@@ -257,6 +257,95 @@ export default function GetSearchData() {
     });
     setFilterData(results);
   };
+  function checkDataAvilable() {
+    return searchData.data !== undefined && searchData.data.length > 0 ? (
+      <>
+        <hr></hr>
+        <h4 className=" text-center   mt-4 mb-3 ">
+          Table Details: {searchTenant.tableName}
+        </h4>
+        <div className=" mb-3">
+          <input
+            type="search"
+            className=" form-control col-3 "
+            placeholder="search "
+            value={searchValue}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+              searchFilterValue(e.target.value);
+            }}
+          />
+        </div>
+        <div>
+          <Table bordered hover>
+            <thead>
+              <tr>
+                <th>Sr.No</th>
+                {tableHeader.map((val, index) => (
+                  <th key={index}>{val}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {searchValue === "" &&
+                // eslint-disable-next-line array-callback-return
+                searchData.data.map((val, index) => {
+                  if (
+                    searchData &&
+                    searchData.data &&
+                    searchData?.data?.length <
+                      Number.parseInt(searchTenant.pageSize)
+                  ) {
+                    return getTableHeader(index, val);
+                  } else if (
+                    searchData &&
+                    searchData.data &&
+                    index + 1 < searchData?.data?.length
+                  ) {
+                    return getTableHeader(index, val);
+                  } else {
+                    return <></>;
+                  }
+                })}
+              {searchValue !== "" &&
+                filterdata &&
+                filterdata?.map((val, index) => getTableHeader(index, val))}
+            </tbody>
+          </Table>
+          <nav
+            aria-label="Page navigation example "
+            className="d-flex w-100 justify-content-center"
+          >
+            <ul className="pagination ">
+              <li className="page-item">
+                <button
+                  className={getReadableStatus(
+                    Number.parseInt(startRecord) === 0 || !!searchValue
+                  )}
+                  disabled={Number.parseInt(startRecord) === 0 || !!searchValue}
+                  onClick={() => prevpage()}
+                >
+                  Previous
+                </button>
+              </li>
+              <li className="page-item ">
+                <button
+                  className={getReadableStatus(checkDisable || !!searchValue)}
+                  disabled={checkDisable || !!searchValue}
+                  onClick={() => nextpage()}
+                >
+                  Next
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </>
+    ) : (
+      <h2> {msg && "No Data"}</h2>
+    );
+  }
+
   return (
     <div>
       <div className="card">
@@ -409,100 +498,7 @@ export default function GetSearchData() {
         ) : (
           <>
             <div className="card-body table-responsive ">
-              {searchData.data !== undefined && searchData.data.length > 0 ? (
-                <>
-                  <hr></hr>
-                  <h4 className=" text-center   mt-4 mb-3 ">
-                    Table Details: {searchTenant.tableName}
-                  </h4>
-                  <div className=" mb-3">
-                    <input
-                      type="search"
-                      className=" form-control col-3 "
-                      placeholder="search "
-                      value={searchValue}
-                      onChange={(e) => {
-                        setSearchValue(e.target.value);
-                        searchFilterValue(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <Table bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Sr.No</th>
-                          {tableHeader.map((val, index) => (
-                            <th key={index}>{val}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {searchValue === "" &&
-                          // eslint-disable-next-line array-callback-return
-                          searchData.data.map((val, index) => {
-                            if (
-                              searchData &&
-                              searchData.data &&
-                              searchData?.data?.length <
-                                Number.parseInt(searchTenant.pageSize)
-                            ) {
-                              return getTableHeader(index, val);
-                            } else if (
-                              searchData &&
-                              searchData.data &&
-                              index + 1 < searchData?.data?.length
-                            ) {
-                              return getTableHeader(index, val);
-                            } else {
-                              return <></>;
-                            }
-                          })}
-                        {searchValue !== "" &&
-                          filterdata &&
-                          filterdata?.map((val, index) =>
-                            getTableHeader(index, val)
-                          )}
-                      </tbody>
-                    </Table>
-                    <nav
-                      aria-label="Page navigation example "
-                      className="d-flex w-100 justify-content-center"
-                    >
-                      <ul className="pagination ">
-                        <li className="page-item">
-                          <button
-                            className={getReadableStatus(
-                              Number.parseInt(startRecord) === 0 ||
-                                !!searchValue
-                            )}
-                            disabled={
-                              Number.parseInt(startRecord) === 0 ||
-                              !!searchValue
-                            }
-                            onClick={() => prevpage()}
-                          >
-                            Previous
-                          </button>
-                        </li>
-                        <li className="page-item ">
-                          <button
-                            className={getReadableStatus(
-                              checkDisable || !!searchValue
-                            )}
-                            disabled={checkDisable || !!searchValue}
-                            onClick={() => nextpage()}
-                          >
-                            Next
-                          </button>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </>
-              ) : (
-                <h2> {msg && "No Data"}</h2>
-              )}
+              {checkDataAvilable()}
             </div>
           </>
         )}
