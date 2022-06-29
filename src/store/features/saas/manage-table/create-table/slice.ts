@@ -56,7 +56,6 @@ const slice = createSlice({
     });
     builder.addCase(createTable.rejected, (state, action: any) => {
       state.loading = false;
-      // state.error = action.error.message;
       const errorMessage = JSON.parse(action.error.message);
       state.error = errorMessage;
     });
