@@ -143,7 +143,9 @@ export default function InputData(this: any) {
   useEffect(() => {
     // THIS IS TRIGGERED WHEN TENANT IS SELECTED FROM THE DROPDOWN
     if (!insertTenant.tenantId) {
-      if (authenticationState.data === "admin") dispatch(getTenantDetails());
+      if (authenticationState.data === "admin") {
+        dispatch(getTenantDetails());
+      }
     } else {
       dispatch(getTables(insertTenant.tenantId));
     }
@@ -191,14 +193,14 @@ export default function InputData(this: any) {
       insertTenant.isNrtChecked &&
       showMsg
     ) {
-      ToastAlert(inputDataWithNrt.error as string, "error");
+      ToastAlert(inputDataWithNrt.error.message, "error");
     } else if (
       !inputDataWithoutNrt.loading &&
       inputDataWithoutNrt.error &&
       !insertTenant.isNrtChecked &&
       showMsg
     ) {
-      ToastAlert(inputDataWithoutNrt.error as string, "error");
+      ToastAlert(inputDataWithoutNrt.error.message, "error");
     }
   }, [
     inputDataWithNrt.loading,
