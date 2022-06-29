@@ -12,11 +12,15 @@ import {
   setTableData,
 } from "../../../../store/features/saas/manage-table/get-all-tables/slice";
 import {
-  getTables,
-  setTableList,
-} from "../../../../store/features/saas/manage-table/get-tables/slice";
+  getTableswithPage,
+  setTableData1,
+} from "../../../../store/features/saas/manage-table/get-tables-pagination/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { IPagination, ITableSchema } from "../../../../types/saas";
+import {
+  IGetDeleteTableByTenant,
+  IPagination,
+  ITableSchema,
+} from "../../../../types/saas";
 
 export default function ManageTables() {
   const authenticationState = useAppSelector(
@@ -36,12 +40,11 @@ export default function ManageTables() {
   });
   const tenantDetaile = useAppSelector((state) => state.userData);
   const allTableData = useAppSelector((state) => state.getAllTableState);
-  const TableData = useAppSelector((state) => state.getTableState);
-
-  const id = tenantDetaile.data?.tenantId?.toString();
+  const TableData = useAppSelector((state) => state.getTablesWithPageState);
   const deleteTableData = useAppSelector(
     (state) => state.deleteTableSchemaState
   );
+  const id = tenantDetaile.data?.tenantId?.toString();
 
   const handleClose = () => setShow(false);
   const handleShow = (tableName: string, tenantID: string) => {
@@ -59,19 +62,23 @@ export default function ManageTables() {
     setShowEdit(true);
   };
 
-  console.log(tenantDetaile.data?.tenantId);
-
+  const dataLength = allTableData.data?.dataSize;
+  const dataSize = TableData.data?.dataSize;
   useEffect(() => {
+    const pageParameters: IPagination = {
+      pageNumber: currentPage.toString(),
+      pageSize: "6",
+    };
     if (authenticationState.data === "admin") {
-      const pageParameters: IPagination = {
-        pageNumber: currentPage.toString(),
-        pageSize: "6",
-      };
       dispatch(getAllTables(pageParameters));
     } else if (authenticationState.data === "tenant") {
-      dispatch(getTables(id!));
+      const parameters: IGetDeleteTableByTenant = {
+        tenantId: id!,
+        pageNumber: pageParameters.pageNumber,
+        pageSize: pageParameters.pageSize,
+      };
+      dispatch(getTableswithPage(parameters));
     }
-
     return () => {
       dispatch(deleteTableReset());
     };
@@ -95,17 +102,22 @@ export default function ManageTables() {
           }
         );
 
-        dispatch(setTableData({ tableList: newTableList }));
+        dispatch(
+          setTableData({ dataSize: dataLength, tableList: newTableList })
+        );
         ToastAlert("Table Deleted successfully ", "success");
       } else if (authenticationState.data === "tenant") {
-        const newTableList = TableData.data?.filter((obj) => {
-          return (
-            obj !== deletedTableRecord.tableName ||
-            id !== deletedTableRecord.tenantId
-          );
-        });
+        const newTableList = TableData.data?.tableList.filter(
+          (obj: { tenantId: string; tableName: string }) => {
+            return (
+              obj.tenantId !== deletedTableRecord.tenantId ||
+              obj.tableName !== deletedTableRecord.tableName
+            );
+          }
+        );
 
-        dispatch(setTableList(newTableList));
+        dispatch(setTableData1({ dataSize, tableList: newTableList }));
+        console.log(dataSize);
         ToastAlert("Table Deleted successfully ", "success");
       }
     }
@@ -123,8 +135,16 @@ export default function ManageTables() {
       pageNumber: (currentPage - 1).toString(),
       pageSize: "6",
     };
-
-    dispatch(getAllTables(pageParameters));
+    if (authenticationState.data === "admin") {
+      dispatch(getAllTables(pageParameters));
+    } else if (authenticationState.data === "tenant") {
+      const parameters: IGetDeleteTableByTenant = {
+        tenantId: id!,
+        pageNumber: pageParameters.pageNumber,
+        pageSize: pageParameters.pageSize,
+      };
+      dispatch(getTableswithPage(parameters));
+    }
   };
 
   const nextpage = (currentPage1: number) => {
@@ -136,15 +156,24 @@ export default function ManageTables() {
       pageNumber: (currentPage + 1).toString(),
       pageSize: "6",
     };
-
-    dispatch(getAllTables(pageParameters));
+    if (authenticationState.data === "admin") {
+      dispatch(getAllTables(pageParameters));
+    } else if (authenticationState.data === "tenant") {
+      const parameters: IGetDeleteTableByTenant = {
+        tenantId: id!,
+        pageNumber: pageParameters.pageNumber,
+        pageSize: pageParameters.pageSize,
+      };
+      dispatch(getTableswithPage(parameters));
+    }
   };
   const deleteTables = (obj: ITableSchema) => {
     dispatch(deleteTable(obj));
     setDeletedTableRecord({ ...obj });
     handleClose();
   };
-  console.log(TableData.data);
+  console.log(TableData.data?.tableList);
+  console.log(allTableData.data);
   return (
     <div className="createbody card">
       <div className="card-body table-responsive">
@@ -244,8 +273,8 @@ export default function ManageTables() {
           </>
         ) : (
           <>
-            {TableData.data !== undefined &&
-            TableData.data.length > 0 &&
+            {TableData.data?.tableList !== undefined &&
+            TableData.data.tableList.length > 0 &&
             id !== undefined ? (
               <>
                 <Table bordered className="text-center">
@@ -258,13 +287,19 @@ export default function ManageTables() {
                     </tr>
                   </thead>
                   <tbody>
-                    {TableData.data.map((val, index) => (
-                      <tr key={index + 1}>
-                        <td>{index + 1}</td>
-                        <td>{val}</td>
+                    {TableData.data?.tableList.map((val, index) => (
+                      <tr key={index + 6 * (currentPage - 1) + 1}>
+                        {currentPage !== 1 ? (
+                          <td>{index + 6 * (currentPage - 1) + 1}</td>
+                        ) : (
+                          <td>{index + currentPage}</td>
+                        )}
+                        <td>{val.tableName}</td>
                         <td
                           className="text-align-middle  text-primary"
-                          onClick={() => handleEditShow(val, id)}
+                          onClick={() =>
+                            handleEditShow(val.tableName, val.tenantId)
+                          }
                           data-testid="edit-table-btn"
                         >
                           <i className="bi bi-pencil-square"></i>
@@ -272,7 +307,9 @@ export default function ManageTables() {
                         <td
                           className="text-danger"
                           data-testid="delete-table-btn"
-                          onClick={() => handleShow(val, id)}
+                          onClick={() =>
+                            handleShow(val.tableName, val.tenantId)
+                          }
                         >
                           <i className="bi bi-trash-fill"></i>
                         </td>
@@ -280,10 +317,45 @@ export default function ManageTables() {
                     ))}
                   </tbody>
                 </Table>
+                <div className="d-flex justify-content-center pt-2">
+                  <ul className="pagination">
+                    <li
+                      className={
+                        currentPage !== 1 ? "page-item" : "page-item disabled"
+                      }
+                    >
+                      <a
+                        className="page-link "
+                        onClick={() => prevpage(currentPage)}
+                      >
+                        Previous
+                      </a>
+                    </li>
+
+                    <li className="page-item active">
+                      <a className="page-link">{currentPage}</a>
+                    </li>
+                    <li
+                      className={
+                        TableData.data !== undefined &&
+                        TableData.data.dataSize - currentPage * 6 <= 0
+                          ? "page-item disabled"
+                          : "page-item  "
+                      }
+                    >
+                      <a
+                        className="page-link "
+                        onClick={() => nextpage(currentPage)}
+                      >
+                        Next
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </>
             ) : (
               <>
-                <h2>No Data</h2>
+                <h2>No Data Tenant</h2>
               </>
             )}
           </>

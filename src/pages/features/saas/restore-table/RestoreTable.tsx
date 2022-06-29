@@ -257,7 +257,7 @@ function RestoreTable() {
               <>
                 <Table bordered className="text-center">
                   <thead>
-                    <tr id="test">
+                    <tr>
                       <th>SR.NO.</th>
                       <th>Table Name</th>
                       <th>Restore</th>

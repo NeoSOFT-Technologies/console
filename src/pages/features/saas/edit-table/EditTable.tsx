@@ -326,13 +326,23 @@ export default function EditTable() {
                               onClick={() => handleShow(val, "View Column")}
                             ></i>
                           </td>
-                          <td className="text-danger">
-                            <i
-                              className="bi bi-trash-fill"
-                              data-testid="delete-col-btn"
-                              onClick={() => deleteModalShow(val)}
-                            ></i>
-                          </td>
+                          {val.required === true ? (
+                            <td className="text-danger disabled">
+                              <i
+                                className="bi bi-trash-fill"
+                                data-testid="delete-col-btn"
+                                onClick={() => deleteModalShow(val)}
+                              ></i>
+                            </td>
+                          ) : (
+                            <td className="text-danger">
+                              <i
+                                className="bi bi-trash-fill"
+                                data-testid="delete-col-btn"
+                                onClick={() => deleteModalShow(val)}
+                              ></i>
+                            </td>
+                          )}
                         </tr>
                       ))}
                     </tbody>
