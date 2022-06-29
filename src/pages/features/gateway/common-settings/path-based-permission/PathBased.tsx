@@ -10,7 +10,7 @@ import { refreshGrid } from "../api-access-List/ApiAccessList";
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
 import { IPropsHelper } from "../global-limit/rate-limit-helper";
 import Ipathpermission from "./path-file";
-// import IpathpermissionKey from "./path-file-Key";
+
 interface IProps {
   requiredInterface: IPropsHelper;
   state?: IKeyCreateState;
@@ -39,40 +39,39 @@ export default function PathBased(props: IProps) {
     Set_by_policy: false,
   });
   const newFormData: any = { ...Limits };
-  const setFieldValue = () => {
+  const commonFunc = (obj: any, propName: any, _setLimit?: boolean) => {
     const apisList = [...props.requiredInterface.formProp!];
-    setLimits(newFormData);
+    if (_setLimit) {
+      setLimits(obj);
+    }
     apisList[props.requiredInterface.index!] = {
       ...apisList[props.requiredInterface.index!],
-      Limit: { ...newFormData },
+      [propName]: obj,
     };
-    console.log("mylist", apisList);
     props.requiredInterface.dispatch(
       props.requiredInterface.setForm!({
         ...props.requiredInterface.form,
         [props.requiredInterface.propName!]: apisList,
       })
     );
+  };
+
+  const setFieldValue = () => {
+    commonFunc({ ...newFormData }, "Limit", true);
+  };
+
+  const setNull = () => {
+    const obj: any = undefined;
+    commonFunc(obj, "Limit");
+  };
+
+  const setPathValuesNull = () => {
+    commonFunc([], "AllowedUrls");
   };
 
   const { id } = useParams();
-  const setNull = () => {
-    const apisList = [...props.requiredInterface.formProp];
-    // ? [...props.policystate?.data.form.APIs!]
-    // : [...props.state?.data.form.AccessRights!];
-    apisList[props.requiredInterface.index!] = {
-      ...apisList[props.requiredInterface.index!],
-      Limit: undefined,
-    };
-
-    props.requiredInterface.dispatch(
-      props.requiredInterface.setForm!({
-        ...props.requiredInterface.form,
-        [props.requiredInterface.propName!]: apisList,
-      })
-    );
-  };
-
+  const formObj: any =
+    props.requiredInterface.formProp[props.requiredInterface.index!];
   function setfieldsvalues(isActiveApis: any) {
     if (id === undefined) {
       if (isActiveApis === false) {
@@ -82,60 +81,15 @@ export default function PathBased(props: IProps) {
       }
     } else {
       if (
-        isActiveApis === true &&
-        props.requiredInterface.formProp[props.requiredInterface.index!]
-          .Limit === null
+        formObj.Limit !== null ||
+        formObj.Limit === null ||
+        formObj.Limit !== undefined
       ) {
-        setFieldValue();
-      } else if (
-        isActiveApis === false &&
-        props.requiredInterface.formProp[props.requiredInterface.index!]
-          .Limit !== null
-      ) {
-        setNull();
-      } else if (
-        isActiveApis === true &&
-        (props.requiredInterface.formProp[props.requiredInterface.index!]
-          .Limit !== null ||
-          props.requiredInterface.formProp[props.requiredInterface.index!]
-            .Limit !== undefined)
-      ) {
-        console.log("properly coming or not");
-        setFieldValue();
-      } else if (
-        isActiveApis === false &&
-        (props.requiredInterface.formProp[props.requiredInterface.index!]
-          .Limit === null ||
-          props.requiredInterface.formProp[props.requiredInterface.index!]
-            .Limit !== undefined)
-      ) {
-        setNull();
-      }
-    }
-  }
-  const setPathValuesNull = () => {
-    const apisList = [...props.requiredInterface.formProp!];
-    apisList[props.requiredInterface.index!] = {
-      ...apisList[props.requiredInterface.index!],
-      AllowedUrls: [],
-    };
-
-    props.requiredInterface.dispatch(
-      props.requiredInterface.setForm!({
-        ...props.requiredInterface.form,
-        [props.requiredInterface.propName!]: apisList,
-      })
-    );
-  };
-
-  function setpathfieldvalues(isActives: any) {
-    if (id === undefined) {
-      if (isActives === false) {
-        setPathValuesNull();
-      }
-    } else {
-      if (isActives === false) {
-        setPathValuesNull();
+        if (isActiveApis === true) {
+          setFieldValue();
+        } else if (isActiveApis === false) {
+          setNull();
+        }
       }
     }
   }
@@ -198,7 +152,7 @@ export default function PathBased(props: IProps) {
       setisActiveApi(Boolean(value));
     } else {
       setisActive(Boolean(value));
-      setpathfieldvalues(Boolean(value));
+      setPathValuesNull();
     }
   };
 
@@ -319,7 +273,7 @@ export default function PathBased(props: IProps) {
                 <AccordionButton>
                   {props.requiredInterface.formProp[
                     props.requiredInterface.index!
-                  ].Name +
+                  ].ApiName +
                     " | " +
                     props.requiredInterface.formProp[
                       props.requiredInterface.index!
