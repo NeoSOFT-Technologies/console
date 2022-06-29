@@ -229,6 +229,16 @@ export default function GetSearchData() {
     ));
   }
 
+  function getTableHeader(index: number, val: any) {
+    return (
+      <tr key={`row${index}`}>
+        <td>{index + 1}</td>
+        {tableHeader.map((h, i) => (
+          <td key={i}>{val[h]?.toString()}</td>
+        ))}
+      </tr>
+    );
+  }
   const searchFilterValue = (search: string) => {
     const results: any[] = [];
     let check = 0;
@@ -437,42 +447,22 @@ export default function GetSearchData() {
                               searchData?.data?.length <
                                 Number.parseInt(searchTenant.pageSize)
                             ) {
-                              return (
-                                <tr key={`row${index}`}>
-                                  <td>{index + 1}</td>
-                                  {tableHeader.map((h, i) => (
-                                    <td key={i}>{val[h]?.toString()}</td>
-                                  ))}
-                                </tr>
-                              );
+                              return getTableHeader(index, val);
                             } else if (
                               searchData &&
                               searchData.data &&
                               index + 1 < searchData?.data?.length
                             ) {
-                              return (
-                                <tr key={`row${index}`}>
-                                  <td>{index + 1}</td>
-                                  {tableHeader.map((h, i) => (
-                                    <td key={i}>{val[h]?.toString()}</td>
-                                  ))}
-                                </tr>
-                              );
+                              return getTableHeader(index, val);
                             } else {
                               return <></>;
                             }
                           })}
                         {searchValue !== "" &&
                           filterdata &&
-                          filterdata?.map((val, index) => (
-                            <tr key={`row${index}`}>
-                              <td>{index + 1}</td>
-
-                              {tableHeader.map((h, i) => (
-                                <td key={i}>{val[h]?.toString()}</td>
-                              ))}
-                            </tr>
-                          ))}
+                          filterdata?.map((val, index) =>
+                            getTableHeader(index, val)
+                          )}
                       </tbody>
                     </Table>
                     <nav
