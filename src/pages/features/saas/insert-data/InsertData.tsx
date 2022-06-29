@@ -19,7 +19,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IInputData, ITableSchema } from "../../../../types/saas";
 import styles from "./InsertData.module.css";
 
-export default function InputData(this: any) {
+export default function InsertData() {
   const dispatch = useAppDispatch();
   const inputDataWithNrt = useAppSelector(
     (state) => state.inputDataWithNrtState
@@ -119,9 +119,23 @@ export default function InputData(this: any) {
 
   // GET TABLE SCHEMA
   const schemaData = tableSchema.data?.map(
-    (val) => '"' + val.name + '" : "' + val.type + '"'
+    (val) => `"${val.name}":"${val.type}"`
   );
 
+  function showtenantDetail() {
+    return authenticationState.data === "tenant" ? (
+      <option>{tenantDetail.data?.tenantName}</option>
+    ) : (
+      <>
+        <option value="">Select Tenant</option>
+        {tenantDetails.data?.map((val, index) => (
+          <option key={`option${index}`} value={val.id?.toString()}>
+            {val.tenantName}
+          </option>
+        ))}
+      </>
+    );
+  }
   const getInputData: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent
   ) => {
@@ -240,21 +254,7 @@ export default function InputData(this: any) {
                         }}
                         required
                       >
-                        {authenticationState.data === "tenant" ? (
-                          <option>{tenantDetail.data?.tenantName}</option>
-                        ) : (
-                          <>
-                            <option value="">Select Tenant</option>
-                            {tenantDetails.data?.map((val, index) => (
-                              <option
-                                key={`option${index}`}
-                                value={val.id?.toString()}
-                              >
-                                {val.tenantName}
-                              </option>
-                            ))}
-                          </>
-                        )}
+                        {showtenantDetail()}
                       </Form.Select>
                     </Form.Group>
                   </Col>
