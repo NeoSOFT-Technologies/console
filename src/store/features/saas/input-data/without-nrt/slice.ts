@@ -1,18 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { inputDataService } from "../../../../../services/saas/api/api";
 import { IInputData } from "../../../../../types/saas";
+import errorHandler from "../../../../../utils/error-handler";
 
 interface IInputDataState {
   data?: string[];
   loading: boolean;
-  error?: string | null;
+  error?: ICustomeError;
 }
 const initialState: IInputDataState = {
   data: undefined,
   loading: false,
   error: undefined,
 };
-
+interface ICustomeError {
+  statusCode: string;
+  message: string;
+}
 export const inputTableDataWithoutNrt = createAsyncThunk(
   "inputDataWithoutNrt",
   async (data: IInputData) => {
@@ -25,11 +29,7 @@ export const inputTableDataWithoutNrt = createAsyncThunk(
       );
       return response.data;
     } catch (_error: any) {
-      let errorMsg = "Undefined Error";
-      errorMsg =
-        _error.response.data !== undefined
-          ? _error.response.data.message
-          : _error.message;
+      const errorMsg = errorHandler(_error);
       throw new Error(errorMsg);
     }
   }
@@ -57,7 +57,8 @@ const slice = createSlice({
     });
     builder.addCase(inputTableDataWithoutNrt.rejected, (state, action: any) => {
       state.loading = false;
-      state.error = action.error.message;
+      const errorMessage = JSON.parse(action.error.message);
+      state.error = errorMessage;
     });
   },
 });

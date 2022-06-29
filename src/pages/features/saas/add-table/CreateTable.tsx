@@ -80,7 +80,7 @@ export default function CreateTables() {
     setDeleteModal(false);
   };
   const deleteModalShow = (columData: ITableColumnData) => {
-    if (columData.name.toLowerCase() === "id") {
+    if (columData.name?.toLowerCase() === "id") {
       ToastAlert("Column not allowed to delete", "warning");
     } else {
       setSelectedColumnData(columData);
@@ -336,16 +336,13 @@ export default function CreateTables() {
   }, [finalTableObj.tenantId]);
 
   useEffect(() => {
+    dispatch(capacityPlans());
     if (tenantDetail.data?.tenantId) {
       setFinalTableObj({
         ...finalTableObj,
         tenantId: tenantDetail.data?.tenantId.toString(),
       });
     } else dispatch(getTenantDetails());
-  }, []);
-
-  useEffect(() => {
-    dispatch(capacityPlans());
   }, []);
 
   useEffect(() => {
@@ -362,7 +359,7 @@ export default function CreateTables() {
       });
     }
     if (!createtablestate.loading && createtablestate.error) {
-      ToastAlert(createtablestate.error as string, "error");
+      ToastAlert(createtablestate.error.message, "error");
     }
   }, [createtablestate.loading, createtablestate.error]);
   return (
@@ -660,12 +657,12 @@ export default function CreateTables() {
                   className="w-100 pr-3 pt-1 pb-1"
                   value={selectedColumnData.type.toString()}
                   disabled={isTypeDisable}
-                  onChange={(e) => {
+                  onChange={(e) =>
                     setSelectedColumnData({
                       ...selectedColumnData,
                       type: e.target.value,
-                    });
-                  }}
+                    })
+                  }
                 >
                   {showDataTypes.map((val, index) =>
                     getDataTypeOptions(val, index)
