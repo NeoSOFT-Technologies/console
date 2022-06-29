@@ -25,6 +25,7 @@ import getAllTableReducer from "./features/saas/manage-table/get-all-tables/slic
 import capacityPlansReducer from "./features/saas/manage-table/get-capacity-plans/slice";
 import getDeleteTableByTenantReducer from "./features/saas/manage-table/get-deleted-table/slice";
 import getTableSchemaReducer from "./features/saas/manage-table/get-table-schema/slice";
+import getTablePaginationReducer from "./features/saas/manage-table/get-tables-pagination/slice";
 import getTableReducer from "./features/saas/manage-table/get-tables/slice";
 import restoreTableSchemaReducer from "./features/saas/manage-table/restore-table/slice";
 import updateTableSchemaReducer from "./features/saas/manage-table/update-table-schema/slice";
@@ -88,6 +89,7 @@ const store = configureStore({
     getAllDeleteTableState: getAllDeletedTableReducer,
     getTenantDetailState: getTenantDetailReducer,
     getDelTableByTenantState: getDeleteTableByTenantReducer,
+    getTablesWithPageState: getTablePaginationReducer,
   },
 });
 

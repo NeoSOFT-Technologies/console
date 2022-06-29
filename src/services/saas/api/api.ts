@@ -93,3 +93,8 @@ export function getDeleteTableByTenantService(data: IGetDeleteTableByTenant) {
 export function getTenantListService() {
   return apiFactory(process.env.REACT_APP_API_BASEURL).get(`/api/tenants`);
 }
+export function getTableByTenantService(data: IGetDeleteTableByTenant) {
+  return apiFactory().get(
+    `manage/table/tablesList?tenantId=${data.tenantId}&pageNumber=${data.pageNumber}&pageSize=${data.pageSize}`
+  );
+}
