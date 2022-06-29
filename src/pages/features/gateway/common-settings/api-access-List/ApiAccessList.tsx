@@ -1,3 +1,4 @@
+import { h } from "gridjs";
 import { Grid } from "gridjs-react";
 import { RowSelection } from "gridjs/plugins/selection";
 import moment from "moment";
@@ -6,20 +7,22 @@ import { useParams } from "react-router-dom";
 import Spinner from "../../../../../components/loader/Loader";
 import { scrollToSection } from "../../../../../components/scroll-to/ScrollTo";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
-import { IApiListState } from "../../../../../store/features/gateway/api/list";
+import {
+  IApiData,
+  IApiListState,
+} from "../../../../../store/features/gateway/api/list";
 import { getApiList } from "../../../../../store/features/gateway/api/list/slice";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create/index";
 import { setForms } from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
 import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppSelector, useAppDispatch } from "../../../../../store/hooks";
-
 interface IProps {
   state?: IKeyCreateState | IPolicyCreateState;
   stateForm?: any; // any[]
   handleAddClick: (val: any) => void;
 }
-// export let reloadGrid: (Id: string) => void;
+export let reloadGrid: () => void;
 export let refreshGrid: (ApiId: string) => void;
 export default function ApiAccessList(props: IProps) {
   const { handleAddClick } = props;
@@ -27,9 +30,10 @@ export default function ApiAccessList(props: IProps) {
   const accessApiList: IApiListState = useAppSelector(
     (State) => State.apiListState
   );
+  const dispatch = useAppDispatch();
   const [apiAuth, setApiAuth] = useState<string>();
   const [gridReady, setGridReady] = useState(false);
-  // const [gridReload, setGridReload] = useState(false);
+  const [gridReload, setGridReload] = useState(false);
   const [_deletedRow, setdeletedRow] = useState<any>([]);
   const [_pluginState, setpluginState] = useState<any>();
   const [selectedRows, setselectedRows] = useState<any>({
@@ -38,23 +42,138 @@ export default function ApiAccessList(props: IProps) {
   });
   let checkboxPlugin: any;
   let prp: any;
-  // console.log(gridReload);
+
+  // This will be used by Grid for reloading the list after delete action
   const _refreshGrid = (ApiId: string) => {
     setdeletedRow(ApiId);
   };
   refreshGrid = _refreshGrid;
-  // const _reloadGrid = (Id: string) => {
-  //   if (Id !== undefined) {
-  //     setGridReload(true);
-  //   }
-  // };
-  // reloadGrid = _reloadGrid;
-  const dispatch = useAppDispatch();
+  // reloading grid
+  const _reloadGrid = () => {
+    setGridReload(true);
+  };
+  reloadGrid = _reloadGrid;
   const mainCall = async (currentPage: number, pageSize: number) => {
     await dispatch(getApiList({ currentPage, pageSize }));
     setGridReady(true);
   };
-  const getDataONUpdate = () => {
+  function containsApis() {
+    let listApis: IApiData[] = [];
+    if (
+      accessApiList.data !== undefined &&
+      accessApiList.data &&
+      accessApiList.data?.Apis?.length! > 0
+    ) {
+      listApis = accessApiList.data?.Apis!.filter((a) =>
+        apiAuth?.length! > 0
+          ? a.AuthType === apiAuth && a.AuthType !== "keyless"
+          : a.AuthType !== "keyless"
+      );
+    }
+    return listApis;
+  }
+  function bindApisList() {
+    return accessApiList.data !== undefined &&
+      accessApiList.data &&
+      accessApiList.data?.Apis?.length! > 0
+      ? containsApis().map((data) => [
+          data.Id,
+          data.Name,
+          data.IsActive ? "Active" : "Inactive",
+          data.CreatedDate !== null
+            ? moment(data.CreatedDate).format("DD/MM/YYYY")
+            : data.CreatedDate,
+          data.AuthType,
+        ])
+      : [];
+  }
+
+  const grid = new Grid({
+    columns: [
+      {
+        id: "myCheckbox",
+        name: "Select",
+        width: "10%",
+        plugin: {
+          component: RowSelection,
+          props: {
+            id: (row: any) =>
+              row.cells[1].data +
+              "," +
+              row.cells[2].data +
+              "," +
+              row.cells[5].data,
+          },
+        },
+      },
+      {
+        name: "Id",
+        hidden: true,
+      },
+      {
+        name: "Name",
+        width: "20%",
+        formatter: (cell: string, row: any) => {
+          const Id = row.cells[1].data;
+          const Name = row.cells[2].data;
+          let data = false;
+
+          if (selectedRows.state) {
+            data = selectedRows.state.some((x: any) => x?.split(",")[0] === Id);
+          }
+          return h(
+            "text",
+            data
+              ? {
+                  onClick: () => scrollToSection(Name),
+                  style: { cursor: "pointer", color: "blue" },
+                }
+              : {},
+            cell
+          );
+        },
+      },
+      { name: "Status", sort: false, width: "20%" },
+      { name: "Created Date", width: "20%" },
+      { name: "Auth Type", width: "20%" },
+    ],
+    search: true,
+    sort: true,
+    fixedHeader: true,
+    height: "300px",
+    scrollable: "virtual",
+    data: () => bindApisList(),
+    style: {
+      table: {
+        width: "100%",
+        fontSize: ".875rem",
+      },
+    },
+  });
+  // This will used to create instance of Grid
+  const mygrid = grid.getInstance();
+  mygrid.on("ready", () => {
+    // find the plugin with the give plugin ID
+    checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
+    prp = checkboxPlugin?.props;
+    setpluginState(prp.store);
+    if (id !== undefined) {
+      for (const iterator of selectedRows.state) {
+        prp!.store.handle("CHECK", {
+          ROW_ID: iterator,
+        });
+      }
+    }
+
+    prp!.store.on("updated", (state1: any, prevState1: any) => {
+      if (gridReload === false) {
+        setselectedRows({ state: state1.rowIds, prevState: prevState1.rowIds });
+      }
+    });
+  });
+
+  // This will set Grid data for update page
+  const getDataOnUpdate = () => {
     // to get selected data on update screen
     if (id && id !== undefined && props.stateForm.length > 0) {
       const arr = [];
@@ -72,26 +191,14 @@ export default function ApiAccessList(props: IProps) {
           arr.push(x);
         }
       }
-      setselectedRows({ state: arr, prevState: arr });
+      if (
+        selectedRows.state.length === 0 &&
+        selectedRows.prevState.length === 0
+      ) {
+        setselectedRows({ state: arr, prevState: arr });
+      }
     }
   };
-
-  useEffect(() => {
-    // method to get grid list
-    mainCall(1, 100_000);
-
-    getDataONUpdate();
-    // console.log("apiacess_blank", id, selectedRows);
-  }, []);
-
-  useEffect(() => {
-    // set auth type to fiter records
-    props.stateForm.length > 0
-      ? setApiAuth(props.stateForm[0].AuthType!)
-      : setApiAuth("");
-    console.log("apiacess_prop", id);
-  }, [props.stateForm.length]);
-
   const removeAccess = (Id: string) => {
     if (props.stateForm) {
       const removeApi = [...props.stateForm];
@@ -117,7 +224,25 @@ export default function ApiAccessList(props: IProps) {
         );
       }
     }
+    reloadGrid();
   };
+  // initial render to get data for grid
+  useEffect(() => {
+    // method to get grid list data
+    mainCall(1, 100_000);
+    // this will be used to set state value as true for displaying selected apis list when updated page is loaded
+    getDataOnUpdate();
+  }, []);
+
+  //  This wil be used to set auth type to fiter records on update page
+  useEffect(() => {
+    // set auth type
+    props.stateForm.length > 0
+      ? setApiAuth(props.stateForm[0].AuthType!)
+      : setApiAuth("");
+  }, [props.stateForm.length]);
+
+  // this will handle rendering of selected and unselected list using checkbox in grid
   useEffect(() => {
     if (
       selectedRows.state.length > 0 &&
@@ -128,6 +253,7 @@ export default function ApiAccessList(props: IProps) {
       const auth: string = selectedRows.state[0].split(",")[2];
       handleAddClick(ApiId);
       setApiAuth(auth);
+      reloadGrid();
       ToastAlert(`${ApiName} selected`, "success");
     } else {
       if (
@@ -139,127 +265,74 @@ export default function ApiAccessList(props: IProps) {
           (i: any) => !selectedRows!.state.includes(i)
         );
         removeAccess(filterApiList.split(",")[0]);
+        if (selectedRows.state.length > 0) {
+          setApiAuth(selectedRows.state[0].split(",")[2]);
+        } else {
+          setApiAuth("");
+        }
+        reloadGrid();
         ToastAlert(`${filterApiList.split(",")[1]} removed`, "warning");
       }
     }
     if (id !== undefined) {
-      getDataONUpdate();
+      // this will be used to set state value as true for displaying selected apis list when updated page is loaded
+      getDataOnUpdate();
     }
-    console.log("apiacess_inrow", id, selectedRows);
   }, [
     id
       ? selectedRows.state.length === selectedRows.prevState.length ||
         selectedRows
       : selectedRows,
   ]);
-  console.log("apiacess", selectedRows);
-  const grid = new Grid({
-    columns: [
-      {
-        id: "myCheckbox",
-        name: "Select",
-        width: "10%",
-        plugin: {
-          component: RowSelection,
-          props: {
-            id: (row: any) =>
-              row.cells[1].data +
-              "," +
-              row.cells[2].data +
-              "," +
-              row.cells[5].data,
-          },
-        },
-      },
-      {
-        name: "Id",
-        hidden: true,
-      },
-      { name: "Name", width: "20%" },
-      { name: "Status", sort: false, width: "20%" },
-      { name: "Created Date", width: "20%" },
-      { name: "Auth Type", width: "20%" },
-    ],
-    search: true,
-    sort: true,
-    fixedHeader: true,
-    height: "300px",
-    scrollable: "virtual",
-    data:
-      accessApiList.data !== undefined &&
-      accessApiList.data &&
-      accessApiList.data?.Apis?.length! > 0
-        ? () =>
-            accessApiList.data
-              ?.Apis!.filter((a) =>
-                apiAuth?.length! > 0
-                  ? a.AuthType === apiAuth && a.AuthType !== "keyless"
-                  : a.AuthType !== "keyless"
-              )
-              .map((data) => [
-                data.Id,
-                data.Name,
-                data.IsActive ? "Active" : "Inactive",
-                data.CreatedDate !== null
-                  ? moment(data.CreatedDate).format("DD/MM/YYYY")
-                  : data.CreatedDate,
-                data.AuthType,
-              ])
-        : [],
-    style: {
-      table: {
-        width: "100%",
-        fontSize: ".875rem",
-      },
-    },
-  });
-
-  const mygrid = grid.getInstance();
-  mygrid.on("ready", () => {
-    // find the plugin with the give plugin ID
-    checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
-    prp = checkboxPlugin?.props;
-    setpluginState(prp.store);
-    if (id !== undefined) {
-      for (const iterator of selectedRows.state) {
-        prp!.store.handle("CHECK", {
-          ROW_ID: iterator,
-        });
-      }
-    }
-
-    prp!.store.on("updated", (state1: any, prevState1: any) => {
-      setselectedRows({ state: state1.rowIds, prevState: prevState1.rowIds });
-    });
-  });
-
+  // This will set Grid data after delete action
   useEffect(() => {
     if (_deletedRow !== undefined && _deletedRow.length > 0) {
-      checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
+      // checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
       _pluginState.handle("UNCHECK", {
         ROW_ID: _deletedRow,
       });
       setdeletedRow([]);
+      reloadGrid();
     }
   }, [_deletedRow]);
-  // useEffect(() => {
-  //   _reloadGrid(id!);
-  //   console.log("reloadGrid", gridReload);
-  // }, [id && id !== undefined && props.stateForm.length > 0]);
+
+  // initial Grid render
   useEffect(() => {
     if (gridReady) {
       mygrid.render(document.querySelector("#gridRender")!);
     }
-    console.log("grideday", id, selectedRows);
   }, [gridReady]);
-  // useEffect(() => {
-  //   console.log("useeffect_apiacess", id);
-  //   if (gridReload) {
-  //     mygrid.render(document.querySelector("#gridRender")!);
-  //   }
-  //   setGridReload(false);
-  // }, [id && id !== undefined && props.stateForm.length > 0]);
-  // console.log("apiacess_id", id);
+
+  //  Grid render on invoke of reloadGrid()
+  useEffect(() => {
+    if (gridReload) {
+      const gridRenderHtml = document.querySelector("#gridRender");
+      gridRenderHtml!.innerHTML = "";
+      mygrid.render(gridRenderHtml!);
+      const render_Grid = mygrid.updateConfig({
+        data: () => bindApisList(),
+      });
+      render_Grid.on("ready", () => {
+        // find the plugin with the give plugin ID
+        checkboxPlugin = render_Grid.config.plugin.get("myCheckbox");
+        prp = checkboxPlugin?.props;
+
+        for (const iterator of selectedRows.state) {
+          prp!.store.handle("CHECK", {
+            ROW_ID: iterator,
+          });
+        }
+        prp!.store.on("updated", (state1: any, prevState1: any) => {
+          setselectedRows({
+            state: state1.rowIds,
+            prevState: prevState1.rowIds,
+          });
+        });
+      });
+      render_Grid.forceRender();
+    }
+    setGridReload(false);
+  }, [gridReload]);
   return (
     <div>
       {gridReady ? <div id="gridRender"></div> : <></>}
@@ -271,24 +344,6 @@ export default function ApiAccessList(props: IProps) {
             {apiAuth && (
               <>
                 <b>Note :&nbsp;</b> Apis get filter based on {apiAuth} Auth Type
-              </>
-            )}
-          </div>
-          <div className="mt-2">
-            {selectedRows.state.length > 0 && (
-              <>
-                <b>Selected APIs...</b>
-                {selectedRows.state.map((rowId: any, idx: number) => {
-                  return (
-                    <li
-                      key={idx}
-                      style={{ cursor: "pointer", color: "blue" }}
-                      onClick={() => scrollToSection(rowId.split(",")[1])}
-                    >
-                      {rowId.split(",")[1]}
-                    </li>
-                  );
-                })}
               </>
             )}
           </div>

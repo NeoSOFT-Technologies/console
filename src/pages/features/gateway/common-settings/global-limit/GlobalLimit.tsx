@@ -7,6 +7,7 @@ import { setForms } from "../../../../../store/features/gateway/key/create/slice
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
 import { getPolicybyId } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import { refreshGrid } from "../../key/create/access-rights/apply-policy/policy-list/PolicyList";
 
 interface IProps {
   isDisabled: boolean;
@@ -123,7 +124,11 @@ export default function GlobalLimit(props: IProps) {
     event.preventDefault();
     const removePolicyByIds = [...states.data.form.PolicyByIds!];
     const removePolicies = [...states.data.form.Policies];
-
+    const rowId: string =
+      states.data.form.Policies[index] +
+      "," +
+      states.data.form.PolicyByIds![index].policyName;
+    refreshGrid(rowId, states.data.form.Policies[index]);
     const PolicyName = removePolicyByIds[index]?.policyName;
     removePolicyByIds.splice(index, 1);
     removePolicies.splice(index, 1);
