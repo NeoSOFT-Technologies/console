@@ -213,6 +213,32 @@ export default function GetSearchData() {
       dispatch(resetSearchDataWithQueryField());
     };
   }, []);
+
+  function getReadableStatus(condition: boolean): string {
+    if (condition) {
+      return "page-item disable";
+    }
+    return "page-link";
+  }
+
+  function getEntriesBy() {
+    return tableColName.data?.map((val, index) => (
+      <option key={`option${index}`} value={val.name}>
+        {val.name}
+      </option>
+    ));
+  }
+
+  function getTableHeader(index: number, val: any) {
+    return (
+      <tr key={`row${index}`}>
+        <td>{index + 1}</td>
+        {tableHeader.map((h, i) => (
+          <td key={i}>{val[h]?.toString()}</td>
+        ))}
+      </tr>
+    );
+  }
   const searchFilterValue = (search: string) => {
     const results: any[] = [];
     let check = 0;
@@ -300,11 +326,7 @@ export default function GetSearchData() {
                   >
                     <option value="">SearchField</option>
 
-                    {tableColName.data?.map((val, index) => (
-                      <option key={`option${index}`} value={val.name}>
-                        {val.name}
-                      </option>
-                    ))}
+                    {getEntriesBy()}
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -351,11 +373,7 @@ export default function GetSearchData() {
                     data-testid="order-by-select"
                   >
                     <option value="">Order By</option>
-                    {tableColName.data?.map((val, index) => (
-                      <option key={`option${index}`} value={val.name}>
-                        {val.name}
-                      </option>
-                    ))}
+                    {getEntriesBy()}
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -429,40 +447,22 @@ export default function GetSearchData() {
                               searchData?.data?.length <
                                 Number.parseInt(searchTenant.pageSize)
                             ) {
-                              return (
-                                <tr key={`row${index}`}>
-                                  <td>{index + 1}</td>
-                                  {tableHeader.map((h, i) => (
-                                    <td key={i}>{val[h]?.toString()}</td>
-                                  ))}
-                                </tr>
-                              );
+                              return getTableHeader(index, val);
                             } else if (
                               searchData &&
                               searchData.data &&
                               index + 1 < searchData?.data?.length
                             ) {
-                              return (
-                                <tr key={`row${index}`}>
-                                  <td>{index + 1}</td>
-                                  {tableHeader.map((h, i) => (
-                                    <td key={i}>{val[h]?.toString()}</td>
-                                  ))}
-                                </tr>
-                              );
+                              return getTableHeader(index, val);
+                            } else {
+                              return <></>;
                             }
                           })}
                         {searchValue !== "" &&
                           filterdata &&
-                          filterdata?.map((val, index) => (
-                            <tr key={`row${index}`}>
-                              <td>{index + 1}</td>
-
-                              {tableHeader.map((h, i) => (
-                                <td key={i}>{val[h]?.toString()}</td>
-                              ))}
-                            </tr>
-                          ))}
+                          filterdata?.map((val, index) =>
+                            getTableHeader(index, val)
+                          )}
                       </tbody>
                     </Table>
                     <nav
@@ -472,11 +472,10 @@ export default function GetSearchData() {
                       <ul className="pagination ">
                         <li className="page-item">
                           <button
-                            className={
-                              Number.parseInt(startRecord) === 0 || searchValue
-                                ? "page-item disable"
-                                : "page-link  "
-                            }
+                            className={getReadableStatus(
+                              Number.parseInt(startRecord) === 0 ||
+                                !!searchValue
+                            )}
                             disabled={
                               Number.parseInt(startRecord) === 0 ||
                               !!searchValue
@@ -488,11 +487,9 @@ export default function GetSearchData() {
                         </li>
                         <li className="page-item ">
                           <button
-                            className={
-                              checkDisable || searchValue
-                                ? "page-item disable"
-                                : "page-link  "
-                            }
+                            className={getReadableStatus(
+                              checkDisable || !!searchValue
+                            )}
                             disabled={checkDisable || !!searchValue}
                             onClick={() => nextpage()}
                           >

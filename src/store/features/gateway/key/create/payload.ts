@@ -43,7 +43,7 @@ export const initialState: IKeyCreateState = {
           Global: {
             Name: "",
             MaxQuota: 0,
-            QuotaRate: 0,
+            QuotaRenewalRate: 0,
             Rate: 0,
             Per: 0,
             ThrottleInterval: 0,
@@ -63,6 +63,7 @@ export const initialState: IKeyCreateState = {
       AccessRights: "",
       GlobalLimit: {
         ApiId: "",
+        ApiName: "",
         Per: "",
         Rate: "",
         Quota: "",

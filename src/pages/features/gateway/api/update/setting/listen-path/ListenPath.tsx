@@ -1,5 +1,6 @@
 import React from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
+import Tooltips from "../../../../../../../components/tooltips/Tooltips";
 import {
   setFormErrors,
   setFormData,
@@ -33,7 +34,6 @@ export default function ListenPath() {
     }
 
     setFormData(event, dispatch, state);
-    // console.log("listenpath", name, value);
   }
   return (
     <>
@@ -60,14 +60,17 @@ export default function ListenPath() {
                     placeholder="Enter listen path"
                     id="listenPath"
                     name="ListenPath"
-                    data-testid="name-input"
+                    data-testid="listenPath-input"
                     disabled={state.data.form?.IsInternal}
                     value={state.data.form?.ListenPath}
                     isInvalid={!!state.data.errors?.ListenPath}
                     isValid={!state.data.errors?.ListenPath}
                     onChange={(e: any) => validateForm(e)}
                   />
-                  <Form.Control.Feedback type="invalid">
+                  <Form.Control.Feedback
+                    type="invalid"
+                    data-testid="listenPathErr"
+                  >
                     {state.data.errors?.ListenPath}
                   </Form.Control.Feedback>
                 </Form.Group>
@@ -78,18 +81,22 @@ export default function ListenPath() {
                 </i>
               </Col>
               <Col md={12}>
+                <div className="float-left mt-2">
+                  <b>Strip the Listen path</b>
+                </div>
+                <Tooltips
+                  content=" If this setting is checked, then application gateway will
+                          remove the above listen path from the inbound URL so that it
+                          does not interfere with routing upstream."
+                />
+              </Col>
+
+              <Col md={12}>
                 <Form.Group className="mb-3">
-                  <Form.Label>
-                    <b>Strip the Listen path</b>
-                  </Form.Label>
-                  <p>
-                    If this setting is checked, then application gateway will
-                    remove the above listen path from the inbound URL so that it
-                    does not interfere with routing upstream.
-                  </p>
                   <Form.Check
                     type="switch"
                     className="ml-4"
+                    data-testid="stripListenPath-switch"
                     id="stripListenPath"
                     name="StripListenPath"
                     label="Strip the Listen path"
@@ -112,6 +119,7 @@ export default function ListenPath() {
                   <Form.Check
                     type="switch"
                     className="ml-4"
+                    data-testid="activated-switch"
                     id="activated"
                     name="IsInternal"
                     label="Activated"

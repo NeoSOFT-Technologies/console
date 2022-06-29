@@ -1,8 +1,10 @@
-import { h } from "gridjs";
 import { Grid } from "gridjs-react";
+import { RowSelection } from "gridjs/plugins/selection";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Spinner from "../../../../../components/loader/Loader";
+import { scrollToSection } from "../../../../../components/scroll-to/ScrollTo";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IApiListState } from "../../../../../store/features/gateway/api/list";
 import { getApiList } from "../../../../../store/features/gateway/api/list/slice";
@@ -14,121 +16,164 @@ import { useAppSelector, useAppDispatch } from "../../../../../store/hooks";
 
 interface IProps {
   state?: IKeyCreateState | IPolicyCreateState;
+  stateForm?: any; // any[]
   handleAddClick: (val: any) => void;
-  // selectedAuthType?: string;
 }
+// export let reloadGrid: (Id: string) => void;
+export let refreshGrid: (ApiId: string) => void;
 export default function ApiAccessList(props: IProps) {
   const { handleAddClick } = props;
-
+  const { id } = useParams();
   const accessApiList: IApiListState = useAppSelector(
     (State) => State.apiListState
   );
   const [apiAuth, setApiAuth] = useState<string>();
+  const [gridReady, setGridReady] = useState(false);
+  // const [gridReload, setGridReload] = useState(false);
+  const [_deletedRow, setdeletedRow] = useState<any>([]);
+  const [_pluginState, setpluginState] = useState<any>();
+  const [selectedRows, setselectedRows] = useState<any>({
+    state: [],
+    prevState: [],
+  });
+  let checkboxPlugin: any;
+  let prp: any;
+  // console.log(gridReload);
+  const _refreshGrid = (ApiId: string) => {
+    setdeletedRow(ApiId);
+  };
+  refreshGrid = _refreshGrid;
+  // const _reloadGrid = (Id: string) => {
+  //   if (Id !== undefined) {
+  //     setGridReload(true);
+  //   }
+  // };
+  // reloadGrid = _reloadGrid;
   const dispatch = useAppDispatch();
   const mainCall = async (currentPage: number, pageSize: number) => {
-    dispatch(getApiList({ currentPage, pageSize }));
+    await dispatch(getApiList({ currentPage, pageSize }));
+    setGridReady(true);
   };
+  const getDataONUpdate = () => {
+    // to get selected data on update screen
+    if (id && id !== undefined && props.stateForm.length > 0) {
+      const arr = [];
+      if ((props.state as IPolicyCreateState).data.form.APIs) {
+        for (const iterator of (props.state as IPolicyCreateState).data.form
+          .APIs) {
+          const x = iterator.Id + "," + iterator.Name + "," + iterator.AuthType;
+          arr.push(x);
+        }
+      } else {
+        for (const iterator of (props.state as IKeyCreateState).data.form
+          .AccessRights) {
+          const x =
+            iterator.ApiId + "," + iterator.ApiName + "," + iterator.AuthType;
+          arr.push(x);
+        }
+      }
+      setselectedRows({ state: arr, prevState: arr });
+    }
+  };
+
   useEffect(() => {
+    // method to get grid list
     mainCall(1, 100_000);
+
+    getDataONUpdate();
+    // console.log("apiacess_blank", id, selectedRows);
   }, []);
 
   useEffect(() => {
-    if ((props.state as IKeyCreateState).data.form.AccessRights) {
-      (props.state as IKeyCreateState).data.form.AccessRights.length > 0
-        ? setApiAuth(
-            (props.state as IKeyCreateState).data?.form.AccessRights[0]
-              ?.AuthType!
-          )
-        : setApiAuth("");
-    }
-    if ((props.state as IPolicyCreateState).data.form.APIs) {
-      // console.log(
-      //   "useEffect-[ (props.state as IPolicyCreateState).data?.form.APIs?.length!]",
-      //   (props.state as IPolicyCreateState).data?.form.APIs?.length!
-      // );
-      (props.state as IPolicyCreateState).data.form.APIs.length > 0
-        ? setApiAuth(
-            (props.state as IPolicyCreateState).data.form.APIs[0]?.AuthType!
-          )
-        : setApiAuth("");
-    }
-  }, [
-    (props.state as IKeyCreateState).data?.form.AccessRights?.length! ||
-      (props.state as IPolicyCreateState).data?.form.APIs?.length!,
-  ]);
+    // set auth type to fiter records
+    props.stateForm.length > 0
+      ? setApiAuth(props.stateForm[0].AuthType!)
+      : setApiAuth("");
+    console.log("apiacess_prop", id);
+  }, [props.stateForm.length]);
 
   const removeAccess = (Id: string) => {
-    if ((props.state as IPolicyCreateState).data.form.APIs) {
-      const removeApi = [
-        ...(props.state as IPolicyCreateState).data.form.APIs!,
-      ];
-      const index = removeApi.findIndex((a) => a.Id === Id);
-      removeApi.splice(index, 1);
-      dispatch(
-        setForm({
-          ...(props.state as IPolicyCreateState).data.form,
-          APIs: removeApi,
-        })
-      );
-    }
-    if ((props.state as IKeyCreateState).data.form.AccessRights) {
-      const removeApi = [
-        ...(props.state as IKeyCreateState).data.form.AccessRights!,
-      ];
-      const index = removeApi.findIndex((a) => a.ApiId === Id);
-      removeApi.splice(index, 1);
-      dispatch(
-        setForms({
-          ...(props.state as IKeyCreateState).data.form,
-          AccessRights: removeApi,
-        })
-      );
+    if (props.stateForm) {
+      const removeApi = [...props.stateForm];
+
+      if ((props.state as IPolicyCreateState).data.form.APIs) {
+        const index = removeApi.findIndex((a) => a.Id === Id);
+        removeApi.splice(index, 1);
+        dispatch(
+          setForm({
+            ...(props.state as IPolicyCreateState).data.form,
+            APIs: removeApi,
+          })
+        );
+      }
+      if ((props.state as IKeyCreateState).data.form.AccessRights) {
+        const index = removeApi.findIndex((a) => a.ApiId === Id);
+        removeApi.splice(index, 1);
+        dispatch(
+          setForms({
+            ...(props.state as IKeyCreateState).data.form,
+            AccessRights: removeApi,
+          })
+        );
+      }
     }
   };
+  useEffect(() => {
+    if (
+      selectedRows.state.length > 0 &&
+      selectedRows.state.length > selectedRows.prevState.length
+    ) {
+      const ApiId: string = selectedRows.state[0].split(",")[0];
+      const ApiName = selectedRows.state[0].split(",")[1];
+      const auth: string = selectedRows.state[0].split(",")[2];
+      handleAddClick(ApiId);
+      setApiAuth(auth);
+      ToastAlert(`${ApiName} selected`, "success");
+    } else {
+      if (
+        selectedRows.prevState.length > 0 &&
+        selectedRows.state.length < selectedRows.prevState.length &&
+        props.stateForm.length > selectedRows.state.length
+      ) {
+        const filterApiList = selectedRows.prevState.find(
+          (i: any) => !selectedRows!.state.includes(i)
+        );
+        removeAccess(filterApiList.split(",")[0]);
+        ToastAlert(`${filterApiList.split(",")[1]} removed`, "warning");
+      }
+    }
+    if (id !== undefined) {
+      getDataONUpdate();
+    }
+    console.log("apiacess_inrow", id, selectedRows);
+  }, [
+    id
+      ? selectedRows.state.length === selectedRows.prevState.length ||
+        selectedRows
+      : selectedRows,
+  ]);
+  console.log("apiacess", selectedRows);
   const grid = new Grid({
     columns: [
       {
-        name: "Id",
-        hidden: true,
+        id: "myCheckbox",
+        name: "Select",
+        width: "10%",
+        plugin: {
+          component: RowSelection,
+          props: {
+            id: (row: any) =>
+              row.cells[1].data +
+              "," +
+              row.cells[2].data +
+              "," +
+              row.cells[5].data,
+          },
+        },
       },
       {
-        id: "Select",
-        width: "6%",
-        sort: false,
-        formatter: (cell: string, row: any) => {
-          const Id = row.cells[1].data;
-          const Name = row.cells[2].data;
-          const Auth = row.cells[5].data;
-          let data = false;
-          if ((props.state as IPolicyCreateState).data.form.APIs) {
-            data = (props.state as IPolicyCreateState).data.form.APIs.some(
-              (x: any) => x?.Id === Id
-            );
-          } else if ((props.state as IKeyCreateState).data.form.AccessRights) {
-            data = (
-              props.state as IKeyCreateState
-            ).data.form.AccessRights?.some((x: any) => x?.ApiId === Id);
-          }
-          // StateKey.data.form?.Policies?.includes(Id);
-          // console.log(props);
-          return h("input", {
-            name: "tag_" + Id,
-            id: "tag_" + Id,
-            type: "checkbox",
-            checked: data,
-            onClick: (event: any) => {
-              if (event.target!.checked) {
-                handleAddClick(Id);
-                setApiAuth(Auth);
-                ToastAlert(`${Name} selected`, "success");
-              } else {
-                removeAccess(Id);
-                // setApiAuth("");
-                ToastAlert(`${Name} removed`, "warning");
-              }
-            },
-          });
-        },
+        name: "Id",
+        hidden: true,
       },
       { name: "Name", width: "20%" },
       { name: "Status", sort: false, width: "20%" },
@@ -152,7 +197,6 @@ export default function ApiAccessList(props: IProps) {
                   : a.AuthType !== "keyless"
               )
               .map((data) => [
-                data.Action,
                 data.Id,
                 data.Name,
                 data.IsActive ? "Active" : "Inactive",
@@ -169,22 +213,83 @@ export default function ApiAccessList(props: IProps) {
       },
     },
   });
-  // console.log(props.state);
+
+  const mygrid = grid.getInstance();
+  mygrid.on("ready", () => {
+    // find the plugin with the give plugin ID
+    checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
+    prp = checkboxPlugin?.props;
+    setpluginState(prp.store);
+    if (id !== undefined) {
+      for (const iterator of selectedRows.state) {
+        prp!.store.handle("CHECK", {
+          ROW_ID: iterator,
+        });
+      }
+    }
+
+    prp!.store.on("updated", (state1: any, prevState1: any) => {
+      setselectedRows({ state: state1.rowIds, prevState: prevState1.rowIds });
+    });
+  });
+
+  useEffect(() => {
+    if (_deletedRow !== undefined && _deletedRow.length > 0) {
+      checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
+      _pluginState.handle("UNCHECK", {
+        ROW_ID: _deletedRow,
+      });
+      setdeletedRow([]);
+    }
+  }, [_deletedRow]);
+  // useEffect(() => {
+  //   _reloadGrid(id!);
+  //   console.log("reloadGrid", gridReload);
+  // }, [id && id !== undefined && props.stateForm.length > 0]);
+  useEffect(() => {
+    if (gridReady) {
+      mygrid.render(document.querySelector("#gridRender")!);
+    }
+    console.log("grideday", id, selectedRows);
+  }, [gridReady]);
+  // useEffect(() => {
+  //   console.log("useeffect_apiacess", id);
+  //   if (gridReload) {
+  //     mygrid.render(document.querySelector("#gridRender")!);
+  //   }
+  //   setGridReload(false);
+  // }, [id && id !== undefined && props.stateForm.length > 0]);
+  // console.log("apiacess_id", id);
   return (
     <div>
+      {gridReady ? <div id="gridRender"></div> : <></>}
       {accessApiList.loading ? (
         <Spinner />
       ) : (
         <>
-          <Grid {...grid.props} />
           <div className="mt-2">
-            {" "}
-            {apiAuth ? (
+            {apiAuth && (
               <>
                 <b>Note :&nbsp;</b> Apis get filter based on {apiAuth} Auth Type
               </>
-            ) : (
-              ""
+            )}
+          </div>
+          <div className="mt-2">
+            {selectedRows.state.length > 0 && (
+              <>
+                <b>Selected APIs...</b>
+                {selectedRows.state.map((rowId: any, idx: number) => {
+                  return (
+                    <li
+                      key={idx}
+                      style={{ cursor: "pointer", color: "blue" }}
+                      onClick={() => scrollToSection(rowId.split(",")[1])}
+                    >
+                      {rowId.split(",")[1]}
+                    </li>
+                  );
+                })}
+              </>
             )}
           </div>
         </>

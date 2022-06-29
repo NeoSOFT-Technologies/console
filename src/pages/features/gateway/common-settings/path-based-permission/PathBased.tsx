@@ -1,40 +1,31 @@
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Accordion, AccordionButton } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-// import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
-import {
-  setFormErrors,
-  setForms,
-} from "../../../../../store/features/gateway/key/create/slice";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
-import {
-  policystate,
-  setForm,
-  setFormError,
-} from "../../../../../store/features/gateway/policy/create/slice";
-import { useAppDispatch } from "../../../../../store/hooks";
+import { refreshGrid } from "../api-access-List/ApiAccessList";
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
+import { IPropsHelper } from "../global-limit/rate-limit-helper";
 import Ipathpermission from "./path-file";
-import IpathpermissionKey from "./path-file-Key";
+// import IpathpermissionKey from "./path-file-Key";
 interface IProps {
+  requiredInterface: IPropsHelper;
   state?: IKeyCreateState;
   policystate?: IPolicyCreateState;
   apidata?: any;
   apistate?: any;
   indexdata?: number;
   current: string;
-  setForm: (state: any, action: any) => void;
-  setFormError: (state: any, action: any) => void;
+  setForm: ActionCreatorWithPayload<any, string>;
+  setFormError: ActionCreatorWithPayload<any, string>;
 }
 export default function PathBased(props: IProps) {
   const [isActive, setisActive] = useState<boolean>(false);
   const [isActiveApi, setisActiveApi] = useState<boolean>(false);
   const [versions, setversion] = useState<string[]>([]);
-
-  const dispatch = useAppDispatch();
   const [Limits, setLimits] = useState<any>({
     Rate: -1,
     Per: -1,
@@ -47,74 +38,39 @@ export default function PathBased(props: IProps) {
     Quota_renewal_rate: 0,
     Set_by_policy: false,
   });
-  const [LimitsKey, setLimitsKey] = useState<any>({
-    Rate: -1,
-    Per: -1,
-    Throttle_interval: -1,
-    Throttle_retry_limit: -1,
-    Max_query_depth: -1,
-    Quota_max: -1,
-    Quota_renews: -1,
-    Quota_remaining: -1,
-    Quota_renewal_rate: 0,
-    Set_by_policy: false,
-  });
   const newFormData: any = { ...Limits };
-  const newFormDatakey: any = { ...LimitsKey };
   const setFieldValue = () => {
-    const apisList =
-      props.current === "policy"
-        ? [...props.policystate?.data.form.APIs!]
-        : [...props.state?.data.form.AccessRights!];
+    const apisList = [...props.requiredInterface.formProp!];
     setLimits(newFormData);
-    setLimitsKey(newFormDatakey);
-    props.current === "policy"
-      ? (apisList[props.indexdata!] = {
-          ...apisList[props.indexdata!],
-          Limit: { ...newFormData },
-        })
-      : (apisList[props.indexdata!] = {
-          ...apisList[props.indexdata!],
-          Limit: { ...newFormDatakey },
-        });
-    props.current === "policy"
-      ? dispatch(
-          setForm({
-            ...props.policystate?.data.form,
-            APIs: apisList,
-          })
-        )
-      : dispatch(
-          setForms({
-            ...props.state?.data.form,
-            AccessRights: apisList,
-          })
-        );
+    apisList[props.requiredInterface.index!] = {
+      ...apisList[props.requiredInterface.index!],
+      Limit: { ...newFormData },
+    };
+    console.log("mylist", apisList);
+    props.requiredInterface.dispatch(
+      props.requiredInterface.setForm!({
+        ...props.requiredInterface.form,
+        [props.requiredInterface.propName!]: apisList,
+      })
+    );
   };
 
   const { id } = useParams();
   const setNull = () => {
-    const apisList =
-      props.current === "policy"
-        ? [...props.policystate?.data.form.APIs!]
-        : [...props.state?.data.form.AccessRights!];
-    apisList[props.indexdata!] = {
-      ...apisList[props.indexdata!],
+    const apisList = [...props.requiredInterface.formProp];
+    // ? [...props.policystate?.data.form.APIs!]
+    // : [...props.state?.data.form.AccessRights!];
+    apisList[props.requiredInterface.index!] = {
+      ...apisList[props.requiredInterface.index!],
       Limit: undefined,
     };
-    props.current === "policy"
-      ? dispatch(
-          setForm({
-            ...props.policystate?.data.form,
-            APIs: apisList,
-          })
-        )
-      : dispatch(
-          setForms({
-            ...props.state?.data.form,
-            AccessRights: apisList,
-          })
-        );
+
+    props.requiredInterface.dispatch(
+      props.requiredInterface.setForm!({
+        ...props.requiredInterface.form,
+        [props.requiredInterface.propName!]: apisList,
+      })
+    );
   };
 
   function setfieldsvalues(isActiveApis: any) {
@@ -125,102 +81,60 @@ export default function PathBased(props: IProps) {
         setFieldValue();
       }
     } else {
-      if (props.current === "policy") {
-        if (
-          isActiveApis === true &&
-          props.policystate?.data.form.APIs[props.indexdata!].Limit === null
-        ) {
-          setFieldValue();
-        } else if (
-          isActiveApis === false &&
-          props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
-        ) {
-          setNull();
-          console.log(
-            "hey",
-            props.policystate?.data.form.APIs[props.indexdata!].Limit
-          );
-        } else if (
-          isActiveApis === true &&
-          (props.policystate?.data.form.APIs[props.indexdata!].Limit !== null ||
-            props.policystate?.data.form.APIs[props.indexdata!].Limit !==
-              undefined)
-        ) {
-          setFieldValue();
-        } else if (
-          isActiveApis === false &&
-          (props.policystate?.data.form.APIs[props.indexdata!].Limit === null ||
-            props.policystate?.data.form.APIs[props.indexdata!].Limit !==
-              undefined)
-        ) {
-          setNull();
-        }
-      } else {
-        if (
-          isActiveApis === true &&
-          props.state?.data.form.AccessRights[props.indexdata!].Limit === null
-        ) {
-          setFieldValue();
-        } else if (
-          isActiveApis === false &&
-          props.state?.data.form.AccessRights[props.indexdata!].Limit !== null
-        ) {
-          setNull();
-        } else if (
-          isActiveApis === true &&
-          (props.state?.data.form.AccessRights[props.indexdata!].Limit !==
-            undefined ||
-            props.state?.data.form.AccessRights[props.indexdata!].Limit !==
-              null)
-        ) {
-          setFieldValue();
-        } else if (
-          isActiveApis === false &&
-          (props.state?.data.form.AccessRights[props.indexdata!].Limit ===
-            undefined ||
-            props.state?.data.form.AccessRights[props.indexdata!].Limit ===
-              null)
-        ) {
-          setNull();
-        }
+      if (
+        isActiveApis === true &&
+        props.requiredInterface.formProp[props.requiredInterface.index!]
+          .Limit === null
+      ) {
+        setFieldValue();
+      } else if (
+        isActiveApis === false &&
+        props.requiredInterface.formProp[props.requiredInterface.index!]
+          .Limit !== null
+      ) {
+        setNull();
+      } else if (
+        isActiveApis === true &&
+        (props.requiredInterface.formProp[props.requiredInterface.index!]
+          .Limit !== null ||
+          props.requiredInterface.formProp[props.requiredInterface.index!]
+            .Limit !== undefined)
+      ) {
+        console.log("properly coming or not");
+        setFieldValue();
+      } else if (
+        isActiveApis === false &&
+        (props.requiredInterface.formProp[props.requiredInterface.index!]
+          .Limit === null ||
+          props.requiredInterface.formProp[props.requiredInterface.index!]
+            .Limit !== undefined)
+      ) {
+        setNull();
       }
     }
   }
   const setPathValuesNull = () => {
-    const apisList =
-      props.current === "policy"
-        ? [...props.policystate?.data.form.APIs!]
-        : [...props.state?.data.form.AccessRights!];
-    apisList[props.indexdata!] = {
-      ...apisList[props.indexdata!],
+    const apisList = [...props.requiredInterface.formProp!];
+    apisList[props.requiredInterface.index!] = {
+      ...apisList[props.requiredInterface.index!],
       AllowedUrls: [],
     };
-    props.current === "policy"
-      ? dispatch(
-          setForm({
-            ...props.policystate?.data.form,
-            APIs: apisList,
-          })
-        )
-      : dispatch(
-          setForms({
-            ...props.state?.data.form,
-            AccessRights: apisList,
-          })
-        );
+
+    props.requiredInterface.dispatch(
+      props.requiredInterface.setForm!({
+        ...props.requiredInterface.form,
+        [props.requiredInterface.propName!]: apisList,
+      })
+    );
   };
 
   function setpathfieldvalues(isActives: any) {
-    console.log("pathlog", isActives);
     if (id === undefined) {
       if (isActives === false) {
         setPathValuesNull();
       }
     } else {
-      if (props.current === "policy" && isActives === false) {
-        console.log("pathvalues", props.policystate?.data.form);
-        setPathValuesNull();
-      } else if (props.current !== "policy" && isActives === false) {
+      if (isActives === false) {
         setPathValuesNull();
       }
     }
@@ -230,94 +144,48 @@ export default function PathBased(props: IProps) {
       setisActiveApi(false);
       setNull();
     } else {
-      if (props.current === "policy") {
+      if (
+        props.requiredInterface.formProp[props.requiredInterface.index!]
+          .Limit !== undefined
+      ) {
         if (
-          props.policystate?.data.form.APIs[props.indexdata!].Limit !==
-          undefined
-        ) {
-          console.log(
-            "hey",
-            props.policystate?.data.form.APIs[props.indexdata!].Limit
-          );
-          if (
-            props.policystate?.data.form.APIs[props.indexdata!].Limit !== null
-          ) {
-            if (
-              props.policystate?.data.form.APIs[props.indexdata!].Limit
-                ?.Rate === -1 &&
-              props.policystate?.data.form.APIs[props.indexdata!].Limit?.Per ===
-                -1 &&
-              props.policystate?.data.form.APIs[props.indexdata!].Limit
-                ?.Throttle_retry_limit === -1 &&
-              props.policystate?.data.form.APIs[props.indexdata!].Limit
-                ?.Quota_max === -1
-            ) {
-              setNull();
-              setisActiveApi(false);
-              setNull();
-            } else {
-              setisActiveApi(true);
-            }
-          } else {
-            setisActiveApi(false);
-          }
-        } else {
-          setisActiveApi(false);
-        }
-      } else {
-        console.log(
-          "empty data set",
-          props.state?.data.form.AccessRights[props.indexdata!].Limit !==
-            undefined
-        );
-        console.log("empty data set", policystate);
-        if (
-          props.state?.data.form.AccessRights[props.indexdata!].Limit !==
-            null &&
-          props.state?.data.form.AccessRights[props.indexdata!].Limit !==
-            undefined
+          props.requiredInterface.formProp[props.requiredInterface.index!]
+            .Limit !== null
         ) {
           if (
-            props.state?.data.form.AccessRights[props.indexdata!].Limit
-              ?.Rate === -1 &&
-            props.state?.data.form.AccessRights[props.indexdata!].Limit?.Per ===
-              -1 &&
-            props.state?.data.form.AccessRights[props.indexdata!].Limit
-              ?.Throttle_retry_limit === -1 &&
-            props.state?.data.form.AccessRights[props.indexdata!].Limit
-              ?.Quota_max === -1
+            props.requiredInterface.formProp[props.requiredInterface.index!]
+              .Limit?.Rate === -1 &&
+            props.requiredInterface.formProp[props.requiredInterface.index!]
+              .Limit?.Per === -1 &&
+            props.requiredInterface.formProp[props.requiredInterface.index!]
+              .Limit?.Throttle_retry_limit === -1 &&
+            props.requiredInterface.formProp[props.requiredInterface.index!]
+              .Limit?.Quota_max === -1
           ) {
+            setNull();
             setisActiveApi(false);
+            setNull();
           } else {
             setisActiveApi(true);
           }
         } else {
           setisActiveApi(false);
         }
+      } else {
+        setisActiveApi(false);
       }
     }
   }, [id]);
 
   useEffect(() => {
-    if (id === undefined) {
-      setisActive(false);
-    } else {
-      if (props.current === "policy") {
-        props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls !==
-          undefined &&
-        props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls.length >
-          0
-          ? setisActive(true)
-          : setisActive(false);
-      } else {
-        props.state?.data.form.AccessRights[props.indexdata!].AllowedUrls !==
-          undefined &&
-        props.state?.data.form.AccessRights[props.indexdata!].AllowedUrls!
-          .length > 0
-          ? setisActive(true)
-          : setisActive(false);
-      }
-    }
+    id === undefined
+      ? setisActive(false)
+      : props.requiredInterface.formProp[props.requiredInterface.index!]!
+          .AllowedUrls !== undefined &&
+        props.requiredInterface.formProp[props.requiredInterface.index!]!
+          .AllowedUrls.length > 0
+      ? setisActive(true)
+      : setisActive(false);
   }, []);
 
   const setPathPermission = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -342,26 +210,22 @@ export default function PathBased(props: IProps) {
       if (!found) {
         setversion([...versions, value]);
       }
-      const apisLists =
-        props.current === "policy"
-          ? [...props.policystate?.data.form.APIs!]
-          : [...props.state?.data.form.AccessRights!];
-      const version = [...apisLists[props.indexdata!].Versions!];
+      const apisLists = [...props.requiredInterface.formProp];
+      const version = [...apisLists[props.requiredInterface.index!].Versions!];
       const checkexisting = version.includes(value);
       if (!checkexisting) {
         version.push(value);
       }
-      apisLists[props.indexdata!] = {
-        ...apisLists[props.indexdata!],
+      apisLists[props.requiredInterface.index!] = {
+        ...apisLists[props.requiredInterface.index!],
         Versions: [...version],
       };
-      props.current === "policy"
-        ? dispatch(
-            setForm({ ...props.policystate?.data.form, APIs: apisLists })
-          )
-        : dispatch(
-            setForms({ ...props.state?.data.form, AccessRights: apisLists })
-          );
+      props.requiredInterface.dispatch(
+        props.requiredInterface.setForm!({
+          ...props.requiredInterface.form,
+          [props.requiredInterface.propName!]: apisLists,
+        })
+      );
     }
   };
 
@@ -371,60 +235,67 @@ export default function PathBased(props: IProps) {
     rows.splice(index, 1);
     setversion(rows);
 
-    const apisLists =
-      props.current === "policy"
-        ? [...props.policystate?.data.form.APIs!]
-        : [...props.state?.data.form.AccessRights!];
-    const version = [...apisLists[props.indexdata!].Versions!];
+    const apisLists = [...props.requiredInterface.formProp];
+    const version = [...apisLists[props.requiredInterface.index!].Versions!];
     version.splice(index, 1);
-    apisLists[props.indexdata!] = {
-      ...apisLists[props.indexdata!],
+    apisLists[props.requiredInterface.index!] = {
+      ...apisLists[props.requiredInterface.index!],
       Versions: [...version],
     };
-    props.current === "policy"
-      ? dispatch(setForm({ ...props.policystate?.data.form, APIs: apisLists }))
-      : dispatch(
-          setForms({ ...props.state?.data.form, AccessRights: apisLists })
-        );
+    props.requiredInterface.dispatch(
+      props.requiredInterface.setForm!({
+        ...props.requiredInterface.form,
+        [props.requiredInterface.propName!]: apisLists,
+      })
+    );
   };
-  const removeAccess = (event: any, index: any, current: string) => {
+  const removeAccess = (event: any, index: any) => {
     event.preventDefault();
+    if (props.requiredInterface.formProp!.length > 0) {
+      // const removeApi = [...props.requiredInterface.formProp!];
+      // removeApi.splice(index, 1);
+      // props.requiredInterface.dispatch(
+      //   props.requiredInterface.setForm!({
+      //     ...props.requiredInterface.form,
+      //     [props.requiredInterface.propName!]: removeApi,
+      //   })
+      // );
+      // const error = [...props.requiredInterface.errorProp!];
+      // error.splice(index, 1);
+      // props.requiredInterface.dispatch(
+      //   props.requiredInterface.setFormError!({
+      //     ...props.requiredInterface.errors,
+      //     [props.requiredInterface.errorProp]: error,
+      //   })
+      // );
+    }
     if (
-      current === "policy" &&
-      props.policystate?.data.form !== undefined &&
-      props.policystate?.data.form.APIs!.length > 0
+      props.requiredInterface.form !== undefined &&
+      props.requiredInterface.formProp!.length > 0
     ) {
-      const removeApi = [...props.policystate?.data.form.APIs!];
+      const removeApi = [...props.requiredInterface.formProp!];
+      const rowId =
+        props.requiredInterface.formProp[index]?.Id +
+        "," +
+        props.requiredInterface.formProp[index]?.Name +
+        "," +
+        props.requiredInterface.formProp[index]?.AuthType;
+      refreshGrid(rowId);
+      const ApiName = props.requiredInterface.formProp[index]?.Name;
 
       removeApi.splice(index, 1);
-      dispatch(setForm({ ...props.policystate?.data.form, APIs: removeApi }));
-      const error = [...props.policystate?.data.errors?.PerApiLimit!];
-      error.splice(index, 1);
-      dispatch(
-        setFormError({
-          ...props.policystate.data.errors,
-          PerApiLimit: error,
+      ToastAlert(`${ApiName} removed`, "warning");
+      props.requiredInterface.dispatch(
+        props.requiredInterface.setForm!({
+          ...props.requiredInterface.form,
+          [props.requiredInterface.propName!]: removeApi,
         })
       );
-    } else if (
-      current === "key" &&
-      props.state?.data.form !== undefined &&
-      props.state?.data.form.AccessRights!.length > 0
-    ) {
-      const removeApi = [...props.state?.data.form.AccessRights!];
-
-      const ApiName = props.state?.data.form.AccessRights[index]?.ApiName;
-      removeApi.splice(index, 1);
-
-      ToastAlert(`${ApiName} removed`, "warning");
-      dispatch(
-        setForms({ ...props.state?.data.form, AccessRights: removeApi })
-      );
-      const error = [...props.state?.data.errors?.PerApiLimit!];
+      const error = [...props.requiredInterface.errorProp!];
       error.splice(index, 1);
-      dispatch(
-        setFormErrors({
-          ...props.state.data.errors,
+      props.requiredInterface.dispatch(
+        props.requiredInterface.setFormError!({
+          ...props.requiredInterface.errors,
           PerApiLimit: error,
         })
       );
@@ -432,27 +303,33 @@ export default function PathBased(props: IProps) {
   };
   return (
     <div>
-      {props.policystate?.loading ? (
+      {props.requiredInterface.form?.loading ? (
         <Spinner />
       ) : (
         <div className="card mt-4">
-          <Accordion defaultActiveKey="0">
+          <Accordion
+            defaultActiveKey="0"
+            id={
+              props.requiredInterface.formProp[props.requiredInterface.index!]
+                .Name
+            }
+          >
             <Accordion.Item eventKey="0">
               <div style={{ display: "inline-flex", width: "100%" }}>
                 <AccordionButton>
-                  {props.current === "policy"
-                    ? props.policystate?.data.form.APIs[props.indexdata!].Name +
-                      " | " +
-                      props.policystate?.data.form.APIs[props.indexdata!]
-                        .AuthType
-                    : props.state?.data.form.AccessRights[props.indexdata!]
-                        .ApiName}
+                  {props.requiredInterface.formProp[
+                    props.requiredInterface.index!
+                  ].Name +
+                    " | " +
+                    props.requiredInterface.formProp[
+                      props.requiredInterface.index!
+                    ].AuthType}
                 </AccordionButton>
                 <button
                   type="button"
                   style={{ width: "5%" }}
                   onClick={(e: any) =>
-                    removeAccess(e, props.indexdata, props.current)
+                    removeAccess(e, props.requiredInterface.index)
                   }
                 >
                   <i className="bi bi-trash-fill menu-icon"></i>
@@ -472,85 +349,46 @@ export default function PathBased(props: IProps) {
                           <option value="" className="bg-light">
                             --- Select Versions ---
                           </option>
-                          {/* <option></option> */}
-                          {props.current === "key"
-                            ? props.state?.data.form.AccessRights[
-                                props.indexdata!
-                              ].MasterVersions?.map(
-                                (datalist: any, index: number) => {
-                                  return (
-                                    <option key={index} value={datalist}>
-                                      {datalist}
-                                    </option>
-                                  );
-                                }
-                              )
-                            : props.policystate?.data.form.APIs[
-                                props.indexdata!
-                              ].MasterVersions?.map(
-                                (datalist: any, index: number) => {
-                                  return (
-                                    <option key={index} value={datalist}>
-                                      {datalist}
-                                    </option>
-                                  );
-                                }
-                              )}
+                          {props.requiredInterface.formProp[
+                            props.requiredInterface.index!
+                          ].MasterVersions?.map(
+                            (datalist: any, index: number) => {
+                              return (
+                                <option key={index} value={datalist}>
+                                  {datalist}
+                                </option>
+                              );
+                            }
+                          )}
                         </Form.Select>
                       </Form.Group>
                     </Col>
                   </Row>
                   <Row>
                     <Col md="12">
-                      {(
-                        props.current === "key"
-                          ? props.state?.data.form !== undefined &&
-                            props.state?.data.form.AccessRights[
-                              props.indexdata!
-                            ].Versions?.length > 0
-                          : props.policystate?.data.form !== undefined &&
-                            props.policystate?.data.form.APIs[props.indexdata!]
-                              .Versions?.length > 0
-                      ) ? (
+                      {props.requiredInterface.form !== undefined &&
+                      props.requiredInterface.formProp[
+                        props.requiredInterface.index!
+                      ].Versions?.length > 0 ? (
                         <div
                           style={{ width: "100%" }}
                           className="float-lg-left border rounded p-4"
                         >
-                          {props.current === "key"
-                            ? props.state?.data.form.AccessRights[
-                                props.indexdata!
-                              ].Versions.map((data: any, index: any) => {
-                                return (
-                                  <div key={index} className="border-0">
-                                    <i
-                                      className="bi bi-x-circle-fill float-left"
-                                      style={{ marginLeft: 30 }}
-                                      onClick={(e: any) =>
-                                        deleteversion(e, index)
-                                      }
-                                    >
-                                      &nbsp;&nbsp;{data}
-                                    </i>
-                                  </div>
-                                );
-                              })
-                            : props.policystate?.data.form.APIs[
-                                props.indexdata!
-                              ].Versions.map((data: any, index: any) => {
-                                return (
-                                  <div key={index} className="border-0">
-                                    <i
-                                      className="bi bi-x-circle-fill float-left"
-                                      style={{ marginLeft: 30 }}
-                                      onClick={(e: any) =>
-                                        deleteversion(e, index)
-                                      }
-                                    >
-                                      &nbsp;&nbsp;{data}
-                                    </i>
-                                  </div>
-                                );
-                              })}
+                          {props.requiredInterface.formProp[
+                            props.requiredInterface.index!
+                          ].Versions.map((data: any, index: any) => {
+                            return (
+                              <div key={index} className="border-0">
+                                <i
+                                  className="bi bi-x-circle-fill float-left"
+                                  style={{ marginLeft: 30 }}
+                                  onClick={(e: any) => deleteversion(e, index)}
+                                >
+                                  &nbsp;&nbsp;{data}
+                                </i>
+                              </div>
+                            );
+                          })}
                         </div>
                       ) : (
                         ""
@@ -582,18 +420,9 @@ export default function PathBased(props: IProps) {
                             above unless per Api limits and quotas are set here.
                           </Form.Label>
                         </Form.Group>
-                        {isActiveApi ? (
-                          <GlobalLimitApi
-                            state={props.policystate}
-                            keystate={props.state}
-                            index={props.indexdata}
-                            current={props.current}
-                            setForm={props.setForm}
-                            setFormError={props.setFormError}
-                          />
-                        ) : (
-                          " "
-                        )}
+                        {isActiveApi
+                          ? GlobalLimitApi(props.requiredInterface)
+                          : " "}
                       </Col>
                     </Row>
                   </div>
@@ -624,23 +453,7 @@ export default function PathBased(props: IProps) {
                         </Form.Group>
                       </Col>
                       {isActive ? (
-                        props.current === "policy" ? (
-                          <Ipathpermission
-                            state={props.state}
-                            policystate={props.policystate}
-                            apidata={props.apidata}
-                            indexdata={props.indexdata}
-                            current={props.current}
-                          />
-                        ) : (
-                          <IpathpermissionKey
-                            state={props.state}
-                            policystate={props.policystate}
-                            apidata={props.apidata}
-                            indexdata={props.indexdata}
-                            current={props.current}
-                          />
-                        )
+                        <Ipathpermission r={props.requiredInterface} />
                       ) : (
                         " "
                       )}

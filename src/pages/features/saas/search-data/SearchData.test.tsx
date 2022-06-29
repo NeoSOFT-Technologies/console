@@ -66,52 +66,58 @@ describe("SAAS - SEARCH DATA Component 2", () => {
     });
 
     mockApi
-      .onGet("http://localhost:8083/api/v1/manage/table/?tenantId=1")
+      .onGet(
+        "https://iam-dev-saas.neosofttech.com/api/v1/manage/table/?tenantId=1"
+      )
       .reply(200, {
         statusCode: 200,
         message: "Successfully retrieved all tables",
         data: ["testTable"],
       });
 
-    mockApi.onGet("manage/table/testTable?tenantId=1").reply(200, {
-      statusCode: 200,
-      message: "Table Information retrieved successfully",
-      data: {
-        tableName: "testTable",
-        columns: [
-          {
-            name: "id",
-            type: "string",
-            required: true,
-            partialSearch: false,
-            multiValue: false,
-            sortable: false,
-            filterable: true,
-            storable: true,
-          },
-          {
-            name: "name",
-            type: "string",
-            required: false,
-            partialSearch: false,
-            multiValue: false,
-            sortable: false,
-            filterable: false,
-            storable: false,
-          },
-          {
-            name: "username",
-            type: "strings",
-            required: true,
-            partialSearch: false,
-            multiValue: true,
-            sortable: true,
-            filterable: true,
-            storable: true,
-          },
-        ],
-      },
-    });
+    mockApi
+      .onGet(
+        "https://iam-dev-saas.neosofttech.com/api/v1/manage/table/testTable?tenantId=1"
+      )
+      .reply(200, {
+        statusCode: 200,
+        message: "Table Information retrieved successfully",
+        data: {
+          tableName: "testTable",
+          columns: [
+            {
+              name: "id",
+              type: "string",
+              required: true,
+              partialSearch: false,
+              multiValue: false,
+              sortable: false,
+              filterable: true,
+              storable: true,
+            },
+            {
+              name: "name",
+              type: "string",
+              required: false,
+              partialSearch: false,
+              multiValue: false,
+              sortable: false,
+              filterable: false,
+              storable: false,
+            },
+            {
+              name: "username",
+              type: "strings",
+              required: true,
+              partialSearch: false,
+              multiValue: true,
+              sortable: true,
+              filterable: true,
+              storable: true,
+            },
+          ],
+        },
+      });
 
     mockApi
       .onGet(

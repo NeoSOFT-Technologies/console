@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { searchDataWithQueryService } from "../../../../../services/saas/api/api";
 import { ISearchDataWithQuery } from "../../../../../types/saas";
+import errorHandler from "../../../../../utils/error-handler";
 
 interface ISearchDataQueryState {
   data?: string;
@@ -21,11 +22,7 @@ export const searchDataWithQuery = createAsyncThunk(
       const response = await searchDataWithQueryService(data);
       return response.data;
     } catch (_error: any) {
-      let errorMsg = "Undefined Error";
-      errorMsg =
-        _error.response.data !== undefined
-          ? _error.response.data.message
-          : _error.message;
+      const errorMsg = errorHandler(_error);
       throw new Error(errorMsg);
     }
   }
@@ -47,7 +44,8 @@ const slice = createSlice({
     });
     builder.addCase(searchDataWithQuery.rejected, (state, action: any) => {
       state.loading = false;
-      state.error = action.error.message;
+      const errorMessage = JSON.parse(action.error.message);
+      state.error = errorMessage;
     });
   },
 });

@@ -12,8 +12,8 @@ export interface IGetPolicyByIdData {
   Name: string;
   Active: boolean;
   KeysInactive: boolean;
-  MaxQuota: number;
-  QuotaRate: number;
+  Quota: number;
+  QuotaRenewalRate: number;
   Rate: number;
   Per: number;
   ThrottleInterval: number;
@@ -63,6 +63,7 @@ export interface IGetPolicyByIdData {
 }
 export interface Limiting {
   ApiId: string;
+  ApiName: string;
   Per: string;
   Rate: string;
   Quota: string;

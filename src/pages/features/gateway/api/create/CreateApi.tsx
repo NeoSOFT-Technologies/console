@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Form, Row, Col, Accordion } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { access, AuthGuard } from "../../../../../components/auth-gaurd";
+// import { errorSummary } from "../../../../../components/error-summary/ErrorSummary";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
@@ -11,11 +12,20 @@ import {
 import {
   IErrorApiInput,
   IApiFormData,
+  IAddApiState,
 } from "../../../../../store/features/gateway/api/create/index";
 import { addNewApi } from "../../../../../store/features/gateway/api/create/slice";
-import { useAppDispatch } from "../../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 function CreateApi() {
   const dispatch = useAppDispatch();
+
+  const state: IAddApiState = useAppSelector(
+    (RootState) => RootState.addApiState
+  );
+  console.log("state:", state);
+  // console.log("state data:", state.data);
+  // console.log("state error:", state.error);
+
   const navigate = useNavigate();
   const [apisForm, setForm] = useState<IApiFormData>({
     name: "",
@@ -142,6 +152,7 @@ function CreateApi() {
                 </span>
               </div>
               <div>
+                {/* <div>{errorSummary(state)}</div> */}
                 <Accordion defaultActiveKey="0">
                   <Accordion.Item eventKey="0">
                     <Accordion.Header>
@@ -164,7 +175,10 @@ function CreateApi() {
                               onChange={validateForm}
                               required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            <Form.Control.Feedback
+                              type="invalid"
+                              data-testid="nameErr"
+                            >
                               {err.name}
                             </Form.Control.Feedback>
                           </Form.Group>
@@ -184,7 +198,10 @@ function CreateApi() {
                               onChange={validateForm}
                               required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            <Form.Control.Feedback
+                              type="invalid"
+                              data-testid="listenPathErr"
+                            >
                               {err.listenPath}
                             </Form.Control.Feedback>
                           </Form.Group>
@@ -204,7 +221,10 @@ function CreateApi() {
                               onChange={validateForm}
                               required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            <Form.Control.Feedback
+                              type="invalid"
+                              data-testid="targetUrlErr"
+                            >
                               {err.targetUrl}
                             </Form.Control.Feedback>
                           </Form.Group>
