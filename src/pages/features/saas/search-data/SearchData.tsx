@@ -239,6 +239,7 @@ export default function SearchData() {
       </tr>
     );
   }
+
   const searchFilterValue = (search: string) => {
     const results: any[] = [];
     let check = 0;
@@ -257,6 +258,31 @@ export default function SearchData() {
     });
     setFilterData(results);
   };
+
+  function checkSearchValue() {
+    return searchValue === "" ? (
+      searchData.data?.map((val, index) => {
+        if (
+          searchData &&
+          searchData.data &&
+          searchData?.data?.length < Number.parseInt(searchTenant.pageSize)
+        ) {
+          return getTableHeader(index, val);
+        } else if (
+          searchData &&
+          searchData.data &&
+          index + 1 < searchData?.data?.length
+        ) {
+          return getTableHeader(index, val);
+        } else {
+          return <></>;
+        }
+      })
+    ) : (
+      <></>
+    );
+  }
+
   function checkDataAvilable() {
     // eslint-disable-next-line unicorn/prefer-ternary
     if (searchData.data && searchData.data.length > 0) {
@@ -289,26 +315,7 @@ export default function SearchData() {
                 </tr>
               </thead>
               <tbody>
-                {searchValue === "" &&
-                  // eslint-disable-next-line array-callback-return
-                  searchData.data.map((val, index) => {
-                    if (
-                      searchData &&
-                      searchData.data &&
-                      searchData?.data?.length <
-                        Number.parseInt(searchTenant.pageSize)
-                    ) {
-                      return getTableHeader(index, val);
-                    } else if (
-                      searchData &&
-                      searchData.data &&
-                      index + 1 < searchData?.data?.length
-                    ) {
-                      return getTableHeader(index, val);
-                    } else {
-                      return <></>;
-                    }
-                  })}
+                {checkSearchValue()}
                 {searchValue !== "" &&
                   filterdata &&
                   filterdata?.map((val, index) => getTableHeader(index, val))}
