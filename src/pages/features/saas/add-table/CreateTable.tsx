@@ -334,6 +334,7 @@ export default function CreateTables() {
   }, [finalTableObj.tenantId]);
 
   useEffect(() => {
+    dispatch(capacityPlans());
     if (tenantDetail.data?.tenantId) {
       setFinalTableObj({
         ...finalTableObj,
@@ -343,8 +344,10 @@ export default function CreateTables() {
   }, []);
 
   useEffect(() => {
-    dispatch(capacityPlans());
-  }, []);
+    if (!capacityData.loading && capacityData.error) {
+      ToastAlert(capacityData.error, "error");
+    }
+  }, [capacityData.loading, capacityData.error]);
 
   useEffect(() => {
     if (
