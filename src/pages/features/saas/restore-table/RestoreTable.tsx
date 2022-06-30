@@ -61,15 +61,15 @@ function RestoreTable() {
       pageNumber: currentPage.toString(),
       pageSize: "6",
     };
-    if (authenticationState.data === "admin") {
-      dispatch(getAllDeletedTables(pageParameters));
-    } else if (authenticationState.data === "tenant") {
+    if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
         tenantId: id!,
         pageNumber: pageParameters.pageNumber,
         pageSize: pageParameters.pageSize,
       };
       dispatch(getDeletedTableByTenant(parameters));
+    } else {
+      dispatch(getAllDeletedTables(pageParameters));
     }
     return () => {
       dispatch(restoreTableReset());
@@ -85,7 +85,18 @@ function RestoreTable() {
       !restoredTableData.error &&
       restoredTableData?.data
     ) {
-      if (authenticationState.data === "admin") {
+      if (authenticationState.data === "tenant") {
+        const newTableList = TableData.data?.tableList.filter((obj) => {
+          return (
+            obj.tableName !== restoredTableRecord.tableName ||
+            obj.tenantId !== restoredTableRecord.tenantId
+          );
+        });
+        console.log(newTableList);
+        dispatch(setDeletedTableList({ dataSize, tableList: newTableList }));
+
+        ToastAlert("Table Deleted successfully ", "success");
+      } else {
         const newTableList = allDeleteTableData.data?.tableList.filter(
           (obj) => {
             return (
@@ -98,17 +109,6 @@ function RestoreTable() {
           setDeletedTableData({ dataSize: dataLength, tableList: newTableList })
         );
         ToastAlert("Table restored successfully ", "success");
-      } else if (authenticationState.data === "tenant") {
-        const newTableList = TableData.data?.tableList.filter((obj) => {
-          return (
-            obj.tableName !== restoredTableRecord.tableName ||
-            obj.tenantId !== restoredTableRecord.tenantId
-          );
-        });
-        console.log(newTableList);
-        dispatch(setDeletedTableList({ dataSize, tableList: newTableList }));
-
-        ToastAlert("Table Deleted successfully ", "success");
       }
     }
   }, [restoredTableData.loading]);
@@ -131,15 +131,15 @@ function RestoreTable() {
       pageNumber: (currentPage - 1).toString(),
       pageSize: "6",
     };
-    if (authenticationState.data === "admin") {
-      dispatch(getAllDeletedTables(pageParameters));
-    } else if (authenticationState.data === "tenant") {
+    if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
         tenantId: id!,
         pageNumber: pageParameters.pageNumber,
         pageSize: pageParameters.pageSize,
       };
       dispatch(getDeletedTableByTenant(parameters));
+    } else {
+      dispatch(getAllDeletedTables(pageParameters));
     }
   };
   const nextpage = (currentPage1: number) => {
@@ -151,22 +151,22 @@ function RestoreTable() {
       pageSize: "6",
     };
 
-    if (authenticationState.data === "admin") {
-      dispatch(getAllDeletedTables(pageParameters));
-    } else if (authenticationState.data === "tenant") {
+    if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
         tenantId: id!,
         pageNumber: pageParameters.pageNumber,
         pageSize: pageParameters.pageSize,
       };
       dispatch(getDeletedTableByTenant(parameters));
+    } else {
+      dispatch(getAllDeletedTables(pageParameters));
     }
   };
 
   return (
     <div className="createbody card">
       <div className="card-body table-responsive">
-        {authenticationState.data === "admin" ? (
+        {authenticationState.data !== "tenant" ? (
           <>
             <h4 className=" text-center pt-3 mt-3 ">Restore Table Details</h4>
 
@@ -251,6 +251,7 @@ function RestoreTable() {
           </>
         ) : (
           <>
+            <h4 className=" text-center mb-4">Restore Table Details</h4>
             {TableData.data?.tableList !== undefined &&
             TableData.data.tableList.length > 0 &&
             id !== undefined ? (
