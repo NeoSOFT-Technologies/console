@@ -3,7 +3,6 @@ import { Button, Col, Modal, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/toast-alert/toast-alert";
-
 import {
   ColNameErrMsg,
   multivaledDataTypes,
@@ -27,14 +26,13 @@ import "./style.css";
 
 export default function CreateTables() {
   const dispatch = useAppDispatch();
-
   const createtablestate = useAppSelector((state) => state.createTableState);
   const capacityData = useAppSelector((state) => state.capacityPlansState);
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
   const addColumn = "Add Column";
-  const [selectedColName, setSelectedColName] = useState<string>("");
   const [show, setShow] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [tableConfirmationModal, setTableConfirmationModal] = useState(false);
   const [capacityModal, setCapacityModal] = useState(false);
   const [selectedColHeading, setSelectedColHeading] = useState<string>("");
   const [selectedColAction, setSelectedColAction] = useState<string>("");
@@ -42,10 +40,11 @@ export default function CreateTables() {
   const [isSortableDisable, setIsSortableDisable] = useState<boolean>(true);
   const [isTypeDisable, setIsTypeDisable] = useState<boolean>(true);
   const [showDataTypes, setShowDataTypes] = useState<string[]>([]);
+  const tenantDetail = useAppSelector((state) => state.userData);
   const authenticationState = useAppSelector(
     (state: RootState) => state.loginType
   );
-  const tenantDetail = useAppSelector((state) => state.userData);
+
   const [finalTableObj, setFinalTableObj] = useState<ICreateTable>({
     tenantId: "",
     requestData: {
@@ -71,7 +70,6 @@ export default function CreateTables() {
     });
   const handleClose = () => {
     setError({
-      ...error,
       name: "",
     });
     setShow(false);
@@ -79,8 +77,14 @@ export default function CreateTables() {
   const deleteModalClose = () => {
     setDeleteModal(false);
   };
+  const tableConfirmationModalClose = () => {
+    setTableConfirmationModal(false);
+  };
+  const tableConfirmationModalShow = () => {
+    setTableConfirmationModal(true);
+  };
   const deleteModalShow = (columData: ITableColumnData) => {
-    if (columData.name?.toLowerCase() === "id") {
+    if (columData.name.toLowerCase() === "id") {
       ToastAlert("Column not allowed to delete", "warning");
     } else {
       setSelectedColumnData(columData);
@@ -200,10 +204,7 @@ export default function CreateTables() {
         const objIndex: number | any =
           finalTableObj.requestData.columns.findIndex(
             (item: ITableColumnData) =>
-              item.name.toLowerCase() ===
-              (selectedColHeading === addColumn
-                ? selectedColumnData.name.toLowerCase()
-                : selectedColName.toLowerCase())
+              item.name.toLowerCase() === selectedColumnData.name.toLowerCase()
           );
 
         if (selectedColHeading === addColumn) {
@@ -223,16 +224,9 @@ export default function CreateTables() {
             setShow(false);
           }
         } else {
-          if (
-            objIndex > -1 &&
-            !finalTableObj.requestData.columns.some(
-              (col) =>
-                col.name.toLowerCase() === selectedColumnData.name.toLowerCase()
-            )
-          ) {
+          if (objIndex > -1) {
             const newColList: ITableColumnData[] =
               finalTableObj.requestData.columns;
-            setSelectedColName("");
             newColList[objIndex] = selectedColumnData;
             setFinalTableObj({
               ...finalTableObj,
@@ -278,7 +272,6 @@ export default function CreateTables() {
       } else {
         setSelectedColumnData(columData);
         setSelectedColAction("Save Changes");
-        setSelectedColName(columData.name);
         if (columData.multiValue) {
           setShowDataTypes(multivaledDataTypes);
           setIsSortableDisable(true);
@@ -311,8 +304,7 @@ export default function CreateTables() {
       if (finalTableObj.requestData.columns.length === 0) {
         ToastAlert("Provide atleast one column", "warning");
       } else {
-        setShowSuccessMsg(true);
-        dispatch(createTable(finalTableObj));
+        tableConfirmationModalShow();
       }
     } else {
       ToastAlert("Provide valid inputs", "warning");
@@ -327,6 +319,12 @@ export default function CreateTables() {
     deleteModalClose();
   };
 
+  const saveTable = () => {
+    setShowSuccessMsg(true);
+    dispatch(createTable(finalTableObj));
+    setTableConfirmationModal(false);
+  };
+
   useEffect(() => {
     if (!finalTableObj.tenantId) {
       if (authenticationState.data === "admin") dispatch(getTenantDetails());
@@ -336,13 +334,16 @@ export default function CreateTables() {
   }, [finalTableObj.tenantId]);
 
   useEffect(() => {
-    dispatch(capacityPlans());
     if (tenantDetail.data?.tenantId) {
       setFinalTableObj({
         ...finalTableObj,
         tenantId: tenantDetail.data?.tenantId.toString(),
       });
     } else dispatch(getTenantDetails());
+  }, []);
+
+  useEffect(() => {
+    dispatch(capacityPlans());
   }, []);
 
   useEffect(() => {
@@ -657,12 +658,12 @@ export default function CreateTables() {
                   className="w-100 pr-3 pt-1 pb-1"
                   value={selectedColumnData.type.toString()}
                   disabled={isTypeDisable}
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setSelectedColumnData({
                       ...selectedColumnData,
                       type: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                 >
                   {showDataTypes.map((val, index) =>
                     getDataTypeOptions(val, index)
@@ -821,6 +822,32 @@ export default function CreateTables() {
           </Button>
           <Button variant="danger" onClick={() => removeColumn()}>
             Yes, Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={tableConfirmationModal}
+        data={finalTableObj}
+        onHide={tableConfirmationModalClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Table Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <b>Note:</b> The Following Column Properties Could Not Be Changed in
+          Future , in order to change please contact admin <br></br>
+          <br></br>
+          <b>Are You Sure You Want to Create Table ?</b>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={tableConfirmationModalClose}>
+            No, Cancel
+          </Button>
+          <Button variant="danger" onClick={() => saveTable()}>
+            Yes, Create
           </Button>
         </Modal.Footer>
       </Modal>
