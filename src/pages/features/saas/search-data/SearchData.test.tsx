@@ -116,17 +116,17 @@ describe("SAAS - SEARCH DATA Component 2", () => {
       )
       .reply(200, {
         statusCode: 200,
-        message: "Records fetched successfully",
+        message: "Record fetched successfully",
         status: "OK",
         results: {
           numDocs: 10,
           data: [
-            { name: ["karthik"], id: "1", username: ["karthik261099"] },
-            { name: ["name"], id: "2", username: ["username_2"] },
-            { name: ["name"], id: "3", username: ["username_3"] },
-            { name: ["name"], id: "4", username: ["username_4"] },
-            { name: ["name"], id: "5", username: ["username_5"] },
-            { name: ["name"], id: "6", username: ["username_6"] },
+            { name: ["omkar"], id: "1", username: ["omkar261099"] },
+            { name: ["xname"], id: "2", username: ["username_2"] },
+            { name: ["yname"], id: "3", username: ["username_3"] },
+            { name: ["zname"], id: "4", username: ["username_4"] },
+            { name: ["pname"], id: "5", username: ["username_5"] },
+            { name: ["qname"], id: "6", username: ["username_6"] },
           ],
         },
       });
@@ -143,10 +143,10 @@ describe("SAAS - SEARCH DATA Component 2", () => {
           numDocs: 10,
           data: [
             { name: ["karthik"], id: "6", username: ["karthik-pillai"] },
-            { name: ["fname"], id: "7", username: ["user-name-2"] },
-            { name: ["fname"], id: "8", username: ["user-name-3"] },
-            { name: ["fname"], id: "9", username: ["user-name-4"] },
-            { name: ["fname"], id: "10", username: ["user-name-5"] },
+            { name: ["afname"], id: "7", username: ["user-name-2"] },
+            { name: ["bfname"], id: "8", username: ["user-name-3"] },
+            { name: ["cfname"], id: "9", username: ["user-name-4"] },
+            { name: ["dfname"], id: "10", username: ["user-name-5"] },
           ],
         },
       });
@@ -226,7 +226,7 @@ describe("SAAS - SEARCH DATA Component 2", () => {
     userEvent.click(searchBtn);
 
     const usernameInTable = await waitFor(
-      () => screen.getByText("karthik261099", { exact: false }),
+      () => screen.getByText("omkar261099", { exact: false }),
       {
         timeout: 3000,
       }
@@ -261,7 +261,7 @@ describe("SAAS - SEARCH DATA Component 2", () => {
 
     // const usernameInTable =
     expect(
-      await waitFor(() => screen.getByText("karthik261099", { exact: false }), {
+      await waitFor(() => screen.getByText("omkar261099", { exact: false }), {
         timeout: 3000,
       })
     ).toBeInTheDocument();
