@@ -52,17 +52,8 @@ describe("SAAS - SEARCH DATA Component 2", () => {
           databaseDescription: "tenant1 db",
           createdDateTime: "2022/05/30 08:28:11",
         },
-        {
-          id: 2,
-          tenantName: "Tenant2",
-          email: "tenant2@email.org",
-          description: "des",
-          databaseName: "tenant2-db",
-          databaseDescription: "des",
-          createdDateTime: "2022/06/02 10:56:19",
-        },
       ],
-      count: 2,
+      count: 1,
     });
 
     mockApi
