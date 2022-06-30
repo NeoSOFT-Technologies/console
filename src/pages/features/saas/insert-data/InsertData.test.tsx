@@ -50,17 +50,8 @@ describe("SAAS - INSERT DATA Component", () => {
           databaseDescription: "tenant1 db",
           createdDateTime: "2022/05/30 08:28:11",
         },
-        {
-          id: 2,
-          tenantName: "Tenant2",
-          email: "tenant2@email.org",
-          description: "des",
-          databaseName: "tenant2-db",
-          databaseDescription: "des",
-          createdDateTime: "2022/06/02 10:56:19",
-        },
       ],
-      count: 2,
+      count: 1,
     });
 
     mockApi.onGet("manage/table/?tenantId=1").reply(200, {
@@ -160,7 +151,7 @@ describe("SAAS - INSERT DATA Component", () => {
       "testTable",
     ]);
 
-    const jsonInputField = await screen.getByTestId("json-input-box");
+    const jsonInputField = screen.getByTestId("json-input-box");
     fireEvent.change(jsonInputField, {
       target: {
         name: "inputData",
