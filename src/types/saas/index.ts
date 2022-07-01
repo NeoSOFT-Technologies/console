@@ -89,3 +89,7 @@ export interface IGetDeleteTableByTenant {
   pageNumber: string;
   pageSize: string;
 }
+export interface ICustomeError {
+  statusCode: string;
+  message: string;
+}
