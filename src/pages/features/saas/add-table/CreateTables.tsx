@@ -220,7 +220,6 @@ export default function CreateTables() {
         setShow(false);
       }
     } else {
-      console.log("wat is objindex", objIndex);
       if (objIndex > -1) {
         const newColList: ITableColumnData[] =
           finalTableObj.requestData.columns;
