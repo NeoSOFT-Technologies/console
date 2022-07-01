@@ -162,7 +162,155 @@ function RestoreTable() {
       dispatch(getAllDeletedTables(pageParameters));
     }
   };
+  function checkData() {
+    if (
+      allDeleteTableData.data?.tableList !== undefined &&
+      allDeleteTableData.data.tableList.length > 0
+    ) {
+      return (
+        <>
+          <Table bordered className="text-center">
+            <thead>
+              <tr id="test">
+                <th>SR.NO.</th>
+                <th>User</th>
+                <th>Table Name</th>
+                <th>Restore</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allDeleteTableData.data.tableList.map((val, index) => (
+                <tr key={index + 6 * (currentPage - 1) + 1}>
+                  {currentPage !== 1 ? (
+                    <td>{index + 6 * (currentPage - 1) + 1}</td>
+                  ) : (
+                    <td>{index + currentPage}</td>
+                  )}
+                  <td>{val.tenantId}</td>
+                  <td>{val.tableName}</td>
+                  <td
+                    className="text-align-middle text-primary"
+                    onClick={() => handleShow(val)}
+                    data-testid="restore-table-btn"
+                  >
+                    <i className="bi bi-bootstrap-reboot"></i>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
 
+          <nav
+            aria-label="Page navigation example "
+            className="d-flex justify-content-center"
+          >
+            <ul className="pagination ">
+              <li
+                className={
+                  currentPage !== 1 ? "page-item" : "page-item disabled"
+                }
+              >
+                <a className="page-link " onClick={() => prevpage(currentPage)}>
+                  Previous
+                </a>
+              </li>
+
+              <li className="page-item active">
+                <a className="page-link">{currentPage}</a>
+              </li>
+              <li
+                className={
+                  allDeleteTableData.data.tableList !== undefined &&
+                  allDeleteTableData.data.dataSize - currentPage * 6 <= 0
+                    ? "page-item disabled"
+                    : "page-item  "
+                }
+              >
+                <a className="page-link " onClick={() => nextpage(currentPage)}>
+                  Next
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </>
+      );
+    } else if (
+      TableData.data?.tableList !== undefined &&
+      TableData.data.tableList.length > 0 &&
+      id !== undefined
+    ) {
+      return (
+        <>
+          <Table bordered className="text-center">
+            <thead>
+              <tr>
+                <th>SR.NO.</th>
+                <th>Table Name</th>
+                <th>Restore</th>
+              </tr>
+            </thead>
+            <tbody>
+              {TableData.data.tableList.map((val, index) => (
+                <tr key={index + 6 * (currentPage - 1) + 1}>
+                  {currentPage !== 1 ? (
+                    <td>{index + 6 * (currentPage - 1) + 1}</td>
+                  ) : (
+                    <td>{index + currentPage}</td>
+                  )}
+                  <td>{val.tableName}</td>
+                  <td
+                    className="text-align-middle text-primary"
+                    onClick={() => handleShow(val)}
+                    data-testid="restore-table-btn"
+                  >
+                    <i className="bi bi-bootstrap-reboot"></i>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <nav
+            aria-label="Page navigation example "
+            className="d-flex justify-content-center"
+          >
+            <ul className="pagination ">
+              <li
+                className={
+                  currentPage !== 1 ? "page-item" : "page-item disabled"
+                }
+              >
+                <a className="page-link " onClick={() => prevpage(currentPage)}>
+                  Previous
+                </a>
+              </li>
+
+              <li className="page-item active">
+                <a className="page-link">{currentPage}</a>
+              </li>
+              <li
+                className={
+                  TableData.data.tableList !== undefined &&
+                  TableData.data.dataSize - currentPage * 6 <= 0
+                    ? "page-item disabled"
+                    : "page-item  "
+                }
+              >
+                <a className="page-link " onClick={() => nextpage(currentPage)}>
+                  Next
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <h2>No Data</h2>
+        </>
+      );
+    }
+  }
   return (
     <div className="createbody card">
       <div className="card-body table-responsive">
@@ -170,164 +318,12 @@ function RestoreTable() {
           <>
             <h4 className=" text-center pt-3 mt-3 ">Restore Table Details</h4>
 
-            {allDeleteTableData.data?.tableList !== undefined &&
-            allDeleteTableData.data.tableList.length > 0 ? (
-              <>
-                <Table bordered className="text-center">
-                  <thead>
-                    <tr id="test">
-                      <th>SR.NO.</th>
-                      <th>User</th>
-                      <th>Table Name</th>
-                      <th>Restore</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {allDeleteTableData.data.tableList.map((val, index) => (
-                      <tr key={index + 6 * (currentPage - 1) + 1}>
-                        {currentPage !== 1 ? (
-                          <td>{index + 6 * (currentPage - 1) + 1}</td>
-                        ) : (
-                          <td>{index + currentPage}</td>
-                        )}
-                        <td>{val.tenantId}</td>
-                        <td>{val.tableName}</td>
-                        <td
-                          className="text-align-middle text-primary"
-                          onClick={() => handleShow(val)}
-                          data-testid="restore-table-btn"
-                        >
-                          <i className="bi bi-bootstrap-reboot"></i>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-
-                <nav
-                  aria-label="Page navigation example "
-                  className="d-flex justify-content-center"
-                >
-                  <ul className="pagination ">
-                    <li
-                      className={
-                        currentPage !== 1 ? "page-item" : "page-item disabled"
-                      }
-                    >
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-
-                    <li className="page-item active">
-                      <a className="page-link">{currentPage}</a>
-                    </li>
-                    <li
-                      className={
-                        allDeleteTableData.data.tableList !== undefined &&
-                        allDeleteTableData.data.dataSize - currentPage * 6 <= 0
-                          ? "page-item disabled"
-                          : "page-item  "
-                      }
-                    >
-                      <a
-                        className="page-link "
-                        onClick={() => nextpage(currentPage)}
-                      >
-                        Next
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
-              </>
-            ) : (
-              <>
-                <h2>No Data</h2>
-              </>
-            )}
+            {checkData()}
           </>
         ) : (
           <>
             <h4 className=" text-center mb-4">Restore Table Details</h4>
-            {TableData.data?.tableList !== undefined &&
-            TableData.data.tableList.length > 0 &&
-            id !== undefined ? (
-              <>
-                <Table bordered className="text-center">
-                  <thead>
-                    <tr>
-                      <th>SR.NO.</th>
-                      <th>Table Name</th>
-                      <th>Restore</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {TableData.data.tableList.map((val, index) => (
-                      <tr key={index + 6 * (currentPage - 1) + 1}>
-                        {currentPage !== 1 ? (
-                          <td>{index + 6 * (currentPage - 1) + 1}</td>
-                        ) : (
-                          <td>{index + currentPage}</td>
-                        )}
-                        <td>{val.tableName}</td>
-                        <td
-                          className="text-align-middle text-primary"
-                          onClick={() => handleShow(val)}
-                          data-testid="restore-table-btn"
-                        >
-                          <i className="bi bi-bootstrap-reboot"></i>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-                <nav
-                  aria-label="Page navigation example "
-                  className="d-flex justify-content-center"
-                >
-                  <ul className="pagination ">
-                    <li
-                      className={
-                        currentPage !== 1 ? "page-item" : "page-item disabled"
-                      }
-                    >
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-
-                    <li className="page-item active">
-                      <a className="page-link">{currentPage}</a>
-                    </li>
-                    <li
-                      className={
-                        TableData.data.tableList !== undefined &&
-                        TableData.data.dataSize - currentPage * 6 <= 0
-                          ? "page-item disabled"
-                          : "page-item  "
-                      }
-                    >
-                      <a
-                        className="page-link "
-                        onClick={() => nextpage(currentPage)}
-                      >
-                        Next
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
-              </>
-            ) : (
-              <>
-                <h2>No Data</h2>
-              </>
-            )}
+            {checkData()}
           </>
         )}
       </div>
