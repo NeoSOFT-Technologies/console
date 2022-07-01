@@ -26,7 +26,7 @@ export default function ManageTables() {
   const authenticationState = useAppSelector(
     (state: RootState) => state.loginType
   );
-
+  const pageDisabled = "page-item disabled";
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -180,18 +180,18 @@ export default function ManageTables() {
       allTableData.data &&
       allTableData.data.dataSize - currentPages * 6 <= 0
     ) {
-      return "page-item disabled";
+      return pageDisabled;
     } else if (
       TableData.data &&
       TableData.data.dataSize - currentPages * 6 <= 0
     ) {
-      return "page-item disabled";
+      return pageDisabled;
     } else {
       return "page-item  ";
     }
   }
   function getPrevPageStatus(currentPages: number) {
-    return currentPages !== 1 ? "page-item" : "page-item disabled";
+    return currentPages !== 1 ? "page-item" : pageDisabled;
   }
   function checkData() {
     return allTableData.data && allTableData.data.tableList.length > 0 ? (
