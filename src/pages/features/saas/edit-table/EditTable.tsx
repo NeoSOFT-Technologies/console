@@ -69,6 +69,25 @@ export default function EditTable() {
     tenantId,
     tableName,
   };
+  function setSelectedColData(columnData: ITableColumnData) {
+    setEditTableState((previousState) => {
+      return {
+        ...previousState,
+        selectedColumnData: columnData,
+      };
+    });
+  }
+  function setSelectedColType(type: string) {
+    setEditTableState((previousState) => {
+      return {
+        ...previousState,
+        selectedColumnData: {
+          ...previousState.selectedColumnData,
+          type,
+        },
+      };
+    });
+  }
   const handleClose = () => {
     setEditTableState((previousState) => {
       return {
@@ -95,12 +114,7 @@ export default function EditTable() {
     if (columData.name.toLowerCase() === "id") {
       ToastAlert("Column not allowed to delete", "warning");
     } else {
-      setEditTableState((previousState) => {
-        return {
-          ...previousState,
-          selectedColumnData: columData,
-        };
-      });
+      setSelectedColData(columData);
       setEditTableState((previousState) => {
         return { ...previousState, deleteModal: true };
       });
@@ -127,18 +141,6 @@ export default function EditTable() {
       };
     });
   };
-
-  function setSelectedColType(type: string) {
-    setEditTableState((previousState) => {
-      return {
-        ...previousState,
-        selectedColumnData: {
-          ...previousState.selectedColumnData,
-          type: type,
-        },
-      };
-    });
-  }
 
   const multivalueOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setEditTableState((previousState) => {
@@ -311,12 +313,7 @@ export default function EditTable() {
       setEditTableState((previousState) => {
         return { ...previousState, isTypeDisable: true };
       });
-      setEditTableState((previousState) => {
-        return {
-          ...previousState,
-          selectedColumnData: columData,
-        };
-      });
+      setSelectedColData(columData);
       setEditTableState((previousState) => {
         return { ...previousState, selectedColAction: "Save Changes" };
       });
