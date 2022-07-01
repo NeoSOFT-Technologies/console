@@ -69,15 +69,15 @@ export default function ManageTables() {
       pageNumber: currentPage.toString(),
       pageSize: "6",
     };
-    if (authenticationState.data === "admin") {
-      dispatch(getAllTables(pageParameters));
-    } else if (authenticationState.data === "tenant") {
+    if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
         tenantId: id!,
         pageNumber: pageParameters.pageNumber,
         pageSize: pageParameters.pageSize,
       };
       dispatch(getTableswithPage(parameters));
+    } else {
+      dispatch(getAllTables(pageParameters));
     }
     return () => {
       dispatch(deleteTableReset());
@@ -92,7 +92,20 @@ export default function ManageTables() {
       !deleteTableData.error &&
       deleteTableData?.data
     ) {
-      if (authenticationState.data === "admin") {
+      if (authenticationState.data === "tenant") {
+        const newTableList = TableData.data?.tableList.filter(
+          (obj: { tenantId: string; tableName: string }) => {
+            return (
+              obj.tenantId !== deletedTableRecord.tenantId ||
+              obj.tableName !== deletedTableRecord.tableName
+            );
+          }
+        );
+
+        dispatch(setTableData1({ dataSize, tableList: newTableList }));
+        console.log(dataSize);
+        ToastAlert("Table Deleted successfully ", "success");
+      } else {
         const newTableList = allTableData.data?.tableList.filter(
           (obj: { tenantId: string; tableName: string }) => {
             return (
@@ -105,19 +118,6 @@ export default function ManageTables() {
         dispatch(
           setTableData({ dataSize: dataLength, tableList: newTableList })
         );
-        ToastAlert("Table Deleted successfully ", "success");
-      } else if (authenticationState.data === "tenant") {
-        const newTableList = TableData.data?.tableList.filter(
-          (obj: { tenantId: string; tableName: string }) => {
-            return (
-              obj.tenantId !== deletedTableRecord.tenantId ||
-              obj.tableName !== deletedTableRecord.tableName
-            );
-          }
-        );
-
-        dispatch(setTableData1({ dataSize, tableList: newTableList }));
-        console.log(dataSize);
         ToastAlert("Table Deleted successfully ", "success");
       }
     }
@@ -135,15 +135,15 @@ export default function ManageTables() {
       pageNumber: (currentPage - 1).toString(),
       pageSize: "6",
     };
-    if (authenticationState.data === "admin") {
-      dispatch(getAllTables(pageParameters));
-    } else if (authenticationState.data === "tenant") {
+    if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
         tenantId: id!,
         pageNumber: pageParameters.pageNumber,
         pageSize: pageParameters.pageSize,
       };
       dispatch(getTableswithPage(parameters));
+    } else {
+      dispatch(getAllTables(pageParameters));
     }
   };
 
@@ -156,15 +156,15 @@ export default function ManageTables() {
       pageNumber: (currentPage + 1).toString(),
       pageSize: "6",
     };
-    if (authenticationState.data === "admin") {
-      dispatch(getAllTables(pageParameters));
-    } else if (authenticationState.data === "tenant") {
+    if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
         tenantId: id!,
         pageNumber: pageParameters.pageNumber,
         pageSize: pageParameters.pageSize,
       };
       dispatch(getTableswithPage(parameters));
+    } else {
+      dispatch(getAllTables(pageParameters));
     }
   };
   const deleteTables = (obj: ITableSchema) => {
@@ -177,10 +177,9 @@ export default function ManageTables() {
   return (
     <div className="createbody card">
       <div className="card-body table-responsive">
-        {authenticationState.data === "admin" ? (
+        <h4 className=" text-center mb-4">Table Details</h4>
+        {authenticationState.data !== "tenant" ? (
           <>
-            <h4 className=" text-center mb-4">Table Details</h4>
-
             {allTableData.data?.tableList !== undefined &&
             allTableData.data.tableList.length > 0 ? (
               <>
