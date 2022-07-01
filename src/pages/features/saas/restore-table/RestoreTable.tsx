@@ -26,6 +26,7 @@ function RestoreTable() {
   const authenticationState = useAppSelector(
     (state: RootState) => state.loginType
   );
+  const pageDisabled = "page-item disabled";
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useAppDispatch();
 
@@ -162,154 +163,147 @@ function RestoreTable() {
       dispatch(getAllDeletedTables(pageParameters));
     }
   };
-  function checkData() {
+  function getNextPageStatus(currentPages: number) {
     if (
-      allDeleteTableData.data?.tableList !== undefined &&
-      allDeleteTableData.data.tableList.length > 0
+      allDeleteTableData.data &&
+      allDeleteTableData.data.dataSize - currentPage * 6 <= 0
     ) {
-      return (
-        <>
-          <Table bordered className="text-center">
-            <thead>
-              <tr id="test">
-                <th>SR.NO.</th>
-                <th>User</th>
-                <th>Table Name</th>
-                <th>Restore</th>
-              </tr>
-            </thead>
-            <tbody>
-              {allDeleteTableData.data.tableList.map((val, index) => (
-                <tr key={index + 6 * (currentPage - 1) + 1}>
-                  {currentPage !== 1 ? (
-                    <td>{index + 6 * (currentPage - 1) + 1}</td>
-                  ) : (
-                    <td>{index + currentPage}</td>
-                  )}
-                  <td>{val.tenantId}</td>
-                  <td>{val.tableName}</td>
-                  <td
-                    className="text-align-middle text-primary"
-                    onClick={() => handleShow(val)}
-                    data-testid="restore-table-btn"
-                  >
-                    <i className="bi bi-bootstrap-reboot"></i>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-
-          <nav
-            aria-label="Page navigation example "
-            className="d-flex justify-content-center"
-          >
-            <ul className="pagination ">
-              <li
-                className={
-                  currentPage !== 1 ? "page-item" : "page-item disabled"
-                }
-              >
-                <a className="page-link " onClick={() => prevpage(currentPage)}>
-                  Previous
-                </a>
-              </li>
-
-              <li className="page-item active">
-                <a className="page-link">{currentPage}</a>
-              </li>
-              <li
-                className={
-                  allDeleteTableData.data.tableList !== undefined &&
-                  allDeleteTableData.data.dataSize - currentPage * 6 <= 0
-                    ? "page-item disabled"
-                    : "page-item  "
-                }
-              >
-                <a className="page-link " onClick={() => nextpage(currentPage)}>
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </>
-      );
+      return pageDisabled;
     } else if (
-      TableData.data?.tableList !== undefined &&
-      TableData.data.tableList.length > 0 &&
-      id !== undefined
+      TableData.data &&
+      TableData.data.dataSize - currentPages * 6 <= 0
     ) {
-      return (
-        <>
-          <Table bordered className="text-center">
-            <thead>
-              <tr>
-                <th>SR.NO.</th>
-                <th>Table Name</th>
-                <th>Restore</th>
-              </tr>
-            </thead>
-            <tbody>
-              {TableData.data.tableList.map((val, index) => (
-                <tr key={index + 6 * (currentPage - 1) + 1}>
-                  {currentPage !== 1 ? (
-                    <td>{index + 6 * (currentPage - 1) + 1}</td>
-                  ) : (
-                    <td>{index + currentPage}</td>
-                  )}
-                  <td>{val.tableName}</td>
-                  <td
-                    className="text-align-middle text-primary"
-                    onClick={() => handleShow(val)}
-                    data-testid="restore-table-btn"
-                  >
-                    <i className="bi bi-bootstrap-reboot"></i>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-          <nav
-            aria-label="Page navigation example "
-            className="d-flex justify-content-center"
-          >
-            <ul className="pagination ">
-              <li
-                className={
-                  currentPage !== 1 ? "page-item" : "page-item disabled"
-                }
-              >
-                <a className="page-link " onClick={() => prevpage(currentPage)}>
-                  Previous
-                </a>
-              </li>
-
-              <li className="page-item active">
-                <a className="page-link">{currentPage}</a>
-              </li>
-              <li
-                className={
-                  TableData.data.tableList !== undefined &&
-                  TableData.data.dataSize - currentPage * 6 <= 0
-                    ? "page-item disabled"
-                    : "page-item  "
-                }
-              >
-                <a className="page-link " onClick={() => nextpage(currentPage)}>
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </>
-      );
+      return pageDisabled;
     } else {
-      return (
-        <>
-          <h2>No Data</h2>
-        </>
-      );
+      return "page-item  ";
     }
+  }
+  function getPrevPageStatus(currentPages: number) {
+    return currentPages !== 1 ? "page-item" : pageDisabled;
+  }
+  function checkData() {
+    return allDeleteTableData.data?.tableList !== undefined &&
+      allDeleteTableData.data.tableList.length > 0 ? (
+      <>
+        <Table bordered className="text-center">
+          <thead>
+            <tr id="test">
+              <th>SR.NO.</th>
+              <th>User</th>
+              <th>Table Name</th>
+              <th>Restore</th>
+            </tr>
+          </thead>
+          <tbody>
+            {allDeleteTableData.data.tableList.map((val, index) => (
+              <tr key={index + 6 * (currentPage - 1) + 1}>
+                {currentPage !== 1 ? (
+                  <td>{index + 6 * (currentPage - 1) + 1}</td>
+                ) : (
+                  <td>{index + currentPage}</td>
+                )}
+                <td>{val.tenantId}</td>
+                <td>{val.tableName}</td>
+                <td
+                  className="text-align-middle text-primary"
+                  onClick={() => handleShow(val)}
+                  data-testid="restore-table-btn"
+                >
+                  <i className="bi bi-bootstrap-reboot"></i>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+
+        <nav
+          aria-label="Page navigation example "
+          className="d-flex justify-content-center"
+        >
+          <ul className="pagination ">
+            <li className={getPrevPageStatus(currentPage)}>
+              <a className="page-link " onClick={() => prevpage(currentPage)}>
+                Previous
+              </a>
+            </li>
+
+            <li className="page-item active">
+              <a className="page-link">{currentPage}</a>
+            </li>
+            <li className={getNextPageStatus(currentPage)}>
+              <a className="page-link " onClick={() => nextpage(currentPage)}>
+                Next
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </>
+    ) : (
+      <>
+        <h2>No Data</h2>
+      </>
+    );
+  }
+  function checkForTenant() {
+    return TableData.data?.tableList !== undefined &&
+      TableData.data.tableList.length > 0 &&
+      id !== undefined ? (
+      <>
+        <Table bordered className="text-center">
+          <thead>
+            <tr>
+              <th>SR.NO.</th>
+              <th>Table Name</th>
+              <th>Restore</th>
+            </tr>
+          </thead>
+          <tbody>
+            {TableData.data.tableList.map((val, index) => (
+              <tr key={index + 6 * (currentPage - 1) + 1}>
+                {currentPage !== 1 ? (
+                  <td>{index + 6 * (currentPage - 1) + 1}</td>
+                ) : (
+                  <td>{index + currentPage}</td>
+                )}
+                <td>{val.tableName}</td>
+                <td
+                  className="text-align-middle text-primary"
+                  onClick={() => handleShow(val)}
+                  data-testid="restore-table-btn"
+                >
+                  <i className="bi bi-bootstrap-reboot"></i>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+        <nav
+          aria-label="Page navigation example "
+          className="d-flex justify-content-center"
+        >
+          <ul className="pagination ">
+            <li className={getPrevPageStatus(currentPage)}>
+              <a className="page-link " onClick={() => prevpage(currentPage)}>
+                Previous
+              </a>
+            </li>
+
+            <li className="page-item active">
+              <a className="page-link">{currentPage}</a>
+            </li>
+            <li className={getNextPageStatus(currentPage)}>
+              <a className="page-link " onClick={() => nextpage(currentPage)}>
+                Next
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </>
+    ) : (
+      <>
+        <h2>No Data</h2>
+      </>
+    );
   }
   return (
     <div className="createbody card">
@@ -323,7 +317,7 @@ function RestoreTable() {
         ) : (
           <>
             <h4 className=" text-center mb-4">Restore Table Details</h4>
-            {checkData()}
+            {checkForTenant()}
           </>
         )}
       </div>
