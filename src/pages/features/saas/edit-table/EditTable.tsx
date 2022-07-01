@@ -37,91 +37,219 @@ export default function EditTable() {
   const updateTableSchemaState = useAppSelector(
     (state) => state.updateTableSchemaState
   );
+  const [editTableState, setEditTableState] = useState(() => {
+    return {
+      show: false,
+      deleteModal: false,
+      selectedColHeading: "",
+      selectedColAction: "",
+      readonlyState: true,
+      showSuccessMsg: false,
+      showModalButton: false,
+      isSortableDisable: true,
+      isTypeDisable: true,
+      showDataTypes: [] as string[],
+      error: {
+        name: "",
+      } as IErrorColumnInput,
+      selectedColumnData: {
+        name: "",
+        type: "",
+        required: false,
+        partialSearch: false,
+        filterable: false,
+        sortable: false,
+        multiValue: false,
+        storable: false,
+      } as ITableColumnData,
+    };
+  });
   const addColumn = "Add Column";
-  const [show, setShow] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [selectedColHeading, setSelectedColHeading] = useState<string>("");
-  const [selectedColAction, setSelectedColAction] = useState<string>("");
-  const [readonlyState, setReadonlyState] = useState<boolean>(true);
-  const [showSuccessMsg, setShowSuccessMsg] = useState<boolean>(false);
-  const [showModalButton, setShowModalButton] = useState<boolean>(false);
-  const [isSortableDisable, setIsSortableDisable] = useState<boolean>(true);
-  const [isTypeDisable, setIsTypeDisable] = useState<boolean>(true);
-  const [showDataTypes, setShowDataTypes] = useState<string[]>([]);
+  // const [show, setShow] = useState(false);
+  // const [deleteModal, setDeleteModal] = useState(false);
+  // const [selectedColHeading, setSelectedColHeading] = useState<string>("");
+  // const [selectedColAction, setSelectedColAction] = useState<string>("");
+  // const [readonlyState, setReadonlyState] = useState<boolean>(true);
+  // const [showSuccessMsg, setShowSuccessMsg] = useState<boolean>(false);
+  // const [showModalButton, setShowModalButton] = useState<boolean>(false);
+  // const [isSortableDisable, setIsSortableDisable] = useState<boolean>(true);
+  // const [isTypeDisable, setIsTypeDisable] = useState<boolean>(true);
+  // const [showDataTypes, setShowDataTypes] = useState<string[]>([]);
   const tableSchemaObject: ITableSchema = {
     tenantId,
     tableName,
   };
-  const [error, setError] = useState<IErrorColumnInput>({
-    name: "",
-  });
-  const [selectedColumnData, setSelectedColumnData] =
-    useState<ITableColumnData>({
-      name: "",
-      type: "",
-      required: false,
-      partialSearch: false,
-      filterable: false,
-      sortable: false,
-      multiValue: false,
-      storable: false,
-    });
+  // const [error, setError] = useState<IErrorColumnInput>({
+  //   name: "",
+  // });
+  // const [selectedColumnData, setSelectedColumnData] =
+  //   useState<ITableColumnData>({
+  //     name: "",
+  //     type: "",
+  //     required: false,
+  //     partialSearch: false,
+  //     filterable: false,
+  //     sortable: false,
+  //     multiValue: false,
+  //     storable: false,
+  //   });
   const handleClose = () => {
-    setError({
-      name: "",
+    setEditTableState((previousState) => {
+      return {
+        ...previousState,
+        error: {
+          ...previousState.error,
+          name: "",
+        },
+      };
     });
-    setShow(false);
+    setEditTableState((previousState) => {
+      return {
+        ...previousState,
+        show: false,
+      };
+    });
   };
   const deleteModalClose = () => {
-    setDeleteModal(false);
+    setEditTableState((previousState) => {
+      return { ...previousState, deleteModal: false };
+    });
   };
   const deleteModalShow = (columData: ITableColumnData) => {
     if (columData.name.toLowerCase() === "id") {
       ToastAlert("Column not allowed to delete", "warning");
     } else {
-      setSelectedColumnData(columData);
-      setDeleteModal(true);
+      // setSelectedColumnData(columData);
+      setEditTableState((previousState) => {
+        return {
+          ...previousState,
+          selectedColumnData: columData,
+        };
+      });
+      setEditTableState((previousState) => {
+        return { ...previousState, deleteModal: true };
+      });
     }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setError({
-      ...error,
-      name: regexForColName.test(event.target.value) ? "" : ColNameErrMsg,
+    setEditTableState((previousState) => {
+      return {
+        ...previousState,
+        error: {
+          ...previousState.error,
+          name: regexForColName.test(event.target.value) ? "" : ColNameErrMsg,
+        },
+      };
     });
-    setSelectedColumnData({ ...selectedColumnData, name: event.target.value });
+    // setSelectedColumnData({ ...selectedColumnData, name: event.target.value });
+    setEditTableState((previousState) => {
+      return {
+        ...previousState,
+        selectedColumnData: {
+          ...previousState.selectedColumnData,
+          name: event.target.value,
+        },
+      };
+    });
   };
 
   const multivalueOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedColumnData((previous) => {
-      return { ...previous, multiValue: JSON.parse(event.target.value) };
+    // setSelectedColumnData((previous) => {
+    //   return { ...previous, multiValue: JSON.parse(event.target.value) };
+    // });
+    setEditTableState((previousState) => {
+      return {
+        ...previousState,
+        selectedColumnData: {
+          ...previousState.selectedColumnData,
+          multiValue: JSON.parse(event.target.value),
+        },
+      };
     });
-    setSelectedColumnData((previous) => {
-      return { ...previous, type: "" };
+    // setSelectedColumnData((previous) => {
+    //   return { ...previous, type: "" };
+    // });
+    setEditTableState((previousState) => {
+      return {
+        ...previousState,
+        selectedColumnData: {
+          ...previousState.selectedColumnData,
+          type: "",
+        },
+      };
     });
 
     if (JSON.parse(event.target.value)) {
-      setSelectedColumnData((previous) => {
-        return { ...previous, sortable: false };
+      // setSelectedColumnData((previous) => {
+      //   return { ...previous, sortable: false };
+      // });
+      setEditTableState((previousState) => {
+        return {
+          ...previousState,
+          selectedColumnData: {
+            ...previousState.selectedColumnData,
+            sortable: false,
+          },
+        };
       });
-      setIsSortableDisable(true);
-      setShowDataTypes(multivaledDataTypes);
-      setSelectedColumnData((previous) => {
-        return { ...previous, type: "strings" };
+      setEditTableState((previousState) => {
+        return { ...previousState, isSortableDisable: true };
       });
-      if (selectedColumnData.partialSearch) {
-        setSelectedColumnData((previous) => {
-          return { ...previous, type: "strings" };
+      setEditTableState((previousState) => {
+        return { ...previousState, showDataTypes: multivaledDataTypes };
+      });
+      // setSelectedColumnData((previous) => {
+      //   return { ...previous, type: "strings" };
+      // });
+      setEditTableState((previousState) => {
+        return {
+          ...previousState,
+          selectedColumnData: {
+            ...previousState.selectedColumnData,
+            type: "strings",
+          },
+        };
+      });
+      if (editTableState.selectedColumnData.partialSearch) {
+        // setSelectedColumnData((previous) => {
+        //   return { ...previous, type: "strings" };
+        // });
+        setEditTableState((previousState) => {
+          return {
+            ...previousState,
+            selectedColumnData: {
+              ...previousState.selectedColumnData,
+              type: "strings",
+            },
+          };
         });
-        setIsTypeDisable(true);
+        setEditTableState((previousState) => {
+          return { ...previousState, isTypeDisable: true };
+        });
       } else {
-        setIsTypeDisable(false);
+        setEditTableState((previousState) => {
+          return { ...previousState, isTypeDisable: false };
+        });
       }
     } else {
-      setIsSortableDisable(false);
-      setShowDataTypes(singleValedDataTypes);
-      setSelectedColumnData((previous) => {
-        return { ...previous, type: "string" };
+      setEditTableState((previousState) => {
+        return { ...previousState, isSortableDisable: false };
+      });
+      setEditTableState((previousState) => {
+        return { ...previousState, showDataTypes: singleValedDataTypes };
+      });
+      // setSelectedColumnData((previous) => {
+      //   return { ...previous, type: "string" };
+      // });
+      setEditTableState((previousState) => {
+        return {
+          ...previousState,
+          selectedColumnData: {
+            ...previousState.selectedColumnData,
+            type: "string",
+          },
+        };
       });
     }
   };
@@ -129,38 +257,75 @@ export default function EditTable() {
   const partialSearchOnChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setSelectedColumnData((previous) => {
-      return { ...previous, partialSearch: JSON.parse(event.target.value) };
+    // setSelectedColumnData((previous) => {
+    //   return { ...previous, partialSearch: JSON.parse(event.target.value) };
+    // });
+    setEditTableState((previousState) => {
+      return {
+        ...previousState,
+        selectedColumnData: {
+          ...previousState.selectedColumnData,
+          partialSearch: JSON.parse(event.target.value),
+        },
+      };
     });
     if (JSON.parse(event.target.value)) {
-      setIsTypeDisable(true);
-      if (selectedColumnData.multiValue) {
-        setSelectedColumnData((previous) => {
-          return { ...previous, type: "strings" };
+      setEditTableState((previousState) => {
+        return { ...previousState, isTypeDisable: true };
+      });
+      if (editTableState.selectedColumnData.multiValue) {
+        // setSelectedColumnData((previous) => {
+        //   return { ...previous, type: "strings" };
+        // });
+        setEditTableState((previousState) => {
+          return {
+            ...previousState,
+            selectedColumnData: {
+              ...previousState.selectedColumnData,
+              type: "strings",
+            },
+          };
         });
       } else {
-        setSelectedColumnData((previous) => {
-          return { ...previous, type: "string" };
+        // setSelectedColumnData((previous) => {
+        //   return { ...previous, type: "string" };
+        // });
+        setEditTableState((previousState) => {
+          return {
+            ...previousState,
+            selectedColumnData: {
+              ...previousState.selectedColumnData,
+              type: "string",
+            },
+          };
         });
       }
     } else {
-      setIsTypeDisable(false);
+      setEditTableState((previousState) => {
+        return { ...previousState, isTypeDisable: false };
+      });
     }
   };
   const handleValidate = () => {
-    return error.name === "";
+    return editTableState.error.name === "";
   };
   const processColumn = () => {
     if (handleValidate()) {
-      if (selectedColumnData.name !== "" && selectedColumnData.type !== "") {
+      if (
+        editTableState.selectedColumnData.name !== "" &&
+        editTableState.selectedColumnData.type !== ""
+      ) {
         const objIndex: number | any = tableData.data?.findIndex(
           (item: ITableColumnData) =>
-            item.name.toLowerCase() === selectedColumnData.name.toLowerCase()
+            item.name.toLowerCase() ===
+            editTableState.selectedColumnData.name.toLowerCase()
         );
 
-        if (selectedColHeading === addColumn && objIndex > -1) {
+        if (editTableState.selectedColHeading === addColumn && objIndex > -1) {
           ToastAlert("Column already exists", "warning");
         } else {
+          const selectedColumnData = editTableState.selectedColumnData;
+          const selectedColHeading = editTableState.selectedColHeading;
           dispatch(
             addOrEditColumn({
               selectedColumnData,
@@ -168,7 +333,9 @@ export default function EditTable() {
               selectedColHeading,
             })
           );
-          setShow(false);
+          setEditTableState((previousState) => {
+            return { ...previousState, show: false };
+          });
         }
       } else {
         ToastAlert("Please Fill All Fields", "warning");
@@ -179,33 +346,81 @@ export default function EditTable() {
     columData: ITableColumnData,
     selectedColumnHeading: string
   ) => {
-    setSelectedColHeading(selectedColumnHeading);
+    // setSelectedColHeading(selectedColumnHeading);
+    setEditTableState((previousState) => {
+      return { ...previousState, selectedColHeading: selectedColumnHeading };
+    });
     if (selectedColumnHeading === addColumn) {
-      setShowModalButton(true);
-      setIsSortableDisable(false);
-      setIsTypeDisable(false);
-      setShowDataTypes(singleValedDataTypes);
-      setSelectedColumnData({
-        name: "",
-        type: "string",
-        required: false,
-        partialSearch: false,
-        filterable: false,
-        sortable: false,
-        multiValue: false,
-        storable: false,
+      setEditTableState((previousState) => {
+        return { ...previousState, showModalButton: true };
       });
-      setSelectedColAction(addColumn);
-      setReadonlyState(false);
+      setEditTableState((previousState) => {
+        return { ...previousState, isSortableDisable: false };
+      });
+      setEditTableState((previousState) => {
+        return { ...previousState, isTypeDisable: false };
+      });
+      setEditTableState((previousState) => {
+        return { ...previousState, showDataTypes: singleValedDataTypes };
+      });
+      // setSelectedColumnData({
+      //   name: "",
+      //   type: "string",
+      //   required: false,
+      //   partialSearch: false,
+      //   filterable: false,
+      //   sortable: false,
+      //   multiValue: false,
+      //   storable: false,
+      // });
+      setEditTableState((previousState) => {
+        return {
+          ...previousState,
+          selectedColumnData: {
+            name: "",
+            type: "string",
+            required: false,
+            partialSearch: false,
+            filterable: false,
+            sortable: false,
+            multiValue: false,
+            storable: false,
+          },
+        };
+      });
+      setEditTableState((previousState) => {
+        return { ...previousState, selectedColAction: addColumn };
+      });
+      setEditTableState((previousState) => {
+        return { ...previousState, readonlyState: false };
+      });
     } else {
-      setShowModalButton(false);
-      setIsSortableDisable(true);
-      setIsTypeDisable(true);
-      setSelectedColumnData(columData);
-      setSelectedColAction("Save Changes");
-      setReadonlyState(true);
+      setEditTableState((previousState) => {
+        return { ...previousState, showModalButton: false };
+      });
+      setEditTableState((previousState) => {
+        return { ...previousState, isSortableDisable: true };
+      });
+      setEditTableState((previousState) => {
+        return { ...previousState, isTypeDisable: true };
+      });
+      // setSelectedColumnData(columData);
+      setEditTableState((previousState) => {
+        return {
+          ...previousState,
+          selectedColumnData: columData,
+        };
+      });
+      setEditTableState((previousState) => {
+        return { ...previousState, selectedColAction: "Save Changes" };
+      });
+      setEditTableState((previousState) => {
+        return { ...previousState, readonlyState: true };
+      });
     }
-    setShow(true);
+    setEditTableState((previousState) => {
+      return { ...previousState, show: true };
+    });
   };
   const getDataTypeOptions = (val: string, index: number) => {
     return (
@@ -218,7 +433,9 @@ export default function EditTable() {
     event: React.FormEvent
   ) => {
     event.preventDefault();
-    setShowSuccessMsg(true);
+    setEditTableState((previousState) => {
+      return { ...previousState, showSuccessMsg: true };
+    });
     dispatch(
       updateTableSchema({
         requestParams: tableSchemaObject,
@@ -231,6 +448,7 @@ export default function EditTable() {
   };
 
   const removeColumn = () => {
+    const selectedColumnData = editTableState.selectedColumnData;
     dispatch(deleteColumn({ selectedColumnData }));
     deleteModalClose();
   };
@@ -244,7 +462,7 @@ export default function EditTable() {
       !updateTableSchemaState.loading &&
       !updateTableSchemaState.error &&
       updateTableSchemaState?.data &&
-      showSuccessMsg
+      editTableState.showSuccessMsg
     ) {
       ToastAlert("Table updated successfully", "success");
     }
@@ -364,7 +582,9 @@ export default function EditTable() {
               data-target="#exampleModalCenter"
               data-testid="add-col-btn"
               disabled={updateTableSchemaState.loading}
-              onClick={() => handleShow(selectedColumnData, addColumn)}
+              onClick={() =>
+                handleShow(editTableState.selectedColumnData, addColumn)
+              }
             >
               Add Column
             </Button>
@@ -384,14 +604,14 @@ export default function EditTable() {
         </Row>
       </Form>
       <Modal
-        show={show}
-        data={selectedColumnData}
+        show={editTableState.show}
+        data={editTableState.selectedColumnData}
         onHide={handleClose}
         size="lg"
       >
         <Modal.Header>
           <Modal.Title className="text-center">
-            {selectedColHeading}
+            {editTableState.selectedColHeading}
           </Modal.Title>
           <button
             type="button"
@@ -419,17 +639,20 @@ export default function EditTable() {
                     className="form-control text-center read-only"
                     placeholder="Name"
                     name="name"
-                    value={selectedColumnData.name}
+                    value={editTableState.selectedColumnData.name}
                     aria-label="Name"
                     aria-describedby="basic-addon"
                     data-testid="add-col-name-input"
-                    readOnly={readonlyState}
-                    isInvalid={!!error.name}
-                    isValid={!error.name && !!selectedColumnData.name}
+                    readOnly={editTableState.readonlyState}
+                    isInvalid={!!editTableState.error.name}
+                    isValid={
+                      !editTableState.error.name &&
+                      !!editTableState.selectedColumnData.name
+                    }
                     onChange={handleInputChange}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {error.name}
+                    {editTableState.error.name}
                   </Form.Control.Feedback>
                 </div>
               </Col>
@@ -446,8 +669,10 @@ export default function EditTable() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   // id="box"
-                  value={JSON.stringify(selectedColumnData.multiValue)}
-                  disabled={readonlyState}
+                  value={JSON.stringify(
+                    editTableState.selectedColumnData.multiValue
+                  )}
+                  disabled={editTableState.readonlyState}
                   onChange={(e) => multivalueOnChange(e)}
                 >
                   <option className="text-center" value="true">
@@ -472,8 +697,8 @@ export default function EditTable() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   // id="box"
-                  value={selectedColumnData.partialSearch.toString()}
-                  disabled={readonlyState}
+                  value={editTableState.selectedColumnData.partialSearch.toString()}
+                  disabled={editTableState.readonlyState}
                   onChange={partialSearchOnChange}
                 >
                   <option className="text-center" value="true">
@@ -497,17 +722,26 @@ export default function EditTable() {
                   required
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
-                  value={selectedColumnData.type.toString()}
-                  disabled={isTypeDisable}
+                  value={editTableState.selectedColumnData.type.toString()}
+                  disabled={editTableState.isTypeDisable}
                   onChange={(e) => {
-                    setSelectedColumnData({
-                      ...selectedColumnData,
-                      type: e.target.value,
+                    // setSelectedColumnData({
+                    //   ...selectedColumnData,
+                    //   type: e.target.value,
+                    // });
+                    setEditTableState((previousState) => {
+                      return {
+                        ...previousState,
+                        selectedColumnData: {
+                          ...previousState.selectedColumnData,
+                          type: e.target.value,
+                        },
+                      };
                     });
                   }}
                 >
-                  {selectedColHeading === addColumn
-                    ? showDataTypes.map((val, index) =>
+                  {editTableState.selectedColHeading === addColumn
+                    ? editTableState.showDataTypes.map((val, index) =>
                         getDataTypeOptions(val, index)
                       )
                     : dataTypelist.map((val, index) =>
@@ -528,12 +762,21 @@ export default function EditTable() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   // id="box"
-                  value={selectedColumnData.sortable.toString()}
-                  disabled={isSortableDisable}
+                  value={editTableState.selectedColumnData.sortable.toString()}
+                  disabled={editTableState.isSortableDisable}
                   onChange={(e) => {
-                    setSelectedColumnData({
-                      ...selectedColumnData,
-                      sortable: JSON.parse(e.target.value),
+                    // setSelectedColumnData({
+                    //   ...selectedColumnData,
+                    //   sortable: JSON.parse(e.target.value),
+                    // });
+                    setEditTableState((previousState) => {
+                      return {
+                        ...previousState,
+                        selectedColumnData: {
+                          ...previousState.selectedColumnData,
+                          sortable: JSON.parse(e.target.value),
+                        },
+                      };
                     });
                   }}
                 >
@@ -559,12 +802,21 @@ export default function EditTable() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   // id="box"
-                  value={selectedColumnData.required.toString()}
-                  disabled={readonlyState}
+                  value={editTableState.selectedColumnData.required.toString()}
+                  disabled={editTableState.readonlyState}
                   onChange={(e) => {
-                    setSelectedColumnData({
-                      ...selectedColumnData,
-                      required: JSON.parse(e.target.value),
+                    // setSelectedColumnData({
+                    //   ...selectedColumnData,
+                    //   required: JSON.parse(e.target.value),
+                    // });
+                    setEditTableState((previousState) => {
+                      return {
+                        ...previousState,
+                        selectedColumnData: {
+                          ...previousState.selectedColumnData,
+                          required: JSON.parse(e.target.value),
+                        },
+                      };
                     });
                   }}
                 >
@@ -590,12 +842,21 @@ export default function EditTable() {
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
                   // id="box"
-                  value={selectedColumnData.filterable.toString()}
-                  disabled={readonlyState}
+                  value={editTableState.selectedColumnData.filterable.toString()}
+                  disabled={editTableState.readonlyState}
                   onChange={(e) => {
-                    setSelectedColumnData({
-                      ...selectedColumnData,
-                      filterable: JSON.parse(e.target.value),
+                    // setSelectedColumnData({
+                    //   ...selectedColumnData,
+                    //   filterable: JSON.parse(e.target.value),
+                    // });
+                    setEditTableState((previousState) => {
+                      return {
+                        ...previousState,
+                        selectedColumnData: {
+                          ...previousState.selectedColumnData,
+                          filterable: JSON.parse(e.target.value),
+                        },
+                      };
                     });
                   }}
                 >
@@ -619,12 +880,21 @@ export default function EditTable() {
                 <Form.Select
                   aria-label="Default select example"
                   className="w-100 pr-3 pt-1 pb-1"
-                  value={selectedColumnData.storable.toString()}
-                  disabled={readonlyState}
+                  value={editTableState.selectedColumnData.storable.toString()}
+                  disabled={editTableState.readonlyState}
                   onChange={(e) => {
-                    setSelectedColumnData({
-                      ...selectedColumnData,
-                      storable: JSON.parse(e.target.value),
+                    // setSelectedColumnData({
+                    //   ...selectedColumnData,
+                    //   storable: JSON.parse(e.target.value),
+                    // });
+                    setEditTableState((previousState) => {
+                      return {
+                        ...previousState,
+                        selectedColumnData: {
+                          ...previousState.selectedColumnData,
+                          storable: JSON.parse(e.target.value),
+                        },
+                      };
                     });
                   }}
                 >
@@ -640,14 +910,14 @@ export default function EditTable() {
           </div>
         </Modal.Body>
         <Modal.Footer className="save-column-changes-button">
-          {showModalButton ? (
+          {editTableState.showModalButton ? (
             <Button
               className="text-center"
               variant="success"
               data-testid="save-col-change-btn"
               onClick={processColumn}
             >
-              {selectedColAction}
+              {editTableState.selectedColAction}
             </Button>
           ) : (
             ""
@@ -655,8 +925,8 @@ export default function EditTable() {
         </Modal.Footer>
       </Modal>
       <Modal
-        show={deleteModal}
-        data={selectedColumnData}
+        show={editTableState.deleteModal}
+        data={editTableState.selectedColumnData}
         onHide={deleteModalClose}
         backdrop="static"
         keyboard={false}
@@ -665,8 +935,8 @@ export default function EditTable() {
           <Modal.Title>Delete Confirmation</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to delete <b>{selectedColumnData.name}</b>{" "}
-          column?
+          Are you sure you want to delete{" "}
+          <b>{editTableState.selectedColumnData.name}</b> column?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="success" onClick={deleteModalClose}>
