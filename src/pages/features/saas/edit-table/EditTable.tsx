@@ -128,6 +128,18 @@ export default function EditTable() {
     });
   };
 
+  function setSelectedColType(type: string) {
+    setEditTableState((previousState) => {
+      return {
+        ...previousState,
+        selectedColumnData: {
+          ...previousState.selectedColumnData,
+          type: type,
+        },
+      };
+    });
+  }
+
   const multivalueOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setEditTableState((previousState) => {
       return {
@@ -164,25 +176,8 @@ export default function EditTable() {
       setEditTableState((previousState) => {
         return { ...previousState, showDataTypes: multivaledDataTypes };
       });
-      setEditTableState((previousState) => {
-        return {
-          ...previousState,
-          selectedColumnData: {
-            ...previousState.selectedColumnData,
-            type: "strings",
-          },
-        };
-      });
+      setSelectedColType("strings");
       if (editTableState.selectedColumnData.partialSearch) {
-        setEditTableState((previousState) => {
-          return {
-            ...previousState,
-            selectedColumnData: {
-              ...previousState.selectedColumnData,
-              type: "strings",
-            },
-          };
-        });
         setEditTableState((previousState) => {
           return { ...previousState, isTypeDisable: true };
         });
@@ -198,15 +193,7 @@ export default function EditTable() {
       setEditTableState((previousState) => {
         return { ...previousState, showDataTypes: singleValedDataTypes };
       });
-      setEditTableState((previousState) => {
-        return {
-          ...previousState,
-          selectedColumnData: {
-            ...previousState.selectedColumnData,
-            type: "string",
-          },
-        };
-      });
+      setSelectedColType("string");
     }
   };
 
@@ -227,25 +214,9 @@ export default function EditTable() {
         return { ...previousState, isTypeDisable: true };
       });
       if (editTableState.selectedColumnData.multiValue) {
-        setEditTableState((previousState) => {
-          return {
-            ...previousState,
-            selectedColumnData: {
-              ...previousState.selectedColumnData,
-              type: "strings",
-            },
-          };
-        });
+        setSelectedColType("strings");
       } else {
-        setEditTableState((previousState) => {
-          return {
-            ...previousState,
-            selectedColumnData: {
-              ...previousState.selectedColumnData,
-              type: "string",
-            },
-          };
-        });
+        setSelectedColType("string");
       }
     } else {
       setEditTableState((previousState) => {
