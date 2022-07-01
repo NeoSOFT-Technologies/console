@@ -1,10 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getTableSchemaService } from "../../../../../services/saas/api/api";
-import { ITableColumnData, ITableSchema } from "../../../../../types/saas";
+import {
+  ICustomeError,
+  ITableColumnData,
+  ITableSchema,
+} from "../../../../../types/saas";
+import errorHandler from "../../../../../utils/error-handler";
 interface IGetTableSchemaState {
   data?: ITableColumnData[];
   loading: boolean;
-  error?: string | null;
+  error?: ICustomeError;
 }
 const initialState: IGetTableSchemaState = {
   data: undefined,
@@ -22,11 +27,7 @@ export const getTableSchema = createAsyncThunk(
       );
       return response.data.data.columns;
     } catch (_error: any) {
-      let errorMsg = "Undefined Error";
-      errorMsg =
-        _error.response.data !== undefined
-          ? _error.response.data.message
-          : _error.message;
+      const errorMsg = errorHandler(_error);
       throw new Error(errorMsg);
     }
   }
@@ -77,7 +78,8 @@ const slice = createSlice({
     });
     builder.addCase(getTableSchema.rejected, (state, action: any) => {
       state.loading = false;
-      state.error = action.error.message;
+      const errorMessage = JSON.parse(action.error.message);
+      state.error = errorMessage;
     });
   },
 });
