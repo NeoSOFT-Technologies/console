@@ -175,18 +175,24 @@ export default function ManageTables() {
   console.log(TableData.data?.tableList);
   console.log(allTableData.data);
 
-  function getTenantNextPageStatus(currentPages: number) {
-    return TableData.data && TableData.data.dataSize - currentPages * 6 <= 0
-      ? "page-item disabled"
-      : "page-item  ";
-  }
-  function getAdminNextPageStatus(currentPages: number) {
-    return allTableData.data &&
+  function getNextPageStatus(currentPages: number) {
+    if (
+      allTableData.data &&
       allTableData.data.dataSize - currentPages * 6 <= 0
-      ? "page-item disabled"
-      : "page-item  ";
+    ) {
+      return "page-item disabled";
+    } else if (
+      TableData.data &&
+      TableData.data.dataSize - currentPages * 6 <= 0
+    ) {
+      return "page-item disabled";
+    } else {
+      return "page-item  ";
+    }
   }
-
+  function getPrevPageStatus(currentPages: number) {
+    return currentPages !== 1 ? "page-item" : "page-item disabled";
+  }
   function checkData() {
     return allTableData.data && allTableData.data.tableList.length > 0 ? (
       <>
@@ -233,9 +239,7 @@ export default function ManageTables() {
 
         <div className="d-flex justify-content-center pt-2">
           <ul className="pagination">
-            <li
-              className={currentPage !== 1 ? "page-item" : "page-item disabled"}
-            >
+            <li className={getPrevPageStatus(currentPage)}>
               <a className="page-link " onClick={() => prevpage(currentPage)}>
                 Previous
               </a>
@@ -244,7 +248,7 @@ export default function ManageTables() {
             <li className="page-item active">
               <a className="page-link">{currentPage}</a>
             </li>
-            <li className={getAdminNextPageStatus(currentPage)}>
+            <li className={getNextPageStatus(currentPage)}>
               <a className="page-link " onClick={() => nextpage(currentPage)}>
                 Next
               </a>
@@ -301,9 +305,7 @@ export default function ManageTables() {
         </Table>
         <div className="d-flex justify-content-center pt-2">
           <ul className="pagination">
-            <li
-              className={currentPage !== 1 ? "page-item" : "page-item disabled"}
-            >
+            <li className={getPrevPageStatus(currentPage)}>
               <a className="page-link " onClick={() => prevpage(currentPage)}>
                 Previous
               </a>
@@ -312,7 +314,7 @@ export default function ManageTables() {
             <li className="page-item active">
               <a className="page-link">{currentPage}</a>
             </li>
-            <li className={getTenantNextPageStatus(currentPage)}>
+            <li className={getNextPageStatus(currentPage)}>
               <a className="page-link " onClick={() => nextpage(currentPage)}>
                 Next
               </a>
