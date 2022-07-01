@@ -467,7 +467,7 @@ export default function EditTable() {
       ToastAlert("Table updated successfully", "success");
     }
     if (!updateTableSchemaState.loading && updateTableSchemaState.error) {
-      ToastAlert(updateTableSchemaState.error as string, "error");
+      ToastAlert(updateTableSchemaState.error.message, "error");
     }
   }, [updateTableSchemaState.loading, updateTableSchemaState.error]);
   return (
