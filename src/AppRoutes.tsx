@@ -89,7 +89,7 @@ const RestoreTable = lazy(
   () => import("./pages/features/saas/restore-table/RestoreTable")
 );
 const AddTable = lazy(
-  () => import("./pages/features/saas/add-table/CreateTable")
+  () => import("./pages/features/saas/add-table/CreateTables")
 );
 
 const EditTables = lazy(

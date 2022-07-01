@@ -198,53 +198,71 @@ export default function CreateTables() {
       setIsTypeDisable(false);
     }
   };
+  const processColCondition = () => {
+    const objIndex: number | any = finalTableObj.requestData.columns.findIndex(
+      (item: ITableColumnData) =>
+        item.name.toLowerCase() === selectedColumnData.name.toLowerCase()
+    );
+    if (selectedColHeading === addColumn) {
+      if (objIndex > -1) {
+        ToastAlert("Column already exists", "warning");
+      } else {
+        const newColList: ITableColumnData[] =
+          finalTableObj.requestData.columns;
+        newColList.push(selectedColumnData);
+        setFinalTableObj({
+          ...finalTableObj,
+          requestData: {
+            ...finalTableObj.requestData,
+            columns: newColList,
+          },
+        });
+        setShow(false);
+      }
+    } else {
+      console.log("wat is objindex", objIndex);
+      if (objIndex > -1) {
+        const newColList: ITableColumnData[] =
+          finalTableObj.requestData.columns;
+        newColList[objIndex] = selectedColumnData;
+        setFinalTableObj({
+          ...finalTableObj,
+          requestData: {
+            ...finalTableObj.requestData,
+            columns: newColList,
+          },
+        });
+        setShow(false);
+      } else {
+        ToastAlert("Column already exists", "warning");
+      }
+    }
+  };
   const processColumn = () => {
     if (error.name === "") {
       if (selectedColumnData.name !== "" && selectedColumnData.type !== "") {
-        const objIndex: number | any =
-          finalTableObj.requestData.columns.findIndex(
-            (item: ITableColumnData) =>
-              item.name.toLowerCase() === selectedColumnData.name.toLowerCase()
-          );
-
-        if (selectedColHeading === addColumn) {
-          if (objIndex > -1) {
-            ToastAlert("Column already exists", "warning");
-          } else {
-            const newColList: ITableColumnData[] =
-              finalTableObj.requestData.columns;
-            newColList.push(selectedColumnData);
-            setFinalTableObj({
-              ...finalTableObj,
-              requestData: {
-                ...finalTableObj.requestData,
-                columns: newColList,
-              },
-            });
-            setShow(false);
-          }
-        } else {
-          if (objIndex > -1) {
-            const newColList: ITableColumnData[] =
-              finalTableObj.requestData.columns;
-            newColList[objIndex] = selectedColumnData;
-            setFinalTableObj({
-              ...finalTableObj,
-              requestData: {
-                ...finalTableObj.requestData,
-                columns: newColList,
-              },
-            });
-            setShow(false);
-          } else {
-            ToastAlert("Column already exists", "warning");
-          }
-        }
+        processColCondition();
       } else {
         ToastAlert("Please Fill All Fields", "warning");
       }
     }
   };
+  const handleShowCondition = (columData: ITableColumnData) => {
+    if (columData.multiValue) {
+      setShowDataTypes(multivaledDataTypes);
+      setIsSortableDisable(true);
+      columData.partialSearch
+        ? setIsTypeDisable(true)
+        : setIsTypeDisable(false);
+    } else {
+      setShowDataTypes(singleValedDataTypes);
+      setIsSortableDisable(false);
+      columData.partialSearch
+        ? setIsTypeDisable(true)
+        : setIsTypeDisable(false);
+    }
+  };
+
   const handleShow = (
     columData: ITableColumnData,
     selectedColumnHeading: string
@@ -272,19 +290,7 @@ export default function CreateTables() {
       } else {
         setSelectedColumnData(columData);
         setSelectedColAction("Save Changes");
-        if (columData.multiValue) {
-          setShowDataTypes(multivaledDataTypes);
-          setIsSortableDisable(true);
-          columData.partialSearch
-            ? setIsTypeDisable(true)
-            : setIsTypeDisable(false);
-        } else {
-          setShowDataTypes(singleValedDataTypes);
-          setIsSortableDisable(false);
-          columData.partialSearch
-            ? setIsTypeDisable(true)
-            : setIsTypeDisable(false);
-        }
+        handleShowCondition(columData);
         setShow(true);
       }
     }
@@ -327,7 +333,9 @@ export default function CreateTables() {
 
   useEffect(() => {
     if (!finalTableObj.tenantId) {
-      if (authenticationState.data === "admin") dispatch(getTenantDetails());
+      if (authenticationState.data === "admin") {
+        dispatch(getTenantDetails());
+      }
     } else {
       dispatch(getTables(finalTableObj.tenantId));
     }
@@ -335,19 +343,18 @@ export default function CreateTables() {
 
   useEffect(() => {
     dispatch(capacityPlans());
+    if (!capacityData.loading && capacityData.error) {
+      ToastAlert("something went wrong", "error");
+    }
     if (tenantDetail.data?.tenantId) {
       setFinalTableObj({
         ...finalTableObj,
         tenantId: tenantDetail.data?.tenantId.toString(),
       });
-    } else dispatch(getTenantDetails());
-  }, []);
-
-  useEffect(() => {
-    if (!capacityData.loading && capacityData.error) {
-      ToastAlert(capacityData.error, "error");
+    } else {
+      dispatch(getTenantDetails());
     }
-  }, [capacityData.loading, capacityData.error]);
+  }, []);
 
   useEffect(() => {
     if (

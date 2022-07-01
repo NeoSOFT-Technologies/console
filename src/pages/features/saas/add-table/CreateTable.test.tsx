@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import mockApi from "../../../../resources/tenant/testconfig";
 import store from "../../../../store/index";
-import GetTables from "./CreateTable";
+import GetTables from "./CreateTables";
 
 describe("SAAS - ADD TABLE Component", () => {
   it("Check if components rendered", () => {
@@ -83,17 +83,6 @@ describe("SAAS - ADD TABLE Component", () => {
       </BrowserRouter>
     );
 
-    // const tenantIDInput = await waitFor(
-    //   () => screen.getByTestId("tenant-id-input-box"),
-    //   {
-    //     timeout: 500,
-    //   }
-    // );
-    // expect(tenantIDInput).toBeInTheDocument();
-    // fireEvent.change(tenantIDInput, {
-    //   target: { value: "1" },
-    // });
-
     const tenantDropdown = await waitFor(
       () => screen.getByTestId("tenant-name-select"),
       {
@@ -125,16 +114,6 @@ describe("SAAS - ADD TABLE Component", () => {
       }
     );
     expect(capacityPlanDropdown).toBeInTheDocument();
-    // userEvent.click(capacityPlanDropdown);
-
-    // const capacityPlanB = await waitFor(
-    //   () => screen.getByText("B", { exact: true }),
-    //   {
-    //     timeout: 500,
-    //   }
-    // );
-    // expect(capacityPlanB).toBeInTheDocument();
-    // userEvent.click(capacityPlanB);
 
     userEvent.selectOptions(capacityPlanDropdown, ["B"]);
 
@@ -157,17 +136,6 @@ describe("SAAS - ADD TABLE Component", () => {
     fireEvent.change(colNameInPopup, {
       target: { value: "testColumn" },
     });
-
-    // const colTypeInPopup = await waitFor(
-    //   () => screen.getByTestId("column-type-popup"),
-    //   {
-    //     timeout: 500,
-    //   }
-    // );
-    // expect(colTypeInPopup).toBeInTheDocument();
-    // fireEvent.change(colTypeInPopup, {
-    //   target: { value: "string" },
-    // });
 
     const addColumnBtnInPopup = await waitFor(
       () => screen.getByTestId("add-column-btn-popup"),
