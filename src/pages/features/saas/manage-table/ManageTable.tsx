@@ -174,190 +174,166 @@ export default function ManageTables() {
   };
   console.log(TableData.data?.tableList);
   console.log(allTableData.data);
+
+  function getTenantNextPageStatus(currentPages: number) {
+    return TableData.data && TableData.data.dataSize - currentPages * 6 <= 0
+      ? "page-item disabled"
+      : "page-item  ";
+  }
+  function getAdminNextPageStatus(currentPages: number) {
+    return allTableData.data &&
+      allTableData.data.dataSize - currentPages * 6 <= 0
+      ? "page-item disabled"
+      : "page-item  ";
+  }
+
+  function checkData() {
+    return allTableData.data && allTableData.data.tableList.length > 0 ? (
+      <>
+        <Table bordered className="text-center">
+          <thead>
+            <tr id="test">
+              <th>SR.NO.</th>
+              <th>User</th>
+              <th>Table Name</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {allTableData.data.tableList.map(
+              (val: ITableSchema, index: number) => (
+                <tr key={index + 6 * (currentPage - 1) + 1}>
+                  {currentPage !== 1 ? (
+                    <td>{index + 6 * (currentPage - 1) + 1}</td>
+                  ) : (
+                    <td>{index + currentPage}</td>
+                  )}
+                  <td>{val.tenantId}</td>
+                  <td>{val.tableName}</td>
+                  <td
+                    className="text-align-middle  text-primary"
+                    onClick={() => handleEditShow(val.tableName, val.tenantId)}
+                    data-testid="edit-table-btn"
+                  >
+                    <i className="bi bi-pencil-square"></i>
+                  </td>
+                  <td
+                    className="text-danger"
+                    data-testid="delete-table-btn"
+                    onClick={() => handleShow(val.tableName, val.tenantId)}
+                  >
+                    <i className="bi bi-trash-fill"></i>
+                  </td>
+                </tr>
+              )
+            )}
+          </tbody>
+        </Table>
+
+        <div className="d-flex justify-content-center pt-2">
+          <ul className="pagination">
+            <li
+              className={currentPage !== 1 ? "page-item" : "page-item disabled"}
+            >
+              <a className="page-link " onClick={() => prevpage(currentPage)}>
+                Previous
+              </a>
+            </li>
+
+            <li className="page-item active">
+              <a className="page-link">{currentPage}</a>
+            </li>
+            <li className={getAdminNextPageStatus(currentPage)}>
+              <a className="page-link " onClick={() => nextpage(currentPage)}>
+                Next
+              </a>
+            </li>
+          </ul>
+        </div>
+      </>
+    ) : (
+      <>
+        <h2>No Data</h2>
+      </>
+    );
+  }
+  function checkForTenant() {
+    return TableData.data?.tableList &&
+      TableData.data?.tableList.length > 0 &&
+      id ? (
+      <>
+        <Table bordered className="text-center">
+          <thead>
+            <tr id="test">
+              <th>SR.NO.</th>
+              <th>Table Name</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {TableData.data?.tableList.map((val, index) => (
+              <tr key={index + 6 * (currentPage - 1) + 1}>
+                {currentPage !== 1 ? (
+                  <td>{index + 6 * (currentPage - 1) + 1}</td>
+                ) : (
+                  <td>{index + currentPage}</td>
+                )}
+                <td>{val.tableName}</td>
+                <td
+                  className="text-align-middle  text-primary"
+                  onClick={() => handleEditShow(val.tableName, val.tenantId)}
+                  data-testid="edit-table-btn"
+                >
+                  <i className="bi bi-pencil-square"></i>
+                </td>
+                <td
+                  className="text-danger"
+                  data-testid="delete-table-btn"
+                  onClick={() => handleShow(val.tableName, val.tenantId)}
+                >
+                  <i className="bi bi-trash-fill"></i>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+        <div className="d-flex justify-content-center pt-2">
+          <ul className="pagination">
+            <li
+              className={currentPage !== 1 ? "page-item" : "page-item disabled"}
+            >
+              <a className="page-link " onClick={() => prevpage(currentPage)}>
+                Previous
+              </a>
+            </li>
+
+            <li className="page-item active">
+              <a className="page-link">{currentPage}</a>
+            </li>
+            <li className={getTenantNextPageStatus(currentPage)}>
+              <a className="page-link " onClick={() => nextpage(currentPage)}>
+                Next
+              </a>
+            </li>
+          </ul>
+        </div>
+      </>
+    ) : (
+      <>
+        <h2>No Data Tenant</h2>
+      </>
+    );
+  }
   return (
     <div className="createbody card">
       <div className="card-body table-responsive">
         <h4 className=" text-center mb-4">Table Details</h4>
         {authenticationState.data !== "tenant" ? (
-          <>
-            {allTableData.data?.tableList !== undefined &&
-            allTableData.data.tableList.length > 0 ? (
-              <>
-                <Table bordered className="text-center">
-                  <thead>
-                    <tr id="test">
-                      <th>SR.NO.</th>
-                      <th>User</th>
-                      <th>Table Name</th>
-                      <th>Edit</th>
-                      <th>Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {allTableData.data.tableList.map(
-                      (val: ITableSchema, index: number) => (
-                        <tr key={index + 6 * (currentPage - 1) + 1}>
-                          {currentPage !== 1 ? (
-                            <td>{index + 6 * (currentPage - 1) + 1}</td>
-                          ) : (
-                            <td>{index + currentPage}</td>
-                          )}
-                          <td>{val.tenantId}</td>
-                          <td>{val.tableName}</td>
-                          <td
-                            className="text-align-middle  text-primary"
-                            onClick={() =>
-                              handleEditShow(val.tableName, val.tenantId)
-                            }
-                            data-testid="edit-table-btn"
-                          >
-                            <i className="bi bi-pencil-square"></i>
-                          </td>
-                          <td
-                            className="text-danger"
-                            data-testid="delete-table-btn"
-                            onClick={() =>
-                              handleShow(val.tableName, val.tenantId)
-                            }
-                          >
-                            <i className="bi bi-trash-fill"></i>
-                          </td>
-                        </tr>
-                      )
-                    )}
-                  </tbody>
-                </Table>
-
-                <div className="d-flex justify-content-center pt-2">
-                  <ul className="pagination">
-                    <li
-                      className={
-                        currentPage !== 1 ? "page-item" : "page-item disabled"
-                      }
-                    >
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-
-                    <li className="page-item active">
-                      <a className="page-link">{currentPage}</a>
-                    </li>
-                    <li
-                      className={
-                        allTableData.data !== undefined &&
-                        allTableData.data.dataSize - currentPage * 6 <= 0
-                          ? "page-item disabled"
-                          : "page-item  "
-                      }
-                    >
-                      <a
-                        className="page-link "
-                        onClick={() => nextpage(currentPage)}
-                      >
-                        Next
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </>
-            ) : (
-              <>
-                <h2>No Data</h2>
-              </>
-            )}
-          </>
+          <>{checkData()}</>
         ) : (
-          <>
-            {TableData.data?.tableList !== undefined &&
-            TableData.data.tableList.length > 0 &&
-            id !== undefined ? (
-              <>
-                <Table bordered className="text-center">
-                  <thead>
-                    <tr id="test">
-                      <th>SR.NO.</th>
-                      <th>Table Name</th>
-                      <th>Edit</th>
-                      <th>Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {TableData.data?.tableList.map((val, index) => (
-                      <tr key={index + 6 * (currentPage - 1) + 1}>
-                        {currentPage !== 1 ? (
-                          <td>{index + 6 * (currentPage - 1) + 1}</td>
-                        ) : (
-                          <td>{index + currentPage}</td>
-                        )}
-                        <td>{val.tableName}</td>
-                        <td
-                          className="text-align-middle  text-primary"
-                          onClick={() =>
-                            handleEditShow(val.tableName, val.tenantId)
-                          }
-                          data-testid="edit-table-btn"
-                        >
-                          <i className="bi bi-pencil-square"></i>
-                        </td>
-                        <td
-                          className="text-danger"
-                          data-testid="delete-table-btn"
-                          onClick={() =>
-                            handleShow(val.tableName, val.tenantId)
-                          }
-                        >
-                          <i className="bi bi-trash-fill"></i>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-                <div className="d-flex justify-content-center pt-2">
-                  <ul className="pagination">
-                    <li
-                      className={
-                        currentPage !== 1 ? "page-item" : "page-item disabled"
-                      }
-                    >
-                      <a
-                        className="page-link "
-                        onClick={() => prevpage(currentPage)}
-                      >
-                        Previous
-                      </a>
-                    </li>
-
-                    <li className="page-item active">
-                      <a className="page-link">{currentPage}</a>
-                    </li>
-                    <li
-                      className={
-                        TableData.data !== undefined &&
-                        TableData.data.dataSize - currentPage * 6 <= 0
-                          ? "page-item disabled"
-                          : "page-item  "
-                      }
-                    >
-                      <a
-                        className="page-link "
-                        onClick={() => nextpage(currentPage)}
-                      >
-                        Next
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </>
-            ) : (
-              <>
-                <h2>No Data Tenant</h2>
-              </>
-            )}
-          </>
+          <>{checkForTenant()}</>
         )}
       </div>
       <div className="text-right">
