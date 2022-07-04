@@ -85,7 +85,6 @@ export default function Versions() {
         // console.log("newdate:", newdate);
 
         const beginDate = moment(newdate).format("YYYY-MM-DD HH:MM");
-        console.log(beginDate);
 
         const list = [
           ...state.data.form.Versions,
@@ -123,7 +122,6 @@ export default function Versions() {
       // console.log("newdate:", newdate);
 
       const beginDate = moment(newdate).format("YYYY-MM-DD HH:MM");
-      console.log(beginDate);
 
       const list = [
         ...state.data.form.Versions,
@@ -187,7 +185,6 @@ export default function Versions() {
   const handleTableRowsInputChange = (index: number, event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
-    console.log("name and value:", name, value);
     const errorState = [...state.data.errors?.Versions!];
 
     switch (name) {
@@ -231,7 +228,6 @@ export default function Versions() {
       // console.log("newdate:", newdate);
 
       const beginDate = moment(newdate).format("YYYY-MM-DD HH:MM");
-      console.log(beginDate);
 
       const versionsList = [...state.data.form.Versions];
       versionsList[index] = { ...versionsList[index], [name]: beginDate };

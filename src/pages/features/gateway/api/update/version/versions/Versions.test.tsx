@@ -55,6 +55,24 @@ it("render inputs", () => {
   expect(overRideTargetInput).toHaveValue("https://httpbin.org");
   fireEvent.change(overRideTargetInput);
 
+  // validation
+  const overRide = screen.getByTestId("overRideTarget-input");
+  expect(overRide).toBeInTheDocument();
+  fireEvent.change(overRide, {
+    target: { value: "" },
+  });
+  const overRideErr = screen.getByTestId("overRideTargetErr");
+  expect(overRideErr).toHaveTextContent("");
+
+  const overRideInput = screen.getByTestId("overRideTarget-input");
+  expect(overRideInput).toBeInTheDocument();
+  fireEvent.change(overRideInput, {
+    target: { value: "test" },
+  });
+  const overRideError = screen.getByTestId("overRideTargetErr");
+  expect(overRideError).toHaveTextContent("Enter a valid Override Target Host");
+  // end
+
   const expiresInput = screen.getByTestId("expires-input");
   expect(expiresInput).toBeInTheDocument();
   fireEvent.change(expiresInput);
@@ -88,7 +106,7 @@ it("render buttons", () => {
 
   const addBtn = screen.getByTestId("add-button");
   expect(addBtn).toBeInTheDocument();
-  fireEvent.change(addBtn);
+  fireEvent.click(addBtn);
 });
 
 it("check validations", () => {
@@ -105,4 +123,9 @@ it("check validations", () => {
   expect(overrideTargetErr).toHaveTextContent(
     "Enter a valid Override Target Host"
   );
+
+  const overridetargetInput = screen.getByTestId("overrideTarget-input");
+  fireEvent.change(overridetargetInput, { target: { value: "" } });
+  const overridetargetErr = screen.getByTestId("overrideTargetErr");
+  expect(overridetargetErr).toHaveTextContent("");
 });

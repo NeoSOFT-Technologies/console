@@ -220,6 +220,7 @@ export default function BlacklistedIPs() {
                                           <td style={{ textAlign: "center" }}>
                                             <i
                                               className="btn btn-sm bi bi-trash-fill"
+                                              data-testid="delete-row"
                                               onClick={(event) =>
                                                 deleteTableRows(index, event)
                                               }
