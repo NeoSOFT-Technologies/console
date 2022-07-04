@@ -92,6 +92,7 @@ test("calling the state of update api", async () => {
       },
       IsVersioningDisabled: false,
       DefaultVersion: "",
+      Versions2: [],
       Versions: [
         {
           Name: "v1",

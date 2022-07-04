@@ -32,20 +32,19 @@ export default function Version() {
           ExtendedPaths: undefined,
         },
       ];
+
+      const rowObj: any = [];
       dispatch(
         setForm({
           ...state.data.form,
           IsVersioningDisabled: !event.target.checked,
           VersioningInfo: versionInfoList,
           Versions: list,
+          Versions2: rowObj,
         })
       );
 
-      const errlist = [
-        {
-          OverrideTarget: "",
-        },
-      ];
+      const errlist: any = [];
 
       dispatch(
         setFormError({
@@ -68,7 +67,6 @@ export default function Version() {
       {state.data.form?.IsVersioningDisabled ? (
         <></>
       ) : (
-        // <div>{generateBreadcrumbs(["VersionSettings", "Versions"])}</div>
         <div>
           <Row>
             <Col className=".text-right">

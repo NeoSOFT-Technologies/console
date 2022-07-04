@@ -3,6 +3,7 @@ import { Tab, Tabs, Form } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { access, AuthGuard } from "../../../../../components/auth-gaurd";
 import { errorSummary } from "../../../../../components/error-summary/ErrorSummary";
+// import ErrorSummary from "../../../../../components/error-summary/ErrorSummary";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
@@ -22,7 +23,7 @@ export default function Update() {
     (RootState) => RootState.updateApiState
   );
   // console.log("state data:", state.data.form);
-  console.log("state error:", state.data.errors);
+  // console.log("state error:", state.data.errors);
 
   const dispatch = useAppDispatch();
   const { id } = useParams();
@@ -54,13 +55,17 @@ export default function Update() {
 
       validateObj1 = Object.values(rest).every((x) => x === null || x === "");
 
-      for (const Version_ of Versions) {
-        if (Version_.OverrideTarget === "") {
-          validateObj2 = true;
-        } else {
-          validateObj2 = false;
-          break;
+      if (Versions.length > 0) {
+        for (const Version_ of Versions) {
+          if (Version_ === "") {
+            validateObj2 = true;
+          } else {
+            validateObj2 = false;
+            break;
+          }
         }
+      } else {
+        validateObj2 = true;
       }
     }
     const validateMTLs =
@@ -77,7 +82,6 @@ export default function Update() {
     ) {
       versionVal = true;
     }
-
     if (
       validateObj1 &&
       validateObj2 &&
@@ -123,6 +127,7 @@ export default function Update() {
       }
     }
   }
+
   const NavigateToApisList = (
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -138,7 +143,7 @@ export default function Update() {
     const { Versions } = obj;
 
     for (const Version_ of Versions) {
-      if (Version_.OverrideTarget === "") {
+      if (Version_ === "") {
         validateVersions = false;
       } else {
         validateVersions = true;
@@ -194,7 +199,12 @@ export default function Update() {
                     </span>
                   </div>
                   <div className="card-body pt-2">
-                    <div>{errorSummary(state.data.errors)}</div>
+                    <div>
+                      {errorSummary(
+                        state.data.errors,
+                        state.data.form.Versions2
+                      )}
+                    </div>
                     <br />
                     <Tabs
                       defaultActiveKey={state.data.form?.SelectedTabIndex}
