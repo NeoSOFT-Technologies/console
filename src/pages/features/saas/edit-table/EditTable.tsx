@@ -532,7 +532,7 @@ export default function EditTable() {
         </Modal.Header>
         <Modal.Body id="colProcessBody">
           <div className="modal-body" id="colProcesBody">
-            <Row id="colNameRow">
+            <Row id="edit-name">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Name</b>
@@ -566,7 +566,7 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            <Row>
+            <Row id="edittable-colNameRow">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Multivalue</b>
@@ -593,7 +593,7 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            <Row>
+            <Row id="edit-partialSearch">
               <Col sm lg="4">
                 <Form.Label className="ml-5 p-0">
                   <b>Partial Search</b>
@@ -619,7 +619,7 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            <Row>
+            <Row id="edit-type">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Type</b>
@@ -655,7 +655,7 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            <Row>
+            <Row id="edit-sortable">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Sortable</b>
@@ -690,7 +690,7 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            <Row>
+            <Row id="edit-required">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Required</b>
@@ -726,7 +726,7 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            <Row>
+            <Row id="edit-filterable">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Filterable</b>
@@ -762,7 +762,7 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            <Row>
+            <Row id="edit-storable">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Storable</b>
