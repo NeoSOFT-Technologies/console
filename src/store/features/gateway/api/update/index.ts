@@ -32,6 +32,7 @@ export interface IGetApiByIdData {
   };
   IsVersioningDisabled: boolean;
   DefaultVersion: string;
+  Versions2: string[];
   Versions: [
     {
       Name: string;
@@ -87,12 +88,13 @@ export interface IError {
   isQuotaDisabled: string;
   LoadBalancingTargets: string;
   OverrideTarget: string;
-  Versions: [
-    {
-      Version: string;
-      OverrideTarget: string;
-    }
-  ];
+  // Versions: [
+  //   {
+  //     Version: string;
+  //     OverrideTarget: string;
+  //   }
+  // ];
+  Versions: string[];
   issuer: string;
   ClientId: string;
   Policy: string;

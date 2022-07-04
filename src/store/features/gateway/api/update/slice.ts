@@ -67,6 +67,19 @@ const slice = createSlice({
     builder.addCase(getApiById.fulfilled, (state, action) => {
       state.loading = false;
       state.data.form = action.payload.Data;
+      console.log(state.data.form);
+      console.log(action.payload.Data.Versions.length);
+      state.data.form.Versions2 = [];
+
+      if (action.payload.Data.Versions.length > 0) {
+        for (let i = 0; i < state.data.form.Versions.length; i++) {
+          state.data.form.Versions2[i] = action.payload.Data.Versions[i].Name;
+        }
+      } else {
+        state.data.form.Versions2[0] = "Default";
+      }
+
+      console.log(state.data.form);
     });
     builder.addCase(getApiById.rejected, (state, action) => {
       state.loading = false;
