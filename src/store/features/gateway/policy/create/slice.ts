@@ -10,13 +10,20 @@ import error from "../../../../../utils/error";
 import { IDGetPolicyByIdData } from "./duplicate-index";
 import { initialState } from "./payload";
 import { IGetPolicyByIdData, IPolicyCreateState } from ".";
-// export const emptyState: IPolicyCreateState = { ...initialState };
+
 let dataduplicate: IDGetPolicyByIdData;
 function bindPolicyData(state: any, action: any) {
-  console.log("action result", action);
   state.data.form.Quota = action.payload.Data.MaxQuota;
   state.data.form.QuotaRenewalRate = action.payload.Data.QuotaRate;
   for (let i = 0; i < action.payload.Data.APIs.length; i++) {
+    state.data.form.APIs[i].ApiId = action.payload.Data.APIs[i].Id;
+    state.data.form.APIs[i].ApiName = action.payload.Data.APIs[i].Name;
+    for (let j = 0; j < action.payload.Data.APIs[i].AllowedUrls.length; j++) {
+      state.data.form.APIs[i].AllowedUrls[j].Url =
+        action.payload.Data.APIs[i].AllowedUrls[j].url;
+      state.data.form.APIs[i].AllowedUrls[j].Methods =
+        action.payload.Data.APIs[i].AllowedUrls[j].methods;
+    }
     if (action.payload.Data.APIs[i].Limit !== null) {
       const limits = {
         Max_query_depth: action.payload.Data.APIs[i].Limit.max_query_depth,
@@ -140,6 +147,7 @@ const slice = createSlice({
     });
     builder.addCase(getPolicybyId.fulfilled, (state, action) => {
       state.loading = false;
+      // loop apiId/name = id/name;
       state.data.form = action.payload.Data;
       bindPolicyData(state, action);
     });

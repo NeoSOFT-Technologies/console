@@ -1,7 +1,10 @@
 import { h } from "gridjs";
 import { Grid } from "gridjs-react";
+import { RowSelection } from "gridjs/plugins/selection";
 import React, { useEffect, useState } from "react";
 import { Accordion } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import { scrollToSection } from "../../../../../../../../components/scroll-to/ScrollTo";
 import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 import { setForms } from "../../../../../../../../store/features/gateway/key/create/slice";
 import {
@@ -17,6 +20,8 @@ interface policyObject {
   name: string[];
   policyId: string;
 }
+export let reloadGrid: () => void;
+export let refreshGrid: (PolicyId: string, Id: string) => void;
 export default function PolicyList() {
   const accessPolicyList: IPolicyListState = useAppSelector(
     (state) => state.policyListState
@@ -26,12 +31,205 @@ export default function PolicyList() {
   const [apis, setApis] = useState<policyObject[]>([]);
   const [uniqueApis, setuniqueApis] = useState<string>("");
   const [selectedApi, setSelectedApi] = useState<string>("");
+  const [gridReady, setGridReady] = useState(false);
+  const [gridReload, setGridReload] = useState(false);
+  const [_deletedRow, setdeletedRow] = useState<any>([]);
+  const [_pluginState, setpluginState] = useState<any>();
+  const [selectedRows, setselectedRows] = useState<any>({
+    state: [],
+    prevState: [],
+  });
+  let checkboxPlugin: any;
+  let prp: any;
+  const { id } = useParams();
+
+  // This will be used by Grid for reloading the list after delete action
+  const _refreshGrid = (PolicyId: string, Id: string) => {
+    let policyApis: any[] = [];
+    const x = accessPolicyList.data?.Policies.find((item) => item.Id === Id);
+    policyApis = x?.Apis!;
+    const deletedRecord = PolicyId + "," + policyApis;
+
+    setdeletedRow(deletedRecord);
+  };
+  refreshGrid = _refreshGrid;
+  // reloading grid
+  const _reloadGrid = () => {
+    setGridReload(true);
+  };
+  reloadGrid = _reloadGrid;
   const mainCall = async (currentPage: number, pageSize: number) => {
     await dispatch(getPolicyList({ currentPage, pageSize }));
+    setGridReady(true);
   };
-  useEffect(() => {
-    mainCall(1, 100_000);
-  }, []);
+  // filter policyList based on apis list in accessRights
+  function containsApis() {
+    const policyId: IPolicyData[] = [];
+    const listPolicies = accessPolicyList.data?.Policies!.filter(
+      (a) =>
+        a.AuthType !== "keyless" &&
+        !StateKey.data.form.Policies.includes(a.Id!) &&
+        !apis.some((i) => i.name.some((name) => a.Apis.includes(name)))
+    );
+    const selectedlistPolicies = accessPolicyList.data?.Policies!.filter(
+      (a) =>
+        a.AuthType !== "keyless" && StateKey.data.form.Policies.includes(a.Id!)
+    );
+    for (const item of selectedlistPolicies!) {
+      policyId.push(item);
+    }
+    for (const item of listPolicies!) {
+      policyId.push(item);
+    }
+
+    return policyId;
+  }
+  function bindPolicyList() {
+    return selectedApi !== ""
+      ? containsApis().map((data) => [
+          data.Id,
+          data.Name,
+          data.State === "active"
+            ? "Active"
+            : data.State === "deny"
+            ? "Access Denied"
+            : "Draft",
+          data.Apis.join(","),
+          data.AuthType,
+        ])
+      : accessPolicyList.data !== undefined &&
+        accessPolicyList.data &&
+        accessPolicyList.data?.Policies?.length! > 0
+      ? accessPolicyList.data?.Policies.filter(
+          (a) => a.AuthType !== "keyless"
+        ).map((data) => [
+          data.Id,
+          data.Name,
+          data.State === "active"
+            ? "Active"
+            : data.State === "deny"
+            ? "Access Denied"
+            : "Draft",
+          data.Apis.join(","), // ? `${data.Apis.join(", ")}` : "", // data.Apis.join(", ")
+          data.AuthType,
+        ])
+      : [];
+  }
+  const gridTable = new Grid({
+    columns: [
+      {
+        id: "myCheckbox",
+        name: "Select",
+        width: "10%",
+        plugin: {
+          component: RowSelection,
+          props: {
+            id: (row: any) =>
+              row.cells[1].data +
+              "," +
+              row.cells[2].data +
+              "," +
+              row.cells[4].data,
+          },
+        },
+      },
+      {
+        name: "Id",
+        hidden: true,
+      },
+      {
+        name: "Name",
+        width: "20%",
+        formatter: (cell: string, row: any) => {
+          const Id = row.cells[1].data;
+          const Name = row.cells[2].data;
+          let data = false;
+
+          if (selectedRows.state) {
+            data = selectedRows.state.some((x: any) => x?.split(",")[0] === Id);
+          }
+          return h(
+            "text",
+            data
+              ? {
+                  onClick: () => scrollToSection(Name),
+                  style: { cursor: "pointer", color: "blue" },
+                }
+              : {},
+            cell
+          );
+        },
+      },
+      { name: "Status", width: "20%", sort: false },
+      { name: "Access Rights", width: "20%" },
+      { name: "Auth Type", width: "20%" },
+    ],
+    data: () => bindPolicyList(),
+    search: true,
+    sort: true,
+    fixedHeader: true,
+    height: "30vh", // 300px
+    style: {
+      table: {
+        width: "100%",
+        fontSize: ".875rem",
+      },
+    },
+  });
+  const mygrid = gridTable.getInstance();
+  mygrid.on("ready", () => {
+    // find the plugin with the give plugin ID
+    checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
+    prp = checkboxPlugin?.props;
+    setpluginState(prp.store);
+
+    if (id !== undefined) {
+      for (const iterator of selectedRows.state) {
+        prp!.store.handle("CHECK", {
+          ROW_ID: iterator, // "8e93bc38-5eb0-4e89-b241-8a9026b7c139,demo,demoKey,TestApi",
+        });
+      }
+    }
+    prp!.store.on("updated", (state1: any, prevState1: any) => {
+      if (gridReload === false) {
+        setselectedRows({ state: state1.rowIds, prevState: prevState1.rowIds });
+      }
+    });
+  });
+  // This will set Grid data for update page
+  const getDataOnUpdate = () => {
+    // to get selected data on update screen
+    if (id && id !== undefined && StateKey.data.form.Policies.length > 0) {
+      const arr = [];
+      for (let i = 0; i < StateKey.data.form.Policies.length; i++) {
+        const policyId = StateKey.data.form.Policies[i];
+        let policyName: any; //= StateKey.data.form.PolicyByIds![0].Global?.Name;
+        let policyApis: any[] = [];
+        if (
+          StateKey.data.form.Policies !== undefined &&
+          StateKey.data.form.Policies.length > 0
+        ) {
+          for (const iterator of StateKey.data.form.Policies!) {
+            const x = accessPolicyList.data?.Policies.find(
+              (item) => item.Id === iterator
+            );
+            policyName = x?.Name;
+            policyApis = x?.Apis!;
+          }
+        }
+        const x = policyId + "," + policyName + "," + policyApis.join(",");
+        arr.push(x);
+      }
+      if (
+        selectedRows.state.length === 0 &&
+        selectedRows.prevState.length === 0
+      ) {
+        setselectedRows({ state: arr, prevState: arr });
+      }
+      // setselectedRows({ state: arr, prevState: arr });
+    }
+  };
+
   const handleAddClick = (Id: any) => {
     const data = StateKey.data.form?.Policies?.includes(Id);
 
@@ -56,66 +254,16 @@ export default function PolicyList() {
         Policies: removePolicies,
       })
     );
+    reloadGrid();
   };
-  function containsApis() {
-    const policyId: IPolicyData[] = [];
-    const listPolicies = accessPolicyList.data?.Policies!.filter(
-      (a) =>
-        a.AuthType !== "keyless" &&
-        !StateKey.data.form.Policies.includes(a.Id!) &&
-        !apis.some((i) => i.name.some((name) => a.Apis.includes(name)))
-    );
-    const selectedlistPolicies = accessPolicyList.data?.Policies!.filter(
-      (a) =>
-        a.AuthType !== "keyless" && StateKey.data.form.Policies.includes(a.Id!)
-    );
-
-    // const selectedlistPoliciesas = accessPolicyList.data?.Policies!.filter(
-    //   (a) => a.Apis.includes("Govind")
-    // );
-    for (const item of selectedlistPolicies!) {
-      policyId.push(item);
-    }
-    for (const item of listPolicies!) {
-      policyId.push(item);
-    }
-
-    return policyId;
-  }
-  function bindPolicyList() {
-    return selectedApi !== ""
-      ? containsApis().map((data) => [
-          data.Action,
-          data.Id,
-          data.Name,
-          data.State === "active"
-            ? "Active"
-            : data.State === "deny"
-            ? "Access Denied"
-            : "Draft",
-          data.Apis.join(", "),
-          data.AuthType,
-        ])
-      : accessPolicyList.data !== undefined &&
-        accessPolicyList.data &&
-        accessPolicyList.data?.Policies?.length! > 0
-      ? accessPolicyList.data?.Policies.filter(
-          (a) => a.AuthType !== "keyless"
-        ).map((data) => [
-          data.Action,
-          data.Id,
-          data.Name,
-          data.State === "active"
-            ? "Active"
-            : data.State === "deny"
-            ? "Access Denied"
-            : "Draft",
-          data.Apis.join(", "), // ? `${data.Apis.join(", ")}` : "", // data.Apis.join(", ")
-          data.AuthType,
-        ])
-      : [];
-  }
-
+  // initial render to get data for grid
+  useEffect(() => {
+    // method to get grid list data
+    mainCall(1, 100_000);
+    // this will be used to set state value as true for displaying selected apis list on updated page
+    getDataOnUpdate();
+  }, []);
+  //  This wil be used to set apis state value
   useEffect(() => {
     if (
       StateKey.data.form.KeyId !== undefined &&
@@ -150,19 +298,20 @@ export default function PolicyList() {
       );
     }
 
-    bindPolicyList();
+    // bindPolicyList();
   }, [StateKey?.data.form.Policies?.length && accessPolicyList]);
 
+  // display list of unique APIs referred by policies below the grid
   useEffect(() => {
-    // alert(apis);
-    bindPolicyList();
     if (apis.length > 0) {
       const selectedApisList = apis.map((a) => a.name);
-      setuniqueApis(selectedApisList.join(", "));
+      setuniqueApis(selectedApisList.join(","));
     } else {
       setuniqueApis("");
     }
   }, [apis]);
+
+  // get and set filter list for update page
   useEffect(() => {
     if (
       StateKey.data.form.KeyId !== undefined &&
@@ -197,71 +346,108 @@ export default function PolicyList() {
       );
     }
 
-    bindPolicyList();
+    // bindPolicyList();
   }, [
     accessPolicyList === undefined
       ? StateKey?.data.form.Policies?.length && accessPolicyList
       : StateKey?.data.form.Policies?.length,
   ]);
+  // this will handle rendering of selected and unselected list using checkbox in grid
+  useEffect(() => {
+    if (
+      selectedRows.state.length > 0 &&
+      selectedRows.state.length > selectedRows.prevState.length
+    ) {
+      const Id: string = selectedRows.state[0].split(",")[0];
+      const Name = selectedRows.state[0].split(",")[1];
+      const accessRights_arr = [];
+      for (let i = 2; i < selectedRows.state[0].split(",").length; i++) {
+        accessRights_arr.push(selectedRows.state[0].split(",")[i]); //
+      }
+      const accessRights = accessRights_arr;
+      handleAddClick(Id);
+      setSelectedApi(Id);
+      const policyApis = [...apis];
+      policyApis.push({ name: accessRights, policyId: Id });
+      setApis(policyApis);
+      reloadGrid();
+      ToastAlert(`${Name} selected`, "success");
+    } else {
+      if (
+        selectedRows.prevState.length > 0 &&
+        selectedRows.state.length < selectedRows.prevState.length &&
+        StateKey?.data.form.Policies?.length > selectedRows.state.length
+      ) {
+        const filterPolicy = selectedRows.prevState.find(
+          (i: any) => !selectedRows!.state.includes(i)
+        );
+        removeAccess(filterPolicy.split(",")[0]);
+        const SelectedPolicyList = [...apis];
+        const filterPolicyList = SelectedPolicyList.filter(
+          (item) => item.policyId !== filterPolicy.split(",")[0]
+        );
+        setApis(filterPolicyList);
+        reloadGrid();
+        ToastAlert(`${filterPolicy.split(",")[1]} removed`, "warning");
+      }
+    }
+    if (id !== undefined) {
+      getDataOnUpdate();
+    }
+  }, [
+    id
+      ? selectedRows.state.length === selectedRows.prevState.length ||
+        selectedRows
+      : selectedRows,
+  ]);
+  // This will set Grid data after delete action
+  useEffect(() => {
+    if (_deletedRow !== undefined && _deletedRow.length > 0) {
+      // checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
+      _pluginState.handle("UNCHECK", {
+        ROW_ID: _deletedRow,
+      });
+      setdeletedRow([]);
+      reloadGrid();
+    }
+  }, [_deletedRow]);
+  // initial Grid render
+  useEffect(() => {
+    if (gridReady) {
+      mygrid.render(document.querySelector("#gridRender")!);
+    }
+  }, [gridReady]);
+  //  Grid render on invoke of reloadGrid()
+  useEffect(() => {
+    if (gridReload) {
+      const gridRenderHtml = document.querySelector("#gridRender");
+      gridRenderHtml!.innerHTML = "";
+      mygrid.render(gridRenderHtml!);
+      const render_Grid = mygrid.updateConfig({
+        data: () => bindPolicyList(),
+      });
+      render_Grid.on("ready", () => {
+        // find the plugin with the give plugin ID
+        checkboxPlugin = render_Grid.config.plugin.get("myCheckbox");
+        prp = checkboxPlugin?.props;
 
-  const gridTable = new Grid({
-    columns: [
-      {
-        name: "Id",
-        hidden: true,
-      },
-      {
-        id: "Select",
-        width: "6%",
-        sort: false,
-        formatter: (cell: string, row: any) => {
-          const Id = row.cells[1].data;
-          const Name = row.cells[2].data;
-          const accessRights = row.cells[4].data.split(", ");
-          const data = StateKey.data.form?.Policies?.includes(Id);
-          return h("input", {
-            name: "tag_" + Id,
-            id: "tag_" + Id,
-            type: "checkbox",
-            checked: data,
-            onClick: (event: any) => {
-              if (event.target!.checked) {
-                handleAddClick(Id);
-                setSelectedApi(Id);
-                const policyApis = [...apis];
-                policyApis.push({ name: accessRights, policyId: Id });
-                setApis(policyApis);
-                ToastAlert(`${Name} selected`, "success");
-              } else {
-                removeAccess(Id);
-                const SelectedPolicyList = [...apis];
-                const filterPolicyList = SelectedPolicyList.filter(
-                  (item) => item.policyId !== Id
-                );
-                setApis(filterPolicyList);
-                ToastAlert(`${Name} removed`, "warning");
-              }
-            },
+        for (const iterator of selectedRows.state) {
+          prp!.store.handle("CHECK", {
+            ROW_ID: iterator,
           });
-        },
-      },
-      { name: "Name", width: "20%" },
-      { name: "Status", width: "20%", sort: false },
-      { name: "Access Rights", width: "20%" },
-      { name: "Auth Type", width: "20%" },
-    ],
-    data: () => bindPolicyList(),
-    search: true,
-    sort: true,
-    fixedHeader: true,
-    height: "30vh", // 300px
-    style: {
-      table: {
-        width: "100%",
-        fontSize: ".875rem",
-      },
-    },
-  });
+        }
+
+        prp!.store.on("updated", (state1: any, prevState1: any) => {
+          setselectedRows({
+            state: state1.rowIds,
+            prevState: prevState1.rowIds,
+          });
+        });
+      });
+      render_Grid.forceRender();
+    }
+    setGridReload(false);
+  }, [gridReload]);
   return (
     <div>
       <div className="card mb-3">
@@ -270,7 +456,8 @@ export default function PolicyList() {
             <Accordion.Header>Apply Policy</Accordion.Header>
             <Accordion.Body>
               <div>
-                <Grid {...gridTable.props} />
+                {gridReady ? <div id="gridRender"></div> : <></>}
+                {/* <Grid {...gridTable.props} /> */}
                 <div className="mt-2">
                   {" "}
                   {uniqueApis.length > 0 ? (

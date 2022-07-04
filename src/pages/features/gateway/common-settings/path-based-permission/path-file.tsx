@@ -9,7 +9,6 @@ interface IProps {
   r: IPropsHelper;
 }
 export default function Ipathpermission(props: IProps) {
-  console.log("hey msiter i am here", props);
   const [InputData, setInputData] = useState<any>({
     path: "",
     method: ["GET"],
@@ -34,8 +33,8 @@ export default function Ipathpermission(props: IProps) {
       );
     }
     const filteredlist = allowedList.filter((a) => {
-      if (a.url === InputData.path) {
-        filtercheck = ArrayEquals(a.methods, InputData.method)
+      if (a.Url === InputData.path) {
+        filtercheck = ArrayEquals(a.Methods, InputData.method)
           ? "true"
           : "false";
       } else {
@@ -48,15 +47,15 @@ export default function Ipathpermission(props: IProps) {
       setspanError(" ");
       console.log("filtered", filteredlist);
       const list = {
-        url: InputData.path,
-        methods: InputData.method,
+        Url: InputData.path,
+        Methods: InputData.method,
       };
       allowedList.push(list);
       apisList[value] = {
         ...apisList[value],
         AllowedUrls: [...allowedList],
       };
-
+      console.log("pathbased", apisList);
       props.r.dispatch(
         props.r.setForm!({ ...props.r.form, [props.r.propName!]: apisList })
       );
@@ -104,7 +103,6 @@ export default function Ipathpermission(props: IProps) {
           ];
           setInputData(newFormData);
         } else {
-          console.log("else", fieldValue);
           newFormData[fieldName] = [fieldValue];
           setInputData(newFormData);
         }
@@ -187,8 +185,8 @@ export default function Ipathpermission(props: IProps) {
                     (data1: any, index1: any) => {
                       return (
                         <tr key={index1}>
-                          <td>{data1.url}</td>
-                          <td>{data1.methods}</td>
+                          <td>{data1.Url}</td>
+                          <td>{data1.Methods}</td>
                           <td style={{ textAlign: "center" }}>
                             <i
                               className="bi bi-trash"
