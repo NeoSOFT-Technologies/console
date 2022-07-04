@@ -57,6 +57,49 @@ export default function ApiAccessList(props: IProps) {
     await dispatch(getApiList({ currentPage, pageSize }));
     setGridReady(true);
   };
+  // This will set Grid data for update page
+  const getDataOnUpdate = () => {
+    // to get selected data on update screen
+    if (id && id !== undefined && props.stateForm.length > 0) {
+      const arr = [];
+      if ((props.state as IPolicyCreateState).data.form.APIs) {
+        for (const iterator of (props.state as IPolicyCreateState).data.form
+          .APIs) {
+          const x = iterator.Id + "," + iterator.Name + "," + iterator.AuthType;
+          arr.push(x);
+        }
+      } else {
+        for (const iterator of (props.state as IKeyCreateState).data.form
+          .AccessRights) {
+          const x =
+            iterator.ApiId + "," + iterator.ApiName + "," + iterator.AuthType;
+          arr.push(x);
+        }
+      }
+      if (
+        selectedRows.state.length === 0 &&
+        selectedRows.prevState.length === 0
+      ) {
+        setselectedRows({ state: arr, prevState: arr });
+      }
+    }
+  };
+  // initial render to get data for grid
+  useEffect(() => {
+    // method to get grid list data
+    mainCall(1, 100_000);
+    // this will be used to set state value as true for displaying selected apis list when updated page is loaded
+    getDataOnUpdate();
+  }, []);
+
+  //  This wil be used to set auth type to fiter records on update page
+  useEffect(() => {
+    // set auth type
+    props.stateForm.length > 0
+      ? setApiAuth(props.stateForm[0].AuthType!)
+      : setApiAuth("");
+  }, [props.stateForm.length]);
+
   function containsApis() {
     let listApis: IApiData[] = [];
     if (
@@ -172,33 +215,6 @@ export default function ApiAccessList(props: IProps) {
     });
   });
 
-  // This will set Grid data for update page
-  const getDataOnUpdate = () => {
-    // to get selected data on update screen
-    if (id && id !== undefined && props.stateForm.length > 0) {
-      const arr = [];
-      if ((props.state as IPolicyCreateState).data.form.APIs) {
-        for (const iterator of (props.state as IPolicyCreateState).data.form
-          .APIs) {
-          const x = iterator.Id + "," + iterator.Name + "," + iterator.AuthType;
-          arr.push(x);
-        }
-      } else {
-        for (const iterator of (props.state as IKeyCreateState).data.form
-          .AccessRights) {
-          const x =
-            iterator.ApiId + "," + iterator.ApiName + "," + iterator.AuthType;
-          arr.push(x);
-        }
-      }
-      if (
-        selectedRows.state.length === 0 &&
-        selectedRows.prevState.length === 0
-      ) {
-        setselectedRows({ state: arr, prevState: arr });
-      }
-    }
-  };
   const removeAccess = (Id: string) => {
     if (props.stateForm) {
       const removeApi = [...props.stateForm];
@@ -226,21 +242,6 @@ export default function ApiAccessList(props: IProps) {
     }
     reloadGrid();
   };
-  // initial render to get data for grid
-  useEffect(() => {
-    // method to get grid list data
-    mainCall(1, 100_000);
-    // this will be used to set state value as true for displaying selected apis list when updated page is loaded
-    getDataOnUpdate();
-  }, []);
-
-  //  This wil be used to set auth type to fiter records on update page
-  useEffect(() => {
-    // set auth type
-    props.stateForm.length > 0
-      ? setApiAuth(props.stateForm[0].AuthType!)
-      : setApiAuth("");
-  }, [props.stateForm.length]);
 
   // this will handle rendering of selected and unselected list using checkbox in grid
   useEffect(() => {
