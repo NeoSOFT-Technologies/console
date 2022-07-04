@@ -515,7 +515,7 @@ export default function EditTable() {
         onHide={handleClose}
         size="lg"
       >
-        <Modal.Header>
+        <Modal.Header id="colProcessHeader">
           <Modal.Title className="text-center">
             {editTableState.selectedColHeading}
           </Modal.Title>
@@ -525,13 +525,14 @@ export default function EditTable() {
             onClick={handleClose}
             aria-label="Close"
             data-testid="close-modal-btn"
+            id="closeColModal"
           >
             <span aria-hidden="true">&times;</span>
           </button>
         </Modal.Header>
-        <Modal.Body>
-          <div className="modal-body">
-            <Row>
+        <Modal.Body id="colProcessBody">
+          <div className="modal-body" id="colProcesBody">
+            <Row id="colNameRow">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Name</b>
@@ -541,6 +542,7 @@ export default function EditTable() {
               <Col sm lg="7">
                 <div className="input-group ">
                   <Form.Control
+                    id="colName"
                     type="text"
                     className="form-control text-center read-only"
                     placeholder="Name"
