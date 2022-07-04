@@ -429,30 +429,33 @@ export default function EditTable() {
                       </tr>
                     </thead>
                     <tbody>
-                      {tableData.data?.map((val, index) => (
+                      {tableData.data?.map((value, index) => (
                         <tr key={`row${index}`}>
-                          <td>{val.name}</td>
-                          <td>{val.multiValue.toString()}</td>
-                          <td>{val.partialSearch.toString()}</td>
-                          <td>{val.type}</td>
-                          <td>{val.sortable.toString()}</td>
-                          <td>{val.required.toString()}</td>
-                          <td>{val.filterable.toString()}</td>
-                          <td>{val.storable.toString()} </td>
-                          <td className="text-align-middle  text-primary">
+                          <td>{value.name}</td>
+                          <td>{value.multiValue.toString()}</td>
+                          <td>{value.partialSearch.toString()}</td>
+                          <td>{value.type}</td>
+                          <td>{value.sortable.toString()}</td>
+                          <td>{value.required.toString()}</td>
+                          <td>{value.filterable.toString()}</td>
+                          <td>{value.storable.toString()} </td>
+                          <td
+                            className="text-align-middle  text-primary"
+                            id={`editRow${index}`}
+                          >
                             <i
                               className="bi bi-eye-fill"
                               data-toggle="modal"
                               data-testid="edit-col-btn"
-                              onClick={() => handleShow(val, "View Column")}
+                              onClick={() => handleShow(value, "View Column")}
                             ></i>
                           </td>
-                          {val.required === true ? (
+                          {value.required === true ? (
                             <td className="text-danger disabled">
                               <i
                                 className="bi bi-trash-fill"
                                 data-testid="delete-col-btn"
-                                onClick={() => deleteModalShow(val)}
+                                onClick={() => deleteModalShow(value)}
                               ></i>
                             </td>
                           ) : (
@@ -460,7 +463,7 @@ export default function EditTable() {
                               <i
                                 className="bi bi-trash-fill"
                                 data-testid="delete-col-btn"
-                                onClick={() => deleteModalShow(val)}
+                                onClick={() => deleteModalShow(value)}
                               ></i>
                             </td>
                           )}
