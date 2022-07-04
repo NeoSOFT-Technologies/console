@@ -2,6 +2,7 @@ import React, { FormEvent, useEffect } from "react";
 import { Form, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { access, AuthGuard } from "../../../../../components/auth-gaurd";
+// import ErrorSummary from "../../../../../components/error-summary/ErrorSummary";
 import { errorSummary } from "../../../../../components/error-summary/ErrorSummary";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
@@ -159,7 +160,9 @@ export default function CreatePolicy() {
                 </div>
 
                 <div className="card-body pt-2">
-                  <div>{errorSummary(state.data.errors)}</div>
+                  <div>
+                    {errorSummary(state.data.errors, state.data.form.APIs)}
+                  </div>
                   <br />
                   <Tabs
                     defaultActiveKey="accessRights"

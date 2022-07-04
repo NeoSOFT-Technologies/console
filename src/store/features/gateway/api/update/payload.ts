@@ -25,6 +25,7 @@ export const initialState: IApiGetByIdState = {
       },
       IsVersioningDisabled: false,
       DefaultVersion: "",
+      Versions2: [],
       Versions: [
         {
           Name: "",
@@ -73,13 +74,14 @@ export const initialState: IApiGetByIdState = {
       isQuotaDisabled: "",
       LoadBalancingTargets: "",
       OverrideTarget: "",
-      Versions: [
-        {
-          // Version: "Default",
-          Version: "",
-          OverrideTarget: "",
-        },
-      ],
+      // Versions: [
+      //   {
+      //     Version: "Default",
+      //     // Version: "",
+      //     OverrideTarget: "",
+      //   },
+      // ],
+      Versions: [""],
       issuer: "",
       ClientId: "",
       Policy: "",

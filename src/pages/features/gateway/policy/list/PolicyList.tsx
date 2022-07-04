@@ -161,7 +161,8 @@ export default function PolicyList() {
               headings={headings}
               url={`Policy?`}
               actionsList={actions}
-              searchBy={"apiName"}
+              searchBy={"Name"}
+              sortBy={"Name"}
               pageSizeList={gridPageSize}
             />
           </div>
