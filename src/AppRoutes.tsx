@@ -82,7 +82,7 @@ const SearchData = lazy(
   () => import("./pages/features/saas/search-data/SearchData")
 );
 const ManageTable = lazy(
-  () => import("./pages/features/saas/manage-table/ManageTable")
+  () => import("./pages/features/saas/manage-table/ManageTables")
 );
 
 const RestoreTable = lazy(

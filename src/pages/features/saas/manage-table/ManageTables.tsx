@@ -83,6 +83,12 @@ export default function ManageTables() {
       dispatch(deleteTableReset());
     };
   }, []);
+  function filterTable(tenantID: string, tableName: string) {
+    return (
+      tenantID !== deletedTableRecord.tenantId ||
+      tableName !== deletedTableRecord.tableName
+    );
+  }
   useEffect(() => {
     if (!deleteTableData.loading && deleteTableData.error) {
       navigate("/error", { state: deleteTableData.error });
@@ -95,10 +101,7 @@ export default function ManageTables() {
       if (authenticationState.data === "tenant") {
         const newTableList = TableData.data?.tableList.filter(
           (obj: { tenantId: string; tableName: string }) => {
-            return (
-              obj.tenantId !== deletedTableRecord.tenantId ||
-              obj.tableName !== deletedTableRecord.tableName
-            );
+            return filterTable(obj.tenantId, obj.tableName);
           }
         );
 
@@ -108,10 +111,7 @@ export default function ManageTables() {
       } else {
         const newTableList = allTableData.data?.tableList.filter(
           (obj: { tenantId: string; tableName: string }) => {
-            return (
-              obj.tenantId !== deletedTableRecord.tenantId ||
-              obj.tableName !== deletedTableRecord.tableName
-            );
+            return filterTable(obj.tenantId, obj.tableName);
           }
         );
 
@@ -172,9 +172,7 @@ export default function ManageTables() {
     setDeletedTableRecord({ ...obj });
     handleClose();
   };
-  console.log(TableData.data?.tableList);
-  console.log(allTableData.data);
-
+  console.log(allTableData);
   function getNextPageStatus(currentPages: number) {
     if (
       allTableData.data &&
@@ -215,7 +213,7 @@ export default function ManageTables() {
                   ) : (
                     <td>{index + currentPage}</td>
                   )}
-                  <td>{val.tenantId}</td>
+                  <td>{val.tenantName}</td>
                   <td>{val.tableName}</td>
                   <td
                     className="text-align-middle  text-primary"
@@ -366,7 +364,13 @@ export default function ManageTables() {
           </Button>
           <Button
             variant="danger"
-            onClick={() => deleteTables({ tenantId, tableName: table })}
+            onClick={() =>
+              deleteTables({
+                tenantId,
+                tableName: table,
+                tenantName: "",
+              })
+            }
           >
             Yes, Delete
           </Button>

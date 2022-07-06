@@ -68,6 +68,7 @@ export default function EditTable() {
   const tableSchemaObject: ITableSchema = {
     tenantId,
     tableName,
+    tenantName: "",
   };
   function setSelectedColData(columnData: ITableColumnData) {
     setEditTableState((previousState) => {

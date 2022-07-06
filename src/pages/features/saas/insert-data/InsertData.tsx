@@ -90,6 +90,7 @@ export default function InsertData() {
   const params: ITableSchema = {
     tenantId: insertTenant.tenantId,
     tableName: insertTenant.tableName,
+    tenantName: "",
   };
   const initialState: IInputData = {
     inputData: insertTenant.inputData,

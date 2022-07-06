@@ -24,6 +24,7 @@ export interface IAllTableList {
   tableList: ITableSchema[];
 }
 export interface ITableSchema {
+  tenantName: string;
   tenantId: string;
   tableName: string;
 }
