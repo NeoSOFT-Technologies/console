@@ -430,30 +430,33 @@ export default function EditTable() {
                       </tr>
                     </thead>
                     <tbody>
-                      {tableData.data?.map((val, index) => (
+                      {tableData.data?.map((value, index) => (
                         <tr key={`row${index}`}>
-                          <td>{val.name}</td>
-                          <td>{val.multiValue.toString()}</td>
-                          <td>{val.partialSearch.toString()}</td>
-                          <td>{val.type}</td>
-                          <td>{val.sortable.toString()}</td>
-                          <td>{val.required.toString()}</td>
-                          <td>{val.filterable.toString()}</td>
-                          <td>{val.storable.toString()} </td>
-                          <td className="text-align-middle  text-primary">
+                          <td>{value.name}</td>
+                          <td>{value.multiValue.toString()}</td>
+                          <td>{value.partialSearch.toString()}</td>
+                          <td>{value.type}</td>
+                          <td>{value.sortable.toString()}</td>
+                          <td>{value.required.toString()}</td>
+                          <td>{value.filterable.toString()}</td>
+                          <td>{value.storable.toString()} </td>
+                          <td
+                            className="text-align-middle  text-primary"
+                            id={`editRow${index}`}
+                          >
                             <i
                               className="bi bi-eye-fill"
                               data-toggle="modal"
                               data-testid="edit-col-btn"
-                              onClick={() => handleShow(val, "View Column")}
+                              onClick={() => handleShow(value, "View Column")}
                             ></i>
                           </td>
-                          {val.required === true ? (
+                          {value.required === true ? (
                             <td className="text-danger disabled">
                               <i
                                 className="bi bi-trash-fill"
                                 data-testid="delete-col-btn"
-                                onClick={() => deleteModalShow(val)}
+                                onClick={() => deleteModalShow(value)}
                               ></i>
                             </td>
                           ) : (
@@ -461,7 +464,7 @@ export default function EditTable() {
                               <i
                                 className="bi bi-trash-fill"
                                 data-testid="delete-col-btn"
-                                onClick={() => deleteModalShow(val)}
+                                onClick={() => deleteModalShow(value)}
                               ></i>
                             </td>
                           )}
@@ -513,7 +516,7 @@ export default function EditTable() {
         onHide={handleClose}
         size="lg"
       >
-        <Modal.Header>
+        <Modal.Header id="colProcessHeader">
           <Modal.Title className="text-center">
             {editTableState.selectedColHeading}
           </Modal.Title>
@@ -523,13 +526,14 @@ export default function EditTable() {
             onClick={handleClose}
             aria-label="Close"
             data-testid="close-modal-btn"
+            id="closeColModal"
           >
             <span aria-hidden="true">&times;</span>
           </button>
         </Modal.Header>
-        <Modal.Body>
-          <div className="modal-body">
-            <Row>
+        <Modal.Body id="colProcessBody">
+          <div className="modal-body" id="colProcesBody">
+            <Row id="edit-name">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Name</b>
@@ -539,6 +543,7 @@ export default function EditTable() {
               <Col sm lg="7">
                 <div className="input-group ">
                   <Form.Control
+                    id="colName"
                     type="text"
                     className="form-control text-center read-only"
                     placeholder="Name"
@@ -562,7 +567,7 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            <Row>
+            <Row id="edittable-colNameRow">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Multivalue</b>
@@ -589,7 +594,7 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            <Row>
+            <Row id="edit-partialSearch">
               <Col sm lg="4">
                 <Form.Label className="ml-5 p-0">
                   <b>Partial Search</b>
@@ -615,7 +620,7 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            <Row>
+            <Row id="edit-type">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Type</b>
@@ -651,7 +656,7 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            <Row>
+            <Row id="edit-sortable">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Sortable</b>
@@ -686,7 +691,7 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            <Row>
+            <Row id="edit-required">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Required</b>
@@ -722,7 +727,7 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            <Row>
+            <Row id="edit-filterable">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Filterable</b>
@@ -758,7 +763,7 @@ export default function EditTable() {
               </Col>
             </Row>
             <br></br>
-            <Row>
+            <Row id="edit-storable">
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
                   <b>Storable</b>
