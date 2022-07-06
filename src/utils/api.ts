@@ -5,13 +5,18 @@ const defaultHostUrl =
   process.env.REACT_APP_API_BASEURL || "http://localhost:5000/";
 const defaultGatewayUrl =
   process.env.REACT_APP_GATEWAY_API || "http://localhost:5501";
+const defaultSaasUrl =
+  process.env.REACT_APP_SAAS_API ||
+  "https://iam-dev-saas.neosofttech.com/api/v1/";
+const defaultSaasSearchUrl =
+  process.env.REACT_APP_SAAS_SEARCH_API ||
+  "https://iam-dev-saasegress.neosofttech.com/search/api/v1/";
 
 // Todo : Make default URL based on Environment ['dev', 'staging', 'test', 'prod']
 
 const getDefaultPath = () => {
   let baseUrl = "";
   const currentURL = window.location.pathname.split("/");
-
   switch (currentURL[1]) {
     case "login-page":
     case "tenant":
@@ -19,6 +24,13 @@ const getDefaultPath = () => {
       break;
     case "gateway":
       baseUrl = defaultGatewayUrl;
+      break;
+    case "saas":
+      baseUrl = defaultSaasUrl;
+      if (currentURL[2] === "search-data") {
+        baseUrl = defaultSaasSearchUrl;
+      }
+      console.log("SASS URL : " + baseUrl);
       break;
     default:
       break;

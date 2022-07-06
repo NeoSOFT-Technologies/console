@@ -4,6 +4,7 @@ import {
   access,
   AdminGuard,
   AuthGuard,
+  SaasGuard,
   TenantGuard,
   UserGuard,
 } from "./components/auth-gaurd";
@@ -73,6 +74,26 @@ const KeyList = lazy(() => import("./pages/features/gateway/key/list/KeyList"));
 const Dashboard = lazy(() => import("./pages/features/gateway/Dashboard"));
 const UpdateApi = lazy(
   () => import("./pages/features/gateway/api/update/Update")
+);
+const InsertData = lazy(
+  () => import("./pages/features/saas/insert-data/InsertData")
+);
+const SearchData = lazy(
+  () => import("./pages/features/saas/search-data/SearchData")
+);
+const ManageTable = lazy(
+  () => import("./pages/features/saas/manage-table/ManageTable")
+);
+
+const RestoreTable = lazy(
+  () => import("./pages/features/saas/restore-table/RestoreTable")
+);
+const AddTable = lazy(
+  () => import("./pages/features/saas/add-table/CreateTables")
+);
+
+const EditTables = lazy(
+  () => import("./pages/features/saas/edit-table/EditTable")
 );
 
 function AppRoutes() {
@@ -181,6 +202,15 @@ function AppRoutes() {
                 <UserGuard>
                   <RoleAndPermissions />
                 </UserGuard>
+              }
+            />
+
+            <Route
+              path="editTables"
+              element={
+                <AdminGuard>
+                  <EditTables />
+                </AdminGuard>
               }
             />
           </Route>
@@ -297,6 +327,59 @@ function AppRoutes() {
             }
           />
         </Route>
+        <Route path="/saas">
+          <Route
+            path="insert-data"
+            element={
+              <SaasGuard>
+                <InsertData />
+              </SaasGuard>
+            }
+          />
+
+          <Route
+            path="search-data"
+            element={
+              <SaasGuard>
+                <SearchData />
+              </SaasGuard>
+            }
+          />
+          <Route
+            path="manage-table"
+            element={
+              <SaasGuard>
+                <ManageTable />
+              </SaasGuard>
+            }
+          />
+
+          <Route
+            path="manage-table/add-table"
+            element={
+              <SaasGuard>
+                <AddTable />
+              </SaasGuard>
+            }
+          />
+          <Route
+            path="restore-table"
+            element={
+              <SaasGuard>
+                <RestoreTable />
+              </SaasGuard>
+            }
+          />
+          <Route
+            path="manage-table/edit-table"
+            element={
+              <SaasGuard>
+                <EditTables />
+              </SaasGuard>
+            }
+          />
+        </Route>
+        <Route path="*" element={<Navigate to="/login-page" />} />{" "}
         <Route path="*" element={<Navigate to="/error-pages/error-404" />} />{" "}
       </Routes>
     </Suspense>

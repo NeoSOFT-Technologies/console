@@ -4,6 +4,7 @@ import { Collapse } from "react-bootstrap";
 import { Link, useNavigate, useLocation, Navigate } from "react-router-dom";
 import withRouter from "../../WithRouter";
 import adminGatewayRoutes from "../../routes/gateway/admin";
+import saasRoutes from "../../routes/saas/saas-routes";
 import adminRoutes from "../../routes/tenants/admin";
 import tenantRoutes from "../../routes/tenants/tenants";
 import userRoutes from "../../routes/tenants/user-routes";
@@ -45,15 +46,14 @@ export const Sidebar = () => {
     if (user.data && loginType.data === "admin") {
       setRoutes(adminRoutes);
       setGatewayRoutes(adminGatewayRoutes);
-      setSaasRoutes(adminRoutes);
+      setSaasRoutes(saasRoutes);
     } else if (user.data && loginType.data === "tenant") {
       setRoutes(tenantRoutes);
       setGatewayRoutes(adminGatewayRoutes);
-      setSaasRoutes(tenantRoutes);
+      setSaasRoutes(saasRoutes);
     } else if (user.data && loginType.data === "user") {
       setRoutes(userRoutes);
       setGatewayRoutes(adminGatewayRoutes);
-      setSaasRoutes(userRoutes);
     }
   }, [user.data]);
 
@@ -219,7 +219,7 @@ export const Sidebar = () => {
                       setSubMenu({ ...subMenu, saas: !subMenu.saas })
                     }
                   >
-                    Saas
+                    Search as a Service
                   </span>
                   <i
                     className={` ${
@@ -242,7 +242,7 @@ export const Sidebar = () => {
                       }
                     >
                       <Link className="nav-link pt-0" to={route.path}>
-                        <div className="d-flex justify-content-between w-100 ">
+                        <div className="d-flex justify-content-between w-100  ">
                           <span className="menu-title lh-2">
                             <>{route.title}</>
                           </span>
