@@ -29,5 +29,5 @@ it("render buttons", () => {
 
   const versionSwitch = screen.getByTestId("enableVersion-switch");
   expect(versionSwitch).toBeInTheDocument();
-  fireEvent.change(versionSwitch);
+  fireEvent.click(versionSwitch);
 });

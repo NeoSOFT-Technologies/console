@@ -175,7 +175,10 @@ export default function WhitelistedIPs() {
                                     handleFormInputChange(event)
                                   }
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                <Form.Control.Feedback
+                                  type="invalid"
+                                  data-testid="whiteListErr"
+                                >
                                   {state.data.errors?.Whitelist}
                                 </Form.Control.Feedback>
                               </Form.Group>

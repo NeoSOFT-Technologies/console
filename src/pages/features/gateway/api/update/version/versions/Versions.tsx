@@ -22,9 +22,8 @@ export default function Versions() {
   const dispatch = useAppDispatch();
 
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  // console.log("form data :", state.data.form);
-  // const [startDate, setStartDate] = useState(new Date());
-  // console.log("startDate:", startDate);
+  console.log("form data :", state.data.form);
+  console.log("form error :", state.data.errors);
 
   const [addFormData, setAddFormData] = useState({
     Name: "",
@@ -82,10 +81,8 @@ export default function Versions() {
         ToastAlert("This version name has been already added!", "error");
       } else {
         newdate = addFormData.Expires;
-        // console.log("newdate:", newdate);
 
         const beginDate = moment(newdate).format("YYYY-MM-DD HH:MM");
-        console.log(beginDate);
 
         const list = [
           ...state.data.form.Versions,
@@ -100,16 +97,20 @@ export default function Versions() {
             ExtendedPaths: undefined,
           },
         ];
-        dispatch(setForm({ ...state.data.form, Versions: list }));
+
+        const rowObj: any = [...state.data.form.Versions2, addFormData.Name];
+
+        dispatch(
+          setForm({
+            ...state.data.form,
+            Versions: list,
+            Versions2: rowObj,
+          })
+        );
+
         setAddFormData({ Name: "", Expires: "", OverrideTarget: "" });
 
-        const errlist = [
-          ...state.data.errors?.Versions!,
-          {
-            Version: addFormData.Name,
-            OverrideTarget: "",
-          },
-        ];
+        const errlist = [...state.data.errors?.Versions!, ""];
 
         dispatch(
           setFormError({
@@ -120,10 +121,8 @@ export default function Versions() {
       }
     } else {
       newdate = addFormData.Expires;
-      // console.log("newdate:", newdate);
 
       const beginDate = moment(newdate).format("YYYY-MM-DD HH:MM");
-      console.log(beginDate);
 
       const list = [
         ...state.data.form.Versions,
@@ -138,16 +137,19 @@ export default function Versions() {
           ExtendedPaths: undefined,
         },
       ];
-      dispatch(setForm({ ...state.data.form, Versions: list }));
+
+      const rowObj: any = [...state.data.form.Versions2, addFormData.Name];
+
+      dispatch(
+        setForm({
+          ...state.data.form,
+          Versions: list,
+          Versions2: rowObj,
+        })
+      );
       setAddFormData({ Name: "", Expires: "", OverrideTarget: "" });
 
-      const errlist = [
-        ...state.data.errors?.Versions!,
-        {
-          Version: addFormData.Name,
-          OverrideTarget: "",
-        },
-      ];
+      const errlist = [...state.data.errors?.Versions!, ""];
 
       dispatch(
         setFormError({
@@ -164,12 +166,15 @@ export default function Versions() {
   ) => {
     e.preventDefault();
     const list = [...state.data.form.Versions];
+    const rowObj: any = [...state.data.form.Versions2];
     list.splice(index, 1);
+    rowObj.splice(index, 1);
     const updatedDefVersion = list.length > 0 ? list[0].Name : "";
     dispatch(
       setForm({
         ...state.data.form,
         Versions: list,
+        Versions2: rowObj,
         DefaultVersion: updatedDefVersion,
       })
     );
@@ -187,16 +192,13 @@ export default function Versions() {
   const handleTableRowsInputChange = (index: number, event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
-    console.log("name and value:", name, value);
+    // console.log("name and value:", name, value);
     const errorState = [...state.data.errors?.Versions!];
 
     switch (name) {
       case "OverrideTarget":
         if (value === "") {
-          errorState[index!] = {
-            ...errorState[index!],
-            OverrideTarget: "",
-          };
+          errorState[index!] = "";
 
           dispatch(
             setFormError({
@@ -205,12 +207,9 @@ export default function Versions() {
             })
           );
         } else {
-          errorState[index!] = {
-            ...errorState[index!],
-            OverrideTarget: regexForOverrideTarget.test(value)
-              ? ""
-              : "Enter a valid Override Target Host",
-          };
+          errorState[index!] = regexForOverrideTarget.test(value)
+            ? ""
+            : "Enter a valid Override Target Host";
 
           dispatch(
             setFormError({
@@ -226,12 +225,9 @@ export default function Versions() {
 
     let newdate: any;
     if (name === "Expires") {
-      // console.log("name and value :", name, value);
       newdate = value;
-      // console.log("newdate:", newdate);
 
       const beginDate = moment(newdate).format("YYYY-MM-DD HH:MM");
-      console.log(beginDate);
 
       const versionsList = [...state.data.form.Versions];
       versionsList[index] = { ...versionsList[index], [name]: beginDate };
@@ -241,10 +237,6 @@ export default function Versions() {
       versionsList[index] = { ...versionsList[index], [name]: value };
       dispatch(setForm({ ...state.data.form, Versions: versionsList }));
     }
-
-    // const versionsList = [...state.data.form.Versions];
-    // versionsList[index] = { ...versionsList[index], [name]: value };
-    // dispatch(setForm({ ...state.data.form, Versions: versionsList }));
   };
 
   const handleFormSelectChange = (
@@ -357,15 +349,6 @@ export default function Versions() {
                       value={addFormData.Expires}
                       onChange={handleInputChange}
                     />
-
-                    {/* <DatePicker
-                      className="form-control"
-                      // showTimeSelect
-                      dateFormat="yyyy-MM-dd HH:mm"
-                      // selected={addFormData.Expires}
-                      // value={addFormData.Expires}
-                      onChange={(date) => handleDateChange(date)}
-                    /> */}
                   </Form.Group>
                 </Col>
                 <Col md={2} className="pt-2">
@@ -404,7 +387,7 @@ export default function Versions() {
                               const { Name, OverrideTarget, Expires } = data;
                               const beginDate =
                                 moment(Expires).format("YYYY-MM-DD");
-                              // console.log(beginDate);
+
                               return (
                                 <tr key={index}>
                                   <td>
@@ -429,11 +412,11 @@ export default function Versions() {
                                       value={OverrideTarget}
                                       isInvalid={
                                         !!state.data.errors?.Versions[index!]
-                                          ?.OverrideTarget
+                                        // ?.OverrideTarget
                                       }
                                       isValid={
                                         !state.data.errors?.Versions[index!]
-                                          ?.OverrideTarget
+                                        // ?.OverrideTarget
                                       }
                                       onChange={(evnt) =>
                                         handleTableRowsInputChange(index, evnt)
@@ -445,7 +428,7 @@ export default function Versions() {
                                     >
                                       {
                                         state.data.errors?.Versions[index!]
-                                          ?.OverrideTarget
+                                        // ?.OverrideTarget
                                       }
                                     </Form.Control.Feedback>
                                   </td>

@@ -12,6 +12,8 @@ import {
   setGridPage,
   renderPageSizeDropdown,
   checkGridRendered,
+  checkSortingUrl,
+  checkSearchingUrl,
 } from "../../utils/grid-helper";
 
 interface IActionsRenderList {
@@ -21,6 +23,7 @@ interface IActionsRenderList {
 }
 interface IProps {
   searchBy: string;
+  sortBy?: string;
   headings: {
     name: string;
     data: string;
@@ -38,6 +41,7 @@ interface IColumns {
   name: string;
   data?: (row: any) => void;
   width?: string;
+  sort?: boolean;
   formatter?: (cell: any, row: any) => void;
 }
 
@@ -57,7 +61,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
   const [_count, setCount] = useState(0);
   const [isGridRendered, setGridRendered] = useState(false);
   const [pageSize, setPageSize] = useState(_pageSize);
-  const { headings, url, searchBy } = props;
+  const { headings, url, searchBy, sortBy } = props;
   const columns: IColumns[] = headings.map((heading) => {
     id += 1;
     return {
@@ -88,6 +92,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     columns.push({
       id,
       name: "Actions",
+      sort: false,
       formatter: (cell, row) => {
         return h(
           "Button",
@@ -114,6 +119,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     columns.push({
       id,
       name: "Actions",
+      sort: false,
       formatter: (cell, row) => {
         return _(
           <>
@@ -153,15 +159,24 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
     limit: pageSize,
     page: 0, // used to set default selected page
     server: {
-      url: (prev: string, page: number) =>
-        checkPaginationUrl(prev, page, paginationConfigs.limit),
+      url: (prev: string, page: number, limit: number) =>
+        checkPaginationUrl(prev, page, limit),
     },
   };
 
   const searchConfigs = {
     enabled: true,
     server: {
-      url: (prev: string, keyword: string) => `${prev}${searchBy}=${keyword}&`,
+      url: (prev: string, keyword: string) =>
+        checkSearchingUrl(prev, searchBy, keyword),
+    },
+  };
+  const sortConfigs = {
+    multiColumn: false,
+
+    server: {
+      url: (prev: string, columnAny: string | any[]) =>
+        checkSortingUrl(prev, columnAny, sortBy),
     },
   };
 
@@ -178,6 +193,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
         server={serverConfigs}
         pagination={paginationConfigs}
         search={searchConfigs}
+        sort={sortConfigs}
         className={classNames}
       />
     );
@@ -201,6 +217,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
           server={serverConfigs}
           pagination={paginationConfigs}
           search={searchConfigs}
+          sort={sortConfigs}
           className={classNames}
         />
       );

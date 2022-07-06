@@ -160,7 +160,8 @@ export default function APIList() {
               headings={headings}
               url={`ApplicationGateway?`}
               actionsList={actions}
-              searchBy={"apiName"}
+              searchBy={"Name"}
+              sortBy={"Name"}
               pageSizeList={gridPageSize}
             />
           </div>

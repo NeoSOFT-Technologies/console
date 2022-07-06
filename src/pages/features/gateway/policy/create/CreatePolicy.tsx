@@ -2,6 +2,7 @@ import React, { FormEvent, useEffect } from "react";
 import { Form, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { access, AuthGuard } from "../../../../../components/auth-gaurd";
+// import ErrorSummary from "../../../../../components/error-summary/ErrorSummary";
 import { errorSummary } from "../../../../../components/error-summary/ErrorSummary";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
@@ -10,7 +11,6 @@ import {
   getPolicybyId,
   setFormError,
   updatePolicy,
-  policystate,
 } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import AccessRights from "./access-rights/AccessRights";
@@ -21,54 +21,6 @@ export default function CreatePolicy() {
   const state: IPolicyCreateState = useAppSelector(
     (RootState) => RootState.createPolicyState
   );
-  console.log("state error:", state.data.errors);
-  // let list: any;
-  // let list2: any;
-  // let list3: any;
-  // let list1: any;
-  // console.log(list);
-  // if (state.data.errors !== undefined) {
-  //   list = Object.entries(state.data.errors).map(([key, value]) => {
-  //     console.log(`${key}: ${value}`);
-  //     return key === "Name" && value !== "" ? (
-  //       <div key={key}>
-  //         {key} : {value!}
-  //       </div>
-  //     ) : undefined;
-  //   });
-  //   list2 = Object.entries(state.data.errors.GlobalLimit).map(
-  //     ([key, value]) => {
-  //       console.log(`${key}: ${value}`);
-  //       return value !== "" ? (
-  //         <div key={key}>
-  //           {key} : {value!}
-  //         </div>
-  //       ) : undefined;
-  //     }
-  //   );
-  //   console.log("pet", list);
-  // }
-  // if (state.data.errors !== undefined) {
-  //   list1 = Object.entries(state.data.errors.PerApiLimit).map(
-  //     ([key, value]) => {
-  //       console.log(`${key}`);
-  //       list3 = Object.entries(value).map(([key1, value1]) => {
-  //         console.log(`${key1}: ${value1}`);
-  //         console.log(`${value1}`);
-  //         return value1 !== "" ? (
-  //           <div key={key1}>
-  //             {key1} : {value1!}
-  //           </div>
-  //         ) : undefined;
-  //       });
-  //       return list3;
-  //     }
-  //   );
-  //   console.log("list3", list3);
-  //   console.log("list1", list1);
-  //   console.log("list2", list2);
-  // }
-
   const { id } = useParams();
   const mainCall = async () => {
     if (id !== undefined) {
@@ -122,9 +74,6 @@ export default function CreatePolicy() {
 
     if (state.data.form.APIs.length > 0) {
       if (validate) {
-        if (id !== undefined) {
-          console.log("update policy checking", policystate, state.data.form);
-        }
         const result =
           id === undefined
             ? await dispatch(createPolicy(state.data.form))
@@ -211,7 +160,9 @@ export default function CreatePolicy() {
                 </div>
 
                 <div className="card-body pt-2">
-                  <div>{errorSummary(state.data.errors)}</div>
+                  <div>
+                    {errorSummary(state.data.errors, state.data.form.APIs)}
+                  </div>
                   <br />
                   <Tabs
                     defaultActiveKey="accessRights"

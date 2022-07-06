@@ -53,9 +53,10 @@ it("test buttons and inputs present", async () => {
 
   const activeBtn = screen.getByTestId("isActive-input");
   expect(activeBtn).toBeInTheDocument();
-  fireEvent.change(listenPathInput, { target: { checked: true } });
+  fireEvent.change(activeBtn, { target: { checked: true } });
   const Active = screen.getByText("Active");
   expect(Active).toBeVisible();
+  fireEvent.click(activeBtn);
 });
 
 it("check validations", async () => {

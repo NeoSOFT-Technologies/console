@@ -21,7 +21,6 @@ export default function AccessList() {
 
     if (!data) {
       const selectedApi = await dispatch(getApiById(Id));
-      console.log("selectedApi", selectedApi);
       if (
         selectedApi.payload.Data.ApiId === Id &&
         selectedApi.payload.Data.AuthType !== "keyless"
@@ -36,6 +35,8 @@ export default function AccessList() {
           {
             Id: selectedApi.payload.Data.ApiId,
             Name: selectedApi.payload.Data.Name,
+            ApiId: selectedApi.payload.Data.ApiId,
+            ApiName: selectedApi.payload.Data.Name,
             Versions: [],
             MasterVersions: listV,
             AuthType: selectedApi.payload.Data.AuthType,

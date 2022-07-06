@@ -1,138 +1,120 @@
 import React from "react";
-
-export const errorSummary = (state: any) => {
+function generateBullets(key: any, value: any, check?: any, name?: any) {
+  const checkFlag = typeof check === "boolean" ? !check : check === 1;
+  return value !== "" ? (
+    <>
+      <div key={key}>
+        <>
+          <ul>
+            {name === undefined ? (
+              <li>
+                {key} : {value!}
+              </li>
+            ) : checkFlag ? (
+              <>
+                <li>
+                  <b>{name}</b>
+                  <ul>
+                    <li>
+                      {key} : {value}
+                    </li>
+                  </ul>
+                </li>
+              </>
+            ) : (
+              <ul>
+                <li>
+                  {key} : {value}
+                </li>
+              </ul>
+            )}
+          </ul>
+          {typeof check === "boolean" ? (check = true) : (check = checkFlag)}
+        </>
+      </div>
+    </>
+  ) : undefined;
+}
+// export default function ErrorSummary(errors: any, data?: any) {
+export const errorSummary = (errors: any, data?: any) => {
   let list1: any;
   let check1: any;
   let check2: any;
   let check3: any;
-  const list: any = Object.entries(state).map(([key, value]) => {
-    console.log(`${key}: ${value}`);
+  let objCounter = 0;
+  const list: any = Object.entries(errors).map(([key, value], index) => {
     if (typeof value === "string") {
-      // console.log(`${key}: ${value}`);
-
       if (value !== "") {
         check1 = true;
       }
-      // console.log("check1:", check1);
-      return value !== "" ? (
-        <div key={key}>
-          <>
-            <ul>
-              <li>
-                {" "}
-                {key} : {value!}
-              </li>
-            </ul>
-            {/* {key} : {value!} */}
-            {/* <Alert
-              key={key}
-              variant="warning"
-              // dismissible
-            >
-              {key} : {value!}
-            </Alert> */}
-          </>
-        </div>
-      ) : undefined;
+      return generateBullets(key, value);
     } else if (typeof value === "object" && !Array.isArray(value!)) {
-      // console.log(
-      //   "is object?",
-      //   typeof value === "object" && !Array.isArray(value!)
-      // );
-      list1 = Object.entries(value!).map(([key1, value1]) => {
-        // console.log(`${key1}: ${value1}`);
+      list1 = Object.entries(value!).map(([key1, value1], index1) => {
         if (value1 !== "") {
           check2 = true;
         }
-        // console.log("check2:", check2);
-
-        // if ((key === "GlobalLimit") && value2 !== "") {
-        //   return (
-        //     <div key={key2}>
-        //       <>
-        //         <ul>
-        //           <li>
-        //             <>
-        //               {key2} : {value2!}
-        //             </>
-        //           </li>
-        //         </ul>
-        //         {/* {key2} : {value2!} */}
-        //       </>
-        //     </div>
-        //   );
-        // }
-        // console.log("check3:", check3);
-
-        return value1 !== "" ? (
-          <div key={key1}>
-            <>
-              <ul>
-                <li>
-                  {" "}
-                  {key1} : {value1!}
-                </li>
-              </ul>
-
-              {/* {key1} : {value1!} */}
-              {/* <Alert key={key1} variant="warning">
-                {key1} : {value1!}
-              </Alert> */}
-            </>
-          </div>
-        ) : undefined;
+        if (value1 !== "") {
+          objCounter = objCounter + 1;
+        }
+        return generateBullets(key1, value1, objCounter, key);
       });
     } else if (Array.isArray(value!)) {
-      console.log("value:", value);
-      list1 = Object.entries(value).map(([key1, value1]) => {
-        console.log(`${key1}`);
-        const list2: any = Object.entries(value1).map(([key2, value2]) => {
-          // console.log(`${key2}: ${value2}`);
-          if (value2 !== "") {
+      list1 = Object.entries(value).map(([key1, value1], index1) => {
+        if (typeof value1 === "object") {
+          const { ApiId, ApiName, ...rest } = value1;
+          let checkEmpty = Object.values(value1).every(
+            (x) => x === null || x === ""
+          );
+          const list2: any = Object.entries(rest).map(
+            ([key2, value2], index2) => {
+              if (value2 !== "") {
+                check3 = true;
+              }
+
+              const a = generateBullets(key2, value2, checkEmpty, ApiName);
+              checkEmpty = true;
+              return a;
+            }
+          );
+
+          return list2;
+        } else if (typeof value1 === "string") {
+          if (value1 !== "") {
             check3 = true;
           }
 
-          // if ((key === "Versions" || key === "PerApiLimit") && value2 !== "") {
-          //   return (
-          //     <div key={key2}>
-          //       <>
-          //         <ul>
-          //           <li>
-          //             <>
-          //               {key2} : {value2!}
-          //             </>
-          //           </li>
-          //         </ul>
-          //         {/* {key2} : {value2!} */}
-          //       </>
-          //     </div>
-          //   );
-          // }
-          // console.log("check3:", check3);
-
-          return value2 !== "" ? (
-            <div key={key2}>
+          return check3 ? (
+            <div key={index1}>
               <>
                 <ul>
-                  <li>
-                    <>
-                      {key2} : {value2!}
-                    </>
-                  </li>
+                  <>
+                    {value1 !== "" && value1 !== undefined ? (
+                      <li>
+                        <>
+                          <b>{data[index1]}</b>
+                        </>
+                        <ul>
+                          <li>
+                            <>{value1}</>
+                          </li>
+                        </ul>
+                      </li>
+                    ) : (
+                      <></>
+                    )}
+                  </>
                 </ul>
-                {/* {key2} : {value2!} */}
               </>
             </div>
           ) : undefined;
-        });
-        return list2;
+        } else {
+          return <></>;
+        }
       });
     }
     return list1;
   });
 
-  // return list;
-  console.log("list:", list);
   return (
     <div>
       {check1 || check2 || check3 ? (
