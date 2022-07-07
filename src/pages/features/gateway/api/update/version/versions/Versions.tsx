@@ -65,12 +65,6 @@ export default function Versions() {
     setAddFormData(newFormData);
   };
 
-  // const handleDateChange = (date: any) => {
-  //   console.log("date :", date);
-  //   const beginDate = moment(date).format("YYYY-MM-DD HH:MM");
-  //   console.log(beginDate);
-  // };
-
   const handleAddClick = () => {
     let newdate: any;
     if (state.data.form.Versions.length > 0) {
@@ -192,7 +186,6 @@ export default function Versions() {
   const handleTableRowsInputChange = (index: number, event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
-    // console.log("name and value:", name, value);
     const errorState = [...state.data.errors?.Versions!];
 
     switch (name) {

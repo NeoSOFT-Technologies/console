@@ -22,8 +22,6 @@ export default function Update() {
   const state: IApiGetByIdState = useAppSelector(
     (RootState) => RootState.updateApiState
   );
-  // console.log("state data:", state.data.form);
-  // console.log("state error:", state.data.errors);
 
   const dispatch = useAppDispatch();
   const { id } = useParams();

@@ -23,8 +23,6 @@ function CreateApi() {
     (RootState) => RootState.addApiState
   );
   console.log("state:", state);
-  // console.log("state data:", state.data);
-  // console.log("state error:", state.error);
 
   const navigate = useNavigate();
   const [apisForm, setForm] = useState<IApiFormData>({

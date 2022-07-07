@@ -62,6 +62,7 @@ export default function Authentication() {
                           <br />
                           <Form.Select
                             aria-label="Default select example"
+                            data-testid="authType"
                             name="AuthType"
                             value={state.data.form.AuthType}
                             // onClick={handleFormSelectChange}
@@ -99,6 +100,7 @@ export default function Authentication() {
                       <Form.Group className="mb-3 ml-4 mt-4">
                         <Form.Check
                           type="switch"
+                          data-testid="enableMtls"
                           id="EnableMTLS"
                           name="EnableMTLS"
                           label="Enable Mutual TLS"
