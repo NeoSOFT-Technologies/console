@@ -208,7 +208,7 @@ export default function CreatePolicy() {
               <div className="text-danger">
                 {list1.length === 0 ? <></> : <div>Per API : </div>}
                 {list1.map((data: any, index: number) => {
-                  console.log("daat", data);
+                  
                   return <div key={index}>{data}</div>;
                 })}
               </div>

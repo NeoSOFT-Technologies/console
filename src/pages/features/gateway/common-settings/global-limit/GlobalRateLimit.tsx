@@ -19,7 +19,7 @@ export default function GlobalRateLimit(props: IProps) {
   let perapi = { ...props.helper!.errors!.GlobalLimit! };
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    console.log("name", name, perapi);
+
     perapi = {
       ...perapi,
       [name]: regexForNumber.test(value) ? "" : "Enter only Numbers",

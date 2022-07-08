@@ -19,33 +19,33 @@ export default function Ipathpermission(props: IProps) {
 
   const HandleAddclick = () => {
     const value = props.r.index!;
-    let filtercheck = "false";
+    const filtercheck = "false";
     const apisList = [...props.r.formProp!];
     const allowedList = [...apisList[value].AllowedUrls!];
 
     // validation function to check two array of method
-    function ArrayEquals(a: any, b: any) {
-      return (
-        Array.isArray(a) &&
-        Array.isArray(b) &&
-        a.length === b.length &&
-        a.every((val, index) => val === b[index])
-      );
-    }
-    const filteredlist = allowedList.filter((a) => {
-      if (a.Url === InputData.path) {
-        filtercheck = ArrayEquals(a.Methods, InputData.method)
-          ? "true"
-          : "false";
-      } else {
-        filtercheck = "false";
-      }
-      return filtercheck;
-    });
+    // function ArrayEquals(a: any, b: any) {
+    //   return (
+    //     Array.isArray(a) &&
+    //     Array.isArray(b) &&
+    //     a.length === b.length &&
+    //     a.every((val, index) => val === b[index])
+    //   );
+    // }
+    // const filteredlist = allowedList.filter((a) => {
+    //   if (a.Url === InputData.path) {
+    //     filtercheck = ArrayEquals(a.Methods, InputData.method)
+    //       ? "true"
+    //       : "false";
+    //   } else {
+    //     filtercheck = "false";
+    //   }
+    //   return filtercheck;
+    // });
     // end of validation from data
     if (InputData.path !== "" && filtercheck === "false") {
       setspanError(" ");
-      console.log("filtered", filteredlist);
+
       const list = {
         Url: InputData.path,
         Methods: InputData.method,
@@ -55,7 +55,7 @@ export default function Ipathpermission(props: IProps) {
         ...apisList[value],
         AllowedUrls: [...allowedList],
       };
-      console.log("pathbased", apisList);
+
       props.r.dispatch(
         props.r.setForm!({ ...props.r.form, [props.r.propName!]: apisList })
       );

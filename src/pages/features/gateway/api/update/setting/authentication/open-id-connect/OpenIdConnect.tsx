@@ -43,7 +43,6 @@ export default function OpenIdConnectAuthentication() {
   });
 
   const [addClientFormData, setClientAddFormData] = useState<any>([]);
-  console.log("addClientFormData :", addClientFormData);
 
   const handleIssuerInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -536,10 +535,6 @@ export default function OpenIdConnectAuthentication() {
                                                   ) => {
                                                     const { Name, Id } =
                                                       filteredPolicy;
-                                                    console.log(
-                                                      "newindex",
-                                                      newindex
-                                                    );
 
                                                     return (
                                                       <tr key={clientIndex}>

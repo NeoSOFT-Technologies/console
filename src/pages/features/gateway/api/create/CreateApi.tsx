@@ -12,19 +12,11 @@ import {
 import {
   IErrorApiInput,
   IApiFormData,
-  IAddApiState,
 } from "../../../../../store/features/gateway/api/create/index";
 import { addNewApi } from "../../../../../store/features/gateway/api/create/slice";
-import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import { useAppDispatch } from "../../../../../store/hooks";
 function CreateApi() {
   const dispatch = useAppDispatch();
-
-  const state: IAddApiState = useAppSelector(
-    (RootState) => RootState.addApiState
-  );
-  console.log("state:", state);
-  // console.log("state data:", state.data);
-  // console.log("state error:", state.error);
 
   const navigate = useNavigate();
   const [apisForm, setForm] = useState<IApiFormData>({

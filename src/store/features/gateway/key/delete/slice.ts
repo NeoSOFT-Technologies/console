@@ -36,7 +36,7 @@ const slice = createSlice({
     builder.addCase(deleteKey.fulfilled, (state) => {
       state.loading = false;
       state.isDeleted = true;
-      // console.log("state ", current(state));
+      //
     });
     builder.addCase(deleteKey.rejected, (state, action) => {
       state.loading = false;

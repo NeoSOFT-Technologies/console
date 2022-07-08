@@ -19,7 +19,7 @@ export default function AccessRights() {
   const state: IKeyCreateState = useAppSelector(
     (RootState) => RootState.createKeyState
   );
-  // console.log("keyId", state.data.form.KeyId);
+  //
   useEffect(() => {
     if (state.data.form.KeyId === undefined) {
       setTabIndex("applyPolicy");
@@ -52,14 +52,14 @@ export default function AccessRights() {
 
   function handleOnTabSelect(key: string) {
     if (SelectedTabIndex !== key) {
-      // console.log("tab selected", key, SelectedTabIndex);
+      //
       setShow(true);
       setClickedTabIndex(key);
     }
   }
   const handleOk = () => {
     setShow(false);
-    // console.log("ok selected", SelectedTabIndex, ClickedTabIndex);
+    //
     const form = {
       ...emptyState.data.form,
       KeyId: state.data.form.KeyId,

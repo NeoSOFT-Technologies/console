@@ -45,8 +45,6 @@ export default function GlobalLimit(props: IProps) {
       loader === false &&
       state.loading === false
     ) {
-      console.log("second use effect -", loader);
-
       const manageState = async () => {
         const APIs: any[] = [];
 
@@ -66,7 +64,7 @@ export default function GlobalLimit(props: IProps) {
         let AuthType = "";
 
         policyName = policyName + state.data.form.Name;
-        console.log("myApis", state);
+
         for (const a of state.data.form.APIs) {
           AuthType = a.AuthType!;
           if (a.Limit === null) {
@@ -84,7 +82,7 @@ export default function GlobalLimit(props: IProps) {
             APIs.push(policyState);
           }
         }
-        // console.log("Names", globalItem.Name);
+        //
         if (globalItem.Name === "") {
           policyByIdTemp[props.index!] = {
             ...policyByIdTemp[props.index!],
@@ -141,7 +139,7 @@ export default function GlobalLimit(props: IProps) {
       })
     );
   };
-  console.log("states", states.data.form);
+
   return (
     <>
       {loader === false &&
