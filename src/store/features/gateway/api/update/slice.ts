@@ -30,16 +30,7 @@ export const updateApi = createAsyncThunk(
       return response.data;
     } catch (error_) {
       const myError = error_ as Error | AxiosError;
-      console.log(
-        "slice1",
-        axios.isAxiosError(myError) && myError.response!.data.Errors[0]
-      );
-      console.log(
-        "slice",
-        axios.isAxiosError(myError) && myError.response
-          ? myError.response.data.Errors[0]
-          : myError.message
-      );
+
       throw axios.isAxiosError(myError) && myError.response
         ? myError.response.data.Errors[0]
         : myError.message;
@@ -53,11 +44,11 @@ const slice = createSlice({
   reducers: {
     setForm: (state, action) => {
       state.data.form = action.payload;
-      // console.log("form data : ", state.data.form);
+      //
     },
     setFormError: (state, action) => {
       state.data.errors = action.payload;
-      // console.log("form error : ", state.data.errors);
+      //
     },
   },
   extraReducers(builder): void {
@@ -67,8 +58,7 @@ const slice = createSlice({
     builder.addCase(getApiById.fulfilled, (state, action) => {
       state.loading = false;
       state.data.form = action.payload.Data;
-      console.log(state.data.form);
-      console.log(action.payload.Data.Versions.length);
+
       state.data.form.Versions2 = [];
 
       if (action.payload.Data.Versions.length > 0) {
@@ -78,8 +68,6 @@ const slice = createSlice({
       } else {
         state.data.form.Versions2[0] = "Default";
       }
-
-      console.log(state.data.form);
     });
     builder.addCase(getApiById.rejected, (state, action) => {
       state.loading = false;
@@ -96,7 +84,7 @@ const slice = createSlice({
     });
     builder.addCase(updateApi.rejected, (state, action) => {
       state.loading = false;
-      console.log("action", action.payload);
+
       // action.payload contains error information
       action.payload = action.error;
       state.error = error(action.payload);

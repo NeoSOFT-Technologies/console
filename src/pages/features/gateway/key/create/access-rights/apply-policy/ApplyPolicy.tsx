@@ -36,7 +36,7 @@ export default function ApplyPolicy() {
     id,
     current: "policy",
   };
-  console.log("hey i am hete in apply poliyc");
+
   return (
     <div>
       <Row>

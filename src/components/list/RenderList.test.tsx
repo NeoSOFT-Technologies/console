@@ -30,9 +30,7 @@ it("render without crashing RenderList", async () => {
           url="api/tenants?isDeleted=false&"
           actions={{
             classNames: "",
-            func: (val) => {
-              console.log(val);
-            },
+            func: () => {},
           }}
         />
       </Provider>
