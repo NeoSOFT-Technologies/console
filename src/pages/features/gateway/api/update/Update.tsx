@@ -185,7 +185,7 @@ export default function Update() {
                     </AuthGuard>
                     <button
                       className=" btn  btn-sm btn-light btn-md d-flex float-right mb-3"
-                      data-testid="cancel-button"
+                      data-testid="cancel-input"
                       onClick={(e) => NavigateToApisList(e)}
                     >
                       {" "}

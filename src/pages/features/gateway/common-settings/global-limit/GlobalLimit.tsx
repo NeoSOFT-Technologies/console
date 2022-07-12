@@ -68,7 +68,7 @@ export default function GlobalLimit(props: IProps) {
         for (const a of state.data.form.APIs) {
           AuthType = a.AuthType!;
           if (a.Limit === null) {
-            globalItem.Name = globalItem.Name.concat(a.Name, ",");
+            globalItem.Name = globalItem.Name.concat(a.Name!, ",");
             globalItem.MaxQuota = state.data.form.Quota;
             globalItem.QuotaRate = state.data.form.QuotaRenewalRate;
             globalItem.Rate = state.data.form.Rate;
