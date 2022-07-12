@@ -6,7 +6,6 @@ import { createKey, getKeyById, updateKey } from "./slice";
 describe("create key redux state tests", () => {
   it("Should initially set keySTate to an empty object", () => {
     const state = store.getState().createKeyState;
-    // console.log(state);
     expect(state.data).toEqual(initialState.data);
   });
   const keyId = "f7764699-e83d-4971-aed3-3e508ac97d70";
@@ -120,13 +119,11 @@ describe("create key redux state tests", () => {
         ],
       })
     );
-    //   console.log("create", result);
+
     expect(result.type).toBe("key/create/fulfilled");
   });
-
   test("key/create/rejected-calling the state of create key-404", async () => {
     mockApi.onPost("/Key/CreateKey").reply(400);
-
     const result = await store.dispatch(
       createKey({
         KeyName: "key1",
@@ -180,12 +177,69 @@ describe("create key redux state tests", () => {
         ],
       })
     );
-    console.log("create", result);
     expect(result.type).toBe("key/create/rejected");
-
     expect(result.payload.message).toBe(
       "Cannot read properties of undefined (reading 'Errors')"
     );
+  });
+  test("Network error- failed for calling the state of create key page", async () => {
+    mockApi.onPost("/Key/CreateKey").networkError();
+
+    const result = await store.dispatch(
+      createKey({
+        KeyName: "key1",
+        SelectedTabIndex: "applyPolicy",
+        Per: 0,
+        Rate: 0,
+        Quota: -1,
+        Expires: 0,
+        // isInActive: false,
+        QuotaRenewalRate: -1,
+        ThrottleInterval: -1,
+        ThrottleRetries: -1,
+        AccessRights: [
+          {
+            ApiId: "api1",
+            ApiName: "api1",
+            Versions: [],
+            MasterVersions: ["Default"],
+            AuthType: "standard",
+            isRateLimitDisabled: false,
+            isQuotaDisbaled: false,
+            AllowedUrls: [],
+            Limit: {
+              Rate: 0,
+              Throttle_interval: 0,
+              Throttle_retry_limit: 0,
+              Max_query_depth: 0,
+              Quota_max: 0,
+              Quota_renews: 0,
+              Quota_remaining: 0,
+              Quota_renewal_rate: 0,
+            },
+          },
+        ],
+        Policies: [],
+        PolicyByIds: [
+          {
+            Global: {
+              Name: "",
+              MaxQuota: 0,
+              QuotaRenewalRate: 0,
+              Rate: 0,
+              Per: 0,
+              ThrottleInterval: 0,
+              ThrottleRetries: 0,
+            },
+            APIs: [],
+            policyName: "",
+            AuthType: "",
+          },
+        ],
+      })
+    );
+    expect(result.type).toBe("key/create/rejected");
+    expect(result.payload.message).toBe("Network Error");
   });
 
   // key/getbyid
@@ -195,7 +249,6 @@ describe("create key redux state tests", () => {
     const result = await store.dispatch(getKeyById(keyId));
     expect(result.type).toBe("key/getKeyById/fulfilled");
   });
-
   test("key/getKeyById/rejected- failed for calling get key by Id", async () => {
     mockApi
       .onGet("Key/GetKey?keyId=" + keyId)
@@ -208,146 +261,16 @@ describe("create key redux state tests", () => {
     mockApi.onGet("Key/GetKey?keyId=").networkError();
 
     const result = await store.dispatch(getKeyById(""));
-    // console.log("res", result);
     expect(result.payload.message).toBe("Network Error");
     expect(result.type).toBe("key/getKeyById/rejected");
   });
 
   // update
-  //   test("calling the state of update", async () => {
-  //     mockApi
-  //       .onPatch("/Key/UpdateKey", response)
-  //       .reply(200, storeStates.updateKeystate);
-
-  //     const result = await store1.dispatch({
-  //       ...storeStates.updateKeystate,
-  //       response,
-  //       type: "key/Update/fulfilled",
-  //     });
-
-  //     // const x = await store.dispatch(
-  //     //   updateKey({
-  //     //     KeyId: "f7764699-e83d-4971-aed3-3e508ac97d70",
-  //     //     KeyName: "key1",
-  //     //     SelectedTabIndex: "applyPolicy",
-  //     //     Per: 0,
-  //     //     Rate: 0,
-  //     //     Quota: -1,
-  //     //     Expires: 0,
-  //     //     // isInActive: false,
-  //     //     QuotaRenewalRate: -1,
-  //     //     ThrottleInterval: -1,
-  //     //     ThrottleRetries: -1,
-  //     //     AccessRights: [
-  //     //       {
-  //     //         ApiId: "api1",
-  //     //         ApiName: "api1",
-  //     //         Versions: [],
-  //     //         MasterVersions: ["Default"],
-  //     //         AuthType: "standard",
-  //     //         isRateLimitDisabled: false,
-  //     //         isQuotaDisbaled: false,
-  //     //         AllowedUrls: [],
-  //     //         Limit: {
-  //     //           Rate: 0,
-  //     //           Throttle_interval: 0,
-  //     //           Throttle_retry_limit: 0,
-  //     //           Max_query_depth: 0,
-  //     //           Quota_max: 0,
-  //     //           Quota_renews: 0,
-  //     //           Quota_remaining: 0,
-  //     //           Quota_renewal_rate: 0,
-  //     //         },
-  //     //       },
-  //     //     ],
-  //     //     Policies: ["policy1"],
-  //     //     PolicyByIds: [
-  //     //       {
-  //     //         Global: {
-  //     //           Name: "",
-  //     //           MaxQuota: 0,
-  //     //           QuotaRenewalRate: 0,
-  //     //           Rate: 0,
-  //     //           Per: 0,
-  //     //           ThrottleInterval: 0,
-  //     //           ThrottleRetries: 0,
-  //     //         },
-  //     //         APIs: [],
-  //     //         policyName: "",
-  //     //         AuthType: "",
-  //     //       },
-  //     //     ],
-  //     //   })
-  //     // );
-  //     // const result = await store.dispatch(updateKey({ s}));
-  //     // ({
-  //     //   ...storeStates.updateKeystate,
-  //     //   response,
-  //     //   type: "key/Update/fulfiled",
-  //     // });
-  //     // const result = await store.dispatch(
-  //     //   updateKey({
-  //     //     KeyId: "key1",
-  //     //     KeyName: "key1",
-  //     //     SelectedTabIndex: "applyPolicy",
-  //     //     Per: 0,
-  //     //     Rate: 0,
-  //     //     Quota: -1,
-  //     //     Expires: 0,
-  //     //     // isInActive: false,
-  //     //     QuotaRenewalRate: -1,
-  //     //     ThrottleInterval: -1,
-  //     //     ThrottleRetries: -1,
-  //     //     AccessRights: [
-  //     //       {
-  //     //         ApiId: "api1",
-  //     //         ApiName: "api1",
-  //     //         Versions: [],
-  //     //         MasterVersions: ["Default"],
-  //     //         AuthType: "standard",
-  //     //         isRateLimitDisabled: false,
-  //     //         isQuotaDisbaled: false,
-  //     //         AllowedUrls: [],
-  //     //         Limit: {
-  //     //           Rate: 0,
-  //     //           Throttle_interval: 0,
-  //     //           Throttle_retry_limit: 0,
-  //     //           Max_query_depth: 0,
-  //     //           Quota_max: 0,
-  //     //           Quota_renews: 0,
-  //     //           Quota_remaining: 0,
-  //     //           Quota_renewal_rate: 0,
-  //     //         },
-  //     //       },
-  //     //     ],
-  //     //     Policies: ["policy1"],
-  //     //     PolicyByIds: [
-  //     //       {
-  //     //         Global: {
-  //     //           Name: "",
-  //     //           MaxQuota: 0,
-  //     //           QuotaRenewalRate: 0,
-  //     //           Rate: 0,
-  //     //           Per: 0,
-  //     //           ThrottleInterval: 0,
-  //     //           ThrottleRetries: 0,
-  //     //         },
-  //     //         APIs: [],
-  //     //         policyName: "",
-  //     //         AuthType: "",
-  //     //       },
-  //     //     ],
-  //     //   })
-  //     // );
-  //     console.log("update", result);
-  //     expect(result.type).toBe("key/Update/fulfilled");
-  //   });
-  test("calling the state of update-fail", async () => {
-    mockApi.onGet("/Key/UpdateKey/", response).reply(404);
-
+  test("calling the state of update key", async () => {
+    mockApi.onPut("/Key/UpdateKey").reply(200, {});
     const result = await store.dispatch(
       updateKey({
-        KeyId: "key1",
+        KeyId: "f7764699-e83d-4971-aed3-3e508ac97d70",
         KeyName: "key1",
         SelectedTabIndex: "applyPolicy",
         Per: 0,
@@ -399,133 +322,124 @@ describe("create key redux state tests", () => {
         ],
       })
     );
-    //   console.log("update", result);
+    expect(result.type).toBe("key/Update/fulfilled");
+  });
+  test("calling the state of update key-404", async () => {
+    mockApi.onPut("/Key/UpdateKey").reply(404, {});
+    const result = await store.dispatch(
+      updateKey({
+        KeyId: "f7764699-e83d-4971-aed3-3e508ac97d70",
+        KeyName: "key1",
+        SelectedTabIndex: "applyPolicy",
+        Per: 0,
+        Rate: 0,
+        Quota: -1,
+        Expires: 0,
+        // isInActive: false,
+        QuotaRenewalRate: -1,
+        ThrottleInterval: -1,
+        ThrottleRetries: -1,
+        AccessRights: [
+          {
+            ApiId: "api1",
+            ApiName: "api1",
+            Versions: [],
+            MasterVersions: ["Default"],
+            AuthType: "standard",
+            isRateLimitDisabled: false,
+            isQuotaDisbaled: false,
+            AllowedUrls: [],
+            Limit: {
+              Rate: 0,
+              Throttle_interval: 0,
+              Throttle_retry_limit: 0,
+              Max_query_depth: 0,
+              Quota_max: 0,
+              Quota_renews: 0,
+              Quota_remaining: 0,
+              Quota_renewal_rate: 0,
+            },
+          },
+        ],
+        Policies: ["policy1"],
+        PolicyByIds: [
+          {
+            Global: {
+              Name: "",
+              MaxQuota: 0,
+              QuotaRenewalRate: 0,
+              Rate: 0,
+              Per: 0,
+              ThrottleInterval: 0,
+              ThrottleRetries: 0,
+            },
+            APIs: [],
+            policyName: "",
+            AuthType: "",
+          },
+        ],
+      })
+    );
     expect(result.type).toBe("key/Update/rejected");
   });
+  test("Network error- failed for calling the state of update key page", async () => {
+    mockApi.onPut("/Key/UpdateKey").networkError();
+
+    const result = await store.dispatch(
+      updateKey({
+        KeyId: "f7764699-e83d-4971-aed3-3e508ac97d70",
+        KeyName: "key1",
+        SelectedTabIndex: "applyPolicy",
+        Per: 0,
+        Rate: 0,
+        Quota: -1,
+        Expires: 0,
+        // isInActive: false,
+        QuotaRenewalRate: -1,
+        ThrottleInterval: -1,
+        ThrottleRetries: -1,
+        AccessRights: [
+          {
+            ApiId: "api1",
+            ApiName: "api1",
+            Versions: [],
+            MasterVersions: ["Default"],
+            AuthType: "standard",
+            isRateLimitDisabled: false,
+            isQuotaDisbaled: false,
+            AllowedUrls: [],
+            Limit: {
+              Rate: 0,
+              Throttle_interval: 0,
+              Throttle_retry_limit: 0,
+              Max_query_depth: 0,
+              Quota_max: 0,
+              Quota_renews: 0,
+              Quota_remaining: 0,
+              Quota_renewal_rate: 0,
+            },
+          },
+        ],
+        Policies: ["policy1"],
+        PolicyByIds: [
+          {
+            Global: {
+              Name: "",
+              MaxQuota: 0,
+              QuotaRenewalRate: 0,
+              Rate: 0,
+              Per: 0,
+              ThrottleInterval: 0,
+              ThrottleRetries: 0,
+            },
+            APIs: [],
+            policyName: "",
+            AuthType: "",
+          },
+        ],
+      })
+    );
+    expect(result.type).toBe("key/Update/rejected");
+    expect(result.payload.message).toBe("Network Error");
+  });
 });
-
-// afterEach(() => {
-//   jest.resetAllMocks();
-// });
-// test("calling the state of successfully creating key", async () => {
-//   mockApi.onPost("/Key/CreateKey").reply(200, {});
-
-//   const result = await store.dispatch(
-//     createKey({
-//       KeyName: "key1",
-//       SelectedTabIndex: "applyPolicy",
-//       Per: 0,
-//       Rate: 0,
-//       Quota: -1,
-//       Expires: 0,
-//       // isInActive: false,
-//       QuotaRenewalRate: -1,
-//       ThrottleInterval: -1,
-//       ThrottleRetries: -1,
-//       AccessRights: [
-//         {
-//           ApiId: "api1",
-//           ApiName: "api1",
-//           Versions: [],
-//           MasterVersions: ["Default"],
-//           AuthType: "standard",
-//           isRateLimitDisabled: false,
-//           isQuotaDisbaled: false,
-//           AllowedUrls: [],
-//           Limit: {
-//             Rate: 0,
-//             Throttle_interval: 0,
-//             Throttle_retry_limit: 0,
-//             Max_query_depth: 0,
-//             Quota_max: 0,
-//             Quota_renews: 0,
-//             Quota_remaining: 0,
-//             Quota_renewal_rate: 0,
-//           },
-//         },
-//       ],
-//       Policies: [],
-//       PolicyByIds: [
-//         {
-//           Global: {
-//             Name: "",
-//             MaxQuota: 0,
-//             QuotaRenewalRate: 0,
-//             Rate: 0,
-//             Per: 0,
-//             ThrottleInterval: 0,
-//             ThrottleRetries: 0,
-//           },
-//           APIs: [],
-//           policyName: "",
-//           AuthType: "",
-//         },
-//       ],
-//     })
-//   );
-//   //   console.log("create", result);
-//   expect(result.type).toBe("key/create/fulfilled");
-// });
-// test("calling the state of create key-404", async () => {
-//   mockApi.onPost("/Key/CreateKey").reply(404);
-
-//   const result = await store.dispatch(
-//     createKey({
-//       KeyName: "key1",
-//       SelectedTabIndex: "applyPolicy",
-//       Per: 0,
-//       Rate: 0,
-//       Quota: -1,
-//       Expires: 0,
-//       // isInActive: false,
-//       QuotaRenewalRate: -1,
-//       ThrottleInterval: -1,
-//       ThrottleRetries: -1,
-//       AccessRights: [
-//         {
-//           ApiId: "",
-//           ApiName: "api1",
-//           Versions: [],
-//           MasterVersions: ["Default"],
-//           AuthType: "standard",
-//           isRateLimitDisabled: false,
-//           isQuotaDisbaled: false,
-//           AllowedUrls: [],
-//           Limit: {
-//             Rate: 0,
-//             Throttle_interval: 0,
-//             Throttle_retry_limit: 0,
-//             Max_query_depth: 0,
-//             Quota_max: 0,
-//             Quota_renews: 0,
-//             Quota_remaining: 0,
-//             Quota_renewal_rate: 0,
-//           },
-//         },
-//       ],
-//       Policies: [],
-//       PolicyByIds: [
-//         {
-//           Global: {
-//             Name: "",
-//             MaxQuota: 0,
-//             QuotaRenewalRate: 0,
-//             Rate: 0,
-//             Per: 0,
-//             ThrottleInterval: 0,
-//             ThrottleRetries: 0,
-//           },
-//           APIs: [],
-//           policyName: "",
-//           AuthType: "",
-//         },
-//       ],
-//     })
-//   );
-//   //   console.log("create", result);
-//   expect(result.type).toBe("key/create/rejected");
-
-//   expect(result.payload.message).toBe(
-//     "Cannot read properties of undefined (reading 'Errors')"
-//   );
-// });
