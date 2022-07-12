@@ -67,11 +67,11 @@ describe("SAAS - EDIT TABLE Component", () => {
             {
               name: "name",
               type: "string",
-              required: true,
+              required: false,
               partialSearch: false,
               multiValue: false,
               sortable: false,
-              filterable: true,
+              filterable: false,
               storable: true,
             },
           ],
@@ -113,7 +113,7 @@ describe("SAAS - EDIT TABLE Component", () => {
     expect(editColBtn).toBeInTheDocument();
     userEvent.click(editColBtn);
 
-    userEvent.click(editColBtn);
+    // userEvent.click(editColBtn);
 
     const closeModalBtn = await waitFor(
       () => screen.getByTestId("close-modal-btn"),

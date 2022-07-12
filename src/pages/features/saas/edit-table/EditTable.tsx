@@ -822,7 +822,11 @@ export default function EditTable() {
           <b>{editTableState.selectedColumnData.name}</b> column?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="success" onClick={() => deleteModalClose()}>
+          <Button
+            variant="success"
+            onClick={() => deleteModalClose()}
+            data-testid="delete-modal-close-btn"
+          >
             No, Cancel
           </Button>
           <Button variant="danger" onClick={() => removeColumn()}>
