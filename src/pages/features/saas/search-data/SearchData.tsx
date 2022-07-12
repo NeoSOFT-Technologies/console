@@ -409,8 +409,8 @@ export default function SearchData() {
                   >
                     <option value="">Table Name</option>
                     {tableData.data?.map((val, index) => (
-                      <option key={`option${index}`} value={val}>
-                        {val}
+                      <option key={`option${index}`} value={val.tableName}>
+                        {val.tableName}
                       </option>
                     ))}
                   </Form.Select>

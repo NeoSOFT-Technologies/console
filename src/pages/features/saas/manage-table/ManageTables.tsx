@@ -34,6 +34,7 @@ export default function ManageTables() {
   const [show, setShow] = useState(false);
   const [table, settable] = useState("");
   const [tenantId, setTenantId] = useState("");
+  const [tenantName, setTenantName] = useState("");
   const [deletedTableRecord, setDeletedTableRecord] = useState({
     tenantId: "",
     tableName: "",
@@ -54,11 +55,15 @@ export default function ManageTables() {
   };
   const [showEdit, setShowEdit] = useState(false);
   const handleEditClose = () => setShowEdit(false);
-  const handleEditShow = (tableName: string, tenantID: string) => {
+  const handleEditShow = (
+    tableName: string,
+    tenantID: string,
+    tenantname: string
+  ) => {
     settable(tableName);
 
     setTenantId(tenantID);
-
+    setTenantName(tenantname);
     setShowEdit(true);
   };
 
@@ -172,7 +177,7 @@ export default function ManageTables() {
     setDeletedTableRecord({ ...obj });
     handleClose();
   };
-  console.log(allTableData);
+
   function getNextPageStatus(currentPages: number) {
     if (
       allTableData.data &&
@@ -217,7 +222,13 @@ export default function ManageTables() {
                   <td>{val.tableName}</td>
                   <td
                     className="text-align-middle  text-primary"
-                    onClick={() => handleEditShow(val.tableName, val.tenantId)}
+                    onClick={() =>
+                      handleEditShow(
+                        val.tableName,
+                        val.tenantId,
+                        val.tenantName
+                      )
+                    }
                     data-testid="edit-table-btn"
                   >
                     <i className="bi bi-pencil-square"></i>
@@ -285,7 +296,9 @@ export default function ManageTables() {
                 <td>{val.tableName}</td>
                 <td
                   className="text-align-middle  text-primary"
-                  onClick={() => handleEditShow(val.tableName, val.tenantId)}
+                  onClick={() =>
+                    handleEditShow(val.tableName, val.tenantId, val.tenantName)
+                  }
                   data-testid="edit-table-btn"
                 >
                   <i className="bi bi-pencil-square"></i>
@@ -378,7 +391,7 @@ export default function ManageTables() {
       </Modal>
       <Modal
         show={showEdit}
-        data={{ table, tenantId }}
+        data={{ table, tenantId, tenantName }}
         onHide={handleEditClose}
         backdrop="static"
         keyboard={false}
@@ -397,7 +410,7 @@ export default function ManageTables() {
             variant="primary"
             onClick={() => {
               navigate("/saas/manage-table/edit-table", {
-                state: { tableName: table, tenantId },
+                state: { tableName: table, tenantId, tenantName },
               });
             }}
           >

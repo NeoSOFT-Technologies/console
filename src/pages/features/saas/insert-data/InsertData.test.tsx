@@ -65,6 +65,13 @@ describe("SAAS - INSERT DATA Component", () => {
       message: "Table Information retrieved successfully",
       data: {
         tableName: "testTable",
+        tableInfo: {
+          replicationFactor: 1,
+          noOfShards: 1,
+          tenantInfo: {
+            tenantName: "Tenant1",
+          },
+        },
         columns: [
           {
             name: "id",

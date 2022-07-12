@@ -13,8 +13,15 @@ export function getTablesService(tenantId: string) {
     `manage/table/?tenantId=${tenantId}`
   );
 }
-export function createTableService(tenantId: string, data: ITableCreateData) {
-  return apiFactory().post(`manage/table/?tenantId=${tenantId}`, data);
+export function createTableService(
+  tenantId: string,
+  tenantName: string,
+  data: ITableCreateData
+) {
+  return apiFactory().post(
+    `manage/table/?tenantName=${tenantName}&tenantId=${tenantId}`,
+    data
+  );
 }
 export function getCapacityPlansService() {
   return apiFactory().get(`manage/table/capacity-plans`);
@@ -95,6 +102,6 @@ export function getTenantListService() {
 }
 export function getTableByTenantService(data: IGetDeleteTableByTenant) {
   return apiFactory().get(
-    `manage/table/tablesList?tenantId=${data.tenantId}&pageNumber=${data.pageNumber}&pageSize=${data.pageSize}`
+    `manage/table/tables-list?tenantId=${data.tenantId}&pageNumber=${data.pageNumber}&pageSize=${data.pageSize}`
   );
 }

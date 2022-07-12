@@ -26,12 +26,15 @@ import {
 } from "../../../../types/saas";
 import "./style.css";
 
-type LocationState = { tableName: string; tenantId: string };
+type LocationState = {
+  tableName: string;
+  tenantId: string;
+  tenantName: string;
+};
 export default function EditTable() {
   const dispatch = useAppDispatch();
   const location = useLocation();
-  console.log(location);
-  const { tableName, tenantId } = location.state as LocationState;
+  const { tableName, tenantId, tenantName } = location.state as LocationState;
 
   const tableData = useAppSelector((state) => state.getTableSchemaState);
   const updateTableSchemaState = useAppSelector(
@@ -112,7 +115,7 @@ export default function EditTable() {
     });
   };
   const deleteModalShow = (columData: ITableColumnData) => {
-    if (columData.name.toLowerCase() === "id") {
+    if (columData.name.toLowerCase() === "id" || columData.required === true) {
       ToastAlert("Column not allowed to delete", "warning");
     } else {
       setSelectedColData(columData);
@@ -391,7 +394,7 @@ export default function EditTable() {
                   <Form.Control
                     type="text"
                     className="text-center"
-                    value={tenantId}
+                    value={tenantName}
                     name="tenantName"
                     disabled
                   />
@@ -451,23 +454,14 @@ export default function EditTable() {
                               onClick={() => handleShow(value, "View Column")}
                             ></i>
                           </td>
-                          {value.required === true ? (
-                            <td className="text-danger disabled">
-                              <i
-                                className="bi bi-trash-fill"
-                                data-testid="delete-col-btn"
-                                onClick={() => deleteModalShow(value)}
-                              ></i>
-                            </td>
-                          ) : (
-                            <td className="text-danger">
-                              <i
-                                className="bi bi-trash-fill"
-                                data-testid="delete-col-btn"
-                                onClick={() => deleteModalShow(value)}
-                              ></i>
-                            </td>
-                          )}
+
+                          <td className="text-danger">
+                            <i
+                              className="bi bi-trash-fill"
+                              data-testid="delete-col-btn"
+                              onClick={() => deleteModalShow(value)}
+                            ></i>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -828,7 +822,7 @@ export default function EditTable() {
           <b>{editTableState.selectedColumnData.name}</b> column?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="success" onClick={deleteModalClose}>
+          <Button variant="success" onClick={() => deleteModalClose()}>
             No, Cancel
           </Button>
           <Button variant="danger" onClick={() => removeColumn()}>
