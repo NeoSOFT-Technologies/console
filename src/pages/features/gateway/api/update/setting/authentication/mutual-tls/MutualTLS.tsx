@@ -6,7 +6,6 @@ import {
 } from "../../../../../../../../components/auth-gaurd";
 import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 import Tooltips from "../../../../../../../../components/tooltips/Tooltips";
-// import Spinner from "../../../../../../../../components/loader/Loader";
 import { setForm } from "../../../../../../../../store/features/gateway/api/update/slice";
 import { addCertificate } from "../../../../../../../../store/features/gateway/certificate/create/slice";
 import { IGetAllCertificateData } from "../../../../../../../../store/features/gateway/certificate/list/index";
@@ -18,14 +17,12 @@ import {
   useAppSelector,
   useAppDispatch,
 } from "../../../../../../../../store/hooks";
-// import { setFormData } from "../../../../../../../resources/api/api-constants";
 export default function MutualTLS() {
   const dispatch = useAppDispatch();
   const updateState = useAppSelector((RootState) => RootState.updateApiState);
   const certificateState = useAppSelector(
     (RootState) => RootState.getAllCertificateState
   );
-  // const [divShow, setDivShow] = useState<any>(false);
   const [certId, setCertId] = useState<any>([]);
   const [certId1, setCertId1] = useState<any>("");
   const [file, setFile] = useState<any>("");
@@ -33,7 +30,6 @@ export default function MutualTLS() {
   const [fileName, setFileName] = useState<any>("");
   const [show, setShow] = useState(false);
   const [loader, setLoader] = useState(true);
-  // const [loader1, setLoader1] = useState(true);
   const handleClose = () => {
     setFile("");
     setCertId1("");
@@ -57,7 +53,6 @@ export default function MutualTLS() {
           ValidNotBefore: objCertState?.ValidNotBefore,
           showDetails: false,
         };
-        // setCertId([...certId, list]);
         const idAlreadyExist = certId.some((x: any) => x?.CertId === arr2);
         if (!idAlreadyExist) {
           certId.push(list);
@@ -129,7 +124,6 @@ export default function MutualTLS() {
           setCertId([...certId, list]);
         }
       } else {
-        // ToastAlert("Please upload Certificate", "error");
         ToastAlert(
           "Certificate of Id " + certId1 + " is not available",
           "error"
@@ -201,7 +195,6 @@ export default function MutualTLS() {
       };
       const idAlreadyExist = certId.some((x: any) => x?.CertId === certobjId);
       if (!idAlreadyExist) {
-        // setCertId([...certId, list]);
         certId.push(list);
       }
     } else {

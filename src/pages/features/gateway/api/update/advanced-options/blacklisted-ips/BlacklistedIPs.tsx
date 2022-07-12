@@ -14,7 +14,6 @@ import {
 export default function BlacklistedIPs() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  //
 
   const [enableBlacklist, setBlacklist] = useState(false);
 

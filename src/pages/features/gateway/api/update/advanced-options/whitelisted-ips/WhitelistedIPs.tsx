@@ -14,7 +14,6 @@ import {
 export default function WhitelistedIPs() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  //
 
   const [enableWhitelist, setWhitelist] = useState(false);
 

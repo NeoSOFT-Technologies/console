@@ -3,7 +3,6 @@ import { Tab, Tabs, Form } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { access, AuthGuard } from "../../../../../components/auth-gaurd";
 import { errorSummary } from "../../../../../components/error-summary/ErrorSummary";
-// import ErrorSummary from "../../../../../components/error-summary/ErrorSummary";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IApiGetByIdState } from "../../../../../store/features/gateway/api/update";
@@ -22,8 +21,6 @@ export default function Update() {
   const state: IApiGetByIdState = useAppSelector(
     (RootState) => RootState.updateApiState
   );
-  //
-  //
 
   const dispatch = useAppDispatch();
   const { id } = useParams();

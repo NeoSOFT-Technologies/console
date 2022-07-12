@@ -14,7 +14,6 @@ import {
 export default function CorsOptions() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  //
 
   const [addAllowedOrigins, setAllowedOrigins] = useState<any>({
     AllowedOrigins: "",

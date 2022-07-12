@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Form, Row, Col, Accordion } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { access, AuthGuard } from "../../../../../components/auth-gaurd";
-// import { errorSummary } from "../../../../../components/error-summary/ErrorSummary";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import {
   regexForName,
@@ -72,9 +71,7 @@ function CreateApi() {
   };
 
   const handleValidate = () => {
-    const validate =
-      err.name === "" && err.listenPath === "" && err.targetUrl === "";
-    return validate;
+    return err.name === "" && err.listenPath === "" && err.targetUrl === "";
   };
   const handleSubmitApi = async (event: React.FormEvent) => {
     event.preventDefault();
