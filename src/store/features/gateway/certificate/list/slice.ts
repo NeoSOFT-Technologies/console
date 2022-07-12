@@ -14,7 +14,7 @@ export const getAllCertificate = createAsyncThunk(
   async () => {
     try {
       const response = await getAllCertificateService();
-      console.log("response", response);
+
       return response.data;
     } catch (error__) {
       const myError = error__ as Error | AxiosError;
@@ -32,10 +32,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     setFormCert: (state, action) => {
-      console.log("action", action);
       state.data!.CertificateCollection = action.payload;
-
-      console.log("form data :", state.data);
     },
   },
   extraReducers(builder): void {

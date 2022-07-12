@@ -69,7 +69,7 @@ export const createPolicy = createAsyncThunk(
     try {
       Insertdata(data);
       const response = await addPolicyService(dataduplicate);
-      // console.log(response);
+      //
       return response.data;
     } catch (error_) {
       const myError = error_ as Error | AxiosError;

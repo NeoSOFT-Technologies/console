@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import CorsOptions from "./CorsOptions";
 
+const allowed_Origin_Input = "allowedOrigin-input";
 const mockStore = configureStore([thunk]);
 const store = mockStore({
   updateApiState: {
@@ -100,7 +101,7 @@ it("render inputs, buttons and switch", () => {
   expect(maxAgeInput).toHaveValue(5);
   fireEvent.change(maxAgeInput);
 
-  const allowedOriginInput = screen.getByTestId("allowedOrigin-input");
+  const allowedOriginInput = screen.getByTestId(allowed_Origin_Input);
   expect(allowedOriginInput).toBeInTheDocument();
   fireEvent.change(allowedOriginInput, {
     target: { value: "https://httpbin2.org" },
@@ -169,7 +170,7 @@ it("check validations", () => {
       </Provider>
     </BrowserRouter>
   );
-  const allowedOriginInput = screen.getByTestId("allowedOrigin-input");
+  const allowedOriginInput = screen.getByTestId(allowed_Origin_Input);
   fireEvent.change(allowedOriginInput, {
     target: { value: "https://httpbin3.org" },
   });
@@ -177,7 +178,7 @@ it("check validations", () => {
   const allowedOriginErr = screen.getByTestId("allowedOriginErr");
   expect(allowedOriginErr).toHaveTextContent("");
 
-  const allowedoriginInput = screen.getByTestId("allowedOrigin-input");
+  const allowedoriginInput = screen.getByTestId(allowed_Origin_Input);
   fireEvent.change(allowedOriginInput, {
     target: { value: "" },
   });

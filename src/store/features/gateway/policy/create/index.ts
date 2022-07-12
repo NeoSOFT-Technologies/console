@@ -24,8 +24,8 @@ export interface IGetPolicyByIdData {
   APIs:
     | [
         {
-          Id: string;
-          Name: string;
+          Id?: string;
+          Name?: string;
           ApiId: string | null;
           ApiName: string | null;
           Versions: string[];

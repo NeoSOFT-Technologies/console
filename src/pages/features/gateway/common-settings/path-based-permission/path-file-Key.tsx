@@ -28,35 +28,33 @@ export default function IpathpermissionKey(props: IProps) {
 
   const handleAddclick = () => {
     const value = props.indexdata!;
-    let filtercheck = "false";
+    const filtercheck = "false";
     const apisList = [...props.state?.data.form.AccessRights!];
     const allowedList = [...apisList[value].AllowedUrls!];
 
     // validation function to check two array of method
-    function arrayEquals(a: any, b: any) {
-      return (
-        Array.isArray(a) &&
-        Array.isArray(b) &&
-        a.length === b.length &&
-        a.every((val, index) => val === b[index])
-      );
-    }
-    const filteredlist = allowedList.filter((a) => {
-      console.log("aurl", a.Url, a.Methods);
-      console.log("old", inputData.path, inputData.method);
-      if (a.Url === inputData.path) {
-        filtercheck = arrayEquals(a.Methods, inputData.method)
-          ? "true"
-          : "false";
-      } else {
-        filtercheck = "false";
-      }
-      return filtercheck;
-    });
+    // function arrayEquals(a: any, b: any) {
+    //   return (
+    //     Array.isArray(a) &&
+    //     Array.isArray(b) &&
+    //     a.length === b.length &&
+    //     a.every((val, index) => val === b[index])
+    //   );
+    // }
+    // const filteredlist = allowedList.filter((a) => {
+    //   if (a.Url === inputData.path) {
+    //     filtercheck = arrayEquals(a.Methods, inputData.method)
+    //       ? "true"
+    //       : "false";
+    //   } else {
+    //     filtercheck = "false";
+    //   }
+    //   return filtercheck;
+    // });
     // end of validation from data
     if (inputData.path !== "" && filtercheck === "false") {
       setspanError(" ");
-      console.log("filtered", filteredlist);
+
       const list = {
         Url: inputData.path,
         Methods: inputData.method,
@@ -109,14 +107,13 @@ export default function IpathpermissionKey(props: IProps) {
           ];
           setInputData(newFormData);
         } else {
-          console.log("else", fieldValue);
           newFormData[fieldName] = [fieldValue];
           setInputData(newFormData);
         }
         break;
     }
   };
-  console.log("state", inputData);
+
   return (
     <div>
       <Row>

@@ -24,7 +24,7 @@ export default function GlobalLimitApi(props: IPropsHelper) {
   const handlerateclick = (event: any) => {
     event.preventDefault();
     validateForm(event);
-    console.log("index check", props.index!);
+
     const value = props.index!;
     const apisList = [...props.formProp!];
     const fieldName = event.target.getAttribute("name");

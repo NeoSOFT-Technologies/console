@@ -16,7 +16,7 @@ export const addCertificate = createAsyncThunk(
   async (data: any) => {
     try {
       const response = await addCertificateService(data);
-      console.log("response", response);
+
       return response.data;
     } catch (error__) {
       const myError = error__ as Error | AxiosError;

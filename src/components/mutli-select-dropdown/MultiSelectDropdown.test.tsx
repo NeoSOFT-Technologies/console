@@ -20,12 +20,8 @@ it("render without crashing MultiSelect Dropdown menu", () => {
           list={[]}
           title="Roles"
           formData={[]}
-          handleCheck={(event) => {
-            console.log(event);
-          }}
-          removeRole={(val) => {
-            console.log(val);
-          }}
+          handleCheck={() => {}}
+          removeRole={() => {}}
         />
       </Provider>
     </BrowserRouter>
@@ -40,12 +36,8 @@ it("render the roles list in MultiSelect Dropdown menu", async () => {
           list={["role1"]}
           title="Roles"
           formData={[]}
-          handleCheck={(event) => {
-            console.log(event);
-          }}
-          removeRole={(val) => {
-            console.log(val);
-          }}
+          handleCheck={() => {}}
+          removeRole={() => {}}
         />
       </Provider>
     </BrowserRouter>
@@ -73,12 +65,8 @@ it("render the form data", () => {
           list={[]}
           title="Roles"
           formData={["role1"]}
-          handleCheck={(event) => {
-            console.log(event);
-          }}
-          removeRole={(val) => {
-            console.log(val);
-          }}
+          handleCheck={() => {}}
+          removeRole={() => {}}
         />
       </Provider>
     </BrowserRouter>

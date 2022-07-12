@@ -1,6 +1,6 @@
 import { h } from "gridjs";
 import { Grid } from "gridjs-react";
-import { RowSelection } from "gridjs/plugins/selection";
+import { RowSelection } from "gridjs-selection";
 import React, { useEffect, useState } from "react";
 import { Accordion } from "react-bootstrap";
 import { useParams } from "react-router-dom";

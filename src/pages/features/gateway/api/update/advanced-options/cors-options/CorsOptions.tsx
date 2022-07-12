@@ -14,7 +14,6 @@ import {
 export default function CorsOptions() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  // console.log("state form :", state.data.form);
 
   const [addAllowedOrigins, setAllowedOrigins] = useState<any>({
     AllowedOrigins: "",

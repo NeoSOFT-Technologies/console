@@ -22,8 +22,6 @@ export default function Versions() {
   const dispatch = useAppDispatch();
 
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  console.log("form data :", state.data.form);
-  console.log("form error :", state.data.errors);
 
   const [addFormData, setAddFormData] = useState({
     Name: "",
@@ -66,9 +64,9 @@ export default function Versions() {
   };
 
   // const handleDateChange = (date: any) => {
-  //   console.log("date :", date);
+  //
   //   const beginDate = moment(date).format("YYYY-MM-DD HH:MM");
-  //   console.log(beginDate);
+  //
   // };
 
   const handleAddClick = () => {
@@ -192,7 +190,7 @@ export default function Versions() {
   const handleTableRowsInputChange = (index: number, event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
-    // console.log("name and value:", name, value);
+    //
     const errorState = [...state.data.errors?.Versions!];
 
     switch (name) {

@@ -36,7 +36,7 @@ export const getKeyById = createAsyncThunk(
         loading: false,
         error: undefined,
       };
-      console.log("keyState", keystate);
+
       return response.data;
     } catch (error_) {
       const myError = error_ as Error | AxiosError;
@@ -52,7 +52,7 @@ export const updateKey = createAsyncThunk(
   async (data: IGetKeyByIdData) => {
     try {
       const response = await updateKeyService(data);
-      // console.log(response);
+      //
       return response.data;
     } catch (error__) {
       const myError = error__ as Error | AxiosError;
@@ -73,7 +73,6 @@ const slice = createSlice({
     },
     setFormErrors: (state, action) => {
       state.data.errors = action.payload;
-      console.log("keyslice", state.data.errors);
     },
   },
   extraReducers(builder): void {

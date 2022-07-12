@@ -230,6 +230,7 @@ export default function LoadBalancing() {
                           <input
                             type="number"
                             name="weighting"
+                            data-testid="weighting"
                             min="1"
                             // value={weight[index].weighting}
                             // value={addUrl[index].weighting}
