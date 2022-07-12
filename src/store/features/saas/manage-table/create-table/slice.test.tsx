@@ -4,11 +4,12 @@ import { createTable } from "./slice";
 
 describe("SAAS - CREATE Table Slice", () => {
   test("SAAS - CREATE TABLE Success", async () => {
-    mockApi.onPost("manage/table/?tenantId=1").reply(200, {});
+    mockApi.onPost("manage/table/?tenantName=demo&tenantId=1").reply(200, {});
 
     const result = await store.dispatch(
       createTable({
         tenantId: "1",
+        tenantName: "demo",
         requestData: {
           tableName: "test",
           sku: "B",
@@ -32,11 +33,12 @@ describe("SAAS - CREATE Table Slice", () => {
   });
 
   test("SAAS - CREATE TABLE Failure", async () => {
-    mockApi.onPost("manage/table/?tenantId=1").reply(400, {});
+    mockApi.onPost("manage/table/?tenantName=demo&tenantId=1").reply(400, {});
 
     const result = await store.dispatch(
       createTable({
         tenantId: "1",
+        tenantName: "demo",
         requestData: {
           tableName: "test",
           sku: "B",

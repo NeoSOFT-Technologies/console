@@ -6,7 +6,11 @@ describe("SAAS - CREATE Table Slice", () => {
   test("SAAS - DELETE TABLE Success", async () => {
     mockApi.onDelete("manage/table/testTable?tenantId=1").reply(200, {});
     const result = await store.dispatch(
-      deleteTable({ tenantId: "1", tableName: "testTable" })
+      deleteTable({
+        tenantId: "1",
+        tableName: "testTable",
+        tenantName: "master",
+      })
     );
     expect(result.type).toBe("deleteTableByTableName/fulfilled");
   });
@@ -14,7 +18,11 @@ describe("SAAS - CREATE Table Slice", () => {
   test("SAAS - DELETE TABLE Failure", async () => {
     mockApi.onDelete("manage/table/testTable?tenantId=1").reply(400, {});
     const result = await store.dispatch(
-      deleteTable({ tenantId: "1", tableName: "testTable" })
+      deleteTable({
+        tenantId: "1",
+        tableName: "testTable",
+        tenantName: "master",
+      })
     );
     expect(result.type).toBe("deleteTableByTableName/rejected");
   });

@@ -8,7 +8,11 @@ describe("SAAS - UPDATE Table Slice", () => {
 
     const result = await store.dispatch(
       updateTableSchema({
-        requestParams: { tenantId: "1", tableName: "testTable" },
+        requestParams: {
+          tenantId: "1",
+          tableName: "testTable",
+          tenantName: "master",
+        },
         requestData: {
           tableName: "testTable",
           columns: [
@@ -35,7 +39,11 @@ describe("SAAS - UPDATE Table Slice", () => {
 
     const result = await store.dispatch(
       updateTableSchema({
-        requestParams: { tenantId: "1", tableName: "testTable" },
+        requestParams: {
+          tenantId: "1",
+          tableName: "testTable",
+          tenantName: "master",
+        },
         requestData: {
           tableName: "testTable",
           columns: [

@@ -34,6 +34,7 @@ export default function ManageTables() {
   const [show, setShow] = useState(false);
   const [table, settable] = useState("");
   const [tenantId, setTenantId] = useState("");
+  const [tenantName, setTenantName] = useState("");
   const [deletedTableRecord, setDeletedTableRecord] = useState({
     tenantId: "",
     tableName: "",
@@ -54,11 +55,15 @@ export default function ManageTables() {
   };
   const [showEdit, setShowEdit] = useState(false);
   const handleEditClose = () => setShowEdit(false);
-  const handleEditShow = (tableName: string, tenantID: string) => {
+  const handleEditShow = (
+    tableName: string,
+    tenantID: string,
+    tenantname: string
+  ) => {
     settable(tableName);
 
     setTenantId(tenantID);
-
+    setTenantName(tenantname);
     setShowEdit(true);
   };
 
@@ -83,6 +88,12 @@ export default function ManageTables() {
       dispatch(deleteTableReset());
     };
   }, []);
+  function filterTable(tenantID: string, tableName: string) {
+    return (
+      tenantID !== deletedTableRecord.tenantId ||
+      tableName !== deletedTableRecord.tableName
+    );
+  }
   useEffect(() => {
     if (!deleteTableData.loading && deleteTableData.error) {
       navigate("/error", { state: deleteTableData.error });
@@ -95,10 +106,7 @@ export default function ManageTables() {
       if (authenticationState.data === "tenant") {
         const newTableList = TableData.data?.tableList.filter(
           (obj: { tenantId: string; tableName: string }) => {
-            return (
-              obj.tenantId !== deletedTableRecord.tenantId ||
-              obj.tableName !== deletedTableRecord.tableName
-            );
+            return filterTable(obj.tenantId, obj.tableName);
           }
         );
 
@@ -108,10 +116,7 @@ export default function ManageTables() {
       } else {
         const newTableList = allTableData.data?.tableList.filter(
           (obj: { tenantId: string; tableName: string }) => {
-            return (
-              obj.tenantId !== deletedTableRecord.tenantId ||
-              obj.tableName !== deletedTableRecord.tableName
-            );
+            return filterTable(obj.tenantId, obj.tableName);
           }
         );
 
@@ -172,8 +177,6 @@ export default function ManageTables() {
     setDeletedTableRecord({ ...obj });
     handleClose();
   };
-  console.log(TableData.data?.tableList);
-  console.log(allTableData.data);
 
   function getNextPageStatus(currentPages: number) {
     if (
@@ -215,11 +218,17 @@ export default function ManageTables() {
                   ) : (
                     <td>{index + currentPage}</td>
                   )}
-                  <td>{val.tenantId}</td>
+                  <td>{val.tenantName}</td>
                   <td>{val.tableName}</td>
                   <td
                     className="text-align-middle  text-primary"
-                    onClick={() => handleEditShow(val.tableName, val.tenantId)}
+                    onClick={() =>
+                      handleEditShow(
+                        val.tableName,
+                        val.tenantId,
+                        val.tenantName
+                      )
+                    }
                     data-testid="edit-table-btn"
                   >
                     <i className="bi bi-pencil-square"></i>
@@ -287,7 +296,9 @@ export default function ManageTables() {
                 <td>{val.tableName}</td>
                 <td
                   className="text-align-middle  text-primary"
-                  onClick={() => handleEditShow(val.tableName, val.tenantId)}
+                  onClick={() =>
+                    handleEditShow(val.tableName, val.tenantId, val.tenantName)
+                  }
                   data-testid="edit-table-btn"
                 >
                   <i className="bi bi-pencil-square"></i>
@@ -366,7 +377,13 @@ export default function ManageTables() {
           </Button>
           <Button
             variant="danger"
-            onClick={() => deleteTables({ tenantId, tableName: table })}
+            onClick={() =>
+              deleteTables({
+                tenantId,
+                tableName: table,
+                tenantName: "",
+              })
+            }
           >
             Yes, Delete
           </Button>
@@ -374,7 +391,7 @@ export default function ManageTables() {
       </Modal>
       <Modal
         show={showEdit}
-        data={{ table, tenantId }}
+        data={{ table, tenantId, tenantName }}
         onHide={handleEditClose}
         backdrop="static"
         keyboard={false}
@@ -393,7 +410,7 @@ export default function ManageTables() {
             variant="primary"
             onClick={() => {
               navigate("/saas/manage-table/edit-table", {
-                state: { tableName: table, tenantId },
+                state: { tableName: table, tenantId, tenantName },
               });
             }}
           >

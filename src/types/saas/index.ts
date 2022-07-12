@@ -16,6 +16,7 @@ export interface ITableCreateData {
 }
 export interface ICreateTable {
   tenantId: string;
+  tenantName: string;
   requestData: ITableCreateData;
 }
 
@@ -24,6 +25,7 @@ export interface IAllTableList {
   tableList: ITableSchema[];
 }
 export interface ITableSchema {
+  tenantName: string;
   tenantId: string;
   tableName: string;
 }

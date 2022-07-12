@@ -35,7 +35,11 @@ describe("SAAS - GET Table Schema Slice", () => {
     });
 
     const result = await store.dispatch(
-      getTableSchema({ tenantId: "1", tableName: "testTable" })
+      getTableSchema({
+        tenantId: "1",
+        tableName: "testTable",
+        tenantName: "master",
+      })
     );
 
     expect(result.type).toBe("getTableSchemaByTableName/fulfilled");
@@ -44,7 +48,11 @@ describe("SAAS - GET Table Schema Slice", () => {
   test("SAAS - GET Table Schema Failure", async () => {
     mockApi.onGet("manage/table/testTable?tenantId=1").reply(400, {});
     const result = await store.dispatch(
-      getTableSchema({ tenantId: "1", tableName: "testTable" })
+      getTableSchema({
+        tenantId: "1",
+        tableName: "testTable",
+        tenantName: "master",
+      })
     );
 
     expect(result.type).toBe("getTableSchemaByTableName/rejected");

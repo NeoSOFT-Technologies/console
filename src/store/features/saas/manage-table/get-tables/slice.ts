@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getTablesService } from "../../../../../services/saas/api/api";
+import { ITableSchema } from "../../../../../types/saas";
 
 interface IGetTableState {
   [x: string]: any;
-  data?: string[];
+  data?: ITableSchema[];
   loading: boolean;
   error?: string | null;
 }
@@ -18,7 +19,7 @@ export const getTables = createAsyncThunk(
   async (id: string) => {
     try {
       const response = await getTablesService(id);
-      return response.data.data;
+      return response.data.tableList;
     } catch (_error: any) {
       let errorMsg = "Undefined Error";
       errorMsg =
