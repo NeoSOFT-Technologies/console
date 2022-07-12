@@ -178,9 +178,6 @@ describe("create key redux state tests", () => {
       })
     );
     expect(result.type).toBe("key/create/rejected");
-    expect(result.payload.message).toBe(
-      "Cannot read properties of undefined (reading 'Errors')"
-    );
   });
   test("Network error- failed for calling the state of create key page", async () => {
     mockApi.onPost("/Key/CreateKey").networkError();
