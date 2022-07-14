@@ -27,3 +27,11 @@ test("calling the state of policy list", async () => {
   );
   expect(result.type).toBe("policy/list/rejected");
 });
+test("calling the state of policy list-networkError", async () => {
+  mockApi.onGet("/Policy?pageNum=1&pageSize=1").networkError();
+
+  const result = await store.dispatch(
+    getPolicyList({ currentPage: 1, pageSize: 1 })
+  );
+  expect(result.type).toBe("policy/list/rejected");
+});

@@ -351,6 +351,7 @@ export default function OpenIdConnectAuthentication() {
                   <Form.Group className="mt-0">
                     <Form.Control
                       type="text"
+                      data-testid="issuer"
                       placeholder="https://issuer.com"
                       id="issuer"
                       name="issuer"
@@ -369,6 +370,7 @@ export default function OpenIdConnectAuthentication() {
                     <Form.Label></Form.Label>
                     <Button
                       variant="dark"
+                      data-testid="add-btn"
                       disabled={!addFormData.issuer}
                       onClick={handleIssuerAddClick}
                     >
@@ -412,6 +414,7 @@ export default function OpenIdConnectAuthentication() {
                                               <td>
                                                 <input
                                                   type="text"
+                                                  data-testid="clientId"
                                                   className="form-control"
                                                   placeholder="Your-client-id"
                                                   id="clientId"
@@ -432,6 +435,7 @@ export default function OpenIdConnectAuthentication() {
                                                 {selectedPolicy?.length! > 0 ? (
                                                   <select
                                                     className="p-2 rounded mb-0"
+                                                    data-testid="selected-policy"
                                                     name="policy"
                                                     id="policy"
                                                     placeholder="select policy"
@@ -475,6 +479,7 @@ export default function OpenIdConnectAuthentication() {
                                                       event
                                                     )
                                                   }
+                                                  data-testid="add-Client"
                                                   disabled={
                                                     !(
                                                       addClientFormData[index]
@@ -488,6 +493,7 @@ export default function OpenIdConnectAuthentication() {
                                                 </button>
                                                 <button
                                                   className="btn bi bi-trash-fill"
+                                                  data-testid="delete-issuer"
                                                   onClick={(event) =>
                                                     deleteIssuerTableRows(
                                                       index,
@@ -553,6 +559,7 @@ export default function OpenIdConnectAuthentication() {
                                                         >
                                                           <i
                                                             className="btn btn-sm bi bi-trash-fill"
+                                                            data-testid="delete-client"
                                                             onClick={(event) =>
                                                               deleteClientTableRows(
                                                                 index,
@@ -595,6 +602,7 @@ export default function OpenIdConnectAuthentication() {
                                         <input
                                           type="text"
                                           className="form-control"
+                                          data-testid="client-id"
                                           placeholder="Your-client-id"
                                           id="clientId"
                                           name="clientId"
@@ -611,6 +619,7 @@ export default function OpenIdConnectAuthentication() {
                                         {selectedPolicy?.length! > 0 ? (
                                           <select
                                             className="p-2 rounded mb-0"
+                                            data-testid="selectedPolicy"
                                             name="policy"
                                             id="policy"
                                             placeholder="select policy"
@@ -646,6 +655,7 @@ export default function OpenIdConnectAuthentication() {
                                       <td>
                                         <button
                                           className="btn btn-outline-dark btn-dark"
+                                          data-testid="addClient"
                                           onClick={() =>
                                             handleClientAddClick(index, event)
                                           }
@@ -661,6 +671,7 @@ export default function OpenIdConnectAuthentication() {
                                         </button>
                                         <button
                                           className="btn bi bi-trash-fill"
+                                          data-testid="deleteIssuer"
                                           onClick={(event) =>
                                             deleteIssuerTableRows(index, event)
                                           }

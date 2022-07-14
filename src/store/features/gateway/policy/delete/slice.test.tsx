@@ -23,3 +23,13 @@ test("calling the state of delete policy", async () => {
   );
   expect(result.type).toBe("api/deletepolicy/rejected");
 });
+test("calling the state of delete policy-networkError", async () => {
+  mockApi
+    .onDelete("/Policy/" + "f7764699-e83d-4971-aed3-3e508ac97d70")
+    .networkError();
+
+  const result = await store.dispatch(
+    deletePolicy("f7764699-e83d-4971-aed3-3e508ac97d70")
+  );
+  expect(result.type).toBe("api/deletepolicy/rejected");
+});
