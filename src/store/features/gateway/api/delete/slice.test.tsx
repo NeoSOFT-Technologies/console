@@ -23,3 +23,13 @@ test("calling the state of create api", async () => {
   );
   expect(result.type).toBe("api/deleteapi/rejected");
 });
+
+test("calling the state of delete key- internal server error", async () => {
+  mockApi
+    .onDelete("/ApplicationGateway/" + "f7764699-e83d-4971-aed3-3e508ac97d70")
+    .networkError();
+  const result = await store.dispatch(
+    deleteApi("f7764699-e83d-4971-aed3-3e508ac97d70")
+  );
+  expect(result.type).toBe("api/deleteapi/rejected");
+});
