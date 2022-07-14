@@ -21,6 +21,7 @@ export default function partitions() {
             <Form.Group className="mb-3 ml-4">
               <Form.Check
                 type="switch"
+                data-testid="enforce-access-rights"
                 id="accessrights"
                 name="Partitions.acl"
                 label="Enforce access rights"
@@ -36,6 +37,7 @@ export default function partitions() {
             <Form.Group className="mb-3 ml-4">
               <Form.Check
                 type="switch"
+                data-testid="enforce-usage-quota"
                 id="usagequota"
                 name="Partitions.quota"
                 label="Enforce usage quota"
@@ -51,6 +53,7 @@ export default function partitions() {
             <Form.Group className="mb-3 ml-4">
               <Form.Check
                 type="switch"
+                data-testid="enforce-rate-limit"
                 id="GlobalRate"
                 name="Partitions.rate_limit"
                 label="Enforce rate limit"
