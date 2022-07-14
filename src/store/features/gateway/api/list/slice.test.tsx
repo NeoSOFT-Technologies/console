@@ -27,3 +27,11 @@ test("calling the state of api list", async () => {
   );
   expect(result.type).toBe("api/list/rejected");
 });
+test("calling the state of api list-networkError", async () => {
+  mockApi.onGet("/ApplicationGateway?pageNum=1&pageSize=1").networkError();
+
+  const result = await store.dispatch(
+    getApiList({ currentPage: 1, pageSize: 1 })
+  );
+  expect(result.type).toBe("api/list/rejected");
+});
