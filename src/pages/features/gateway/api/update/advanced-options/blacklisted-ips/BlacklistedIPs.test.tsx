@@ -84,8 +84,9 @@ it("render switch and inputs", () => {
 
   const blackListInput = screen.getByTestId("blacklist-input");
   expect(blackListInput).toBeInTheDocument();
-  fireEvent.change(blackListInput, { target: { value: "192.168.0.0" } });
-  expect(blackListInput).toHaveValue("192.168.0.0");
+  const testIP = "192.168.0.0";
+  fireEvent.change(blackListInput, { target: { value: testIP } });
+  expect(blackListInput).toHaveValue(testIP);
   fireEvent.change(blackListInput);
 
   const addIps = screen.getByTestId("add-ips");

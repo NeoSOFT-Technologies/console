@@ -83,8 +83,9 @@ it("render buttons and inputs", () => {
 
   const whiteListInput = screen.getByTestId("whitelist-input");
   expect(whiteListInput).toBeInTheDocument();
-  fireEvent.change(whiteListInput, { target: { value: "192.168.0.0" } });
-  expect(whiteListInput).toHaveValue("192.168.0.0");
+  const testIP = "192.168.0.0";
+  fireEvent.change(whiteListInput, { target: { value: testIP } });
+  expect(whiteListInput).toHaveValue(testIP);
   fireEvent.change(whiteListInput);
 
   const addIps = screen.getByTestId("add-ips");

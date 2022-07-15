@@ -477,7 +477,7 @@ export default function CorsOptions() {
                             <Form.Control
                               type="text"
                               data-testid="allowedOrigin-input"
-                              placeholder="http://localhost"
+                              placeholder="https://localhost"
                               id="AllowedOrigins"
                               name="AllowedOrigins"
                               isInvalid={!!state.data.errors?.AllowedOrigins}

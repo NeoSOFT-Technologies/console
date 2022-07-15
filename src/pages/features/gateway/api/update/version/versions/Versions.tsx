@@ -318,7 +318,7 @@ export default function Versions() {
                     <Form.Control
                       type="text"
                       data-testid="overrideTarget-input"
-                      placeholder="http://override-target.com"
+                      placeholder="https://override-target.com"
                       id="overrideTarget"
                       name="OverrideTarget"
                       value={addFormData.OverrideTarget}
@@ -404,7 +404,7 @@ export default function Versions() {
                                     <Form.Control
                                       type="text"
                                       data-testid="overRideTarget-input"
-                                      placeholder="http://override-target.com"
+                                      placeholder="https://override-target.com"
                                       id="overrideTarget"
                                       name="OverrideTarget"
                                       value={OverrideTarget}
