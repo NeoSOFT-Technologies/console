@@ -40,7 +40,11 @@ describe("SAAS - SEARCH Tables With Query Field Slice", () => {
         pageSize: "5",
         orderBy: "id",
         order: "asc",
-        requestParams: { tenantId: "1", tableName: "testTable" },
+        requestParams: {
+          tenantId: "1",
+          tableName: "testTable",
+          tenantName: "master",
+        },
       })
     );
 

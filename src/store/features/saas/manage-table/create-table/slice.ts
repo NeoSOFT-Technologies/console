@@ -30,6 +30,7 @@ export const createTable = createAsyncThunk(
     try {
       const response = await createTableService(
         data.tenantId,
+        data.tenantName,
         data.requestData
       );
       return response.data;

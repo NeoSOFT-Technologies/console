@@ -202,7 +202,7 @@ function RestoreTable() {
                 ) : (
                   <td>{index + currentPage}</td>
                 )}
-                <td>{val.tenantId}</td>
+                <td>{val.tenantName}</td>
                 <td>{val.tableName}</td>
                 <td
                   className="text-align-middle text-primary"
@@ -341,7 +341,13 @@ function RestoreTable() {
           </Button>
           <Button
             variant="danger"
-            onClick={() => restoreDeletedTable({ tenantId, tableName: table })}
+            onClick={() =>
+              restoreDeletedTable({
+                tenantId,
+                tableName: table,
+                tenantName: "",
+              })
+            }
           >
             Yes, Restore
           </Button>

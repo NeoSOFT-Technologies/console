@@ -66,7 +66,6 @@ export default function InsertData() {
         break;
       }
       case "tableName": {
-        console.log("tableName CALLEDDD!!");
         setInsertTenant({
           ...insertTenant,
           [name]: value,
@@ -90,6 +89,7 @@ export default function InsertData() {
   const params: ITableSchema = {
     tenantId: insertTenant.tenantId,
     tableName: insertTenant.tableName,
+    tenantName: "",
   };
   const initialState: IInputData = {
     inputData: insertTenant.inputData,
@@ -156,12 +156,8 @@ export default function InsertData() {
 
   useEffect(() => {
     // THIS IS TRIGGERED WHEN TENANT IS SELECTED FROM THE DROPDOWN
-    if (!insertTenant.tenantId) {
-      if (authenticationState.data === "admin") {
-        dispatch(getTenantDetails());
-      }
-    } else {
-      dispatch(getTables(insertTenant.tenantId));
+    if (!insertTenant.tenantId && authenticationState.data === "admin") {
+      dispatch(getTenantDetails());
     }
   }, [insertTenant.tenantId]);
 
@@ -272,8 +268,8 @@ export default function InsertData() {
                       >
                         <option value=""> Select Table</option>
                         {tableData.data?.map((val, index) => (
-                          <option key={`option${index}`} value={val}>
-                            {val}
+                          <option key={`option${index}`} value={val.tableName}>
+                            {val.tableName}
                           </option>
                         ))}
                       </Form.Select>

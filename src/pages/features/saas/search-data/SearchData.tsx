@@ -89,6 +89,7 @@ export default function SearchData() {
   const params: ITableSchema = {
     tenantId: searchTenant.tenantId,
     tableName: searchTenant.tableName,
+    tenantName: "",
   };
 
   const getSearchData: React.FormEventHandler<HTMLFormElement> = (
@@ -204,6 +205,7 @@ export default function SearchData() {
         getTableSchema({
           tableName: searchTenant.tableName,
           tenantId: searchTenant.tenantId,
+          tenantName: "",
         })
       );
     }
@@ -407,8 +409,8 @@ export default function SearchData() {
                   >
                     <option value="">Table Name</option>
                     {tableData.data?.map((val, index) => (
-                      <option key={`option${index}`} value={val}>
-                        {val}
+                      <option key={`option${index}`} value={val.tableName}>
+                        {val.tableName}
                       </option>
                     ))}
                   </Form.Select>

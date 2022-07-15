@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import mockApi from "../../../../resources/tenant/testconfig";
 import store from "../../../../store/index";
-import ManageTable from "./ManageTable";
+import ManageTable from "./ManageTables";
 
 describe("SAAS - MANAGE TABLE Component 1", () => {
   it("Check if H1 rendered", () => {

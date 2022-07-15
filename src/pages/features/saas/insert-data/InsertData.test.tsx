@@ -56,8 +56,11 @@ describe("SAAS - INSERT DATA Component", () => {
 
     mockApi.onGet("manage/table/?tenantId=1").reply(200, {
       statusCode: 200,
-      message: "Successfully retrieved all tables",
-      data: ["testTable"],
+      message: "Successfully retrieved all Tables With TenantId: 1",
+      dataSize: 1,
+      tableList: [
+        { tenantName: "Tenant1", tenantId: 1, tableName: "testTable" },
+      ],
     });
 
     mockApi.onGet("manage/table/testTable?tenantId=1").reply(200, {
@@ -65,6 +68,13 @@ describe("SAAS - INSERT DATA Component", () => {
       message: "Table Information retrieved successfully",
       data: {
         tableName: "testTable",
+        tableInfo: {
+          replicationFactor: 1,
+          noOfShards: 1,
+          tenantInfo: {
+            tenantName: "Tenant1",
+          },
+        },
         columns: [
           {
             name: "id",

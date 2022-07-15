@@ -9,7 +9,11 @@ describe("SAAS - INPUT DATA WITHOUT NRT Slice", () => {
     const result = await store.dispatch(
       inputTableDataWithoutNrt({
         inputData: "abcd",
-        requestParams: { tenantId: "1", tableName: "testTable" },
+        requestParams: {
+          tenantId: "1",
+          tableName: "testTable",
+          tenantName: "master",
+        },
       })
     );
 
@@ -22,7 +26,11 @@ describe("SAAS - INPUT DATA WITHOUT NRT Slice", () => {
     const result = await store.dispatch(
       inputTableDataWithoutNrt({
         inputData: "abcd",
-        requestParams: { tenantId: "1", tableName: "testTable" },
+        requestParams: {
+          tenantId: "1",
+          tableName: "testTable",
+          tenantName: "master",
+        },
       })
     );
     expect(result.type).toBe("inputDataWithoutNrt/rejected");

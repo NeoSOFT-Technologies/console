@@ -62,8 +62,11 @@ describe("SAAS - SEARCH DATA Component 2", () => {
       )
       .reply(200, {
         statusCode: 200,
-        message: "Successfully retrieved all tables",
-        data: ["testTable"],
+        message: "Successfully retrieved all Tables With TenantId: 1",
+        dataSize: 1,
+        tableList: [
+          { tenantName: "Tenant1", tenantId: 1, tableName: "testTable" },
+        ],
       });
 
     mockApi

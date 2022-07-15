@@ -47,6 +47,7 @@ export default function CreateTables() {
 
   const [finalTableObj, setFinalTableObj] = useState<ICreateTable>({
     tenantId: "",
+    tenantName: "Select tenant",
     requestData: {
       tableName: "",
       sku: "B",
@@ -131,7 +132,11 @@ export default function CreateTables() {
     const { name, value } = event.target;
     switch (name) {
       case "tenantName":
-        setFinalTableObj({ ...finalTableObj, tenantId: value });
+        setFinalTableObj({
+          ...finalTableObj,
+          tenantId: value.split("/")[0],
+          tenantName: value.split("/")[1],
+        });
         break;
       case "capacityPlan":
         setFinalTableObj({
@@ -365,6 +370,7 @@ export default function CreateTables() {
       ToastAlert("Table created successfully", "success");
       setFinalTableObj({
         tenantId: "",
+        tenantName: "Select tenant",
         requestData: { tableName: "", sku: "B", columns: [] },
       });
     }
@@ -401,11 +407,13 @@ export default function CreateTables() {
                       </option>
                     ) : (
                       <>
-                        <option value="">Select Tenant</option>
+                        <option value={finalTableObj.tenantId}>
+                          {finalTableObj.tenantName}
+                        </option>
                         {tenantDetails.data?.map((val, index) => (
                           <option
                             key={`option${index}`}
-                            value={val.id?.toString()}
+                            value={val.id + "/" + val.tenantName}
                           >
                             {val.tenantName}
                           </option>
