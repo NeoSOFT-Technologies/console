@@ -4,13 +4,13 @@ import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import store from "../../../../../store";
-import CreateKey from "./CreateKey";
+import CreatePolicy from "./CreatePolicy";
 
-it("Test render of CreateKey", async () => {
-  render(
+it("render without crashing CreatePolicy", async () => {
+  await render(
     <BrowserRouter>
       <Provider store={store}>
-        <CreateKey />
+        <CreatePolicy />
       </Provider>
     </BrowserRouter>
   );

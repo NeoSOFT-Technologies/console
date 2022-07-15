@@ -60,7 +60,7 @@ function Configurations() {
                   <Form.Label> Alias :</Form.Label>
                   <Form.Control
                     type="text"
-                    data-testId="keyName-input"
+                    data-testid="keyName-input"
                     placeholder="Give your key alias to remember it by "
                     name="KeyName"
                     id="KeyName"
@@ -80,7 +80,7 @@ function Configurations() {
                 <Form.Group>
                   <Form.Label> Expires :</Form.Label>
                   <Form.Select
-                    data-testId="expiry"
+                    data-testid="expiry"
                     aria-label="Default select example"
                     name="Expires"
                     value={state.data.form?.Expires}

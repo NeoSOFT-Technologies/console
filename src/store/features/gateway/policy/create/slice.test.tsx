@@ -20,7 +20,7 @@ const response = {
       Tags: [""],
       APIs: [
         {
-          ApiId: "47748934",
+          ApiId: "7fa85f64-5717-4532-b3fc-2c963f66asa6",
           ApiName: "api1",
           Versions: [""],
           MasterVersions: [""],
@@ -29,7 +29,7 @@ const response = {
           isQuotaDisbaled: false,
           AllowedUrls: [
             {
-              Url: "http:",
+              Url: "https://httpbin.orgs",
               Methods: [""],
             },
           ],
@@ -86,7 +86,7 @@ test("calling the state of create policy", async () => {
           isQuotaDisbaled: false,
           AllowedUrls: [
             {
-              Url: "http:",
+              Url: "https://httpbin.orgs",
               Methods: [""],
             },
           ],
@@ -183,9 +183,9 @@ test("calling the state of update policy", async () => {
       Tags: [""],
       APIs: [
         {
-          Id: "47748934",
+          Id: "7fa85f64-5717-4532-b3fc-2c963f66asa6",
           Name: "api1",
-          ApiId: "47748934",
+          ApiId: "7fa85f64-5717-4532-b3fc-2c963f66asa6",
           ApiName: "api1",
           Versions: [""],
           MasterVersions: [""],
@@ -194,7 +194,7 @@ test("calling the state of update policy", async () => {
           isQuotaDisbaled: false,
           AllowedUrls: [
             {
-              Url: "http:",
+              Url: "https://httpbin.orgs",
               Methods: [""],
             },
           ],
@@ -243,7 +243,7 @@ test("calling the state of update policy  rejected", async () => {
       Tags: [""],
       APIs: [
         {
-          ApiId: "47748934",
+          ApiId: "7fa85f64-5717-4532-b3fc-2c963f66asa6",
           ApiName: "api1",
           Versions: [""],
           MasterVersions: [""],
@@ -252,7 +252,7 @@ test("calling the state of update policy  rejected", async () => {
           isQuotaDisbaled: false,
           AllowedUrls: [
             {
-              Url: "http:",
+              Url: "https://httpbin.orgs",
               Methods: [""],
             },
           ],
@@ -301,7 +301,7 @@ test("calling the state of update policy network Error", async () => {
       Tags: [""],
       APIs: [
         {
-          ApiId: "47748934",
+          ApiId: "7fa85f64-5717-4532-b3fc-2c963f66asa6",
           ApiName: "api1",
           Versions: [""],
           MasterVersions: [""],
@@ -310,7 +310,7 @@ test("calling the state of update policy network Error", async () => {
           isQuotaDisbaled: false,
           AllowedUrls: [
             {
-              Url: "http:",
+              Url: "https://httpbin.orgs",
               Methods: [""],
             },
           ],
