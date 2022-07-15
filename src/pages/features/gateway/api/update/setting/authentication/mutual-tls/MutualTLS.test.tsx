@@ -92,7 +92,6 @@ it("test buttons and inputs", () => {
       </Provider>
     </BrowserRouter>
   );
-  expect(screen).toBeDefined();
 
   const handlePlusBtn = screen.getByTestId("handlePlus-button");
   expect(handlePlusBtn).toBeInTheDocument();
@@ -101,12 +100,4 @@ it("test buttons and inputs", () => {
   const handledropLeftBtn = screen.getByTestId("handleDropLeft-table");
   expect(handledropLeftBtn).toBeInTheDocument();
   fireEvent.click(handledropLeftBtn);
-
-  // const handleMinusBtn = screen.getByTestId("handleMinus-button");
-  // expect(handleMinusBtn).toBeInTheDocument();
-  // fireEvent.click(handleMinusBtn);
-
-  // const handledropRightBtn = screen.getByTestId("handleDropRight-table");
-  // expect(handledropRightBtn).toBeInTheDocument();
-  // fireEvent.click(handledropRightBtn);
 });
