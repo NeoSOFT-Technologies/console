@@ -446,6 +446,7 @@ export default function MutualTLS() {
                             <td>
                               <button
                                 type="button"
+                                data-testid="handlePlus-button"
                                 className="btn"
                                 onClick={(e: any) => handlePlusButton(e, index)}
                               >
@@ -455,6 +456,7 @@ export default function MutualTLS() {
                             <td>
                               <button
                                 type="button"
+                                data-testid="handleDropLeft-table"
                                 className="btn"
                                 onClick={(e: any) =>
                                   handleDropLeftTable(e, index)
@@ -542,6 +544,7 @@ export default function MutualTLS() {
                             <td>
                               <button
                                 type="button"
+                                data-testid="handleMinus-button"
                                 className="btn"
                                 onClick={(e: any) =>
                                   handleMinusButton(e, index)
@@ -556,6 +559,7 @@ export default function MutualTLS() {
                               <td>
                                 <button
                                   type="button"
+                                  data-testid="handleDropRight-table"
                                   className="btn"
                                   onClick={(e: any) =>
                                     handleDropRightTable(e, index)
