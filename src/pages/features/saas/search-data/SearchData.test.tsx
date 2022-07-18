@@ -7,6 +7,24 @@ import mockApi from "../../../../resources/tenant/testconfig";
 import store from "../../../../store/index";
 import SearchData from "./SearchData";
 
+function tabaleRecord() {
+  return {
+    statusCode: 200,
+    message: "Record fetched successfully",
+    status: "OK",
+    results: {
+      numDocs: 10,
+      data: [
+        { name: ["test"], id: "1", username: ["test261099"] },
+        { name: ["xname"], id: "2", username: ["username_2"] },
+        { name: ["yname"], id: "3", username: ["username_3"] },
+        { name: ["zname"], id: "4", username: ["username_4"] },
+        { name: ["pname"], id: "5", username: ["username_5"] },
+        { name: ["qname"], id: "6", username: ["username_6"] },
+      ],
+    },
+  };
+}
 describe("SAAS - SEARCH DATA Component 1", () => {
   it("Check if H1 rendered", () => {
     render(
@@ -117,42 +135,13 @@ describe("SAAS - SEARCH DATA Component 2", () => {
       .onGet(
         "testTable?tenantId=1&queryField=id&searchTerm=*&startRecord=0&pageSize=6&orderBy=id&order=asc"
       )
-      .reply(200, {
-        statusCode: 200,
-        message: "Record fetched successfully",
-        status: "OK",
-        results: {
-          numDocs: 10,
-          data: [
-            { name: ["omkar"], id: "1", username: ["omkar261099"] },
-            { name: ["xname"], id: "2", username: ["username_2"] },
-            { name: ["yname"], id: "3", username: ["username_3"] },
-            { name: ["zname"], id: "4", username: ["username_4"] },
-            { name: ["pname"], id: "5", username: ["username_5"] },
-            { name: ["qname"], id: "6", username: ["username_6"] },
-          ],
-        },
-      });
+      .reply(200, tabaleRecord());
 
     mockApi
       .onGet(
         "testTable?tenantId=1&queryField=id&searchTerm=*&startRecord=5&pageSize=6&orderBy=id&order=asc"
       )
-      .reply(200, {
-        statusCode: 200,
-        message: "Records fetched successfully",
-        status: "OK",
-        results: {
-          numDocs: 10,
-          data: [
-            { name: ["karthik"], id: "6", username: ["karthik-pillai"] },
-            { name: ["afname"], id: "7", username: ["user-name-2"] },
-            { name: ["bfname"], id: "8", username: ["user-name-3"] },
-            { name: ["cfname"], id: "9", username: ["user-name-4"] },
-            { name: ["dfname"], id: "10", username: ["user-name-5"] },
-          ],
-        },
-      });
+      .reply(200, tabaleRecord());
 
     render(
       <BrowserRouter>
@@ -229,7 +218,7 @@ describe("SAAS - SEARCH DATA Component 2", () => {
     userEvent.click(searchBtn);
 
     const usernameInTable = await waitFor(
-      () => screen.getByText("omkar261099", { exact: false }),
+      () => screen.getByText("test261099", { exact: false }),
       {
         timeout: 3000,
       }
@@ -246,7 +235,7 @@ describe("SAAS - SEARCH DATA Component 2", () => {
     userEvent.click(nextBtn);
 
     const usernameInTable2 = await waitFor(
-      () => screen.getByText("karthik-pillai", { exact: false }),
+      () => screen.getByText("test", { exact: false }),
       {
         timeout: 3000,
       }
@@ -264,7 +253,7 @@ describe("SAAS - SEARCH DATA Component 2", () => {
 
     // const usernameInTable =
     expect(
-      await waitFor(() => screen.getByText("omkar261099", { exact: false }), {
+      await waitFor(() => screen.getByText("test261099", { exact: false }), {
         timeout: 3000,
       })
     ).toBeInTheDocument();
