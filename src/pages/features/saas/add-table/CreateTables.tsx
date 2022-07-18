@@ -413,7 +413,7 @@ export default function CreateTables() {
                         {tenantDetails.data?.map((val, index) => (
                           <option
                             key={`option${index}`}
-                            value={val.id + "/" + val.tenantName}
+                            value={`${val.id}/${val.tenantName}`}
                           >
                             {val.tenantName}
                           </option>
