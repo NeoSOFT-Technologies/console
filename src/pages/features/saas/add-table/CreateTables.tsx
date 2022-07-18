@@ -378,7 +378,6 @@ export default function CreateTables() {
       ToastAlert(createtablestate.error.message, "error");
     }
   }, [createtablestate.loading, createtablestate.error]);
-  console.log("final obj", finalTableObj);
   return (
     <div className="createbody pb-5">
       <h3 className="pl-5 pt-5 text-center">Add Table</h3>
