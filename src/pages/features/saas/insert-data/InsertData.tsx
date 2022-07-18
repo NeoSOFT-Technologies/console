@@ -46,6 +46,12 @@ export default function InsertData() {
     event: React.ChangeEvent<HTMLSelectElement> | any
   ) => {
     const { name, value } = event.target;
+    const idata = () => {
+      setInsertTenant({
+        ...insertTenant,
+        [name]: value,
+      });
+    };
     switch (name) {
       case "tenantId": {
         setInsertTenant({
@@ -66,18 +72,11 @@ export default function InsertData() {
         break;
       }
       case "tableName": {
-        setInsertTenant({
-          ...insertTenant,
-          [name]: value,
-        });
+        idata();
         break;
       }
       case "inputData": {
-        setInsertTenant({
-          ...insertTenant,
-          [name]: value,
-        });
-
+        idata();
         break;
       }
       default: {
