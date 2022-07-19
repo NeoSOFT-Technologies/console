@@ -22,7 +22,7 @@ export default function ChooseApi() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   // const Apistate = useAppSelector((RootState) => RootState.updateApiState);
-  // console.log("parent states", state.data.form);
+  //
   const requiredParameters: IPropsHelper = {
     state,
     form: state.data.form!,

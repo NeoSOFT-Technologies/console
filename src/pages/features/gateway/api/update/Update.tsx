@@ -21,8 +21,6 @@ export default function Update() {
   const state: IApiGetByIdState = useAppSelector(
     (RootState) => RootState.updateApiState
   );
-  // console.log("state data:", state.data.form);
-  console.log("state error:", state.data.errors);
 
   const dispatch = useAppDispatch();
   const { id } = useParams();
@@ -54,13 +52,17 @@ export default function Update() {
 
       validateObj1 = Object.values(rest).every((x) => x === null || x === "");
 
-      for (const Version_ of Versions) {
-        if (Version_.OverrideTarget === "") {
-          validateObj2 = true;
-        } else {
-          validateObj2 = false;
-          break;
+      if (Versions.length > 0) {
+        for (const Version_ of Versions) {
+          if (Version_ === "") {
+            validateObj2 = true;
+          } else {
+            validateObj2 = false;
+            break;
+          }
         }
+      } else {
+        validateObj2 = true;
       }
     }
     const validateMTLs =
@@ -77,7 +79,6 @@ export default function Update() {
     ) {
       versionVal = true;
     }
-
     if (
       validateObj1 &&
       validateObj2 &&
@@ -123,6 +124,7 @@ export default function Update() {
       }
     }
   }
+
   const NavigateToApisList = (
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -138,7 +140,7 @@ export default function Update() {
     const { Versions } = obj;
 
     for (const Version_ of Versions) {
-      if (Version_.OverrideTarget === "") {
+      if (Version_ === "") {
         validateVersions = false;
       } else {
         validateVersions = true;
@@ -183,7 +185,7 @@ export default function Update() {
                     </AuthGuard>
                     <button
                       className=" btn  btn-sm btn-light btn-md d-flex float-right mb-3"
-                      data-testid="cancel-button"
+                      data-testid="cancel-input"
                       onClick={(e) => NavigateToApisList(e)}
                     >
                       {" "}
@@ -194,7 +196,12 @@ export default function Update() {
                     </span>
                   </div>
                   <div className="card-body pt-2">
-                    <div>{errorSummary(state.data.errors)}</div>
+                    <div>
+                      {errorSummary(
+                        state.data.errors,
+                        state.data.form.Versions2
+                      )}
+                    </div>
                     <br />
                     <Tabs
                       defaultActiveKey={state.data.form?.SelectedTabIndex}

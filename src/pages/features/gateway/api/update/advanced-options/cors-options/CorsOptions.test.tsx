@@ -3,8 +3,58 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import store from "../../../../../../../store";
+import configureStore from "redux-mock-store";
+import thunk from "redux-thunk";
 import CorsOptions from "./CorsOptions";
+
+const allowed_Origin_Input = "allowedOrigin-input";
+const mockStore = configureStore([thunk]);
+const store = mockStore({
+  updateApiState: {
+    loading: false,
+    data: {
+      form: {
+        ApiId: 0,
+        Name: "api1",
+        ListenPath: "/api1/",
+        StripListenPath: true,
+        TargetUrl: "https://httpbin.org",
+        IsActive: true,
+        AuthType: "standard",
+        RateLimit: {
+          Rate: 5,
+          Per: 10,
+          IsDisabled: true,
+        },
+        VersioningInfo: {
+          Location: 1,
+          Key: "key",
+        },
+        Versions: [
+          {
+            Name: "default",
+            OverrideTarget: "https://httpbin.org2",
+          },
+        ],
+        Blacklist: [process.env.IP_ADDRESS],
+        Whitelist: [process.env.IP_ADDRESS],
+        CORS: {
+          IsEnabled: false,
+          AllowedOrigins: ["https://google.co.in"],
+          AllowedMethods: ["GET"],
+          AllowedHeaders: ["ABC"],
+          ExposedHeaders: ["XYZ"],
+          AllowCredentials: true,
+          MaxAge: 5,
+          OptionsPassthrough: false,
+          Debug: false,
+        },
+        EnableRoundRobin: false,
+        LoadBalancingTargets: [],
+      },
+    },
+  },
+});
 
 it("render without crashing CorsOptions", () => {
   render(
@@ -51,12 +101,12 @@ it("render inputs, buttons and switch", () => {
   expect(maxAgeInput).toHaveValue(5);
   fireEvent.change(maxAgeInput);
 
-  const allowedOriginInput = screen.getByTestId("allowedOrigin-input");
+  const allowedOriginInput = screen.getByTestId(allowed_Origin_Input);
   expect(allowedOriginInput).toBeInTheDocument();
   fireEvent.change(allowedOriginInput, {
-    target: { value: "https://httpbin.org" },
+    target: { value: "https://httpbin2.org" },
   });
-  expect(allowedOriginInput).toHaveValue("https://httpbin.org");
+  expect(allowedOriginInput).toHaveValue("https://httpbin2.org");
   fireEvent.change(allowedOriginInput);
 
   const addBtn = screen.getByTestId("add-allowedOrigin");
@@ -120,19 +170,19 @@ it("check validations", () => {
       </Provider>
     </BrowserRouter>
   );
-  const allowedOriginInput = screen.getByTestId("allowedOrigin-input");
+  const allowedOriginInput = screen.getByTestId(allowed_Origin_Input);
   fireEvent.change(allowedOriginInput, {
-    target: { value: "https://httpbin.org" },
+    target: { value: "https://httpbin3.org" },
   });
+  expect(allowedOriginInput).toHaveValue("https://httpbin3.org");
   const allowedOriginErr = screen.getByTestId("allowedOriginErr");
   expect(allowedOriginErr).toHaveTextContent("");
 
-  const allowedoriginInput = screen.getByTestId("allowedOrigin-input");
-  fireEvent.change(allowedoriginInput, {
-    target: { value: "wrongUrl" },
+  const allowedoriginInput = screen.getByTestId(allowed_Origin_Input);
+  fireEvent.change(allowedOriginInput, {
+    target: { value: "" },
   });
+  expect(allowedoriginInput).toHaveValue("");
   const allowedoriginErr = screen.getByTestId("allowedOriginErr");
-  expect(allowedoriginErr).toHaveTextContent(
-    "Please enter a Valid URL value(i.e. http://)"
-  );
+  expect(allowedoriginErr).toHaveTextContent("");
 });

@@ -24,8 +24,10 @@ export interface IGetPolicyByIdData {
   APIs:
     | [
         {
-          Id: string;
-          Name: string;
+          Id?: string;
+          Name?: string;
+          ApiId: string | null;
+          ApiName: string | null;
           Versions: string[];
           MasterVersions: string[];
           AuthType: string;
@@ -33,8 +35,8 @@ export interface IGetPolicyByIdData {
           isQuotaDisbaled: boolean;
           AllowedUrls:
             | {
-                url: string;
-                methods: string[];
+                Url: string;
+                Methods: string[];
               }[];
           Limit?:
             | {

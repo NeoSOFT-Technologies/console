@@ -18,7 +18,7 @@ it("render without crashing LoadBalancing", () => {
 });
 
 it("render buttons and inputs", () => {
-  render(
+  const { getByTestId } = render(
     <BrowserRouter>
       <Provider store={store}>
         <LoadBalancing />
@@ -27,7 +27,7 @@ it("render buttons and inputs", () => {
   );
   expect(screen).toBeDefined();
 
-  const loadTargetInput = screen.getByTestId("loadTargets-input");
+  const loadTargetInput = getByTestId("loadTargets-input");
   expect(loadTargetInput).toBeInTheDocument();
   fireEvent.change(loadTargetInput, {
     target: { value: "https://httpbin.org" },
@@ -35,11 +35,15 @@ it("render buttons and inputs", () => {
   expect(loadTargetInput).toHaveValue("https://httpbin.org");
   fireEvent.change(loadTargetInput);
 
-  const addBtn = screen.getByTestId("add-button");
+  const addBtn = getByTestId("add-button");
   expect(addBtn).toBeInTheDocument();
   fireEvent.click(addBtn);
 
-  const deleteBtn = screen.getByTestId("deleteRow-button");
+  const weighting = getByTestId("weighting");
+  expect(weighting).toBeInTheDocument();
+  fireEvent.change(weighting, { target: { value: "2" } });
+
+  const deleteBtn = getByTestId("deleteRow-button");
   expect(deleteBtn).toBeInTheDocument();
   fireEvent.click(deleteBtn);
 });

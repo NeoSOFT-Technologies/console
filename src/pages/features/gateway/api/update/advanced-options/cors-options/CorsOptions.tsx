@@ -14,7 +14,6 @@ import {
 export default function CorsOptions() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  // console.log("state form :", state.data.form);
 
   const [addAllowedOrigins, setAllowedOrigins] = useState<any>({
     AllowedOrigins: "",
@@ -478,7 +477,7 @@ export default function CorsOptions() {
                             <Form.Control
                               type="text"
                               data-testid="allowedOrigin-input"
-                              placeholder="http://localhost"
+                              placeholder="https://localhost"
                               id="AllowedOrigins"
                               name="AllowedOrigins"
                               isInvalid={!!state.data.errors?.AllowedOrigins}

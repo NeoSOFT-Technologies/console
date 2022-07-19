@@ -21,10 +21,10 @@ export const getApiList = createAsyncThunk(
   async (conditions: IConditions) => {
     const { currentPage, pageSize } = conditions;
     try {
-      // console.log(currentPage, pageSize);
+      //
       const response = await apiListService(currentPage, pageSize);
       // initialState.pageSize = pageSize;
-      // console.log(response);
+      //
       return response?.data;
     } catch (error_) {
       const myError = error_ as Error | AxiosError;

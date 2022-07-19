@@ -54,7 +54,7 @@ const store = mockStore({
     },
   },
 });
-store.dispatch = jest.fn();
+
 it("render without crashing BlackListIPs", () => {
   render(
     <BrowserRouter>
@@ -78,15 +78,22 @@ it("render switch and inputs", () => {
 
   const blackListSwitch = screen.getByTestId("blacklist-switch");
   expect(blackListSwitch).toBeInTheDocument();
-  fireEvent.change(blackListSwitch, { target: { checked: true } });
-  expect(blackListSwitch).toBeChecked();
-  fireEvent.change(blackListSwitch);
+  fireEvent.change(blackListSwitch, { target: { checked: false } });
+  expect(blackListSwitch).not.toBeChecked();
+  fireEvent.click(blackListSwitch);
 
   const blackListInput = screen.getByTestId("blacklist-input");
   expect(blackListInput).toBeInTheDocument();
-  fireEvent.change(blackListInput, { target: { value: "192.168.0.0" } });
-  expect(blackListInput).toHaveValue("192.168.0.0");
+  const testIP = "192.168.0.0";
+  fireEvent.change(blackListInput, { target: { value: testIP } });
+  expect(blackListInput).toHaveValue(testIP);
   fireEvent.change(blackListInput);
 
-  expect(store.dispatch).toHaveBeenCalledTimes(1);
+  const addIps = screen.getByTestId("add-ips");
+  expect(addIps).toBeInTheDocument();
+  fireEvent.click(addIps);
+
+  const deleteRow = screen.getByTestId("delete-row");
+  expect(deleteRow).toBeInTheDocument();
+  fireEvent.click(deleteRow);
 });

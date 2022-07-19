@@ -38,7 +38,6 @@ export default function CreateKey() {
         keybyid.payload.Data?.AccessRights.length > 0
       ) {
         for (let i = 0; i < keybyid.payload.Data.AccessRights.length; i++) {
-          console.log("hii");
           const perapierror = {
             ApiId: keybyid?.payload.Data?.AccessRights[i]?.ApiId!,
             Per: "",
@@ -94,8 +93,6 @@ export default function CreateKey() {
         state.data.errors?.PerApiLimit.length > 0 &&
         state.data.form.SelectedTabIndex === "chooseApi"
       ) {
-        console.log("errorfirst", validateFieldValue);
-        console.log("erros", state.data.errors);
         for (let i = 0; i < state.data.errors?.PerApiLimit.length; i++) {
           validate = !!(
             validateFieldValue === true &&
@@ -112,7 +109,6 @@ export default function CreateKey() {
             state.data.errors?.PerApiLimit[i].ThrottleInterval === "" &&
             state.data.errors?.PerApiLimit[i].ThrottleRetries === ""
           );
-          console.log("error validate", validate);
         }
       } else {
         validate = !!(validateFieldValue === true);
@@ -177,7 +173,7 @@ export default function CreateKey() {
       if (keyId === undefined) {
         setKeyId(id);
       }
-      console.log(keyId);
+
       await navigator.clipboard.writeText(keyId!);
       setClipboard(true);
       setVisible(true);

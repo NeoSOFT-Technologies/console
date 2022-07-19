@@ -4,13 +4,13 @@ import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import store from "../../../../../store";
-import GlobalLimit from "./GlobalLimit";
+import CreateKey from "./CreateKey";
 
-it("render without crashing GlobalRateLimit", () => {
+it("Test render of CreateKey", async () => {
   render(
     <BrowserRouter>
       <Provider store={store}>
-        <GlobalLimit isDisabled={true} msg={""} />
+        <CreateKey />
       </Provider>
     </BrowserRouter>
   );

@@ -155,7 +155,8 @@ export default function KeyList() {
               headings={headings}
               url={`Key/GetAllKeys?`}
               actionsList={actions}
-              searchBy={"Name"}
+              searchBy={"KeyName"}
+              sortBy={"KeyName"}
               pageSizeList={gridPageSize}
             />
           </div>

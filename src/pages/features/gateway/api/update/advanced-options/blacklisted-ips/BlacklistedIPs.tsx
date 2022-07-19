@@ -14,7 +14,6 @@ import {
 export default function BlacklistedIPs() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  // console.log("state:", state.data.form);
 
   const [enableBlacklist, setBlacklist] = useState(false);
 
@@ -220,6 +219,7 @@ export default function BlacklistedIPs() {
                                           <td style={{ textAlign: "center" }}>
                                             <i
                                               className="btn btn-sm bi bi-trash-fill"
+                                              data-testid="delete-row"
                                               onClick={(event) =>
                                                 deleteTableRows(index, event)
                                               }

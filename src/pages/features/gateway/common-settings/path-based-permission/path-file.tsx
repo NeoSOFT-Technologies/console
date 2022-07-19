@@ -9,7 +9,6 @@ interface IProps {
   r: IPropsHelper;
 }
 export default function Ipathpermission(props: IProps) {
-  console.log("hey msiter i am here", props);
   const [InputData, setInputData] = useState<any>({
     path: "",
     method: ["GET"],
@@ -20,36 +19,36 @@ export default function Ipathpermission(props: IProps) {
 
   const HandleAddclick = () => {
     const value = props.r.index!;
-    let filtercheck = "false";
+    const filtercheck = "false";
     const apisList = [...props.r.formProp!];
     const allowedList = [...apisList[value].AllowedUrls!];
 
     // validation function to check two array of method
-    function ArrayEquals(a: any, b: any) {
-      return (
-        Array.isArray(a) &&
-        Array.isArray(b) &&
-        a.length === b.length &&
-        a.every((val, index) => val === b[index])
-      );
-    }
-    const filteredlist = allowedList.filter((a) => {
-      if (a.url === InputData.path) {
-        filtercheck = ArrayEquals(a.methods, InputData.method)
-          ? "true"
-          : "false";
-      } else {
-        filtercheck = "false";
-      }
-      return filtercheck;
-    });
+    // function ArrayEquals(a: any, b: any) {
+    //   return (
+    //     Array.isArray(a) &&
+    //     Array.isArray(b) &&
+    //     a.length === b.length &&
+    //     a.every((val, index) => val === b[index])
+    //   );
+    // }
+    // const filteredlist = allowedList.filter((a) => {
+    //   if (a.Url === InputData.path) {
+    //     filtercheck = ArrayEquals(a.Methods, InputData.method)
+    //       ? "true"
+    //       : "false";
+    //   } else {
+    //     filtercheck = "false";
+    //   }
+    //   return filtercheck;
+    // });
     // end of validation from data
     if (InputData.path !== "" && filtercheck === "false") {
       setspanError(" ");
-      console.log("filtered", filteredlist);
+
       const list = {
-        url: InputData.path,
-        methods: InputData.method,
+        Url: InputData.path,
+        Methods: InputData.method,
       };
       allowedList.push(list);
       apisList[value] = {
@@ -104,7 +103,6 @@ export default function Ipathpermission(props: IProps) {
           ];
           setInputData(newFormData);
         } else {
-          console.log("else", fieldValue);
           newFormData[fieldName] = [fieldValue];
           setInputData(newFormData);
         }
@@ -187,8 +185,8 @@ export default function Ipathpermission(props: IProps) {
                     (data1: any, index1: any) => {
                       return (
                         <tr key={index1}>
-                          <td>{data1.url}</td>
-                          <td>{data1.methods}</td>
+                          <td>{data1.Url}</td>
+                          <td>{data1.Methods}</td>
                           <td style={{ textAlign: "center" }}>
                             <i
                               className="bi bi-trash"

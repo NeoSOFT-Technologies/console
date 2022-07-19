@@ -31,7 +31,7 @@ function setValue(
   id: any
 ) {
   // const propv = togglecheck === -1 ? prop : -1;
-  console.log("togglecheck", togglecheck);
+
   return togglecheck === -1
     ? attribute !== attributeName
       ? prop
@@ -55,7 +55,7 @@ function updateValidationInput(
   error: any
 ) {
   const perapi1 = [...perapi];
-  console.log("perapi1", perapi1);
+
   perapi1[index!] = {
     ...perapi1[index!],
     Rate:
@@ -171,7 +171,7 @@ function GlobalupdateValidationInput(
   error: any
 ) {
   let perapi1 = { ...perapi };
-  console.log("perapi1", perapi1);
+
   perapi1 = {
     ...perapi1,
     Rate: attributeName !== "GlobalLimit.IsDisabled" ? perapi1.Rate : "",

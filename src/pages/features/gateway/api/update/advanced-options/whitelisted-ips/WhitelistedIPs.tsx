@@ -14,7 +14,6 @@ import {
 export default function WhitelistedIPs() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  // console.log("state:", state.data.form);
 
   const [enableWhitelist, setWhitelist] = useState(false);
 
@@ -175,7 +174,10 @@ export default function WhitelistedIPs() {
                                     handleFormInputChange(event)
                                   }
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                <Form.Control.Feedback
+                                  type="invalid"
+                                  data-testid="whiteListErr"
+                                >
                                   {state.data.errors?.Whitelist}
                                 </Form.Control.Feedback>
                               </Form.Group>

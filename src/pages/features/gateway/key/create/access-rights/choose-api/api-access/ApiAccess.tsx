@@ -30,7 +30,7 @@ export default function ApiAccess() {
     dispatch,
     id,
   };
-  // console.log("states", state.data.form);
+  //
   return (
     <>
       <fieldset className="border p-2">
@@ -41,7 +41,7 @@ export default function ApiAccess() {
           (state.data.form.AccessRights as any[]).map(
             (data: any, index: number) => {
               requiredParameters.index = index;
-              // console.log("apiacessIndex", index, data);
+              //
               return (
                 <div key={index}>
                   <PathBased

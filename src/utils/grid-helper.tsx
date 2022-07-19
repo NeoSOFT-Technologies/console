@@ -144,6 +144,56 @@ export function checkPaginationUrl(prev: string, page: number, limit: number) {
   return paginationURL;
 }
 
+// This will be used to set url with searching parameters to get server-side filtered data
+export function checkSearchingUrl(
+  prev: string,
+  searchBy: string,
+  searchKeyword: string
+) {
+  let searchingUrl = "";
+  const currentURL = window.location.pathname.split("/");
+  switch (currentURL[1]) {
+    case "tenant":
+      searchingUrl = `${prev}${searchBy}=${searchKeyword}&`;
+      break;
+    case "gateway":
+      searchingUrl = `${prev}name=${searchBy}&value=${searchKeyword}&`;
+      break;
+    default:
+      break;
+  }
+
+  return searchingUrl;
+}
+
+// This will be used to set url with sorting to get server-side data in perticular order
+export function checkSortingUrl(
+  prev: string,
+  columnAny: string | any[],
+  sortBy: any
+) {
+  let sortingUrl = "";
+  const currentURL = window.location.pathname.split("/");
+
+  if (columnAny.length === 0) sortingUrl = prev;
+  else {
+    const col = columnAny[0];
+    const dir = col.direction === 1;
+
+    switch (currentURL[1]) {
+      case "tenant":
+        sortingUrl = `${prev}`;
+        break;
+      case "gateway":
+        sortingUrl = `${prev}&param=${sortBy}&isDesc=${!dir}&`;
+        break;
+      default:
+        break;
+    }
+  }
+  return sortingUrl;
+}
+
 // This will be used when you want to navigate from column data
 export const handleNavigation = (cell: any, row: any, heading: any) => {
   return h(

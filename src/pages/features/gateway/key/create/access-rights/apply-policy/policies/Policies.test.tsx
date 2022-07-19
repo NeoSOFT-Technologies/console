@@ -6,8 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 import store from "../../../../../../../../store";
 import Policies from "./Policies";
 
-it("render without crashing Policies", async () => {
-  await render(
+it("Test render of Policies", () => {
+  render(
     <BrowserRouter>
       <Provider store={store}>
         <Policies />
@@ -15,18 +15,4 @@ it("render without crashing Policies", async () => {
     </BrowserRouter>
   );
   expect(screen).toBeDefined();
-});
-
-it("render buttons and inputs", async () => {
-  await render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <Policies />
-      </Provider>
-    </BrowserRouter>
-  );
-  expect(screen).toBeDefined();
-
-  const policiesHeading = screen.getByText(/policies/i);
-  expect(policiesHeading).toBeVisible();
 });

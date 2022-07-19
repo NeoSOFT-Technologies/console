@@ -36,7 +36,7 @@ const slice = createSlice({
     builder.addCase(deleteApi.fulfilled, (state) => {
       state.loading = false;
       state.isDeleted = true;
-      // console.log("state ", current(state));
+      //
     });
     builder.addCase(deleteApi.rejected, (state, action) => {
       state.loading = false;
