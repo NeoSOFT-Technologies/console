@@ -76,7 +76,7 @@ export default function ManageTables() {
     };
     if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
-        tenantId: id!,
+        tenantId: id,
         pageNumber: pageParameters.pageNumber,
         pageSize: pageParameters.pageSize,
       };
@@ -142,7 +142,7 @@ export default function ManageTables() {
     };
     if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
-        tenantId: id!,
+        tenantId: id,
         pageNumber: pageParameters.pageNumber,
         pageSize: pageParameters.pageSize,
       };
@@ -163,7 +163,7 @@ export default function ManageTables() {
     };
     if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
-        tenantId: id!,
+        tenantId: id,
         pageNumber: pageParameters.pageNumber,
         pageSize: pageParameters.pageSize,
       };
