@@ -281,10 +281,10 @@ export default function CreateTables() {
         type: "string",
         required: false,
         partialSearch: false,
-        filterable: false,
+        filterable: true,
         sortable: false,
         multiValue: false,
-        storable: false,
+        storable: true,
       });
       setSelectedColAction(addColumn);
       setShow(true);
@@ -413,7 +413,7 @@ export default function CreateTables() {
                         {tenantDetails.data?.map((val, index) => (
                           <option
                             key={`option${index}`}
-                            value={val.id + "/" + val.tenantName}
+                            value={`${val.id}/${val.tenantName}`}
                           >
                             {val.tenantName}
                           </option>
@@ -752,7 +752,13 @@ export default function CreateTables() {
             <Row>
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
-                  <b>Filterable</b>
+                  <b className="mr-5">Filterable</b>
+                  <i
+                    className="bi bi-info-circle-fill"
+                    data-testid="capacity-plan-info-btn"
+                    title="If true, the value of the field can be used in queries to retrieve
+                    matching documents"
+                  ></i>
                 </Form.Label>
               </Col>
               <Col sm lg="7">
@@ -782,7 +788,12 @@ export default function CreateTables() {
             <Row>
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
-                  <b>Storable</b>
+                  <b className="mr-5">Storable</b>
+                  <i
+                    className="bi bi-info-circle-fill"
+                    data-testid="capacity-plan-info-btn"
+                    title="If true, the actual value of the field can be retrieved by queries."
+                  ></i>
                 </Form.Label>
               </Col>
               <Col sm lg="7">
@@ -868,6 +879,14 @@ export default function CreateTables() {
           </Button>
         </Modal.Footer>
       </Modal>
+      {/* <Modal show={filerableModal}>
+        <Modal.Body>
+          <h5>
+            If true, the value of the field can be used in queries to retrieve
+            matching documents
+          </h5>
+        </Modal.Body>
+      </Modal> */}
       <Modal show={capacityModal} onHide={capacityModalClose} size="lg">
         <Modal.Header>
           <Modal.Title className="text-center">
