@@ -196,6 +196,25 @@ export default function ManageTables() {
   function getPrevPageStatus(currentPages: number) {
     return currentPages !== 1 ? "page-item" : pageDisabled;
   }
+  function pagination(currentpage: number) {
+    return (
+      <>
+        <li className={getPrevPageStatus(currentpage)}>
+          <a className="page-link " onClick={() => prevpage(currentpage)}>
+            Previous
+          </a>
+        </li>
+        <li className="page-item active">
+          <a className="page-link">{currentpage}</a>
+        </li>
+        <li className={getNextPageStatus(currentPage)}>
+          <a className="page-link " onClick={() => nextpage(currentpage)}>
+            Next
+          </a>
+        </li>
+      </>
+    );
+  }
   function checkData() {
     return allTableData.data && allTableData.data.tableList.length > 0 ? (
       <>
@@ -247,22 +266,7 @@ export default function ManageTables() {
         </Table>
 
         <div className="d-flex justify-content-center pt-2">
-          <ul className="pagination">
-            <li className={getPrevPageStatus(currentPage)}>
-              <a className="page-link " onClick={() => prevpage(currentPage)}>
-                Previous
-              </a>
-            </li>
-
-            <li className="page-item active">
-              <a className="page-link">{currentPage}</a>
-            </li>
-            <li className={getNextPageStatus(currentPage)}>
-              <a className="page-link " onClick={() => nextpage(currentPage)}>
-                Next
-              </a>
-            </li>
-          </ul>
+          <ul className="pagination">{pagination(currentPage)}</ul>
         </div>
       </>
     ) : (
@@ -315,22 +319,7 @@ export default function ManageTables() {
           </tbody>
         </Table>
         <div className="d-flex justify-content-center pt-2">
-          <ul className="pagination">
-            <li className={getPrevPageStatus(currentPage)}>
-              <a className="page-link " onClick={() => prevpage(currentPage)}>
-                Previous
-              </a>
-            </li>
-
-            <li className="page-item active">
-              <a className="page-link">{currentPage}</a>
-            </li>
-            <li className={getNextPageStatus(currentPage)}>
-              <a className="page-link " onClick={() => nextpage(currentPage)}>
-                Next
-              </a>
-            </li>
-          </ul>
+          <ul className="pagination">{pagination(currentPage)}</ul>
         </div>
       </>
     ) : (

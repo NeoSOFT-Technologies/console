@@ -64,7 +64,7 @@ function RestoreTable() {
     };
     if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
-        tenantId: id!,
+        tenantId: id,
         pageNumber: pageParameters.pageNumber,
         pageSize: pageParameters.pageSize,
       };
@@ -134,7 +134,7 @@ function RestoreTable() {
     };
     if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
-        tenantId: id!,
+        tenantId: id,
         pageNumber: pageParameters.pageNumber,
         pageSize: pageParameters.pageSize,
       };
@@ -154,7 +154,7 @@ function RestoreTable() {
 
     if (authenticationState.data === "tenant") {
       const parameters: IGetDeleteTableByTenant = {
-        tenantId: id!,
+        tenantId: id,
         pageNumber: pageParameters.pageNumber,
         pageSize: pageParameters.pageSize,
       };
@@ -180,6 +180,25 @@ function RestoreTable() {
   }
   function getPrevPageStatus(currentPages: number) {
     return currentPages !== 1 ? "page-item" : pageDisabled;
+  }
+  function paginationRestore(currentpage: number) {
+    return (
+      <>
+        <li className={getPrevPageStatus(currentpage)}>
+          <a className="page-link " onClick={() => prevpage(currentpage)}>
+            Previous
+          </a>
+        </li>
+        <li className="page-item active">
+          <a className="page-link">{currentpage}</a>
+        </li>
+        <li className={getNextPageStatus(currentpage)}>
+          <a className="page-link " onClick={() => nextpage(currentpage)}>
+            Next
+          </a>
+        </li>
+      </>
+    );
   }
   function checkData() {
     return allDeleteTableData.data?.tableList !== undefined &&
@@ -220,22 +239,7 @@ function RestoreTable() {
           aria-label="Page navigation example "
           className="d-flex justify-content-center"
         >
-          <ul className="pagination ">
-            <li className={getPrevPageStatus(currentPage)}>
-              <a className="page-link " onClick={() => prevpage(currentPage)}>
-                Previous
-              </a>
-            </li>
-
-            <li className="page-item active">
-              <a className="page-link">{currentPage}</a>
-            </li>
-            <li className={getNextPageStatus(currentPage)}>
-              <a className="page-link " onClick={() => nextpage(currentPage)}>
-                Next
-              </a>
-            </li>
-          </ul>
+          <ul className="pagination ">{paginationRestore(currentPage)}</ul>
         </nav>
       </>
     ) : (
@@ -281,22 +285,7 @@ function RestoreTable() {
           aria-label="Page navigation example "
           className="d-flex justify-content-center"
         >
-          <ul className="pagination ">
-            <li className={getPrevPageStatus(currentPage)}>
-              <a className="page-link " onClick={() => prevpage(currentPage)}>
-                Previous
-              </a>
-            </li>
-
-            <li className="page-item active">
-              <a className="page-link">{currentPage}</a>
-            </li>
-            <li className={getNextPageStatus(currentPage)}>
-              <a className="page-link " onClick={() => nextpage(currentPage)}>
-                Next
-              </a>
-            </li>
-          </ul>
+          <ul className="pagination ">{paginationRestore(currentPage)}</ul>
         </nav>
       </>
     ) : (

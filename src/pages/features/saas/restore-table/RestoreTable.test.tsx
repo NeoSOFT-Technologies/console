@@ -6,7 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 import mockApi from "../../../../resources/tenant/testconfig";
 import store from "../../../../store/index";
 import GetTables from "./RestoreTable";
-
+const urlRestore = "manage/table/deletion/all-tables?pageNumber=1&pageSize=6";
+const restoreMessage = "Successfully Retrieved All Tables Under Deletion";
 describe("SAAS - RESTORE TABLE Component", () => {
   it("Check if component rendered without crashing", () => {
     render(
@@ -34,13 +35,11 @@ describe("SAAS - RESTORE TABLE Component", () => {
   });
 
   it("Check if fields autofilled using API on component load", async () => {
-    mockApi
-      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=6")
-      .reply(200, {
-        statusCode: 200,
-        message: "Successfully Retrieved All Tables Under Deletion",
-        tableList: [{ tenantId: 1, tableName: "testTable" }],
-      });
+    mockApi.onGet(urlRestore).reply(200, {
+      statusCode: 200,
+      message: restoreMessage,
+      tableList: [{ tenantId: 1, tableName: "testTable" }],
+    });
 
     render(
       <BrowserRouter>
@@ -61,13 +60,11 @@ describe("SAAS - RESTORE TABLE Component", () => {
   });
 
   it("Click Restore button", async () => {
-    mockApi
-      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=6")
-      .reply(200, {
-        statusCode: 200,
-        message: "Successfully Retrieved All Tables Under Deletion",
-        tableList: [{ tenantId: 1, tableName: "testTable" }],
-      });
+    mockApi.onGet(urlRestore).reply(200, {
+      statusCode: 200,
+      message: restoreMessage,
+      tableList: [{ tenantId: 1, tableName: "testTable" }],
+    });
 
     mockApi.onPut("manage/table/restore/testTable?tenantId=1").reply(200, {
       statusCode: 200,
@@ -114,13 +111,11 @@ describe("SAAS - RESTORE TABLE Component", () => {
   });
 
   it("Click Cancel button", async () => {
-    mockApi
-      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=6")
-      .reply(200, {
-        statusCode: 200,
-        message: "Successfully Retrieved All Tables Under Deletion",
-        tableList: [{ tenantId: 1, tableName: "testTable" }],
-      });
+    mockApi.onGet(urlRestore).reply(200, {
+      statusCode: 200,
+      message: restoreMessage,
+      tableList: [{ tenantId: 1, tableName: "testTable" }],
+    });
 
     render(
       <BrowserRouter>
@@ -155,26 +150,24 @@ describe("SAAS - RESTORE TABLE Component", () => {
   });
 
   it("Check if next and prev btns working", async () => {
-    mockApi
-      .onGet("manage/table/deletion/all-tables?pageNumber=1&pageSize=6")
-      .reply(200, {
-        statusCode: 200,
-        message: "Successfully Retrieved All Tables Under Deletion",
-        tableList: [
-          { tenantId: 1, tableName: "testTable1" },
-          { tenantId: 1, tableName: "testTable2" },
-          { tenantId: 1, tableName: "testTable3" },
-          { tenantId: 1, tableName: "testTable4" },
-          { tenantId: 1, tableName: "testTable5" },
-          { tenantId: 1, tableName: "testTable6" },
-        ],
-      });
+    mockApi.onGet(urlRestore).reply(200, {
+      statusCode: 200,
+      message: restoreMessage,
+      tableList: [
+        { tenantId: 1, tableName: "testTable1" },
+        { tenantId: 1, tableName: "testTable2" },
+        { tenantId: 1, tableName: "testTable3" },
+        { tenantId: 1, tableName: "testTable4" },
+        { tenantId: 1, tableName: "testTable5" },
+        { tenantId: 1, tableName: "testTable6" },
+      ],
+    });
 
     mockApi
       .onGet("manage/table/deletion/all-tables?pageNumber=2&pageSize=6")
       .reply(200, {
         statusCode: 200,
-        message: "Successfully Retrieved All Tables Under Deletion",
+        message: restoreMessage,
         tableList: [
           { tenantId: 1, tableName: "testTable7" },
           { tenantId: 1, tableName: "testTable8" },

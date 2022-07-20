@@ -219,14 +219,14 @@ describe("SAAS - MANAGE TABLE Component 2", () => {
       })
     ).toBeInTheDocument();
 
-    const nextBtn = await waitFor(
+    const nextButton = await waitFor(
       () => screen.getByText("Next", { exact: false }),
       {
         timeout: 3000,
       }
     );
-    expect(nextBtn).toBeInTheDocument();
-    userEvent.click(nextBtn);
+    expect(nextButton).toBeInTheDocument();
+    userEvent.click(nextButton);
 
     expect(
       await waitFor(() => screen.getByText("testTable8", { exact: false }), {
@@ -234,14 +234,14 @@ describe("SAAS - MANAGE TABLE Component 2", () => {
       })
     ).toBeInTheDocument();
 
-    const previousBtn = await waitFor(
+    const preBtn = await waitFor(
       () => screen.getByText("Previous", { exact: false }),
       {
         timeout: 3000,
       }
     );
-    userEvent.click(previousBtn);
-    expect(previousBtn).toBeInTheDocument();
+    userEvent.click(preBtn);
+    expect(preBtn).toBeInTheDocument();
 
     expect(
       await waitFor(() => screen.getByText("testTable1", { exact: false }), {
