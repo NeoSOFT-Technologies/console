@@ -66,7 +66,7 @@ export default function SearchData() {
         tableName: "",
         searchTerm: "*",
         queryField: "",
-        pageSize: "5",
+        pageSize: "6",
         orderBy: "",
         order: "asc",
       });
@@ -76,7 +76,7 @@ export default function SearchData() {
         [name]: value,
         searchTerm: "*",
         queryField: "",
-        pageSize: "5",
+        pageSize: "6",
         orderBy: "",
         order: "asc",
       });
@@ -121,7 +121,9 @@ export default function SearchData() {
     const nextindex =
       Number.parseInt(startRecord) + Number.parseInt(searchTenant.pageSize) - 1;
     setStartRecord(nextindex?.toString());
-
+    console.log("indexnext:" + nextindex);
+    console.log("startRecordnext:" + Number.parseInt(startRecord));
+    console.log("pageSizenext:" + Number.parseInt(searchTenant.pageSize));
     const initialState: ISearchDataWithQueryField = {
       queryField: searchTenant.queryField,
       searchTerm: searchTenant.searchTerm,
@@ -135,6 +137,7 @@ export default function SearchData() {
   };
 
   const prevpage = (currentpage: number) => {
+    console.log(currentpage);
     if (currentpage <= 1) {
       setCurrentPage(1);
     } else {
@@ -144,7 +147,10 @@ export default function SearchData() {
 
     setCheckDisable(false);
     let nextindex =
-      Number.parseInt(startRecord) - Number.parseInt(searchTenant.pageSize);
+      Number.parseInt(startRecord) - Number.parseInt(searchTenant.pageSize) + 1;
+    console.log("index:" + nextindex);
+    console.log("startRecord:" + Number.parseInt(startRecord));
+    console.log("pageSize:" + Number.parseInt(searchTenant.pageSize));
     if (nextindex < 0) {
       nextindex = 0;
     }
@@ -230,9 +236,9 @@ export default function SearchData() {
 
   function getReadableStatus(condition: boolean): string {
     if (condition) {
-      return "page-item disable";
+      return "page-item disabled";
     }
-    return "page-link";
+    return "page-item";
   }
 
   function getEntriesBy() {
@@ -332,12 +338,12 @@ export default function SearchData() {
             />
           </div>
           <div>
-            <Table bordered hover>
+            <Table bordered className="text-center">
               <thead>
                 <tr>
                   <th>Sr.No</th>
                   {tableHeader.map((val, index) => (
-                    <th key={index}>{val}</th>
+                    <th key={index}>{val.toLocaleUpperCase()}</th>
                   ))}
                 </tr>
               </thead>
@@ -350,14 +356,16 @@ export default function SearchData() {
             </Table>
             <nav
               aria-label="Page navigation example "
-              className="d-flex w-100 justify-content-center"
+              className="d-flex justify-content-center"
             >
               <ul className="pagination ">
-                <li className="page-item">
+                <li
+                  className={getReadableStatus(
+                    Number.parseInt(startRecord) === 0 || !!searchValue
+                  )}
+                >
                   <button
-                    className={getReadableStatus(
-                      Number.parseInt(startRecord) === 0 || !!searchValue
-                    )}
+                    className="page-link"
                     disabled={
                       Number.parseInt(startRecord) === 0 || !!searchValue
                     }
@@ -366,9 +374,14 @@ export default function SearchData() {
                     Previous
                   </button>
                 </li>
-                <li className="page-item ">
+                <li className="page-item active">
+                  <button className="page-link">{currentPage}</button>
+                </li>
+                <li
+                  className={getReadableStatus(checkDisable || !!searchValue)}
+                >
                   <button
-                    className={getReadableStatus(checkDisable || !!searchValue)}
+                    className="page-link"
                     disabled={checkDisable || !!searchValue}
                     onClick={() => nextpage(currentPage)}
                   >
