@@ -34,6 +34,7 @@ export default function SearchData() {
   const tableColName = useAppSelector((state) => state.getTableSchemaState);
   const tenantDetails = useAppSelector((state) => state.getTenantDetailState);
   const tenantDetail = useAppSelector((state) => state.userData);
+  const [currentPage, setCurrentPage] = useState(1);
   const [checkDisable, setCheckDisable] = useState(false);
   const authenticationState = useAppSelector(
     (state: RootState) => state.loginType
@@ -108,11 +109,15 @@ export default function SearchData() {
       order: searchTenant.order,
       requestParams: params,
     };
-
+    setCurrentPage(1);
     dispatch(searchDataWithQueryField(initialState));
   };
 
-  const nextpage = () => {
+  const nextpage = (currentpage: number) => {
+    currentpage++;
+
+    setCurrentPage(currentpage);
+
     const nextindex =
       Number.parseInt(startRecord) + Number.parseInt(searchTenant.pageSize) - 1;
     setStartRecord(nextindex?.toString());
@@ -129,10 +134,17 @@ export default function SearchData() {
     dispatch(searchDataWithQueryField(initialState));
   };
 
-  const prevpage = () => {
+  const prevpage = (currentpage: number) => {
+    if (currentpage <= 1) {
+      setCurrentPage(1);
+    } else {
+      --currentpage;
+      setCurrentPage(currentpage);
+    }
+
     setCheckDisable(false);
     let nextindex =
-      Number.parseInt(startRecord) - Number.parseInt(searchTenant.pageSize) + 1;
+      Number.parseInt(startRecord) - Number.parseInt(searchTenant.pageSize);
     if (nextindex < 0) {
       nextindex = 0;
     }
@@ -233,8 +245,21 @@ export default function SearchData() {
 
   function getTableHeader(index: number, val: any) {
     return (
-      <tr key={`row${index}`}>
-        <td>{index + 1}</td>
+      <tr
+        key={`row${
+          index + Number.parseInt(searchTenant.pageSize) * (currentPage - 1)
+        }`}
+      >
+        {currentPage !== 1 ? (
+          <td>
+            {index +
+              (Number.parseInt(searchTenant.pageSize) - 1) * (currentPage - 1) +
+              1}
+          </td>
+        ) : (
+          <td>{index + 1}</td>
+        )}
+
         {tableHeader.map((h, i) => (
           <td key={i}>{val[h]?.toString()}</td>
         ))}
@@ -336,7 +361,7 @@ export default function SearchData() {
                     disabled={
                       Number.parseInt(startRecord) === 0 || !!searchValue
                     }
-                    onClick={() => prevpage()}
+                    onClick={() => prevpage(currentPage)}
                   >
                     Previous
                   </button>
@@ -345,7 +370,7 @@ export default function SearchData() {
                   <button
                     className={getReadableStatus(checkDisable || !!searchValue)}
                     disabled={checkDisable || !!searchValue}
-                    onClick={() => nextpage()}
+                    onClick={() => nextpage(currentPage)}
                   >
                     Next
                   </button>

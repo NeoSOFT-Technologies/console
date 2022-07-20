@@ -618,7 +618,12 @@ export default function CreateTables() {
             <Row>
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
-                  <b>Multivalue</b>
+                  <b className="mr-4">Multivalue</b>
+                  <i
+                    className="bi bi-info-circle-fill"
+                    data-testid="capacity-plan-info-btn"
+                    title="If true, indicates that a single document might contain multiple values for this field type."
+                  ></i>
                 </Form.Label>
               </Col>
               <Col sm lg="7">
@@ -641,7 +646,12 @@ export default function CreateTables() {
             <Row>
               <Col sm lg="4">
                 <Form.Label className="ml-5 p-0">
-                  <b>Partial Search</b>
+                  <b className="mr-3">Partial Search</b>
+                  <i
+                    className="bi bi-info-circle-fill"
+                    data-testid="capacity-plan-info-btn"
+                    title="If true, then do the searching operation on document using similler word as in field value."
+                  ></i>
                 </Form.Label>
               </Col>
               <Col sm lg="7">
@@ -692,7 +702,12 @@ export default function CreateTables() {
             <Row>
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
-                  <b>Sortable</b>
+                  <b className="mr-5">Sortable</b>
+                  <i
+                    className="bi bi-info-circle-fill"
+                    data-testid="capacity-plan-info-btn"
+                    title="If true, then sort document using that field value."
+                  ></i>
                 </Form.Label>
               </Col>
               <Col sm lg="7">
@@ -722,7 +737,12 @@ export default function CreateTables() {
             <Row>
               <Col sm lg="4">
                 <Form.Label className="ml-5 pt-2">
-                  <b>Required</b>
+                  <b className="mr-5">Required</b>
+                  <i
+                    className="bi bi-info-circle-fill"
+                    data-testid="capacity-plan-info-btn"
+                    title="Instructs Database to reject any attempts to add a document which does not have a value for this field."
+                  ></i>
                 </Form.Label>
               </Col>
               <Col sm lg="7">

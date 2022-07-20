@@ -181,7 +181,7 @@ function RestoreTable() {
   function getPrevPageStatus(currentPages: number) {
     return currentPages !== 1 ? "page-item" : pageDisabled;
   }
-  function pagination(currentpage: number) {
+  function paginationRestore(currentpage: number) {
     return (
       <>
         <li className={getPrevPageStatus(currentpage)}>
@@ -239,7 +239,7 @@ function RestoreTable() {
           aria-label="Page navigation example "
           className="d-flex justify-content-center"
         >
-          <ul className="pagination ">{pagination(currentPage)}</ul>
+          <ul className="pagination ">{paginationRestore(currentPage)}</ul>
         </nav>
       </>
     ) : (
@@ -285,7 +285,7 @@ function RestoreTable() {
           aria-label="Page navigation example "
           className="d-flex justify-content-center"
         >
-          <ul className="pagination ">{pagination(currentPage)}</ul>
+          <ul className="pagination ">{paginationRestore(currentPage)}</ul>
         </nav>
       </>
     ) : (
