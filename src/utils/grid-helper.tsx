@@ -19,11 +19,11 @@ export function renderPageSizeDropdown(
   const paginationFooter = document.querySelector(".gridjs-pages") as Element;
   // Create Dropdown
   const dropdown = document.createElement("select");
-  for (const index_Item of list) {
+  for (const Item of list) {
     const opt = document.createElement("option");
-    opt.value = index_Item.toString();
-    opt.innerHTML = index_Item.toString();
-    opt.selected = size === index_Item;
+    opt.value = Item.toString();
+    opt.innerHTML = Item.toString();
+    opt.selected = size === Item;
     dropdown.append(opt);
   }
   dropdown.className = "gridjs-pagesize";

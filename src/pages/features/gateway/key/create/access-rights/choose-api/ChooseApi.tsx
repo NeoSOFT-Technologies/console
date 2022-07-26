@@ -26,7 +26,7 @@ export default function ChooseApi() {
     form: state.data.form as any,
     formProp: state.data.form.AccessRights as any,
     errors: state.data.errors as any,
-    errorProp: state.data.errors?.PerApiLimit as any,
+    errorProp: state.data.errors?.PerApiLimit || [],
     prevState: keystate,
     propName: "AccessRights",
     setForm: setForms,

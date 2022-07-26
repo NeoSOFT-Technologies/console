@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
-import { WritableDraft } from "immer/dist/internal";
 import {
   addKeyService,
   getKeyByIdService,
@@ -10,14 +9,6 @@ import error from "../../../../../utils/error";
 import { initialState } from "./payload";
 import { IGetKeyByIdData, IKeyCreateState } from "./index";
 export let keystate: IKeyCreateState;
-const commonStatement = (
-  state: WritableDraft<IKeyCreateState>,
-  action: any
-) => {
-  state.loading = false;
-  action.payload = action.error;
-  state.error = error(action.payload);
-};
 export const createKey = createAsyncThunk(
   "key/create",
   async (data: IGetKeyByIdData) => {
@@ -90,7 +81,9 @@ const slice = createSlice({
       state.loading = false;
     });
     builder.addCase(createKey.rejected, (state, action) => {
-      commonStatement(state, action);
+      state.loading = false;
+      action.payload = action.error;
+      state.error = error(action.payload);
     });
 
     builder.addCase(getKeyById.pending, (state) => {
@@ -101,7 +94,9 @@ const slice = createSlice({
       state.data.form = action.payload.Data;
     });
     builder.addCase(getKeyById.rejected, (state, action) => {
-      commonStatement(state, action);
+      state.loading = false;
+      action.payload = action.error;
+      state.error = error(action.payload);
     });
 
     builder.addCase(updateKey.pending, (state) => {
@@ -111,7 +106,9 @@ const slice = createSlice({
       state.loading = false;
     });
     builder.addCase(updateKey.rejected, (state, action) => {
-      commonStatement(state, action);
+      state.loading = false;
+      action.payload = action.error;
+      state.error = error(action.payload);
     });
   },
 });

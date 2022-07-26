@@ -1,3 +1,4 @@
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import React from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
 import Spinner from "../../../../../components/loader/Loader";
@@ -15,7 +16,7 @@ export default function GlobalLimitApi(props: IPropsHelper) {
     };
 
     props.dispatch(
-      (props.setFormError as any)({
+      (props.setFormError as ActionCreatorWithPayload<any, string>)({
         ...props.errors,
         PerApiLimit: perapi,
       })
@@ -59,7 +60,7 @@ export default function GlobalLimitApi(props: IPropsHelper) {
       Limit: { ...newFormData },
     };
     props.dispatch(
-      (props.setForm as any)({
+      (props.setForm as ActionCreatorWithPayload<any, string>)({
         ...props.form,
         [props.propName || ""]: apisList, // look
       })

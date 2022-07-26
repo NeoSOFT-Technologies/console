@@ -49,7 +49,9 @@ export default function PathBased(props: IProps) {
       [propName]: obj,
     };
     props.requiredInterface.dispatch(
-      (props.requiredInterface.setForm as any)({
+      (
+        props.requiredInterface.setForm as ActionCreatorWithPayload<any, string>
+      )({
         ...props.requiredInterface.form,
         [props.requiredInterface.propName as string]: apisList,
       })
@@ -190,7 +192,12 @@ export default function PathBased(props: IProps) {
         Versions: [...version],
       };
       props.requiredInterface.dispatch(
-        (props.requiredInterface.setForm as any)({
+        (
+          props.requiredInterface.setForm as ActionCreatorWithPayload<
+            any,
+            string
+          >
+        )({
           ...props.requiredInterface.form,
           [props.requiredInterface.propName as string]: apisLists,
         })
@@ -214,7 +221,9 @@ export default function PathBased(props: IProps) {
       Versions: [...version],
     };
     props.requiredInterface.dispatch(
-      (props.requiredInterface.setForm as any)({
+      (
+        props.requiredInterface.setForm as ActionCreatorWithPayload<any, string>
+      )({
         ...props.requiredInterface.form,
         [props.requiredInterface.propName as string]: apisLists,
       })
@@ -222,7 +231,7 @@ export default function PathBased(props: IProps) {
   };
   const removeAccess = (event: any, index: any) => {
     event.preventDefault();
-    if ((props.requiredInterface.formProp || []).length > 0) {
+    if ((props.requiredInterface.formProp as any[]).length > 0) {
       // const removeApi = [...props.requiredInterface.formProp!];
       // removeApi.splice(index, 1);
       // props.requiredInterface.dispatch(
@@ -257,7 +266,12 @@ export default function PathBased(props: IProps) {
       removeApi.splice(index, 1);
       ToastAlert(`${ApiName} removed`, "warning");
       props.requiredInterface.dispatch(
-        (props.requiredInterface.setForm as any)({
+        (
+          props.requiredInterface.setForm as ActionCreatorWithPayload<
+            any,
+            string
+          >
+        )({
           ...props.requiredInterface.form,
           [props.requiredInterface.propName as string]: removeApi,
         })
@@ -265,7 +279,12 @@ export default function PathBased(props: IProps) {
       const error = [...(props.requiredInterface.errorProp || [])];
       error.splice(index, 1);
       props.requiredInterface.dispatch(
-        (props.requiredInterface.setFormError as any)({
+        (
+          props.requiredInterface.setFormError as ActionCreatorWithPayload<
+            any,
+            string
+          >
+        )({
           ...props.requiredInterface.errors,
           PerApiLimit: error,
         })
