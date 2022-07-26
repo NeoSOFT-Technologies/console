@@ -3,7 +3,7 @@ import { h } from "gridjs";
 // This will check if grid rendered
 export function checkGridRendered() {
   let flag = false;
-  const grid = document.querySelector(".gridjs")!;
+  const grid = document.querySelector(".gridjs") as Element;
   if (grid) {
     flag = true;
   }
@@ -16,14 +16,14 @@ export function renderPageSizeDropdown(
   setPageLimit: (size: number) => void,
   size: number
 ) {
-  const paginationFooter = document.querySelector(".gridjs-pages")!;
+  const paginationFooter = document.querySelector(".gridjs-pages") as Element;
   // Create Dropdown
   const dropdown = document.createElement("select");
-  for (const index in list) {
+  for (const index_Item of list) {
     const opt = document.createElement("option");
-    opt.value = list[index].toString();
-    opt.innerHTML = list[index].toString();
-    opt.selected = size === list[index];
+    opt.value = index_Item.toString();
+    opt.innerHTML = index_Item.toString();
+    opt.selected = size === index_Item;
     dropdown.append(opt);
   }
   dropdown.className = "gridjs-pagesize";
@@ -40,9 +40,10 @@ export function renderPageSizeDropdown(
 
 // This will be used for handling current selected page after we refresh grid
 export function setGridPage(paginationConfigs: any, _totalCount: number) {
-  const selectedPage = document.querySelector(".gridjs-currentPage")?.innerHTML;
+  const selectedPage =
+    document.querySelector(".gridjs-currentPage")?.innerHTML || 0;
 
-  let currentPage: number = +selectedPage!;
+  let currentPage: number = +selectedPage;
   currentPage = currentPage - 1;
   const limit = paginationConfigs.limit;
   const totalCount = _totalCount;
@@ -73,25 +74,27 @@ export function setGridPage(paginationConfigs: any, _totalCount: number) {
 
 export function checkResponse(data: any) {
   const checkData = data;
+  let responseData: any[] = [];
   const currentURL = window.location.pathname.split("/");
   switch (currentURL[1]) {
     case "tenant":
       if (checkData.data) {
-        return checkData.data;
+        responseData = checkData.data;
       }
       break;
     case "gateway":
       if (checkData.Data.Apis) {
-        return checkData.Data.Apis;
+        responseData = checkData.Data.Apis;
       } else if (checkData.Data.Keys) {
-        return checkData.Data.Keys;
+        responseData = checkData.Data.Keys;
       } else if (checkData.Data.Policies) {
-        return checkData.Data.Policies;
+        responseData = checkData.Data.Policies;
       }
       break;
     default:
       break;
   }
+  return responseData;
 }
 // This will be used when return total count of available data
 export function checkCount(data: any) {
@@ -175,8 +178,9 @@ export function checkSortingUrl(
   let sortingUrl = "";
   const currentURL = window.location.pathname.split("/");
 
-  if (columnAny.length === 0) sortingUrl = prev;
-  else {
+  if (columnAny.length === 0) {
+    sortingUrl = prev;
+  } else {
     const col = columnAny[0];
     const dir = col.direction === 1;
 
@@ -198,9 +202,9 @@ export function checkSortingUrl(
 export const handleNavigation = (cell: any, row: any, heading: any) => {
   return h(
     "text",
-    heading.navigate!
+    (heading.navigate as (val: any) => void)
       ? {
-          onClick: () => heading.navigate!(row),
+          onClick: () => (heading.navigate as (val: any) => void)(row),
           style: {
             cursor: "pointer",
             color: "blue",

@@ -21,14 +21,12 @@ export default function ChooseApi() {
   const state = useAppSelector((RootState) => RootState.createKeyState);
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  // const Apistate = useAppSelector((RootState) => RootState.updateApiState);
-  //
   const requiredParameters: IPropsHelper = {
     state,
-    form: state.data.form!,
-    formProp: state.data.form.AccessRights!,
-    errors: state.data.errors!,
-    errorProp: state.data.errors?.PerApiLimit!,
+    form: state.data.form as any,
+    formProp: state.data.form.AccessRights as any,
+    errors: state.data.errors as any,
+    errorProp: state.data.errors?.PerApiLimit as any,
     prevState: keystate,
     propName: "AccessRights",
     setForm: setForms,
@@ -48,22 +46,16 @@ export default function ChooseApi() {
       </Row>
       <div id="chooseapicollapse">
         <AccessList />
-        {/* <GlobalLimit
-        isDisabled={false}
-        msg={""}
-        // policyId="e9420aa1-eec5-4dfc-8ddf-2bc989a9a47f"
-      /> */}
-        {/* {Apistate.data.form.RateLimit.IsDisabled ? (
-        <div className="text-warning">warning: Ratelimit cannot be apply</div>
-      ) : (
-        ""
-      )} */}
         <GlobalRateLimit
           helper={requiredParameters}
           keystate={state}
           current="key"
         />
-        {state.data.form.AccessRights?.length! > 0 ? <ApiAccess /> : <></>}
+        {(state.data.form.AccessRights?.length as number) > 0 ? (
+          <ApiAccess />
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
