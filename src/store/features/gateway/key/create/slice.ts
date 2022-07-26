@@ -56,11 +56,9 @@ export const updateKey = createAsyncThunk(
       return response.data;
     } catch (error__) {
       const myError = error__ as Error | AxiosError;
-      const error_ =
-        axios.isAxiosError(myError) && myError.response
-          ? myError.response.data.Errors[0]
-          : myError.message;
-      throw error_;
+      throw axios.isAxiosError(myError) && myError.response
+        ? myError.response.data.Errors[0]
+        : myError.message;
     }
   }
 );
@@ -81,11 +79,9 @@ const slice = createSlice({
     });
     builder.addCase(createKey.fulfilled, (state) => {
       state.loading = false;
-      // state.data = action.payload;
     });
     builder.addCase(createKey.rejected, (state, action) => {
       state.loading = false;
-      // action.payload contains error information
       action.payload = action.error;
       state.error = error(action.payload);
     });
@@ -99,7 +95,6 @@ const slice = createSlice({
     });
     builder.addCase(getKeyById.rejected, (state, action) => {
       state.loading = false;
-      // action.payload contains error information
       action.payload = action.error;
       state.error = error(action.payload);
     });
@@ -109,11 +104,9 @@ const slice = createSlice({
     });
     builder.addCase(updateKey.fulfilled, (state) => {
       state.loading = false;
-      // state.data = action.payload;
     });
     builder.addCase(updateKey.rejected, (state, action) => {
       state.loading = false;
-      // action.payload contains error information
       action.payload = action.error;
       state.error = error(action.payload);
     });

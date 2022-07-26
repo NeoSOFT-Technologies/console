@@ -23,10 +23,10 @@ export default function ApplyPolicy() {
   const dispatch = useAppDispatch();
   const requiredParameters: IPropsHelper = {
     state,
-    form: state.data.form!,
-    formProp: state.data.form.AccessRights!,
-    errors: state.data.errors!,
-    errorProp: state.data.errors?.PerApiLimit!,
+    form: state.data.form as any,
+    formProp: state.data.form.AccessRights as any,
+    errors: state.data.errors as any,
+    errorProp: state.data.errors?.PerApiLimit || [],
     prevState: keystate,
     propName: "AccessRights",
     setForm: setForms,
