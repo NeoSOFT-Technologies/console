@@ -68,7 +68,7 @@ export default function GlobalLimitApi(props: IPropsHelper) {
 
   function getValue(value: any) {
     return props.formProp[props.index || 0]?.Limit[value] === -1
-      ? "Disabled " + value
+      ? `Disabled ${value}`
       : props.formProp[props.index || 0]?.Limit[value];
   }
   const valueError = props.errorProp[props.index || 0];
