@@ -96,7 +96,7 @@ export default function ApiAccessList(props: IProps) {
   useEffect(() => {
     // set auth type
     props.stateForm.length > 0
-      ? setApiAuth(props.stateForm[0].AuthType!)
+      ? setApiAuth(props.stateForm[0].AuthType)
       : setApiAuth("");
   }, [props.stateForm.length]);
 
@@ -105,10 +105,10 @@ export default function ApiAccessList(props: IProps) {
     if (
       accessApiList.data !== undefined &&
       accessApiList.data &&
-      accessApiList.data?.Apis?.length! > 0
+      accessApiList.data?.Apis?.length > 0
     ) {
-      listApis = accessApiList.data?.Apis!.filter((a) =>
-        apiAuth?.length! > 0
+      listApis = accessApiList.data?.Apis.filter((a) =>
+        (apiAuth?.length as number) > 0
           ? a.AuthType === apiAuth && a.AuthType !== "keyless"
           : a.AuthType !== "keyless"
       );
@@ -118,7 +118,7 @@ export default function ApiAccessList(props: IProps) {
   function bindApisList() {
     return accessApiList.data !== undefined &&
       accessApiList.data &&
-      accessApiList.data?.Apis?.length! > 0
+      accessApiList.data?.Apis?.length > 0
       ? containsApis().map((data) => [
           data.Id,
           data.Name,
@@ -202,13 +202,13 @@ export default function ApiAccessList(props: IProps) {
     setpluginState(prp.store);
     if (id !== undefined) {
       for (const iterator of selectedRows.state) {
-        prp!.store.handle("CHECK", {
+        prp.store.handle("CHECK", {
           ROW_ID: iterator,
         });
       }
     }
 
-    prp!.store.on("updated", (state1: any, prevState1: any) => {
+    prp.store.on("updated", (state1: any, prevState1: any) => {
       if (gridReload === false) {
         setselectedRows({ state: state1.rowIds, prevState: prevState1.rowIds });
       }
@@ -263,7 +263,7 @@ export default function ApiAccessList(props: IProps) {
         props.stateForm.length > selectedRows.state.length
       ) {
         const filterApiList = selectedRows.prevState.find(
-          (i: any) => !selectedRows!.state.includes(i)
+          (i: any) => !selectedRows.state.includes(i)
         );
         removeAccess(filterApiList.split(",")[0]);
         if (selectedRows.state.length > 0) {
@@ -288,7 +288,6 @@ export default function ApiAccessList(props: IProps) {
   // This will set Grid data after delete action
   useEffect(() => {
     if (_deletedRow !== undefined && _deletedRow.length > 0) {
-      // checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
       _pluginState.handle("UNCHECK", {
         ROW_ID: _deletedRow,
       });
@@ -300,7 +299,7 @@ export default function ApiAccessList(props: IProps) {
   // initial Grid render
   useEffect(() => {
     if (gridReady) {
-      mygrid.render(document.querySelector("#gridRender")!);
+      mygrid.render(document.querySelector("#gridRender") as Element);
     }
   }, [gridReady]);
 
@@ -308,8 +307,8 @@ export default function ApiAccessList(props: IProps) {
   useEffect(() => {
     if (gridReload) {
       const gridRenderHtml = document.querySelector("#gridRender");
-      gridRenderHtml!.innerHTML = "";
-      mygrid.render(gridRenderHtml!);
+      (gridRenderHtml as Element).innerHTML = "";
+      mygrid.render(gridRenderHtml as Element);
       const render_Grid = mygrid.updateConfig({
         data: () => bindApisList(),
       });
@@ -319,11 +318,11 @@ export default function ApiAccessList(props: IProps) {
         prp = checkboxPlugin?.props;
 
         for (const iterator of selectedRows.state) {
-          prp!.store.handle("CHECK", {
+          prp.store.handle("CHECK", {
             ROW_ID: iterator,
           });
         }
-        prp!.store.on("updated", (state1: any, prevState1: any) => {
+        prp.store.on("updated", (state1: any, prevState1: any) => {
           setselectedRows({
             state: state1.rowIds,
             prevState: prevState1.rowIds,
