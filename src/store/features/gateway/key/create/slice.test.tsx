@@ -18,7 +18,7 @@ describe("create key redux state tests", () => {
     Quota: -1,
     Expires: 0,
     isInActive: false,
-    QuotaRenewalRate: -1,
+    QuotaRate: -1,
     ThrottleInterval: -1,
     ThrottleRetries: -1,
     AccessRights: [
@@ -49,7 +49,7 @@ describe("create key redux state tests", () => {
         Global: {
           Name: "",
           MaxQuota: 0,
-          QuotaRenewalRate: 0,
+          QuotaRate: 0,
           Rate: 0,
           Per: 0,
           ThrottleInterval: 0,
@@ -106,7 +106,7 @@ describe("create key redux state tests", () => {
             Global: {
               Name: "",
               MaxQuota: 0,
-              QuotaRenewalRate: 0,
+              QuotaRate: 0,
               Rate: 0,
               Per: 0,
               ThrottleInterval: 0,
@@ -164,7 +164,7 @@ describe("create key redux state tests", () => {
             Global: {
               Name: "",
               MaxQuota: 0,
-              QuotaRenewalRate: 0,
+              QuotaRate: 0,
               Rate: 0,
               Per: 0,
               ThrottleInterval: 0,
@@ -222,7 +222,7 @@ describe("create key redux state tests", () => {
             Global: {
               Name: "",
               MaxQuota: 0,
-              QuotaRenewalRate: 0,
+              QuotaRate: 0,
               Rate: 0,
               Per: 0,
               ThrottleInterval: 0,
@@ -306,7 +306,7 @@ describe("create key redux state tests", () => {
             Global: {
               Name: "",
               MaxQuota: 0,
-              QuotaRenewalRate: 0,
+              QuotaRate: 0,
               Rate: 0,
               Per: 0,
               ThrottleInterval: 0,
@@ -364,7 +364,7 @@ describe("create key redux state tests", () => {
             Global: {
               Name: "",
               MaxQuota: 0,
-              QuotaRenewalRate: 0,
+              QuotaRate: 0,
               Rate: 0,
               Per: 0,
               ThrottleInterval: 0,
@@ -423,7 +423,7 @@ describe("create key redux state tests", () => {
             Global: {
               Name: "",
               MaxQuota: 0,
-              QuotaRenewalRate: 0,
+              QuotaRate: 0,
               Rate: 0,
               Per: 0,
               ThrottleInterval: 0,

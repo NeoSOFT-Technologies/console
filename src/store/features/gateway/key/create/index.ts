@@ -58,7 +58,7 @@ export interface IGetKeyByIdData {
         | {
             Name: string;
             MaxQuota: number;
-            QuotaRenewalRate: number;
+            QuotaRate: number;
             Rate: number;
             Per: number;
             ThrottleInterval: number;
