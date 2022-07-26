@@ -20,10 +20,10 @@ export default function ApiAccess() {
   const dispatch = useAppDispatch();
   const { id } = useParams();
   const requiredParameters: IPropsHelper = {
-    form: state.data.form!,
-    formProp: state.data.form.APIs!,
-    errors: state.data.errors!,
-    errorProp: state.data.errors?.PerApiLimit!,
+    form: state.data.form as any,
+    formProp: state.data.form.APIs as any,
+    errors: state.data.errors as any,
+    errorProp: state.data.errors?.PerApiLimit as any,
     prevState: policystate,
     propName: "APIs",
     setForm,
