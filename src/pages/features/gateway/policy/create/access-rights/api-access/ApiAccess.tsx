@@ -23,7 +23,7 @@ export default function ApiAccess() {
     form: state.data.form as any,
     formProp: state.data.form.APIs as any,
     errors: state.data.errors as any,
-    errorProp: state.data.errors?.PerApiLimit as any,
+    errorProp: state.data.errors?.PerApiLimit || {},
     prevState: policystate,
     propName: "APIs",
     setForm,
