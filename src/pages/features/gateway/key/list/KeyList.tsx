@@ -120,7 +120,7 @@ export default function KeyList() {
               <Button
                 variant="primary"
                 className="btn-danger"
-                onClick={() => handleDelete(DeleteKeyId!)}
+                onClick={() => handleDelete(DeleteKeyId as string)}
               >
                 Delete
               </Button>

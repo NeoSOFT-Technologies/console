@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal, Tab, Tabs } from "react-bootstrap";
 import { IKeyCreateState } from "../../../../../../store/features/gateway/key/create";
 import { emptyState } from "../../../../../../store/features/gateway/key/create/payload";
-import {
-  setForms,
-  // setFormErrors,
-} from "../../../../../../store/features/gateway/key/create/slice";
-// import { setForms } from "../../../../../../store/features/gateway/key/create/slice";
+import { setForms } from "../../../../../../store/features/gateway/key/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import ApplyPolicy from "./apply-policy/ApplyPolicy";
 import ChooseApi from "./choose-api/ChooseApi";
@@ -31,19 +27,10 @@ export default function AccessRights() {
   }, []);
   useEffect(() => {
     dispatch(setForms({ ...state.data.form, SelectedTabIndex }));
-    // if (SelectedTabIndex === "applyPolicy") {
-    //   dispatch(
-    //     setFormErrors({
-    //       ...state.data.errors,
-    //       PerApiLimit: [],
-    //     })
-    //   );
-    // }
   }, [SelectedTabIndex]);
   const handleCancel = () => {
     if (ClickedTabIndex === "applyPolicy") {
       setTabIndex("chooseApi");
-      // setForms({ ...state.data.form, SelectedTabIndex: a });
     } else {
       setTabIndex("applyPolicy");
     }
@@ -110,7 +97,7 @@ export default function AccessRights() {
               activeKey={SelectedTabIndex}
               id="uncontrolled-tab"
               // transition={false}
-              onSelect={(key) => handleOnTabSelect(key!)}
+              onSelect={(key) => handleOnTabSelect(key as string)}
               className="small" // mb-2
             >
               <Tab eventKey="applyPolicy" title="Apply Policy">

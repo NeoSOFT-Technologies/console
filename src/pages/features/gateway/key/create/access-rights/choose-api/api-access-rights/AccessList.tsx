@@ -54,7 +54,7 @@ export default function AccessList() {
           },
         ];
         dispatch(setForms({ ...state.data.form, AccessRights: list }));
-        const error = [...state.data.errors?.PerApiLimit!];
+        const error = [...(state.data.errors?.PerApiLimit as any[])];
         const perapierror = {
           ApiId: selectedApi.payload.Data.ApiId,
           ApiName: selectedApi.payload.Data.Name,
