@@ -35,101 +35,99 @@ export default function MutualTLS() {
     setCertId1("");
     setShow(false);
   };
+
+  const listObj = (obj: any) => {
+    return {
+      CertId: obj?.CertId,
+      Issuer: obj?.Issuer,
+      SignatureAlgorithm: obj?.SignatureAlgorithm,
+      Subject: obj?.Subject,
+      Thumbprint: obj?.Thumbprint,
+      ValidNotAfter: obj?.ValidNotAfter,
+      ValidNotBefore: obj?.ValidNotBefore,
+      showDetails: false,
+    };
+  };
   const mainCall = async () => {
     const result1 = await dispatch(getAllCertificate());
     if (updateState.data.form.CertIds.length > 0) {
-      for (let i = 0; i < updateState.data.form.CertIds.length; i++) {
-        const arr2 = updateState.data.form.CertIds[i];
+      // Look
+      for (const arr2 of updateState.data.form.CertIds) {
         const objCertState = result1.payload.CertificateCollection.find(
           (obj1: IGetAllCertificateData) => obj1.CertId === arr2
         );
-        const list = {
-          CertId: objCertState?.CertId,
-          Issuer: objCertState?.Issuer,
-          SignatureAlgorithm: objCertState?.SignatureAlgorithm,
-          Subject: objCertState?.Subject,
-          Thumbprint: objCertState?.Thumbprint,
-          ValidNotAfter: objCertState?.ValidNotAfter,
-          ValidNotBefore: objCertState?.ValidNotBefore,
-          showDetails: false,
-        };
+        const list = listObj(objCertState);
         const idAlreadyExist = certId.some((x: any) => x?.CertId === arr2);
         if (!idAlreadyExist) {
           certId.push(list);
         }
+        console.log("certid", certId);
       }
       setLoader(false);
     } else {
       setLoader(false);
     }
   };
+  const radioUploadCert = async () => {
+    let result: any;
+    if (fileName.name.includes(".pem")) {
+      const data = new FormData();
+      data.append("file", fileName);
+      result = await dispatch(addCertificate(data));
+
+      mainCall();
+      setFile("");
+      setFileName("");
+
+      if (result.meta.requestStatus === "rejected") {
+        ToastAlert(result.payload.message, "error");
+      } else if (result.meta.requestStatus === "fulfilled") {
+        ToastAlert("Certificate Added Successfully!!", "success");
+        handleClose();
+      }
+    } else {
+      ToastAlert("Please select the .pem file type", "error");
+      setFile("");
+      setFileName("");
+    }
+  };
+  function radioCertId() {
+    const certobjId = certificateState.data?.CertificateCollection;
+    const certIdExistCertState = certobjId?.some(
+      (x: any) => x?.CertId === certId1
+    );
+    if (certIdExistCertState) {
+      const certIdExistUpdateState =
+        updateState.data.form?.CertIds?.includes(certId1);
+      if (!certIdExistUpdateState) {
+        const arrUpdateState = [...updateState.data.form.CertIds, certId1];
+        dispatch(
+          setForm({ ...updateState.data.form, CertIds: arrUpdateState })
+        );
+        handleClose();
+      } else {
+        ToastAlert("Certificate already selected", "error");
+      }
+      const objCertState = certificateState.data?.CertificateCollection.find(
+        (obj1) => obj1.CertId === certId1
+      );
+      const list = listObj(objCertState);
+      const idAlreadyExist = certId.some((x: any) => x?.CertId === certId1);
+      if (!idAlreadyExist) {
+        setCertId([...certId, list]);
+      }
+    } else {
+      ToastAlert(`Certificate of Id ${certId1} is not available`, "error");
+    }
+  }
   const handleAddNewCertificate = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    let result: any;
     if (radio === "uploadCert") {
-      if (fileName.name.includes(".pem")) {
-        const data = new FormData();
-        data.append("file", fileName);
-        result = await dispatch(addCertificate(data));
-
-        mainCall();
-        setFile("");
-        setFileName("");
-
-        if (result.meta.requestStatus === "rejected") {
-          ToastAlert(result.payload.message, "error");
-        } else if (result.meta.requestStatus === "fulfilled") {
-          ToastAlert("Certificate Added Successfully!!", "success");
-          handleClose();
-        }
-      } else {
-        ToastAlert("Please select the .pem file type", "error");
-        setFile("");
-        setFileName("");
-      }
+      radioUploadCert();
     } else {
-      const certobjId = certificateState.data?.CertificateCollection;
-      const certIdExistCertState = certobjId!.some(
-        (x: any) => x?.CertId === certId1
-      );
-      if (certIdExistCertState) {
-        const certIdExistUpdateState =
-          updateState.data.form?.CertIds?.includes(certId1);
-        if (!certIdExistUpdateState) {
-          const arrUpdateState = [...updateState.data.form.CertIds, certId1];
-          dispatch(
-            setForm({ ...updateState.data.form, CertIds: arrUpdateState })
-          );
-          handleClose();
-        } else {
-          ToastAlert("Certificate already selected", "error");
-        }
-        const objCertState = certificateState.data!.CertificateCollection.find(
-          (obj1) => obj1.CertId === certId1
-        );
-        const list = {
-          CertId: objCertState?.CertId,
-          Issuer: objCertState?.Issuer,
-          SignatureAlgorithm: objCertState?.SignatureAlgorithm,
-          Subject: objCertState?.Subject,
-          Thumbprint: objCertState?.Thumbprint,
-          ValidNotAfter: objCertState?.ValidNotAfter,
-          ValidNotBefore: objCertState?.ValidNotBefore,
-          showDetails: false,
-        };
-        const idAlreadyExist = certId.some((x: any) => x?.CertId === certId1);
-        if (!idAlreadyExist) {
-          setCertId([...certId, list]);
-        }
-      } else {
-        ToastAlert(
-          "Certificate of Id " + certId1 + " is not available",
-          "error"
-        );
-      }
-
+      radioCertId();
       setCertId1("");
     }
   };
@@ -152,7 +150,7 @@ export default function MutualTLS() {
     setCertId1(value);
   };
   const handlefile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFileName(e.target.files![0]);
+    setFileName(e.target.files?.item(0)); // look
     setFile(e.target.value);
   };
   const deletetheFile = (
@@ -168,7 +166,7 @@ export default function MutualTLS() {
   ) => {
     e.preventDefault();
     const certobjId =
-      certificateState.data?.CertificateCollection[index]?.CertId!;
+      certificateState.data?.CertificateCollection[index]?.CertId || ""; // Look
     const certIdExistUpdateState =
       updateState.data.form?.CertIds?.includes(certobjId);
     if (!certIdExistUpdateState) {
@@ -177,22 +175,7 @@ export default function MutualTLS() {
         certificateState.data?.CertificateCollection[index].CertId,
       ];
       dispatch(setForm({ ...updateState.data.form, CertIds: arrUpdateState }));
-
-      const list = {
-        CertId: certificateState.data?.CertificateCollection[index]?.CertId,
-        Issuer: certificateState.data?.CertificateCollection[index]?.Issuer,
-        SignatureAlgorithm:
-          certificateState.data?.CertificateCollection[index]
-            ?.SignatureAlgorithm,
-        Subject: certificateState.data?.CertificateCollection[index]?.Subject,
-        Thumbprint:
-          certificateState.data?.CertificateCollection[index]?.Thumbprint,
-        ValidNotAfter:
-          certificateState.data?.CertificateCollection[index]?.ValidNotAfter,
-        ValidNotBefore:
-          certificateState.data?.CertificateCollection[index]?.ValidNotBefore,
-        showDetails: false,
-      };
+      const list = listObj(certificateState.data?.CertificateCollection[index]);
       const idAlreadyExist = certId.some((x: any) => x?.CertId === certobjId);
       if (!idAlreadyExist) {
         certId.push(list);
@@ -202,7 +185,7 @@ export default function MutualTLS() {
     }
   };
   const handleMinusButton = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    _e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     index: number
   ) => {
     const row = [...updateState.data.form.CertIds];
@@ -217,7 +200,7 @@ export default function MutualTLS() {
     index: number
   ) => {
     e.preventDefault();
-    const data = [...certificateState.data?.CertificateCollection!];
+    const data = [...(certificateState.data?.CertificateCollection || [])]; // Look
     data[index] = {
       ...data[index],
       showDetails: !data[index].showDetails,
@@ -237,7 +220,23 @@ export default function MutualTLS() {
     };
     setCertId(data);
   };
-
+  function certDetails(certObj: any, index: any) {
+    return certObj[index].showDetails ? (
+      <div>
+        <label>Issuer Common Name : {certObj[index].Issuer.slice(3, 12)}</label>
+        <br />
+        <label>
+          Subject Common Name : {certObj[index].Subject.slice(3, 12)}
+        </label>
+        <br />
+        <label>Not Before : {certObj[index].ValidNotAfter}</label>
+        <br />
+        <label>Not After : {certObj[index].ValidNotBefore}</label>
+      </div>
+    ) : (
+      <></>
+    );
+  }
   return (
     <div>
       <>
@@ -251,11 +250,6 @@ export default function MutualTLS() {
             current keys working for this API."
           />
         </Col>
-        {/* <div className="border rounded p-2">
-          Changing the Authentication mode on an active API can have severe
-          consequences for your users. Please be aware that this will stop the
-          current keys working for this API.
-        </div> */}
         <br />
         <br />
         <p>
@@ -401,44 +395,9 @@ export default function MutualTLS() {
                                 {data.CertId}
                                 <br />
                                 <br />
-                                {certificateState.data?.CertificateCollection[
+                                {certDetails(
+                                  certificateState.data?.CertificateCollection,
                                   index
-                                ].showDetails ? (
-                                  <div>
-                                    <label>
-                                      Issuer Common Name :{" "}
-                                      {certificateState.data?.CertificateCollection[
-                                        index
-                                      ].Issuer.slice(3, 12)}
-                                    </label>
-                                    <br />
-                                    <label>
-                                      Subject Common Name :{" "}
-                                      {certificateState.data?.CertificateCollection[
-                                        index
-                                      ].Subject.slice(3, 12)}
-                                    </label>
-                                    <br />
-                                    <label>
-                                      Not Before :{" "}
-                                      {
-                                        certificateState.data
-                                          ?.CertificateCollection[index]
-                                          .ValidNotAfter
-                                      }
-                                    </label>
-                                    <br />
-                                    <label>
-                                      Not After :{" "}
-                                      {
-                                        certificateState.data
-                                          ?.CertificateCollection[index]
-                                          .ValidNotBefore
-                                      }
-                                    </label>
-                                  </div>
-                                ) : (
-                                  <></>
                                 )}
                               </label>
                             </td>
@@ -511,31 +470,7 @@ export default function MutualTLS() {
                                 <br />
                                 {certId.length ===
                                 updateState.data.form.CertIds.length ? (
-                                  certId[index].showDetails ? (
-                                    <div>
-                                      <label>
-                                        Issuer Common Name :{" "}
-                                        {certId[index].Issuer.slice(3, 12)}
-                                      </label>
-                                      <br />
-                                      <label>
-                                        Subject Common Name :{" "}
-                                        {certId[index].Subject.slice(3, 12)}
-                                      </label>
-                                      <br />
-                                      <label>
-                                        Not Before :{" "}
-                                        {certId[index].ValidNotAfter}
-                                      </label>
-                                      <br />
-                                      <label>
-                                        Not After :{" "}
-                                        {certId[index].ValidNotBefore}
-                                      </label>
-                                    </div>
-                                  ) : (
-                                    <></>
-                                  )
+                                  certDetails(certId, index)
                                 ) : (
                                   <></>
                                 )}
@@ -553,30 +488,24 @@ export default function MutualTLS() {
                                 <i className="bi bi-dash"></i>
                               </button>
                             </td>
-                            {certId.length > 0 &&
-                            certId.length ===
-                              updateState.data.form.CertIds.length ? (
-                              <td>
-                                <button
-                                  type="button"
-                                  data-testid="handleDropRight-table"
-                                  className="btn"
-                                  onClick={(e: any) =>
-                                    handleDropRightTable(e, index)
-                                  }
-                                >
-                                  <i
-                                    className={`${
-                                      certId[index].showDetails
-                                        ? "bi bi-chevron-up"
-                                        : "bi bi-chevron-down"
-                                    }`}
-                                  ></i>
-                                </button>
-                              </td>
-                            ) : (
-                              <></>
-                            )}
+                            <td>
+                              <button
+                                type="button"
+                                data-testid="handleDropRight-table"
+                                className="btn"
+                                onClick={(e: any) =>
+                                  handleDropRightTable(e, index)
+                                }
+                              >
+                                <i
+                                  className={`${
+                                    certId[index].showDetails
+                                      ? "bi bi-chevron-up"
+                                      : "bi bi-chevron-down"
+                                  }`}
+                                ></i>
+                              </button>
+                            </td>
                           </tr>
                         );
                       }

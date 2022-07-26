@@ -13,7 +13,6 @@ export default function Policies() {
         Array.isArray(state.data.form.Policies) ? (
           (state.data.form.Policies as any[]).map(
             (data: any, index: number) => {
-              // const { policies } = data;
               return (
                 <div key={index}>
                   <GlobalLimit

@@ -57,7 +57,7 @@ export default function AccessList() {
             },
           },
         ];
-        const error = [...state.data.errors?.PerApiLimit!];
+        const error = [...(state.data.errors?.PerApiLimit as any[])];
         const perapierror = {
           ApiId: selectedApi.payload.Data.ApiId,
           ApiName: selectedApi.payload.Data.Name,

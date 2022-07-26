@@ -1,20 +1,22 @@
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import React from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
 import Spinner from "../../../../../components/loader/Loader";
 import { regexForNumber } from "../../../../../resources/gateway/api/api-constants";
 import { IPropsHelper, setFormValue, setLabel } from "./rate-limit-helper";
 export default function GlobalLimitApi(props: IPropsHelper) {
-  const perapi = [...props.errorProp!];
+  const perapi = [...(props.errorProp || [])]; // look
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    perapi[props.index!] = {
-      ...perapi[props.index!],
+    perapi[props.index || 0] = {
+      // look
+      ...perapi[props.index || 0], // look
       [name]: regexForNumber.test(value) ? "" : "Enter only Numbers",
     };
 
     props.dispatch(
-      props.setFormError!({
+      (props.setFormError as ActionCreatorWithPayload<any, string>)({
         ...props.errors,
         PerApiLimit: perapi,
       })
@@ -25,12 +27,12 @@ export default function GlobalLimitApi(props: IPropsHelper) {
     event.preventDefault();
     validateForm(event);
 
-    const value = props.index!;
-    const apisList = [...props.formProp!];
+    const value = props.index || 0; // look
+    const apisList = [...(props.formProp || [])]; // look
     const fieldName = event.target.getAttribute("name");
     const fieldValue = event.target.value;
     const newFormData: any = {
-      ...props.formProp[props.index!].Limit!,
+      ...props.formProp[props.index || 0].Limit, // look
     };
     switch (fieldName) {
       case "Rate":
@@ -58,16 +60,22 @@ export default function GlobalLimitApi(props: IPropsHelper) {
       Limit: { ...newFormData },
     };
     props.dispatch(
-      props.setForm!({
+      (props.setForm as ActionCreatorWithPayload<any, string>)({
         ...props.form,
-        [props.propName!]: apisList,
+        [props.propName || ""]: apisList, // look
       })
     );
   };
 
+  function getValue(value: any) {
+    return props.formProp[props.index || 0]?.Limit[value] === -1
+      ? `Disabled ${value}`
+      : props.formProp[props.index || 0]?.Limit[value];
+  }
+  const valueError = props.errorProp[props.index || 0];
   return (
     <>
-      {props.errorProp!.length! > 0 ? (
+      {props.errorProp?.length > 0 ? ( // look
         <div className="card">
           <Accordion defaultActiveKey="0">
             <Accordion.Item eventKey="0">
@@ -79,7 +87,7 @@ export default function GlobalLimitApi(props: IPropsHelper) {
                       <Form.Group className="mt-6">
                         <Form.Label>
                           {setLabel({
-                            index: props.index!,
+                            index: props.index || 0, // look
                             formProp: props.formProp,
                           })}
                         </Form.Label>
@@ -99,7 +107,7 @@ export default function GlobalLimitApi(props: IPropsHelper) {
                           label="Disable rate limiting"
                           className="ml-4"
                           checked={
-                            props.formProp[props.index!]?.Limit?.Rate! === -1
+                            props.formProp[props.index || 0]?.Limit?.Rate === -1 // look
                           }
                           onChange={(e: any) => setFormValue(props, e)}
                         />
@@ -111,24 +119,20 @@ export default function GlobalLimitApi(props: IPropsHelper) {
                           type="text"
                           id="Rate"
                           required
-                          value={
-                            props.formProp[props.index!]?.Limit?.Rate === -1
-                              ? "Disabled Rate"
-                              : props.formProp[props.index!]?.Limit?.Rate
-                          }
+                          value={getValue("Rate")}
                           placeholder="Enter Request per period"
                           // onChange={(e: any) => validateForm(e)}
                           onChange={(e: any) => handlerateclick(e)}
                           name="Rate"
-                          isInvalid={!!props.errorProp[props.index!].Rate}
-                          isValid={!props.errorProp[props.index!].Rate}
+                          isInvalid={!!valueError.Rate}
+                          isValid={!valueError.Rate} // look
                           disabled={
-                            props.formProp[props.index!].Limit?.Rate! === -1
+                            props.formProp[props.index || 0].Limit?.Rate === -1 // look
                           }
                         />
                         <Form.Control.Feedback type="invalid">
                           {" "}
-                          {props.errorProp[props.index!].Rate}
+                          {valueError.Rate}
                         </Form.Control.Feedback>
                         <Form.Label className="mt-3">Per (Seconds)</Form.Label>
                         <br />
@@ -139,19 +143,15 @@ export default function GlobalLimitApi(props: IPropsHelper) {
                           placeholder="Enter time"
                           onChange={(e: any) => handlerateclick(e)}
                           name="Per"
-                          value={
-                            props.formProp[props.index!]?.Limit?.Per === -1
-                              ? "Disabled Rate"
-                              : props.formProp[props.index!]?.Limit?.Per
-                          }
-                          isInvalid={!!props.errorProp[props.index!].Per}
-                          isValid={!props.errorProp[props.index!].Per}
+                          value={getValue("Per")}
+                          isInvalid={!!valueError.Per}
+                          isValid={!valueError.Per}
                           disabled={
-                            props.formProp[props.index!].Limit?.Per! === -1
+                            props.formProp[props.index || 0].Limit?.Per === -1 // look
                           }
                         />
                         <Form.Control.Feedback type="invalid">
-                          {props.errorProp[props.index!].Per}
+                          {valueError.Per}
                         </Form.Control.Feedback>
                       </Form.Group>
                     </Col>
@@ -166,8 +166,8 @@ export default function GlobalLimitApi(props: IPropsHelper) {
                           name="Throttling.IsDisabled"
                           label="Disable Throttling"
                           checked={
-                            props.formProp[props.index!]?.Limit
-                              ?.Throttle_retry_limit! === -1
+                            props.formProp[props.index || 0]?.Limit // look
+                              ?.Throttle_retry_limit === -1 // look
                           }
                           className="ml-4"
                           onChange={(e: any) => setFormValue(props, e)}
@@ -180,30 +180,23 @@ export default function GlobalLimitApi(props: IPropsHelper) {
                           className="mt-2"
                           type="text"
                           id="retry"
-                          value={
-                            props.formProp[props.index!]?.Limit
-                              ?.Throttle_retry_limit === -1
-                              ? "Disabled Rate"
-                              : props.formProp[props.index!]?.Limit
-                                  ?.Throttle_retry_limit
-                          }
+                          value={getValue("Throttle_retry_limit")}
                           placeholder="Enter per request"
                           name="ThrottleRetries"
                           onChange={(e: any) => handlerateclick(e)}
-                          // value={throttleDefault}ThrottleRetries
                           isInvalid={
-                            !!props.errorProp[props.index!].ThrottleRetries
+                            !!valueError.ThrottleRetries // look
                           }
                           isValid={
-                            !props.errorProp[props.index!].ThrottleRetries
+                            !valueError.ThrottleRetries // look
                           }
                           disabled={
-                            props.formProp[props.index!].Limit
-                              ?.Throttle_retry_limit! === -1
+                            props.formProp[props.index || 0].Limit // look
+                              ?.Throttle_retry_limit === -1 // look
                           }
                         />
                         <Form.Control.Feedback type="invalid">
-                          {props.errorProp[props.index!].ThrottleRetries}
+                          {valueError.ThrottleRetries}
                         </Form.Control.Feedback>
                         <Form.Label className="mt-3">
                           Throttle interval
@@ -214,28 +207,22 @@ export default function GlobalLimitApi(props: IPropsHelper) {
                           type="text"
                           id="interval"
                           name="ThrottleInterval"
-                          value={
-                            props.formProp[props.index!]?.Limit
-                              ?.Throttle_interval === -1
-                              ? "Disabled Rate"
-                              : props.formProp[props.index!]?.Limit
-                                  ?.Throttle_interval
-                          }
+                          value={getValue("Throttle_interval")}
                           placeholder="Enter per request"
                           onChange={(e: any) => handlerateclick(e)}
                           isInvalid={
-                            !!props.errorProp[props.index!].ThrottleInterval
+                            !!valueError.ThrottleInterval // look
                           }
                           isValid={
-                            !props.errorProp[props.index!].ThrottleInterval
+                            !valueError.ThrottleInterval // look
                           }
                           disabled={
-                            props.formProp[props.index!].Limit
-                              ?.Throttle_interval! === -1
+                            props.formProp[props.index || 0].Limit // look
+                              ?.Throttle_interval === -1 // look
                           }
                         />
                         <Form.Control.Feedback type="invalid">
-                          {props.errorProp[props.index!].ThrottleInterval}
+                          {valueError.ThrottleInterval}
                         </Form.Control.Feedback>
                       </Form.Group>
                     </Col>
@@ -250,7 +237,8 @@ export default function GlobalLimitApi(props: IPropsHelper) {
                           name="unlimitedRequests.IsDisabled"
                           label="Unlimited requests"
                           checked={
-                            props.formProp[props.index!]?.Limit?.Quota_max! ===
+                            props.formProp[props.index || 0]?.Limit // look
+                              ?.Quota_max === // look
                             -1
                           }
                           className="ml-4"
@@ -267,22 +255,18 @@ export default function GlobalLimitApi(props: IPropsHelper) {
                           placeholder="Enter per period request"
                           onChange={(e: any) => handlerateclick(e)}
                           name="Quota"
-                          value={
-                            props.formProp[props.index!]?.Limit?.Quota_max ===
-                            -1
-                              ? "Disabled Rate"
-                              : props.formProp[props.index!]?.Limit?.Quota_max
-                          }
-                          isInvalid={!!props.errorProp[props.index!].Quota}
-                          isValid={!props.errorProp[props.index!].Quota}
+                          value={getValue("Quota_max")}
+                          isInvalid={!!valueError.Quota} // look
+                          isValid={!valueError.Quota} // look
                           disabled={
-                            props.formProp[props.index!].Limit?.Quota_max! ===
+                            props.formProp[props.index || 0].Limit // look
+                              ?.Quota_max === // look
                             -1
                           }
                         />
                         <Form.Control.Feedback type="invalid">
                           {" "}
-                          {props.errorProp[props.index!].Quota}
+                          {valueError.Quota}
                         </Form.Control.Feedback>
                         <Form.Label className="mt-3">
                           Quota resets every
@@ -291,17 +275,11 @@ export default function GlobalLimitApi(props: IPropsHelper) {
                           className="mt-2"
                           style={{ height: 46 }}
                           disabled={
-                            props.formProp[props.index!].Limit?.Quota_max! ===
-                            -1
+                            props.formProp[props.index || 0].Limit // look
+                              ?.Quota_max === -1 // look
                           }
                           name="Quota_renewal_rate"
-                          value={
-                            props.formProp[props.index!]?.Limit
-                              ?.Quota_renewal_rate === -1
-                              ? "Disabled Rate"
-                              : props.formProp[props.index!]?.Limit
-                                  ?.Quota_renewal_rate
-                          }
+                          value={getValue("Quota_renewal_rate")}
                           onChange={(e: any) => handlerateclick(e)}
                         >
                           <option value={0}>never</option>
