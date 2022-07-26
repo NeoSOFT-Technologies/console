@@ -117,7 +117,7 @@ export default function MutualTLS() {
         setCertId([...certId, list]);
       }
     } else {
-      ToastAlert("Certificate of Id " + certId1 + " is not available", "error");
+      ToastAlert(`Certificate of Id ${certId1} is not available`, "error");
     }
   }
   const handleAddNewCertificate = async (
