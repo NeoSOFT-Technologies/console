@@ -40,18 +40,20 @@ export default function PathBased(props: IProps) {
   });
   const newFormData: any = { ...Limits };
   const commonFunc = (obj: any, propName: any, _setLimit?: boolean) => {
-    const apisList = [...props.requiredInterface.formProp!];
+    const apisList = [...(props.requiredInterface.formProp || [])];
     if (_setLimit) {
       setLimits(obj);
     }
-    apisList[props.requiredInterface.index!] = {
-      ...apisList[props.requiredInterface.index!],
+    apisList[props.requiredInterface.index || 0] = {
+      ...apisList[props.requiredInterface.index || 0],
       [propName]: obj,
     };
     props.requiredInterface.dispatch(
-      props.requiredInterface.setForm!({
+      (
+        props.requiredInterface.setForm as ActionCreatorWithPayload<any, string>
+      )({
         ...props.requiredInterface.form,
-        [props.requiredInterface.propName!]: apisList,
+        [props.requiredInterface.propName as string]: apisList,
       })
     );
   };
@@ -71,7 +73,7 @@ export default function PathBased(props: IProps) {
 
   const { id } = useParams();
   const formObj: any =
-    props.requiredInterface.formProp[props.requiredInterface.index!];
+    props.requiredInterface.formProp[props.requiredInterface.index as number];
   function setfieldsvalues(isActiveApis: any) {
     if (id === undefined) {
       if (isActiveApis === false) {
@@ -99,22 +101,28 @@ export default function PathBased(props: IProps) {
       setNull();
     } else {
       if (
-        props.requiredInterface.formProp[props.requiredInterface.index!]
-          .Limit !== undefined
+        props.requiredInterface.formProp[
+          props.requiredInterface.index as number
+        ].Limit !== undefined
       ) {
         if (
-          props.requiredInterface.formProp[props.requiredInterface.index!]
-            .Limit !== null
+          props.requiredInterface.formProp[
+            props.requiredInterface.index as number
+          ].Limit !== null
         ) {
           if (
-            props.requiredInterface.formProp[props.requiredInterface.index!]
-              .Limit?.Rate === -1 &&
-            props.requiredInterface.formProp[props.requiredInterface.index!]
-              .Limit?.Per === -1 &&
-            props.requiredInterface.formProp[props.requiredInterface.index!]
-              .Limit?.Throttle_retry_limit === -1 &&
-            props.requiredInterface.formProp[props.requiredInterface.index!]
-              .Limit?.Quota_max === -1
+            props.requiredInterface.formProp[
+              props.requiredInterface.index as number
+            ].Limit?.Rate === -1 &&
+            props.requiredInterface.formProp[
+              props.requiredInterface.index as number
+            ].Limit?.Per === -1 &&
+            props.requiredInterface.formProp[
+              props.requiredInterface.index as number
+            ].Limit?.Throttle_retry_limit === -1 &&
+            props.requiredInterface.formProp[
+              props.requiredInterface.index as number
+            ].Limit?.Quota_max === -1
           ) {
             setNull();
             setisActiveApi(false);
@@ -132,14 +140,20 @@ export default function PathBased(props: IProps) {
   }, [id]);
 
   useEffect(() => {
-    id === undefined
-      ? setisActive(false)
-      : props.requiredInterface.formProp[props.requiredInterface.index!]!
-          .AllowedUrls !== undefined &&
-        props.requiredInterface.formProp[props.requiredInterface.index!]!
-          .AllowedUrls.length > 0
-      ? setisActive(true)
-      : setisActive(false);
+    if (id === undefined) {
+      setisActive(false);
+    } else {
+      (
+        props.requiredInterface.formProp[props.requiredInterface.index || 0] ||
+        []
+      ).AllowedUrls !== undefined &&
+      (
+        props.requiredInterface.formProp[props.requiredInterface.index || 0] ||
+        []
+      ).AllowedUrls.length > 0
+        ? setisActive(true)
+        : setisActive(false);
+    }
   }, []);
 
   const setPathPermission = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,19 +179,27 @@ export default function PathBased(props: IProps) {
         setversion([...versions, value]);
       }
       const apisLists = [...props.requiredInterface.formProp];
-      const version = [...apisLists[props.requiredInterface.index!].Versions!];
+      const version = [
+        ...(apisLists[props.requiredInterface.index as number]
+          .Versions as any[]),
+      ];
       const checkexisting = version.includes(value);
       if (!checkexisting) {
         version.push(value);
       }
-      apisLists[props.requiredInterface.index!] = {
-        ...apisLists[props.requiredInterface.index!],
+      apisLists[props.requiredInterface.index as number] = {
+        ...apisLists[props.requiredInterface.index as number],
         Versions: [...version],
       };
       props.requiredInterface.dispatch(
-        props.requiredInterface.setForm!({
+        (
+          props.requiredInterface.setForm as ActionCreatorWithPayload<
+            any,
+            string
+          >
+        )({
           ...props.requiredInterface.form,
-          [props.requiredInterface.propName!]: apisLists,
+          [props.requiredInterface.propName as string]: apisLists,
         })
       );
     }
@@ -190,22 +212,26 @@ export default function PathBased(props: IProps) {
     setversion(rows);
 
     const apisLists = [...props.requiredInterface.formProp];
-    const version = [...apisLists[props.requiredInterface.index!].Versions!];
+    const version = [
+      ...(apisLists[props.requiredInterface.index as number].Versions as any[]),
+    ];
     version.splice(index, 1);
-    apisLists[props.requiredInterface.index!] = {
-      ...apisLists[props.requiredInterface.index!],
+    apisLists[props.requiredInterface.index as number] = {
+      ...apisLists[props.requiredInterface.index as number],
       Versions: [...version],
     };
     props.requiredInterface.dispatch(
-      props.requiredInterface.setForm!({
+      (
+        props.requiredInterface.setForm as ActionCreatorWithPayload<any, string>
+      )({
         ...props.requiredInterface.form,
-        [props.requiredInterface.propName!]: apisLists,
+        [props.requiredInterface.propName as string]: apisLists,
       })
     );
   };
   const removeAccess = (event: any, index: any) => {
     event.preventDefault();
-    if (props.requiredInterface.formProp!.length > 0) {
+    if ((props.requiredInterface.formProp as any[]).length > 0) {
       // const removeApi = [...props.requiredInterface.formProp!];
       // removeApi.splice(index, 1);
       // props.requiredInterface.dispatch(
@@ -225,9 +251,9 @@ export default function PathBased(props: IProps) {
     }
     if (
       props.requiredInterface.form !== undefined &&
-      props.requiredInterface.formProp!.length > 0
+      (props.requiredInterface.formProp || []).length > 0
     ) {
-      const removeApi = [...props.requiredInterface.formProp!];
+      const removeApi = [...(props.requiredInterface.formProp || [])];
       const rowId =
         props.requiredInterface.formProp[index]?.Id +
         "," +
@@ -240,21 +266,59 @@ export default function PathBased(props: IProps) {
       removeApi.splice(index, 1);
       ToastAlert(`${ApiName} removed`, "warning");
       props.requiredInterface.dispatch(
-        props.requiredInterface.setForm!({
+        (
+          props.requiredInterface.setForm as ActionCreatorWithPayload<
+            any,
+            string
+          >
+        )({
           ...props.requiredInterface.form,
-          [props.requiredInterface.propName!]: removeApi,
+          [props.requiredInterface.propName as string]: removeApi,
         })
       );
-      const error = [...props.requiredInterface.errorProp!];
+      const error = [...(props.requiredInterface.errorProp || [])];
       error.splice(index, 1);
       props.requiredInterface.dispatch(
-        props.requiredInterface.setFormError!({
+        (
+          props.requiredInterface.setFormError as ActionCreatorWithPayload<
+            any,
+            string
+          >
+        )({
           ...props.requiredInterface.errors,
           PerApiLimit: error,
         })
       );
     }
   };
+  function deleteFunction() {
+    return props.requiredInterface.form !== undefined &&
+      props.requiredInterface.formProp[props.requiredInterface.index as number]
+        .Versions?.length > 0 ? (
+      <div
+        style={{ width: "100%" }}
+        className="float-lg-left border rounded p-4"
+      >
+        {props.requiredInterface.formProp[
+          props.requiredInterface.index as number
+        ].Versions.map((data: any, index: number) => {
+          return (
+            <div key={index} className="border-0">
+              <i
+                className="bi bi-x-circle-fill float-left"
+                style={{ marginLeft: 30 }}
+                onClick={(e: any) => deleteversion(e, index)}
+              >
+                &nbsp;&nbsp;{data}
+              </i>
+            </div>
+          );
+        })}
+      </div>
+    ) : (
+      ""
+    );
+  }
   return (
     <div>
       {props.requiredInterface.form?.loading ? (
@@ -264,19 +328,20 @@ export default function PathBased(props: IProps) {
           <Accordion
             defaultActiveKey="0"
             id={
-              props.requiredInterface.formProp[props.requiredInterface.index!]
-                .Name
+              props.requiredInterface.formProp[
+                props.requiredInterface.index as number
+              ].Name
             }
           >
             <Accordion.Item eventKey="0">
               <div style={{ display: "inline-flex", width: "100%" }}>
                 <AccordionButton>
                   {props.requiredInterface.formProp[
-                    props.requiredInterface.index!
+                    props.requiredInterface.index as number
                   ].ApiName +
                     " | " +
                     props.requiredInterface.formProp[
-                      props.requiredInterface.index!
+                      props.requiredInterface.index as number
                     ].AuthType}
                 </AccordionButton>
                 <button
@@ -304,7 +369,7 @@ export default function PathBased(props: IProps) {
                             --- Select Versions ---
                           </option>
                           {props.requiredInterface.formProp[
-                            props.requiredInterface.index!
+                            props.requiredInterface.index as number
                           ].MasterVersions?.map(
                             (datalist: any, index: number) => {
                               return (
@@ -319,35 +384,7 @@ export default function PathBased(props: IProps) {
                     </Col>
                   </Row>
                   <Row>
-                    <Col md="12">
-                      {props.requiredInterface.form !== undefined &&
-                      props.requiredInterface.formProp[
-                        props.requiredInterface.index!
-                      ].Versions?.length > 0 ? (
-                        <div
-                          style={{ width: "100%" }}
-                          className="float-lg-left border rounded p-4"
-                        >
-                          {props.requiredInterface.formProp[
-                            props.requiredInterface.index!
-                          ].Versions.map((data: any, index: any) => {
-                            return (
-                              <div key={index} className="border-0">
-                                <i
-                                  className="bi bi-x-circle-fill float-left"
-                                  style={{ marginLeft: 30 }}
-                                  onClick={(e: any) => deleteversion(e, index)}
-                                >
-                                  &nbsp;&nbsp;{data}
-                                </i>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                    </Col>
+                    <Col md="12">{deleteFunction()}</Col>
                   </Row>
                   <div className="w-100 p-3 border rounded mt-3">
                     <Row>
@@ -367,50 +404,60 @@ export default function PathBased(props: IProps) {
                         </Form.Group>
                       </Col>
                       <Col md="12">
-                        <Form.Group className="mt-6">
-                          <Form.Label>
-                            {" "}
-                            This Api with inherit the Global Limit settings
-                            above unless per Api limits and quotas are set here.
-                          </Form.Label>
-                        </Form.Group>
-                        {isActiveApi
-                          ? GlobalLimitApi(props.requiredInterface)
-                          : " "}
+                        <>
+                          <Form.Group className="mt-6">
+                            <Form.Label>
+                              {" "}
+                              This Api with inherit the Global Limit settings
+                              above unless per Api limits and quotas are set
+                              here.
+                            </Form.Label>
+                          </Form.Group>
+                          {(() => {
+                            return isActiveApi
+                              ? GlobalLimitApi(props.requiredInterface)
+                              : " ";
+                          })()}
+                        </>
                       </Col>
                     </Row>
                   </div>
                   <div className="w-100 p-3 mt-3 border rounded">
                     <Row>
-                      <Col md="12">
-                        <Form.Group className="mt-6">
-                          <Form.Label>
-                            <b>Path Based Permission</b>
-                          </Form.Label>
-                          <Form.Check
-                            className="float-lg-end"
-                            type="switch"
-                            name="isActive"
-                            onChange={setPathPermission}
-                            checked={isActive}
-                            id="isActive"
-                          />
-                        </Form.Group>
-                      </Col>
-                      <Col md="12">
-                        <Form.Group className="mt-6">
-                          <Form.Label>
-                            {" "}
-                            Restrict access on per-path and per method basis to
-                            only allow access to specific portion of the API.
-                          </Form.Label>
-                        </Form.Group>
-                      </Col>
-                      {isActive ? (
-                        <Ipathpermission r={props.requiredInterface} />
-                      ) : (
-                        " "
-                      )}
+                      <>
+                        <Col md="12">
+                          <Form.Group className="mt-6">
+                            <Form.Label>
+                              <b>Path Based Permission</b>
+                            </Form.Label>
+                            <Form.Check
+                              className="float-lg-end"
+                              type="switch"
+                              name="isActive"
+                              onChange={setPathPermission}
+                              checked={isActive}
+                              id="isActive"
+                            />
+                          </Form.Group>
+                        </Col>
+                        <Col md="12">
+                          <Form.Group className="mt-6">
+                            <Form.Label>
+                              {" "}
+                              Restrict access on per-path and per method basis
+                              to only allow access to specific portion of the
+                              API.
+                            </Form.Label>
+                          </Form.Group>
+                        </Col>
+                        {(() => {
+                          return isActive ? (
+                            <Ipathpermission r={props.requiredInterface} />
+                          ) : (
+                            " "
+                          );
+                        })()}
+                      </>
                     </Row>
                   </div>
                 </div>
