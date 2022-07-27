@@ -15,8 +15,8 @@ export const createKey = createAsyncThunk(
     try {
       const response = await addKeyService(data);
       return response.data;
-    } catch (error_) {
-      const myError = error_ as Error | AxiosError;
+    } catch (_error) {
+      const myError = _error as Error | AxiosError;
       throw axios.isAxiosError(myError) && myError.response
         ? myError.response.data.Errors[0]
         : myError.message;
@@ -38,8 +38,8 @@ export const getKeyById = createAsyncThunk(
       };
 
       return response.data;
-    } catch (error_) {
-      const myError = error_ as Error | AxiosError;
+    } catch (_error) {
+      const myError = _error as Error | AxiosError;
       throw axios.isAxiosError(myError) && myError.response
         ? myError.response.data.Errors[0]
         : myError.message;
@@ -54,8 +54,8 @@ export const updateKey = createAsyncThunk(
       const response = await updateKeyService(data);
       //
       return response.data;
-    } catch (error__) {
-      const myError = error__ as Error | AxiosError;
+    } catch (_error) {
+      const myError = _error as Error | AxiosError;
       throw axios.isAxiosError(myError) && myError.response
         ? myError.response.data.Errors[0]
         : myError.message;

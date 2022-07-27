@@ -16,8 +16,8 @@ export const deleteKey = createAsyncThunk(
     try {
       const response = await deleteKeyService(Id);
       return response.data;
-    } catch (error_) {
-      const myError = error_ as Error | AxiosError;
+    } catch (_error) {
+      const myError = _error as Error | AxiosError;
       throw axios.isAxiosError(myError) && myError.response
         ? myError.response.data.Errors[0]
         : myError.message;
