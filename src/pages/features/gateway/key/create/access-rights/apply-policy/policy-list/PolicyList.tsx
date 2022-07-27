@@ -49,7 +49,7 @@ export default function PolicyList() {
     let policyApis: any[] = [];
     const x = accessPolicyList.data?.Policies.find((item) => item.Id === Id);
     policyApis = x?.Apis as string[];
-    const deletedRecord = PolicyId + "," + policyApis;
+    const deletedRecord = `${PolicyId},${policyApis}`;
 
     setdeletedRow(deletedRecord);
   };
@@ -71,26 +71,31 @@ export default function PolicyList() {
     ).filter(
       (a) =>
         a.AuthType !== "keyless" &&
-        !StateKey.data.form.Policies.includes(a.Id!) &&
+        !StateKey.data.form.Policies.includes(a.Id as string) &&
         !apis.some((i) => i.name.some((name) => a.Apis.includes(name)))
     );
-    const selectedlistPolicies = accessPolicyList.data?.Policies!.filter(
+    const selectedlistPolicies = (accessPolicyList.data?.Policies || []).filter(
       (a) =>
-        a.AuthType !== "keyless" && StateKey.data.form.Policies.includes(a.Id!)
+        a.AuthType !== "keyless" &&
+        StateKey.data.form.Policies.includes(a.Id as string)
     );
-    for (const item of selectedlistPolicies!) {
+    for (const item of selectedlistPolicies || []) {
       policyId.push(item);
     }
-    for (const item of listPolicies!) {
+    for (const item of listPolicies || []) {
       policyId.push(item);
     }
 
     return policyId;
   }
   function DataState(state: string) {
-    if (state === "active") return "Active";
-    else if (state === "deny") return "Access Denied";
-    else return "Draft";
+    if (state === "active") {
+      return "Active";
+    } else if (state === "deny") {
+      return "Access Denied";
+    } else {
+      return "Draft";
+    }
   }
   function bindPolicyList() {
     let bindList = [];
@@ -220,8 +225,9 @@ export default function PolicyList() {
           policyName = x?.Name;
           policyApis = x?.Apis as string[];
         }
-        const selectedPolicies: string =
-          policyId + "," + policyName + "," + policyApis.join(",");
+        const selectedPolicies = `${policyId},${policyName},${policyApis.join(
+          ","
+        )}`;
         arr.push(selectedPolicies);
         console.log(
           "[3]",
@@ -252,7 +258,7 @@ export default function PolicyList() {
   };
 
   const removeAccess = (Id: any) => {
-    const removePolicyByIds = [...StateKey.data.form.PolicyByIds!];
+    const removePolicyByIds = [...(StateKey.data.form.PolicyByIds as any[])];
     const removePolicies = [...StateKey.data?.form.Policies];
     const index = removePolicies.indexOf(Id);
     removePolicyByIds.splice(index, 1);
@@ -271,7 +277,7 @@ export default function PolicyList() {
     // method to get grid list data
     mainCall(1, 100_000);
     // this will be used to set state value as true for displaying selected apis list on updated page
-    if (accessPolicyList.data! !== undefined) {
+    if (accessPolicyList.data !== undefined) {
       console.log("[]", accessPolicyList);
       // this will be used to set state value as true for displaying selected apis list on updated page
       getDataOnUpdate();
@@ -281,13 +287,15 @@ export default function PolicyList() {
   console.log("[2]", selectedRows);
   // load selected data on update page
   useEffect(() => {
-    if (accessPolicyList.data! !== undefined) {
+    if (accessPolicyList.data !== undefined) {
       console.log(accessPolicyList);
       // this will be used to set state value as true for displaying selected apis list on updated page
       getDataOnUpdate();
     }
   }, [
-    id !== undefined && accessPolicyList! && accessPolicyList.loading !== true,
+    id !== undefined &&
+      accessPolicyList.data !== undefined &&
+      accessPolicyList.loading !== true,
   ]);
   //  This wil be used to set apis state value
   useEffect(() => {
@@ -299,18 +307,21 @@ export default function PolicyList() {
       const policyApis = [...apis];
       const accessRightList =
         accessPolicyList !== undefined
-          ? accessPolicyList.data?.Policies!.filter(
+          ? (accessPolicyList.data?.Policies || []).filter(
               (a) =>
                 a.AuthType !== "keyless" &&
-                StateKey.data.form.Policies.includes(a.Id!)
+                StateKey.data.form.Policies.includes(a.Id as string)
             )
           : undefined;
 
-      if (accessRightList !== undefined && accessRightList?.length! > 0) {
-        for (const policyItem of accessRightList!) {
-          policyApis.push({ name: policyItem.Apis!, policyId: policyItem.Id! });
+      if (accessRightList !== undefined && (accessRightList?.length || 0) > 0) {
+        for (const policyItem of accessRightList || []) {
+          policyApis.push({
+            name: policyItem.Apis as string[],
+            policyId: policyItem.Id as string,
+          });
           setApis(policyApis);
-          setSelectedApi(policyItem.Id!);
+          setSelectedApi(policyItem.Id || "");
         }
       }
     }
@@ -346,28 +357,32 @@ export default function PolicyList() {
       const policyApis = [...apis];
       const accessRightList =
         accessPolicyList !== undefined
-          ? accessPolicyList.data?.Policies!.filter(
+          ? (accessPolicyList.data?.Policies || []).filter(
               (a) =>
                 a.AuthType !== "keyless" &&
-                StateKey.data.form.Policies.includes(a.Id!)
+                StateKey.data.form.Policies.includes(a.Id as string)
             )
           : undefined;
 
       if (accessRightList !== undefined && accessRightList?.length! > 0) {
-        for (const policyItem of accessRightList!) {
-          policyApis.push({ name: policyItem.Apis!, policyId: policyItem.Id! });
+        for (const policyItem of accessRightList || []) {
+          policyApis.push({
+            name: policyItem.Apis as string[],
+            policyId: policyItem.Id as string,
+          });
           setApis(policyApis);
-          setSelectedApi(policyItem.Id!);
+          setSelectedApi(policyItem.Id || "");
         }
       }
     }
     if (apis.length > 0 && apis.length !== StateKey.data.form.Policies.length) {
       const filterPolicyList = apis.filter((i) =>
-        StateKey.data.form.Policies.includes(i.policyId!)
+        StateKey.data.form.Policies.includes(i.policyId as string)
       );
       setApis(filterPolicyList);
       setSelectedApi(
-        StateKey.data.form.Policies[StateKey.data.form.Policies.length - 1]!
+        StateKey.data.form.Policies[StateKey.data.form.Policies.length - 1] ||
+          ""
       );
     }
   }, [
@@ -437,15 +452,15 @@ export default function PolicyList() {
   // initial Grid render
   useEffect(() => {
     if (gridReady) {
-      mygrid.render(document.querySelector("#gridRender")!);
+      mygrid.render(document.querySelector("#gridRender") as Element);
     }
   }, [gridReady]);
   //  Grid render on invoke of reloadGrid()
   useEffect(() => {
     if (gridReload) {
       const gridRenderHtml = document.querySelector("#gridRender");
-      gridRenderHtml!.innerHTML = "";
-      mygrid.render(gridRenderHtml!);
+      (gridRenderHtml as Element).innerHTML = "";
+      mygrid.render(gridRenderHtml as Element);
       const render_Grid = mygrid.updateConfig({
         data: () => bindPolicyList(),
       });
@@ -487,15 +502,17 @@ export default function PolicyList() {
                 ) : (
                   <div className="mt-2">
                     {" "}
-                    {uniqueApis.length > 0 ? (
-                      <>
-                        <b>Note :&nbsp;</b> Policies get filter based on
-                        &quot;&nbsp;
-                        <i>{uniqueApis}</i>&nbsp;&quot; Apis
-                      </>
-                    ) : (
-                      ""
-                    )}
+                    {(() => {
+                      return uniqueApis.length > 0 ? (
+                        <>
+                          <b>Note :&nbsp;</b> Policies get filter based on
+                          &quot;&nbsp;
+                          <i>{uniqueApis}</i>&nbsp;&quot; Apis
+                        </>
+                      ) : (
+                        ""
+                      );
+                    })()}
                   </div>
                 )}
               </div>
