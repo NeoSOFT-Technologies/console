@@ -6,7 +6,6 @@ import {
   updatePolicyService,
 } from "../../../../../services/gateway/policy/policy";
 import error from "../../../../../utils/error";
-// import { IDGetPolicyByIdData } from "./duplicate-index";
 import { IDGetPolicyByIdData } from "./duplicate-index";
 import { initialState } from "./payload";
 import { IGetPolicyByIdData, IPolicyCreateState } from ".";
@@ -71,8 +70,8 @@ export const createPolicy = createAsyncThunk(
       const response = await addPolicyService(dataduplicate);
       //
       return response.data;
-    } catch (error_) {
-      const myError = error_ as Error | AxiosError;
+    } catch (_error) {
+      const myError = _error as Error | AxiosError;
       throw axios.isAxiosError(myError) && myError.response
         ? myError.response.data.Errors[0]
         : myError.message;
@@ -91,10 +90,9 @@ export const getPolicybyId = createAsyncThunk(
         loading: false,
         error: undefined,
       };
-      // emptyState.data.form = response.data;
       return response.data;
-    } catch (error_) {
-      const myError = error_ as Error | AxiosError;
+    } catch (_error) {
+      const myError = _error as Error | AxiosError;
       throw axios.isAxiosError(myError) && myError.response
         ? myError.response.data.Errors[0]
         : myError.message;
@@ -108,13 +106,11 @@ export const updatePolicy = createAsyncThunk(
       Insertdata(data);
       const response = await updatePolicyService(dataduplicate);
       return response.data;
-    } catch (error__) {
-      const myError = error__ as Error | AxiosError;
-      const error_ =
-        axios.isAxiosError(myError) && myError.response
-          ? myError.response.data.Errors[0]
-          : myError.message;
-      throw error_;
+    } catch (_error) {
+      const myError = _error as Error | AxiosError;
+      throw axios.isAxiosError(myError) && myError.response
+        ? myError.response.data.Errors[0]
+        : myError.message;
     }
   }
 );
@@ -153,7 +149,6 @@ const slice = createSlice({
     });
     builder.addCase(getPolicybyId.rejected, (state, action) => {
       state.loading = false;
-      // action.payload contains error information
       action.payload = action.error;
       state.error = error(action.payload);
     });

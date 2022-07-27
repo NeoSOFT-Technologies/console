@@ -8,6 +8,11 @@ import RenderList, {
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { gridPageSize } from "../../../../../resources/gateway/common";
 import { deleteApi } from "../../../../../store/features/gateway/api/delete/slice";
+import { emptyState } from "../../../../../store/features/gateway/api/update/payload";
+import {
+  setForm,
+  setFormError,
+} from "../../../../../store/features/gateway/api/update/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
 import {
   // formatClick,
@@ -25,6 +30,8 @@ export default function APIList() {
   };
 
   const NavigateUpdate = (val: any) => {
+    dispatch(setForm(emptyState.data.form));
+    dispatch(setFormError(emptyState.data.errors));
     navigate(`/gateway/apis/update/${val._cells[0].data}`);
   };
 

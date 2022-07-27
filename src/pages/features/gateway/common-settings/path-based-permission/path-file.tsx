@@ -1,9 +1,6 @@
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import { Button, Form, Row, Col, Table } from "react-bootstrap";
-// import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
-// import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
-// import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
-// import { useAppSelector, useAppDispatch } from "../../../../../store/hooks";
 import { IPropsHelper } from "../global-limit/rate-limit-helper";
 interface IProps {
   r: IPropsHelper;
@@ -18,10 +15,10 @@ export default function Ipathpermission(props: IProps) {
   const length = props.r.formProp.length;
 
   const HandleAddclick = () => {
-    const value = props.r.index!;
+    const value = props.r.index as any;
     const filtercheck = "false";
-    const apisList = [...props.r.formProp!];
-    const allowedList = [...apisList[value].AllowedUrls!];
+    const apisList = [...(props.r.formProp || [])];
+    const allowedList = [...(apisList[value].AllowedUrls || [])];
 
     // validation function to check two array of method
     // function ArrayEquals(a: any, b: any) {
@@ -57,7 +54,10 @@ export default function Ipathpermission(props: IProps) {
       };
 
       props.r.dispatch(
-        props.r.setForm!({ ...props.r.form, [props.r.propName!]: apisList })
+        (props.r.setForm as ActionCreatorWithPayload<any, string>)({
+          ...props.r.form,
+          [props.r.propName as any]: apisList,
+        })
       );
       setInputData({ path: "", method: ["GET"] });
     } else {
@@ -67,16 +67,19 @@ export default function Ipathpermission(props: IProps) {
 
   const deleteTableRows = (event: any, index: any) => {
     event.preventDefault();
-    const value = props.r.index!;
-    const apisList = [...props.r.formProp!];
-    const allowedList = [...apisList[value].AllowedUrls!];
+    const value = props.r.index as any;
+    const apisList = [...(props.r.formProp || [])];
+    const allowedList = [...(apisList[value].AllowedUrls || [])];
     allowedList.splice(index, 1);
     apisList[value] = {
       ...apisList[value],
       AllowedUrls: [...allowedList],
     };
     props.r.dispatch(
-      props.r.setForm!({ ...props.r.form, [props.r.propName!]: apisList })
+      (props.r.setForm as ActionCreatorWithPayload<any, string>)({
+        ...props.r.form,
+        [props.r.propName as any]: apisList,
+      })
     );
   };
 
@@ -181,22 +184,22 @@ export default function Ipathpermission(props: IProps) {
               </thead>
               <tbody>
                 {length > 0 ? (
-                  (props.r.formProp[props.r.index!].AllowedUrls as any[]).map(
-                    (data1: any, index1: any) => {
-                      return (
-                        <tr key={index1}>
-                          <td>{data1.Url}</td>
-                          <td>{data1.Methods}</td>
-                          <td style={{ textAlign: "center" }}>
-                            <i
-                              className="bi bi-trash"
-                              onClick={(e: any) => deleteTableRows(e, index1)}
-                            ></i>
-                          </td>
-                        </tr>
-                      );
-                    }
-                  )
+                  (
+                    props.r.formProp[props.r.index as any].AllowedUrls as any[]
+                  ).map((data1: any, index1: any) => {
+                    return (
+                      <tr key={index1}>
+                        <td>{data1.Url}</td>
+                        <td>{data1.Methods}</td>
+                        <td style={{ textAlign: "center" }}>
+                          <i
+                            className="bi bi-trash"
+                            onClick={(e: any) => deleteTableRows(e, index1)}
+                          ></i>
+                        </td>
+                      </tr>
+                    );
+                  })
                 ) : (
                   <></>
                 )}

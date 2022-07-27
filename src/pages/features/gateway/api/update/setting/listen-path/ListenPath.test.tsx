@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import store from "../../../../../../../store";
 import ListenPath from "./ListenPath";
 
+const TestId = "listenPath-input";
 it("render without crashing ListenPath", () => {
   render(
     <BrowserRouter>
@@ -27,7 +28,7 @@ it("render inputs", () => {
   );
   expect(screen).toBeDefined();
 
-  const listenPathInput = screen.getByTestId("listenPath-input");
+  const listenPathInput = screen.getByTestId(TestId);
   expect(listenPathInput).toBeInTheDocument();
   fireEvent.change(listenPathInput, {
     target: { value: "/test/" },
@@ -67,14 +68,14 @@ it("check validations", () => {
       </Provider>
     </BrowserRouter>
   );
-  const listenPathlInput = screen.getByTestId("listenPath-input");
+  const listenPathlInput = screen.getByTestId(TestId);
   fireEvent.change(listenPathlInput, {
     target: { value: "/test/" },
   });
   const listenPath = screen.getByTestId("listenPathErr");
   expect(listenPath).toHaveTextContent("");
 
-  const listenpathlInput = screen.getByTestId("listenPath-input");
+  const listenpathlInput = screen.getByTestId(TestId);
   fireEvent.change(listenpathlInput, {
     target: { value: "test" },
   });
