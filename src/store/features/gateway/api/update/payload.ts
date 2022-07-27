@@ -92,3 +92,4 @@ export const initialState: IApiGetByIdState = {
   loading: false,
   error: undefined,
 };
+export const emptyState: IApiGetByIdState = { ...initialState };
