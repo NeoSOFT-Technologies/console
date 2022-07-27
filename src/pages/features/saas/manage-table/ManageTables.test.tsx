@@ -6,7 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 import mockApi from "../../../../resources/tenant/testconfig";
 import store from "../../../../store/index";
 import ManageTable from "./ManageTables";
-
+const urlGetallTables = "manage/table/all-tables?pageNumber=1&pageSize=6";
+const sMessage = "Successfully retrieved all Tables From The Server";
 describe("SAAS - MANAGE TABLE Component 1", () => {
   it("Check if H1 rendered", () => {
     render(
@@ -41,16 +42,14 @@ describe("SAAS - MANAGE TABLE Component 1", () => {
 
 describe("SAAS - MANAGE TABLE Component 2", () => {
   it("Check if fields autofilled using API on component load", async () => {
-    mockApi
-      .onGet("manage/table/all-tables?pageNumber=1&pageSize=6")
-      .reply(200, {
-        statusCode: 200,
-        message: "Successfully retrieved all Tables From The Server",
-        tableList: [
-          { tenantId: 1, tableName: "testTable" },
-          { tenantId: 1, tableName: "karthik" },
-        ],
-      });
+    mockApi.onGet(urlGetallTables).reply(200, {
+      statusCode: 200,
+      message: sMessage,
+      tableList: [
+        { tenantId: 1, tableName: "testTable" },
+        { tenantId: 1, tableName: "karthik" },
+      ],
+    });
 
     render(
       <BrowserRouter>
@@ -70,13 +69,11 @@ describe("SAAS - MANAGE TABLE Component 2", () => {
   });
 
   it("Check if delete button works", async () => {
-    mockApi
-      .onGet("manage/table/all-tables?pageNumber=1&pageSize=6")
-      .reply(200, {
-        statusCode: 200,
-        message: "Successfully retrieved all Tables From The Server",
-        tableList: [{ tenantId: 1, tableName: "testTable" }],
-      });
+    mockApi.onGet(urlGetallTables).reply(200, {
+      statusCode: 200,
+      message: sMessage,
+      tableList: [{ tenantId: 1, tableName: "testTable" }],
+    });
 
     mockApi.onDelete("manage/table/testTable?tenantId=1").reply(200, {
       statusCode: 200,
@@ -135,13 +132,11 @@ describe("SAAS - MANAGE TABLE Component 2", () => {
   });
 
   it("Check if edit button works", async () => {
-    mockApi
-      .onGet("manage/table/all-tables?pageNumber=1&pageSize=6")
-      .reply(200, {
-        statusCode: 200,
-        message: "Successfully retrieved all Tables From The Server",
-        tableList: [{ tenantId: 1, tableName: "testTable" }],
-      });
+    mockApi.onGet(urlGetallTables).reply(200, {
+      statusCode: 200,
+      message: sMessage,
+      tableList: [{ tenantId: 1, tableName: "testTable" }],
+    });
 
     render(
       <BrowserRouter>
@@ -185,26 +180,24 @@ describe("SAAS - MANAGE TABLE Component 2", () => {
   });
 
   it("Check if prev and next button work", async () => {
-    mockApi
-      .onGet("manage/table/all-tables?pageNumber=1&pageSize=6")
-      .reply(200, {
-        statusCode: 200,
-        message: "Successfully retrieved all Tables From The Server",
-        tableList: [
-          { tenantId: 1, tableName: "testTable1" },
-          { tenantId: 1, tableName: "testTable2" },
-          { tenantId: 1, tableName: "testTable3" },
-          { tenantId: 1, tableName: "testTable4" },
-          { tenantId: 1, tableName: "testTable5" },
-          { tenantId: 1, tableName: "testTable6" },
-        ],
-      });
+    mockApi.onGet(urlGetallTables).reply(200, {
+      statusCode: 200,
+      message: sMessage,
+      tableList: [
+        { tenantId: 1, tableName: "testTable1" },
+        { tenantId: 1, tableName: "testTable2" },
+        { tenantId: 1, tableName: "testTable3" },
+        { tenantId: 1, tableName: "testTable4" },
+        { tenantId: 1, tableName: "testTable5" },
+        { tenantId: 1, tableName: "testTable6" },
+      ],
+    });
 
     mockApi
       .onGet("manage/table/all-tables?pageNumber=2&pageSize=6")
       .reply(200, {
         statusCode: 200,
-        message: "Successfully retrieved all Tables From The Server",
+        message: sMessage,
         tableList: [
           { tenantId: 1, tableName: "testTable7" },
           { tenantId: 1, tableName: "testTable8" },
@@ -226,14 +219,14 @@ describe("SAAS - MANAGE TABLE Component 2", () => {
       })
     ).toBeInTheDocument();
 
-    const nextBtn = await waitFor(
+    const nextButton = await waitFor(
       () => screen.getByText("Next", { exact: false }),
       {
         timeout: 3000,
       }
     );
-    expect(nextBtn).toBeInTheDocument();
-    userEvent.click(nextBtn);
+    expect(nextButton).toBeInTheDocument();
+    userEvent.click(nextButton);
 
     expect(
       await waitFor(() => screen.getByText("testTable8", { exact: false }), {
@@ -241,14 +234,14 @@ describe("SAAS - MANAGE TABLE Component 2", () => {
       })
     ).toBeInTheDocument();
 
-    const previousBtn = await waitFor(
+    const preBtn = await waitFor(
       () => screen.getByText("Previous", { exact: false }),
       {
         timeout: 3000,
       }
     );
-    userEvent.click(previousBtn);
-    expect(previousBtn).toBeInTheDocument();
+    userEvent.click(preBtn);
+    expect(preBtn).toBeInTheDocument();
 
     expect(
       await waitFor(() => screen.getByText("testTable1", { exact: false }), {
