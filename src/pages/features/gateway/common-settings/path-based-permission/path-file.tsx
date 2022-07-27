@@ -1,3 +1,4 @@
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import { Button, Form, Row, Col, Table } from "react-bootstrap";
 import { IPropsHelper } from "../global-limit/rate-limit-helper";
@@ -53,7 +54,7 @@ export default function Ipathpermission(props: IProps) {
       };
 
       props.r.dispatch(
-        (props.r.setForm as any)({
+        (props.r.setForm as ActionCreatorWithPayload<any, string>)({
           ...props.r.form,
           [props.r.propName as any]: apisList,
         })
@@ -75,7 +76,7 @@ export default function Ipathpermission(props: IProps) {
       AllowedUrls: [...allowedList],
     };
     props.r.dispatch(
-      (props.r.setForm as any)({
+      (props.r.setForm as ActionCreatorWithPayload<any, string>)({
         ...props.r.form,
         [props.r.propName as any]: apisList,
       })
