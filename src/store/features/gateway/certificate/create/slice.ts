@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-// import error from "../../../../utils/error";
 import axios, { AxiosError } from "axios";
 import { addCertificateService } from "../../../../../services/gateway/api/api";
 import { IAddCertificateState } from ".";
@@ -18,13 +17,11 @@ export const addCertificate = createAsyncThunk(
       const response = await addCertificateService(data);
 
       return response.data;
-    } catch (error__) {
-      const myError = error__ as Error | AxiosError;
-      const error_ =
-        axios.isAxiosError(myError) && myError.response
-          ? myError.response.data.Errors[0]
-          : myError.message;
-      throw error_;
+    } catch (_error) {
+      const myError = _error as Error | AxiosError;
+      throw axios.isAxiosError(myError) && myError.response
+        ? myError.response.data.Errors[0]
+        : myError.message;
     }
   }
 );

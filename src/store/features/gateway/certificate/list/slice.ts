@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { getAllCertificateService } from "../../../../../services/gateway/api/api";
 import error from "../../../../../utils/error";
-import { IGetAllCertificateState } from ".";
+import { ICertificateState, IGetAllCertificateState } from ".";
 
 const initialState: IGetAllCertificateState = {
   data: undefined,
@@ -16,13 +16,11 @@ export const getAllCertificate = createAsyncThunk(
       const response = await getAllCertificateService();
 
       return response.data;
-    } catch (error__) {
-      const myError = error__ as Error | AxiosError;
-      const error_ =
-        axios.isAxiosError(myError) && myError.response
-          ? myError.response.data.Errors[0]
-          : myError.message;
-      throw error_;
+    } catch (_error) {
+      const myError = _error as Error | AxiosError;
+      throw axios.isAxiosError(myError) && myError.response
+        ? myError.response.data.Errors[0]
+        : myError.message;
     }
   }
 );
@@ -32,7 +30,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     setFormCert: (state, action) => {
-      state.data!.CertificateCollection = action.payload;
+      (state.data as ICertificateState).CertificateCollection = action.payload;
     },
   },
   extraReducers(builder): void {

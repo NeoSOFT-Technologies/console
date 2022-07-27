@@ -14,8 +14,8 @@ export const getApiById = createAsyncThunk(
     try {
       const response = await getApiByIdService(Id);
       return response?.data;
-    } catch (error_) {
-      const myError = error_ as Error | AxiosError;
+    } catch (_error) {
+      const myError = _error as Error | AxiosError;
       throw axios.isAxiosError(myError) && myError.response
         ? myError.response.data.Errors[0]
         : myError.message;
@@ -28,8 +28,8 @@ export const updateApi = createAsyncThunk(
     try {
       const response = await updateApiService(data);
       return response.data;
-    } catch (error_) {
-      const myError = error_ as Error | AxiosError;
+    } catch (_error) {
+      const myError = _error as Error | AxiosError;
 
       throw axios.isAxiosError(myError) && myError.response
         ? myError.response.data.Errors[0]
@@ -80,7 +80,6 @@ const slice = createSlice({
     });
     builder.addCase(updateApi.fulfilled, (state) => {
       state.loading = false;
-      // state.data = action.payload;
     });
     builder.addCase(updateApi.rejected, (state, action) => {
       state.loading = false;
