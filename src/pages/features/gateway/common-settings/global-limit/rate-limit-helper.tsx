@@ -97,7 +97,6 @@ function updateValidationInput(
   );
 }
 export function setFormValue(props: IPropsHelper, event: any) {
-  // const attributeName: string = props.event?.target.getAttribute("name")!;
   const attributeName: string = event.target.getAttribute("name") as string;
   const apisList = [...props.formProp];
   apisList[props.index as number] = {
@@ -205,7 +204,6 @@ function GlobalupdateValidationInput(
   );
 }
 export function GlobalsetFormValue(props: IPropsHelper, event: any) {
-  // const attributeName: string = props.event?.target.getAttribute("name")!;
   const attributeName: string = event?.target.getAttribute("name") as string;
   props.dispatch(
     (props.setForm as ActionCreatorWithPayload<any, string>)({

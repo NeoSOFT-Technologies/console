@@ -232,8 +232,6 @@ export default function LoadBalancing() {
                             name="weighting"
                             data-testid="weighting"
                             min="1"
-                            // value={weight[index].weighting}
-                            // value={addUrl[index].weighting}
                             value={data.weighting}
                             className="form-control"
                             onChange={(evnt) => handleWeighting(evnt, index)}

@@ -14,11 +14,7 @@ import {
   setFormError,
 } from "../../../../../store/features/gateway/api/update/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
-import {
-  // formatClick,
-  formatDate,
-  formatStatus,
-} from "../../../../../utils/gateway/helper";
+import { formatDate, formatStatus } from "../../../../../utils/gateway/helper";
 
 export default function APIList() {
   const navigate = useNavigate();

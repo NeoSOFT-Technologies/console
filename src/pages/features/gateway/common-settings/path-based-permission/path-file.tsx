@@ -20,26 +20,6 @@ export default function Ipathpermission(props: IProps) {
     const apisList = [...(props.r.formProp || [])];
     const allowedList = [...(apisList[value].AllowedUrls || [])];
 
-    // validation function to check two array of method
-    // function ArrayEquals(a: any, b: any) {
-    //   return (
-    //     Array.isArray(a) &&
-    //     Array.isArray(b) &&
-    //     a.length === b.length &&
-    //     a.every((val, index) => val === b[index])
-    //   );
-    // }
-    // const filteredlist = allowedList.filter((a) => {
-    //   if (a.Url === InputData.path) {
-    //     filtercheck = ArrayEquals(a.Methods, InputData.method)
-    //       ? "true"
-    //       : "false";
-    //   } else {
-    //     filtercheck = "false";
-    //   }
-    //   return filtercheck;
-    // });
-    // end of validation from data
     if (InputData.path !== "" && filtercheck === "false") {
       setspanError(" ");
 
@@ -128,7 +108,6 @@ export default function Ipathpermission(props: IProps) {
               name="path"
               onChange={HandleAddFormChange}
               value={InputData.path}
-              // data-testid="name-input"
             />
             {spanError !== "" ? (
               <span style={{ color: "red" }}>{spanError}</span>

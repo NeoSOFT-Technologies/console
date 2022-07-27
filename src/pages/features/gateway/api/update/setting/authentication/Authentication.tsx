@@ -65,7 +65,6 @@ export default function Authentication() {
                             data-testid="authType"
                             name="AuthType"
                             value={state.data.form.AuthType}
-                            // onClick={handleFormSelectChange}
                             onChange={(e: any) => handleFormSelectChange(e)}
                           >
                             <option id="authToken" value="standard">
@@ -104,8 +103,6 @@ export default function Authentication() {
                           id="EnableMTLS"
                           name="EnableMTLS"
                           label="Enable Mutual TLS"
-                          // checked={check}
-                          // onChange={(e: any) => setCheck(e.target.checked)}
                           checked={state.data.form.EnableMTLS}
                           onChange={(e: any) => handleFormSelectChange(e)}
                         />

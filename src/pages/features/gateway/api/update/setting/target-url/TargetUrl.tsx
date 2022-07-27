@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-// import React, { useState } from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
 import {
   setFormData,
@@ -106,7 +105,6 @@ export default function TargetUrl() {
                       id="EnableRoundRobin"
                       name="EnableRoundRobin"
                       label="Enable round-robin load balancing"
-                      // disabled={!state.data.form.IsVersioningDisabled}
                       checked={
                         state.data.form.EnableRoundRobin === undefined
                           ? false
@@ -116,14 +114,6 @@ export default function TargetUrl() {
                     />
                   </Form.Group>
                 </Col>
-                {/* {!state.data.form.IsVersioningDisabled ? (
-                  <h6>
-                    Note: Version is enable so you can&apos;t apply Round-Robin
-                    LoadBalacing{" "}
-                  </h6>
-                ) : (
-                  <></>
-                )} */}
                 <Col>
                   {state.data.form.EnableRoundRobin === true ? (
                     <LoadBalancing />
@@ -142,7 +132,6 @@ export default function TargetUrl() {
                       id="IsService"
                       name="IsService"
                       label="Enable service discovery"
-                      // checked={state.data.form?.IsService}
                       onChange={(e: any) => validateForm(e)}
                     />
                   </Form.Group>

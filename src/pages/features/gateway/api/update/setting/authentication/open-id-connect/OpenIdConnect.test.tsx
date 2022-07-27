@@ -205,10 +205,6 @@ it("test buttons and inputs", () => {
   const deleteIssuer = screen.getByTestId("delete-issuer");
   expect(deleteIssuer).toBeInTheDocument();
   fireEvent.click(deleteIssuer);
-
-  //   const deleteClient = screen.getByTestId("delete-client");
-  //   expect(deleteClient).toBeInTheDocument();
-  //   fireEvent.click(deleteClient);
 });
 
 it("test buttons and inputs2", () => {

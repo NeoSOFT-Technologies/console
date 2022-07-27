@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import "./styles/index.scss";
 import { connect } from "react-redux";
 import { Navigate } from "react-router-dom";
 import "./App.scss";

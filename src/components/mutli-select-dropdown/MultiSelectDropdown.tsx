@@ -18,7 +18,6 @@ export default function MultiSelectDropdown(props: IProps) {
           <Dropdown autoClose="outside" className="w-100">
             <Dropdown.Toggle
               variant="success"
-              // id="dropdown-basic"
               data-testid="dropdown-toggle"
               className="dynamic-w"
             >
