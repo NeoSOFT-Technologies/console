@@ -48,30 +48,26 @@ export default function OpenIdConnectAuthentication() {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { name, value } = event.target;
-    switch (name) {
-      case "issuer":
-        if (value === "") {
-          setFormErrors(
-            {
-              ...state.data.errors,
-              [name]: "",
-            },
-            dispatch
-          );
-        } else {
-          setFormErrors(
-            {
-              ...state.data.errors,
-              [name]: regexForIssuer.test(value)
-                ? ""
-                : "Please enter a Valid Issuer URL",
-            },
-            dispatch
-          );
-        }
-        break;
-      default:
-        break;
+    if (name === "issuer") {
+      if (value === "") {
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: "",
+          },
+          dispatch
+        );
+      } else {
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: regexForIssuer.test(value)
+              ? ""
+              : "Please enter a Valid Issuer URL",
+          },
+          dispatch
+        );
+      }
     }
     const newFormData: any = { ...addFormData };
     newFormData[name] = value;
@@ -395,7 +391,7 @@ export default function OpenIdConnectAuthentication() {
                               state.data.form.OpenidOptions.Providers[
                                 index
                               ].Client_ids.map(
-                                (clientData: any, clientIndex: any) => {
+                                (_clientData: any, clientIndex: any) => {
                                   return (
                                     <div key={index}>
                                       {clientIndex === 0 ? (
@@ -432,7 +428,8 @@ export default function OpenIdConnectAuthentication() {
                                                 />{" "}
                                               </td>
                                               <td>
-                                                {selectedPolicy?.length! > 0 ? (
+                                                {(selectedPolicy?.length as number) >
+                                                0 ? (
                                                   <select
                                                     className="p-2 rounded mb-0"
                                                     data-testid="selected-policy"
@@ -534,45 +531,40 @@ export default function OpenIdConnectAuthentication() {
                                                   clientObj;
                                                 return policyList?.data?.Policies.filter(
                                                   (p) => p.Id === Policy
-                                                ).map(
-                                                  (
-                                                    filteredPolicy,
-                                                    newindex
-                                                  ) => {
-                                                    const { Name, Id } =
-                                                      filteredPolicy;
+                                                ).map((filteredPolicy) => {
+                                                  const { Name, Id } =
+                                                    filteredPolicy;
 
-                                                    return (
-                                                      <tr key={clientIndex}>
-                                                        <td>{ClientId}</td>
-                                                        <td
-                                                          style={{
-                                                            textAlign: "left",
-                                                          }}
-                                                        >
-                                                          {Name} : {Id}
-                                                        </td>
-                                                        <td
-                                                          style={{
-                                                            textAlign: "center",
-                                                          }}
-                                                        >
-                                                          <i
-                                                            className="btn btn-sm bi bi-trash-fill"
-                                                            data-testid="delete-client"
-                                                            onClick={(event) =>
-                                                              deleteClientTableRows(
-                                                                index,
-                                                                cIndex,
-                                                                event
-                                                              )
-                                                            }
-                                                          ></i>
-                                                        </td>
-                                                      </tr>
-                                                    );
-                                                  }
-                                                );
+                                                  return (
+                                                    <tr key={clientIndex}>
+                                                      <td>{ClientId}</td>
+                                                      <td
+                                                        style={{
+                                                          textAlign: "left",
+                                                        }}
+                                                      >
+                                                        {Name} : {Id}
+                                                      </td>
+                                                      <td
+                                                        style={{
+                                                          textAlign: "center",
+                                                        }}
+                                                      >
+                                                        <i
+                                                          className="btn btn-sm bi bi-trash-fill"
+                                                          data-testid="delete-client"
+                                                          onClick={(event) =>
+                                                            deleteClientTableRows(
+                                                              index,
+                                                              cIndex,
+                                                              event
+                                                            )
+                                                          }
+                                                        ></i>
+                                                      </td>
+                                                    </tr>
+                                                  );
+                                                });
                                               }
                                             )}
                                           </tbody>
@@ -616,7 +608,8 @@ export default function OpenIdConnectAuthentication() {
                                         />{" "}
                                       </td>
                                       <td>
-                                        {selectedPolicy?.length! > 0 ? (
+                                        {(selectedPolicy?.length as number) >
+                                        0 ? (
                                           <select
                                             className="p-2 rounded mb-0"
                                             data-testid="selectedPolicy"

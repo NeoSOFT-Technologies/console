@@ -21,8 +21,6 @@ export default function GlobalLimit(props: IProps) {
   const dispatch = useAppDispatch();
   const states = useAppSelector((RootState) => RootState.createKeyState);
   const [loader, setLoader] = useState(true);
-  // const [localState, setLocalState] = useState({} as IPolicyCreateState);
-  // const globalNames: any[] = [];
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
   );
@@ -82,7 +80,6 @@ export default function GlobalLimit(props: IProps) {
             APIs.push(policyState);
           }
         }
-        //
         if (globalItem.Name === "") {
           policyByIdTemp[props.index || 0] = {
             ...policyByIdTemp[props.index || 0],
@@ -139,7 +136,7 @@ export default function GlobalLimit(props: IProps) {
       })
     );
   };
-  function setValue(value1: any, value2: any, data: any, stateObj: any) {
+  function setValue(value1: any, data: any, stateObj: any, value2?: any) {
     return props.isDisabled && (data.Limit === null || undefined)
       ? stateObj
       : data.Limit[value1] === -1 ||
@@ -147,6 +144,14 @@ export default function GlobalLimit(props: IProps) {
         data.Limit[value2] === 0
       ? "Unlimited"
       : data.Limit[value1];
+  }
+
+  function setGlobalValue(value1: any, stateObj: any, value2?: any) {
+    return stateObj.Global[value1] === -1 ||
+      stateObj.Global[value1] === 0 ||
+      stateObj.Global[value2] === 0
+      ? "Unlimited"
+      : stateObj.Global[value1];
   }
   return (
     <>
@@ -233,11 +238,12 @@ export default function GlobalLimit(props: IProps) {
                                       placeholder="Enter Rate"
                                       value={setValue(
                                         "Rate",
-                                        "Per",
+
                                         data,
                                         (states.data.form.PolicyByIds || [])[
                                           props.index || 0
-                                        ].Global?.Rate
+                                        ].Global?.Rate,
+                                        "Per"
                                       )}
                                       name="Rate"
                                       disabled={true}
@@ -254,11 +260,12 @@ export default function GlobalLimit(props: IProps) {
                                       placeholder="Enter time"
                                       value={setValue(
                                         "Per",
-                                        "Rate",
+
                                         data,
                                         (states.data.form.PolicyByIds || [])[
                                           props.index || 0
-                                        ].Global?.Per
+                                        ].Global?.Per,
+                                        "Rate"
                                       )}
                                       name="RateLimit.Per"
                                       disabled={true}
@@ -296,11 +303,12 @@ export default function GlobalLimit(props: IProps) {
                                       name="Throttling.Retry"
                                       value={setValue(
                                         "Throttle_retry_limit",
-                                        "Throttle_interval",
+
                                         data,
                                         (states.data.form.PolicyByIds || [])[
                                           props.index || 0
-                                        ].Global?.ThrottleRetries
+                                        ].Global?.ThrottleRetries,
+                                        "Throttle_interval"
                                       )}
                                       disabled={true}
                                     />
@@ -316,11 +324,12 @@ export default function GlobalLimit(props: IProps) {
                                       id="interval"
                                       value={setValue(
                                         "Throttle_interval",
-                                        "Throttle_retry_limit",
+
                                         data,
                                         (states.data.form.PolicyByIds || [])[
                                           props.index || 0
-                                        ].Global?.ThrottleInterval
+                                        ].Global?.ThrottleInterval,
+                                        "Throttle_retry_limit"
                                       )}
                                       name="Throttling.Interval"
                                       disabled={true}
@@ -352,17 +361,14 @@ export default function GlobalLimit(props: IProps) {
                                       className="mt-2"
                                       type="text"
                                       id="quotaPer"
-                                      value={
-                                        props.isDisabled &&
-                                        (data.Limit === null || undefined)
-                                          ? (states.data.form.PolicyByIds ||
-                                              [])[props.index || 0].Global
-                                              ?.MaxQuota
-                                          : data.Limit.Quota_max === -1 ||
-                                            data.Limit.Quota_max === 0
-                                          ? "Unlimited"
-                                          : data.Limit.Quota_max
-                                      }
+                                      value={setValue(
+                                        "Quota_max",
+
+                                        data,
+                                        (states.data.form.PolicyByIds || [])[
+                                          props.index || 0
+                                        ].Global?.MaxQuota
+                                      )}
                                       name="Quota.Per"
                                       disabled={true}
                                     />
@@ -470,22 +476,12 @@ export default function GlobalLimit(props: IProps) {
                                             type="text"
                                             id="rate"
                                             placeholder="Enter Rate"
-                                            value={
+                                            value={setGlobalValue(
+                                              "Rate",
                                               (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.Rate === -1 ||
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.Rate === 0 ||
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.Per === 0
-                                                ? "Unlimited"
-                                                : (states.data.form
-                                                    .PolicyByIds || [])[
-                                                    props.index || 0
-                                                  ].Global?.Rate
-                                            }
+                                                [])[props.index || 0],
+                                              "Per"
+                                            )}
                                             name="Rate"
                                             disabled={true}
                                           />
@@ -499,22 +495,12 @@ export default function GlobalLimit(props: IProps) {
                                             type="text"
                                             id="per"
                                             placeholder="Enter time"
-                                            value={
+                                            value={setGlobalValue(
+                                              "Per",
                                               (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.Per === -1 ||
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.Per === 0 ||
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.Rate === 0
-                                                ? "Unlimited"
-                                                : (states.data.form
-                                                    .PolicyByIds || [])[
-                                                    props.index || 0
-                                                  ].Global?.Per
-                                            }
+                                                [])[props.index || 0],
+                                              "Rate"
+                                            )}
                                             name="RateLimit.Per"
                                             disabled={true}
                                           />
@@ -571,23 +557,12 @@ export default function GlobalLimit(props: IProps) {
                                             type="text"
                                             id="retry"
                                             name="Throttling.Retry"
-                                            value={
+                                            value={setGlobalValue(
+                                              "ThrottleRetries",
                                               (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.ThrottleRetries === -1 ||
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.ThrottleRetries === 0 ||
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.ThrottleInterval === 0
-                                                ? "Disabled Throttling"
-                                                : (states.data.form
-                                                    .PolicyByIds || [])[
-                                                    props.index || 0
-                                                  ].Global?.ThrottleRetries
-                                            }
-                                            // value={throttleDefault}
+                                                [])[props.index || 0],
+                                              "ThrottleInterval"
+                                            )}
                                             disabled={true}
                                           />
 
@@ -600,22 +575,12 @@ export default function GlobalLimit(props: IProps) {
                                             className="mt-2"
                                             type="text"
                                             id="interval"
-                                            value={
+                                            value={setGlobalValue(
+                                              "ThrottleInterval",
                                               (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.ThrottleInterval === -1 ||
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.ThrottleInterval === 0 ||
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.ThrottleRetries === 0
-                                                ? "Disabled Throttling"
-                                                : (states.data.form
-                                                    .PolicyByIds || [])[
-                                                    props.index || 0
-                                                  ].Global?.ThrottleInterval
-                                            }
+                                                [])[props.index || 0],
+                                              "ThrottleRetries"
+                                            )}
                                             name="Throttling.Interval"
                                             disabled={true}
                                           />
@@ -667,19 +632,11 @@ export default function GlobalLimit(props: IProps) {
                                             className="mt-2"
                                             type="text"
                                             id="quotaPer"
-                                            value={
+                                            value={setGlobalValue(
+                                              "MaxQuota",
                                               (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.MaxQuota === -1 ||
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.MaxQuota === 0
-                                                ? "Unlimited"
-                                                : (states.data.form
-                                                    .PolicyByIds || [])[
-                                                    props.index || 0
-                                                  ].Global?.MaxQuota
-                                            }
+                                                [])[props.index || 0]
+                                            )}
                                             name="Quota.Per"
                                             disabled={true}
                                           />
