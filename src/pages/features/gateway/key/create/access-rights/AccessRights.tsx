@@ -15,7 +15,7 @@ export default function AccessRights() {
   const state: IKeyCreateState = useAppSelector(
     (RootState) => RootState.createKeyState
   );
-  //
+
   useEffect(() => {
     if (state.data.form.KeyId === undefined) {
       setTabIndex("applyPolicy");

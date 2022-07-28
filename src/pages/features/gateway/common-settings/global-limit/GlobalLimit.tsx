@@ -437,7 +437,7 @@ export default function GlobalLimit(props: IProps) {
                                             className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2"
                                             style={{
                                               background: "#ADD8E6",
-                                            }} // #96DED1
+                                            }}
                                           >
                                             Rate Limit {props.msg}
                                           </div>

@@ -231,24 +231,6 @@ export default function PathBased(props: IProps) {
   };
   const removeAccess = (event: any, index: any) => {
     event.preventDefault();
-    if ((props.requiredInterface.formProp as any[]).length > 0) {
-      // const removeApi = [...props.requiredInterface.formProp!];
-      // removeApi.splice(index, 1);
-      // props.requiredInterface.dispatch(
-      //   props.requiredInterface.setForm!({
-      //     ...props.requiredInterface.form,
-      //     [props.requiredInterface.propName!]: removeApi,
-      //   })
-      // );
-      // const error = [...props.requiredInterface.errorProp!];
-      // error.splice(index, 1);
-      // props.requiredInterface.dispatch(
-      //   props.requiredInterface.setFormError!({
-      //     ...props.requiredInterface.errors,
-      //     [props.requiredInterface.errorProp]: error,
-      //   })
-      // );
-    }
     if (
       props.requiredInterface.form !== undefined &&
       (props.requiredInterface.formProp || []).length > 0

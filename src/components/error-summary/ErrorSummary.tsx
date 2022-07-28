@@ -35,7 +35,6 @@ function generateBullets(key: any, value: any, check?: any, name?: any) {
     </>
   ) : undefined;
 }
-// export default function ErrorSummary(errors: any, data?: any) {
 export const errorSummary = (errors: any, data?: any) => {
   let list1: any;
   let check1: any;

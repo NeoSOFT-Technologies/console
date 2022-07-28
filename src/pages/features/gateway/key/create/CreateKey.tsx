@@ -10,7 +10,6 @@ import {
   createKey,
   getKeyById,
   setFormErrors,
-  // setForms,
   updateKey,
 } from "../../../../../store/features/gateway/key/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
@@ -76,6 +75,8 @@ export default function CreateKey() {
   const handleOk = () => {
     setShow(false);
   };
+
+
 
   function setValidate() {
     if (state.data.errors !== undefined) {
@@ -167,7 +168,9 @@ export default function CreateKey() {
     ) {
       toastPolicyApi();
     } else {
+
       checkValidate();
+
     }
   }
 
@@ -296,16 +299,16 @@ export default function CreateKey() {
                           })()}{" "}
                         </b>
                       </span>
+
                       <div className="pt-2">{keyid()}</div>
+
                     </div>
                     <div className="card-body pt-2">
                       <div>{errorSummary(state.data.errors)}</div>
                       <br />
                       <Tabs
-                        // tab-content
                         defaultActiveKey="accessRights"
                         id="uncontrolled-tab"
-                        // transition={false}
                         className="mb-0 small"
                       >
                         <Tab eventKey="accessRights" title="Access Rights">

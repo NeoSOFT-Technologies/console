@@ -15,7 +15,9 @@ interface IProps {
 }
 
 export default function GlobalRateLimit(props: IProps) {
+
   let perapi = { ...(props.helper?.errors?.GlobalLimit || []) };
+
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -66,7 +68,7 @@ export default function GlobalRateLimit(props: IProps) {
                         </Form.Label>
                         <div
                           className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2"
-                          style={{ background: "#ADD8E6" }} // #96DED1
+                          style={{ background: "#ADD8E6" }}
                         >
                           Rate Limit {props.message}
                         </div>
@@ -181,11 +183,9 @@ export default function GlobalRateLimit(props: IProps) {
                           type="text"
                           data-testid="retry-input"
                           id="retry"
-                          // placeholder={throttleRetry}
                           name="ThrottleRetries"
                           value={getvalue("ThrottleRetries")}
                           onChange={(e: any) => handlerateclick(e)}
-                          // value={throttleDefault}
                           isInvalid={
                             !!(props.helper?.errors?.GlobalLimit
                               .ThrottleRetries as number)
@@ -212,8 +212,10 @@ export default function GlobalRateLimit(props: IProps) {
                           data-testid="interval-input"
                           id="interval"
                           name="ThrottleInterval"
+
                           value={getvalue("ThrottleInterval")}
                           // placeholder={throttleInterval}
+
                           onChange={(e: any) => handlerateclick(e)}
                           isInvalid={
                             !!(props.helper?.errors?.GlobalLimit
@@ -275,7 +277,6 @@ export default function GlobalRateLimit(props: IProps) {
                           type="text"
                           data-testid="quotaPer-input"
                           id="quotaPer"
-                          // placeholder={quotaPerPeriod}
                           onChange={(e: any) => handlerateclick(e)}
                           name="Quota"
                           value={getvalue("Quota")}
