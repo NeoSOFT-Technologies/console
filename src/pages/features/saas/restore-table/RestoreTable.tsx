@@ -200,6 +200,33 @@ function RestoreTable() {
       </>
     );
   }
+  function itrateTable(val: ITableSchema) {
+    return (
+      <>
+        <td>{val.tableName}</td>
+        <td
+          className="text-align-middle text-primary"
+          onClick={() => handleShow(val)}
+          data-testid="restore-table-btn"
+        >
+          <i className="bi bi-bootstrap-reboot"></i>
+        </td>
+      </>
+    );
+  }
+  function paginationCommon(currentpage: number) {
+    return (
+      <nav
+        aria-label="Page navigation example "
+        className="d-flex justify-content-center"
+      >
+        <ul className="pagination ">{paginationRestore(currentpage)}</ul>
+      </nav>
+    );
+  }
+  function nodata() {
+    return <h2>No Data</h2>;
+  }
   function checkData() {
     return allDeleteTableData.data?.tableList !== undefined &&
       allDeleteTableData.data.tableList.length > 0 ? (
@@ -222,30 +249,16 @@ function RestoreTable() {
                   <td>{index + currentPage}</td>
                 )}
                 <td>{val.tenantName}</td>
-                <td>{val.tableName}</td>
-                <td
-                  className="text-align-middle text-primary"
-                  onClick={() => handleShow(val)}
-                  data-testid="restore-table-btn"
-                >
-                  <i className="bi bi-bootstrap-reboot"></i>
-                </td>
+                {itrateTable(val)}
               </tr>
             ))}
           </tbody>
         </Table>
 
-        <nav
-          aria-label="Page navigation example "
-          className="d-flex justify-content-center"
-        >
-          <ul className="pagination ">{paginationRestore(currentPage)}</ul>
-        </nav>
+        {paginationCommon(currentPage)}
       </>
     ) : (
-      <>
-        <h2>No Data</h2>
-      </>
+      <>{nodata()}</>
     );
   }
   function checkForTenant() {
@@ -269,29 +282,15 @@ function RestoreTable() {
                 ) : (
                   <td>{index + currentPage}</td>
                 )}
-                <td>{val.tableName}</td>
-                <td
-                  className="text-align-middle text-primary"
-                  onClick={() => handleShow(val)}
-                  data-testid="restore-table-btn"
-                >
-                  <i className="bi bi-bootstrap-reboot"></i>
-                </td>
+                {itrateTable(val)}
               </tr>
             ))}
           </tbody>
         </Table>
-        <nav
-          aria-label="Page navigation example "
-          className="d-flex justify-content-center"
-        >
-          <ul className="pagination ">{paginationRestore(currentPage)}</ul>
-        </nav>
+        {paginationCommon(currentPage)}
       </>
     ) : (
-      <>
-        <h2>No Data</h2>
-      </>
+      <>{nodata()}</>
     );
   }
   return (
