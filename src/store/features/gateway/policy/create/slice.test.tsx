@@ -1,11 +1,14 @@
 import mockApi from "../../../../../resources/tenant/testconfig";
 import store from "../../../../index";
 import { createPolicy, getPolicybyId, updatePolicy } from "./slice";
-
+const policyid =  "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+const ApIid =  "7fa85f64-5717-4532-b3fc-2c963f66asa6";
+const conUrl = "https://httpbin.orgs";
+const onGet = "/Policy/3fa85f64-5717-4562-b3fc-2c963f66afa6"
 const response = {
   data: {
     Data: {
-      PolicyId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      PolicyId: policyid,
       Name: "poliy1",
       Active: true,
       KeysInactive: true,
@@ -20,7 +23,7 @@ const response = {
       Tags: [""],
       APIs: [
         {
-          ApiId: "7fa85f64-5717-4532-b3fc-2c963f66asa6",
+          ApiId: ApIid,
           ApiName: "api1",
           Versions: [""],
           MasterVersions: [""],
@@ -29,7 +32,7 @@ const response = {
           isQuotaDisbaled: false,
           AllowedUrls: [
             {
-              Url: "https://httpbin.orgs",
+              Url: conUrl,
               Methods: [""],
             },
           ],
@@ -77,7 +80,7 @@ test("calling the state of create policy", async () => {
       Tags: [],
       APIs: [
         {
-          ApiId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          ApiId: policyid,
           ApiName: "api1",
           Versions: [""],
           AuthType: "standard",
@@ -86,7 +89,7 @@ test("calling the state of create policy", async () => {
           isQuotaDisbaled: false,
           AllowedUrls: [
             {
-              Url: "https://httpbin.orgs",
+              Url: conUrl,
               Methods: [""],
             },
           ],
@@ -148,18 +151,18 @@ test("calling the state of create policy rejected", async () => {
 
 test("calling the state of getById policy", async () => {
   mockApi
-    .onGet("/Policy/3fa85f64-5717-4562-b3fc-2c963f66afa6")
+    .onGet(onGet)
     .reply(200, response.data);
   const result = await store.dispatch(
-    getPolicybyId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+    getPolicybyId(policyid)
   );
   expect(result.type).toBe("Policy/GetById/fulfilled");
 });
 
 test("calling the state of getById policy rejected", async () => {
-  mockApi.onGet("/Policy/3fa85f64-5717-4562-b3fc-2c963f66afa6").reply(404);
+  mockApi.onGet(onGet).reply(404);
   const result = await store.dispatch(
-    getPolicybyId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+    getPolicybyId(policyid)
   );
   expect(result.type).toBe("Policy/GetById/rejected");
 });
@@ -168,7 +171,7 @@ test("calling the state of update policy", async () => {
   mockApi.onPut("Policy").reply(200, {});
   const result = await store.dispatch(
     updatePolicy({
-      PolicyId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      PolicyId: policyid,
       Name: "poliy1",
       Active: true,
       KeysInactive: true,
@@ -183,9 +186,9 @@ test("calling the state of update policy", async () => {
       Tags: [""],
       APIs: [
         {
-          Id: "7fa85f64-5717-4532-b3fc-2c963f66asa6",
+          Id: ApIid,
           Name: "api1",
-          ApiId: "7fa85f64-5717-4532-b3fc-2c963f66asa6",
+          ApiId: ApIid,
           ApiName: "api1",
           Versions: [""],
           MasterVersions: [""],
@@ -194,7 +197,7 @@ test("calling the state of update policy", async () => {
           isQuotaDisbaled: false,
           AllowedUrls: [
             {
-              Url: "https://httpbin.orgs",
+              Url: conUrl,
               Methods: [""],
             },
           ],
@@ -228,7 +231,7 @@ test("calling the state of update policy  rejected", async () => {
   mockApi.onPut("Policy").reply(404, {});
   const result = await store.dispatch(
     updatePolicy({
-      PolicyId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      PolicyId: policyid,
       Name: "poliy1",
       Active: true,
       KeysInactive: true,
@@ -243,7 +246,7 @@ test("calling the state of update policy  rejected", async () => {
       Tags: [""],
       APIs: [
         {
-          ApiId: "7fa85f64-5717-4532-b3fc-2c963f66asa6",
+          ApiId: ApIid,
           ApiName: "api1",
           Versions: [""],
           MasterVersions: [""],
@@ -252,7 +255,7 @@ test("calling the state of update policy  rejected", async () => {
           isQuotaDisbaled: false,
           AllowedUrls: [
             {
-              Url: "https://httpbin.orgs",
+              Url: conUrl,
               Methods: [""],
             },
           ],
@@ -286,7 +289,7 @@ test("calling the state of update policy network Error", async () => {
   mockApi.onPut("Policy").networkError();
   const result = await store.dispatch(
     updatePolicy({
-      PolicyId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      PolicyId: policyid,
       Name: "poliy1",
       Active: true,
       KeysInactive: true,
@@ -301,7 +304,7 @@ test("calling the state of update policy network Error", async () => {
       Tags: [""],
       APIs: [
         {
-          ApiId: "7fa85f64-5717-4532-b3fc-2c963f66asa6",
+          ApiId: ApIid,
           ApiName: "api1",
           Versions: [""],
           MasterVersions: [""],
@@ -310,7 +313,7 @@ test("calling the state of update policy network Error", async () => {
           isQuotaDisbaled: false,
           AllowedUrls: [
             {
-              Url: "https://httpbin.orgs",
+              Url: conUrl,
               Methods: [""],
             },
           ],
@@ -341,9 +344,9 @@ test("calling the state of update policy network Error", async () => {
 });
 
 test("calling the state of getById policy network Error", async () => {
-  mockApi.onGet("/Policy/3fa85f64-5717-4562-b3fc-2c963f66afa6").networkError();
+  mockApi.onGet(onGet).networkError();
   const result = await store.dispatch(
-    getPolicybyId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+    getPolicybyId(policyid)
   );
   expect(result.type).toBe("Policy/GetById/rejected");
 });
