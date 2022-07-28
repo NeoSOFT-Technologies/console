@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, isRejected } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import {
   getApiByIdService,
@@ -6,7 +6,14 @@ import {
 } from "../../../../../services/gateway/api/api";
 import error from "../../../../../utils/error";
 import { initialState } from "./payload";
-import { IGetApiByIdData } from ".";
+import { IGetApiByIdData, IApiGetByIdState } from ".";
+
+function rejectedAction(state: IApiGetByIdState, action: any) {
+  state.loading = false;
+  // action.payload contains error information
+  action.payload = action.error;
+  state.error = error(action.payload);
+}
 
 export const getApiById = createAsyncThunk(
   "api/getApiById",
@@ -69,18 +76,18 @@ const slice = createSlice({
         state.data.form.Versions2[0] = "Default";
       }
     });
+    builder.addCase(getApiById.rejected, (state, action) => {
+      rejectedAction(state, action);
+    });
+
     builder.addCase(updateApi.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(updateApi.fulfilled, (state) => {
       state.loading = false;
     });
-    builder.addMatcher(isRejected, (state, action) => {
-      state.loading = false;
-
-      // action.payload contains error information
-      action.payload = action.error;
-      state.error = error(action.payload);
+    builder.addCase(updateApi.rejected, (state, action) => {
+      rejectedAction(state, action);
     });
   },
 });
