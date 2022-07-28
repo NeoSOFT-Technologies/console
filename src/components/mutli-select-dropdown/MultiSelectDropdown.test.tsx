@@ -53,7 +53,6 @@ it("render the roles list in MultiSelect Dropdown menu", async () => {
   const item = rolesMenu[0];
   const roleItem = within(item).getByTestId("role-item");
   expect(roleItem).toBeInTheDocument();
-  // expect(roleItem).toHaveValue("role1");
   expect(roleItem).toHaveAttribute("type", "checkbox");
 });
 

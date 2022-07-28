@@ -60,7 +60,6 @@ export default function Setting() {
       console.log(error);
     }
   };
-  // const myRef = useRef<Element>();
 
   return (
     <>

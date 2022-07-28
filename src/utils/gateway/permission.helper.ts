@@ -74,7 +74,7 @@ export default function getUserPermissions(resource: string) {
     // This will get all user permitted resources
     else {
       for (const item of permissions) {
-        userResources.push(item.resource!);
+        userResources.push(item.resource as string);
       }
       return userResources;
     }

@@ -1,5 +1,3 @@
-// import { IApiData } from "../../types/api/index";
-// import { IGetPolicyByIdData } from "../../../store/features/gateway/policy/create";
 import { IDGetPolicyByIdData } from "../../../store/features/gateway/policy/create/duplicate-index";
 import apiFactory from "../../../utils/api";
 

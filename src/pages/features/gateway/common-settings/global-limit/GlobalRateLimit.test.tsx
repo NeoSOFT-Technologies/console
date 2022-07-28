@@ -57,8 +57,8 @@ const state: IPolicyCreateState = {
 };
 const requiredParameters: IPropsHelper = {
   state,
-  form: state.data.form!,
-  formProp: state.data.form.APIs!,
+  form: state.data.form,
+  formProp: state.data.form.APIs || [],
   errors: state.data.errors!,
   errorProp: state.data.errors?.PerApiLimit!,
   setForm,

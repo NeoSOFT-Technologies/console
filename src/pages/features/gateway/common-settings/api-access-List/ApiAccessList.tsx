@@ -65,14 +65,13 @@ export default function ApiAccessList(props: IProps) {
       if ((props.state as IPolicyCreateState).data.form.APIs) {
         for (const iterator of (props.state as IPolicyCreateState).data.form
           .APIs) {
-          const x = iterator.Id + "," + iterator.Name + "," + iterator.AuthType;
+          const x = `${iterator.ApiId},${iterator.ApiName},${iterator.AuthType}`;
           arr.push(x);
         }
       } else {
         for (const iterator of (props.state as IKeyCreateState).data.form
           .AccessRights) {
-          const x =
-            iterator.ApiId + "," + iterator.ApiName + "," + iterator.AuthType;
+          const x = `${iterator.ApiId},${iterator.ApiName},${iterator.AuthType}`;
           arr.push(x);
         }
       }
@@ -96,7 +95,7 @@ export default function ApiAccessList(props: IProps) {
   useEffect(() => {
     // set auth type
     props.stateForm.length > 0
-      ? setApiAuth(props.stateForm[0].AuthType)
+      ? setApiAuth(props.stateForm[0].AuthType || "")
       : setApiAuth("");
   }, [props.stateForm.length]);
 
@@ -105,7 +104,7 @@ export default function ApiAccessList(props: IProps) {
     if (
       accessApiList.data !== undefined &&
       accessApiList.data &&
-      accessApiList.data?.Apis?.length > 0
+      (accessApiList.data?.Apis?.length || 0) > 0
     ) {
       listApis = accessApiList.data?.Apis.filter((a) =>
         (apiAuth?.length as number) > 0
@@ -118,7 +117,7 @@ export default function ApiAccessList(props: IProps) {
   function bindApisList() {
     return accessApiList.data !== undefined &&
       accessApiList.data &&
-      accessApiList.data?.Apis?.length > 0
+      (accessApiList.data?.Apis?.length || 0) > 0
       ? containsApis().map((data) => [
           data.Id,
           data.Name,
@@ -141,11 +140,7 @@ export default function ApiAccessList(props: IProps) {
           component: RowSelection,
           props: {
             id: (row: any) =>
-              row.cells[1].data +
-              "," +
-              row.cells[2].data +
-              "," +
-              row.cells[5].data,
+              `${row.cells[1].data},${row.cells[2].data},${row.cells[5].data}`,
           },
         },
       },
@@ -309,12 +304,12 @@ export default function ApiAccessList(props: IProps) {
       const gridRenderHtml = document.querySelector("#gridRender");
       (gridRenderHtml as Element).innerHTML = "";
       mygrid.render(gridRenderHtml as Element);
-      const render_Grid = mygrid.updateConfig({
+      const renderGrid = mygrid.updateConfig({
         data: () => bindApisList(),
       });
-      render_Grid.on("ready", () => {
+      renderGrid.on("ready", () => {
         // find the plugin with the give plugin ID
-        checkboxPlugin = render_Grid.config.plugin.get("myCheckbox");
+        checkboxPlugin = renderGrid.config.plugin.get("myCheckbox");
         prp = checkboxPlugin?.props;
 
         for (const iterator of selectedRows.state) {
@@ -329,7 +324,7 @@ export default function ApiAccessList(props: IProps) {
           });
         });
       });
-      render_Grid.forceRender();
+      renderGrid.forceRender();
     }
     setGridReload(false);
   }, [gridReload]);
