@@ -2,7 +2,6 @@ import React, { FormEvent, useEffect } from "react";
 import { Form, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { access, AuthGuard } from "../../../../../components/auth-gaurd";
-// import ErrorSummary from "../../../../../components/error-summary/ErrorSummary";
 import { errorSummary } from "../../../../../components/error-summary/ErrorSummary";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
@@ -26,9 +25,9 @@ export default function CreatePolicy() {
     if (id !== undefined) {
       const error = [];
       const policybyid = await dispatch(getPolicybyId(id));
-      for (let i = 0; i < policybyid.payload.Data.APIs.length; i++) {
+      for (const element of policybyid.payload.Data.APIs) {
         const perapierror = {
-          ApiId: policybyid.payload.Data.APIs[i].Id,
+          ApiId: element.Id,
           Per: "",
           Rate: "",
           Quota: "",
@@ -60,8 +59,7 @@ export default function CreatePolicy() {
       );
     }
 
-    let validate: boolean;
-    validate = false;
+    let validate = false;
     validate = !!(
       state.data.errors?.Name === "" &&
       validateFieldValue === true &&
@@ -192,29 +190,6 @@ export default function CreatePolicy() {
                 </div>
               </div>
             </Form>
-
-            {/* <div className="container">
-              <div className="text-danger">{list}</div>
-              <div>
-                {list2 !== [undefined] ? (
-                  <div className="text-danger">
-                    GlobalLimit:
-                    <br /> {list2}{" "}
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <div className="text-danger">
-                {list1.length === 0 ? <></> : <div>Per API : </div>}
-                {list1.map((data: any, index: number) => {
-                  
-                  return <div key={index}>{data}</div>;
-                })}
-              </div>
-            </div> */}
-
-            {/* <div>{errorSummary(state.data.errors)}</div> */}
           </div>
         </div>
       </div>
