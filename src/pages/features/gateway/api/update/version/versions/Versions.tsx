@@ -29,30 +29,26 @@ export default function Versions() {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
-    switch (name) {
-      case "OverrideTarget":
-        if (value === "") {
-          setFormErrors(
-            {
-              ...state.data.errors,
-              [name]: "",
-            },
-            dispatch
-          );
-        } else {
-          setFormErrors(
-            {
-              ...state.data.errors,
-              [name]: regexForOverrideTarget.test(value)
-                ? ""
-                : "Enter a valid Override Target Host",
-            },
-            dispatch
-          );
-        }
-        break;
-      default:
-        break;
+    if (name === "OverrideTarget") {
+      if (value === "") {
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: "",
+          },
+          dispatch
+        );
+      } else {
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: regexForOverrideTarget.test(value)
+              ? ""
+              : "Enter a valid Override Target Host",
+          },
+          dispatch
+        );
+      }
     }
 
     const newFormData: any = { ...addFormData };
@@ -99,7 +95,7 @@ export default function Versions() {
 
         setAddFormData({ Name: "", Expires: "", OverrideTarget: "" });
 
-        const errlist = [...state.data.errors?.Versions!, ""];
+        const errlist = [...(state.data.errors?.Versions || []), ""];
 
         dispatch(
           setFormError({
@@ -138,7 +134,7 @@ export default function Versions() {
       );
       setAddFormData({ Name: "", Expires: "", OverrideTarget: "" });
 
-      const errlist = [...state.data.errors?.Versions!, ""];
+      const errlist = [...(state.data.errors?.Versions as any[]), ""];
 
       dispatch(
         setFormError({
@@ -168,7 +164,7 @@ export default function Versions() {
       })
     );
 
-    const errlist = [...state.data.errors?.Versions!];
+    const errlist = [...(state.data.errors?.Versions as any[])];
     errlist.splice(index, 1);
     dispatch(
       setFormError({
@@ -181,34 +177,31 @@ export default function Versions() {
   const handleTableRowsInputChange = (index: number, event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
-    const errorState = [...state.data.errors?.Versions!];
+    //
+    const errorState = [...(state.data.errors?.Versions as any[])];
 
-    switch (name) {
-      case "OverrideTarget":
-        if (value === "") {
-          errorState[index!] = "";
+    if (name === "OverrideTarget") {
+      if (value === "") {
+        errorState[index || 0] = "";
 
-          dispatch(
-            setFormError({
-              ...state.data.errors,
-              Versions: errorState,
-            })
-          );
-        } else {
-          errorState[index!] = regexForOverrideTarget.test(value)
-            ? ""
-            : "Enter a valid Override Target Host";
+        dispatch(
+          setFormError({
+            ...state.data.errors,
+            Versions: errorState,
+          })
+        );
+      } else {
+        errorState[index || 0] = regexForOverrideTarget.test(value)
+          ? ""
+          : "Enter a valid Override Target Host";
 
-          dispatch(
-            setFormError({
-              ...state.data.errors,
-              Versions: errorState,
-            })
-          );
-        }
-        break;
-      default:
-        break;
+        dispatch(
+          setFormError({
+            ...state.data.errors,
+            Versions: errorState,
+          })
+        );
+      }
     }
 
     let newdate: any;
@@ -399,10 +392,14 @@ export default function Versions() {
                                       name="OverrideTarget"
                                       value={OverrideTarget}
                                       isInvalid={
-                                        !!state.data.errors?.Versions[index!]
+                                        !!state.data.errors?.Versions[
+                                          index as number
+                                        ]
                                       }
                                       isValid={
-                                        !state.data.errors?.Versions[index!]
+                                        !state.data.errors?.Versions[
+                                          index as number
+                                        ]
                                       }
                                       onChange={(evnt) =>
                                         handleTableRowsInputChange(index, evnt)
@@ -412,7 +409,11 @@ export default function Versions() {
                                       type="invalid"
                                       data-testid="overRideTargetErr"
                                     >
-                                      {state.data.errors?.Versions[index!]}
+                                      {
+                                        state.data.errors?.Versions[
+                                          index as number
+                                        ]
+                                      }
                                     </Form.Control.Feedback>
                                   </td>
                                   <td>
