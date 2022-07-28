@@ -26,25 +26,22 @@ export default function LoadBalancing() {
     }
     const traffic: number = 100 / weightSum;
     const percentage: number = traffic * addUrl[index].weighting;
-    const trafficPercentage =
-      Math.round((percentage + Number.EPSILON) * 100) / 100;
-    return trafficPercentage;
+    return Math.round((percentage + Number.EPSILON) * 100) / 100;
   };
   const setArrayLength = () => {
     if (state.data.form.LoadBalancingTargets.length > 0) {
-      for (let i = 0; i < state.data.form.LoadBalancingTargets.length; i++) {
-        const urlExistLocalState = addUrl!.some(
-          (x: any) =>
-            x?.loadBalancing === state.data.form.LoadBalancingTargets[i]
+      for (const element of state.data.form.LoadBalancingTargets) {
+        const urlExistLocalState = (addUrl as any[]).some(
+          (x: any) => x?.loadBalancing === element
         );
-        arrUrl.push(state.data.form.LoadBalancingTargets[i]);
+        arrUrl.push(element);
         if (!urlExistLocalState) {
           const sameUrlArray = state.data.form.LoadBalancingTargets.filter(
-            (item) => item === state.data.form.LoadBalancingTargets[i]
+            (item) => item === element
           );
           const urlWeightCount = sameUrlArray.length;
           const weightObj: any = {
-            loadBalancing: state.data.form.LoadBalancingTargets[i],
+            loadBalancing: element,
             weighting: urlWeightCount,
             traffic: 0,
           };
@@ -70,19 +67,16 @@ export default function LoadBalancing() {
   const handleFormInputChange = (event: any) => {
     const { name, value } = event.target;
 
-    switch (name) {
-      case "LoadBalancingTargets":
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: regexForTargetUrl.test(value) ? "" : "Enter a valid Url ",
-          },
-          dispatch
-        );
-        break;
-      default:
-        break;
+    if (name === "LoadBalancingTargets") {
+      setFormErrors(
+        {
+          ...state.data.errors,
+          [name]: regexForTargetUrl.test(value) ? "" : "Enter a valid Url ",
+        },
+        dispatch
+      );
     }
+
     const formobj = { ...addFormData };
     formobj[name] = value;
     setAddFormData(formobj);

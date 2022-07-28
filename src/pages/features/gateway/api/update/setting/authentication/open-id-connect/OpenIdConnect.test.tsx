@@ -217,10 +217,10 @@ it("test buttons and inputs2", () => {
   );
   expect(screen).toBeDefined();
 
-  const client_id = screen.getByTestId("client-id");
-  expect(client_id).toBeInTheDocument();
-  fireEvent.change(client_id, { target: { value: "newId" } });
-  expect(client_id).toHaveValue("newId");
+  const clientID = screen.getByTestId("client-id");
+  expect(clientID).toBeInTheDocument();
+  fireEvent.change(clientID, { target: { value: "newId" } });
+  expect(clientID).toHaveValue("newId");
 
   const selectedPolicy = screen.getByTestId("selectedPolicy");
   expect(selectedPolicy).toBeInTheDocument();

@@ -17,20 +17,16 @@ export default function TargetUrl() {
   const state = useAppSelector((RootState) => RootState.updateApiState);
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    switch (name) {
-      case "TargetUrl":
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: regexForTargetUrl.test(value)
-              ? ""
-              : "Enter a Valid Target URL",
-          },
-          dispatch
-        );
-        break;
-      default:
-        break;
+    if (name === "TargetUrl") {
+      setFormErrors(
+        {
+          ...state.data.errors,
+          [name]: regexForTargetUrl.test(value)
+            ? ""
+            : "Enter a Valid Target URL",
+        },
+        dispatch
+      );
     }
     setFormData(event, dispatch, state);
   }

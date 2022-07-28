@@ -57,7 +57,8 @@ export const ScrollToTop = () => {
 export const scrollToSection = (elementName: any) => {
   const yOffset = -70;
   const el = document.querySelector(`#${elementName}`);
-  const y = el!.getBoundingClientRect().top + window.pageYOffset + yOffset;
+  const y =
+    (el as Element).getBoundingClientRect().top + window.pageYOffset + yOffset;
   window.scrollTo({
     top: y,
     behavior: "smooth",

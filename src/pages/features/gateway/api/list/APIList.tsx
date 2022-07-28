@@ -124,7 +124,7 @@ export default function APIList() {
             data-testid="delete-input"
             variant="primary"
             className="btn-danger"
-            onClick={() => handleDelete(DeleteApiId!)}
+            onClick={() => handleDelete(DeleteApiId as string)}
           >
             Delete
           </Button>

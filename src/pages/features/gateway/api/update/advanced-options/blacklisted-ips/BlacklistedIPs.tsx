@@ -3,7 +3,7 @@ import { Accordion, Form, Col, Row, Button, Table } from "react-bootstrap";
 import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import {
   setFormErrors,
-  regexForIP_Address,
+  regexForIPAddress,
 } from "../../../../../../../resources/gateway/api/api-constants";
 import { setForm } from "../../../../../../../store/features/gateway/api/update/slice";
 import {
@@ -47,30 +47,27 @@ export default function BlacklistedIPs() {
 
   const handleFormInputChange = (event: any) => {
     const { name, value } = event.target;
-    switch (name) {
-      case "Blacklist":
-        if (value === "") {
-          setFormErrors(
-            {
-              ...state.data.errors,
-              [name]: "",
-            },
-            dispatch
-          );
-        } else {
-          setFormErrors(
-            {
-              ...state.data.errors,
-              [name]: regexForIP_Address.test(value)
-                ? ""
-                : "Please enter a Valid IP Address",
-            },
-            dispatch
-          );
-        }
-        break;
-      default:
-        break;
+
+    if (name === "Blacklist") {
+      if (value === "") {
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: "",
+          },
+          dispatch
+        );
+      } else {
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: regexForIPAddress.test(value)
+              ? ""
+              : "Please enter a Valid IP Address",
+          },
+          dispatch
+        );
+      }
     }
     const formobj = { ...addFormData };
     formobj[name] = value;
@@ -148,12 +145,13 @@ export default function BlacklistedIPs() {
                     {enableBlacklist ? (
                       <div>
                         <Row>
-                          {/* <b>Blacklisted IPs</b> */}
-                          {blacklistLength > 0 ? (
-                            <></>
-                          ) : (
-                            <p>No IPs selected, please add one below.</p>
-                          )}
+                          {(() => {
+                            return blacklistLength > 0 ? (
+                              <></>
+                            ) : (
+                              <p>No IPs selected, please add one below.</p>
+                            );
+                          })()}
                           <Row>
                             <Form.Label>
                               <b>IP Address:</b>
@@ -198,18 +196,20 @@ export default function BlacklistedIPs() {
                           <Row className="mr-5">
                             <Col md={10}>
                               <Table striped bordered hover size="lg">
-                                {blacklistLength > 0 ? (
-                                  <thead>
-                                    <tr>
-                                      <th>IP Address</th>
-                                      <th style={{ textAlign: "center" }}>
-                                        Action
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                ) : (
-                                  <></>
-                                )}
+                                {(() => {
+                                  return blacklistLength > 0 ? (
+                                    <thead>
+                                      <tr>
+                                        <th>IP Address</th>
+                                        <th style={{ textAlign: "center" }}>
+                                          Action
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                  ) : (
+                                    <></>
+                                  );
+                                })()}
                                 <tbody>
                                   {state.data.form.Blacklist.map(
                                     (data: any, index: any) => {
