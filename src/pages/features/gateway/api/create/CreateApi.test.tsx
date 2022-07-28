@@ -6,9 +6,9 @@ import { BrowserRouter } from "react-router-dom";
 import store from "../../../../../store";
 import CreateApi from "./CreateApi";
 
-const name_Input = "name-input";
-const listen_Path_Input = "listenPath-input";
-const target_Url_Input = "targetUrl-input";
+const nameInputs = "name-input";
+const listenPathInputs = "listenPath-input";
+const targetUrlInputs = "targetUrl-input";
 it("render without crashing CreateApi", () => {
   render(
     <BrowserRouter>
@@ -38,19 +38,19 @@ it("test buttons and inputs present", async () => {
   expect(submitBtn).toBeInTheDocument();
   fireEvent.submit(submitBtn);
 
-  const nameInput = screen.getByTestId(name_Input);
+  const nameInput = screen.getByTestId(nameInputs);
   fireEvent.change(nameInput, { target: { value: "api1" } });
-  expect(screen.getByTestId(name_Input)).toHaveValue("api1");
+  expect(screen.getByTestId(nameInputs)).toHaveValue("api1");
 
-  const listenPathInput = screen.getByTestId(listen_Path_Input);
+  const listenPathInput = screen.getByTestId(listenPathInputs);
   fireEvent.change(listenPathInput, { target: { value: "/api1/" } });
-  expect(screen.getByTestId(listen_Path_Input)).toHaveValue("/api1/");
+  expect(screen.getByTestId(listenPathInputs)).toHaveValue("/api1/");
 
-  const targetUrlInput = screen.getByTestId(target_Url_Input);
+  const targetUrlInput = screen.getByTestId(targetUrlInputs);
   fireEvent.change(targetUrlInput, {
     target: { value: "https://httpbin.org" },
   });
-  expect(screen.getByTestId(target_Url_Input)).toHaveValue(
+  expect(screen.getByTestId(targetUrlInputs)).toHaveValue(
     "https://httpbin.org"
   );
 
@@ -70,19 +70,19 @@ it("check validations", async () => {
       </Provider>
     </BrowserRouter>
   );
-  const nameInput = screen.getByTestId(name_Input);
+  const nameInput = screen.getByTestId(nameInputs);
   fireEvent.change(nameInput, { target: { value: "123" } });
   const nameErr = screen.getByTestId("nameErr");
   expect(nameErr).toHaveTextContent("Enter valid Api Name eg: abcd or Abcd1");
 
-  const listenPathInput = screen.getByTestId(listen_Path_Input);
+  const listenPathInput = screen.getByTestId(listenPathInputs);
   fireEvent.change(listenPathInput, { target: { value: "test" } });
   const listenPathErr = screen.getByTestId("listenPathErr");
   expect(listenPathErr).toHaveTextContent(
     "Enter a Valid Listen Path eg: /abc/"
   );
 
-  const targetUrlInput = await screen.getByTestId(target_Url_Input);
+  const targetUrlInput = await screen.getByTestId(targetUrlInputs);
   fireEvent.change(targetUrlInput, { target: { value: "https:wrongUrl" } });
   const targetUrlErr = screen.getByTestId("targetUrlErr");
   expect(targetUrlErr).toHaveTextContent("Enter a Valid url");
