@@ -17,22 +17,17 @@ export default function ListenPath() {
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
-    switch (name) {
-      case "ListenPath":
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: regexForListenPath.test(value)
-              ? ""
-              : "Enter a Valid Listen Path",
-          },
-          dispatch
-        );
-        break;
-      default:
-        break;
+    if (name === "ListenPath") {
+      setFormErrors(
+        {
+          ...state.data.errors,
+          [name]: regexForListenPath.test(value)
+            ? ""
+            : "Enter a Valid Listen Path",
+        },
+        dispatch
+      );
     }
-
     setFormData(event, dispatch, state);
   }
   return (
