@@ -209,6 +209,7 @@ export default function CreateKey() {
         </>
       );
     }
+    return <></>;
   }
   return (
     <>
