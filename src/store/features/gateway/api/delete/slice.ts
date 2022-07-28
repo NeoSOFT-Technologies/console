@@ -15,8 +15,8 @@ export const deleteApi = createAsyncThunk(
     try {
       const response = await deleteApiService(Id);
       return response.data;
-    } catch (error_) {
-      const myError = error_ as Error | AxiosError;
+    } catch (_error) {
+      const myError = _error as Error | AxiosError;
       throw axios.isAxiosError(myError) && myError.response
         ? myError.response.data.Errors[0]
         : myError.message;

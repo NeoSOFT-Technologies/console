@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, isRejected } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import {
   getApiByIdService,
@@ -69,19 +69,13 @@ const slice = createSlice({
         state.data.form.Versions2[0] = "Default";
       }
     });
-    builder.addCase(getApiById.rejected, (state, action) => {
-      state.loading = false;
-      // action.payload contains error information
-      action.payload = action.error;
-      state.error = error(action.payload);
-    });
     builder.addCase(updateApi.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(updateApi.fulfilled, (state) => {
       state.loading = false;
     });
-    builder.addCase(updateApi.rejected, (state, action) => {
+    builder.addMatcher(isRejected, (state, action) => {
       state.loading = false;
 
       // action.payload contains error information
