@@ -40,6 +40,7 @@ export default function PathBased(props: IProps) {
   });
   const newFormData: any = { ...Limits };
   const commonFunc = (obj: any, propName: any, _setLimit?: boolean) => {
+    _setLimit = _setLimit === true;
     const apisList = [...(props.requiredInterface.formProp || [])];
     if (_setLimit) {
       setLimits(obj);
@@ -236,12 +237,7 @@ export default function PathBased(props: IProps) {
       (props.requiredInterface.formProp || []).length > 0
     ) {
       const removeApi = [...(props.requiredInterface.formProp || [])];
-      const rowId =
-        props.requiredInterface.formProp[index]?.Id +
-        "," +
-        props.requiredInterface.formProp[index]?.Name +
-        "," +
-        props.requiredInterface.formProp[index]?.AuthType;
+      const rowId = `${props.requiredInterface.formProp[index]?.Id},${props.requiredInterface.formProp[index]?.Name},${props.requiredInterface.formProp[index]?.AuthType}`;
       refreshGrid(rowId);
       const ApiName = props.requiredInterface.formProp[index]?.Name;
 
@@ -318,13 +314,15 @@ export default function PathBased(props: IProps) {
             <Accordion.Item eventKey="0">
               <div style={{ display: "inline-flex", width: "100%" }}>
                 <AccordionButton>
-                  {props.requiredInterface.formProp[
-                    props.requiredInterface.index as number
-                  ].ApiName +
-                    " | " +
+                  {`${
                     props.requiredInterface.formProp[
                       props.requiredInterface.index as number
-                    ].AuthType}
+                    ].ApiName
+                  } | ${
+                    props.requiredInterface.formProp[
+                      props.requiredInterface.index as number
+                    ].AuthType
+                  }`}
                 </AccordionButton>
                 <button
                   type="button"

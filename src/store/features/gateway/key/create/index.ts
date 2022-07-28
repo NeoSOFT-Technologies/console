@@ -35,37 +35,33 @@ export interface IGetKeyByIdData {
                 Url: string;
                 Methods: string[];
               }[];
-          Limit?:
-            | {
-                Rate?: number;
-                Per?: number;
-                Throttle_interval?: number;
-                Throttle_retry_limit?: number;
-                Max_query_depth?: number;
-                Quota_max?: number;
-                Quota_renews?: number;
-                Quota_remaining?: number;
-                Quota_renewal_rate?: number;
-              }
-            | undefined;
+          Limit?: {
+            Rate?: number;
+            Per?: number;
+            Throttle_interval?: number;
+            Throttle_retry_limit?: number;
+            Max_query_depth?: number;
+            Quota_max?: number;
+            Quota_renews?: number;
+            Quota_remaining?: number;
+            Quota_renewal_rate?: number;
+          };
         }
       ]
     | [];
   Policies: string[];
   PolicyByIds?: [
     {
-      Global?:
-        | {
-            Name: string;
-            MaxQuota: number;
-            QuotaRate: number;
-            Rate: number;
-            Per: number;
-            ThrottleInterval: number;
-            ThrottleRetries: number;
-          }
-        | undefined;
-      APIs?: any[] | undefined;
+      Global?: {
+        Name: string;
+        MaxQuota: number;
+        QuotaRate: number;
+        Rate: number;
+        Per: number;
+        ThrottleInterval: number;
+        ThrottleRetries: number;
+      };
+      APIs?: any[];
       policyName: string;
       AuthType: string;
     }
