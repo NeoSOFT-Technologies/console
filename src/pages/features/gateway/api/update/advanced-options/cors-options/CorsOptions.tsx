@@ -49,18 +49,16 @@ export default function CorsOptions() {
     event: React.ChangeEvent<HTMLInputElement>
   ) {
     const { name, value } = event.target;
-    switch (name) {
-      case "AllowedOrigins":
-        if (value === "") {
-          setFormErrors(
+    if (name === "AllowedOrigins") {
+      value === ""
+        ? setFormErrors(
             {
               ...state.data.errors,
               [name]: "",
             },
             dispatch
-          );
-        } else {
-          setFormErrors(
+          )
+        : setFormErrors(
             {
               ...state.data.errors,
               [name]: regexForAllowedOrigins.test(value)
@@ -69,11 +67,8 @@ export default function CorsOptions() {
             },
             dispatch
           );
-        }
-        break;
-      default:
-        break;
     }
+
     const allowedOrigins = { ...addAllowedOrigins };
     allowedOrigins[name] = value;
     setAllowedOrigins(allowedOrigins);
