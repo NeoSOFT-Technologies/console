@@ -16,7 +16,7 @@ interface IProps {
 
 export default function GlobalRateLimit(props: IProps) {
   let perapi = { ...(props.helper?.errors?.GlobalLimit || []) };
-
+  const globalkeyapplyPolicy = "globalKey-applyPolicy";
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
@@ -59,7 +59,7 @@ export default function GlobalRateLimit(props: IProps) {
               <Row>
                 <Col md="4">
                   {(() => {
-                    return props.current === "globalKey-applyPolicy" ? (
+                    return props.current === globalkeyapplyPolicy ? (
                       <Form.Group className="mb-3">
                         <Form.Label className="mt-2">
                           <b>Rate Limiting</b>
@@ -140,7 +140,7 @@ export default function GlobalRateLimit(props: IProps) {
                 </Col>
                 <Col md="4">
                   {(() => {
-                    return props.current === "globalKey-applyPolicy" ? (
+                    return props.current === globalkeyapplyPolicy ? (
                       <Form.Group className="mb-3">
                         <Form.Label className="mt-2">
                           <b>Throttling</b>
@@ -236,7 +236,7 @@ export default function GlobalRateLimit(props: IProps) {
                 </Col>
                 <Col md="4">
                   {(() => {
-                    return props.current === "globalKey-applyPolicy" ? (
+                    return props.current === globalkeyapplyPolicy ? (
                       <Form.Group className="mb-3">
                         <Form.Label className="mt-2">
                           <b>Usage Quota</b>
