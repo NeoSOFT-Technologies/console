@@ -1,10 +1,10 @@
 import mockApi from "../../../../../resources/tenant/testconfig";
 import store from "../../../../index";
 import { createPolicy, getPolicybyId, updatePolicy } from "./slice";
-const policyid =  "3fa85f64-5717-4562-b3fc-2c963f66afa6";
-const ApIid =  "7fa85f64-5717-4532-b3fc-2c963f66asa6";
+const policyid = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+const ApIid = "7fa85f64-5717-4532-b3fc-2c963f66asa6";
 const conUrl = "https://httpbin.orgs";
-const onGet = "/Policy/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+const onGet = "/Policy/3fa85f64-5717-4562-b3fc-2c963f66afa6";
 const response = {
   data: {
     Data: {
@@ -150,20 +150,14 @@ test("calling the state of create policy rejected", async () => {
 });
 
 test("calling the state of getById policy", async () => {
-  mockApi
-    .onGet(onGet)
-    .reply(200, response.data);
-  const result = await store.dispatch(
-    getPolicybyId(policyid)
-  );
+  mockApi.onGet(onGet).reply(200, response.data);
+  const result = await store.dispatch(getPolicybyId(policyid));
   expect(result.type).toBe("Policy/GetById/fulfilled");
 });
 
 test("calling the state of getById policy rejected", async () => {
   mockApi.onGet(onGet).reply(404);
-  const result = await store.dispatch(
-    getPolicybyId(policyid)
-  );
+  const result = await store.dispatch(getPolicybyId(policyid));
   expect(result.type).toBe("Policy/GetById/rejected");
 });
 
@@ -345,9 +339,7 @@ test("calling the state of update policy network Error", async () => {
 
 test("calling the state of getById policy network Error", async () => {
   mockApi.onGet(onGet).networkError();
-  const result = await store.dispatch(
-    getPolicybyId(policyid)
-  );
+  const result = await store.dispatch(getPolicybyId(policyid));
   expect(result.type).toBe("Policy/GetById/rejected");
 });
 
