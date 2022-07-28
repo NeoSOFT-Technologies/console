@@ -135,6 +135,55 @@ export default function OpenIdConnectAuthentication() {
     }
   };
 
+  function filterClient(filteredClientId: any, issuerIndex: any) {
+    if (filteredClientId[0].Policy === addClientFormData[issuerIndex].policy) {
+      ToastAlert(
+        "This client with same policy name has been already added!",
+        "error"
+      );
+    } else {
+      const providerList = [...state.data.form.OpenidOptions.Providers];
+
+      const clientList = [
+        ...state.data.form.OpenidOptions.Providers[issuerIndex].Client_ids,
+      ];
+      for (const element of state.data.form.OpenidOptions.Providers[issuerIndex]
+        .Client_ids) {
+        if (element.ClientId === addClientFormData[issuerIndex].clientId) {
+          const i = clientList.findIndex(
+            (e) => e.ClientId === addClientFormData[issuerIndex].clientId
+          );
+          clientList.splice(i, 1);
+          const list = {
+            ClientId: addClientFormData[issuerIndex].clientId,
+            Policy: addClientFormData[issuerIndex].policy,
+          };
+          clientList.push(list);
+          providerList[issuerIndex] = {
+            ...providerList[issuerIndex],
+            Client_ids: [...clientList],
+          };
+          const OpenidOptionsData = {
+            Providers: providerList,
+          };
+          dispatch(
+            setForm({
+              ...state.data.form,
+              OpenidOptions: OpenidOptionsData,
+            })
+          );
+
+          const clientObj = {
+            clientId: "",
+            policy: "",
+          };
+          const newFormData: any = [...addClientFormData];
+          newFormData[issuerIndex] = clientObj;
+          setClientAddFormData(newFormData);
+        }
+      }
+    }
+  }
   const handleClientAddClick = (issuerIndex: any, event: any) => {
     event.preventDefault();
     if (
@@ -146,56 +195,7 @@ export default function OpenIdConnectAuthentication() {
         (x) => x.ClientId === addClientFormData[issuerIndex].clientId
       );
       if (filteredClientId.length > 0) {
-        if (
-          filteredClientId[0].Policy === addClientFormData[issuerIndex].policy
-        ) {
-          ToastAlert(
-            "This client with same policy name has been already added!",
-            "error"
-          );
-        } else {
-          const providerList = [...state.data.form.OpenidOptions.Providers];
-
-          const clientList = [
-            ...state.data.form.OpenidOptions.Providers[issuerIndex].Client_ids,
-          ];
-          for (const element of state.data.form.OpenidOptions.Providers[
-            issuerIndex
-          ].Client_ids) {
-            if (element.ClientId === addClientFormData[issuerIndex].clientId) {
-              const i = clientList.findIndex(
-                (e) => e.ClientId === addClientFormData[issuerIndex].clientId
-              );
-              clientList.splice(i, 1);
-              const list = {
-                ClientId: addClientFormData[issuerIndex].clientId,
-                Policy: addClientFormData[issuerIndex].policy,
-              };
-              clientList.push(list);
-              providerList[issuerIndex] = {
-                ...providerList[issuerIndex],
-                Client_ids: [...clientList],
-              };
-              const OpenidOptionsData = {
-                Providers: providerList,
-              };
-              dispatch(
-                setForm({
-                  ...state.data.form,
-                  OpenidOptions: OpenidOptionsData,
-                })
-              );
-
-              const clientObj = {
-                clientId: "",
-                policy: "",
-              };
-              const newFormData: any = [...addClientFormData];
-              newFormData[issuerIndex] = clientObj;
-              setClientAddFormData(newFormData);
-            }
-          }
-        }
+        return filterClient(filteredClientId, issuerIndex);
       } else {
         const providerList = [...state.data.form.OpenidOptions.Providers];
 
@@ -381,11 +381,13 @@ export default function OpenIdConnectAuthentication() {
                   <div className="row">
                     <div className="mb-1"></div>
                     <div className="col-sm-11">
-                      {loading ? (
-                        <></>
-                      ) : (
-                        (state.data.form.OpenidOptions.Providers as any[]).map(
-                          (data: any, index) => {
+                      {(() => {
+                        return loading ? (
+                          <></>
+                        ) : (
+                          (
+                            state.data.form.OpenidOptions.Providers as any[]
+                          ).map((data: any, index) => {
                             const { Issuer, Client_ids } = data;
                             return Client_ids?.length > 0 ? (
                               state.data.form.OpenidOptions.Providers[
@@ -428,44 +430,46 @@ export default function OpenIdConnectAuthentication() {
                                                 />{" "}
                                               </td>
                                               <td>
-                                                {(selectedPolicy?.length as number) >
-                                                0 ? (
-                                                  <select
-                                                    className="p-2 rounded mb-0"
-                                                    data-testid="selected-policy"
-                                                    name="policy"
-                                                    id="policy"
-                                                    placeholder="select policy"
-                                                    value={
-                                                      addClientFormData.policy
-                                                    }
-                                                    onChange={(evnt) =>
-                                                      handleClientInputChange(
-                                                        evnt,
-                                                        index
-                                                      )
-                                                    }
-                                                  >
-                                                    <option></option>
-                                                    {selectedPolicy?.map(
-                                                      (item: any) => {
-                                                        return (
-                                                          <option
-                                                            key={item.Id}
-                                                            value={item.Id}
-                                                            id={item.Name}
-                                                          >
-                                                            {item.Name}
-                                                          </option>
-                                                        );
+                                                {(() => {
+                                                  return (selectedPolicy?.length as number) >
+                                                    0 ? (
+                                                    <select
+                                                      className="p-2 rounded mb-0"
+                                                      data-testid="selected-policy"
+                                                      name="policy"
+                                                      id="policy"
+                                                      placeholder="select policy"
+                                                      value={
+                                                        addClientFormData.policy
                                                       }
-                                                    )}
-                                                  </select>
-                                                ) : (
-                                                  <>
-                                                    <p>No policy available</p>
-                                                  </>
-                                                )}
+                                                      onChange={(evnt) =>
+                                                        handleClientInputChange(
+                                                          evnt,
+                                                          index
+                                                        )
+                                                      }
+                                                    >
+                                                      <option></option>
+                                                      {selectedPolicy?.map(
+                                                        (item: any) => {
+                                                          return (
+                                                            <option
+                                                              key={item.Id}
+                                                              value={item.Id}
+                                                              id={item.Name}
+                                                            >
+                                                              {item.Name}
+                                                            </option>
+                                                          );
+                                                        }
+                                                      )}
+                                                    </select>
+                                                  ) : (
+                                                    <>
+                                                      <p>No policy available</p>
+                                                    </>
+                                                  );
+                                                })()}
                                               </td>
                                               <td>
                                                 <button
@@ -608,42 +612,44 @@ export default function OpenIdConnectAuthentication() {
                                         />{" "}
                                       </td>
                                       <td>
-                                        {(selectedPolicy?.length as number) >
-                                        0 ? (
-                                          <select
-                                            className="p-2 rounded mb-0"
-                                            data-testid="selectedPolicy"
-                                            name="policy"
-                                            id="policy"
-                                            placeholder="select policy"
-                                            value={addClientFormData.policy}
-                                            onChange={(evnt) =>
-                                              handleClientInputChange(
-                                                evnt,
-                                                index
-                                              )
-                                            }
-                                          >
-                                            <option></option>
-                                            {selectedPolicy?.map(
-                                              (item: any) => {
-                                                return (
-                                                  <option
-                                                    key={item.Id}
-                                                    value={item.Id}
-                                                    id={item.Name}
-                                                  >
-                                                    {item.Name}
-                                                  </option>
-                                                );
+                                        {(() => {
+                                          return (selectedPolicy?.length as number) >
+                                            0 ? (
+                                            <select
+                                              className="p-2 rounded mb-0"
+                                              data-testid="selectedPolicy"
+                                              name="policy"
+                                              id="policy"
+                                              placeholder="select policy"
+                                              value={addClientFormData.policy}
+                                              onChange={(evnt) =>
+                                                handleClientInputChange(
+                                                  evnt,
+                                                  index
+                                                )
                                               }
-                                            )}
-                                          </select>
-                                        ) : (
-                                          <>
-                                            <p>No policy available</p>
-                                          </>
-                                        )}
+                                            >
+                                              <option></option>
+                                              {selectedPolicy?.map(
+                                                (item: any) => {
+                                                  return (
+                                                    <option
+                                                      key={item.Id}
+                                                      value={item.Id}
+                                                      id={item.Name}
+                                                    >
+                                                      {item.Name}
+                                                    </option>
+                                                  );
+                                                }
+                                              )}
+                                            </select>
+                                          ) : (
+                                            <>
+                                              <p>No policy available</p>
+                                            </>
+                                          );
+                                        })()}
                                       </td>
                                       <td>
                                         <button
@@ -675,9 +681,9 @@ export default function OpenIdConnectAuthentication() {
                                 </table>
                               </div>
                             );
-                          }
-                        )
-                      )}
+                          })
+                        );
+                      })()}
                     </div>
                     <div className="col-sm-4"></div>
                   </div>
