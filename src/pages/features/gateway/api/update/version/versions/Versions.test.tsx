@@ -6,6 +6,9 @@ import { BrowserRouter } from "react-router-dom";
 import store from "../../../../../../../store";
 import Versions from "./Versions";
 
+const overrideTargetInputs = "overrideTarget-input";
+const overRideTargetInputs = "overRideTarget-input";
+const overRideTargetValue = "https://httpbin.org";
 it("render without crashing Versions", () => {
   render(
     <BrowserRouter>
@@ -39,24 +42,24 @@ it("render inputs", () => {
   expect(versionNameInput).toHaveValue("testVersionName");
   fireEvent.change(versionNameInput);
 
-  const overrideTargetInput = screen.getByTestId("overrideTarget-input");
+  const overrideTargetInput = screen.getByTestId(overrideTargetInputs);
   expect(overrideTargetInput).toBeInTheDocument();
   fireEvent.change(overrideTargetInput, {
-    target: { value: "https://httpbin.org" },
+    target: { value: overRideTargetValue },
   });
-  expect(overrideTargetInput).toHaveValue("https://httpbin.org");
+  expect(overrideTargetInput).toHaveValue(overRideTargetValue);
   fireEvent.change(overrideTargetInput);
 
-  const overRideTargetInput = screen.getByTestId("overRideTarget-input");
+  const overRideTargetInput = screen.getByTestId(overRideTargetInputs);
   expect(overRideTargetInput).toBeInTheDocument();
   fireEvent.change(overRideTargetInput, {
-    target: { value: "https://httpbin.org" },
+    target: { value: overRideTargetValue },
   });
-  expect(overRideTargetInput).toHaveValue("https://httpbin.org");
+  expect(overRideTargetInput).toHaveValue(overRideTargetValue);
   fireEvent.change(overRideTargetInput);
 
   // validation
-  const overRide = screen.getByTestId("overRideTarget-input");
+  const overRide = screen.getByTestId(overRideTargetInputs);
   expect(overRide).toBeInTheDocument();
   fireEvent.change(overRide, {
     target: { value: "" },
@@ -64,7 +67,7 @@ it("render inputs", () => {
   const overRideErr = screen.getByTestId("overRideTargetErr");
   expect(overRideErr).toHaveTextContent("");
 
-  const overRideInput = screen.getByTestId("overRideTarget-input");
+  const overRideInput = screen.getByTestId(overRideTargetInputs);
   expect(overRideInput).toBeInTheDocument();
   fireEvent.change(overRideInput, {
     target: { value: "test" },
@@ -117,14 +120,14 @@ it("check validations", () => {
       </Provider>
     </BrowserRouter>
   );
-  const overrideTargetInput = screen.getByTestId("overrideTarget-input");
+  const overrideTargetInput = screen.getByTestId(overrideTargetInputs);
   fireEvent.change(overrideTargetInput, { target: { value: "test" } });
   const overrideTargetErr = screen.getByTestId("overrideTargetErr");
   expect(overrideTargetErr).toHaveTextContent(
     "Enter a valid Override Target Host"
   );
 
-  const overridetargetInput = screen.getByTestId("overrideTarget-input");
+  const overridetargetInput = screen.getByTestId(overrideTargetInputs);
   fireEvent.change(overridetargetInput, { target: { value: "" } });
   const overridetargetErr = screen.getByTestId("overrideTargetErr");
   expect(overridetargetErr).toHaveTextContent("");

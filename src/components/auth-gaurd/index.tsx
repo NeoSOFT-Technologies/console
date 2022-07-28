@@ -112,6 +112,16 @@ export const SaasGuard = ({ children }: component) => {
   }
   return <Navigate to="/error-pages/error-401" />;
 };
+function isChildren(children: any, protect: any, authorized: any) {
+  // This will execute when AuthGuard is invoked from AppRoutes
+  if (protect) {
+    return authorized ? children : <Error401 />;
+  }
+  // This will execute when AuthGuard is invoked from Action Buttons
+  else {
+    return authorized ? children : <></>;
+  }
+}
 export function AuthGuard({ children, resource, scope, protect }: component) {
   let authorized = true;
   let permissions: any;
@@ -124,7 +134,7 @@ export function AuthGuard({ children, resource, scope, protect }: component) {
     // This will check specific resource has specific scope
     if (resource && scope) {
       authorized =
-        scope && permissions.scopes && permissions.scopes.length > 0
+        permissions.scopes && permissions.scopes.length > 0
           ? permissions.scopes.includes(scope)
           : false;
     }
@@ -136,14 +146,7 @@ export function AuthGuard({ children, resource, scope, protect }: component) {
 
   // This will check if AuthGuard is invoked from Action Buttons, or AppRoutes or Menus
   if (children) {
-    // This will execute when AuthGuard is invoked from AppRoutes
-    if (protect) {
-      return authorized ? children : <Error401 />;
-    }
-    // This will execute when AuthGuard is invoked from Action Buttons
-    else {
-      return authorized ? children : <></>;
-    }
+    return isChildren(children, protect, authorized);
   }
   // This will execute when AuthGuard is invoked from Menus
   else if (resource === undefined && permissions) {
