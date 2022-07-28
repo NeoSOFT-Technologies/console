@@ -6,7 +6,7 @@ import {
 import { setNestedState } from "../common";
 
 export const regexForName = /^[ A-Za-z][\d A-Za-z]{3,29}$/;
-export const regexForListenPath = /^\/[A-Za-z]+[\dA-Za-z-][\dA-Za-z]*\/$/;
+export const regexForListenPath = /^\/[A-Za-z][\dA-Za-z]*\/$/;
 
 export const regexForTargetUrl =
   /^((https?|ftp|file):\/\/|www\.|ftp\.)(\([\w!#$%&+,./:=?@\\|]*\)|[\d!#$%&+,./:=?@A-Z\\_|-])*((\.[a-z0-9]{1,6}|:[a-z0-9]{1,6}))/i;
