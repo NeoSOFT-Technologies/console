@@ -11,6 +11,11 @@ import { initialState } from "./payload";
 import { IGetPolicyByIdData, IPolicyCreateState } from ".";
 
 let dataduplicate: IDGetPolicyByIdData;
+function rejectedAction(state: IPolicyCreateState, action: any) {
+  state.loading = false;
+  action.payload = action.error;
+  state.error = error(action.payload);
+}
 function bindPolicyData(state: any, action: any) {
   state.data.form.Quota = action.payload.Data.MaxQuota;
   state.data.form.QuotaRenewalRate = action.payload.Data.QuotaRate;
@@ -134,9 +139,7 @@ const slice = createSlice({
       state.loading = false;
     });
     builder.addCase(createPolicy.rejected, (state, action) => {
-      state.loading = false;
-      action.payload = action.error;
-      state.error = error(action.payload);
+      rejectedAction(state, action);
     });
     builder.addCase(getPolicybyId.pending, (state) => {
       state.loading = true;
@@ -148,9 +151,7 @@ const slice = createSlice({
       bindPolicyData(state, action);
     });
     builder.addCase(getPolicybyId.rejected, (state, action) => {
-      state.loading = false;
-      action.payload = action.error;
-      state.error = error(action.payload);
+      rejectedAction(state, action);
     });
 
     builder.addCase(updatePolicy.pending, (state) => {
@@ -160,9 +161,7 @@ const slice = createSlice({
       state.loading = false;
     });
     builder.addCase(updatePolicy.rejected, (state, action) => {
-      state.loading = false;
-      action.payload = action.error;
-      state.error = error(action.payload);
+      rejectedAction(state, action);
     });
   },
 });
