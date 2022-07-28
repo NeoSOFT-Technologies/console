@@ -32,14 +32,8 @@ export const getDecodeToken: any = () => {
   return decoded;
 };
 
-// This will get current logged-in user's resource based permissions
-export default function getUserPermissions(resource: string) {
-  const token = getDecodeToken();
-  // TODO - Uncomment below variable once Token provides resource based permissions
-  // const permissions: IPermission[] = token.permission;
-
-  // TODO - Token should provide resource based permission and then we will remove hard-code part
-  const permissions: IPermission[] = [
+function permissionFunction(token: any) {
+  return [
     {
       resource: resources.Api,
       scopes: token && token.permission !== undefined ? token.permission : "",
@@ -53,6 +47,15 @@ export default function getUserPermissions(resource: string) {
       scopes: token && token.permission !== undefined ? token.permission : "",
     },
   ];
+}
+// This will get current logged-in user's resource based permissions
+export default function getUserPermissions(resource: string) {
+  const token = getDecodeToken();
+  // TODO - Uncomment below variable once Token provides resource based permissions
+  // const permissions: IPermission[] = token.permission;
+
+  // TODO - Token should provide resource based permission and then we will remove hard-code part
+  const permissions: IPermission[] = permissionFunction(token);
 
   let resourcePermission: IPermission = {
     resource: "",

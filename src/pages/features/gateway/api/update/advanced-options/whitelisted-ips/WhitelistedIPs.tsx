@@ -3,7 +3,7 @@ import { Accordion, Form, Col, Row, Button, Table } from "react-bootstrap";
 import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import {
   setFormErrors,
-  regexForIP_Address,
+  regexForIPAddress,
 } from "../../../../../../../resources/gateway/api/api-constants";
 import { setForm } from "../../../../../../../store/features/gateway/api/update/slice";
 import {
@@ -61,7 +61,7 @@ export default function WhitelistedIPs() {
         setFormErrors(
           {
             ...state.data.errors,
-            [name]: regexForIP_Address.test(value)
+            [name]: regexForIPAddress.test(value)
               ? ""
               : "Please enter a Valid IP Address",
           },

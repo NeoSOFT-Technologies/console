@@ -39,46 +39,22 @@ export default function Update() {
     );
   }
 
-  async function handleSubmitApiUpdate(event: FormEvent) {
-    event.preventDefault();
-
-    let validateObj1: any;
-    let validateObj2: any;
-    let versionVal = false;
-
-    if (state.data.errors !== undefined) {
-      const obj = state.data.errors;
-      const { Versions, ...rest } = obj;
-
-      validateObj1 = Object.values(rest).every((x) => x === null || x === "");
-
-      if (Versions.length > 0) {
-        for (const Version_ of Versions) {
-          if (Version_ === "") {
-            validateObj2 = true;
-          } else {
-            validateObj2 = false;
-            break;
-          }
-        }
-      } else {
-        validateObj2 = true;
-      }
+  function checkResultStateus(result: any) {
+    if (result.meta.requestStatus === "rejected") {
+      ToastAlert(result.payload.message, "error");
+    } else if (result.meta.requestStatus === "fulfilled") {
+      ToastAlert("Api Updated Successfully!!", "success");
+    } else {
+      ToastAlert("Api Updated request is not fulfilled!!", "error");
     }
-    const validateMTLs =
-      state.data.form.EnableMTLS === true &&
-      state.data.form.CertIds.length === 0;
-    const validateLoad =
-      state.data.form.EnableRoundRobin === true &&
-      state.data.form.LoadBalancingTargets.length === 0;
-
-    if (
-      state.data.form.IsVersioningDisabled === false &&
-      (state.data.form.VersioningInfo.Location === 0 ||
-        state.data.form.VersioningInfo.Key === "")
-    ) {
-      versionVal = true;
-    }
+  }
+  async function updateFunc(
+    validateObj1: any,
+    validateObj2: any,
+    validateMTLs: any,
+    validateLoad: any,
+    versionVal: any
+  ) {
     if (
       validateObj1 &&
       validateObj2 &&
@@ -93,13 +69,7 @@ export default function Update() {
       }
 
       const result = await dispatch(updateApi(newForm));
-      if (result.meta.requestStatus === "rejected") {
-        ToastAlert(result.payload.message, "error");
-      } else if (result.meta.requestStatus === "fulfilled") {
-        ToastAlert("Api Updated Successfully!!", "success");
-      } else {
-        ToastAlert("Api Updated request is not fulfilled!!", "error");
-      }
+      checkResultStateus(result);
     } else {
       if (validateMTLs === true) {
         ToastAlert(
@@ -125,6 +95,63 @@ export default function Update() {
     }
   }
 
+  function validateMTLSFunc() {
+    return (
+      state.data.form.EnableMTLS === true &&
+      state.data.form.CertIds.length === 0
+    );
+  }
+
+  function validateVersionFunc(versionVal: any) {
+    if (
+      state.data.form.IsVersioningDisabled === false &&
+      (state.data.form.VersioningInfo.Location === 0 ||
+        state.data.form.VersioningInfo.Key === "")
+    ) {
+      versionVal = true;
+      return versionVal;
+    }
+  }
+
+  async function handleSubmitApiUpdate(event: FormEvent) {
+    event.preventDefault();
+
+    let validateObj1: any;
+    let validateObj2: any;
+    let versionVal = false;
+    if (state.data.errors !== undefined) {
+      const obj = state.data.errors;
+      const { Versions, ...rest } = obj;
+
+      validateObj1 = Object.values(rest).every((x) => x === null || x === "");
+      if (Versions.length > 0) {
+        for (const _Version of Versions) {
+          if (_Version === "") {
+            validateObj2 = true;
+          } else {
+            validateObj2 = false;
+            break;
+          }
+        }
+      } else {
+        validateObj2 = true;
+      }
+    }
+    const validateMTLs = validateMTLSFunc();
+    const validateLoad =
+      state.data.form.EnableRoundRobin === true &&
+      state.data.form.LoadBalancingTargets.length === 0;
+
+    versionVal = validateVersionFunc(versionVal);
+    updateFunc(
+      validateObj1,
+      validateObj2,
+      validateMTLs,
+      validateLoad,
+      versionVal
+    );
+  }
+
   const NavigateToApisList = (
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -139,8 +166,8 @@ export default function Update() {
     const obj = state.data.errors;
     const { Versions } = obj;
 
-    for (const Version_ of Versions) {
-      if (Version_ === "") {
+    for (const _Version of Versions) {
+      if (_Version === "") {
         validateVersions = false;
       } else {
         validateVersions = true;
@@ -215,16 +242,18 @@ export default function Update() {
                         eventKey="setting"
                         title={
                           <span>
-                            {state.data.errors?.Name ||
-                            state.data.errors?.ListenPath ||
-                            state.data.errors?.TargetUrl ||
-                            state.data.errors?.Rate ||
-                            state.data.errors?.Per ||
-                            state.data.errors?.issuer ? (
-                              <i className="bi bi-info-circle-fill text-danger"></i>
-                            ) : (
-                              ""
-                            )}
+                            {(() => {
+                              return state.data.errors?.Name ||
+                                state.data.errors?.ListenPath ||
+                                state.data.errors?.TargetUrl ||
+                                state.data.errors?.Rate ||
+                                state.data.errors?.Per ||
+                                state.data.errors?.issuer ? (
+                                <i className="bi bi-info-circle-fill text-danger"></i>
+                              ) : (
+                                ""
+                              );
+                            })()}
                             &nbsp; Setting
                           </span>
                         }
@@ -235,13 +264,15 @@ export default function Update() {
                         eventKey="version"
                         title={
                           <span>
-                            {state.data.errors?.OverrideTarget ||
-                            validateVersions ||
-                            validateKeyLocation ? (
-                              <i className="bi bi-info-circle-fill text-danger"></i>
-                            ) : (
-                              ""
-                            )}
+                            {(() => {
+                              return state.data.errors?.OverrideTarget ||
+                                validateVersions ||
+                                validateKeyLocation ? (
+                                <i className="bi bi-info-circle-fill text-danger"></i>
+                              ) : (
+                                ""
+                              );
+                            })()}
                             &nbsp; Version
                           </span>
                         }
@@ -252,13 +283,15 @@ export default function Update() {
                         eventKey="advanced-options"
                         title={
                           <span>
-                            {state.data.errors?.AllowedOrigins ||
-                            state.data.errors?.Whitelist ||
-                            state.data.errors?.Blacklist ? (
-                              <i className="bi bi-info-circle-fill text-danger"></i>
-                            ) : (
-                              ""
-                            )}
+                            {(() => {
+                              return state.data.errors?.AllowedOrigins ||
+                                state.data.errors?.Whitelist ||
+                                state.data.errors?.Blacklist ? (
+                                <i className="bi bi-info-circle-fill text-danger"></i>
+                              ) : (
+                                ""
+                              );
+                            })()}
                             &nbsp; AdvancedOptions
                           </span>
                         }

@@ -240,16 +240,14 @@ export default function MutualTLS() {
   return (
     <div>
       <>
-        <Col md={12}>
-          <div className="float-left mt-2">
-            <b>Mutual TLS</b>
-          </div>
-          <Tooltips
-            content="Changing the Authentication mode on an active API can have severe
-            consequences for your users. Please be aware that this will stop the
-            current keys working for this API."
-          />
-        </Col>
+        <div className="float-left mt-2">
+          <b>Mutual TLS</b>
+        </div>
+        <Tooltips
+          content="Changing the Authentication mode on an active API can have severe
+          consequences for your users. Please be aware that this will stop the
+          current keys working for this API."
+        />
         <br />
         <br />
         <p>
