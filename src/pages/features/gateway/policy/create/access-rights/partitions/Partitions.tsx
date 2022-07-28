@@ -25,7 +25,7 @@ export default function partitions() {
                 id="accessrights"
                 name="Partitions.acl"
                 label="Enforce access rights"
-                checked={state.data.form.Partitions?.acl!}
+                checked={state.data.form.Partitions?.acl}
                 onChange={(e: any) => validateForm(e)}
                 // onChange={(e: any) => setRate(e.target.checked)}
               />
