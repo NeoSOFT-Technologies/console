@@ -93,20 +93,11 @@ export default function Version() {
               id="IsVersioningDisabled"
               name="IsVersioningDisabled"
               label="Enable Versioning"
-              // disabled={state.data.form.EnableRoundRobin}
               checked={!state.data.form?.IsVersioningDisabled}
               onChange={(e: any) => validateForm(e)}
             />
           </Form.Group>
         </Col>
-
-        {/* {state.data.form?.IsVersioningDisabled ? (
-          <></>
-        ) : (
-          <Col md={3}>
-            <ExpandCollapse containerId="versioncollapse" />
-          </Col>
-        )} */}
       </Row>
 
       {state.data.form?.IsVersioningDisabled ? (

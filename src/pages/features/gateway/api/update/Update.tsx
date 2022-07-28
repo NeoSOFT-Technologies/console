@@ -207,7 +207,6 @@ export default function Update() {
                       defaultActiveKey={state.data.form?.SelectedTabIndex}
                       id="uncontrolled-tab"
                       data-testid="tabs"
-                      // transition={false}
                       className="mb-2 small"
                       onSelect={(k) => setKey(k)}
                     >

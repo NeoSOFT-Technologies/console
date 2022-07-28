@@ -9,17 +9,12 @@ html {
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 
-// @import "~bootstrap5/scss/functions";
-// @import "~bootstrap5/scss/variables";
-// @import "~bootstrap5/scss/mixins";
-
 @import "./styles/theme/variables";
 @import "~compass-mixins/lib/compass";
 @import "~compass-mixins/lib/animate";
 @import "./styles/theme/fonts";
 @import "./styles/theme/functions";
 @import "~bootstrap/scss/bootstrap";
-// @import "~bootstrap5/scss/bootstrap";
 
 /* === Icon fonts === */
 @import "~@mdi/font/scss/materialdesignicons.scss";

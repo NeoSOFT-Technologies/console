@@ -4,7 +4,6 @@ import Spinner from "../../../../../components/loader/Loader";
 import { regexForNumber } from "../../../../../resources/gateway/api/api-constants";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
-// import { useAppSelector } from "../../../../../store/hooks";
 import { GlobalsetFormValue, IPropsHelper } from "./rate-limit-helper";
 interface IProps {
   helper?: IPropsHelper;
@@ -15,7 +14,6 @@ interface IProps {
 }
 
 export default function GlobalRateLimit(props: IProps) {
-  // const state = useAppSelector((RootState) => RootState.createPolicyState);
   let perapi = { ...props.helper!.errors!.GlobalLimit! };
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -61,7 +59,7 @@ export default function GlobalRateLimit(props: IProps) {
                         </Form.Label>
                         <div
                           className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2"
-                          style={{ background: "#ADD8E6" }} // #96DED1
+                          style={{ background: "#ADD8E6" }}
                         >
                           Rate Limit {props.message}
                         </div>
@@ -171,7 +169,6 @@ export default function GlobalRateLimit(props: IProps) {
                           type="text"
                           data-testid="retry-input"
                           id="retry"
-                          // placeholder={throttleRetry}
                           name="ThrottleRetries"
                           value={
                             props.helper!.form.ThrottleRetries! === -1
@@ -179,7 +176,6 @@ export default function GlobalRateLimit(props: IProps) {
                               : props.helper!.form.ThrottleRetries!
                           }
                           onChange={(e: any) => handlerateclick(e)}
-                          // value={throttleDefault}
                           isInvalid={
                             !!props.helper!.errors?.GlobalLimit.ThrottleRetries!
                           }
@@ -206,7 +202,6 @@ export default function GlobalRateLimit(props: IProps) {
                               ? "Disabled Throttling"
                               : props.helper!.form.ThrottleInterval!
                           }
-                          // placeholder={throttleInterval}
                           onChange={(e: any) => handlerateclick(e)}
                           isInvalid={
                             !!props.helper!.errors?.GlobalLimit
@@ -262,7 +257,6 @@ export default function GlobalRateLimit(props: IProps) {
                           type="text"
                           data-testid="quotaPer-input"
                           id="quotaPer"
-                          // placeholder={quotaPerPeriod}
                           onChange={(e: any) => handlerateclick(e)}
                           name="Quota"
                           value={

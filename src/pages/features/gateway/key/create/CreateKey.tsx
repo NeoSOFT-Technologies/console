@@ -5,14 +5,11 @@ import { access, AuthGuard } from "../../../../../components/auth-gaurd";
 import { errorSummary } from "../../../../../components/error-summary/ErrorSummary";
 import Spinner from "../../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
-// import { setFormErrorkey } from "../../../../../resources/gateway/key/key-constants";
 import { IKeyCreateState } from "../../../../../store/features/gateway/key/create";
-// import { emptyState } from "../../../../../store/features/gateway/key/create/payload";
 import {
   createKey,
   getKeyById,
   setFormErrors,
-  // setForms,
   updateKey,
 } from "../../../../../store/features/gateway/key/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
@@ -73,7 +70,7 @@ export default function CreateKey() {
   const handleOk = () => {
     setShow(false);
   };
-  // let TabIcon: any;
+
   async function handleSubmitKey(event: FormEvent) {
     event.preventDefault();
 
@@ -131,8 +128,6 @@ export default function CreateKey() {
         if (result.meta.requestStatus === "rejected") {
           ToastAlert(result.payload.message, "error");
         } else if (result.meta.requestStatus === "fulfilled") {
-          // ToastAlert("Key Created Successfully!!", "success");
-          // navigate("/gateway/keys");
           if (id === undefined) {
             const valId: string = result.payload.Data.KeyId;
             ToastAlert("Key Created Successfully!!", "success");
@@ -140,7 +135,7 @@ export default function CreateKey() {
               setShow(true);
               setKeyId(valId);
               await new Promise((resolve) => setTimeout(resolve, 1000));
-              // alert(`${valId}`);
+
               await dispatch(getKeyById(valId));
               navigate(`/gateway/keys/update/${valId}`);
             }
@@ -164,10 +159,6 @@ export default function CreateKey() {
     navigate("/gateway/keys");
   };
 
-  //  const [show, setShow] = useState(false);
-
-  // const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
   const copyToClipBoard = async () => {
     try {
       if (keyId === undefined) {
@@ -269,8 +260,6 @@ export default function CreateKey() {
                             <i
                               data-testid="copy-input"
                               className="btn btn-sm bi bi-clipboard"
-                              // onClick={copyToClipBoard(state.data.form.ApiId)}
-
                               onClick={copyToClipBoard}
                             ></i>
                             {visible ? "Copied!" : ""}
@@ -284,10 +273,8 @@ export default function CreateKey() {
                       <div>{errorSummary(state.data.errors)}</div>
                       <br />
                       <Tabs
-                        // tab-content
                         defaultActiveKey="accessRights"
                         id="uncontrolled-tab"
-                        // transition={false}
                         className="mb-0 small"
                       >
                         <Tab eventKey="accessRights" title="Access Rights">

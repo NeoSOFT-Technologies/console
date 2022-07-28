@@ -1,9 +1,6 @@
 import moment from "moment";
 import React, { useState } from "react";
 import { Accordion, Button, Col, Form, Row } from "react-bootstrap";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import {
   regexForOverrideTarget,
@@ -62,12 +59,6 @@ export default function Versions() {
     newFormData[name] = value;
     setAddFormData(newFormData);
   };
-
-  // const handleDateChange = (date: any) => {
-  //
-  //   const beginDate = moment(date).format("YYYY-MM-DD HH:MM");
-  //
-  // };
 
   const handleAddClick = () => {
     let newdate: any;
@@ -190,7 +181,6 @@ export default function Versions() {
   const handleTableRowsInputChange = (index: number, event: any) => {
     event.preventDefault();
     const { name, value } = event.target;
-    //
     const errorState = [...state.data.errors?.Versions!];
 
     switch (name) {
@@ -410,11 +400,9 @@ export default function Versions() {
                                       value={OverrideTarget}
                                       isInvalid={
                                         !!state.data.errors?.Versions[index!]
-                                        // ?.OverrideTarget
                                       }
                                       isValid={
                                         !state.data.errors?.Versions[index!]
-                                        // ?.OverrideTarget
                                       }
                                       onChange={(evnt) =>
                                         handleTableRowsInputChange(index, evnt)
@@ -424,10 +412,7 @@ export default function Versions() {
                                       type="invalid"
                                       data-testid="overRideTargetErr"
                                     >
-                                      {
-                                        state.data.errors?.Versions[index!]
-                                        // ?.OverrideTarget
-                                      }
+                                      {state.data.errors?.Versions[index!]}
                                     </Form.Control.Feedback>
                                   </td>
                                   <td>

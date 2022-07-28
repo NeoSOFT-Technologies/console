@@ -30,7 +30,6 @@ function CreateApi() {
     name: "",
     targetUrl: "",
     listenPath: "",
-    // status: true,
   });
 
   const validateForm = (event: React.ChangeEvent<HTMLInputElement>) => {

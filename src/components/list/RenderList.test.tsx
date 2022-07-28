@@ -1,4 +1,3 @@
-// import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { render } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -36,10 +35,4 @@ it("render without crashing RenderList", async () => {
       </Provider>
     </BrowserRouter>
   );
-
-  // await waitFor(() => {
-  //   const actionBtn = screen.getByTestId("action-btn");
-  //   expect(actionBtn).toBeInTheDocument();
-  //   fireEvent.click(actionBtn);
-  // });
 });

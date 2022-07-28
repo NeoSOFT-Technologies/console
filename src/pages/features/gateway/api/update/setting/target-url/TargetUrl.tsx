@@ -101,7 +101,6 @@ export default function TargetUrl() {
                       id="EnableRoundRobin"
                       name="EnableRoundRobin"
                       label="Enable round-robin load balancing"
-                      // disabled={!state.data.form.IsVersioningDisabled}
                       checked={
                         state.data.form.EnableRoundRobin === undefined
                           ? false
@@ -129,7 +128,6 @@ export default function TargetUrl() {
                       id="IsService"
                       name="IsService"
                       label="Enable service discovery"
-                      // checked={state.data.form?.IsService}
                       onChange={(e: any) => validateForm(e)}
                     />
                   </Form.Group>
