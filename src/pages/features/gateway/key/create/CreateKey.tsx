@@ -76,8 +76,6 @@ export default function CreateKey() {
     setShow(false);
   };
 
-
-
   function setValidate() {
     if (state.data.errors !== undefined) {
       if (
@@ -168,9 +166,7 @@ export default function CreateKey() {
     ) {
       toastPolicyApi();
     } else {
-
       checkValidate();
-
     }
   }
 
@@ -301,7 +297,6 @@ export default function CreateKey() {
                       </span>
 
                       <div className="pt-2">{keyid()}</div>
-
                     </div>
                     <div className="card-body pt-2">
                       <div>{errorSummary(state.data.errors)}</div>

@@ -15,9 +15,7 @@ interface IProps {
 }
 
 export default function GlobalRateLimit(props: IProps) {
-
   let perapi = { ...(props.helper?.errors?.GlobalLimit || []) };
-
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -212,7 +210,6 @@ export default function GlobalRateLimit(props: IProps) {
                           data-testid="interval-input"
                           id="interval"
                           name="ThrottleInterval"
-
                           value={getvalue("ThrottleInterval")}
                           // placeholder={throttleInterval}
 
