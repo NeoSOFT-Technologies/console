@@ -6,7 +6,10 @@ export default function OpenKeyless() {
     <div>
       {
         <>
-          <Col className="border bg-info bg-opacity-10 rounded mx-2 pb-3 h-60 d-inline-block">
+          <Col
+            md={12}
+            className="border bg-info bg-opacity-10 rounded mb-3  p-2"
+          >
             <Form.Group className="mt-3  ">
               Keyless access will disable all rating limiting, security checks
               and validations of requests as no session data is tracked along

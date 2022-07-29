@@ -67,18 +67,15 @@ export default function RateLimit() {
                         </Form.Group>
                       </Col>
                       <Col md="12">
-                        <Col md={12}>
-                          <div className="float-left mt-2">
-                            <b>Global Rate Limiting</b>
-                          </div>
-                          <Tooltips
-                            content=" Turn on global rate limit for the whole Api.Key
-                            specific rate limit will still work, but separate Api
-                            global rate limiter will have higher priority and will
-                            be aggregated across all keys."
-                          />
-                        </Col>
-
+                        <div className="float-left mt-2">
+                          <b>Global Rate Limiting</b>
+                        </div>
+                        <Tooltips
+                          content=" Turn on global rate limit for the whole Api.Key
+                          specific rate limit will still work, but separate Api
+                          global rate limiter will have higher priority and will
+                          be aggregated across all keys."
+                        />
                         <br />
                         <br />
                         <Form.Group className="mb-3">

@@ -50,6 +50,31 @@ export default function CreatePolicy() {
     mainCall();
   }, []);
 
+  async function validateResultStatusFunction(result: any) {
+    if (result.meta.requestStatus === "rejected") {
+      ToastAlert(result.payload.message, "error");
+    } else if (result.meta.requestStatus === "fulfilled") {
+      if (state.data.form.APIs.length > 0) {
+        if (id === undefined) {
+          const valId: string = result.payload.Data.PolicyId;
+          ToastAlert("Policy Created Successfully!!", "success");
+          // navigate("/gateway/policies")
+          if (valId) {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await dispatch(getPolicybyId(valId));
+            navigate(`/gateway/policies/update/${valId}`);
+          }
+        } else {
+          ToastAlert("Policy Updated Successfully!!", "success");
+          await dispatch(getPolicybyId(id));
+        }
+      } else {
+        ToastAlert("Please select atleast one Api!", "error");
+      }
+    } else {
+      ToastAlert("policy Created request is not fulfilled!!", "error");
+    }
+  }
   async function handleSubmitPolicy(event: FormEvent) {
     event.preventDefault();
     const validateFieldValue = state.data.form.Name.length > 0;
@@ -76,29 +101,7 @@ export default function CreatePolicy() {
           id === undefined
             ? await dispatch(createPolicy(state.data.form))
             : await dispatch(updatePolicy(state.data.form));
-        if (result.meta.requestStatus === "rejected") {
-          ToastAlert(result.payload.message, "error");
-        } else if (result.meta.requestStatus === "fulfilled") {
-          if (state.data.form.APIs.length > 0) {
-            if (id === undefined) {
-              const valId: string = result.payload.Data.PolicyId;
-              ToastAlert("Policy Created Successfully!!", "success");
-              // navigate("/gateway/policies")
-              if (valId) {
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-                await dispatch(getPolicybyId(valId));
-                navigate(`/gateway/policies/update/${valId}`);
-              }
-            } else {
-              ToastAlert("Policy Updated Successfully!!", "success");
-              await dispatch(getPolicybyId(id));
-            }
-          } else {
-            ToastAlert("Please select atleast one Api!", "error");
-          }
-        } else {
-          ToastAlert("policy Created request is not fulfilled!!", "error");
-        }
+        validateResultStatusFunction(result);
       } else {
         ToastAlert("Please fill all the fields correctly! ", "error");
       }
@@ -117,8 +120,6 @@ export default function CreatePolicy() {
       <div className="col-lg-12 grid-margin stretch-card">
         <div className="card">
           <div>
-            {/*  className="card-body" */}
-
             <Form
               data-testid="form-input"
               onSubmit={(e: FormEvent) => handleSubmitPolicy(e)}

@@ -18,22 +18,3 @@ export interface IGetAllCertificateData {
   showDetails: boolean;
   addState: boolean;
 }
-
-// export const initialState: IGetAllCertificateState = {
-//   data: {
-//     CertificateCollection: [
-//       {
-//         CertId: "",
-//         Issuer: "",
-//         SignatureAlgorithm: "",
-//         Subject: "",
-//         Thumbprint: "",
-//         ValidNotAfter: "",
-//         ValidNotBefore: "",
-//         showDetails: false,
-//       },
-//     ],
-//   },
-//   loading: false,
-//   error: undefined,
-// };

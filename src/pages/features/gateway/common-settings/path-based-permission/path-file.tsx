@@ -15,7 +15,7 @@ export default function Ipathpermission(props: IProps) {
   const length = props.r.formProp.length;
 
   const HandleAddclick = () => {
-    const value = props.r.index as any;
+    const value = props.r.index || 0;
     const filtercheck = "false";
     const apisList = [...(props.r.formProp || [])];
     const allowedList = [...(apisList[value].AllowedUrls || [])];
@@ -36,7 +36,7 @@ export default function Ipathpermission(props: IProps) {
       props.r.dispatch(
         (props.r.setForm as ActionCreatorWithPayload<any, string>)({
           ...props.r.form,
-          [props.r.propName as any]: apisList,
+          [props.r.propName || ""]: apisList,
         })
       );
       setInputData({ path: "", method: ["GET"] });
@@ -47,7 +47,7 @@ export default function Ipathpermission(props: IProps) {
 
   const deleteTableRows = (event: any, index: any) => {
     event.preventDefault();
-    const value = props.r.index as any;
+    const value = props.r.index || 0;
     const apisList = [...(props.r.formProp || [])];
     const allowedList = [...(apisList[value].AllowedUrls || [])];
     allowedList.splice(index, 1);
@@ -58,7 +58,7 @@ export default function Ipathpermission(props: IProps) {
     props.r.dispatch(
       (props.r.setForm as ActionCreatorWithPayload<any, string>)({
         ...props.r.form,
-        [props.r.propName as any]: apisList,
+        [props.r.propName || ""]: apisList,
       })
     );
   };
@@ -164,7 +164,7 @@ export default function Ipathpermission(props: IProps) {
               <tbody>
                 {length > 0 ? (
                   (
-                    props.r.formProp[props.r.index as any].AllowedUrls as any[]
+                    props.r.formProp[props.r.index || 0].AllowedUrls as any[]
                   ).map((data1: any, index1: any) => {
                     return (
                       <tr key={index1}>

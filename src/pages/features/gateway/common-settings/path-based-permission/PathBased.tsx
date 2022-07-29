@@ -39,8 +39,11 @@ export default function PathBased(props: IProps) {
     Set_by_policy: false,
   });
   const newFormData: any = { ...Limits };
-  const commonFunc = (obj: any, propName: any, _setLimit?: boolean) => {
-    _setLimit = _setLimit === true;
+  const commonFunc = (
+    obj: any,
+    propName: any,
+    _setLimit: boolean | undefined = false
+  ) => {
     const apisList = [...(props.requiredInterface.formProp || [])];
     if (_setLimit) {
       setLimits(obj);
