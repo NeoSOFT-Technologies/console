@@ -6,7 +6,7 @@ import {
   useAppDispatch,
 } from "../../../../../../../store/hooks";
 
-export default function partitions() {
+export default function Partitions() {
   const state = useAppSelector((RootState) => RootState.createPolicyState);
   const dispatch = useAppDispatch();
 

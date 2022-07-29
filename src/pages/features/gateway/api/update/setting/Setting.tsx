@@ -24,18 +24,14 @@ export default function Setting() {
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
-    switch (name) {
-      case "Name":
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: regexForName.test(value) ? "" : "Enter a valid Api Name ",
-          },
-          dispatch
-        );
-        break;
-      default:
-        break;
+    if (name === "Name") {
+      setFormErrors(
+        {
+          ...state.data.errors,
+          [name]: regexForName.test(value) ? "" : "Enter a valid Api Name ",
+        },
+        dispatch
+      );
     }
     setFormData(event, dispatch, state);
   }
