@@ -34,7 +34,7 @@ export default function Authentication() {
       setFormData(event, dispatch, state);
     }
   };
-  function fun() {
+  function authentications() {
     switch (state.data.form.AuthType) {
       case "standard":
         return <AuthenticationToken />;
@@ -95,7 +95,7 @@ export default function Authentication() {
                     </Row>
                   </div>
 
-                  <div>{fun()}</div>
+                  <div>{authentications()}</div>
                   <Row>
                     <Col md="12">
                       <Form.Group className="mb-3 ml-4 mt-4">

@@ -57,7 +57,7 @@ export default function Versions() {
     setAddFormData(newFormData);
   };
 
-  function disUse(beginDate: any) {
+  function listObj(beginDate: any) {
     return [
       ...state.data.form.Versions,
       {
@@ -84,7 +84,7 @@ export default function Versions() {
         newdate = addFormData.Expires;
 
         const beginDate = moment(newdate).format(dateFormat);
-        const list = disUse(beginDate);
+        const list = listObj(beginDate);
         const rowObj: any = [...state.data.form.Versions2, addFormData.Name];
 
         dispatch(
@@ -111,7 +111,7 @@ export default function Versions() {
 
       const beginDate = moment(newdate).format(dateFormat);
 
-      const list = disUse(beginDate);
+      const list = listObj(beginDate);
       const rowObj: any = [...state.data.form.Versions2, addFormData.Name];
 
       dispatch(
