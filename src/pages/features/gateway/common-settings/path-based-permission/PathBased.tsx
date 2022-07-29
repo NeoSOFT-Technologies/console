@@ -9,7 +9,7 @@ import { IPolicyCreateState } from "../../../../../store/features/gateway/policy
 import { refreshGrid } from "../api-access-List/ApiAccessList";
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
 import { IPropsHelper } from "../global-limit/rate-limit-helper";
-import Ipathpermission from "./path-file";
+import PathPermission from "./PathPermission";
 
 interface IProps {
   requiredInterface: IPropsHelper;
@@ -435,7 +435,7 @@ export default function PathBased(props: IProps) {
                         </Col>
                         {(() => {
                           return isActive ? (
-                            <Ipathpermission r={props.requiredInterface} />
+                            <PathPermission r={props.requiredInterface} />
                           ) : (
                             " "
                           );
