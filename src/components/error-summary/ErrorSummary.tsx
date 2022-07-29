@@ -47,7 +47,7 @@ function generateBullets(key: any, value: any, check?: any, name?: any) {
     </>
   ) : undefined;
 }
-function valuew(value: any, check: any) {
+function displayValue(value: any, check: any) {
   if (value !== "") {
     check = true;
   }
@@ -61,11 +61,11 @@ export const errorSummary = (errors: any, data?: any) => {
   let objCounter = 0;
   const list: any = Object.entries(errors).map(([key, value]) => {
     if (typeof value === "string") {
-      check1 = valuew(value, check1);
+      check1 = displayValue(value, check1);
       return generateBullets(key, value);
     } else if (typeof value === "object" && !Array.isArray(value || "")) {
       list1 = Object.entries(value || "").map(([key1, value1]) => {
-        check2 = valuew(value1, check2);
+        check2 = displayValue(value1, check2);
         if (value1 !== "") {
           objCounter = objCounter + 1;
         }
@@ -81,7 +81,7 @@ export const errorSummary = (errors: any, data?: any) => {
             (x) => x === null || x === ""
           );
           const list2: any = Object.entries(rest).map(([key2, value2]) => {
-            check3 = valuew(value2, check3);
+            check3 = displayValue(value2, check3);
             const a = generateBullets(key2, value2, checkEmpty, ApiName);
             checkEmpty = true;
             return a;
@@ -89,7 +89,7 @@ export const errorSummary = (errors: any, data?: any) => {
 
           return list2;
         } else if (typeof value1 === "string") {
-          check3 = valuew(value1, check3);
+          check3 = displayValue(value1, check3);
           return check3 ? (
             <div key={index1}>
               <>
