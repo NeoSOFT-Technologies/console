@@ -5,23 +5,23 @@ import { IPropsHelper } from "../global-limit/rate-limit-helper";
 interface IProps {
   r: IPropsHelper;
 }
-export default function Ipathpermission(props: IProps) {
+export default function PathPermission(props: IProps) {
   const [InputData, setInputData] = useState<any>({
     path: "",
     method: ["GET"],
   });
-  const [spanError, setspanError] = useState("");
+  const [spanError, setSpanError] = useState("");
 
   const length = props.r.formProp.length;
 
-  const HandleAddclick = () => {
+  const HandleAddClick = () => {
     const value = props.r.index || 0;
-    const filtercheck = "false";
+    const filterCheck = "false";
     const apisList = [...(props.r.formProp || [])];
     const allowedList = [...(apisList[value].AllowedUrls || [])];
 
-    if (InputData.path !== "" && filtercheck === "false") {
-      setspanError(" ");
+    if (InputData.path !== "" && filterCheck === "false") {
+      setSpanError(" ");
 
       const list = {
         Url: InputData.path,
@@ -41,7 +41,7 @@ export default function Ipathpermission(props: IProps) {
       );
       setInputData({ path: "", method: ["GET"] });
     } else {
-      setspanError("Input cannot be empty or already exist");
+      setSpanError("Input cannot be empty or already exist");
     }
   };
 
@@ -144,7 +144,7 @@ export default function Ipathpermission(props: IProps) {
         <Col md={2} className="pt-2">
           <Form.Label></Form.Label>
           <Form.Group className="mb-3">
-            <Button variant="dark" onClick={HandleAddclick}>
+            <Button variant="dark" onClick={HandleAddClick}>
               Add
             </Button>{" "}
           </Form.Group>
