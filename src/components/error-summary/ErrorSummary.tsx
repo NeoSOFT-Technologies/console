@@ -39,8 +39,8 @@ function generateBullets(key: any, value: any, check?: any, name?: any) {
           </ul>
           {(() => {
             return typeof check === "boolean"
-              ? (check = true)
-              : (check = checkFlag);
+              ? () => (check = true)
+              : () => (check = checkFlag);
           })()}
         </>
       </div>
