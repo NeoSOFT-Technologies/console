@@ -15,7 +15,7 @@ import {
   useAppSelector,
 } from "../../../../../../../../store/hooks";
 
-export default function OpenIdConnectAuthentication() {
+export default function OpenIdConnect() {
   const state = useAppSelector((RootState) => RootState.updateApiState);
 
   const policyList: IPolicyListState = useAppSelector(
