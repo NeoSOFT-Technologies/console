@@ -53,6 +53,66 @@ function displayValue(value: any, check: any) {
   }
   return check;
 }
+function arrayString(value1: any, index1: number, data: any, check3: any) {
+  check3 = displayValue(value1, check3);
+  return check3 ? (
+    <div key={index1}>
+      <>
+        <ul>
+          <>
+            {(() => {
+              return value1 !== "" && value1 !== undefined ? (
+                <li>
+                  <>
+                    <b>{data[index1]}</b>
+                  </>
+                  <ul>
+                    <li>
+                      <>{value1}</>
+                    </li>
+                  </ul>
+                </li>
+              ) : (
+                <></>
+              );
+            })()}
+          </>
+        </ul>
+      </>
+    </div>
+  ) : undefined;
+}
+function arraySummary(
+  value1: any,
+  key1: any,
+  index1: number,
+  data: any,
+  check3: any
+) {
+  if (typeof value1 === "object") {
+    const { ApiId, ApiName, ...rest } = value1;
+    console.log(key1, ApiId);
+    let checkEmpty = Object.values(value1).every((x) => x === null || x === "");
+    const list2: any = Object.entries(rest).map(([key2, value2]) => {
+      check3 = displayValue(value2, check3);
+      const a = generateBullets(key2, value2, checkEmpty, ApiName);
+      checkEmpty = true;
+      return a;
+    });
+
+    return list2;
+  } else if (typeof value1 === "string") {
+    return arrayString(value1, index1, data, check3);
+  } else {
+    return <></>;
+  }
+}
+function counter(value1: any, objCounter: number) {
+  if (value1 !== "") {
+    objCounter = objCounter + 1;
+  }
+  return objCounter;
+}
 export const errorSummary = (errors: any, data?: any) => {
   let list1: any;
   let check1: any;
@@ -66,59 +126,13 @@ export const errorSummary = (errors: any, data?: any) => {
     } else if (typeof value === "object" && !Array.isArray(value || "")) {
       list1 = Object.entries(value || "").map(([key1, value1]) => {
         check2 = displayValue(value1, check2);
-        if (value1 !== "") {
-          objCounter = objCounter + 1;
-        }
+        objCounter = counter(value1, objCounter);
         return generateBullets(key1, value1, objCounter, key);
       });
     } else if (Array.isArray(value)) {
       // look
       list1 = Object.entries(value).map(([key1, value1], index1) => {
-        if (typeof value1 === "object") {
-          const { ApiId, ApiName, ...rest } = value1;
-          console.log(key1, ApiId);
-          let checkEmpty = Object.values(value1).every(
-            (x) => x === null || x === ""
-          );
-          const list2: any = Object.entries(rest).map(([key2, value2]) => {
-            check3 = displayValue(value2, check3);
-            const a = generateBullets(key2, value2, checkEmpty, ApiName);
-            checkEmpty = true;
-            return a;
-          });
-
-          return list2;
-        } else if (typeof value1 === "string") {
-          check3 = displayValue(value1, check3);
-          return check3 ? (
-            <div key={index1}>
-              <>
-                <ul>
-                  <>
-                    {(() => {
-                      return value1 !== "" && value1 !== undefined ? (
-                        <li>
-                          <>
-                            <b>{data[index1]}</b>
-                          </>
-                          <ul>
-                            <li>
-                              <>{value1}</>
-                            </li>
-                          </ul>
-                        </li>
-                      ) : (
-                        <></>
-                      );
-                    })()}
-                  </>
-                </ul>
-              </>
-            </div>
-          ) : undefined;
-        } else {
-          return <></>;
-        }
+        return arraySummary(value1, key1, index1, data, check3);
       });
     }
     return list1;
