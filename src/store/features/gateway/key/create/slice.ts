@@ -9,6 +9,17 @@ import error from "../../../../../utils/error";
 import { initialState } from "./payload";
 import { IGetKeyByIdData, IKeyCreateState } from "./index";
 export let keystate: IKeyCreateState;
+function rejectedAction(state: IKeyCreateState, action: any) {
+  state.loading = false;
+  action.payload = action.error;
+  state.error = error(action.payload);
+}
+function handleError(_error: unknown) {
+  const myError = _error as Error | AxiosError;
+  throw axios.isAxiosError(myError) && myError.response
+    ? myError.response.data.Errors[0]
+    : myError.message;
+}
 export const createKey = createAsyncThunk(
   "key/create",
   async (data: IGetKeyByIdData) => {
@@ -16,10 +27,7 @@ export const createKey = createAsyncThunk(
       const response = await addKeyService(data);
       return response.data;
     } catch (_error) {
-      const myError = _error as Error | AxiosError;
-      throw axios.isAxiosError(myError) && myError.response
-        ? myError.response.data.Errors[0]
-        : myError.message;
+      handleError(_error);
     }
   }
 );
@@ -39,10 +47,7 @@ export const getKeyById = createAsyncThunk(
 
       return response.data;
     } catch (_error) {
-      const myError = _error as Error | AxiosError;
-      throw axios.isAxiosError(myError) && myError.response
-        ? myError.response.data.Errors[0]
-        : myError.message;
+      handleError(_error);
     }
   }
 );
@@ -55,10 +60,7 @@ export const updateKey = createAsyncThunk(
       //
       return response.data;
     } catch (_error) {
-      const myError = _error as Error | AxiosError;
-      throw axios.isAxiosError(myError) && myError.response
-        ? myError.response.data.Errors[0]
-        : myError.message;
+      handleError(_error);
     }
   }
 );
@@ -81,9 +83,7 @@ const slice = createSlice({
       state.loading = false;
     });
     builder.addCase(createKey.rejected, (state, action) => {
-      state.loading = false;
-      action.payload = action.error;
-      state.error = error(action.payload);
+      rejectedAction(state, action);
     });
 
     builder.addCase(getKeyById.pending, (state) => {
@@ -94,9 +94,7 @@ const slice = createSlice({
       state.data.form = action.payload.Data;
     });
     builder.addCase(getKeyById.rejected, (state, action) => {
-      state.loading = false;
-      action.payload = action.error;
-      state.error = error(action.payload);
+      rejectedAction(state, action);
     });
 
     builder.addCase(updateKey.pending, (state) => {
@@ -106,9 +104,7 @@ const slice = createSlice({
       state.loading = false;
     });
     builder.addCase(updateKey.rejected, (state, action) => {
-      state.loading = false;
-      action.payload = action.error;
-      state.error = error(action.payload);
+      rejectedAction(state, action);
     });
   },
 });
