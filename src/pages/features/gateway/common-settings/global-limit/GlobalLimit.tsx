@@ -37,7 +37,7 @@ export default function GlobalLimit(props: IProps) {
 
   const policyByIds = states.data.form.PolicyByIds || [];
   const propsIndex = props.index || 0;
-  function newFun() {
+  function manageStates() {
     const manageState = async () => {
       const APIs: any[] = [];
 
@@ -116,7 +116,7 @@ export default function GlobalLimit(props: IProps) {
       loader === false &&
       state.loading === false
     ) {
-      return newFun();
+      return manageStates();
     }
   }, [loader]);
 
