@@ -1,4 +1,3 @@
-// import { IApiData } from "../../types/api/index";
 import { IApiFormData } from "../../../store/features/gateway/api/create";
 import { IGetApiByIdData } from "../../../store/features/gateway/api/update";
 import apiFactory from "../../../utils/api";
