@@ -126,7 +126,7 @@ export default function PolicyList() {
           <Button
             variant="primary"
             className="btn-danger"
-            onClick={() => handleDelete(DeletePolicyId!)}
+            onClick={() => handleDelete(DeletePolicyId as string)}
           >
             Delete
           </Button>

@@ -93,7 +93,7 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
       id,
       name: "Actions",
       sort: false,
-      formatter: (cell, row) => {
+      formatter: (_cell, row) => {
         return h(
           "Button",
           {
@@ -120,10 +120,10 @@ const RenderList1: React.FC<IProps> = (props: IProps) => {
       id,
       name: "Actions",
       sort: false,
-      formatter: (cell, row) => {
+      formatter: (_cell, row) => {
         return _(
           <>
-            {props.actionsList!.map((data, idx) => {
+            {(props.actionsList as IActionsRenderList[]).map((data, idx) => {
               return (
                 <div key={idx} style={{ display: "flex", float: "left" }}>
                   <button
