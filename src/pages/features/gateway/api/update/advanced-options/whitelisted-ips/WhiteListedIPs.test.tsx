@@ -35,8 +35,8 @@ const store = mockStore({
             OverrideTarget: "https://httpbin.org2",
           },
         ],
-        Blacklist: [process.env.IP_ADDRESS],
-        Whitelist: [process.env.IP_ADDRESS],
+        Blacklist: [process.env.REACT_APP_IP],
+        Whitelist: [process.env.REACT_APP_IP],
         CORS: {
           IsEnabled: false,
           AllowedOrigins: ["https://google.co.in"],
@@ -83,7 +83,7 @@ it("render buttons and inputs", () => {
 
   const whiteListInput = screen.getByTestId("whitelist-input");
   expect(whiteListInput).toBeInTheDocument();
-  const testIP = "192.168.0.0";
+  const testIP = process.env.REACT_APP_IP;
   fireEvent.change(whiteListInput, { target: { value: testIP } });
   expect(whiteListInput).toHaveValue(testIP);
   fireEvent.change(whiteListInput);

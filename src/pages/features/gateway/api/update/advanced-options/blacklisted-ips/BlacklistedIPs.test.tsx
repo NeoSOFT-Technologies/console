@@ -84,7 +84,7 @@ it("render switch and inputs", () => {
 
   const blackListInput = screen.getByTestId("blacklist-input");
   expect(blackListInput).toBeInTheDocument();
-  const testIP = "192.168.0.0";
+  const testIP = process.env.REACT_APP_IP;
   fireEvent.change(blackListInput, { target: { value: testIP } });
   expect(blackListInput).toHaveValue(testIP);
   fireEvent.change(blackListInput);
