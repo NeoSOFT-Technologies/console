@@ -300,6 +300,10 @@ export default function OpenIdConnectAuthentication() {
     );
   };
 
+  function inputChange(event: any, index: number) {
+    handleClientInputChange(event, index);
+  }
+
   return (
     <div>
       {policyList.loading ? (
@@ -422,10 +426,7 @@ export default function OpenIdConnectAuthentication() {
                                                       ?.clientId || ""
                                                   }
                                                   onChange={(evnt) =>
-                                                    handleClientInputChange(
-                                                      evnt,
-                                                      index
-                                                    )
+                                                    inputChange(evnt, index)
                                                   }
                                                 />{" "}
                                               </td>
@@ -443,10 +444,7 @@ export default function OpenIdConnectAuthentication() {
                                                         addClientFormData.policy
                                                       }
                                                       onChange={(evnt) =>
-                                                        handleClientInputChange(
-                                                          evnt,
-                                                          index
-                                                        )
+                                                        inputChange(evnt, index)
                                                       }
                                                     >
                                                       <option></option>
@@ -474,7 +472,7 @@ export default function OpenIdConnectAuthentication() {
                                               <td>
                                                 <button
                                                   className="btn btn-outline-dark btn-dark"
-                                                  onClick={() =>
+                                                  onClick={(event) =>
                                                     handleClientAddClick(
                                                       index,
                                                       event
@@ -607,7 +605,7 @@ export default function OpenIdConnectAuthentication() {
                                               ?.clientId || ""
                                           }
                                           onChange={(evnt) =>
-                                            handleClientInputChange(evnt, index)
+                                            inputChange(evnt, index)
                                           }
                                         />{" "}
                                       </td>
@@ -623,10 +621,7 @@ export default function OpenIdConnectAuthentication() {
                                               placeholder="select policy"
                                               value={addClientFormData.policy}
                                               onChange={(evnt) =>
-                                                handleClientInputChange(
-                                                  evnt,
-                                                  index
-                                                )
+                                                inputChange(evnt, index)
                                               }
                                             >
                                               <option></option>
@@ -655,7 +650,7 @@ export default function OpenIdConnectAuthentication() {
                                         <button
                                           className="btn btn-outline-dark btn-dark"
                                           data-testid="addClient"
-                                          onClick={() =>
+                                          onClick={(event) =>
                                             handleClientAddClick(index, event)
                                           }
                                           disabled={
