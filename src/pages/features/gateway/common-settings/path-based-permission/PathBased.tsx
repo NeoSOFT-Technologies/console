@@ -9,7 +9,7 @@ import { IPolicyCreateState } from "../../../../../store/features/gateway/policy
 import { refreshGrid } from "../api-access-List/ApiAccessList";
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
 import { IPropsHelper } from "../global-limit/rate-limit-helper";
-import Ipathpermission from "./path-file";
+import PathPermission from "./PathPermission";
 
 interface IProps {
   requiredInterface: IPropsHelper;
@@ -39,8 +39,11 @@ export default function PathBased(props: IProps) {
     Set_by_policy: false,
   });
   const newFormData: any = { ...Limits };
-  const commonFunc = (obj: any, propName: any, _setLimit?: boolean) => {
-    _setLimit = _setLimit === true;
+  const commonFunc = (
+    obj: any,
+    propName: any,
+    _setLimit: boolean | undefined = false
+  ) => {
     const apisList = [...(props.requiredInterface.formProp || [])];
     if (_setLimit) {
       setLimits(obj);
@@ -432,7 +435,7 @@ export default function PathBased(props: IProps) {
                         </Col>
                         {(() => {
                           return isActive ? (
-                            <Ipathpermission r={props.requiredInterface} />
+                            <PathPermission r={props.requiredInterface} />
                           ) : (
                             " "
                           );

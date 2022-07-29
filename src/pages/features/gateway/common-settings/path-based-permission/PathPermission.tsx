@@ -5,23 +5,23 @@ import { IPropsHelper } from "../global-limit/rate-limit-helper";
 interface IProps {
   r: IPropsHelper;
 }
-export default function Ipathpermission(props: IProps) {
+export default function PathPermission(props: IProps) {
   const [InputData, setInputData] = useState<any>({
     path: "",
     method: ["GET"],
   });
-  const [spanError, setspanError] = useState("");
+  const [spanError, setSpanError] = useState("");
 
   const length = props.r.formProp.length;
 
-  const HandleAddclick = () => {
-    const value = props.r.index as any;
-    const filtercheck = "false";
+  const HandleAddClick = () => {
+    const value = props.r.index || 0;
+    const filterCheck = "false";
     const apisList = [...(props.r.formProp || [])];
     const allowedList = [...(apisList[value].AllowedUrls || [])];
 
-    if (InputData.path !== "" && filtercheck === "false") {
-      setspanError(" ");
+    if (InputData.path !== "" && filterCheck === "false") {
+      setSpanError(" ");
 
       const list = {
         Url: InputData.path,
@@ -36,18 +36,18 @@ export default function Ipathpermission(props: IProps) {
       props.r.dispatch(
         (props.r.setForm as ActionCreatorWithPayload<any, string>)({
           ...props.r.form,
-          [props.r.propName as any]: apisList,
+          [props.r.propName || ""]: apisList,
         })
       );
       setInputData({ path: "", method: ["GET"] });
     } else {
-      setspanError("Input cannot be empty or already exist");
+      setSpanError("Input cannot be empty or already exist");
     }
   };
 
   const deleteTableRows = (event: any, index: any) => {
     event.preventDefault();
-    const value = props.r.index as any;
+    const value = props.r.index || 0;
     const apisList = [...(props.r.formProp || [])];
     const allowedList = [...(apisList[value].AllowedUrls || [])];
     allowedList.splice(index, 1);
@@ -58,7 +58,7 @@ export default function Ipathpermission(props: IProps) {
     props.r.dispatch(
       (props.r.setForm as ActionCreatorWithPayload<any, string>)({
         ...props.r.form,
-        [props.r.propName as any]: apisList,
+        [props.r.propName || ""]: apisList,
       })
     );
   };
@@ -144,7 +144,7 @@ export default function Ipathpermission(props: IProps) {
         <Col md={2} className="pt-2">
           <Form.Label></Form.Label>
           <Form.Group className="mb-3">
-            <Button variant="dark" onClick={HandleAddclick}>
+            <Button variant="dark" onClick={HandleAddClick}>
               Add
             </Button>{" "}
           </Form.Group>
@@ -164,7 +164,7 @@ export default function Ipathpermission(props: IProps) {
               <tbody>
                 {length > 0 ? (
                   (
-                    props.r.formProp[props.r.index as any].AllowedUrls as any[]
+                    props.r.formProp[props.r.index || 0].AllowedUrls as any[]
                   ).map((data1: any, index1: any) => {
                     return (
                       <tr key={index1}>

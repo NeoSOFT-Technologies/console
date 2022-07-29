@@ -97,16 +97,19 @@ export default function PolicyList() {
       return "Draft";
     }
   }
+  const mapData = (data: any) => {
+    return [
+      data.Id,
+      data.Name,
+      DataState(data.State),
+      data.Apis.join(","),
+      data.AuthType,
+    ];
+  };
   function bindPolicyList() {
     let bindList = [];
     if (selectedApi !== "") {
-      bindList = containsApis().map((data) => [
-        data.Id,
-        data.Name,
-        DataState(data.State),
-        data.Apis.join(","),
-        data.AuthType,
-      ]);
+      bindList = containsApis().map((data) => mapData(data));
     } else {
       bindList =
         accessPolicyList.data !== undefined &&
@@ -114,13 +117,7 @@ export default function PolicyList() {
         (accessPolicyList.data?.Policies?.length || 0) > 0
           ? accessPolicyList.data?.Policies.filter(
               (a) => a.AuthType !== "keyless"
-            ).map((data) => [
-              data.Id,
-              data.Name,
-              DataState(data.State),
-              data.Apis.join(","), // ? `${data.Apis.join(", ")}` : "", // data.Apis.join(", ")
-              data.AuthType,
-            ])
+            ).map((data) => mapData(data))
           : [];
     }
     return bindList;
@@ -195,12 +192,12 @@ export default function PolicyList() {
 
     if (id !== undefined) {
       for (const iterator of selectedRows.state) {
-        prp!.store.handle("CHECK", {
-          ROW_ID: iterator, // "8e93bc38-5eb0-4e89-b241-8a9026b7c139,demo,demoKey,TestApi",
+        prp.store.handle("CHECK", {
+          ROW_ID: iterator,
         });
       }
     }
-    prp!.store.on("updated", (state1: any, prevState1: any) => {
+    prp.store.on("updated", (state1: any, prevState1: any) => {
       if (gridReload === false) {
         setselectedRows({ state: state1.rowIds, prevState: prevState1.rowIds });
       }
@@ -213,7 +210,7 @@ export default function PolicyList() {
       const arr = [];
       for (const _item of StateKey.data.form.Policies) {
         const policyId = _item;
-        let policyName: any; //= StateKey.data.form.PolicyByIds![0].Global?.Name;
+        let policyName: any;
         let policyApis: any[] = [];
         if (
           StateKey.data.form.Policies !== undefined &&
@@ -229,14 +226,7 @@ export default function PolicyList() {
           ","
         )}`;
         arr.push(selectedPolicies);
-        console.log(
-          "[3]",
-          selectedPolicies,
-          "---",
-          StateKey.data.form.Policies
-        );
       }
-      console.log("[4]", arr);
       if (
         selectedRows.state.length === 0 &&
         selectedRows.prevState.length === 0
@@ -278,17 +268,13 @@ export default function PolicyList() {
     mainCall(1, 100_000);
     // this will be used to set state value as true for displaying selected apis list on updated page
     if (accessPolicyList.data !== undefined) {
-      console.log("[]", accessPolicyList);
       // this will be used to set state value as true for displaying selected apis list on updated page
       getDataOnUpdate();
     }
   }, []);
-  console.log("[1]", apis);
-  console.log("[2]", selectedRows);
   // load selected data on update page
   useEffect(() => {
     if (accessPolicyList.data !== undefined) {
-      console.log(accessPolicyList);
       // this will be used to set state value as true for displaying selected apis list on updated page
       getDataOnUpdate();
     }
@@ -297,7 +283,20 @@ export default function PolicyList() {
       accessPolicyList.data !== undefined &&
       accessPolicyList.loading !== true,
   ]);
-  //  This wil be used to set apis state value
+
+  function setFilterList(accessRightList: any, policyApis: PolicyObject[]) {
+    if (accessRightList !== undefined && (accessRightList?.length || 0) > 0) {
+      for (const policyItem of accessRightList) {
+        policyApis.push({
+          name: policyItem.Apis,
+          policyId: policyItem.Id as string,
+        });
+        setApis(policyApis);
+        setSelectedApi(policyItem.Id || "");
+      }
+    }
+  }
+  //  This wil be used to set apis state value & get and set filter list for update page
   useEffect(() => {
     if (
       StateKey.data.form.KeyId !== undefined &&
@@ -307,27 +306,18 @@ export default function PolicyList() {
       const policyApis = [...apis];
       const accessRightList =
         accessPolicyList !== undefined
-          ? (accessPolicyList.data?.Policies || []).filter(
+          ? accessPolicyList.data?.Policies.filter(
               (a) =>
                 a.AuthType !== "keyless" &&
                 StateKey.data.form.Policies.includes(a.Id as string)
             )
           : undefined;
 
-      if (accessRightList !== undefined && (accessRightList?.length || 0) > 0) {
-        for (const policyItem of accessRightList || []) {
-          policyApis.push({
-            name: policyItem.Apis as string[],
-            policyId: policyItem.Id as string,
-          });
-          setApis(policyApis);
-          setSelectedApi(policyItem.Id || "");
-        }
-      }
+      setFilterList(accessRightList, policyApis);
     }
     if (apis.length > 0 && apis.length !== StateKey.data.form.Policies.length) {
       const filterPolicyList = apis.filter((i) =>
-        StateKey.data.form.Policies.includes(i.policyId!)
+        StateKey.data.form.Policies.includes(i.policyId || "")
       );
       setApis(filterPolicyList);
       setSelectedApi(
@@ -335,7 +325,12 @@ export default function PolicyList() {
           ""
       );
     }
-  }, [StateKey?.data.form.Policies?.length && accessPolicyList]);
+  }, [
+    StateKey?.data.form.Policies?.length && accessPolicyList,
+    accessPolicyList === undefined
+      ? StateKey?.data.form.Policies?.length && accessPolicyList
+      : StateKey?.data.form.Policies?.length,
+  ]);
 
   // display list of unique APIs referred by policies below the grid
   useEffect(() => {
@@ -347,49 +342,6 @@ export default function PolicyList() {
     }
   }, [apis]);
 
-  // get and set filter list for update page
-  useEffect(() => {
-    if (
-      StateKey.data.form.KeyId !== undefined &&
-      apis.length === 0 &&
-      StateKey.data.form.Policies.length > 0
-    ) {
-      const policyApis = [...apis];
-      const accessRightList =
-        accessPolicyList !== undefined
-          ? (accessPolicyList.data?.Policies || []).filter(
-              (a) =>
-                a.AuthType !== "keyless" &&
-                StateKey.data.form.Policies.includes(a.Id as string)
-            )
-          : undefined;
-
-      if (accessRightList !== undefined && accessRightList?.length! > 0) {
-        for (const policyItem of accessRightList || []) {
-          policyApis.push({
-            name: policyItem.Apis as string[],
-            policyId: policyItem.Id as string,
-          });
-          setApis(policyApis);
-          setSelectedApi(policyItem.Id || "");
-        }
-      }
-    }
-    if (apis.length > 0 && apis.length !== StateKey.data.form.Policies.length) {
-      const filterPolicyList = apis.filter((i) =>
-        StateKey.data.form.Policies.includes(i.policyId as string)
-      );
-      setApis(filterPolicyList);
-      setSelectedApi(
-        StateKey.data.form.Policies[StateKey.data.form.Policies.length - 1] ||
-          ""
-      );
-    }
-  }, [
-    accessPolicyList === undefined
-      ? StateKey?.data.form.Policies?.length && accessPolicyList
-      : StateKey?.data.form.Policies?.length,
-  ]);
   // this will handle rendering of selected and unselected list using checkbox in grid
   useEffect(() => {
     if (
@@ -417,7 +369,7 @@ export default function PolicyList() {
         StateKey?.data.form.Policies?.length > selectedRows.state.length
       ) {
         const filterPolicy = selectedRows.prevState.find(
-          (i: any) => !selectedRows!.state.includes(i)
+          (i: any) => !selectedRows.state.includes(i)
         );
         removeAccess(filterPolicy.split(",")[0]);
         const SelectedPolicyList = [...apis];
@@ -441,7 +393,6 @@ export default function PolicyList() {
   // This will set Grid data after delete action
   useEffect(() => {
     if (_deletedRow !== undefined && _deletedRow.length > 0) {
-      // checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
       _pluginState.handle("UNCHECK", {
         ROW_ID: _deletedRow,
       });
@@ -470,12 +421,12 @@ export default function PolicyList() {
         prp = checkboxPlugin?.props;
 
         for (const iterator of selectedRows.state) {
-          prp!.store.handle("CHECK", {
+          prp.store.handle("CHECK", {
             ROW_ID: iterator,
           });
         }
 
-        prp!.store.on("updated", (state1: any, prevState1: any) => {
+        prp.store.on("updated", (state1: any, prevState1: any) => {
           setselectedRows({
             state: state1.rowIds,
             prevState: prevState1.rowIds,

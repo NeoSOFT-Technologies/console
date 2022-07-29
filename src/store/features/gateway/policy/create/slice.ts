@@ -16,6 +16,12 @@ function rejectedAction(state: IPolicyCreateState, action: any) {
   action.payload = action.error;
   state.error = error(action.payload);
 }
+function handleError(_error: unknown) {
+  const myError = _error as Error | AxiosError;
+  throw axios.isAxiosError(myError) && myError.response
+    ? myError.response.data.Errors[0]
+    : myError.message;
+}
 function bindPolicyData(state: any, action: any) {
   state.data.form.Quota = action.payload.Data.MaxQuota;
   state.data.form.QuotaRenewalRate = action.payload.Data.QuotaRate;
@@ -73,13 +79,9 @@ export const createPolicy = createAsyncThunk(
     try {
       Insertdata(data);
       const response = await addPolicyService(dataduplicate);
-      //
       return response.data;
     } catch (_error) {
-      const myError = _error as Error | AxiosError;
-      throw axios.isAxiosError(myError) && myError.response
-        ? myError.response.data.Errors[0]
-        : myError.message;
+      handleError(_error);
     }
   }
 );
@@ -97,10 +99,7 @@ export const getPolicybyId = createAsyncThunk(
       };
       return response.data;
     } catch (_error) {
-      const myError = _error as Error | AxiosError;
-      throw axios.isAxiosError(myError) && myError.response
-        ? myError.response.data.Errors[0]
-        : myError.message;
+      handleError(_error);
     }
   }
 );
@@ -112,10 +111,7 @@ export const updatePolicy = createAsyncThunk(
       const response = await updatePolicyService(dataduplicate);
       return response.data;
     } catch (_error) {
-      const myError = _error as Error | AxiosError;
-      throw axios.isAxiosError(myError) && myError.response
-        ? myError.response.data.Errors[0]
-        : myError.message;
+      handleError(_error);
     }
   }
 );

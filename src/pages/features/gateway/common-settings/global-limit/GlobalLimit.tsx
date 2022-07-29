@@ -35,6 +35,79 @@ export default function GlobalLimit(props: IProps) {
     mainCall(props.policyId || "");
   }, []);
 
+  const policyByIds = states.data.form.PolicyByIds || [];
+  const propsIndex = props.index || 0;
+  function newFun() {
+    const manageState = async () => {
+      const APIs: any[] = [];
+
+      const policyByIdTemp = [...policyByIds];
+
+      const globalItem = {
+        Name: "",
+        MaxQuota: 0,
+        QuotaRate: 0,
+        Rate: 0,
+        Per: 0,
+        QuotaRenewalRate: 0,
+        ThrottleInterval: 0,
+        ThrottleRetries: 0,
+      };
+      let policyName = "";
+      let AuthType = "";
+
+      policyName = policyName + state.data.form.Name;
+
+      for (const a of state.data.form.APIs) {
+        AuthType = a.AuthType;
+        if (a.Limit === null) {
+          globalItem.Name = globalItem.Name.concat(a.Name as string, ",");
+          globalItem.MaxQuota = state.data.form.Quota;
+          globalItem.QuotaRate = state.data.form.QuotaRenewalRate;
+          globalItem.Rate = state.data.form.Rate;
+          globalItem.Per = state.data.form.Per;
+          globalItem.ThrottleInterval = state.data.form.ThrottleInterval;
+          globalItem.ThrottleRetries = state.data.form.ThrottleRetries;
+        }
+
+        if (a.Limit !== null) {
+          const policyState = a;
+          APIs.push(policyState);
+        }
+      }
+      if (globalItem.Name === "") {
+        policyByIdTemp[propsIndex] = {
+          ...policyByIdTemp[propsIndex],
+          Global: undefined,
+          APIs,
+          policyName,
+          AuthType,
+        };
+
+        dispatch(
+          setForms({
+            ...states.data.form,
+            PolicyByIds: policyByIdTemp,
+          })
+        );
+      } else {
+        policyByIdTemp[propsIndex] = {
+          ...policyByIdTemp[propsIndex],
+          Global: globalItem,
+          APIs,
+          policyName,
+          AuthType,
+        };
+        dispatch(
+          setForms({
+            ...states.data.form,
+            PolicyByIds: policyByIdTemp,
+          })
+        );
+      }
+    };
+    manageState();
+  }
   useEffect(() => {
     if (
       props.policyId !== null &&
@@ -43,75 +116,7 @@ export default function GlobalLimit(props: IProps) {
       loader === false &&
       state.loading === false
     ) {
-      const manageState = async () => {
-        const APIs: any[] = [];
-
-        const policyByIdTemp = [...(states.data.form.PolicyByIds || [])];
-
-        const globalItem = {
-          Name: "",
-          MaxQuota: 0,
-          QuotaRate: 0,
-          Rate: 0,
-          Per: 0,
-          QuotaRenewalRate: 0,
-          ThrottleInterval: 0,
-          ThrottleRetries: 0,
-        };
-        let policyName = "";
-        let AuthType = "";
-
-        policyName = policyName + state.data.form.Name;
-
-        for (const a of state.data.form.APIs) {
-          AuthType = a.AuthType || "";
-          if (a.Limit === null) {
-            globalItem.Name = globalItem.Name.concat(a.Name || "", ",");
-            globalItem.MaxQuota = state.data.form.Quota;
-            globalItem.QuotaRate = state.data.form.QuotaRenewalRate;
-            globalItem.Rate = state.data.form.Rate;
-            globalItem.Per = state.data.form.Per;
-            globalItem.ThrottleInterval = state.data.form.ThrottleInterval;
-            globalItem.ThrottleRetries = state.data.form.ThrottleRetries;
-          }
-
-          if (a.Limit !== null) {
-            const policyState = a;
-            APIs.push(policyState);
-          }
-        }
-        if (globalItem.Name === "") {
-          policyByIdTemp[props.index || 0] = {
-            ...policyByIdTemp[props.index || 0],
-            Global: undefined,
-            APIs,
-            policyName,
-            AuthType,
-          };
-
-          dispatch(
-            setForms({
-              ...states.data.form,
-              PolicyByIds: policyByIdTemp,
-            })
-          );
-        } else {
-          policyByIdTemp[props.index || 0] = {
-            ...policyByIdTemp[props.index || 0],
-            Global: globalItem,
-            APIs,
-            policyName,
-            AuthType,
-          };
-          dispatch(
-            setForms({
-              ...states.data.form,
-              PolicyByIds: policyByIdTemp,
-            })
-          );
-        }
-      };
-      manageState();
+      return newFun();
     }
   }, [loader]);
 
@@ -154,8 +159,14 @@ export default function GlobalLimit(props: IProps) {
       ? "Unlimited"
       : stateObj.Global[value1];
   }
+  function setGlobalChecked(value1: any, stateObj: any, value2?: any) {
+    return (
+      stateObj.Global[value1] === -1 ||
+      stateObj.Global[value1] === 0 ||
+      stateObj.Global[value2] === 0
+    );
+  }
 
-  const policyByIds = states.data.form.PolicyByIds || [];
   return (
     <>
       {loader === false &&
@@ -396,16 +407,17 @@ export default function GlobalLimit(props: IProps) {
                   }
                 )}
                 {(() => {
-                  if (policyByIds[props.index || 0].Global !== undefined) {
+                  if (policyByIds[propsIndex].Global !== undefined) {
                     return (
                       <>
                         <div className="card">
                           <Accordion defaultActiveKey="0">
                             <Accordion.Item eventKey="0">
                               <Accordion.Header>
-                                {policyByIds[
-                                  props.index || 0
-                                ].Global?.Name.slice(0, -1)}
+                                {policyByIds[propsIndex].Global?.Name.slice(
+                                  0,
+                                  -1
+                                )}
                                 {" |"}
                                 <b>&nbsp;Global Limits and Quota</b>
                               </Accordion.Header>
@@ -441,17 +453,11 @@ export default function GlobalLimit(props: IProps) {
                                             label="Disable rate limiting"
                                             disabled={true}
                                             className="ml-4"
-                                            checked={
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.Rate === -1 ||
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.Rate === 0 ||
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.Per === 0
-                                            }
+                                            checked={setGlobalChecked(
+                                              "Rate",
+                                              policyByIds[propsIndex],
+                                              "Per"
+                                            )}
                                           />
                                           <Form.Label className="mt-3">
                                             Rate
@@ -465,8 +471,7 @@ export default function GlobalLimit(props: IProps) {
                                             placeholder="Enter Rate"
                                             value={setGlobalValue(
                                               "Rate",
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0],
+                                              policyByIds[propsIndex],
                                               "Per"
                                             )}
                                             name="Rate"
@@ -484,8 +489,7 @@ export default function GlobalLimit(props: IProps) {
                                             placeholder="Enter time"
                                             value={setGlobalValue(
                                               "Per",
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0],
+                                              policyByIds[propsIndex],
                                               "Rate"
                                             )}
                                             name="RateLimit.Per"
@@ -523,17 +527,11 @@ export default function GlobalLimit(props: IProps) {
                                             label="Disable Throttling"
                                             disabled={true}
                                             className="ml-4"
-                                            checked={
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.ThrottleRetries === -1 ||
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.ThrottleRetries === 0 ||
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.ThrottleInterval === 0
-                                            }
+                                            checked={setGlobalChecked(
+                                              "ThrottleRetries",
+                                              policyByIds[propsIndex],
+                                              "ThrottleInterval"
+                                            )}
                                           />
                                           <Form.Label className="mt-3">
                                             Throttle retry limit
@@ -546,8 +544,7 @@ export default function GlobalLimit(props: IProps) {
                                             name="Throttling.Retry"
                                             value={setGlobalValue(
                                               "ThrottleRetries",
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0],
+                                              policyByIds[propsIndex],
                                               "ThrottleInterval"
                                             )}
                                             disabled={true}
@@ -564,8 +561,7 @@ export default function GlobalLimit(props: IProps) {
                                             id="interval"
                                             value={setGlobalValue(
                                               "ThrottleInterval",
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0],
+                                              policyByIds[propsIndex],
                                               "ThrottleRetries"
                                             )}
                                             name="Throttling.Interval"
@@ -602,14 +598,10 @@ export default function GlobalLimit(props: IProps) {
                                             label="Unlimited requests"
                                             disabled={true}
                                             className="ml-4"
-                                            checked={
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.MaxQuota === -1 ||
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
-                                                ?.MaxQuota === 0
-                                            }
+                                            checked={setGlobalChecked(
+                                              "MaxQuota",
+                                              policyByIds[propsIndex]
+                                            )}
                                           />
                                           <Form.Label className="mt-3">
                                             Max requests per period
@@ -621,8 +613,7 @@ export default function GlobalLimit(props: IProps) {
                                             id="quotaPer"
                                             value={setGlobalValue(
                                               "MaxQuota",
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0]
+                                              policyByIds[propsIndex]
                                             )}
                                             name="Quota.Per"
                                             disabled={true}
@@ -635,8 +626,7 @@ export default function GlobalLimit(props: IProps) {
                                             className="mt-2"
                                             style={{ height: 46 }}
                                             value={
-                                              (states.data.form.PolicyByIds ||
-                                                [])[props.index || 0].Global
+                                              policyByIds[propsIndex].Global
                                                 ?.QuotaRate
                                             }
                                             disabled={true}

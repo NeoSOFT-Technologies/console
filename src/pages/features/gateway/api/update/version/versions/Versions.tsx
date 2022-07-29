@@ -19,6 +19,7 @@ export default function Versions() {
   const dispatch = useAppDispatch();
 
   const state = useAppSelector((RootState) => RootState.updateApiState);
+  const dateFormat = "YYYY-MM-DD HH:MM";
 
   const [addFormData, setAddFormData] = useState({
     Name: "",
@@ -56,6 +57,21 @@ export default function Versions() {
     setAddFormData(newFormData);
   };
 
+  function listObj(beginDate: any) {
+    return [
+      ...state.data.form.Versions,
+      {
+        Name: addFormData.Name,
+        OverrideTarget: addFormData.OverrideTarget,
+        Expires: beginDate,
+        GlobalRequestHeaders: {},
+        GlobalRequestHeadersRemove: [],
+        GlobalResponseHeaders: {},
+        GlobalResponseHeadersRemove: [],
+        ExtendedPaths: undefined,
+      },
+    ];
+  }
   const handleAddClick = () => {
     let newdate: any;
     if (state.data.form.Versions.length > 0) {
@@ -67,22 +83,8 @@ export default function Versions() {
       } else {
         newdate = addFormData.Expires;
 
-        const beginDate = moment(newdate).format("YYYY-MM-DD HH:MM");
-
-        const list = [
-          ...state.data.form.Versions,
-          {
-            Name: addFormData.Name,
-            OverrideTarget: addFormData.OverrideTarget,
-            Expires: beginDate,
-            GlobalRequestHeaders: {},
-            GlobalRequestHeadersRemove: [],
-            GlobalResponseHeaders: {},
-            GlobalResponseHeadersRemove: [],
-            ExtendedPaths: undefined,
-          },
-        ];
-
+        const beginDate = moment(newdate).format(dateFormat);
+        const list = listObj(beginDate);
         const rowObj: any = [...state.data.form.Versions2, addFormData.Name];
 
         dispatch(
@@ -107,22 +109,9 @@ export default function Versions() {
     } else {
       newdate = addFormData.Expires;
 
-      const beginDate = moment(newdate).format("YYYY-MM-DD HH:MM");
+      const beginDate = moment(newdate).format(dateFormat);
 
-      const list = [
-        ...state.data.form.Versions,
-        {
-          Name: addFormData.Name,
-          OverrideTarget: addFormData.OverrideTarget,
-          Expires: beginDate,
-          GlobalRequestHeaders: {},
-          GlobalRequestHeadersRemove: [],
-          GlobalResponseHeaders: {},
-          GlobalResponseHeadersRemove: [],
-          ExtendedPaths: undefined,
-        },
-      ];
-
+      const list = listObj(beginDate);
       const rowObj: any = [...state.data.form.Versions2, addFormData.Name];
 
       dispatch(
@@ -208,7 +197,7 @@ export default function Versions() {
     if (name === "Expires") {
       newdate = value;
 
-      const beginDate = moment(newdate).format("YYYY-MM-DD HH:MM");
+      const beginDate = moment(newdate).format(dateFormat);
 
       const versionsList = [...state.data.form.Versions];
       versionsList[index] = { ...versionsList[index], [name]: beginDate };

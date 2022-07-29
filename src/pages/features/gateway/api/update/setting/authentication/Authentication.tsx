@@ -34,6 +34,18 @@ export default function Authentication() {
       setFormData(event, dispatch, state);
     }
   };
+  function authentications() {
+    switch (state.data.form.AuthType) {
+      case "standard":
+        return <AuthenticationToken />;
+      case "openid":
+        return <OpenIdConnect />;
+      case "keyless":
+        return <OpenKeyless />;
+      default:
+        return <></>;
+    }
+  }
   return (
     <div>
       <div className="card">
@@ -83,17 +95,7 @@ export default function Authentication() {
                     </Row>
                   </div>
 
-                  <div>
-                    {state.data.form.AuthType === "standard" ? (
-                      <AuthenticationToken />
-                    ) : state.data.form.AuthType === "openid" ? (
-                      <OpenIdConnect />
-                    ) : state.data.form.AuthType === "keyless" ? (
-                      <OpenKeyless />
-                    ) : (
-                      <></>
-                    )}
-                  </div>
+                  <div>{authentications()}</div>
                   <Row>
                     <Col md="12">
                       <Form.Group className="mb-3 ml-4 mt-4">
