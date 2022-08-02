@@ -8,7 +8,7 @@ import thunk from "redux-thunk";
 import BlacklistedIPs from "./BlacklistedIPs";
 
 const mockStore = configureStore([thunk]);
-const store = mockStore({
+export const store = mockStore({
   updateApiState: {
     loading: false,
     data: {
