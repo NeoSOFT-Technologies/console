@@ -3,11 +3,11 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { store } from "../blacklisted-ips/BlacklistedIPs.test";
+import { componentStore } from "../../mock-store";
 import CorsOptions from "./CorsOptions";
 
 const allowedOriginInputs = "allowedOrigin-input";
-
+const store = componentStore();
 it("render without crashing CorsOptions", () => {
   render(
     <BrowserRouter>

@@ -5,88 +5,11 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
+import { componentStore } from "../../../mock-store";
 import OepnIdConnect from "./OpenIdConnect";
 
 const mockStore = configureStore([thunk]);
-const store = mockStore({
-  policyListState: {
-    loading: false,
-    data: {
-      Policies: [
-        {
-          Action: "",
-          Id: "0",
-          Name: "policy1",
-          State: "active",
-          Apis: ["api1", "api2"],
-          AuthType: "standard",
-        },
-      ],
-    },
-  },
-  updateApiState: {
-    loading: false,
-    data: {
-      form: {
-        ApiId: 0,
-        Name: "api1",
-        ListenPath: "/api1/",
-        StripListenPath: true,
-        TargetUrl: "https://httpbin.org",
-        IsActive: true,
-        AuthType: "standard",
-        RateLimit: {
-          Rate: 5,
-          Per: 10,
-          IsDisabled: true,
-        },
-        VersioningInfo: {
-          Location: 1,
-          Key: "key",
-        },
-        Versions: [
-          {
-            Name: "default",
-            OverrideTarget: "https://httpbin.org2",
-          },
-        ],
-        Blacklist: [process.env.IP_ADDRESS],
-        Whitelist: [process.env.IP_ADDRESS],
-        OpenidOptions: {
-          Providers: [
-            {
-              Issuer: "issuer",
-              Client_ids: [
-                {
-                  ClientId: "id",
-                  Policy: "policy1",
-                },
-                {
-                  ClientId: "id2",
-                  Policy: "policy2",
-                },
-              ],
-            },
-          ],
-        },
-
-        CORS: {
-          IsEnabled: false,
-          AllowedOrigins: ["https://google.co.in"],
-          AllowedMethods: ["GET"],
-          AllowedHeaders: ["ABC"],
-          ExposedHeaders: ["XYZ"],
-          AllowCredentials: true,
-          MaxAge: 5,
-          OptionsPassthrough: false,
-          Debug: false,
-        },
-        EnableRoundRobin: false,
-        LoadBalancingTargets: [],
-      },
-    },
-  },
-});
+const store = componentStore("openIdConnect");
 
 const store2 = mockStore({
   policyListState: {
