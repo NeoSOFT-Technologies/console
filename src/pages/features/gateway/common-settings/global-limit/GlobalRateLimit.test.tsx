@@ -5,12 +5,14 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import store from "../../../../../store";
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
+import { emptyState } from "../../../../../store/features/gateway/policy/create/payload";
 import {
   setForm,
   setFormError,
 } from "../../../../../store/features/gateway/policy/create/slice";
 import GlobalRateLimit from "./GlobalRateLimit";
 import { IPropsHelper } from "./rate-limit-helper";
+const state2 = { ...emptyState };
 const state: IPolicyCreateState = {
   data: {
     form: {
@@ -25,35 +27,14 @@ const state: IPolicyCreateState = {
       ThrottleRetries: 10,
       State: "active",
       KeyExpiresIn: 10,
-      Tags: [],
-      APIs: [],
-      Partitions: {
-        quota: false,
-        rate_limit: false,
-        complexity: false,
-        acl: false,
-        per_api: true,
-      },
+      Tags: state2.data.form.Tags,
+      APIs: state2.data.form.APIs,
+      Partitions: state2.data.form.Partitions,
     },
-    errors: {
-      Name: "",
-      Policies: "",
-      GlobalLimit: {
-        ApiId: "",
-        ApiName: "",
-        Per: "",
-        Rate: "",
-        Quota: "",
-        Expires: "",
-        QuotaRenewalRate: "",
-        ThrottleInterval: "",
-        ThrottleRetries: "",
-      },
-      PerApiLimit: [],
-    },
+    errors: state2.data.errors,
   },
-  loading: false,
-  error: undefined,
+  loading: state2.loading,
+  error: state2.error,
 };
 const requiredParameters: IPropsHelper = {
   state,
