@@ -4,8 +4,9 @@ import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import Update from "./Update";
-import { store } from "./advanced-options/blacklisted-ips/BlacklistedIPs.test";
+import { componentStore } from "./mock-store";
 
+const store = componentStore();
 it("Test render of UpdateApi", () => {
   render(
     <BrowserRouter>
