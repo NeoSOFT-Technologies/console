@@ -3,13 +3,14 @@ import { Accordion, Form, Col, Row, Button, Table } from "react-bootstrap";
 import { ToastAlert } from "../../../../../../../components/toast-alert/toast-alert";
 import {
   setFormErrors,
-  regexForIPAddress,
+  // regexForIPAddress,
 } from "../../../../../../../resources/gateway/api/api-constants";
 import { setForm } from "../../../../../../../store/features/gateway/api/update/slice";
 import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../../../../store/hooks";
+import { handleFormInputChange } from "../whitelisted-ips/WhitelistedIPs";
 
 export default function BlacklistedIPs() {
   const dispatch = useAppDispatch();
@@ -44,36 +45,6 @@ export default function BlacklistedIPs() {
       dispatch
     );
   }
-
-  const handleFormInputChange = (event: any) => {
-    const { name, value } = event.target;
-
-    if (name === "Blacklist") {
-      if (value === "") {
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: "",
-          },
-          dispatch
-        );
-      } else {
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: regexForIPAddress.test(value)
-              ? ""
-              : "Please enter a Valid IP Address",
-          },
-          dispatch
-        );
-      }
-    }
-    const formobj = { ...addFormData };
-    formobj[name] = value;
-    setAddFormData(formobj);
-  };
-
   const handleAddClick = () => {
     if (blacklistLength > 0) {
       const filtered = state.data.form.Blacklist.filter(
@@ -168,7 +139,13 @@ export default function BlacklistedIPs() {
                                   isInvalid={!!state.data.errors?.Blacklist}
                                   isValid={!state.data.errors?.Blacklist}
                                   onChange={(event) =>
-                                    handleFormInputChange(event)
+                                    handleFormInputChange(
+                                      event,
+                                      state,
+                                      dispatch,
+                                      addFormData,
+                                      setAddFormData
+                                    )
                                   }
                                 />
                                 <Form.Control.Feedback type="invalid">
