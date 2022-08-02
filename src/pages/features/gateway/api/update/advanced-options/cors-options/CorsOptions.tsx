@@ -74,6 +74,19 @@ export default function CorsOptions() {
     setAllowedOrigins(allowedOrigins);
   }
 
+  function corObj(allowedOrigins: any) {
+    return {
+      IsEnabled: state.data.form.CORS.IsEnabled,
+      AllowedOrigins: allowedOrigins,
+      AllowedMethods: state.data.form.CORS.AllowedMethods,
+      AllowedHeaders: state.data.form.CORS.AllowedHeaders,
+      ExposedHeaders: state.data.form.CORS.ExposedHeaders,
+      AllowCredentials: state.data.form.CORS.AllowCredentials,
+      MaxAge: state.data.form.CORS.MaxAge,
+      OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
+      Debug: state.data.form.CORS.Debug,
+    };
+  }
   const handleAllowedOriginsAddClick = () => {
     if (state.data.form.CORS.AllowedOrigins.length > 0) {
       const filtered = state.data.form.CORS.AllowedOrigins.filter(
@@ -87,17 +100,7 @@ export default function CorsOptions() {
           addAllowedOrigins.AllowedOrigins,
         ];
 
-        const corsObj = {
-          IsEnabled: state.data.form.CORS.IsEnabled,
-          AllowedOrigins: allowedOrigins,
-          AllowedMethods: state.data.form.CORS.AllowedMethods,
-          AllowedHeaders: state.data.form.CORS.AllowedHeaders,
-          ExposedHeaders: state.data.form.CORS.ExposedHeaders,
-          AllowCredentials: state.data.form.CORS.AllowCredentials,
-          MaxAge: state.data.form.CORS.MaxAge,
-          OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-          Debug: state.data.form.CORS.Debug,
-        };
+        const corsObj = corObj(allowedOrigins);
 
         dispatch(setForm({ ...state.data.form, CORS: corsObj }));
         setAllowedOrigins({ ...addAllowedOrigins, AllowedOrigins: "" });
@@ -108,18 +111,7 @@ export default function CorsOptions() {
         addAllowedOrigins.AllowedOrigins,
       ];
 
-      const corsObj = {
-        IsEnabled: state.data.form.CORS.IsEnabled,
-        AllowedOrigins: allowedOrigins,
-        AllowedMethods: state.data.form.CORS.AllowedMethods,
-        AllowedHeaders: state.data.form.CORS.AllowedHeaders,
-        ExposedHeaders: state.data.form.CORS.ExposedHeaders,
-        AllowCredentials: state.data.form.CORS.AllowCredentials,
-        MaxAge: state.data.form.CORS.MaxAge,
-        OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-        Debug: state.data.form.CORS.Debug,
-      };
-
+      const corsObj = corObj(allowedOrigins);
       dispatch(setForm({ ...state.data.form, CORS: corsObj }));
       setAllowedOrigins({ ...addAllowedOrigins, AllowedOrigins: "" });
     }
