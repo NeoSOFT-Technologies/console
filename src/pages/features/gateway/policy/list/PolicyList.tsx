@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { access, AuthGuard } from "../../../../../components/auth-gaurd";
-import RenderList, {
-  refreshGrid,
-} from "../../../../../components/list/RenderList";
-import { ToastAlert } from "../../../../../components/toast-alert/toast-alert";
+import RenderList from "../../../../../components/list/RenderList";
 import { gridPageSize } from "../../../../../resources/gateway/common";
 
 import { emptyState } from "../../../../../store/features/gateway/policy/create/payload";
@@ -16,6 +13,7 @@ import {
 import { deletePolicy } from "../../../../../store/features/gateway/policy/delete/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
 import { formatCommaSeparated } from "../../../../../utils/gateway/helper";
+import { successReject } from "../../api/list/APIList";
 
 export default function PolicyList() {
   const navigate = useNavigate();
@@ -50,13 +48,7 @@ export default function PolicyList() {
     setShow(false);
     const result = await dispatch(deletePolicy(Id));
 
-    if (result.meta.requestStatus === "rejected") {
-      ToastAlert(result.payload.message, "error");
-    } else {
-      ToastAlert("Policy Deleted Successfully", "success");
-      // This will be used for reloading the Grid after delete operation
-      refreshGrid();
-    }
+    successReject(result);
   };
   const handleCancel = () => setShow(false);
 

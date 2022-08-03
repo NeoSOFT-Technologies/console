@@ -15,7 +15,15 @@ import {
 } from "../../../../../store/features/gateway/api/update/slice";
 import { useAppDispatch } from "../../../../../store/hooks";
 import { formatDate, formatStatus } from "../../../../../utils/gateway/helper";
-
+export function successReject(result: any) {
+  if (result.meta.requestStatus === "rejected") {
+    ToastAlert(result.payload.message, "error");
+  } else {
+    ToastAlert("Api Deleted Successfully", "success");
+    // This will be used for reloading the Grid after delete operation
+    refreshGrid();
+  }
+}
 export default function APIList() {
   const navigate = useNavigate();
   const [DeleteApiId, SetDeleteApiId] = useState<string>();
@@ -40,14 +48,7 @@ export default function APIList() {
   const handleDelete = async (Id: string) => {
     setShow(false);
     const result = await dispatch(deleteApi(Id));
-
-    if (result.meta.requestStatus === "rejected") {
-      ToastAlert(result.payload.message, "error");
-    } else {
-      ToastAlert("Api Deleted Successfully", "success");
-      // This will be used for reloading the Grid after delete operation
-      refreshGrid();
-    }
+    successReject(result);
   };
   const handleCancel = () => setShow(false);
 
