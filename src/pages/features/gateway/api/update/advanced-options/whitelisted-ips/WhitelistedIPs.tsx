@@ -11,6 +11,40 @@ import {
   useAppSelector,
 } from "../../../../../../../store/hooks";
 
+export const handleFormInputChange = (
+  event: any,
+  state: any,
+  dispatch: any,
+  addFormData: any,
+  setAddFormData: any
+) => {
+  const { name, value } = event.target;
+
+  if (name === "Whitelist" || name === "Blacklist") {
+    if (value === "") {
+      setFormErrors(
+        {
+          ...state.data.errors,
+          [name]: "",
+        },
+        dispatch
+      );
+    } else {
+      setFormErrors(
+        {
+          ...state.data.errors,
+          [name]: regexForIPAddress.test(value)
+            ? ""
+            : "Please enter a Valid IP Address",
+        },
+        dispatch
+      );
+    }
+  }
+  const formobj = { ...addFormData };
+  formobj[name] = value;
+  setAddFormData(formobj);
+};
 export default function WhitelistedIPs() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
@@ -44,35 +78,6 @@ export default function WhitelistedIPs() {
       );
     }
   }
-
-  const handleFormInputChange = (event: any) => {
-    const { name, value } = event.target;
-
-    if (name === "Whitelist") {
-      if (value === "") {
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: "",
-          },
-          dispatch
-        );
-      } else {
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: regexForIPAddress.test(value)
-              ? ""
-              : "Please enter a Valid IP Address",
-          },
-          dispatch
-        );
-      }
-    }
-    const formobj = { ...addFormData };
-    formobj[name] = value;
-    setAddFormData(formobj);
-  };
 
   const handleAddClick = () => {
     if (whitelistLength > 0) {
@@ -168,7 +173,13 @@ export default function WhitelistedIPs() {
                                   isInvalid={!!state.data.errors?.Whitelist}
                                   isValid={!state.data.errors?.Whitelist}
                                   onChange={(event) =>
-                                    handleFormInputChange(event)
+                                    handleFormInputChange(
+                                      event,
+                                      state,
+                                      dispatch,
+                                      addFormData,
+                                      setAddFormData
+                                    )
                                   }
                                 />
                                 <Form.Control.Feedback
