@@ -17,12 +17,44 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../../../../../store/hooks";
+
 interface PolicyObject {
   name: string[];
   policyId: string;
 }
 export let reloadGrid: () => void;
 export let refreshGrid: (PolicyId: string, Id: string) => void;
+export function gridOn(
+  mygrid: any,
+  selectedRows: any,
+  gridReload: any,
+  setpluginState: any,
+  setselectedRows: any,
+  id: any
+) {
+  mygrid.on("ready", () => {
+    // find the plugin with the give plugin ID
+    const checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
+    const prp = checkboxPlugin?.props;
+    setpluginState(prp.store);
+
+    if (id !== undefined) {
+      for (const iterator of selectedRows.state) {
+        prp.store.handle("CHECK", {
+          ROW_ID: iterator,
+        });
+      }
+    }
+    prp.store.on("updated", (state1: any, prevState1: any) => {
+      if (gridReload === false) {
+        setselectedRows({
+          state: state1.rowIds,
+          prevState: prevState1.rowIds,
+        });
+      }
+    });
+  });
+}
 export default function PolicyList() {
   const accessPolicyList: IPolicyListState = useAppSelector(
     (state) => state.policyListState
@@ -40,7 +72,7 @@ export default function PolicyList() {
     state: [],
     prevState: [],
   });
-  let checkboxPlugin: any;
+  let checkboxPlugin: any = "";
   let prp: any;
   const { id } = useParams();
 
@@ -184,27 +216,11 @@ export default function PolicyList() {
     },
   });
   const mygrid = gridTable.getInstance();
-  mygrid.on("ready", () => {
-    // find the plugin with the give plugin ID
-    checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
-    prp = checkboxPlugin?.props;
-    setpluginState(prp.store);
 
-    if (id !== undefined) {
-      for (const iterator of selectedRows.state) {
-        prp.store.handle("CHECK", {
-          ROW_ID: iterator,
-        });
-      }
-    }
-    prp.store.on("updated", (state1: any, prevState1: any) => {
-      if (gridReload === false) {
-        setselectedRows({ state: state1.rowIds, prevState: prevState1.rowIds });
-      }
-    });
-  });
+  gridOn(mygrid, selectedRows, gridReload, setpluginState, setselectedRows, id);
+
   // This will set Grid data for update page
-  const getDataOnUpdate = () => {
+  const getDataOnUpdates = () => {
     // to get selected data on update screen
     if (id && id !== undefined && StateKey.data.form.Policies.length > 0) {
       const arr = [];
@@ -269,14 +285,14 @@ export default function PolicyList() {
     // this will be used to set state value as true for displaying selected apis list on updated page
     if (accessPolicyList.data !== undefined) {
       // this will be used to set state value as true for displaying selected apis list on updated page
-      getDataOnUpdate();
+      getDataOnUpdates();
     }
   }, []);
   // load selected data on update page
   useEffect(() => {
     if (accessPolicyList.data !== undefined) {
       // this will be used to set state value as true for displaying selected apis list on updated page
-      getDataOnUpdate();
+      getDataOnUpdates();
     }
   }, [
     id !== undefined &&
@@ -382,7 +398,7 @@ export default function PolicyList() {
       }
     }
     if (id !== undefined && accessPolicyList.data !== undefined) {
-      getDataOnUpdate();
+      getDataOnUpdates();
     }
   }, [
     id
@@ -409,9 +425,9 @@ export default function PolicyList() {
   //  Grid render on invoke of reloadGrid()
   useEffect(() => {
     if (gridReload) {
-      const gridRenderHtml = document.querySelector("#gridRender");
-      (gridRenderHtml as Element).innerHTML = "";
-      mygrid.render(gridRenderHtml as Element);
+      const gridRenderHtmll = document.querySelector("#gridRender");
+      (gridRenderHtmll as Element).innerHTML = "";
+      mygrid.render(gridRenderHtmll as Element);
       const render_Grid = mygrid.updateConfig({
         data: () => bindPolicyList(),
       });
