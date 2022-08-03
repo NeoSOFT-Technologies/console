@@ -1,20 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Tab, Tabs } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import { IKeyCreateState } from "../../../../../../store/features/gateway/key/create";
 import { emptyState } from "../../../../../../store/features/gateway/key/create/payload";
-import { setForms } from "../../../../../../store/features/gateway/key/create/slice";
+import {
+  keystate,
+  setFormErrors,
+  setForms,
+} from "../../../../../../store/features/gateway/key/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
+import { IPropsHelper } from "../../../common-settings/global-limit/rate-limit-helper";
 import ApplyPolicy from "./apply-policy/ApplyPolicy";
 import ChooseApi from "./choose-api/ChooseApi";
+export interface IProp {
+  requiredParameters: IPropsHelper;
+  state: IKeyCreateState;
+}
 export default function AccessRights() {
   const [SelectedTabIndex, setTabIndex] = useState("applyPolicy");
   const [ClickedTabIndex, setClickedTabIndex] = useState("");
-
   const [show, setShow] = useState(false);
   const dispatch = useAppDispatch();
+  const { id } = useParams();
   const state: IKeyCreateState = useAppSelector(
     (RootState) => RootState.createKeyState
   );
+  const requiredParameters: IPropsHelper = {
+    state,
+    form: state.data.form as any,
+    formProp: state.data.form.AccessRights as any,
+    errors: state.data.errors as any,
+    errorProp: state.data.errors?.PerApiLimit || [],
+    prevState: keystate,
+    propName: "AccessRights",
+    setForm: setForms,
+    setFormError: setFormErrors,
+    index: 0,
+    dispatch,
+    id,
+    current: "policy",
+  };
 
   useEffect(() => {
     if (state.data.form.KeyId === undefined) {
@@ -59,8 +84,6 @@ export default function AccessRights() {
 
     dispatch(setForms(form));
     setTabIndex(ClickedTabIndex);
-
-    //  if(ClickedTabIndex!==)
   };
   return (
     <>
@@ -91,7 +114,6 @@ export default function AccessRights() {
       <div>
         <div className="align-items-center">
           <div>
-            {/* className="pt-2"   style={{ padding: "1rem 0rem" }} */}
             <Tabs
               // style={{ padding: "1rem 0rem" }}
               activeKey={SelectedTabIndex}
@@ -101,10 +123,24 @@ export default function AccessRights() {
               className="small" // mb-2
             >
               <Tab eventKey="applyPolicy" title="Apply Policy">
-                {SelectedTabIndex === "applyPolicy" ? <ApplyPolicy /> : <></>}
+                {SelectedTabIndex === "applyPolicy" ? (
+                  <ApplyPolicy
+                    requiredParameters={requiredParameters}
+                    state={state}
+                  />
+                ) : (
+                  <></>
+                )}
               </Tab>
               <Tab eventKey="chooseApi" title="Choose Api">
-                {SelectedTabIndex === "chooseApi" ? <ChooseApi /> : <></>}
+                {SelectedTabIndex === "chooseApi" ? (
+                  <ChooseApi
+                    requiredParameters={requiredParameters}
+                    state={state}
+                  />
+                ) : (
+                  <></>
+                )}
               </Tab>
             </Tabs>
           </div>
