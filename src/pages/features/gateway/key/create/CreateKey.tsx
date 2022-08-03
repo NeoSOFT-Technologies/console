@@ -100,7 +100,7 @@ export default function CreateKey() {
           );
         }
       } else {
-        validate = !!(validateFieldValue === true);
+        validate = validateFieldValue === true;
       }
     }
   }
