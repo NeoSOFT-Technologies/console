@@ -13,6 +13,57 @@ const createPath = "/Key/CreateKey";
 const getByIdPath = "Key/GetKey?keyId=";
 const updateKeyPath = "/Key/UpdateKey";
 const _error = "Network Error";
+const createKeys: IGetKeyByIdData = {
+  KeyName: "key1",
+  SelectedTabIndex: "applyPolicy",
+  Per: 0,
+  Rate: 0,
+  Quota: -1,
+  Expires: 0,
+  // isInActive: false,
+  QuotaRenewalRate: -1,
+  ThrottleInterval: -1,
+  ThrottleRetries: -1,
+  AccessRights: [
+    {
+      ApiId: "api1",
+      ApiName: "api1",
+      Versions: [],
+      MasterVersions: ["Default"],
+      AuthType: "standard",
+      isRateLimitDisabled: false,
+      isQuotaDisbaled: false,
+      AllowedUrls: [],
+      Limit: {
+        Rate: 0,
+        Throttle_interval: 0,
+        Throttle_retry_limit: 0,
+        Max_query_depth: 0,
+        Quota_max: 0,
+        Quota_renews: 0,
+        Quota_remaining: 0,
+        Quota_renewal_rate: 0,
+      },
+    },
+  ],
+  Policies: [],
+  PolicyByIds: [
+    {
+      Global: {
+        Name: "",
+        MaxQuota: 0,
+        QuotaRate: 0,
+        Rate: 0,
+        Per: 0,
+        ThrottleInterval: 0,
+        ThrottleRetries: 0,
+      },
+      APIs: [],
+      policyName: "",
+      AuthType: "",
+    },
+  ],
+};
 const response: IGetKeyByIdData = {
   KeyId: keyId,
   KeyName: "key1",
@@ -70,175 +121,19 @@ const response: IGetKeyByIdData = {
 test("key/create/fulfilled-calling the state of successfully creating key", async () => {
   mockApi.onPost(createPath).reply(200, response);
 
-  const result = await store.dispatch(
-    createKey({
-      KeyName: "key1",
-      SelectedTabIndex: "applyPolicy",
-      Per: 0,
-      Rate: 0,
-      Quota: -1,
-      Expires: 0,
-      // isInActive: false,
-      QuotaRenewalRate: -1,
-      ThrottleInterval: -1,
-      ThrottleRetries: -1,
-      AccessRights: [
-        {
-          ApiId: "api1",
-          ApiName: "api1",
-          Versions: [],
-          MasterVersions: ["Default"],
-          AuthType: "standard",
-          isRateLimitDisabled: false,
-          isQuotaDisbaled: false,
-          AllowedUrls: [],
-          Limit: {
-            Rate: 0,
-            Throttle_interval: 0,
-            Throttle_retry_limit: 0,
-            Max_query_depth: 0,
-            Quota_max: 0,
-            Quota_renews: 0,
-            Quota_remaining: 0,
-            Quota_renewal_rate: 0,
-          },
-        },
-      ],
-      Policies: [],
-      PolicyByIds: [
-        {
-          Global: {
-            Name: "",
-            MaxQuota: 0,
-            QuotaRate: 0,
-            Rate: 0,
-            Per: 0,
-            ThrottleInterval: 0,
-            ThrottleRetries: 0,
-          },
-          APIs: [],
-          policyName: "",
-          AuthType: "",
-        },
-      ],
-    })
-  );
+  const result = await store.dispatch(createKey(createKeys));
 
   expect(result.type).toBe("key/create/fulfilled");
 });
 test("key/create/rejected-calling the state of create key-404", async () => {
   mockApi.onPost(createPath).reply(400);
-  const result = await store.dispatch(
-    createKey({
-      KeyName: "key1",
-      SelectedTabIndex: "applyPolicy",
-      Per: 0,
-      Rate: 0,
-      Quota: -1,
-      Expires: 0,
-      // isInActive: false,
-      QuotaRenewalRate: -1,
-      ThrottleInterval: -1,
-      ThrottleRetries: -1,
-      AccessRights: [
-        {
-          ApiId: "",
-          ApiName: "api1",
-          Versions: [],
-          MasterVersions: ["Default"],
-          AuthType: "standard",
-          isRateLimitDisabled: false,
-          isQuotaDisbaled: false,
-          AllowedUrls: [],
-          Limit: {
-            Rate: 0,
-            Throttle_interval: 0,
-            Throttle_retry_limit: 0,
-            Max_query_depth: 0,
-            Quota_max: 0,
-            Quota_renews: 0,
-            Quota_remaining: 0,
-            Quota_renewal_rate: 0,
-          },
-        },
-      ],
-      Policies: [],
-      PolicyByIds: [
-        {
-          Global: {
-            Name: "",
-            MaxQuota: 0,
-            QuotaRate: 0,
-            Rate: 0,
-            Per: 0,
-            ThrottleInterval: 0,
-            ThrottleRetries: 0,
-          },
-          APIs: [],
-          policyName: "",
-          AuthType: "",
-        },
-      ],
-    })
-  );
+  const result = await store.dispatch(createKey(createKeys));
   expect(result.type).toBe("key/create/rejected");
 });
 test("Network error- failed for calling the state of create key page", async () => {
   mockApi.onPost(createPath).networkError();
 
-  const result = await store.dispatch(
-    createKey({
-      KeyName: "key1",
-      SelectedTabIndex: "applyPolicy",
-      Per: 0,
-      Rate: 0,
-      Quota: -1,
-      Expires: 0,
-      // isInActive: false,
-      QuotaRenewalRate: -1,
-      ThrottleInterval: -1,
-      ThrottleRetries: -1,
-      AccessRights: [
-        {
-          ApiId: "api1",
-          ApiName: "api1",
-          Versions: [],
-          MasterVersions: ["Default"],
-          AuthType: "standard",
-          isRateLimitDisabled: false,
-          isQuotaDisbaled: false,
-          AllowedUrls: [],
-          Limit: {
-            Rate: 0,
-            Throttle_interval: 0,
-            Throttle_retry_limit: 0,
-            Max_query_depth: 0,
-            Quota_max: 0,
-            Quota_renews: 0,
-            Quota_remaining: 0,
-            Quota_renewal_rate: 0,
-          },
-        },
-      ],
-      Policies: [],
-      PolicyByIds: [
-        {
-          Global: {
-            Name: "",
-            MaxQuota: 0,
-            QuotaRate: 0,
-            Rate: 0,
-            Per: 0,
-            ThrottleInterval: 0,
-            ThrottleRetries: 0,
-          },
-          APIs: [],
-          policyName: "",
-          AuthType: "",
-        },
-      ],
-    })
-  );
+  const result = await store.dispatch(createKey(createKeys));
   expect(result.type).toBe("key/create/rejected");
   expect(result.payload.message).toBe(_error);
 });
