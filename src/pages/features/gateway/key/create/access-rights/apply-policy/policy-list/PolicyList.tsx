@@ -17,10 +17,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../../../../../store/hooks";
-import {
-  gridReadyEffect,
-  setDeletedRowEffect,
-} from "../../../../../common-settings/api-access-List/ApiAccessList";
+
 interface PolicyObject {
   name: string[];
   policyId: string;
@@ -411,18 +408,26 @@ export default function PolicyList() {
   ]);
   // This will set Grid data after delete action
   useEffect(() => {
-    setDeletedRowEffect(_deletedRow, _pluginState, setdeletedRow);
+    if (_deletedRow !== undefined && _deletedRow.length > 0) {
+      _pluginState.handle("UNCHECK", {
+        ROW_ID: _deletedRow,
+      });
+      setdeletedRow([]);
+      reloadGrid();
+    }
   }, [_deletedRow]);
   // initial Grid render
   useEffect(() => {
-    gridReadyEffect(gridReady, mygrid);
+    if (gridReady) {
+      mygrid.render(document.querySelector("#gridRender") as Element);
+    }
   }, [gridReady]);
   //  Grid render on invoke of reloadGrid()
   useEffect(() => {
     if (gridReload) {
-      const gridRenderHtml = document.querySelector("#gridRender");
-      (gridRenderHtml as Element).innerHTML = "";
-      mygrid.render(gridRenderHtml as Element);
+      const gridRenderHtmll = document.querySelector("#gridRender");
+      (gridRenderHtmll as Element).innerHTML = "";
+      mygrid.render(gridRenderHtmll as Element);
       const render_Grid = mygrid.updateConfig({
         data: () => bindPolicyList(),
       });
