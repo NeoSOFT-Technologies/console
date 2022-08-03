@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Collapse } from "react-bootstrap";
 import { Link, useNavigate, useLocation, Navigate } from "react-router-dom";
 import withRouter from "../../WithRouter";
-import adminGatewayRoutes from "../../routes/gateway/admin";
+import adminGatewayRoutes from "../../routes/gateway/admin-gateway-routes";
 import saasRoutes from "../../routes/saas/saas-routes";
 import adminRoutes from "../../routes/tenants/admin";
 import tenantRoutes from "../../routes/tenants/tenants";
