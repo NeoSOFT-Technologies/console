@@ -17,6 +17,7 @@ import { setForms } from "../../../../../store/features/gateway/key/create/slice
 import { IPolicyCreateState } from "../../../../../store/features/gateway/policy/create";
 import { setForm } from "../../../../../store/features/gateway/policy/create/slice";
 import { useAppSelector, useAppDispatch } from "../../../../../store/hooks";
+import { gridOn } from "../../key/create/access-rights/apply-policy/policy-list/PolicyList";
 interface IProps {
   state?: IKeyCreateState | IPolicyCreateState;
   stateForm?: any; // any[]
@@ -24,6 +25,24 @@ interface IProps {
 }
 export let reloadGrid: () => void;
 export let refreshGrid: (ApiId: string) => void;
+export function setDeletedRowEffect(
+  _deletedRow: any,
+  _pluginState: any,
+  setdeletedRow: any
+) {
+  if (_deletedRow !== undefined && _deletedRow.length > 0) {
+    _pluginState.handle("UNCHECK", {
+      ROW_ID: _deletedRow,
+    });
+    setdeletedRow([]);
+    reloadGrid();
+  }
+}
+export function gridReadyEffect(gridReady: any, mygrid: any) {
+  if (gridReady) {
+    mygrid.render(document.querySelector("#gridRender") as Element);
+  }
+}
 export default function ApiAccessList(props: IProps) {
   const { handleAddClick } = props;
   const { id } = useParams();
@@ -190,25 +209,17 @@ export default function ApiAccessList(props: IProps) {
   });
   // This will used to create instance of Grid
   const mygrid = grid.getInstance();
-  mygrid.on("ready", () => {
-    // find the plugin with the give plugin ID
-    checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
-    prp = checkboxPlugin?.props;
-    setpluginState(prp.store);
-    if (id !== undefined) {
-      for (const iterator of selectedRows.state) {
-        prp.store.handle("CHECK", {
-          ROW_ID: iterator,
-        });
-      }
-    }
 
-    prp.store.on("updated", (state1: any, prevState1: any) => {
-      if (gridReload === false) {
-        setselectedRows({ state: state1.rowIds, prevState: prevState1.rowIds });
-      }
-    });
-  });
+  gridOn(
+    mygrid,
+    checkboxPlugin,
+    prp,
+    selectedRows,
+    gridReload,
+    setpluginState,
+    setselectedRows,
+    id
+  );
 
   const removeAccess = (Id: string) => {
     if (props.stateForm) {
@@ -282,20 +293,12 @@ export default function ApiAccessList(props: IProps) {
   ]);
   // This will set Grid data after delete action
   useEffect(() => {
-    if (_deletedRow !== undefined && _deletedRow.length > 0) {
-      _pluginState.handle("UNCHECK", {
-        ROW_ID: _deletedRow,
-      });
-      setdeletedRow([]);
-      reloadGrid();
-    }
+    setDeletedRowEffect(_deletedRow, _pluginState, setdeletedRow);
   }, [_deletedRow]);
 
   // initial Grid render
   useEffect(() => {
-    if (gridReady) {
-      mygrid.render(document.querySelector("#gridRender") as Element);
-    }
+    gridReadyEffect(gridReady, mygrid);
   }, [gridReady]);
 
   //  Grid render on invoke of reloadGrid()
