@@ -1,66 +1,67 @@
 import mockApi from "../../../../../resources/tenant/testconfig";
 import store from "../../../../index";
 import { createPolicy, getPolicybyId, updatePolicy } from "./slice";
+import { IGetPolicyByIdData } from ".";
 const policyid = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
 const ApIid = "7fa85f64-5717-4532-b3fc-2c963f66asa6";
 const conUrl = "https://httpbin.orgs";
 const onGet = "/Policy/3fa85f64-5717-4562-b3fc-2c963f66afa6";
-const response = {
-  data: {
-    Data: {
-      PolicyId: policyid,
-      Name: "poliy1",
-      Active: true,
-      KeysInactive: true,
-      Quota: 0,
-      QuotaRenewalRate: 0,
-      Rate: 0,
-      Per: 0,
-      ThrottleInterval: 0,
-      ThrottleRetries: 0,
-      State: "true",
-      KeyExpiresIn: 0,
-      Tags: [""],
-      APIs: [
+const responseData: IGetPolicyByIdData = {
+  PolicyId: policyid,
+  Name: "poliy1",
+  Active: true,
+  KeysInactive: true,
+  Quota: 0,
+  QuotaRenewalRate: 0,
+  Rate: 0,
+  Per: 0,
+  ThrottleInterval: 0,
+  ThrottleRetries: 0,
+  State: "true",
+  KeyExpiresIn: 0,
+  Tags: [""],
+  APIs: [
+    {
+      ApiId: ApIid,
+      ApiName: "api1",
+      Versions: [""],
+      MasterVersions: [""],
+      AuthType: "standard",
+      isRateLimitDisabled: false,
+      isQuotaDisbaled: false,
+      AllowedUrls: [
         {
-          ApiId: ApIid,
-          ApiName: "api1",
-          Versions: [""],
-          MasterVersions: [""],
-          AuthType: "standard",
-          isRateLimitDisabled: false,
-          isQuotaDisbaled: false,
-          AllowedUrls: [
-            {
-              Url: conUrl,
-              Methods: [""],
-            },
-          ],
-          Limit: {
-            Rate: 0,
-            Per: 0,
-            Throttle_interval: 0,
-            Throttle_retry_limit: 0,
-            Max_query_depth: 0,
-            Quota_max: 0,
-            Quota_renews: 0,
-            Quota_remaining: 0,
-            Quota_renewal_rate: 0,
-            Set_by_policy: 0,
-          },
+          Url: conUrl,
+          Methods: [""],
         },
       ],
-      Partitions: {
-        quota: 0,
-        rate_limit: 0,
-        complexity: 0,
-        acl: 0,
-        per_api: 0,
+      Limit: {
+        Rate: 0,
+        Per: 0,
+        Throttle_interval: 0,
+        Throttle_retry_limit: 0,
+        Max_query_depth: 0,
+        Quota_max: 0,
+        Quota_renews: 0,
+        Quota_remaining: 0,
+        Quota_renewal_rate: 0,
+        Set_by_policy: true,
       },
     },
+  ],
+  Partitions: {
+    quota: true,
+    rate_limit: true,
+    complexity: false,
+    acl: false,
+    per_api: false,
   },
 };
-
+const response = {
+  data: {
+    Data: responseData,
+  },
+};
 test("calling the state of create policy", async () => {
   mockApi.onPost("/Policy").reply(200, {});
 
@@ -163,177 +164,19 @@ test("calling the state of getById policy rejected", async () => {
 
 test("calling the state of update policy", async () => {
   mockApi.onPut("Policy").reply(200, {});
-  const result = await store.dispatch(
-    updatePolicy({
-      PolicyId: policyid,
-      Name: "poliy1",
-      Active: true,
-      KeysInactive: true,
-      Quota: 0,
-      QuotaRenewalRate: 0,
-      Rate: 0,
-      Per: 0,
-      ThrottleInterval: 0,
-      ThrottleRetries: 0,
-      State: "true",
-      KeyExpiresIn: 0,
-      Tags: [""],
-      APIs: [
-        {
-          Id: ApIid,
-          Name: "api1",
-          ApiId: ApIid,
-          ApiName: "api1",
-          Versions: [""],
-          MasterVersions: [""],
-          AuthType: "standard",
-          isRateLimitDisabled: false,
-          isQuotaDisbaled: false,
-          AllowedUrls: [
-            {
-              Url: conUrl,
-              Methods: [""],
-            },
-          ],
-          Limit: {
-            Rate: 0,
-            Per: 0,
-            Throttle_interval: 0,
-            Throttle_retry_limit: 0,
-            Max_query_depth: 0,
-            Quota_max: 0,
-            Quota_renews: 0,
-            Quota_remaining: 0,
-            Quota_renewal_rate: 0,
-            Set_by_policy: false,
-          },
-        },
-      ],
-      Partitions: {
-        quota: false,
-        rate_limit: false,
-        complexity: false,
-        acl: false,
-        per_api: false,
-      },
-    })
-  );
+  const result = await store.dispatch(updatePolicy(response.data.Data));
   expect(result.type).toBe("Policy/Update/fulfilled");
 });
 
 test("calling the state of update policy  rejected", async () => {
   mockApi.onPut("Policy").reply(404, {});
-  const result = await store.dispatch(
-    updatePolicy({
-      PolicyId: policyid,
-      Name: "poliy1",
-      Active: true,
-      KeysInactive: true,
-      Quota: 0,
-      QuotaRenewalRate: 0,
-      Rate: 0,
-      Per: 0,
-      ThrottleInterval: 0,
-      ThrottleRetries: 0,
-      State: "true",
-      KeyExpiresIn: 0,
-      Tags: [""],
-      APIs: [
-        {
-          ApiId: ApIid,
-          ApiName: "api1",
-          Versions: [""],
-          MasterVersions: [""],
-          AuthType: "standard",
-          isRateLimitDisabled: false,
-          isQuotaDisbaled: false,
-          AllowedUrls: [
-            {
-              Url: conUrl,
-              Methods: [""],
-            },
-          ],
-          Limit: {
-            Rate: 0,
-            Per: 0,
-            Throttle_interval: 0,
-            Throttle_retry_limit: 0,
-            Max_query_depth: 0,
-            Quota_max: 0,
-            Quota_renews: 0,
-            Quota_remaining: 0,
-            Quota_renewal_rate: 0,
-            Set_by_policy: false,
-          },
-        },
-      ],
-      Partitions: {
-        quota: false,
-        rate_limit: false,
-        complexity: false,
-        acl: false,
-        per_api: false,
-      },
-    })
-  );
+  const result = await store.dispatch(updatePolicy(response.data.Data));
   expect(result.type).toBe("Policy/Update/rejected");
 });
 
 test("calling the state of update policy network Error", async () => {
   mockApi.onPut("Policy").networkError();
-  const result = await store.dispatch(
-    updatePolicy({
-      PolicyId: policyid,
-      Name: "poliy1",
-      Active: true,
-      KeysInactive: true,
-      Quota: 0,
-      QuotaRenewalRate: 0,
-      Rate: 0,
-      Per: 0,
-      ThrottleInterval: 0,
-      ThrottleRetries: 0,
-      State: "true",
-      KeyExpiresIn: 0,
-      Tags: [""],
-      APIs: [
-        {
-          ApiId: ApIid,
-          ApiName: "api1",
-          Versions: [""],
-          MasterVersions: [""],
-          AuthType: "standard",
-          isRateLimitDisabled: false,
-          isQuotaDisbaled: false,
-          AllowedUrls: [
-            {
-              Url: conUrl,
-              Methods: [""],
-            },
-          ],
-          Limit: {
-            Rate: 0,
-            Per: 0,
-            Throttle_interval: 0,
-            Throttle_retry_limit: 0,
-            Max_query_depth: 0,
-            Quota_max: 0,
-            Quota_renews: 0,
-            Quota_remaining: 0,
-            Quota_renewal_rate: 0,
-            Set_by_policy: false,
-          },
-        },
-      ],
-      Partitions: {
-        quota: false,
-        rate_limit: false,
-        complexity: false,
-        acl: false,
-        per_api: false,
-      },
-    })
-  );
+  const result = await store.dispatch(updatePolicy(response.data.Data));
   expect(result.type).toBe("Policy/Update/rejected");
 });
 

@@ -1,11 +1,9 @@
-import { h } from "gridjs";
 import { Grid } from "gridjs-react";
 import { RowSelection } from "gridjs-selection";
 import React, { useEffect, useState } from "react";
 import { Accordion } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Spinner from "../../../../../../../../components/loader/Loader";
-import { scrollToSection } from "../../../../../../../../components/scroll-to/ScrollTo";
 import { ToastAlert } from "../../../../../../../../components/toast-alert/toast-alert";
 import { setForms } from "../../../../../../../../store/features/gateway/key/create/slice";
 import {
@@ -17,6 +15,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../../../../../store/hooks";
+import { getformatter } from "../../../../../common-settings/api-access-List/ApiAccessList";
 
 interface PolicyObject {
   name: string[];
@@ -180,23 +179,7 @@ export default function PolicyList() {
         name: "Name",
         width: "20%",
         formatter: (cell: string, row: any) => {
-          const Id = row.cells[1].data;
-          const Name = row.cells[2].data;
-          let data = false;
-
-          if (selectedRows.state) {
-            data = selectedRows.state.some((x: any) => x?.split(",")[0] === Id);
-          }
-          return h(
-            "text",
-            data
-              ? {
-                  onClick: () => scrollToSection(Name),
-                  style: { cursor: "pointer", color: "blue" },
-                }
-              : {},
-            cell
-          );
+          getformatter(row, selectedRows, cell);
         },
       },
       { name: "Status", width: "20%", sort: false },
