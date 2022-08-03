@@ -29,8 +29,6 @@ export let reloadGrid: () => void;
 export let refreshGrid: (PolicyId: string, Id: string) => void;
 export function gridOn(
   mygrid: any,
-  checkboxPlugin: any,
-  prp: any,
   selectedRows: any,
   gridReload: any,
   setpluginState: any,
@@ -39,8 +37,8 @@ export function gridOn(
 ) {
   mygrid.on("ready", () => {
     // find the plugin with the give plugin ID
-    checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
-    prp = checkboxPlugin?.props;
+    const checkboxPlugin = mygrid.config.plugin.get("myCheckbox");
+    const prp = checkboxPlugin?.props;
     setpluginState(prp.store);
 
     if (id !== undefined) {
@@ -77,7 +75,7 @@ export default function PolicyList() {
     state: [],
     prevState: [],
   });
-  let checkboxPlugin: any;
+  let checkboxPlugin: any = "";
   let prp: any;
   const { id } = useParams();
 
@@ -222,16 +220,7 @@ export default function PolicyList() {
   });
   const mygrid = gridTable.getInstance();
 
-  gridOn(
-    mygrid,
-    checkboxPlugin,
-    prp,
-    selectedRows,
-    gridReload,
-    setpluginState,
-    setselectedRows,
-    id
-  );
+  gridOn(mygrid, selectedRows, gridReload, setpluginState, setselectedRows, id);
 
   // This will set Grid data for update page
   const getDataOnUpdates = () => {
