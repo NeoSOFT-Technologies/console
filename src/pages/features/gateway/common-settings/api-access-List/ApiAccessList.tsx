@@ -43,6 +43,25 @@ export function gridReadyEffect(gridReady: any, mygrid: any) {
     mygrid.render(document.querySelector("#gridRender") as Element);
   }
 }
+export function getformatter(row: any, selectedRows: any, cell: any) {
+  const Id = row.cells[1].data;
+  const Name = row.cells[2].data;
+  let data = false;
+
+  if (selectedRows.state) {
+    data = selectedRows.state.some((x: any) => x?.split(",")[0] === Id);
+  }
+  return h(
+    "text",
+    data
+      ? {
+          onClick: () => scrollToSection(Name),
+          style: { cursor: "pointer", color: "blue" },
+        }
+      : {},
+    cell
+  );
+}
 export default function ApiAccessList(props: IProps) {
   const { handleAddClick } = props;
   const { id } = useParams();
@@ -171,23 +190,7 @@ export default function ApiAccessList(props: IProps) {
         name: "Name",
         width: "20%",
         formatter: (cell: string, row: any) => {
-          const Id = row.cells[1].data;
-          const Name = row.cells[2].data;
-          let data = false;
-
-          if (selectedRows.state) {
-            data = selectedRows.state.some((x: any) => x?.split(",")[0] === Id);
-          }
-          return h(
-            "text",
-            data
-              ? {
-                  onClick: () => scrollToSection(Name),
-                  style: { cursor: "pointer", color: "blue" },
-                }
-              : {},
-            cell
-          );
+          getformatter(row, selectedRows, cell);
         },
       },
       { name: "Status", sort: false, width: "20%" },
