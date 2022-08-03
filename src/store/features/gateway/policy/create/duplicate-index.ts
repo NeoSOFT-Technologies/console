@@ -36,7 +36,7 @@ export interface IDGetPolicyByIdData {
                 url: string;
                 methods: string[];
               }[];
-          Limit?:
+          Limit:
             | {
                 Rate?: number;
                 Per: number;
