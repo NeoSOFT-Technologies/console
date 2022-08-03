@@ -210,16 +210,7 @@ export default function ApiAccessList(props: IProps) {
   // This will used to create instance of Grid
   const mygrid = grid.getInstance();
 
-  gridOn(
-    mygrid,
-    checkboxPlugin,
-    prp,
-    selectedRows,
-    gridReload,
-    setpluginState,
-    setselectedRows,
-    id
-  );
+  gridOn(mygrid, selectedRows, gridReload, setpluginState, setselectedRows, id);
 
   const removeAccess = (Id: string) => {
     if (props.stateForm) {
