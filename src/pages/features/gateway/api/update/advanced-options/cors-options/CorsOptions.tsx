@@ -74,13 +74,18 @@ export default function CorsOptions() {
     setAllowedOrigins(allowedOrigins);
   }
 
-  function corObj(allowedOrigins: any) {
+  function corObj(
+    allowedOrigins: any,
+    allowedMethods: any,
+    allowedHeaders: any,
+    exposedHeaders: any
+  ) {
     return {
       IsEnabled: state.data.form.CORS.IsEnabled,
       AllowedOrigins: allowedOrigins,
-      AllowedMethods: state.data.form.CORS.AllowedMethods,
-      AllowedHeaders: state.data.form.CORS.AllowedHeaders,
-      ExposedHeaders: state.data.form.CORS.ExposedHeaders,
+      AllowedMethods: allowedMethods,
+      AllowedHeaders: allowedHeaders,
+      ExposedHeaders: exposedHeaders,
       AllowCredentials: state.data.form.CORS.AllowCredentials,
       MaxAge: state.data.form.CORS.MaxAge,
       OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
@@ -100,7 +105,12 @@ export default function CorsOptions() {
           addAllowedOrigins.AllowedOrigins,
         ];
 
-        const corsObj = corObj(allowedOrigins);
+        const corsObj = corObj(
+          allowedOrigins,
+          state.data.form.CORS.AllowedMethods,
+          state.data.form.CORS.AllowedHeaders,
+          state.data.form.CORS.ExposedHeaders
+        );
 
         dispatch(setForm({ ...state.data.form, CORS: corsObj }));
         setAllowedOrigins({ ...addAllowedOrigins, AllowedOrigins: "" });
@@ -111,7 +121,12 @@ export default function CorsOptions() {
         addAllowedOrigins.AllowedOrigins,
       ];
 
-      const corsObj = corObj(allowedOrigins);
+      const corsObj = corObj(
+        allowedOrigins,
+        state.data.form.CORS.AllowedMethods,
+        state.data.form.CORS.AllowedHeaders,
+        state.data.form.CORS.ExposedHeaders
+      );
       dispatch(setForm({ ...state.data.form, CORS: corsObj }));
       setAllowedOrigins({ ...addAllowedOrigins, AllowedOrigins: "" });
     }
@@ -124,17 +139,12 @@ export default function CorsOptions() {
     event.preventDefault();
     const list = [...state.data.form.CORS.AllowedOrigins];
     list.splice(index, 1);
-    const corsObj = {
-      IsEnabled: state.data.form.CORS.IsEnabled,
-      AllowedOrigins: list,
-      AllowedMethods: state.data.form.CORS.AllowedMethods,
-      AllowedHeaders: state.data.form.CORS.AllowedHeaders,
-      ExposedHeaders: state.data.form.CORS.ExposedHeaders,
-      AllowCredentials: state.data.form.CORS.AllowCredentials,
-      MaxAge: state.data.form.CORS.MaxAge,
-      OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-      Debug: state.data.form.CORS.Debug,
-    };
+    const corsObj = corObj(
+      list,
+      state.data.form.CORS.AllowedMethods,
+      state.data.form.CORS.AllowedHeaders,
+      state.data.form.CORS.ExposedHeaders
+    );
 
     dispatch(setForm({ ...state.data.form, CORS: corsObj }));
   };
@@ -152,7 +162,7 @@ export default function CorsOptions() {
   const handleAllowedMethodsAddClick = () => {
     if (state.data.form.CORS.AllowedMethods.length > 0) {
       const filtered = state.data.form.CORS.AllowedMethods.filter(
-        (x) => x === addAllowedMethods.AllowedMethods
+        (x: any) => x === addAllowedMethods.AllowedMethods
       );
       if (filtered.length > 0) {
         ToastAlert("This method has been already added!", "error");
@@ -162,18 +172,12 @@ export default function CorsOptions() {
           addAllowedMethods.AllowedMethods,
         ];
 
-        const corsObj = {
-          IsEnabled: state.data.form.CORS.IsEnabled,
-          AllowedOrigins: state.data.form.CORS.AllowedOrigins,
-          AllowedMethods: allowedMethods,
-          AllowedHeaders: state.data.form.CORS.AllowedHeaders,
-          ExposedHeaders: state.data.form.CORS.ExposedHeaders,
-          AllowCredentials: state.data.form.CORS.AllowCredentials,
-          MaxAge: state.data.form.CORS.MaxAge,
-          OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-          Debug: state.data.form.CORS.Debug,
-        };
-
+        const corsObj = corObj(
+          state.data.form.CORS.AllowedOrigins,
+          allowedMethods,
+          state.data.form.CORS.AllowedHeaders,
+          state.data.form.CORS.ExposedHeaders
+        );
         dispatch(setForm({ ...state.data.form, CORS: corsObj }));
       }
     } else {
@@ -182,17 +186,12 @@ export default function CorsOptions() {
         addAllowedMethods.AllowedMethods,
       ];
 
-      const corsObj = {
-        IsEnabled: state.data.form.CORS.IsEnabled,
-        AllowedOrigins: state.data.form.CORS.AllowedOrigins,
-        AllowedMethods: allowedMethods,
-        AllowedHeaders: state.data.form.CORS.AllowedHeaders,
-        ExposedHeaders: state.data.form.CORS.ExposedHeaders,
-        AllowCredentials: state.data.form.CORS.AllowCredentials,
-        MaxAge: state.data.form.CORS.MaxAge,
-        OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-        Debug: state.data.form.CORS.Debug,
-      };
+      const corsObj = corObj(
+        state.data.form.CORS.AllowedOrigins,
+        allowedMethods,
+        state.data.form.CORS.AllowedHeaders,
+        state.data.form.CORS.ExposedHeaders
+      );
 
       dispatch(setForm({ ...state.data.form, CORS: corsObj }));
     }
@@ -205,18 +204,12 @@ export default function CorsOptions() {
     event.preventDefault();
     const list = [...state.data.form.CORS.AllowedMethods];
     list.splice(index, 1);
-    const corsObj = {
-      IsEnabled: state.data.form.CORS.IsEnabled,
-      AllowedOrigins: state.data.form.CORS.AllowedOrigins,
-      AllowedMethods: list,
-      AllowedHeaders: state.data.form.CORS.AllowedHeaders,
-      ExposedHeaders: state.data.form.CORS.ExposedHeaders,
-      AllowCredentials: state.data.form.CORS.AllowCredentials,
-      MaxAge: state.data.form.CORS.MaxAge,
-      OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-      Debug: state.data.form.CORS.Debug,
-    };
-
+    const corsObj = corObj(
+      state.data.form.CORS.AllowedOrigins,
+      list,
+      state.data.form.CORS.AllowedHeaders,
+      state.data.form.CORS.ExposedHeaders
+    );
     dispatch(setForm({ ...state.data.form, CORS: corsObj }));
   };
 
@@ -242,17 +235,12 @@ export default function CorsOptions() {
           addAllowedHeaders.AllowedHeaders,
         ];
 
-        const corsObj = {
-          IsEnabled: state.data.form.CORS.IsEnabled,
-          AllowedOrigins: state.data.form.CORS.AllowedOrigins,
-          AllowedMethods: state.data.form.CORS.AllowedMethods,
-          AllowedHeaders: allowedHeaders,
-          ExposedHeaders: state.data.form.CORS.ExposedHeaders,
-          AllowCredentials: state.data.form.CORS.AllowCredentials,
-          MaxAge: state.data.form.CORS.MaxAge,
-          OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-          Debug: state.data.form.CORS.Debug,
-        };
+        const corsObj = corObj(
+          state.data.form.CORS.AllowedOrigins,
+          state.data.form.CORS.AllowedMethods,
+          allowedHeaders,
+          state.data.form.CORS.ExposedHeaders
+        );
 
         dispatch(setForm({ ...state.data.form, CORS: corsObj }));
         setAllowedHeaders({ ...addAllowedHeaders, AllowedHeaders: "" });
@@ -263,17 +251,12 @@ export default function CorsOptions() {
         addAllowedHeaders.AllowedHeaders,
       ];
 
-      const corsObj = {
-        IsEnabled: state.data.form.CORS.IsEnabled,
-        AllowedOrigins: state.data.form.CORS.AllowedOrigins,
-        AllowedMethods: state.data.form.CORS.AllowedMethods,
-        AllowedHeaders: allowedHeaders,
-        ExposedHeaders: state.data.form.CORS.ExposedHeaders,
-        AllowCredentials: state.data.form.CORS.AllowCredentials,
-        MaxAge: state.data.form.CORS.MaxAge,
-        OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-        Debug: state.data.form.CORS.Debug,
-      };
+      const corsObj = corObj(
+        state.data.form.CORS.AllowedOrigins,
+        state.data.form.CORS.AllowedMethods,
+        allowedHeaders,
+        state.data.form.CORS.ExposedHeaders
+      );
 
       dispatch(setForm({ ...state.data.form, CORS: corsObj }));
       setAllowedHeaders({ ...addAllowedHeaders, AllowedHeaders: "" });
@@ -287,17 +270,12 @@ export default function CorsOptions() {
     event.preventDefault();
     const list = [...state.data.form.CORS.AllowedHeaders];
     list.splice(index, 1);
-    const corsObj = {
-      IsEnabled: state.data.form.CORS.IsEnabled,
-      AllowedOrigins: state.data.form.CORS.AllowedOrigins,
-      AllowedMethods: state.data.form.CORS.AllowedMethods,
-      AllowedHeaders: list,
-      ExposedHeaders: state.data.form.CORS.ExposedHeaders,
-      AllowCredentials: state.data.form.CORS.AllowCredentials,
-      MaxAge: state.data.form.CORS.MaxAge,
-      OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-      Debug: state.data.form.CORS.Debug,
-    };
+    const corsObj = corObj(
+      state.data.form.CORS.AllowedOrigins,
+      state.data.form.CORS.AllowedMethods,
+      list,
+      state.data.form.CORS.ExposedHeaders
+    );
 
     dispatch(setForm({ ...state.data.form, CORS: corsObj }));
   };
@@ -324,17 +302,12 @@ export default function CorsOptions() {
           addExposedHeaders.ExposedHeaders,
         ];
 
-        const corsObj = {
-          IsEnabled: state.data.form.CORS.IsEnabled,
-          AllowedOrigins: state.data.form.CORS.AllowedOrigins,
-          AllowedMethods: state.data.form.CORS.AllowedMethods,
-          AllowedHeaders: state.data.form.CORS.AllowedHeaders,
-          ExposedHeaders: exposedHeaders,
-          AllowCredentials: state.data.form.CORS.AllowCredentials,
-          MaxAge: state.data.form.CORS.MaxAge,
-          OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-          Debug: state.data.form.CORS.Debug,
-        };
+        const corsObj = corObj(
+          state.data.form.CORS.AllowedOrigins,
+          state.data.form.CORS.AllowedMethods,
+          state.data.form.CORS.AllowedHeaders,
+          exposedHeaders
+        );
 
         dispatch(setForm({ ...state.data.form, CORS: corsObj }));
         setExposedHeaders({ ...addExposedHeaders, ExposedHeaders: "" });
@@ -345,17 +318,12 @@ export default function CorsOptions() {
         addExposedHeaders.ExposedHeaders,
       ];
 
-      const corsObj = {
-        IsEnabled: state.data.form.CORS.IsEnabled,
-        AllowedOrigins: state.data.form.CORS.AllowedOrigins,
-        AllowedMethods: state.data.form.CORS.AllowedMethods,
-        AllowedHeaders: state.data.form.CORS.AllowedHeaders,
-        ExposedHeaders: exposedHeaders,
-        AllowCredentials: state.data.form.CORS.AllowCredentials,
-        MaxAge: state.data.form.CORS.MaxAge,
-        OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-        Debug: state.data.form.CORS.Debug,
-      };
+      const corsObj = corObj(
+        state.data.form.CORS.AllowedOrigins,
+        state.data.form.CORS.AllowedMethods,
+        state.data.form.CORS.AllowedHeaders,
+        exposedHeaders
+      );
 
       dispatch(setForm({ ...state.data.form, CORS: corsObj }));
       setExposedHeaders({ ...addExposedHeaders, ExposedHeaders: "" });
@@ -369,17 +337,12 @@ export default function CorsOptions() {
     event.preventDefault();
     const list = [...state.data.form.CORS.ExposedHeaders];
     list.splice(index, 1);
-    const corsObj = {
-      IsEnabled: state.data.form.CORS.IsEnabled,
-      AllowedOrigins: state.data.form.CORS.AllowedOrigins,
-      AllowedMethods: state.data.form.CORS.AllowedMethods,
-      AllowedHeaders: state.data.form.CORS.AllowedHeaders,
-      ExposedHeaders: list,
-      AllowCredentials: state.data.form.CORS.AllowCredentials,
-      MaxAge: state.data.form.CORS.MaxAge,
-      OptionsPassthrough: state.data.form.CORS.OptionsPassthrough,
-      Debug: state.data.form.CORS.Debug,
-    };
+    const corsObj = corObj(
+      state.data.form.CORS.AllowedOrigins,
+      state.data.form.CORS.AllowedMethods,
+      state.data.form.CORS.AllowedHeaders,
+      list
+    );
 
     dispatch(setForm({ ...state.data.form, CORS: corsObj }));
   };
