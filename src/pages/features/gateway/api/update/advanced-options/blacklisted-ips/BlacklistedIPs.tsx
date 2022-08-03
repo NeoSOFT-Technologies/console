@@ -70,7 +70,7 @@ export default function BlacklistedIPs() {
     }
   };
 
-  const deleteTableRows = (
+  const deleteTableRow = (
     index: number,
     event: React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
@@ -198,7 +198,7 @@ export default function BlacklistedIPs() {
                                               className="btn btn-sm bi bi-trash-fill"
                                               data-testid="delete-row"
                                               onClick={(event) =>
-                                                deleteTableRows(index, event)
+                                                deleteTableRow(index, event)
                                               }
                                             ></i>
                                           </td>
