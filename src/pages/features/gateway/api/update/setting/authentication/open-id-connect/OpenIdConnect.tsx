@@ -81,7 +81,26 @@ export default function OpenIdConnect() {
     newFormData[index] = { ...newFormData[index], [name]: value };
     setClientAddFormData(newFormData);
   };
+  function addData() {
+    const clientObj: any = {
+      clientId: "",
+      policy: "",
+    };
+    setClientAddFormData([...addClientFormData, clientObj]);
 
+    const providerList = [...state.data.form.OpenidOptions.Providers];
+    const list = {
+      Issuer: addFormData.issuer,
+      Client_ids: [],
+    };
+    providerList.push(list);
+
+    const OpenidOptionsData = {
+      Providers: providerList,
+    };
+    dispatch(setForm({ ...state.data.form, OpenidOptions: OpenidOptionsData }));
+    setAddFormData({ issuer: "", client_ids: [] });
+  }
   const handleIssuerAddClick = () => {
     if (state.data.form.OpenidOptions.Providers.length > 0) {
       const filtered = state.data.form.OpenidOptions.Providers.filter(
@@ -90,48 +109,10 @@ export default function OpenIdConnect() {
       if (filtered.length > 0) {
         ToastAlert("This issuer has been already added!", "error");
       } else {
-        const clientObj: any = {
-          clientId: "",
-          policy: "",
-        };
-        setClientAddFormData([...addClientFormData, clientObj]);
-
-        const providerList = [...state.data.form.OpenidOptions.Providers];
-        const list = {
-          Issuer: addFormData.issuer,
-          Client_ids: [],
-        };
-        providerList.push(list);
-
-        const OpenidOptionsData = {
-          Providers: providerList,
-        };
-        dispatch(
-          setForm({ ...state.data.form, OpenidOptions: OpenidOptionsData })
-        );
-        setAddFormData({ issuer: "", client_ids: [] });
+        addData();
       }
     } else {
-      const clientObj: any = {
-        clientId: "",
-        policy: "",
-      };
-      setClientAddFormData([...addClientFormData, clientObj]);
-
-      const providerList = [...state.data.form.OpenidOptions.Providers];
-      const list = {
-        Issuer: addFormData.issuer,
-        Client_ids: [],
-      };
-      providerList.push(list);
-
-      const OpenidOptionsData = {
-        Providers: providerList,
-      };
-      dispatch(
-        setForm({ ...state.data.form, OpenidOptions: OpenidOptionsData })
-      );
-      setAddFormData({ issuer: "", client_ids: [] });
+      addData();
     }
   };
 
@@ -303,6 +284,31 @@ export default function OpenIdConnect() {
   function inputChange(event: any, index: number) {
     handleClientInputChange(event, index);
   }
+
+  function policySelect(index: any) {
+    return (
+      <>
+        <select
+          className="p-2 rounded mb-0"
+          data-testid="selected-policy"
+          name="policy"
+          id="policy"
+          placeholder="select policy"
+          value={addClientFormData.policy}
+          onChange={(evnt) => inputChange(evnt, index)}
+        >
+          <option></option>
+          {selectedPolicy?.map((item: any) => {
+            return (
+              <option key={item.Id} value={item.Id} id={item.Name}>
+                {item.Name}
+              </option>
+            );
+          })}
+        </select>
+      </>
+    );
+  }
   function issuerEntry(clientIndex: any, index: any, Issuer: any) {
     return (
       <>
@@ -334,28 +340,7 @@ export default function OpenIdConnect() {
                 <td>
                   {(() => {
                     return (selectedPolicy?.length as number) > 0 ? (
-                      <select
-                        className="p-2 rounded mb-0"
-                        data-testid="selected-policy"
-                        name="policy"
-                        id="policy"
-                        placeholder="select policy"
-                        value={addClientFormData.policy}
-                        onChange={(evnt) => inputChange(evnt, index)}
-                      >
-                        <option></option>
-                        {selectedPolicy?.map((item: any) => {
-                          return (
-                            <option
-                              key={item.Id}
-                              value={item.Id}
-                              id={item.Name}
-                            >
-                              {item.Name}
-                            </option>
-                          );
-                        })}
-                      </select>
+                      policySelect(index)
                     ) : (
                       <>
                         <p>No policy available</p>
@@ -500,28 +485,7 @@ export default function OpenIdConnect() {
                       <td>
                         {(() => {
                           return (selectedPolicy?.length as number) > 0 ? (
-                            <select
-                              className="p-2 rounded mb-0"
-                              data-testid="selectedPolicy"
-                              name="policy"
-                              id="policy"
-                              placeholder="select policy"
-                              value={addClientFormData.policy}
-                              onChange={(evnt) => inputChange(evnt, index)}
-                            >
-                              <option></option>
-                              {selectedPolicy?.map((item: any) => {
-                                return (
-                                  <option
-                                    key={item.Id}
-                                    value={item.Id}
-                                    id={item.Name}
-                                  >
-                                    {item.Name}
-                                  </option>
-                                );
-                              })}
-                            </select>
+                            policySelect(index)
                           ) : (
                             <>
                               <p>No policy available</p>

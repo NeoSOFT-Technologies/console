@@ -145,10 +145,6 @@ it("test buttons and inputs2", () => {
   fireEvent.change(clientID, { target: { value: "newId" } });
   expect(clientID).toHaveValue("newId");
 
-  const selectedPolicy = screen.getByTestId("selectedPolicy");
-  expect(selectedPolicy).toBeInTheDocument();
-  fireEvent.change(selectedPolicy, { target: { value: "policy1" } });
-
   // notcovered
   const addClient = screen.getByTestId("addClient");
   expect(addClient).toBeInTheDocument();
