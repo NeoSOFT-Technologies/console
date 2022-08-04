@@ -3,16 +3,7 @@ import { Breadcrumb } from "react-bootstrap";
 import "./ScrollTo.css";
 export const ScrollToTop = () => {
   const [showTopBtn, setShowTopBtn] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
 
-  const handleMouseOver = () => {
-    setIsHovering(true);
-    console.log(isHovering);
-  };
-
-  const handleMouseOut = () => {
-    setIsHovering(false);
-  };
   useEffect(() => {
     window.addEventListener("scroll", () => {
       if (window.scrollY > 400) {
@@ -37,15 +28,10 @@ export const ScrollToTop = () => {
         <>
           <button
             className="btn btn-md float-end btn-info icon-position"
-            onMouseOver={handleMouseOver}
-            onMouseOut={handleMouseOut}
             onClick={(e) => goToTop(e)}
           >
             <i className="bi bi-chevron-up"></i>
           </button>
-          {/* <div className="float-end mr-1">
-            {isHovering && <span>Go to Top</span>}
-          </div> */}
         </>
       ) : (
         <></>
@@ -58,7 +44,9 @@ export const scrollToSection = (elementName: any) => {
   const yOffset = -70;
   const el = document.querySelector(`#${elementName}`);
   const y =
-    (el as Element).getBoundingClientRect().top + window.pageYOffset + yOffset;
+    (el as Element).getBoundingClientRect().top +
+    document.documentElement.scrollTop +
+    yOffset;
   window.scrollTo({
     top: y,
     behavior: "smooth",
