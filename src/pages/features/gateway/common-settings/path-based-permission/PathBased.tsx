@@ -240,9 +240,9 @@ export default function PathBased(props: IProps) {
       (props.requiredInterface.formProp || []).length > 0
     ) {
       const removeApi = [...(props.requiredInterface.formProp || [])];
-      const rowId = `${props.requiredInterface.formProp[index]?.Id},${props.requiredInterface.formProp[index]?.Name},${props.requiredInterface.formProp[index]?.AuthType}`;
+      const rowId = `${props.requiredInterface.formProp[index]?.ApiId},${props.requiredInterface.formProp[index]?.ApiName},${props.requiredInterface.formProp[index]?.AuthType}`;
       refreshGrid(rowId);
-      const ApiName = props.requiredInterface.formProp[index]?.Name;
+      const ApiName = props.requiredInterface.formProp[index]?.ApiName;
 
       removeApi.splice(index, 1);
       ToastAlert(`${ApiName} removed`, "warning");
@@ -311,7 +311,7 @@ export default function PathBased(props: IProps) {
             id={
               props.requiredInterface.formProp[
                 props.requiredInterface.index as number
-              ].Name
+              ].ApiName
             }
           >
             <Accordion.Item eventKey="0">

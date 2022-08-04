@@ -173,10 +173,13 @@ export default function GlobalLimit(props: IProps) {
       state.loading === false &&
       states.data.form !== undefined &&
       (states.data.form?.PolicyByIds || []).length > (props.index || 0) &&
-      (policyByIds[props.index || 0].APIs!.length > 0 ||
+      ((policyByIds[props.index || 0].APIs || []).length > 0 ||
         Object.keys(policyByIds[props.index || 0].Global || {}).length > 0) ? (
         <>
-          <Accordion defaultActiveKey="0">
+          <Accordion
+            defaultActiveKey="0"
+            id={policyByIds[props.index || 0].policyName}
+          >
             <Accordion.Item eventKey="0">
               <div style={{ display: "inline-flex", width: "100%" }}>
                 <AccordionButton>
