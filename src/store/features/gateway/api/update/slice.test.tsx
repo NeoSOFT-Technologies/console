@@ -1,5 +1,6 @@
 import mockApi from "../../../../../resources/tenant/testconfig";
 import store from "../../../../../store/index";
+import { initialState } from "./payload";
 import { getApiById, updateApi } from "./slice";
 import { IGetApiByIdData } from ".";
 const apiId = "b9eef321-8bb7-43d3-982a-59e8c9225ca5";
@@ -30,18 +31,7 @@ const responseData: IGetApiByIdData = {
   IsVersioningDisabled: false,
   DefaultVersion: "",
   Versions2: ["Default"],
-  Versions: [
-    {
-      Name: "v1",
-      OverrideTarget: "https://httpbin.orgs",
-      Expires: "",
-      GlobalRequestHeaders: {},
-      GlobalRequestHeadersRemove: [],
-      GlobalResponseHeaders: {},
-      GlobalResponseHeadersRemove: [],
-      ExtendedPaths: undefined,
-    },
-  ],
+  Versions: initialState.data.form.Versions,
   AuthType: "standard",
   EnableMTLS: false,
   CertIds: [],
