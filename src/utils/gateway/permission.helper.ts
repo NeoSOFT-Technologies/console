@@ -5,7 +5,7 @@ export interface IPermission {
   scopes: string[];
 }
 
-// TODO - This variable needs to be removed once token provides resource based permissions
+// This variable needs to be removed once token provides resource based permissions
 const resources: any = {
   Api: "api",
   Key: "key",
@@ -51,10 +51,10 @@ function permissionFunction(token: any) {
 // This will get current logged-in user's resource based permissions
 export default function getUserPermissions(resource: string) {
   const token = getDecodeToken();
-  // TODO - Uncomment below variable once Token provides resource based permissions
+  // Uncomment below variable once Token provides resource based permissions
   // const permissions: IPermission[] = token.permission;
 
-  // TODO - Token should provide resource based permission and then we will remove hard-code part
+  // Token should provide resource based permission and then we will remove hard-code part
   const permissions: IPermission[] = permissionFunction(token);
 
   let resourcePermission: IPermission = {
