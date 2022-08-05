@@ -140,10 +140,14 @@ it("test buttons and inputs2", () => {
   );
   expect(screen).toBeDefined();
 
-  const clientID = screen.getByTestId("client-id");
+  const clientID = screen.getByTestId("clientId");
   expect(clientID).toBeInTheDocument();
   fireEvent.change(clientID, { target: { value: "newId" } });
   expect(clientID).toHaveValue("newId");
+
+  const selectedPolicy = screen.getByTestId("selected-policy");
+  expect(selectedPolicy).toBeInTheDocument();
+  fireEvent.change(selectedPolicy, { target: { value: "policy1" } });
 
   // notcovered
   const addClient = screen.getByTestId("addClient");
