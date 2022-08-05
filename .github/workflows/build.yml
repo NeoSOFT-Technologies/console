@@ -22,9 +22,9 @@ jobs:
             -Dsonar.projectKey=NeoSOFT-Technologies_console
             -Dsonar.sources=src
             -Dsonar.tests=src
-            -Dsonar.test.inclusions=src/**/.tests./**
-            -Dsonar.exclusions=src/**/.tests./**
-            -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+            -Dsonar.test.inclusions=src/**/.test./**
+            -Dsonar.exclusions=src/**/.test./**
+            -Dsonar.javascript.lcov.reportPaths=**/lcov.info
             -Dsonar.coverage.exclusions=__mocks__/**,.storybook/**,src/stories/**,src/types/**
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
