@@ -16,7 +16,7 @@ it("render without crashing API list", () => {
       {
         Name: "Api1",
         CreatedDate: "2022-07-07T14:09:40.405677+00:00",
-        TargetUrl: "http://httpbin.org",
+        TargetUrl: "https://httpbin.org",
         IsActive: true,
         Id: "9dd100136a6a4e00af04bcece0eb1c8a",
         AuthType: "standard",
