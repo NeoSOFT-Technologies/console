@@ -62,10 +62,8 @@ const response = {
     Data: responseData,
   },
 };
-test("calling the state of create policy", async () => {
-  mockApi.onPost("/Policy").reply(200, {});
-
-  const result = await store.dispatch(
+async function storeDispatch() {
+  return store.dispatch(
     createPolicy({
       Name: "policy1",
       Active: true,
@@ -117,36 +115,18 @@ test("calling the state of create policy", async () => {
       },
     })
   );
+}
+test("calling the state of create policy", async () => {
+  mockApi.onPost("/Policy").reply(200, {});
+
+  const result = await storeDispatch();
   expect(result.type).toBe("policy/fulfilled");
 });
 
 test("calling the state of create policy rejected", async () => {
   mockApi.onPost("/Policy").reply(404);
 
-  const result = await store.dispatch(
-    createPolicy({
-      Name: "policy1",
-      Active: true,
-      KeysInactive: true,
-      Quota: -1,
-      QuotaRenewalRate: -1,
-      Rate: 0,
-      Per: 0,
-      ThrottleInterval: -1,
-      ThrottleRetries: -1,
-      State: "active",
-      KeyExpiresIn: 0,
-      Tags: [],
-      APIs: [],
-      Partitions: {
-        quota: false,
-        rate_limit: false,
-        complexity: false,
-        acl: false,
-        per_api: true,
-      },
-    })
-  );
+  const result = await storeDispatch();
   expect(result.type).toBe("policy/rejected");
 });
 
