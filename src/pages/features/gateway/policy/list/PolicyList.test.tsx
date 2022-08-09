@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import store from "../../../../../store/index";
 import PolicyList from "./PolicyList";
 
-it("check buttons and inputs", async () => {
+it("check buttons and inputs", () => {
   render(
     <BrowserRouter>
       <Provider store={store}>
