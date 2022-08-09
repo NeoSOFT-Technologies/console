@@ -7,7 +7,7 @@ import CreatePolicy from "./CreatePolicy";
 import { store } from "./access-rights/api-access-rights/AccessList.test";
 
 describe("Create policy component", () => {
-  it("render without crashing CreatePolicy", async () => {
+  it("render without crashing CreatePolicy", () => {
     render(
       <BrowserRouter>
         <Provider store={store}>
