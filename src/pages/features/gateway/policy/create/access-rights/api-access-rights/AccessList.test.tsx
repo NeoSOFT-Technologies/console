@@ -8,12 +8,12 @@ import thunk from "redux-thunk";
 import AccessList from "./AccessList";
 
 const mockStore = configureStore([thunk]);
-const store = mockStore({
+export const store = mockStore({
   createPolicyState: {
     loading: false,
     data: {
       form: {
-        Name: "",
+        Name: "policy1",
         Active: true,
         KeysInactive: true,
         Quota: -1,
@@ -25,7 +25,7 @@ const store = mockStore({
         State: "active",
         KeyExpiresIn: 0,
         Tags: [],
-        APIs: [],
+        APIs: ["api1", "api2"],
         Partitions: {
           quota: false,
           rate_limit: false,
@@ -34,7 +34,24 @@ const store = mockStore({
           per_api: true,
         },
       },
+      errors: {
+        Name: "",
+        Policies: "",
+        GlobalLimit: {
+          ApiId: "",
+          ApiName: "",
+          Per: "",
+          Rate: "",
+          Quota: "",
+          Expires: "",
+          QuotaRenewalRate: "",
+          ThrottleInterval: "",
+          ThrottleRetries: "",
+        },
+        PerApiLimit: [],
+      },
     },
+    error: undefined,
   },
   apiListState: {
     loading: false,

@@ -1,4 +1,4 @@
-import { screen, render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import React from "react";
@@ -6,20 +6,20 @@ import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import store from "../../../../../store/index";
-import KeyList from "./KeyList";
+import PolicyList from "./PolicyList";
 
 const mockApi = new MockAdapter(axios);
 
-it("render without crashing Key list", () => {
-  mockApi.onGet("/Key/GetAllKeys?pageNum=1&pageSize=1").reply(200, {
+it("render without crashing Policy list", () => {
+  mockApi.onGet("/Policy?pageNum=1&pageSize=1").reply(200, {
     data: [
       {
+        Action: "delete",
         Id: "9dd100136a6a4e00af04bcece0eb1c8a",
-        KeyName: "key1",
-        IsActive: true,
-        Expires: 0,
-        Policies: [],
-        CreatedDate: "2022-07-07T14:09:40.405677+00:00",
+        Name: "policy1",
+        State: "state",
+        Apis: ["api1", "api2"],
+        AuthType: "standard",
       },
     ],
     count: 1,
@@ -27,20 +27,20 @@ it("render without crashing Key list", () => {
   render(
     <BrowserRouter>
       <Provider store={store}>
-        <KeyList />
+        <PolicyList />
       </Provider>
     </BrowserRouter>
   );
 });
 
-it("check buttons and inputs", () => {
+it("check buttons and inputs", async () => {
   render(
     <BrowserRouter>
       <Provider store={store}>
-        <KeyList />
+        <PolicyList />
       </Provider>
     </BrowserRouter>
   );
-  const keyListHeading = screen.getByText("KEY LIST");
-  expect(keyListHeading).toBeInTheDocument();
+  const policyListHeading = screen.getByText("POLICY LIST");
+  expect(policyListHeading).toBeInTheDocument();
 });
