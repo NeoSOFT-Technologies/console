@@ -13,7 +13,7 @@ export const store = mockStore({
     loading: false,
     data: {
       form: {
-        Name: "policy1",
+        Name: "",
         Active: true,
         KeysInactive: true,
         Quota: -1,
