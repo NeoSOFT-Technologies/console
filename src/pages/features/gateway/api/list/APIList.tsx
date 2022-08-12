@@ -115,7 +115,7 @@ export default function APIList() {
         <Modal.Body>Are you sure you want to delete this Api ?</Modal.Body>
         <Modal.Footer>
           <Button
-            data-testid="delete-input"
+            data-testid="cancel-input"
             variant="secondary"
             onClick={handleCancel}
           >
