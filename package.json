@@ -76,7 +76,7 @@
     "husky": "^8.0.1",
     "prettier": "^2.5.1",
     "sass": "^1.49.9",
-    "serve": "^13.0.2"
+    "serve": "^14.1.2"
   },
   "jest": {
     "coveragePathIgnorePatterns": [
