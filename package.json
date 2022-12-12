@@ -23,7 +23,7 @@
     "prepush": "npm run lint"
   },
   "dependencies": {
-    "@mdi/font": "^6.5.95",
+    "@mdi/font": "^7.1.96",
     "@reduxjs/toolkit": "^1.8.0",
     "@types/node": "^17.0.23",
     "@types/react": "^18.0.1",
